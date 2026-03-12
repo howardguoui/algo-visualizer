@@ -1,6 +1,8 @@
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { Link } from 'react-router-dom'
 import type { Components } from 'react-markdown'
+import { practiceProblemIds } from '../../data/problems/practiceProblems'
 
 const components: Components = {
   h1: ({ children }) => (
@@ -71,6 +73,29 @@ const components: Components = {
   td: ({ children }) => (
     <td className="border border-slate-700 px-4 py-2">{children}</td>
   ),
+  a: ({ href, children }) => {
+    // Intercept LeetCode problem links — redirect to internal practice page if available
+    if (href?.includes('leetcode.com/problems/')) {
+      const text = Array.isArray(children)
+        ? children.map(c => (typeof c === 'string' ? c : '')).join('')
+        : String(children ?? '')
+      const idMatch = text.match(/^(\d+)[\.\s]/)
+      const id = idMatch ? parseInt(idMatch[1]) : null
+      if (id && practiceProblemIds.has(id)) {
+        return (
+          <Link to={`/practice/${id}`} className="text-blue-400 hover:text-blue-300 underline font-medium">
+            {children}
+            <span className="ml-1 text-[10px] text-blue-500 align-middle">●</span>
+          </Link>
+        )
+      }
+    }
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">
+        {children}
+      </a>
+    )
+  },
 }
 
 export function MarkdownRenderer({ content }: { content: string }) {

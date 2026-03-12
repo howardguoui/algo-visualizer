@@ -19,8 +19,8 @@ export function VisualizerEmbed({ algorithmKey }: Props) {
   const [sourceArray, setSourceArray] = useState(() => randomArray(16))
   const algorithm = algorithms[algorithmKey]
 
-  const steps = useMemo(() => algorithm.generateSteps(sourceArray), [algorithm, sourceArray])
-  const maxValue = useMemo(() => Math.max(...sourceArray), [sourceArray])
+  const steps = useMemo(() => algorithm?.generateSteps(sourceArray) ?? [], [algorithm, sourceArray])
+  const maxValue = useMemo(() => sourceArray.length ? Math.max(...sourceArray) : 100, [sourceArray])
   const vis = useVisualizer(steps)
 
   const handleRandomize = () => {
@@ -57,9 +57,9 @@ export function VisualizerEmbed({ algorithmKey }: Props) {
 
       {/* Stats row */}
       <div className="flex gap-6 px-5 py-2 border-t border-slate-800 text-xs">
-        <span className="text-slate-500">{t('Comparisons', '比较次数')}: <span className="text-yellow-400 font-mono font-bold">{vis.currentStep.comparisons}</span></span>
-        <span className="text-slate-500">{t('Swaps', '交换次数')}: <span className="text-red-400 font-mono font-bold">{vis.currentStep.swaps}</span></span>
-        <span className="text-slate-500 flex-1 text-right">{vis.currentStep.description}</span>
+        <span className="text-slate-500">{t('Comparisons', '比较次数')}: <span className="text-yellow-400 font-mono font-bold">{vis.currentStep?.comparisons ?? 0}</span></span>
+        <span className="text-slate-500">{t('Swaps', '交换次数')}: <span className="text-red-400 font-mono font-bold">{vis.currentStep?.swaps ?? 0}</span></span>
+        <span className="text-slate-500 flex-1 text-right">{vis.currentStep?.description ?? ''}</span>
       </div>
 
       {/* Controls */}
