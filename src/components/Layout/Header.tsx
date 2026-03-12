@@ -42,6 +42,14 @@ export function Header({ onMenuToggle }: Props) {
         <span className="text-slate-300">{lang === 'en' ? '中文' : 'English'}</span>
       </button>
 
+      {/* Problem sets link */}
+      <Link
+        to="/problems"
+        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors text-sm font-medium text-slate-200 no-underline"
+      >
+        🎯 {t('Problems', '题单')}
+      </Link>
+
       {/* Standalone visualizer link */}
       <Link
         to="/visualize"

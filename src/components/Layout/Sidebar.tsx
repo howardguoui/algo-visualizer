@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useLocation } from 'react-router-dom'
 import { curriculum } from '../../content/curriculum'
 import { useLang } from '../../context/LangContext'
 import { useState } from 'react'
@@ -17,6 +17,7 @@ interface Props {
 export function Sidebar({ isOpen }: Props) {
   const { topicId } = useParams<{ topicId: string }>()
   const { lang } = useLang()
+  const location = useLocation()
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
 
   const toggleChapter = (id: string) =>
@@ -97,6 +98,21 @@ export function Sidebar({ isOpen }: Props) {
           )
         })}
       </nav>
+
+      {/* Problem sets link */}
+      <div className="px-3 py-2 border-t border-slate-800">
+        <Link
+          to="/problems"
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium no-underline transition-colors ${
+            location.pathname === '/problems'
+              ? 'bg-blue-600 text-white'
+              : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+          }`}
+        >
+          <span>🎯</span>
+          <span>{lang === 'zh' ? 'LeetCode 题单' : 'Problem Sets'}</span>
+        </Link>
+      </div>
 
       {/* Footer */}
       <div className="p-3 border-t border-slate-800 text-xs text-slate-600 text-center">
