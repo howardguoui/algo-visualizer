@@ -1,541 +1,293 @@
-import { TopicContent } from '../types'
+import type { TopicContent } from '../../types'
 
 export const binarySearch: TopicContent = {
   id: 'arrays-binary-search',
-  title: {
-    en: 'Binary Search Mastery',
-    zh: '二分查找精通',
-  },
-  description: {
-    en: 'Master binary search not just for sorted arrays, but for any well-defined search space. Three template variants for different problem types.',
-    zh: '不仅掌握排序数组的二分查找，还要掌握任何定义清晰的搜索空间。三个不同问题类型的模板变体。',
-  },
-  timeEstimate: '80-100 minutes',
+  title: { en: 'Binary Search Pattern', zh: '二分查找模式' },
+  description: { en: 'Master 3 binary search templates for exact match, left bound, and right bound', zh: '掌握3个二分查找模板：精确匹配、左边界、右边界' },
+  timeEstimate: '45 min',
   contentType: 'all',
-  hasVisualizer: false,
+  hasVisualizer: true,
+  visualizerKey: 'binarySearch',
   content: {
-    en: `## The Key Insight: Define Your Search Space
-
-Binary search isn't just for finding exact values in sorted arrays. The **real power** comes from clearly defining a search space where the answer exists, and the property is monotonic.
-
-### Monotonic Property
-
-A search space has monotonic property if:
-\`\`\`
-Search space divided into two parts:
-[Invalid ... Invalid | Valid ... Valid]
-                    ↑
-              Answer is here
-\`\`\`
-
-Examples:
-- Sorted array: [elements < target | elements >= target]
-- Capacity problems: [capacity too small | capacity sufficient]
-- Time problems: [time too early | time sufficient]
-
-## Template 1: Find Exact Match
-
-Use when looking for a specific value in sorted array.
-
-\`\`\`javascript
-function binarySearchExact(arr, target) {
-  let left = 0;
-  let right = arr.length - 1;
-
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-
-    if (arr[mid] === target) {
-      return mid;  // Found!
-    } else if (arr[mid] < target) {
-      left = mid + 1;  // Target is to the right
-    } else {
-      right = mid - 1;  // Target is to the left
-    }
-  }
-
-  return -1;  // Not found
-  // Time: O(log n), Space: O(1)
-}
-\`\`\`
-
-**Key**: Use \`left <= right\` because we want to check all elements that might be target.
-
-## Template 2: Find Left Boundary
-
-Use when you need the **first position** where condition is true.
-
-\`\`\`javascript
-function binarySearchLeftBound(arr, target) {
-  let left = 0;
-  let right = arr.length;  // Note: right = length, not length - 1
-
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-
-    if (arr[mid] < target) {
-      // arr[mid] doesn't satisfy condition
-      left = mid + 1;
-    } else {
-      // arr[mid] might be answer, keep searching left
-      right = mid;
-    }
-  }
-
-  // left is now the leftmost position where arr[left] >= target
-  return left;
-  // Time: O(log n), Space: O(1)
-}
-
-// Example: Find first position of 5
-// arr = [1, 3, 5, 5, 5, 7]
-// left=0, right=6
-// mid=3, arr[3]=5, not < 5, so right=3
-// mid=1, arr[1]=3, < 5, so left=2
-// mid=2, arr[2]=5, not < 5, so right=2
-// left=right=2, exit
-// Result: position 2 (first 5)
-\`\`\`
-
-**Key**: Use \`left < right\` (not <=) and move \`right = mid\` (not mid-1) to preserve boundary.
-
-## Template 3: Find Right Boundary
-
-Use when you need the **last position** where condition is true.
-
-\`\`\`javascript
-function binarySearchRightBound(arr, target) {
-  let left = 0;
-  let right = arr.length;
-
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-
-    if (arr[mid] <= target) {
-      // arr[mid] might be answer, keep searching right
-      left = mid + 1;
-    } else {
-      // arr[mid] is beyond target
-      right = mid;
-    }
-  }
-
-  // left-1 is now the rightmost position where arr[left-1] <= target
-  return left - 1;
-  // Time: O(log n), Space: O(1)
-}
-
-// Example: Find last position of 5
-// arr = [1, 3, 5, 5, 5, 7]
-// left=0, right=6
-// mid=3, arr[3]=5, <= 5, so left=4
-// mid=5, arr[5]=7, > 5, so right=5
-// mid=4, arr[4]=5, <= 5, so left=5
-// left=right=5, exit
-// Result: left-1=4 (last 5)
-\`\`\`
-
-**Key**: Use \`arr[mid] <= target\` and move \`left = mid + 1\` to find rightmost.
-
-## Example: Find First and Last Position
-
-\`\`\`javascript
-function searchRange(arr, target) {
-  if (arr.length === 0) return [-1, -1];
-
-  // Find first position
-  let left = 0, right = arr.length;
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-    if (arr[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid;
-    }
-  }
-  const firstPos = left;
-  if (firstPos === arr.length || arr[firstPos] !== target) {
-    return [-1, -1];  // Not found
-  }
-
-  // Find last position
-  left = 0;
-  right = arr.length;
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-    if (arr[mid] <= target) {
-      left = mid + 1;
-    } else {
-      right = mid;
-    }
-  }
-  const lastPos = left - 1;
-
-  return [firstPos, lastPos];
-  // Time: O(log n), Space: O(1)
-}
-
-// Example: arr = [5,7,7,8,8,10], target = 8
-// First pass finds leftmost 8 at index 3
-// Second pass finds rightmost 8 at index 4
-// Result: [3, 4]
-\`\`\`
-
-## Example: Search in Rotated Sorted Array
-
-\`\`\`javascript
-function searchRotated(arr, target) {
-  let left = 0, right = arr.length - 1;
-
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-
-    if (arr[mid] === target) {
-      return mid;
-    }
-
-    // Determine which side is sorted
-    if (arr[left] <= arr[mid]) {
-      // Left half is sorted
-      if (arr[left] <= target && target < arr[mid]) {
-        // Target is in sorted left half
-        right = mid - 1;
-      } else {
-        // Target is in right half (may be unsorted)
-        left = mid + 1;
-      }
-    } else {
-      // Right half is sorted
-      if (arr[mid] < target && target <= arr[right]) {
-        // Target is in sorted right half
-        left = mid + 1;
-      } else {
-        // Target is in left half (may be unsorted)
-        right = mid - 1;
-      }
-    }
-  }
-
-  return -1;
-  // Time: O(log n), Space: O(1)
-}
-
-// Example: [4,5,6,7,0,1,2], target=0
-// left=0, right=6, mid=3, arr[3]=7
-// Left [4,5,6,7] is sorted, target 0 not in range, so left=4
-// left=4, right=6, mid=5, arr[5]=1
-// Right [1,2] is sorted, target 0 not in range, so right=4
-// left=4, right=4, mid=4, arr[4]=0 == target
-// Result: 4
-\`\`\`
-
-## Common Patterns
-
-| Problem Type | Search Space | Template |
-|---|---|---|
-| Find exact value | Sorted array | Template 1 |
-| Find first >= target | Sorted array | Template 2 |
-| Find last <= target | Sorted array | Template 3 |
-| Find peak element | Mountain array | Find boundary |
-| Capacity problem | [too small \| sufficient] | Find boundary |
-| Time-based problem | [not ready \| ready] | Find boundary |
-
-## Why Three Templates?
-
-Each template corresponds to a different boundary scenario:
-- **Exact match**: Condition is \`==\`
-- **Left bound**: Condition is \`>=\` (first element satisfying)
-- **Right bound**: Condition is \`<=\` (last element satisfying)
-
-The subtle differences ensure correctness at the boundary.
-
-## Template Comparison
-
-\`\`\`
-           | Exact     | Left        | Right
------------|-----------|-------------|----------
-while      | left<=rgt  | left<right  | left<right
-right init | len-1      | len         | len
-mid test   | ==, <, >   | <           | <=
-adjust     | mid±1      | mid, mid+1  | mid+1, mid
-return     | mid/-1     | left        | left-1
-\`\`\`
-
-The consistency across templates makes them easy to remember and implement correctly.`,
-
-    zh: `## 关键洞察：定义搜索空间
-
-二分查找不仅仅是在排序数组中查找精确值。**真正的力量**来自于清楚地定义一个存在答案的搜索空间，且具有单调性。
-
-### 单调性属性
-
-搜索空间具有单调性当：
-\`\`\`
-搜索空间分为两部分：
-[无效 ... 无效 | 有效 ... 有效]
-              ↑
-            答案在这里
-\`\`\`
-
-例子：
-- 排序数组：[元素 < 目标 | 元素 >= 目标]
-- 容量问题：[容量不足 | 容量充足]
-- 时间问题：[时间太早 | 时间充足]
-
-## 模板1：精确查找
-
-当在排序数组中查找特定值时使用。
-
-\`\`\`javascript
-function binarySearchExact(arr, target) {
-  let left = 0;
-  let right = arr.length - 1;
-
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-
-    if (arr[mid] === target) {
-      return mid;  // 找到！
-    } else if (arr[mid] < target) {
-      left = mid + 1;  // 目标在右边
-    } else {
-      right = mid - 1;  // 目标在左边
-    }
-  }
-
-  return -1;  // 未找到
-  // 时间：O(log n)，空间：O(1)
-}
-\`\`\`
-
-**关键**：使用 \`left <= right\` 因为我们想检查所有可能是目标的元素。
-
-## 模板2：找左边界
-
-当你需要**第一个位置**满足条件时使用。
-
-\`\`\`javascript
-function binarySearchLeftBound(arr, target) {
-  let left = 0;
-  let right = arr.length;  // 注意：right = 长度，不是长度-1
-
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-
-    if (arr[mid] < target) {
-      // arr[mid]不满足条件
-      left = mid + 1;
-    } else {
-      // arr[mid]可能是答案，继续搜索左侧
-      right = mid;
-    }
-  }
-
-  // left现在是arr[left] >= target的最左位置
-  return left;
-  // 时间：O(log n)，空间：O(1)
-}
-
-// 例子：找5的第一个位置
-// arr = [1, 3, 5, 5, 5, 7]
-// left=0, right=6
-// mid=3, arr[3]=5, 不 < 5，所以 right=3
-// mid=1, arr[1]=3, < 5，所以 left=2
-// mid=2, arr[2]=5, 不 < 5，所以 right=2
-// left=right=2，退出
-// 结果：位置2（第一个5）
-\`\`\`
-
-**关键**：使用 \`left < right\` （不是<=）并移动 \`right = mid\` （不是mid-1）以保持边界。
-
-## 模板3：找右边界
-
-当你需要**最后一个位置**满足条件时使用。
-
-\`\`\`javascript
-function binarySearchRightBound(arr, target) {
-  let left = 0;
-  let right = arr.length;
-
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-
-    if (arr[mid] <= target) {
-      // arr[mid]可能是答案，继续搜索右侧
-      left = mid + 1;
-    } else {
-      // arr[mid]超过目标
-      right = mid;
-    }
-  }
-
-  // left-1现在是arr[left-1] <= target的最右位置
-  return left - 1;
-  // 时间：O(log n)，空间：O(1)
-}
-
-// 例子：找5的最后一个位置
-// arr = [1, 3, 5, 5, 5, 7]
-// left=0, right=6
-// mid=3, arr[3]=5, <= 5，所以 left=4
-// mid=5, arr[5]=7, > 5，所以 right=5
-// mid=4, arr[4]=5, <= 5，所以 left=5
-// left=right=5，退出
-// 结果：left-1=4（最后一个5）
-\`\`\`
-
-**关键**：使用 \`arr[mid] <= target\` 并移动 \`left = mid + 1\` 以找到最右侧。
-
-## 例子：找第一个和最后一个位置
-
-\`\`\`javascript
-function searchRange(arr, target) {
-  if (arr.length === 0) return [-1, -1];
-
-  // 找第一个位置
-  let left = 0, right = arr.length;
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-    if (arr[mid] < target) {
-      left = mid + 1;
-    } else {
-      right = mid;
-    }
-  }
-  const firstPos = left;
-  if (firstPos === arr.length || arr[firstPos] !== target) {
-    return [-1, -1];  // 未找到
-  }
-
-  // 找最后一个位置
-  left = 0;
-  right = arr.length;
-  while (left < right) {
-    const mid = Math.floor((left + right) / 2);
-    if (arr[mid] <= target) {
-      left = mid + 1;
-    } else {
-      right = mid;
-    }
-  }
-  const lastPos = left - 1;
-
-  return [firstPos, lastPos];
-  // 时间：O(log n)，空间：O(1)
-}
-
-// 例子：arr = [5,7,7,8,8,10], target = 8
-// 第一次遍历找到最左侧的8在索引3
-// 第二次遍历找到最右侧的8在索引4
-// 结果：[3, 4]
-\`\`\`
-
-## 例子：旋转排序数组中的搜索
-
-\`\`\`javascript
-function searchRotated(arr, target) {
-  let left = 0, right = arr.length - 1;
-
-  while (left <= right) {
-    const mid = Math.floor((left + right) / 2);
-
-    if (arr[mid] === target) {
-      return mid;
-    }
-
-    // 确定哪一侧是有序的
-    if (arr[left] <= arr[mid]) {
-      // 左半部分有序
-      if (arr[left] <= target && target < arr[mid]) {
-        // 目标在有序左半部分
-        right = mid - 1;
-      } else {
-        // 目标在右半部分（可能无序）
-        left = mid + 1;
-      }
-    } else {
-      // 右半部分有序
-      if (arr[mid] < target && target <= arr[right]) {
-        // 目标在有序右半部分
-        left = mid + 1;
-      } else {
-        // 目标在左半部分（可能无序）
-        right = mid - 1;
-      }
-    }
-  }
-
-  return -1;
-  // 时间：O(log n)，空间：O(1)
-}
-
-// 例子：[4,5,6,7,0,1,2], target=0
-// left=0, right=6, mid=3, arr[3]=7
-// 左侧[4,5,6,7]有序，目标0不在范围内，所以left=4
-// left=4, right=6, mid=5, arr[5]=1
-// 右侧[1,2]有序，目标0不在范围内，所以right=4
-// left=4, right=4, mid=4, arr[4]=0 == target
-// 结果：4
-\`\`\`
-
-## 常见模式
-
-| 问题类型 | 搜索空间 | 模板 |
-|---|---|---|
-| 找精确值 | 排序数组 | 模板1 |
-| 找第一个 >= 目标 | 排序数组 | 模板2 |
-| 找最后一个 <= 目标 | 排序数组 | 模板3 |
-| 找峰值元素 | 山型数组 | 找边界 |
-| 容量问题 | [不足\|充足] | 找边界 |
-| 时间问题 | [未准备\|准备好] | 找边界 |
-
-## 为什么有三个模板？
-
-每个模板对应不同的边界场景：
-- **精确匹配**：条件是 \`==\`
-- **左边界**：条件是 \`>=\` （首个满足的元素）
-- **右边界**：条件是 \`<=\` （最后一个满足的元素）
-
-细微的差异确保了边界处的正确性。
-
-## 模板比较
-
-\`\`\`
-           | 精确      | 左边界      | 右边界
------------|-----------|-------------|----------
-while      | left<=rgt  | left<right  | left<right
-right初始  | len-1      | len         | len
-mid测试    | ==, <, >   | <           | <=
-调整       | mid±1      | mid, mid+1  | mid+1, mid
-返回       | mid/-1     | left        | left-1
-\`\`\`
-
-模板间的一致性使其易于记忆和正确实现。`,
+    en: [
+      "## The Binary Search Core Concept",
+      "",
+      "Binary search is built on the principle of halving the search space. If you have n elements, each comparison eliminates half the remaining space. After k comparisons, you've checked at most 2^k elements. This is why binary search is O(log n) - incredibly efficient.",
+      "",
+      "However, binary search requires sorted data. If the data isn't sorted, sorting first (O(n log n)) might still be worth it if you do many searches.",
+      "",
+      "The challenge: there are three slightly different templates depending on what you're searching for.",
+      "",
+      "## Template 1: Exact Match",
+      "",
+      "Find the exact position of a target element. If not found, return -1.",
+      "",
+      "```javascript",
+      "function binarySearchExact(arr, target) {",
+      "  let left = 0, right = arr.length - 1",
+      "  while (left <= right) {",
+      "    const mid = Math.floor((left + right) / 2)",
+      "    if (arr[mid] === target) {",
+      "      return mid",
+      "    } else if (arr[mid] < target) {",
+      "      left = mid + 1",
+      "    } else {",
+      "      right = mid - 1",
+      "    }",
+      "  }",
+      "  return -1",
+      "}",
+      "```",
+      "",
+      "**Key difference**: `while (left <= right)` - we continue until the pointers cross.",
+      "",
+      "## Template 2: Left Bound",
+      "",
+      "Find the leftmost position where target appears. This handles duplicates - if there are multiple copies of the target, find the first one.",
+      "",
+      "```javascript",
+      "function binarySearchLeftBound(arr, target) {",
+      "  let left = 0, right = arr.length",
+      "  while (left < right) {",
+      "    const mid = Math.floor((left + right) / 2)",
+      "    if (arr[mid] < target) {",
+      "      left = mid + 1",
+      "    } else {",
+      "      right = mid",
+      "    }",
+      "  }",
+      "  if (left < arr.length && arr[left] === target) return left",
+      "  return -1",
+      "}",
+      "```",
+      "",
+      "**Key differences**:",
+      "- `right = arr.length` (not `arr.length - 1`)",
+      "- `while (left < right)` (not `<=`)",
+      "- When `arr[mid] < target`, move left; when `arr[mid] >= target`, move right",
+      "- We bias towards the left side",
+      "",
+      "**Why this works**: When the loop ends, `left == right` pointing at the first position where `arr[pos] >= target`.",
+      "",
+      "## Template 3: Right Bound",
+      "",
+      "Find the rightmost position where target appears.",
+      "",
+      "```javascript",
+      "function binarySearchRightBound(arr, target) {",
+      "  let left = 0, right = arr.length",
+      "  while (left < right) {",
+      "    const mid = Math.floor((left + right) / 2)",
+      "    if (arr[mid] <= target) {",
+      "      left = mid + 1",
+      "    } else {",
+      "      right = mid",
+      "    }",
+      "  }",
+      "  if (left > 0 && arr[left - 1] === target) return left - 1",
+      "  return -1",
+      "}",
+      "```",
+      "",
+      "**Key differences from left bound**:",
+      "- When `arr[mid] <= target`, move left (we include equal)",
+      "- We check `arr[left - 1]` at the end (the position we skipped over)",
+      "- We bias towards the right side",
+      "",
+      "## Example: Find First and Last Position",
+      "",
+      "```javascript",
+      "function searchRange(arr, target) {",
+      "  const left = binarySearchLeftBound(arr, target)",
+      "  const right = binarySearchRightBound(arr, target)",
+      "  if (left === -1) return [-1, -1]",
+      "  return [left, right]",
+      "}",
+      "```",
+      "",
+      "For array `[5, 7, 7, 8, 8, 10]` and target `8`:",
+      "- Left bound finds index 3 (first 8)",
+      "- Right bound finds index 4 (last 8)",
+      "- Return `[3, 4]`",
+      "",
+      "## Search Space Reduction Beyond Sorted Arrays",
+      "",
+      "Binary search isn't limited to finding elements in arrays. The core concept applies anywhere you have a monotonic property.",
+      "",
+      "**Example: Find Peak Element**",
+      "",
+      "A peak is an element greater than its neighbors. In an unsorted array, use binary search on the property: if `arr[mid]` is in an upslope, search right; if downslope, search left.",
+      "",
+      "```javascript",
+      "function findPeak(arr) {",
+      "  let left = 0, right = arr.length - 1",
+      "  while (left < right) {",
+      "    const mid = Math.floor((left + right) / 2)",
+      "    if (arr[mid] < arr[mid + 1]) {",
+      "      left = mid + 1  // Go right",
+      "    } else {",
+      "      right = mid     // Go left (or mid is peak)",
+      "    }",
+      "  }",
+      "  return left",
+      "}",
+      "```",
+      "",
+      "The monotonic property here is: \"if going up, peak is to the right; if going down, peak is here or to the left.\"",
+      "",
+      "## Common Mistakes",
+      "",
+      "1. **Integer overflow**: Use `mid = left + Math.floor((right - left) / 2)` instead of `(left + right) / 2`",
+      "2. **Off-by-one errors**: Test boundary cases (first element, last element, not found)",
+      "3. **Mixing templates**: Each template has specific conditions. Don't mix them.",
+      "4. **Assuming data is sorted**: Binary search silently fails on unsorted data without error.",
+      "",
+      "## Time Complexity",
+      "",
+      "All three templates are O(log n) for search and O(n log n) if you sort first."
+    ].join('\n'),
+    zh: [
+      "## 二分查找核心概念",
+      "",
+      "二分查找建立在减半搜索空间的原则上。如果有n个元素，每次比较消除一半的剩余空间。经过k次比较后，你最多检查2^k个元素。这就是为什么二分查找是O(log n) - 极其高效。",
+      "",
+      "然而，二分查找需要排序数据。如果数据未排序，先排序（O(n log n)）如果进行许多搜索可能仍值得。",
+      "",
+      "挑战：根据你搜索的内容，有三个略有不同的模板。",
+      "",
+      "## 模板1：精确匹配",
+      "",
+      "找到目标元素的确切位置。如果未找到，返回-1。",
+      "",
+      "```javascript",
+      "function binarySearchExact(arr, target) {",
+      "  let left = 0, right = arr.length - 1",
+      "  while (left <= right) {",
+      "    const mid = Math.floor((left + right) / 2)",
+      "    if (arr[mid] === target) {",
+      "      return mid",
+      "    } else if (arr[mid] < target) {",
+      "      left = mid + 1",
+      "    } else {",
+      "      right = mid - 1",
+      "    }",
+      "  }",
+      "  return -1",
+      "}",
+      "```",
+      "",
+      "**关键区别**：`while (left <= right)` - 我们继续直到指针交叉。",
+      "",
+      "## 模板2：左边界",
+      "",
+      "找到目标出现的最左位置。这处理重复 - 如果有多个目标副本，找第一个。",
+      "",
+      "```javascript",
+      "function binarySearchLeftBound(arr, target) {",
+      "  let left = 0, right = arr.length",
+      "  while (left < right) {",
+      "    const mid = Math.floor((left + right) / 2)",
+      "    if (arr[mid] < target) {",
+      "      left = mid + 1",
+      "    } else {",
+      "      right = mid",
+      "    }",
+      "  }",
+      "  if (left < arr.length && arr[left] === target) return left",
+      "  return -1",
+      "}",
+      "```",
+      "",
+      "**关键区别**：",
+      "- `right = arr.length`（不是`arr.length - 1`）",
+      "- `while (left < right)`（不是`<=`）",
+      "- 当`arr[mid] < target`时，左移；当`arr[mid] >= target`时，右移",
+      "- 我们偏向左侧",
+      "",
+      "**为什么有效**：当循环结束时，`left == right`指向第一个`arr[pos] >= target`的位置。",
+      "",
+      "## 模板3：右边界",
+      "",
+      "找到目标出现的最右位置。",
+      "",
+      "```javascript",
+      "function binarySearchRightBound(arr, target) {",
+      "  let left = 0, right = arr.length",
+      "  while (left < right) {",
+      "    const mid = Math.floor((left + right) / 2)",
+      "    if (arr[mid] <= target) {",
+      "      left = mid + 1",
+      "    } else {",
+      "      right = mid",
+      "    }",
+      "  }",
+      "  if (left > 0 && arr[left - 1] === target) return left - 1",
+      "  return -1",
+      "}",
+      "```",
+      "",
+      "**与左边界的关键区别**：",
+      "- 当`arr[mid] <= target`时，左移（我们包括相等）",
+      "- 我们检查`arr[left - 1]`在末尾（我们跳过的位置）",
+      "- 我们偏向右侧",
+      "",
+      "## 示例：找第一和最后位置",
+      "",
+      "```javascript",
+      "function searchRange(arr, target) {",
+      "  const left = binarySearchLeftBound(arr, target)",
+      "  const right = binarySearchRightBound(arr, target)",
+      "  if (left === -1) return [-1, -1]",
+      "  return [left, right]",
+      "}",
+      "```",
+      "",
+      "对于数组`[5, 7, 7, 8, 8, 10]`和目标`8`：",
+      "- 左边界找到索引3（第一个8）",
+      "- 右边界找到索引4（最后一个8）",
+      "- 返回`[3, 4]`",
+      "",
+      "## 超越排序数组的搜索空间缩小",
+      "",
+      "二分查找不限于在数组中查找元素。核心概念适用于任何具有单调性质的地方。",
+      "",
+      "**示例：找峰值元素**",
+      "",
+      "峰值是大于其邻居的元素。在未排序数组中，在属性上使用二分查找：如果`arr[mid]`在上升斜坡，搜索右侧；如果下降，搜索左侧。",
+      "",
+      "```javascript",
+      "function findPeak(arr) {",
+      "  let left = 0, right = arr.length - 1",
+      "  while (left < right) {",
+      "    const mid = Math.floor((left + right) / 2)",
+      "    if (arr[mid] < arr[mid + 1]) {",
+      "      left = mid + 1  // 向右走",
+      "    } else {",
+      "      right = mid     // 向左走（或mid是峰值）",
+      "    }",
+      "  }",
+      "  return left",
+      "}",
+      "```",
+      "",
+      "这里的单调属性是：「如果上升，峰值在右侧；如果下降，峰值在这里或左侧。」",
+      "",
+      "## 常见错误",
+      "",
+      "1. **整数溢出**：使用`mid = left + Math.floor((right - left) / 2)`而不是`(left + right) / 2`",
+      "2. **一一到位错误**：测试边界情况（第一个元素、最后一个元素、未找到）",
+      "3. **混合模板**：每个模板有特定条件。不要混合它们。",
+      "4. **假设数据已排序**：二分查找在未排序数据上无声失败而无错误。",
+      "",
+      "## 时间复杂度",
+      "",
+      "所有三个模板都是O(log n)用于搜索，如果先排序O(n log n)。"
+    ].join('\n'),
   },
   leetcode: [
-    {
-      id: 704,
-      title: 'Binary Search',
-      titleZh: '二分查找',
-      difficulty: 'Easy',
-    },
-    {
-      id: 34,
-      title: 'Find First and Last Position of Element in Sorted Array',
-      titleZh: '在排序数组中查找元素的第一个和最后一个位置',
-      difficulty: 'Medium',
-    },
-    {
-      id: 33,
-      title: 'Search in Rotated Sorted Array',
-      titleZh: '搜索旋转排序数组',
-      difficulty: 'Medium',
-    },
-    {
-      id: 162,
-      title: 'Find Peak Element',
-      titleZh: '寻找峰值',
-      difficulty: 'Medium',
-    },
+    { id: 704, title: 'Binary Search', titleZh: '二分查找', difficulty: 'Easy' },
+    { id: 34, title: 'Find First and Last Position of Element in Sorted Array', titleZh: '在排序数组中查找元素的第一个和最后一个位置', difficulty: 'Medium' },
+    { id: 33, title: 'Search in Rotated Sorted Array', titleZh: '搜索旋转排序数组', difficulty: 'Medium' },
+    { id: 162, title: 'Find Peak Element', titleZh: '寻找峰值', difficulty: 'Medium' },
   ],
 }

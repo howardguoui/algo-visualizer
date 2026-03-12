@@ -1,308 +1,360 @@
-import { TopicContent } from '../../types';
+import type { TopicContent } from '../../types'
 
 export const bstContent: TopicContent = {
   id: 'trees-bst',
-  title: {
-    en: 'Binary Search Tree (BST)',
-    zh: '二叉搜索树'
-  },
-  description: {
-    en: 'Understand BST properties and master search, insert, and delete operations',
-    zh: '理解二叉搜索树特性，掌握搜索、插入和删除操作'
-  },
-  timeEstimate: '50 minutes',
+  title: { en: 'Binary Search Tree (BST)', zh: '二叉搜索树（BST）' },
+  description: { en: 'Master BST properties, search/insert/delete, and inorder traversal gives sorted order', zh: '掌握BST属性、搜索/插入/删除，中序遍历得到排序顺序' },
+  timeEstimate: '40 min',
   contentType: 'content+practice',
   hasVisualizer: false,
   content: {
-    en: `# Binary Search Tree (BST)
-
-A Binary Search Tree is a binary tree where for every node: all values in the left subtree are smaller, and all values in the right subtree are larger. This property enables efficient searching and operations.
-
-## Core BST Property
-
-For every node in a BST:
-- **Left subtree**: All values < node.val
-- **Right subtree**: All values > node.val
-- **Inorder traversal**: Returns values in ascending sorted order
-
-This property is the foundation of all BST operations.
-
-## BST Search
-
-Searching leverages the BST property to eliminate half the remaining nodes at each step:
-
-\`\`\`javascript
-function searchBST(root, val) {
-  let current = root;
-
-  while (current) {
-    if (current.val === val) {
-      return current;
-    } else if (val < current.val) {
-      // Go left - smaller values are on left
-      current = current.left;
-    } else {
-      // Go right - larger values are on right
-      current = current.right;
-    }
-  }
-
-  return null; // Not found
-}
-\`\`\`
-
-**Time Complexity**: O(log n) average case (balanced), O(n) worst case (skewed tree)
-
-## BST Insertion
-
-Insert maintains the BST property by finding the correct position:
-
-\`\`\`javascript
-function insertIntoBST(root, val) {
-  if (!root) {
-    return new TreeNode(val);
-  }
-
-  if (val < root.val) {
-    root.left = insertIntoBST(root.left, val);
-  } else {
-    root.right = insertIntoBST(root.right, val);
-  }
-
-  return root;
-}
-\`\`\`
-
-Insertion always creates a new leaf node. The key is recursively finding the position where the new value belongs.
-
-## BST Deletion
-
-Deletion is the most complex operation. Three cases:
-
-**Case 1: Node is a leaf** - Simply delete it.
-
-**Case 2: Node has one child** - Replace node with its child.
-
-**Case 3: Node has two children** - Find successor (minimum in right subtree) or predecessor (maximum in left subtree), replace node's value, then delete the successor/predecessor.
-
-\`\`\`javascript
-function deleteNode(root, val) {
-  if (!root) return null;
-
-  if (val < root.val) {
-    root.left = deleteNode(root.left, val);
-  } else if (val > root.val) {
-    root.right = deleteNode(root.right, val);
-  } else {
-    // Found the node to delete
-
-    // Case 1 & 2: No left child or no right child
-    if (!root.left) {
-      return root.right;
-    }
-    if (!root.right) {
-      return root.left;
-    }
-
-    // Case 3: Two children - find successor
-    let minRight = root.right;
-    while (minRight.left) {
-      minRight = minRight.left;
-    }
-
-    root.val = minRight.val;
-    root.right = deleteNode(root.right, minRight.val);
-  }
-
-  return root;
-}
-\`\`\`
-
-## BST Validation
-
-Validate that a tree is a valid BST by checking the range constraint:
-
-\`\`\`javascript
-function isValidBST(root) {
-  function validate(node, min, max) {
-    if (!node) return true;
-
-    // Current node must be within range
-    if (node.val <= min || node.val >= max) {
-      return false;
-    }
-
-    // Left subtree must have all values < node.val
-    // Right subtree must have all values > node.val
-    return validate(node.left, min, node.val) &&
-           validate(node.right, node.val, max);
-  }
-
-  return validate(root, -Infinity, Infinity);
-}
-\`\`\`
-
-**Key insight**: Use min/max bounds to track the valid range for each subtree. This prevents invalid BSTs that might pass simpler checks.
-
-## Common Patterns
-
-- **Inorder Traversal**: Produces sorted sequence
-- **Finding Kth Smallest**: Use inorder traversal and count
-- **Range Queries**: Leverage BST property to prune branches
-- **Successor/Predecessor**: Standard BST navigation
-
-## Performance Characteristics
-
-- **Balanced BST**: Search/Insert/Delete = O(log n)
-- **Skewed BST**: Operations = O(n)
-- **Self-balancing variants**: AVL trees, Red-Black trees maintain O(log n)`,
-    zh: `# 二叉搜索树（BST）
-
-二叉搜索树是一种二叉树，其中对于每个节点，左子树的所有值都小于节点值，右子树的所有值都大于节点值。这个特性使得高效的搜索和操作成为可能。
-
-## 核心BST特性
-
-对于BST中的每个节点：
-- **左子树**：所有值 < 节点值
-- **右子树**：所有值 > 节点值
-- **中序遍历**：按升序返回所有值
-
-这个特性是所有BST操作的基础。
-
-## BST搜索
-
-搜索利用BST特性在每个步骤消除一半的剩余节点：
-
-\`\`\`javascript
-function searchBST(root, val) {
-  let current = root;
-
-  while (current) {
-    if (current.val === val) {
-      return current;
-    } else if (val < current.val) {
-      // 向左 - 较小的值在左侧
-      current = current.left;
-    } else {
-      // 向右 - 较大的值在右侧
-      current = current.right;
-    }
-  }
-
-  return null; // 未找到
-}
-\`\`\`
-
-**时间复杂度**：O(log n) 平均情况（平衡树），O(n) 最坏情况（倾斜树）
-
-## BST插入
-
-插入通过找到正确位置来维持BST特性：
-
-\`\`\`javascript
-function insertIntoBST(root, val) {
-  if (!root) {
-    return new TreeNode(val);
-  }
-
-  if (val < root.val) {
-    root.left = insertIntoBST(root.left, val);
-  } else {
-    root.right = insertIntoBST(root.right, val);
-  }
-
-  return root;
-}
-\`\`\`
-
-插入总是创建新的叶子节点。关键是递归找到新值应该所在的位置。
-
-## BST删除
-
-删除是最复杂的操作。有三种情况：
-
-**情况1：节点是叶子** - 直接删除。
-
-**情况2：节点只有一个子节点** - 用子节点替换该节点。
-
-**情况3：节点有两个子节点** - 找到后继节点（右子树中的最小值）或前驱节点（左子树中的最大值），替换节点的值，然后删除后继/前驱节点。
-
-\`\`\`javascript
-function deleteNode(root, val) {
-  if (!root) return null;
-
-  if (val < root.val) {
-    root.left = deleteNode(root.left, val);
-  } else if (val > root.val) {
-    root.right = deleteNode(root.right, val);
-  } else {
-    // 找到要删除的节点
-
-    // 情况1和2：无左子节点或无右子节点
-    if (!root.left) {
-      return root.right;
-    }
-    if (!root.right) {
-      return root.left;
-    }
-
-    // 情况3：两个子节点 - 找到后继节点
-    let minRight = root.right;
-    while (minRight.left) {
-      minRight = minRight.left;
-    }
-
-    root.val = minRight.val;
-    root.right = deleteNode(root.right, minRight.val);
-  }
-
-  return root;
-}
-\`\`\`
-
-## BST验证
-
-通过检查范围约束来验证树是否为有效的BST：
-
-\`\`\`javascript
-function isValidBST(root) {
-  function validate(node, min, max) {
-    if (!node) return true;
-
-    // 当前节点必须在范围内
-    if (node.val <= min || node.val >= max) {
-      return false;
-    }
-
-    // 左子树的所有值必须 < 节点值
-    // 右子树的所有值必须 > 节点值
-    return validate(node.left, min, node.val) &&
-           validate(node.right, node.val, max);
-  }
-
-  return validate(root, -Infinity, Infinity);
-}
-\`\`\`
-
-**关键洞察**：使用最小/最大边界来跟踪每个子树的有效范围。这防止可能通过简单检查但无效的BST。
-
-## 常见模式
-
-- **中序遍历**：产生排序序列
-- **查找第K小**：使用中序遍历并计数
-- **范围查询**：利用BST特性修剪分支
-- **后继/前驱**：标准BST导航
-
-## 性能特点
-
-- **平衡BST**：搜索/插入/删除 = O(log n)
-- **倾斜BST**：操作 = O(n)
-- **自平衡变体**：AVL树、红黑树维持O(log n)`
+    en: [
+      "## BST Property",
+      "",
+      "A Binary Search Tree maintains a critical property:",
+      "- For any node: **all values in left subtree < node value < all values in right subtree**",
+      "",
+      "This property must hold at every node, not just the root. It enables efficient search: at each node, decide go left or right based on comparison.",
+      "",
+      "```",
+      "         8",
+      "       /   \\",
+      "      3     10",
+      "     / \\      \\",
+      "    1   6      14",
+      "       / \\    /",
+      "      4   7  13",
+      "",
+      "Valid BST: left subtrees smaller, right subtrees larger",
+      "```",
+      "",
+      "## Inorder Traversal Gives Sorted Order",
+      "",
+      "A major feature of BSTs: inorder traversal (left, root, right) visits nodes in sorted order.",
+      "",
+      "```javascript",
+      "function inorderTraversal(root) {",
+      "  const result = []",
+      "  function traverse(node) {",
+      "    if (!node) return",
+      "    traverse(node.left)",
+      "    result.push(node.val)    // Nodes visited in ascending order",
+      "    traverse(node.right)",
+      "  }",
+      "  traverse(root)",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "For the tree above: 1, 3, 4, 6, 7, 8, 10, 13, 14 (perfectly sorted).",
+      "",
+      "## Search in BST",
+      "",
+      "Find a value using divide-and-conquer via the BST property.",
+      "",
+      "```javascript",
+      "function searchBST(root, val) {",
+      "  let current = root",
+      "  while (current) {",
+      "    if (current.val === val) {",
+      "      return current",
+      "    } else if (val < current.val) {",
+      "      current = current.left       // Go left for smaller values",
+      "    } else {",
+      "      current = current.right      // Go right for larger values",
+      "    }",
+      "  }",
+      "  return null",
+      "}",
+      "```",
+      "",
+      "**Time complexity**: O(log n) average for balanced tree, O(n) worst case (degenerate tree).",
+      "",
+      "## Insert into BST",
+      "",
+      "Find the correct position maintaining BST property, then insert.",
+      "",
+      "```javascript",
+      "function insertBST(root, val) {",
+      "  if (!root) return new TreeNode(val)",
+      "  ",
+      "  if (val < root.val) {",
+      "    root.left = insertBST(root.left, val)",
+      "  } else if (val > root.val) {",
+      "    root.right = insertBST(root.right, val)",
+      "  }",
+      "  // If val === root.val, don't insert (handle per problem)",
+      "  ",
+      "  return root",
+      "}",
+      "```",
+      "",
+      "**Key insight**: Recursively find the leaf position. When you hit null, that's where the new node goes.",
+      "",
+      "## Delete from BST",
+      "",
+      "Deletion is trickier. Three cases:",
+      "",
+      "**Case 1: Node is a leaf (no children)**",
+      "```javascript",
+      "// Just remove it",
+      "parent.left = null  // or parent.right = null",
+      "```",
+      "",
+      "**Case 2: Node has one child**",
+      "```javascript",
+      "// Replace node with its child",
+      "parent.left = node.right  // Skip node, connect to its child",
+      "```",
+      "",
+      "**Case 3: Node has two children**",
+      "```javascript",
+      "// Find inorder successor (smallest in right subtree)",
+      "// Copy successor's value to current node",
+      "// Delete the successor from right subtree",
+      "```",
+      "",
+      "**Full Delete Implementation:**",
+      "",
+      "```javascript",
+      "function deleteBST(root, val) {",
+      "  if (!root) return null",
+      "  ",
+      "  if (val < root.val) {",
+      "    root.left = deleteBST(root.left, val)",
+      "  } else if (val > root.val) {",
+      "    root.right = deleteBST(root.right, val)",
+      "  } else {",
+      "    // Found the node to delete",
+      "    if (!root.left && !root.right) {",
+      "      // Case 1: Leaf node",
+      "      return null",
+      "    } else if (!root.left || !root.right) {",
+      "      // Case 2: One child",
+      "      return root.left || root.right",
+      "    } else {",
+      "      // Case 3: Two children",
+      "      const minRight = findMin(root.right)",
+      "      root.val = minRight.val",
+      "      root.right = deleteBST(root.right, minRight.val)",
+      "    }",
+      "  }",
+      "  return root",
+      "}",
+      "",
+      "function findMin(node) {",
+      "  while (node.left) node = node.left",
+      "  return node",
+      "}",
+      "```",
+      "",
+      "## Validate BST",
+      "",
+      "Check if a binary tree is a valid BST. Common mistake: only check immediate left < root < right. Must validate entire subtree.",
+      "",
+      "```javascript",
+      "function isValidBST(root) {",
+      "  function validate(node, min, max) {",
+      "    if (!node) return true",
+      "    if (node.val <= min || node.val >= max) return false",
+      "    return validate(node.left, min, node.val) &&",
+      "           validate(node.right, node.val, max)",
+      "  }",
+      "  return validate(root, -Infinity, Infinity)",
+      "}",
+      "```",
+      "",
+      "Key idea: each node has valid range. Left child's max is current node's value. Right child's min is current node's value.",
+      "",
+      "## BST vs Balanced Search Trees",
+      "",
+      "A BST's operations are O(log n) only if balanced. Unbalanced BSTs degenerate to linked lists. Self-balancing variants (AVL, Red-Black) guarantee balance, but are complex. For interviews, know BST operations and their time complexity.",
+      "",
+      "## Real Problems Pattern",
+      "",
+      "Most BST problems follow one of these patterns:",
+      "",
+      "1. **Inorder gives sorted order** - use for getting kth smallest, median, etc.",
+      "2. **Validate BST** - check range constraints at each node",
+      "3. **Search/Insert/Delete** - leverage BST property for efficiency",
+      "4. **Lowest Common Ancestor** - use BST property to navigate towards target values"
+    ].join('\n'),
+    zh: [
+      "## BST属性",
+      "",
+      "二叉搜索树维护一个关键属性：",
+      "- 对于任何节点：**左子树中的所有值 < 节点值 < 右子树中的所有值**",
+      "",
+      "此属性必须在每个节点成立，不仅仅是根。它启用有效搜索：在每个节点，根据比较决定向左或向右。",
+      "",
+      "```",
+      "         8",
+      "       /   \\",
+      "      3     10",
+      "     / \\      \\",
+      "    1   6      14",
+      "       / \\    /",
+      "      4   7  13",
+      "",
+      "有效BST：左子树更小，右子树更大",
+      "```",
+      "",
+      "## 中序遍历得出排序顺序",
+      "",
+      "BST的一个主要特征：中序遍历（左、根、右）按排序顺序访问节点。",
+      "",
+      "```javascript",
+      "function inorderTraversal(root) {",
+      "  const result = []",
+      "  function traverse(node) {",
+      "    if (!node) return",
+      "    traverse(node.left)",
+      "    result.push(node.val)    // 节点按升序访问",
+      "    traverse(node.right)",
+      "  }",
+      "  traverse(root)",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "对于上面的树：1, 3, 4, 6, 7, 8, 10, 13, 14（完全排序）。",
+      "",
+      "## 在BST中搜索",
+      "",
+      "使用通过BST属性的分治法找到值。",
+      "",
+      "```javascript",
+      "function searchBST(root, val) {",
+      "  let current = root",
+      "  while (current) {",
+      "    if (current.val === val) {",
+      "      return current",
+      "    } else if (val < current.val) {",
+      "      current = current.left       // 向左找较小值",
+      "    } else {",
+      "      current = current.right      // 向右找较大值",
+      "    }",
+      "  }",
+      "  return null",
+      "}",
+      "```",
+      "",
+      "**时间复杂度**：平衡树O(log n)平均，退化树O(n)最坏。",
+      "",
+      "## 插入到BST",
+      "",
+      "找到正确位置保持BST属性，然后插入。",
+      "",
+      "```javascript",
+      "function insertBST(root, val) {",
+      "  if (!root) return new TreeNode(val)",
+      "  ",
+      "  if (val < root.val) {",
+      "    root.left = insertBST(root.left, val)",
+      "  } else if (val > root.val) {",
+      "    root.right = insertBST(root.right, val)",
+      "  }",
+      "  // 如果val === root.val，不插入（根据问题处理）",
+      "  ",
+      "  return root",
+      "}",
+      "```",
+      "",
+      "**关键洞察**：递归找叶位置。当你点击null，那就是新节点的地方。",
+      "",
+      "## 从BST删除",
+      "",
+      "删除更棘手。三种情况：",
+      "",
+      "**情况1：节点是叶子（无孩子）**",
+      "```javascript",
+      "// 只删除它",
+      "parent.left = null  // 或parent.right = null",
+      "```",
+      "",
+      "**情况2：节点有一个孩子**",
+      "```javascript",
+      "// 用其孩子替换节点",
+      "parent.left = node.right  // 跳过节点，连接其孩子",
+      "```",
+      "",
+      "**情况3：节点有两个孩子**",
+      "```javascript",
+      "// 找中序后继（右子树中的最小）",
+      "// 将后继的值复制到当前节点",
+      "// 从右子树删除后继",
+      "```",
+      "",
+      "**完整删除实现：**",
+      "",
+      "```javascript",
+      "function deleteBST(root, val) {",
+      "  if (!root) return null",
+      "  ",
+      "  if (val < root.val) {",
+      "    root.left = deleteBST(root.left, val)",
+      "  } else if (val > root.val) {",
+      "    root.right = deleteBST(root.right, val)",
+      "  } else {",
+      "    // 找到要删除的节点",
+      "    if (!root.left && !root.right) {",
+      "      // 情况1：叶节点",
+      "      return null",
+      "    } else if (!root.left || !root.right) {",
+      "      // 情况2：一个孩子",
+      "      return root.left || root.right",
+      "    } else {",
+      "      // 情况3：两个孩子",
+      "      const minRight = findMin(root.right)",
+      "      root.val = minRight.val",
+      "      root.right = deleteBST(root.right, minRight.val)",
+      "    }",
+      "  }",
+      "  return root",
+      "}",
+      "",
+      "function findMin(node) {",
+      "  while (node.left) node = node.left",
+      "  return node",
+      "}",
+      "```",
+      "",
+      "## 验证BST",
+      "",
+      "检查二叉树是否是有效BST。常见错误：仅检查立即左 < 根 < 右。必须验证整个子树。",
+      "",
+      "```javascript",
+      "function isValidBST(root) {",
+      "  function validate(node, min, max) {",
+      "    if (!node) return true",
+      "    if (node.val <= min || node.val >= max) return false",
+      "    return validate(node.left, min, node.val) &&",
+      "           validate(node.right, node.val, max)",
+      "  }",
+      "  return validate(root, -Infinity, Infinity)",
+      "}",
+      "```",
+      "",
+      "关键想法：每个节点有有效范围。左孩子的最大是当前节点的值。右孩子的最小是当前节点的值。",
+      "",
+      "## BST vs 平衡搜索树",
+      "",
+      "BST的操作是O(log n)仅如果平衡。不平衡BST退化为链表。自平衡变体（AVL、红黑）保证平衡，但复杂。对于面试，知道BST操作及其时间复杂度。",
+      "",
+      "## 真实问题模式",
+      "",
+      "大多数BST问题遵循这些模式之一：",
+      "",
+      "1. **中序给排序顺序** - 用于获得第k个最小值、中位数等",
+      "2. **验证BST** - 检查每个节点的范围约束",
+      "3. **搜索/插入/删除** - 利用BST属性获得效率",
+      "4. **最低公共祖先** - 使用BST属性导航向目标值"
+    ].join('\n'),
   },
   leetcode: [
     { id: 700, title: 'Search in a Binary Search Tree', titleZh: '二叉搜索树中的搜索', difficulty: 'Easy' },
     { id: 701, title: 'Insert into a Binary Search Tree', titleZh: '二叉搜索树中的插入操作', difficulty: 'Medium' },
     { id: 450, title: 'Delete Node in a BST', titleZh: '删除二叉搜索树中的节点', difficulty: 'Medium' },
-    { id: 98, title: 'Validate Binary Search Tree', titleZh: '验证二叉搜索树', difficulty: 'Medium' }
-  ]
-};
+    { id: 98, title: 'Validate Binary Search Tree', titleZh: '验证二叉搜索树', difficulty: 'Medium' },
+  ],
+}

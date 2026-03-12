@@ -1,414 +1,308 @@
-import { TopicContent } from '../../types';
+import type { TopicContent } from '../../types'
 
 export const permutationsContent: TopicContent = {
   id: 'backtracking-permutations',
-  title: {
-    en: 'Permutation Problems',
-    zh: '排列问题'
-  },
-  description: {
-    en: 'Deep dive into permutation generation with and without duplicate handling',
-    zh: '深入研究排列生成，包括有无重复元素的情况'
-  },
-  timeEstimate: '45 minutes',
+  title: { en: 'Permutations & Permutations II', zh: '排列与排列II（含重复）' },
+  description: { en: 'Deep dive into permutations with and without duplicates using the backtracking framework', zh: '使用回溯框架深入排列（有无重复）' },
+  timeEstimate: '40 min',
   contentType: 'content+practice',
   hasVisualizer: false,
   content: {
-    en: `# Permutation Problems In Depth
-
-Permutations are arrangements where order matters and every element is used exactly once. Understanding permutations is the key to mastering backtracking.
-
-## Basic Permutations: [1,2,3]
-
-Walking through the decision tree helps visualize how permutations are generated:
-
-\`\`\`
-Starting with []
-
-Choose 1 → [1]
-  Choose 2 → [1,2]
-    Choose 3 → [1,2,3] ✓ (solution found)
-  Choose 3 → [1,3]
-    Choose 2 → [1,3,2] ✓ (solution found)
-
-Choose 2 → [2]
-  Choose 1 → [2,1]
-    Choose 3 → [2,1,3] ✓
-  Choose 3 → [2,3]
-    Choose 1 → [2,3,1] ✓
-
-Choose 3 → [3]
-  Choose 1 → [3,1]
-    Choose 2 → [3,1,2] ✓
-  Choose 2 → [3,2]
-    Choose 1 → [3,2,1] ✓
-
-Result: [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
-\`\`\`
-
-Total: 3! = 6 permutations
-
-## Approach 1: Using Remaining Array
-
-Track which elements haven't been used yet:
-
-\`\`\`javascript
-function permute(nums) {
-  const result = [];
-
-  function backtrack(path, remaining) {
-    // Base case: used all numbers
-    if (remaining.length === 0) {
-      result.push([...path]);
-      return;
-    }
-
-    // Try each remaining number
-    for (let i = 0; i < remaining.length; i++) {
-      // Choose
-      path.push(remaining[i]);
-
-      // Create new remaining array without current element
-      const newRemaining = remaining.slice(0, i).concat(remaining.slice(i + 1));
-
-      // Explore
-      backtrack(path, newRemaining);
-
-      // Unchoose
-      path.pop();
-    }
-  }
-
-  backtrack([], nums);
-  return result;
-}
-\`\`\`
-
-**Pros**: Clear logic, easy to understand
-**Cons**: Creates new arrays (O(n) space per call)
-
-## Approach 2: Using Used Array (More Efficient)
-
-Track which indices have been used:
-
-\`\`\`javascript
-function permuteEfficient(nums) {
-  const result = [];
-  const used = new Array(nums.length).fill(false);
-
-  function backtrack(path) {
-    // Base case: path contains all numbers
-    if (path.length === nums.length) {
-      result.push([...path]);
-      return;
-    }
-
-    for (let i = 0; i < nums.length; i++) {
-      // Skip if already used
-      if (used[i]) continue;
-
-      // Choose
-      path.push(nums[i]);
-      used[i] = true;
-
-      // Explore
-      backtrack(path);
-
-      // Unchoose
-      path.pop();
-      used[i] = false;
-    }
-  }
-
-  backtrack([]);
-  return result;
-}
-\`\`\`
-
-**Pros**: No array creation, more efficient
-**Cons**: Needs boolean array
-
-## Handling Duplicates: Permutations II
-
-When array has duplicates like [1,1,2], we need to avoid duplicate permutations.
-
-Key insight: **Sort first, then skip consecutive duplicates**.
-
-\`\`\`javascript
-function permuteUnique(nums) {
-  const result = [];
-  const used = new Array(nums.length).fill(false);
-
-  // Step 1: Sort to group duplicates together
-  nums.sort((a, b) => a - b);
-
-  function backtrack(path) {
-    if (path.length === nums.length) {
-      result.push([...path]);
-      return;
-    }
-
-    for (let i = 0; i < nums.length; i++) {
-      // Skip if already used
-      if (used[i]) continue;
-
-      // Key optimization: skip duplicates
-      // If current is same as previous AND previous hasn't been used yet,
-      // skip this duplicate to avoid duplicate permutations
-      if (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]) {
-        continue;
-      }
-
-      // Choose
-      path.push(nums[i]);
-      used[i] = true;
-
-      // Explore
-      backtrack(path);
-
-      // Unchoose
-      path.pop();
-      used[i] = false;
-    }
-  }
-
-  backtrack([]);
-  return result;
-}
-\`\`\`
-
-## Why the Duplicate-Skipping Works
-
-For [1,1,2]:
-
-**Without optimization** (generates duplicates):
-- [1(index 0), 1(index 1), 2]
-- [1(index 1), 1(index 0), 2] ← duplicate!
-
-**With optimization**:
-- When at index 1 and nums[0] == nums[1] and used[0] is false, skip
-- This prevents using the second 1 before the first 1
-- Only generates: [1, 1, 2], [1, 2, 1], [2, 1, 1]
-
-The rule: **In sorted array, never use nums[i] if nums[i-1] is the same AND hasn't been used yet.**
-
-## Time and Space Complexity
-
-- **Time**: O(n! × n) - n! permutations, each takes O(n) to create
-- **Space**: O(n) for recursion depth + O(n) path storage
-
-## Common Mistakes
-
-1. **Forgetting to unchoose**: Stack error or wrong results
-2. **Not sorting before handling duplicates**: Creates duplicate permutations
-3. **Wrong skip condition**: Can generate duplicates or miss solutions
-4. **Using slice instead of used array**: Inefficient due to array creation
-
-## Key Takeaways
-
-- **Basic permutations**: Try each remaining element
-- **With duplicates**: Sort + skip consecutive duplicates at same recursion level
-- **Always follow**: Choose → Explore → Unchoose pattern
-- **Visualize decision tree** to understand why permutations are generated in that order`,
-    zh: `# 排列问题深入研究
-
-排列是考虑顺序且每个元素恰好使用一次的安排。理解排列是掌握回溯法的关键。
-
-## 基本排列：[1,2,3]
-
-遍历决策树有助于可视化排列是如何生成的：
-
-\`\`\`
-从[]开始
-
-选择1 → [1]
-  选择2 → [1,2]
-    选择3 → [1,2,3] ✓ (找到解)
-  选择3 → [1,3]
-    选择2 → [1,3,2] ✓ (找到解)
-
-选择2 → [2]
-  选择1 → [2,1]
-    选择3 → [2,1,3] ✓
-  选择3 → [2,3]
-    选择1 → [2,3,1] ✓
-
-选择3 → [3]
-  选择1 → [3,1]
-    选择2 → [3,1,2] ✓
-  选择2 → [3,2]
-    选择1 → [3,2,1] ✓
-
-结果: [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]
-\`\`\`
-
-总计：3! = 6个排列
-
-## 方法1：使用剩余数组
-
-跟踪哪些元素还未被使用：
-
-\`\`\`javascript
-function permute(nums) {
-  const result = [];
-
-  function backtrack(path, remaining) {
-    // 基础情况：已使用所有数字
-    if (remaining.length === 0) {
-      result.push([...path]);
-      return;
-    }
-
-    // 尝试每个剩余数字
-    for (let i = 0; i < remaining.length; i++) {
-      // 选择
-      path.push(remaining[i]);
-
-      // 创建不含当前元素的新剩余数组
-      const newRemaining = remaining.slice(0, i).concat(remaining.slice(i + 1));
-
-      // 探索
-      backtrack(path, newRemaining);
-
-      // 取消选择
-      path.pop();
-    }
-  }
-
-  backtrack([], nums);
-  return result;
-}
-\`\`\`
-
-**优点**：逻辑清晰，易于理解
-**缺点**：创建新数组（每次调用O(n)空间）
-
-## 方法2：使用Used数组（更有效）
-
-跟踪哪些索引已被使用：
-
-\`\`\`javascript
-function permuteEfficient(nums) {
-  const result = [];
-  const used = new Array(nums.length).fill(false);
-
-  function backtrack(path) {
-    // 基础情况：路径包含所有数字
-    if (path.length === nums.length) {
-      result.push([...path]);
-      return;
-    }
-
-    for (let i = 0; i < nums.length; i++) {
-      // 跳过已使用的
-      if (used[i]) continue;
-
-      // 选择
-      path.push(nums[i]);
-      used[i] = true;
-
-      // 探索
-      backtrack(path);
-
-      // 取消选择
-      path.pop();
-      used[i] = false;
-    }
-  }
-
-  backtrack([]);
-  return result;
-}
-\`\`\`
-
-**优点**：无数组创建，更有效
-**缺点**：需要布尔数组
-
-## 处理重复：排列II
-
-当数组有重复元素如[1,1,2]时，需要避免重复排列。
-
-关键洞察：**先排序，然后跳过连续的重复元素**。
-
-\`\`\`javascript
-function permuteUnique(nums) {
-  const result = [];
-  const used = new Array(nums.length).fill(false);
-
-  // 步骤1：排序以分组重复元素
-  nums.sort((a, b) => a - b);
-
-  function backtrack(path) {
-    if (path.length === nums.length) {
-      result.push([...path]);
-      return;
-    }
-
-    for (let i = 0; i < nums.length; i++) {
-      // 跳过已使用的
-      if (used[i]) continue;
-
-      // 关键优化：跳过重复
-      // 如果当前与前一个相同且前一个尚未被使用，
-      // 跳过此重复以避免重复排列
-      if (i > 0 && nums[i] === nums[i - 1] && !used[i - 1]) {
-        continue;
-      }
-
-      // 选择
-      path.push(nums[i]);
-      used[i] = true;
-
-      // 探索
-      backtrack(path);
-
-      // 取消选择
-      path.pop();
-      used[i] = false;
-    }
-  }
-
-  backtrack([]);
-  return result;
-}
-\`\`\`
-
-## 为什么重复跳过有效
-
-对于[1,1,2]：
-
-**不带优化**（生成重复）：
-- [1(索引0), 1(索引1), 2]
-- [1(索引1), 1(索引0), 2] ← 重复！
-
-**带优化**：
-- 当在索引1且nums[0] == nums[1]且used[0]为false时，跳过
-- 这防止在第一个1前使用第二个1
-- 仅生成：[1, 1, 2], [1, 2, 1], [2, 1, 1]
-
-规则：**在排序数组中，如果nums[i-1]相同且尚未被使用，永不使用nums[i]。**
-
-## 时间和空间复杂度
-
-- **时间**：O(n! × n) - n!个排列，每个花费O(n)创建
-- **空间**：O(n)递归深度 + O(n)路径存储
-
-## 常见错误
-
-1. **忘记取消选择**：栈错误或错误结果
-2. **处理重复前不排序**：创建重复排列
-3. **跳过条件错误**：可能生成重复或遗漏解
-4. **使用slice而非used数组**：由于数组创建低效
-
-## 关键要点
-
-- **基本排列**：尝试每个剩余元素
-- **有重复**：排序 + 跳过同一递归层的连续重复
-- **始终遵循**：选择 → 探索 → 取消选择模式
-- **可视化决策树**以理解排列生成的顺序`
+    en: [
+      "## What is a Permutation?",
+      "",
+      "A permutation is an arrangement of elements where order matters. [1,2,3], [1,3,2], [2,1,3] are all different permutations.",
+      "",
+      "For n unique elements, there are n! permutations. For 3 elements: 3! = 6 permutations.",
+      "",
+      "## Basic Permutations (No Duplicates)",
+      "",
+      "Use the universal backtracking template: choose element → explore → unchoose.",
+      "",
+      "```javascript",
+      "function permute(nums) {",
+      "  const result = []",
+      "  const used = new Set()",
+      "  const current = []",
+      "  ",
+      "  function backtrack() {",
+      "    // Base case: built a complete permutation",
+      "    if (current.length === nums.length) {",
+      "      result.push([...current])",
+      "      return",
+      "    }",
+      "    ",
+      "    // Try adding each number",
+      "    for (const num of nums) {",
+      "      if (used.has(num)) continue  // Skip if already used",
+      "      ",
+      "      // Choose",
+      "      current.push(num)",
+      "      used.add(num)",
+      "      ",
+      "      // Explore",
+      "      backtrack()",
+      "      ",
+      "      // Unchoose",
+      "      current.pop()",
+      "      used.delete(num)",
+      "    }",
+      "  }",
+      "  ",
+      "  backtrack()",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "**How it works for [1, 2, 3]:**",
+      "- Start with empty current: []",
+      "- Choose 1: [1], recurse",
+      "  - Choose 2: [1, 2], recurse",
+      "    - Choose 3: [1, 2, 3] → complete, save",
+      "  - Backtrack, choose 3: [1, 3], recurse",
+      "    - Choose 2: [1, 3, 2] → complete, save",
+      "- Backtrack, choose 2: [2], recurse",
+      "  - And so on...",
+      "",
+      "Result: [[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]",
+      "",
+      "## Permutations II (With Duplicates)",
+      "",
+      "When input has duplicates, we need to avoid generating duplicate permutations.",
+      "",
+      "**Example:** For [1, 1, 2], we want 3 permutations: [1,1,2], [1,2,1], [2,1,1]",
+      "Not 6, because swapping the two 1's gives the same permutation.",
+      "",
+      "### Strategy: Sort First, Skip Duplicates",
+      "",
+      "```javascript",
+      "function permuteUnique(nums) {",
+      "  const result = []",
+      "  const used = Array(nums.length).fill(false)",
+      "  const current = []",
+      "  ",
+      "  // Sort so duplicate elements are adjacent",
+      "  nums.sort((a, b) => a - b)",
+      "  ",
+      "  function backtrack() {",
+      "    if (current.length === nums.length) {",
+      "      result.push([...current])",
+      "      return",
+      "    }",
+      "    ",
+      "    for (let i = 0; i < nums.length; i++) {",
+      "      if (used[i]) continue",
+      "      ",
+      "      // Skip if this number is a duplicate and its previous copy is unused",
+      "      if (i > 0 && nums[i] === nums[i-1] && !used[i-1]) continue",
+      "      ",
+      "      // Choose",
+      "      current.push(nums[i])",
+      "      used[i] = true",
+      "      ",
+      "      // Explore",
+      "      backtrack()",
+      "      ",
+      "      // Unchoose",
+      "      current.pop()",
+      "      used[i] = false",
+      "    }",
+      "  }",
+      "  ",
+      "  backtrack()",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "**Key Line:**",
+      "```javascript",
+      "if (i > 0 && nums[i] === nums[i-1] && !used[i-1]) continue",
+      "```",
+      "",
+      "This skips using a number if its duplicate exists and hasn't been used yet. Why? Because if we're trying to place nums[i] now, but nums[i-1] (which is the same value) is still available, we should use nums[i-1] instead. This forces a canonical order.",
+      "",
+      "**How it prevents duplicates:**",
+      "",
+      "For sorted [1, 1, 2]:",
+      "- Level 1: Can choose nums[0]=1 or nums[2]=2. Cannot choose nums[1]=1 (duplicate still available).",
+      "- If we choose nums[0]=1 and later try nums[1]=1, nums[0] is marked used, so we proceed.",
+      "- If we try nums[1]=1 without using nums[0] first, we skip it.",
+      "",
+      "This guarantees each permutation is generated exactly once.",
+      "",
+      "## Why Use Array Instead of Set for Duplicates?",
+      "",
+      "With a Set, we can't easily track which specific elements are used. With an array, we use indices to track which elements are used, allowing us to detect duplicates by comparing values.",
+      "",
+      "## Time Complexity",
+      "",
+      "**No duplicates:** O(n! * n) - n! permutations, each takes O(n) to copy/store",
+      "",
+      "**With duplicates:** O(k * n) where k is number of unique permutations. In worst case (no duplicates), k = n!",
+      "",
+      "## Space Complexity",
+      "",
+      "O(n) for the recursion stack + O(n) for current array = O(n)",
+      "",
+      "Not counting the output space (which must hold all permutations).",
+      "",
+      "## Permutation Problems in Interviews",
+      "",
+      "Once you master the framework:",
+      "1. **Basic permutations** - sorted/unsorted arrays",
+      "2. **Permutations with constraints** - only certain orderings allowed",
+      "3. **Next permutation** - find the next lexicographically greater permutation",
+      "4. **Permutation in string** - check if one string is a permutation of another"
+    ].join('\n'),
+    zh: [
+      "## 什么是排列？",
+      "",
+      "排列是元素的安排，其中顺序重要。[1,2,3]、[1,3,2]、[2,1,3]都是不同的排列。",
+      "",
+      "对于n个唯一元素，有n!个排列。对于3个元素：3! = 6个排列。",
+      "",
+      "## 基本排列（无重复）",
+      "",
+      "使用通用回溯模板：选择元素→探索→撤销。",
+      "",
+      "```javascript",
+      "function permute(nums) {",
+      "  const result = []",
+      "  const used = new Set()",
+      "  const current = []",
+      "  ",
+      "  function backtrack() {",
+      "    // 基本情况：建立了完整排列",
+      "    if (current.length === nums.length) {",
+      "      result.push([...current])",
+      "      return",
+      "    }",
+      "    ",
+      "    // 尝试添加每个数字",
+      "    for (const num of nums) {",
+      "      if (used.has(num)) continue  // 如果已使用，跳过",
+      "      ",
+      "      // 选择",
+      "      current.push(num)",
+      "      used.add(num)",
+      "      ",
+      "      // 探索",
+      "      backtrack()",
+      "      ",
+      "      // 撤销",
+      "      current.pop()",
+      "      used.delete(num)",
+      "    }",
+      "  }",
+      "  ",
+      "  backtrack()",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "**对[1, 2, 3]的工作方式：**",
+      "- 从空current开始：[]",
+      "- 选择1：[1]，递归",
+      "  - 选择2：[1, 2]，递归",
+      "    - 选择3：[1, 2, 3]→完成，保存",
+      "  - 回溯，选择3：[1, 3]，递归",
+      "    - 选择2：[1, 3, 2]→完成，保存",
+      "- 回溯，选择2：[2]，递归",
+      "  - 等等...",
+      "",
+      "结果：[[1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], [3,2,1]]",
+      "",
+      "## 排列II（含重复）",
+      "",
+      "当输入有重复时，我们需要避免生成重复排列。",
+      "",
+      "**示例：**对于[1, 1, 2]，我们想要3个排列：[1,1,2], [1,2,1], [2,1,1]",
+      "不是6个，因为交换两个1给出相同排列。",
+      "",
+      "### 策略：先排序，跳过重复",
+      "",
+      "```javascript",
+      "function permuteUnique(nums) {",
+      "  const result = []",
+      "  const used = Array(nums.length).fill(false)",
+      "  const current = []",
+      "  ",
+      "  // 排序使重复元素相邻",
+      "  nums.sort((a, b) => a - b)",
+      "  ",
+      "  function backtrack() {",
+      "    if (current.length === nums.length) {",
+      "      result.push([...current])",
+      "      return",
+      "    }",
+      "    ",
+      "    for (let i = 0; i < nums.length; i++) {",
+      "      if (used[i]) continue",
+      "      ",
+      "      // 如果该数字是重复且其前一个副本未使用，跳过",
+      "      if (i > 0 && nums[i] === nums[i-1] && !used[i-1]) continue",
+      "      ",
+      "      // 选择",
+      "      current.push(nums[i])",
+      "      used[i] = true",
+      "      ",
+      "      // 探索",
+      "      backtrack()",
+      "      ",
+      "      // 撤销",
+      "      current.pop()",
+      "      used[i] = false",
+      "    }",
+      "  }",
+      "  ",
+      "  backtrack()",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "**关键行：**",
+      "```javascript",
+      "if (i > 0 && nums[i] === nums[i-1] && !used[i-1]) continue",
+      "```",
+      "",
+      "如果某数字的重复存在且未使用，则跳过使用它。为什么？因为如果我们现在试图放置nums[i]，但nums[i-1]（值相同）仍可用，我们应该改用nums[i-1]。这强制规范顺序。",
+      "",
+      "**如何防止重复：**",
+      "",
+      "对于排序的[1, 1, 2]：",
+      "- 第1级：可选择nums[0]=1或nums[2]=2。不能选择nums[1]=1（重复仍可用）。",
+      "- 如果我们选择nums[0]=1，稍后试图nums[1]=1，nums[0]被标记为已使用，我们继续。",
+      "- 如果试图nums[1]=1而不先使用nums[0]，我们跳过它。",
+      "",
+      "这保证每个排列恰好生成一次。",
+      "",
+      "## 为什么用数组而不是Set用于重复？",
+      "",
+      "用Set，我们不能轻易追踪哪些特定元素被使用。用数组，我们使用索引追踪已使用元素，允许我们通过比较值检测重复。",
+      "",
+      "## 时间复杂度",
+      "",
+      "**无重复：**O(n! * n) - n!排列，每个花O(n)复制/存储",
+      "",
+      "**有重复：**O(k * n)，其中k是唯一排列数量。最坏情况（无重复），k = n!",
+      "",
+      "## 空间复杂度",
+      "",
+      "O(n)用于递归栈 + O(n)用于current数组 = O(n)",
+      "",
+      "不计输出空间（必须保存所有排列）。",
+      "",
+      "## 面试中的排列问题",
+      "",
+      "一旦掌握框架：",
+      "1. **基本排列** - 排序/未排序数组",
+      "2. **有约束的排列** - 仅某些排序允许",
+      "3. **下一个排列** - 找下一个字典序更大的排列",
+      "4. **字符串中的排列** - 检查一个字符串是否是另一个的排列"
+    ].join('\n'),
   },
   leetcode: [
     { id: 46, title: 'Permutations', titleZh: '排列', difficulty: 'Medium' },
-    { id: 47, title: 'Permutations II', titleZh: '排列II', difficulty: 'Medium' }
-  ]
-};
+    { id: 47, title: 'Permutations II', titleZh: '排列 II', difficulty: 'Medium' },
+  ],
+}

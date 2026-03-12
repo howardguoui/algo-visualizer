@@ -1,621 +1,339 @@
-import { TopicContent } from '../types'
+import type { TopicContent } from '../../types'
 
 export const linkedListFundamentals: TopicContent = {
-  id: 'linkedlist-fundamentals',
-  title: {
-    en: 'Linked List Fundamentals',
-    zh: '链表基础',
-  },
-  description: {
-    en: 'Master linked list operations, two-pointer tricks, and the dummy node pattern that simplifies edge cases',
-    zh: '掌握链表操作、双指针技巧和简化边界情况的虚拟头节点模式',
-  },
-  timeEstimate: '70-90 minutes',
+  id: 'linked-list-fundamentals',
+  title: { en: 'Linked List Fundamentals', zh: '链表基础' },
+  description: { en: 'Master node structure, common operations, dummy head, and two-pointer techniques', zh: '掌握节点结构、常见操作、虚拟头节点和双指针技巧' },
+  timeEstimate: '40 min',
   contentType: 'content+practice',
   hasVisualizer: false,
   content: {
-    en: `## Linked List Structure
-
-A linked list is a **chain of nodes** where each node contains data and a reference to the next node.
-
-\`\`\`javascript
-class ListNode {
-  constructor(val = 0, next = null) {
-    this.val = val;
-    this.next = next;
-  }
-}
-
-// Example: 1 → 2 → 3 → null
-const head = new ListNode(1);
-head.next = new ListNode(2);
-head.next.next = new ListNode(3);
-\`\`\`
-
-### Single vs Double Linked List
-
-| Operation | Singly | Doubly |
-|---|---|---|
-| Forward traverse | O(1) | O(1) |
-| Backward traverse | O(n) | O(1) |
-| Insert before | O(n) | O(1) |
-| Space | O(n) | O(n + back refs) |
-
-**Rule of thumb**: Use singly unless you need backward traversal.
-
-## Common Operations
-
-### Traverse
-\`\`\`javascript
-function traverse(head) {
-  let current = head;
-  while (current) {
-    console.log(current.val);
-    current = current.next;
-  }
-}
-// Time: O(n), Space: O(1)
-\`\`\`
-
-### Find nth Element
-\`\`\`javascript
-function findNth(head, n) {
-  let current = head;
-  for (let i = 0; i < n && current; i++) {
-    current = current.next;
-  }
-  return current;  // nth element (0-indexed)
-}
-\`\`\`
-
-### Reverse
-\`\`\`javascript
-function reverseList(head) {
-  let prev = null;
-  let current = head;
-
-  while (current) {
-    // Save next before breaking link
-    const next = current.next;
-
-    // Reverse the link
-    current.next = prev;
-
-    // Move pointers forward
-    prev = current;
-    current = next;
-  }
-
-  return prev;  // New head
-  // Time: O(n), Space: O(1)
-}
-
-// Example: 1 → 2 → 3 → null
-// Step 0: prev=null, current=1
-//   next=2, 1.next=null, prev=1, current=2
-// Step 1: prev=1, current=2
-//   next=3, 2.next=1, prev=2, current=3
-// Step 2: prev=2, current=3
-//   next=null, 3.next=2, prev=3, current=null
-// Result: 3 → 2 → 1 → null
-\`\`\`
-
-## Two Pointer Tricks for Linked Lists
-
-### Find Middle
-\`\`\`javascript
-function findMiddle(head) {
-  let slow = head, fast = head;
-
-  // Move fast 2 steps, slow 1 step
-  while (fast && fast.next) {
-    slow = slow.next;
-    fast = fast.next.next;
-  }
-
-  return slow;  // Middle node
-  // Time: O(n), Space: O(1)
-}
-
-// Example: 1 → 2 → 3 → 4 → 5
-// Initially: slow=1, fast=1
-// Iter 1: slow=2, fast=3
-// Iter 2: slow=3, fast=5
-// Iter 3: fast=null (5.next.next)
-// Result: slow=3 (middle)
-\`\`\`
-
-### Detect Cycle
-\`\`\`javascript
-function hasCycle(head) {
-  let slow = head, fast = head;
-
-  while (fast && fast.next) {
-    slow = slow.next;
-    fast = fast.next.next;
-
-    if (slow === fast) {
-      return true;  // Cycle detected
-    }
-  }
-
-  return false;  // No cycle
-  // Time: O(n), Space: O(1)
-}
-
-// Why it works: If cycle exists, fast will eventually catch slow.
-// Fast moves 2 steps per iteration, slow moves 1.
-// In cycle, fast gains 1 step on slow per iteration.
-// Eventually fast.next === slow.next === slow (collision!)
-\`\`\`
-
-### Find Cycle Start
-\`\`\`javascript
-function findCycleStart(head) {
-  let slow = head, fast = head;
-
-  // First, detect if cycle exists
-  while (fast && fast.next) {
-    slow = slow.next;
-    fast = fast.next.next;
-    if (slow === fast) break;
-  }
-
-  if (!fast || !fast.next) return null;  // No cycle
-
-  // Slow and fast met at some point in cycle
-  // Reset slow to head, move both 1 step at a time
-  // They will meet at cycle start!
-  slow = head;
-  while (slow !== fast) {
-    slow = slow.next;
-    fast = fast.next;
-  }
-
-  return slow;  // Cycle start
-  // Time: O(n), Space: O(1)
-}
-
-// Why it works:
-// When slow/fast collide in cycle, they're at distance d from start.
-// slow has traveled x, fast has traveled 2x (where x = distance to collision).
-// Resetting slow to head: both are now (x + d) apart.
-// Moving 1 step at a time: they meet at cycle start.
-\`\`\`
-
-### Remove nth from End
-\`\`\`javascript
-function removeNthFromEnd(head, n) {
-  // Create dummy node pointing to head
-  const dummy = new ListNode(0);
-  dummy.next = head;
-
-  let first = dummy;
-  let second = dummy;
-
-  // Move first n+1 steps ahead
-  for (let i = 0; i <= n; i++) {
-    first = first.next;
-  }
-
-  // Move both until first reaches end
-  while (first) {
-    first = first.next;
-    second = second.next;
-  }
-
-  // Skip the node
-  second.next = second.next.next;
-
-  return dummy.next;
-  // Time: O(n), Space: O(1)
-}
-
-// Example: Remove 2nd from end in [1,2,3,4,5], n=2
-// dummy → 1 → 2 → 3 → 4 → 5 → null
-// first moves n+1=3 steps: first points to 3
-// both move until first reaches null:
-//   first at 5, second at 3
-// second.next = second.next.next (skip 4)
-// Result: [1,2,3,5]
-\`\`\`
-
-## The Dummy Node Pattern
-
-The **dummy node** is a sentinel node that simplifies edge cases by ensuring the head always has a predecessor.
-
-\`\`\`javascript
-// Without dummy: Must handle head separately
-function removeValue_noDummy(head, val) {
-  // Special case: removing head
-  while (head && head.val === val) {
-    head = head.next;
-  }
-
-  // Regular case: removing non-head
-  let current = head;
-  while (current && current.next) {
-    if (current.next.val === val) {
-      current.next = current.next.next;
-    } else {
-      current = current.next;
-    }
-  }
-
-  return head;
-}
-
-// With dummy: Uniform handling
-function removeValue_dummy(head, val) {
-  const dummy = new ListNode(0);
-  dummy.next = head;
-
-  let current = dummy;
-  while (current.next) {
-    if (current.next.val === val) {
-      current.next = current.next.next;
-    } else {
-      current = current.next;
-    }
-  }
-
-  return dummy.next;
-}
-
-// Key insight: dummy ensures every node has a predecessor,
-// eliminating need for special case handling!
-\`\`\`
-
-## Example: Merge Two Sorted Lists
-
-\`\`\`javascript
-function mergeTwoLists(list1, list2) {
-  const dummy = new ListNode(0);
-  let current = dummy;
-
-  while (list1 && list2) {
-    if (list1.val <= list2.val) {
-      current.next = list1;
-      list1 = list1.next;
-    } else {
-      current.next = list2;
-      list2 = list2.next;
-    }
-    current = current.next;
-  }
-
-  // Attach remaining nodes
-  current.next = list1 || list2;
-
-  return dummy.next;
-  // Time: O(m + n), Space: O(1)
-}
-\`\`\`
-
-## Key Insights
-
-1. **Linked lists excel at insertions/deletions** at known positions (O(1) after finding position)
-2. **Finding position still requires traversal** (O(n)), so total is O(n)
-3. **Two-pointer tricks are powerful**: Finding middle, detecting cycles, removing nth
-4. **Dummy node eliminates edge cases**: Always use for modifications
-5. **Trade-off**: Random access O(n) vs arrays O(1), but insertion O(1) vs arrays O(n)`,
-
-    zh: `## 链表结构
-
-链表是一个**节点链**，其中每个节点包含数据和对下一个节点的引用。
-
-\`\`\`javascript
-class ListNode {
-  constructor(val = 0, next = null) {
-    this.val = val;
-    this.next = next;
-  }
-}
-
-// 例子：1 → 2 → 3 → null
-const head = new ListNode(1);
-head.next = new ListNode(2);
-head.next.next = new ListNode(3);
-\`\`\`
-
-### 单向链表 vs 双向链表
-
-| 操作 | 单向 | 双向 |
-|---|---|---|
-| 前向遍历 | O(1) | O(1) |
-| 后向遍历 | O(n) | O(1) |
-| 在前面插入 | O(n) | O(1) |
-| 空间 | O(n) | O(n + 反向引用) |
-
-**经验法则**：除非需要后向遍历，否则使用单向。
-
-## 常见操作
-
-### 遍历
-\`\`\`javascript
-function traverse(head) {
-  let current = head;
-  while (current) {
-    console.log(current.val);
-    current = current.next;
-  }
-}
-// 时间：O(n)，空间：O(1)
-\`\`\`
-
-### 找第n个元素
-\`\`\`javascript
-function findNth(head, n) {
-  let current = head;
-  for (let i = 0; i < n && current; i++) {
-    current = current.next;
-  }
-  return current;  // 第n个元素（0索引）
-}
-\`\`\`
-
-### 反转链表
-\`\`\`javascript
-function reverseList(head) {
-  let prev = null;
-  let current = head;
-
-  while (current) {
-    // 保存下一个节点
-    const next = current.next;
-
-    // 反转链接
-    current.next = prev;
-
-    // 向前移动指针
-    prev = current;
-    current = next;
-  }
-
-  return prev;  // 新head
-  // 时间：O(n)，空间：O(1)
-}
-
-// 例子：1 → 2 → 3 → null
-// 步骤0：prev=null, current=1
-//   next=2, 1.next=null, prev=1, current=2
-// 步骤1：prev=1, current=2
-//   next=3, 2.next=1, prev=2, current=3
-// 步骤2：prev=2, current=3
-//   next=null, 3.next=2, prev=3, current=null
-// 结果：3 → 2 → 1 → null
-\`\`\`
-
-## 链表的双指针技巧
-
-### 找中点
-\`\`\`javascript
-function findMiddle(head) {
-  let slow = head, fast = head;
-
-  // 快指针移动2步，慢指针移动1步
-  while (fast && fast.next) {
-    slow = slow.next;
-    fast = fast.next.next;
-  }
-
-  return slow;  // 中点节点
-  // 时间：O(n)，空间：O(1)
-}
-
-// 例子：1 → 2 → 3 → 4 → 5
-// 初始化：slow=1, fast=1
-// 迭代1：slow=2, fast=3
-// 迭代2：slow=3, fast=5
-// 迭代3：fast=null（5.next.next）
-// 结果：slow=3（中点）
-\`\`\`
-
-### 检测环
-\`\`\`javascript
-function hasCycle(head) {
-  let slow = head, fast = head;
-
-  while (fast && fast.next) {
-    slow = slow.next;
-    fast = fast.next.next;
-
-    if (slow === fast) {
-      return true;  // 检测到环
-    }
-  }
-
-  return false;  // 无环
-  // 时间：O(n)，空间：O(1)
-}
-
-// 为什么有效：如果存在环，快指针最终会追上慢指针。
-// 快指针每次迭代移动2步，慢指针移动1步。
-// 在环中，快指针每次迭代在慢指针上前进1步。
-// 最终快指针.next === 慢指针.next === 慢指针（碰撞！）
-\`\`\`
-
-### 找到环的起点
-\`\`\`javascript
-function findCycleStart(head) {
-  let slow = head, fast = head;
-
-  // 首先检测环是否存在
-  while (fast && fast.next) {
-    slow = slow.next;
-    fast = fast.next.next;
-    if (slow === fast) break;
-  }
-
-  if (!fast || !fast.next) return null;  // 无环
-
-  // 慢快指针在环中某点相遇
-  // 重置慢指针到头部，两者都以1步移动
-  // 它们将在环的起点相遇！
-  slow = head;
-  while (slow !== fast) {
-    slow = slow.next;
-    fast = fast.next;
-  }
-
-  return slow;  // 环的起点
-  // 时间：O(n)，空间：O(1)
-}
-
-// 为什么有效：
-// 当slow/fast在环中碰撞时，它们距离起点距离d。
-// slow已经走了x，fast走了2x（x=到碰撞点的距离）。
-// 重置slow到head：两者现在相距(x + d)。
-// 每次移动1步：它们在环的起点相遇。
-\`\`\`
-
-### 删除倒数第n个节点
-\`\`\`javascript
-function removeNthFromEnd(head, n) {
-  // 创建虚拟节点指向head
-  const dummy = new ListNode(0);
-  dummy.next = head;
-
-  let first = dummy;
-  let second = dummy;
-
-  // 移动first指针n+1步
-  for (let i = 0; i <= n; i++) {
-    first = first.next;
-  }
-
-  // 两个指针都移动，直到first到达末尾
-  while (first) {
-    first = first.next;
-    second = second.next;
-  }
-
-  // 跳过节点
-  second.next = second.next.next;
-
-  return dummy.next;
-  // 时间：O(n)，空间：O(1)
-}
-
-// 例子：删除[1,2,3,4,5]的倒数第2个，n=2
-// dummy → 1 → 2 → 3 → 4 → 5 → null
-// first移动n+1=3步：first指向3
-// 两个指针都移动，直到first到达null：
-//   first在5，second在3
-// second.next = second.next.next（跳过4）
-// 结果：[1,2,3,5]
-\`\`\`
-
-## 虚拟节点模式
-
-**虚拟节点**是一个哨兵节点，通过确保head始终有前驱，简化边界情况。
-
-\`\`\`javascript
-// 无虚拟节点：必须单独处理head
-function removeValue_noDummy(head, val) {
-  // 特殊情况：删除head
-  while (head && head.val === val) {
-    head = head.next;
-  }
-
-  // 普通情况：删除非head
-  let current = head;
-  while (current && current.next) {
-    if (current.next.val === val) {
-      current.next = current.next.next;
-    } else {
-      current = current.next;
-    }
-  }
-
-  return head;
-}
-
-// 有虚拟节点：统一处理
-function removeValue_dummy(head, val) {
-  const dummy = new ListNode(0);
-  dummy.next = head;
-
-  let current = dummy;
-  while (current.next) {
-    if (current.next.val === val) {
-      current.next = current.next.next;
-    } else {
-      current = current.next;
-    }
-  }
-
-  return dummy.next;
-}
-
-// 关键洞察：虚拟节点确保每个节点都有前驱，
-// 消除了特殊情况处理的需要！
-\`\`\`
-
-## 例子：合并两个排序链表
-
-\`\`\`javascript
-function mergeTwoLists(list1, list2) {
-  const dummy = new ListNode(0);
-  let current = dummy;
-
-  while (list1 && list2) {
-    if (list1.val <= list2.val) {
-      current.next = list1;
-      list1 = list1.next;
-    } else {
-      current.next = list2;
-      list2 = list2.next;
-    }
-    current = current.next;
-  }
-
-  // 附加剩余节点
-  current.next = list1 || list2;
-
-  return dummy.next;
-  // 时间：O(m + n)，空间：O(1)
-}
-\`\`\`
-
-## 关键洞察
-
-1. **链表在已知位置的插入/删除上表现出色**（找到位置后O(1)）
-2. **找到位置仍需要遍历**（O(n)），所以总体是O(n)
-3. **双指针技巧很强大**：找中点、检测环、删除倒数第n个
-4. **虚拟节点消除边界情况**：修改时总是使用
-5. **权衡**：随机访问O(n)vs数组O(1)，但插入O(1)vs数组O(n)`,
+    en: [
+      "## Linked List vs Array",
+      "",
+      "Arrays provide fast random access but slow insertion/deletion in the middle. Linked lists are the opposite: slow access but fast modification if you're already at the target position.",
+      "",
+      "| Operation | Array | Linked List |",
+      "|-----------|-------|-----------|",
+      "| Access by index | O(1) | O(n) |",
+      "| Append | O(1)* | O(1) if you have tail pointer |",
+      "| Insert at position | O(n) | O(1) if you have the node before |",
+      "| Delete at position | O(n) | O(1) if you have the node before |",
+      "| Space | O(n) | O(n) (plus pointer overhead) |",
+      "",
+      "*Amortized - O(n) when full",
+      "",
+      "## The Node Structure",
+      "",
+      "A linked list node contains data and a pointer to the next node.",
+      "",
+      "```javascript",
+      "class ListNode {",
+      "  constructor(val = 0, next = null) {",
+      "    this.val = val",
+      "    this.next = next",
+      "  }",
+      "}",
+      "```",
+      "",
+      "The head pointer points to the first node. The last node's next is null, marking the end.",
+      "",
+      "## The Dummy Head Trick",
+      "",
+      "When you need to modify the head of the list (remove it, insert before it), operations become awkward. If you insert at index 0, you need to update the head reference itself.",
+      "",
+      "The solution: create a dummy node that points to the real head. Now all insertions and deletions happen after a node, never replacing head itself.",
+      "",
+      "```javascript",
+      "function removeElements(head, val) {",
+      "  const dummy = new ListNode(0, head)",
+      "  let current = dummy",
+      "  while (current.next) {",
+      "    if (current.next.val === val) {",
+      "      current.next = current.next.next  // Skip the target node",
+      "    } else {",
+      "      current = current.next",
+      "    }",
+      "  }",
+      "  return dummy.next  // Return the real head",
+      "}",
+      "```",
+      "",
+      "With the dummy head, we never modify head directly. We always operate on current.next, which is cleaner and handles edge cases automatically.",
+      "",
+      "## Two-Pointer Pattern: Find the Middle",
+      "",
+      "Use fast and slow pointers. Fast moves 2 steps per iteration, slow moves 1 step. When fast reaches the end, slow is at the middle.",
+      "",
+      "```javascript",
+      "function findMiddle(head) {",
+      "  let slow = head, fast = head",
+      "  while (fast && fast.next) {",
+      "    slow = slow.next",
+      "    fast = fast.next.next",
+      "  }",
+      "  return slow  // Slow is at the middle",
+      "}",
+      "```",
+      "",
+      "For list [1, 2, 3, 4, 5]:",
+      "- Slow ends up at node 3 (middle)",
+      "- For even length [1, 2, 3, 4], slow ends up at node 3 (first of the two middle elements)",
+      "",
+      "Why it works: fast moves twice as fast, so when it finishes, slow is halfway through.",
+      "",
+      "## Two-Pointer Pattern: Detect Cycle",
+      "",
+      "If a linked list has a cycle, a fast pointer will eventually catch up to a slow pointer. If no cycle, fast reaches null.",
+      "",
+      "```javascript",
+      "function hasCycle(head) {",
+      "  let slow = head, fast = head",
+      "  while (fast && fast.next) {",
+      "    slow = slow.next",
+      "    fast = fast.next.next",
+      "    if (slow === fast) return true  // Cycle detected",
+      "  }",
+      "  return false",
+      "}",
+      "```",
+      "",
+      "This is the Floyd cycle detection algorithm. If they meet, there's a cycle. If fast exits the list, there's no cycle.",
+      "",
+      "## Two-Pointer Pattern: Find Nth From End",
+      "",
+      "Get the Nth node from the end without storing all nodes. Use two pointers: first pointer is N steps ahead. When the first reaches the end, the second is at position (length - N).",
+      "",
+      "```javascript",
+      "function removeNthFromEnd(head, n) {",
+      "  const dummy = new ListNode(0, head)",
+      "  let first = dummy, second = dummy",
+      "  ",
+      "  // Move first n+1 steps ahead",
+      "  for (let i = 0; i <= n; i++) {",
+      "    first = first.next",
+      "  }",
+      "  ",
+      "  // Move both pointers until first reaches null",
+      "  while (first) {",
+      "    first = first.next",
+      "    second = second.next",
+      "  }",
+      "  ",
+      "  // Remove the Nth node",
+      "  second.next = second.next.next",
+      "  return dummy.next",
+      "}",
+      "```",
+      "",
+      "Why start from dummy? So we can remove the head if needed (when n equals list length).",
+      "",
+      "## Common Linked List Operations",
+      "",
+      "**Reverse a list:**",
+      "```javascript",
+      "function reverse(head) {",
+      "  let prev = null, current = head",
+      "  while (current) {",
+      "    const next = current.next  // Save next",
+      "    current.next = prev        // Reverse the link",
+      "    prev = current             // Move prev forward",
+      "    current = next             // Move current forward",
+      "  }",
+      "  return prev",
+      "}",
+      "```",
+      "",
+      "**Merge two sorted lists:**",
+      "```javascript",
+      "function mergeTwoLists(list1, list2) {",
+      "  const dummy = new ListNode(0)",
+      "  let current = dummy",
+      "  while (list1 && list2) {",
+      "    if (list1.val < list2.val) {",
+      "      current.next = list1",
+      "      list1 = list1.next",
+      "    } else {",
+      "      current.next = list2",
+      "      list2 = list2.next",
+      "    }",
+      "    current = current.next",
+      "  }",
+      "  current.next = list1 || list2",
+      "  return dummy.next",
+      "}",
+      "```",
+      "",
+      "## Why Linked Lists Matter Less in Interviews",
+      "",
+      "Linked lists are less common in modern interviews because arrays with deques (double-ended queues) solve most problems as efficiently. However, linked lists teach pointer manipulation and help you understand how structures work under the hood. Master them once, recognize the patterns, then move on to more valuable topics."
+    ].join('\n'),
+    zh: [
+      "## 链表vs数组",
+      "",
+      "数组提供快速随机访问但在中间插入/删除很慢。链表相反：访问慢但如果你已在目标位置修改快。",
+      "",
+      "| 操作 | 数组 | 链表 |",
+      "|------|------|------|",
+      "| 按索引访问 | O(1) | O(n) |",
+      "| 追加 | O(1)* | O(1)如果有尾指针 |",
+      "| 在位置插入 | O(n) | O(1)如果有前一个节点 |",
+      "| 在位置删除 | O(n) | O(1)如果有前一个节点 |",
+      "| 空间 | O(n) | O(n)（加指针开销） |",
+      "",
+      "*摊销 - 满时O(n)",
+      "",
+      "## 节点结构",
+      "",
+      "链表节点包含数据和指向下一个节点的指针。",
+      "",
+      "```javascript",
+      "class ListNode {",
+      "  constructor(val = 0, next = null) {",
+      "    this.val = val",
+      "    this.next = next",
+      "  }",
+      "}",
+      "```",
+      "",
+      "head指针指向第一个节点。最后一个节点的next是null，标记结束。",
+      "",
+      "## 虚拟头节点技巧",
+      "",
+      "当你需要修改列表的头（删除它、在它前面插入），操作变得尴尬。如果在索引0插入，你需要更新head引用本身。",
+      "",
+      "解决方案：创建一个虚拟节点指向真实的头。现在所有插入和删除发生在节点后，永远不替换head本身。",
+      "",
+      "```javascript",
+      "function removeElements(head, val) {",
+      "  const dummy = new ListNode(0, head)",
+      "  let current = dummy",
+      "  while (current.next) {",
+      "    if (current.next.val === val) {",
+      "      current.next = current.next.next  // 跳过目标节点",
+      "    } else {",
+      "      current = current.next",
+      "    }",
+      "  }",
+      "  return dummy.next  // 返回真实的头",
+      "}",
+      "```",
+      "",
+      "有虚拟头，我们永远不直接修改head。我们总在current.next操作，更干净且自动处理边界情况。",
+      "",
+      "## 双指针模式：找中间",
+      "",
+      "使用快慢指针。快每次迭代移动2步，慢移动1步。当快到达末尾，慢在中间。",
+      "",
+      "```javascript",
+      "function findMiddle(head) {",
+      "  let slow = head, fast = head",
+      "  while (fast && fast.next) {",
+      "    slow = slow.next",
+      "    fast = fast.next.next",
+      "  }",
+      "  return slow  // 慢在中间",
+      "}",
+      "```",
+      "",
+      "对于列表[1, 2, 3, 4, 5]：",
+      "- 慢到达节点3（中间）",
+      "- 对于偶数长度[1, 2, 3, 4]，慢到达节点3（两个中间元素的第一个）",
+      "",
+      "为什么有效：快移动两倍快，所以完成时，慢在一半。",
+      "",
+      "## 双指针模式：检测循环",
+      "",
+      "如果链表有循环，快指针最终追上慢指针。如果无循环，快到达null。",
+      "",
+      "```javascript",
+      "function hasCycle(head) {",
+      "  let slow = head, fast = head",
+      "  while (fast && fast.next) {",
+      "    slow = slow.next",
+      "    fast = fast.next.next",
+      "    if (slow === fast) return true  // 检测到循环",
+      "  }",
+      "  return false",
+      "}",
+      "```",
+      "",
+      "这是Floyd循环检测算法。如果相遇，有循环。如果快离开列表，无循环。",
+      "",
+      "## 双指针模式：从末尾查找第N个",
+      "",
+      "获得末尾第N个节点而不存储所有节点。使用两个指针：第一个指针提前N步。第一个到达末尾时，第二个在位置（长度- N）。",
+      "",
+      "```javascript",
+      "function removeNthFromEnd(head, n) {",
+      "  const dummy = new ListNode(0, head)",
+      "  let first = dummy, second = dummy",
+      "  ",
+      "  // 前移第一个n+1步",
+      "  for (let i = 0; i <= n; i++) {",
+      "    first = first.next",
+      "  }",
+      "  ",
+      "  // 移动两个指针直到第一个到达null",
+      "  while (first) {",
+      "    first = first.next",
+      "    second = second.next",
+      "  }",
+      "  ",
+      "  // 删除第N个节点",
+      "  second.next = second.next.next",
+      "  return dummy.next",
+      "}",
+      "```",
+      "",
+      "为什么从虚拟开始？所以我们可以删除头如果需要（当n等于列表长度）。",
+      "",
+      "## 常见链表操作",
+      "",
+      "**反转列表：**",
+      "```javascript",
+      "function reverse(head) {",
+      "  let prev = null, current = head",
+      "  while (current) {",
+      "    const next = current.next  // 保存next",
+      "    current.next = prev        // 反转链接",
+      "    prev = current             // prev前移",
+      "    current = next             // current前移",
+      "  }",
+      "  return prev",
+      "}",
+      "```",
+      "",
+      "**合并两个排序列表：**",
+      "```javascript",
+      "function mergeTwoLists(list1, list2) {",
+      "  const dummy = new ListNode(0)",
+      "  let current = dummy",
+      "  while (list1 && list2) {",
+      "    if (list1.val < list2.val) {",
+      "      current.next = list1",
+      "      list1 = list1.next",
+      "    } else {",
+      "      current.next = list2",
+      "      list2 = list2.next",
+      "    }",
+      "    current = current.next",
+      "  }",
+      "  current.next = list1 || list2",
+      "  return dummy.next",
+      "}",
+      "```",
+      "",
+      "## 为什么链表在面试中不那么重要",
+      "",
+      "链表在现代面试中不太常见，因为带有deques（双端队列）的数组同样有效地解决大多数问题。然而，链表教指针操作并帮助理解结构如何工作的底层。掌握它们一次，识别模式，然后转向更有价值的主题。"
+    ].join('\n'),
   },
   leetcode: [
-    {
-      id: 21,
-      title: 'Merge Two Sorted Lists',
-      titleZh: '合并两个排序的链表',
-      difficulty: 'Easy',
-    },
-    {
-      id: 206,
-      title: 'Reverse Linked List',
-      titleZh: '反转链表',
-      difficulty: 'Easy',
-    },
-    {
-      id: 141,
-      title: 'Linked List Cycle',
-      titleZh: '环形链表',
-      difficulty: 'Easy',
-    },
-    {
-      id: 19,
-      title: 'Remove Nth Node From End of List',
-      titleZh: '删除链表的倒数第 N 个结点',
-      difficulty: 'Medium',
-    },
-    {
-      id: 876,
-      title: 'Middle of the Linked List',
-      titleZh: '链表的中间结点',
-      difficulty: 'Easy',
-    },
+    { id: 21, title: 'Merge Two Sorted Lists', titleZh: '合并两个有序链表', difficulty: 'Easy' },
+    { id: 206, title: 'Reverse Linked List', titleZh: '反转链表', difficulty: 'Easy' },
+    { id: 141, title: 'Linked List Cycle', titleZh: '环形链表', difficulty: 'Easy' },
+    { id: 876, title: 'Middle of the Linked List', titleZh: '链表的中间结点', difficulty: 'Easy' },
+    { id: 19, title: 'Remove Nth Node From End of List', titleZh: '删除链表的倒数第N个结点', difficulty: 'Medium' },
   ],
 }

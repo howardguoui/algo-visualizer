@@ -1,438 +1,321 @@
-import { TopicContent } from '../../types';
+import type { TopicContent } from '../../types'
 
 export const fibonacciContent: TopicContent = {
   id: 'dp-fibonacci',
-  title: {
-    en: 'Fibonacci and Coin Change',
-    zh: '斐波那契与硬币兑换'
-  },
-  description: {
-    en: 'Journey from exponential brute force to O(1) optimization, then master the coin change DP pattern',
-    zh: '从指数蛮力到O(1)优化的旅程，然后掌握硬币兑换动态规划模式'
-  },
-  timeEstimate: '45 minutes',
+  title: { en: 'Fibonacci & Coin Change', zh: 'Fibonacci与硬币兑换' },
+  description: { en: 'Journey from O(2^n) to O(1) with Fibonacci. Then master Coin Change as canonical DP template.', zh: '用Fibonacci从O(2^n)优化到O(1)。然后掌握硬币兑换作为规范DP模板。' },
+  timeEstimate: '45 min',
   contentType: 'all',
-  hasVisualizer: false,
+  hasVisualizer: true,
+  visualizerKey: 'fibonacci',
   content: {
-    en: `# Fibonacci and Coin Change: The DP Journey
-
-Fibonacci is the quintessential DP introduction problem. Walking through the optimization journey from brute force to O(1) space reveals the power of dynamic programming.
-
-## The Journey: Four Approaches to Fibonacci
-
-### Approach 1: Brute Force Recursion O(2^n)
-
-The naive recursive approach explodes exponentially:
-
-\`\`\`javascript
-function fib(n) {
-  if (n <= 1) return n;
-  return fib(n - 1) + fib(n - 2);
-}
-
-// fib(5) = 5
-// Calls: fib(4) + fib(3)
-//        (fib(3) + fib(2)) + (fib(2) + fib(1))
-//        ((fib(2) + fib(1)) + (fib(1) + fib(0))) + ...
-// Time: O(2^n) - exponential!
-\`\`\`
-
-**Why exponential?** The recursion tree grows exponentially, and many nodes repeat.
-
-### Approach 2: Memoization (Top-Down) O(n) Time, O(n) Space
-
-Cache results to avoid recomputation:
-
-\`\`\`javascript
-function fib(n, memo = {}) {
-  // Check cache first
-  if (n in memo) return memo[n];
-
-  // Base case
-  if (n <= 1) return n;
-
-  // Compute and store
-  memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
-  return memo[n];
-}
-
-// fib(5, {}) computes each fib(i) only once
-// Time: O(n), Space: O(n) for recursion stack + memo
-\`\`\`
-
-**Key insight**: Each fib(i) is computed exactly once. Subsequent lookups hit the cache.
-
-### Approach 3: Tabulation (Bottom-Up) O(n) Time, O(n) Space
-
-Build array iteratively from base cases:
-
-\`\`\`javascript
-function fib(n) {
-  if (n <= 1) return n;
-
-  const dp = [0, 1];
-  for (let i = 2; i <= n; i++) {
-    dp[i] = dp[i - 1] + dp[i - 2];
-  }
-  return dp[n];
-}
-
-// dp[0] = 0, dp[1] = 1
-// dp[2] = dp[1] + dp[0] = 1
-// dp[3] = dp[2] + dp[1] = 2
-// dp[4] = dp[3] + dp[2] = 3
-// dp[5] = dp[4] + dp[3] = 5
-\`\`\`
-
-**Why better?** No recursion overhead, no call stack, simple iteration.
-
-### Approach 4: Space Optimization O(n) Time, O(1) Space
-
-Key observation: We only need the last two values to compute the next:
-
-\`\`\`javascript
-function fib(n) {
-  if (n <= 1) return n;
-
-  let prev = 0, curr = 1;
-  for (let i = 2; i <= n; i++) {
-    // Store new value before overwriting
-    [prev, curr] = [curr, prev + curr];
-  }
-  return curr;
-}
-
-// Iteration 2: prev=1, curr=0+1=1
-// Iteration 3: prev=1, curr=1+1=2
-// Iteration 4: prev=2, curr=1+2=3
-// Iteration 5: prev=3, curr=2+3=5
-\`\`\`
-
-**The optimization trick**: After computing fib(i), we only need fib(i) and fib(i-1) for the next iteration. Discard older values.
-
-**Final optimization**: Space from O(n) to O(1)!
-
-## Coin Change: The Classic DP Pattern
-
-The coin change problem demonstrates the DP pattern applied to a new domain.
-
-**Problem**: Given coins [1, 2, 5] and amount 7, find minimum coins needed.
-
-### State Definition
-
-\`\`\`
-f(i) = minimum number of coins to make amount i
-\`\`\`
-
-This is the crucial step. We're breaking down the problem by amount.
-
-### Recurrence Relation
-
-For amount i, we can use any coin c where c <= i:
-
-\`\`\`
-f(i) = 1 + min(f(i-1), f(i-2), f(i-5))
-\`\`\`
-
-"To make amount i, take one coin and the minimum way to make (i - coin_value)"
-
-### Base Case
-
-\`\`\`
-f(0) = 0  (zero coins make amount 0)
-\`\`\`
-
-### Solution Code
-
-\`\`\`javascript
-function coinChange(coins, amount) {
-  // dp[i] = minimum coins to make amount i
-  const dp = new Array(amount + 1).fill(Infinity);
-  dp[0] = 0; // Base case
-
-  for (let i = 1; i <= amount; i++) {
-    // Try each coin
-    for (const coin of coins) {
-      if (coin <= i) {
-        // If we can use this coin
-        dp[i] = Math.min(dp[i], 1 + dp[i - coin]);
-      }
-    }
-  }
-
-  return dp[amount] === Infinity ? -1 : dp[amount];
-}
-
-// Example: coins=[1,2,5], amount=7
-// dp[0] = 0
-// dp[1] = 1 + dp[0] = 1 (coin 1)
-// dp[2] = min(1 + dp[1], 1 + dp[0]) = 1 (coin 2)
-// dp[3] = min(1 + dp[2], 1 + dp[1]) = 2 (1+2)
-// dp[4] = min(1 + dp[3], 1 + dp[2]) = 2 (2+2)
-// dp[5] = min(1 + dp[4], 1 + dp[3], 1 + dp[0]) = 1 (coin 5)
-// dp[6] = min(1 + dp[5], 1 + dp[4], 1 + dp[1]) = 2 (5+1)
-// dp[7] = min(1 + dp[6], 1 + dp[5], 1 + dp[2]) = 2 (5+2)
-// Result: 2
-\`\`\`
-
-**Time Complexity**: O(amount × coins.length)
-**Space Complexity**: O(amount)
-
-## Key Patterns Recognition
-
-**Fibonacci-like problems** (f(i) depends on f(i-1), f(i-2)):
-- Climbing stairs
-- House robber
-- Decode ways
-
-**Coin change-like problems** (f(i) depends on f(i-coin) for each coin):
-- Coin change
-- Coin change 2 (ways to make amount)
-- Perfect squares
-
-Both follow: Loop through states, update based on recurrence.
-
-## Memoization vs Tabulation for Coin Change
-
-**Memoization** (if implementing recursively):
-\`\`\`javascript
-function coinChangeMemo(coins, amount, memo = {}) {
-  if (amount === 0) return 0;
-  if (amount in memo) return memo[amount];
-
-  let result = Infinity;
-  for (const coin of coins) {
-    if (coin <= amount) {
-      result = Math.min(result, 1 + coinChangeMemo(coins, amount - coin, memo));
-    }
-  }
-
-  memo[amount] = result;
-  return result;
-}
-\`\`\`
-
-Both work identically; choose based on code clarity preference.
-
-## Common Mistakes
-
-1. **Forgetting base case**: Will compute wrong values
-2. **Initialization wrong**: dp should start with Infinity for min problems
-3. **Wrong recurrence**: Mistaking direction (i-coin vs i+coin)
-4. **Off-by-one errors**: Amount indices start at 0
-5. **Not checking coin validity**: Using coin > amount causes issues`,
-    zh: `# 斐波那契与硬币兑换：动态规划之旅
-
-斐波那契是典型的动态规划入门问题。通过蛮力到O(1)空间优化的过程，展现了动态规划的强大。
-
-## 旅程：四种斐波那契方法
-
-### 方法1：蛮力递归 O(2^n)
-
-朴素递归方法指数爆炸：
-
-\`\`\`javascript
-function fib(n) {
-  if (n <= 1) return n;
-  return fib(n - 1) + fib(n - 2);
-}
-
-// fib(5) = 5
-// 调用：fib(4) + fib(3)
-//       (fib(3) + fib(2)) + (fib(2) + fib(1))
-//       ((fib(2) + fib(1)) + (fib(1) + fib(0))) + ...
-// 时间：O(2^n) - 指数！
-\`\`\`
-
-**为什么指数？** 递归树指数增长，许多节点重复。
-
-### 方法2：备忘（自顶向下）O(n)时间, O(n)空间
-
-缓存结果避免重新计算：
-
-\`\`\`javascript
-function fib(n, memo = {}) {
-  // 先检查缓存
-  if (n in memo) return memo[n];
-
-  // 基础情况
-  if (n <= 1) return n;
-
-  // 计算并存储
-  memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
-  return memo[n];
-}
-
-// fib(5, {})仅计算每个fib(i)一次
-// 时间：O(n)，空间：O(n)用于递归栈+备忘
-\`\`\`
-
-**关键洞察**：每个fib(i)只计算一次。后续查找命中缓存。
-
-### 方法3：制表（自底向上）O(n)时间, O(n)空间
-
-从基础情况向上迭代构建数组：
-
-\`\`\`javascript
-function fib(n) {
-  if (n <= 1) return n;
-
-  const dp = [0, 1];
-  for (let i = 2; i <= n; i++) {
-    dp[i] = dp[i - 1] + dp[i - 2];
-  }
-  return dp[n];
-}
-
-// dp[0] = 0, dp[1] = 1
-// dp[2] = dp[1] + dp[0] = 1
-// dp[3] = dp[2] + dp[1] = 2
-// dp[4] = dp[3] + dp[2] = 3
-// dp[5] = dp[4] + dp[3] = 5
-\`\`\`
-
-**为什么更好？** 无递归开销，无调用栈，简单迭代。
-
-### 方法4：空间优化 O(n)时间, O(1)空间
-
-关键观察：仅需最后两个值计算下一个：
-
-\`\`\`javascript
-function fib(n) {
-  if (n <= 1) return n;
-
-  let prev = 0, curr = 1;
-  for (let i = 2; i <= n; i++) {
-    // 覆盖前先存储新值
-    [prev, curr] = [curr, prev + curr];
-  }
-  return curr;
-}
-
-// 迭代2：prev=1, curr=0+1=1
-// 迭代3：prev=1, curr=1+1=2
-// 迭代4：prev=2, curr=1+2=3
-// 迭代5：prev=3, curr=2+3=5
-\`\`\`
-
-**优化技巧**：计算fib(i)后，仅需fib(i)和fib(i-1)用于下一迭代。丢弃较旧值。
-
-**最终优化**：空间从O(n)到O(1)！
-
-## 硬币兑换：经典动态规划模式
-
-硬币兑换问题展示了应用于新域的动态规划模式。
-
-**问题**：给定硬币[1, 2, 5]和金额7，找最少硬币数。
-
-### 状态定义
-
-\`\`\`
-f(i) = 组成金额i所需的最少硬币数
-\`\`\`
-
-这是关键步骤。我们按金额分解问题。
-
-### 递推关系
-
-对于金额i，可使用任何硬币c，其中c <= i：
-
-\`\`\`
-f(i) = 1 + min(f(i-1), f(i-2), f(i-5))
-\`\`\`
-
-"为组成金额i，取一个硬币和组成(i - 硬币值)的最少方式"
-
-### 基础情况
-
-\`\`\`
-f(0) = 0  （零硬币组成金额0）
-\`\`\`
-
-### 解决方案代码
-
-\`\`\`javascript
-function coinChange(coins, amount) {
-  // dp[i] = 组成金额i的最少硬币数
-  const dp = new Array(amount + 1).fill(Infinity);
-  dp[0] = 0; // 基础情况
-
-  for (let i = 1; i <= amount; i++) {
-    // 尝试每个硬币
-    for (const coin of coins) {
-      if (coin <= i) {
-        // 如果能使用此硬币
-        dp[i] = Math.min(dp[i], 1 + dp[i - coin]);
-      }
-    }
-  }
-
-  return dp[amount] === Infinity ? -1 : dp[amount];
-}
-
-// 例：硬币=[1,2,5], 金额=7
-// dp[0] = 0
-// dp[1] = 1 + dp[0] = 1 (硬币1)
-// dp[2] = min(1 + dp[1], 1 + dp[0]) = 1 (硬币2)
-// dp[3] = min(1 + dp[2], 1 + dp[1]) = 2 (1+2)
-// dp[4] = min(1 + dp[3], 1 + dp[2]) = 2 (2+2)
-// dp[5] = min(1 + dp[4], 1 + dp[3], 1 + dp[0]) = 1 (硬币5)
-// dp[6] = min(1 + dp[5], 1 + dp[4], 1 + dp[1]) = 2 (5+1)
-// dp[7] = min(1 + dp[6], 1 + dp[5], 1 + dp[2]) = 2 (5+2)
-// 结果：2
-\`\`\`
-
-**时间复杂度**：O(金额 × 硬币数)
-**空间复杂度**：O(金额)
-
-## 关键模式识别
-
-**斐波那契类问题**（f(i)依赖f(i-1), f(i-2)）：
-- 爬楼梯
-- 打家劫舍
-- 解码方式
-
-**硬币兑换类问题**（f(i)依赖每个硬币的f(i-coin)）：
-- 硬币兑换
-- 硬币兑换2（组成金额的方式数）
-- 完全平方数
-
-都遵循：循环遍历状态，根据递推更新。
-
-## 备忘与制表用于硬币兑换
-
-**备忘**（如实现递归）：
-\`\`\`javascript
-function coinChangeMemo(coins, amount, memo = {}) {
-  if (amount === 0) return 0;
-  if (amount in memo) return memo[amount];
-
-  let result = Infinity;
-  for (const coin of coins) {
-    if (coin <= amount) {
-      result = Math.min(result, 1 + coinChangeMemo(coins, amount - coin, memo));
-    }
-  }
-
-  memo[amount] = result;
-  return result;
-}
-\`\`\`
-
-两者工作相同；根据代码清晰度偏好选择。
-
-## 常见错误
-
-1. **忘记基础情况**：将计算错误值
-2. **初始化错误**：对最小值问题dp应从Infinity开始
-3. **递推错误**：混淆方向（i-coin vs i+coin）
-4. **一处差之毫厘错误**：金额索引从0开始
-5. **未检查硬币有效性**：使用硬币 > 金额导致问题`
+    en: [
+      "## The Fibonacci Journey: From Exponential to Constant",
+      "",
+      "Fibonacci perfectly illustrates how DP optimizes from terrible to great.",
+      "",
+      "### Step 1: Naive Recursion - O(2^n)",
+      "",
+      "```javascript",
+      "function fib(n) {",
+      "  if (n <= 1) return n",
+      "  return fib(n - 1) + fib(n - 2)",
+      "}",
+      "```",
+      "",
+      "**Problem:** fib(5) calls fib(4) and fib(3). fib(4) calls fib(3) and fib(2). So fib(3) is computed twice. This redundancy explodes exponentially.",
+      "",
+      "For fib(50), we'd be doing quintillions of operations. Completely impractical.",
+      "",
+      "### Step 2: Memoization - O(n)",
+      "",
+      "Cache results to avoid recomputation.",
+      "",
+      "```javascript",
+      "function fib(n, memo = {}) {",
+      "  if (n in memo) return memo[n]",
+      "  if (n <= 1) return n",
+      "  memo[n] = fib(n - 1, memo) + fib(n - 2, memo)",
+      "  return memo[n]",
+      "}",
+      "```",
+      "",
+      "**Key:** First time we compute fib(3), we store it. Next time, we return the stored value instantly.",
+      "",
+      "Now fib(50) is just 50 recursive calls (one per unique state), each O(1).",
+      "",
+      "**Time:** O(n)",
+      "**Space:** O(n) for memo + O(n) for call stack",
+      "",
+      "### Step 3: Tabulation - O(n) time, O(n) space",
+      "",
+      "Build table iteratively instead of recursively.",
+      "",
+      "```javascript",
+      "function fib(n) {",
+      "  if (n <= 1) return n",
+      "  const dp = [0, 1]",
+      "  for (let i = 2; i <= n; i++) {",
+      "    dp[i] = dp[i - 1] + dp[i - 2]",
+      "  }",
+      "  return dp[n]",
+      "}",
+      "```",
+      "",
+      "**Cleaner than memoization:** No recursion overhead, clearer logic.",
+      "",
+      "### Step 4: Space Optimization - O(n) time, O(1) space",
+      "",
+      "Notice we only need the last two values. Keep a rolling window.",
+      "",
+      "```javascript",
+      "function fib(n) {",
+      "  if (n <= 1) return n",
+      "  let prev2 = 0, prev1 = 1",
+      "  for (let i = 2; i <= n; i++) {",
+      "    const current = prev1 + prev2",
+      "    prev2 = prev1",
+      "    prev1 = current",
+      "  }",
+      "  return prev1",
+      "}",
+      "```",
+      "",
+      "**The journey:** O(2^n) → O(n) → O(n) time, O(1) space. Fibonacci becomes instant for any n.",
+      "",
+      "## Coin Change: Canonical DP Problem",
+      "",
+      "**Problem:** Given coins [1, 2, 5] and amount 5, find minimum number of coins to make the amount.",
+      "",
+      "Answer for amount 5: [5] (1 coin) or [2, 2, 1] (3 coins). Minimum is 1.",
+      "",
+      "### Define State Clearly",
+      "",
+      "`dp[i]` = minimum number of coins to make amount i",
+      "",
+      "### Transition",
+      "",
+      "To make amount i, we can use any coin c, then solve for (i - c). Add 1 for the coin we used.",
+      "",
+      "`dp[i] = 1 + min(dp[i - coin] for all coins)`",
+      "",
+      "### Code",
+      "",
+      "```javascript",
+      "function coinChange(coins, amount) {",
+      "  const dp = Array(amount + 1).fill(Infinity)",
+      "  dp[0] = 0  // Base case: 0 coins for amount 0",
+      "  ",
+      "  for (let i = 1; i <= amount; i++) {",
+      "    for (const coin of coins) {",
+      "      if (coin <= i) {",
+      "        dp[i] = Math.min(dp[i], dp[i - coin] + 1)",
+      "      }",
+      "    }",
+      "  }",
+      "  return dp[amount] === Infinity ? -1 : dp[amount]",
+      "}",
+      "```",
+      "",
+      "**Walk through for coins=[1,2,5], amount=5:**",
+      "- dp[0] = 0",
+      "- dp[1] = min(dp[0] + 1) = 1  (use coin 1)",
+      "- dp[2] = min(dp[1] + 1, dp[0] + 1) = 1  (use coin 2)",
+      "- dp[3] = min(dp[2] + 1, dp[1] + 1) = 2  (use coin 2 then 1, or coin 1 three times)",
+      "- dp[4] = min(dp[3] + 1, dp[2] + 1) = 2  (use coin 2 twice)",
+      "- dp[5] = min(dp[4] + 1, dp[3] + 1, dp[0] + 1) = 1  (use coin 5)",
+      "",
+      "**Time:** O(amount × coins)",
+      "**Space:** O(amount)",
+      "",
+      "## Why Coin Change is Canonical",
+      "",
+      "The structure teaches everything about DP:",
+      "1. **Clear state:** dp[i] = answer for subproblem of size i",
+      "2. **Clear transition:** Try all choices (coins), pick best",
+      "3. **Base case:** dp[0] = 0 (empty amount needs 0 coins)",
+      "4. **Building up:** Solve small amounts before large amounts",
+      "",
+      "Master this pattern, apply it everywhere: climbing stairs, house robber, longest palindrome, edit distance, etc.",
+      "",
+      "## Variation: Coin Change II (Count Ways)",
+      "",
+      "How many ways to make amount 5 with coins [1, 2, 5]?",
+      "",
+      "`dp[i]` = number of ways to make amount i",
+      "",
+      "```javascript",
+      "function change(amount, coins) {",
+      "  const dp = Array(amount + 1).fill(0)",
+      "  dp[0] = 1  // One way: use no coins",
+      "  ",
+      "  for (const coin of coins) {",
+      "    for (let i = coin; i <= amount; i++) {",
+      "      dp[i] += dp[i - coin]",
+      "    }",
+      "  }",
+      "  return dp[amount]",
+      "}",
+      "```",
+      "",
+      "**Key difference:** Iterate coins in outer loop (avoid counting same combination multiple times). Add instead of taking minimum."
+    ].join('\n'),
+    zh: [
+      "## Fibonacci旅程：从指数到常数",
+      "",
+      "Fibonacci完美说明DP如何从可怕优化到伟大。",
+      "",
+      "### 第1步：幼稚递归 - O(2^n)",
+      "",
+      "```javascript",
+      "function fib(n) {",
+      "  if (n <= 1) return n",
+      "  return fib(n - 1) + fib(n - 2)",
+      "}",
+      "```",
+      "",
+      "**问题：**fib(5)调用fib(4)和fib(3)。fib(4)调用fib(3)和fib(2)。所以fib(3)计算两次。这种冗余指数级爆炸。",
+      "",
+      "对于fib(50)，我们需做经验次的操作。完全不实际。",
+      "",
+      "### 第2步：记忆化 - O(n)",
+      "",
+      "缓存结果以避免重新计算。",
+      "",
+      "```javascript",
+      "function fib(n, memo = {}) {",
+      "  if (n in memo) return memo[n]",
+      "  if (n <= 1) return n",
+      "  memo[n] = fib(n - 1, memo) + fib(n - 2, memo)",
+      "  return memo[n]",
+      "}",
+      "```",
+      "",
+      "**关键：**第一次计算fib(3)，我们存储它。下一次，我们立即返回存储的值。",
+      "",
+      "现在fib(50)只是50个递归调用（每个唯一状态一个），每个O(1)。",
+      "",
+      "**时间：**O(n)",
+      "**空间：**O(n)用于memo + O(n)用于调用栈",
+      "",
+      "### 第3步：制表 - O(n)时间，O(n)空间",
+      "",
+      "迭代而非递归地构建表。",
+      "",
+      "```javascript",
+      "function fib(n) {",
+      "  if (n <= 1) return n",
+      "  const dp = [0, 1]",
+      "  for (let i = 2; i <= n; i++) {",
+      "    dp[i] = dp[i - 1] + dp[i - 2]",
+      "  }",
+      "  return dp[n]",
+      "}",
+      "```",
+      "",
+      "**比记忆化更干净：**无递归开销，更清晰的逻辑。",
+      "",
+      "### 第4步：空间优化 - O(n)时间，O(1)空间",
+      "",
+      "注意我们仅需最后两个值。保持滚动窗口。",
+      "",
+      "```javascript",
+      "function fib(n) {",
+      "  if (n <= 1) return n",
+      "  let prev2 = 0, prev1 = 1",
+      "  for (let i = 2; i <= n; i++) {",
+      "    const current = prev1 + prev2",
+      "    prev2 = prev1",
+      "    prev1 = current",
+      "  }",
+      "  return prev1",
+      "}",
+      "```",
+      "",
+      "**旅程：**O(2^n) → O(n) → O(n)时间，O(1)空间。Fibonacci对任何n都变即时。",
+      "",
+      "## 硬币兑换：规范DP问题",
+      "",
+      "**问题：**给定硬币[1, 2, 5]和金额5，找最少硬币数量兑换金额。",
+      "",
+      "金额5的答案：[5]（1个硬币）或[2, 2, 1]（3个硬币）。最少是1。",
+      "",
+      "### 清楚定义状态",
+      "",
+      "`dp[i]` = 兑换金额i的最少硬币数",
+      "",
+      "### 转移",
+      "",
+      "要兑换金额i，我们可用任何硬币c，然后解(i - c)。为使用的硬币添加1。",
+      "",
+      "`dp[i] = 1 + min(dp[i - coin]用于所有硬币)`",
+      "",
+      "### 代码",
+      "",
+      "```javascript",
+      "function coinChange(coins, amount) {",
+      "  const dp = Array(amount + 1).fill(Infinity)",
+      "  dp[0] = 0  // 基本情况：金额0需0硬币",
+      "  ",
+      "  for (let i = 1; i <= amount; i++) {",
+      "    for (const coin of coins) {",
+      "      if (coin <= i) {",
+      "        dp[i] = Math.min(dp[i], dp[i - coin] + 1)",
+      "      }",
+      "    }",
+      "  }",
+      "  return dp[amount] === Infinity ? -1 : dp[amount]",
+      "}",
+      "```",
+      "",
+      "**硬币=[1,2,5]，金额=5时：**",
+      "- dp[0] = 0",
+      "- dp[1] = min(dp[0] + 1) = 1  (用硬币1)",
+      "- dp[2] = min(dp[1] + 1, dp[0] + 1) = 1  (用硬币2)",
+      "- dp[3] = min(dp[2] + 1, dp[1] + 1) = 2  (用硬币2再1，或硬币1三次)",
+      "- dp[4] = min(dp[3] + 1, dp[2] + 1) = 2  (用硬币2两次)",
+      "- dp[5] = min(dp[4] + 1, dp[3] + 1, dp[0] + 1) = 1  (用硬币5)",
+      "",
+      "**时间：**O(金额 × 硬币)",
+      "**空间：**O(金额)",
+      "",
+      "## 为什么硬币兑换是规范的",
+      "",
+      "结构教所有DP知识：",
+      "1. **清楚状态：**dp[i] = 大小i子问题的答案",
+      "2. **清楚转移：**尝试所有选择（硬币），选最好的",
+      "3. **基本情况：**dp[0] = 0（空金额需0硬币）",
+      "4. **往上构建：**解小金额先于大金额",
+      "",
+      "掌握这个模式，处处应用：爬楼梯、打家劫舍、最长回文、编辑距离等。",
+      "",
+      "## 变体：硬币兑换II（计数方式）",
+      "",
+      "有多少种方式用硬币[1, 2, 5]兑换金额5？",
+      "",
+      "`dp[i]` = 兑换金额i的方式数",
+      "",
+      "```javascript",
+      "function change(amount, coins) {",
+      "  const dp = Array(amount + 1).fill(0)",
+      "  dp[0] = 1  // 一个方式：不用硬币",
+      "  ",
+      "  for (const coin of coins) {",
+      "    for (let i = coin; i <= amount; i++) {",
+      "      dp[i] += dp[i - coin]",
+      "    }",
+      "  }",
+      "  return dp[amount]",
+      "}",
+      "```",
+      "",
+      "**关键区别：**在外循环迭代硬币（避免计数相同组合多次）。添加而非取最小值。"
+    ].join('\n'),
   },
   leetcode: [
-    { id: 509, title: 'Fibonacci Number', titleZh: '斐波那契数', difficulty: 'Easy' },
+    { id: 509, title: 'Fibonacci Number', titleZh: 'Fibonacci 数', difficulty: 'Easy' },
     { id: 70, title: 'Climbing Stairs', titleZh: '爬楼梯', difficulty: 'Easy' },
     { id: 322, title: 'Coin Change', titleZh: '零钱兑换', difficulty: 'Medium' },
-    { id: 518, title: 'Coin Change II', titleZh: '零钱兑换II', difficulty: 'Medium' }
-  ]
-};
+    { id: 518, title: 'Coin Change II', titleZh: '零钱兑换 II', difficulty: 'Medium' },
+  ],
+}

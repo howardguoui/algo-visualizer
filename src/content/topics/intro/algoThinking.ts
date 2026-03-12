@@ -1,194 +1,127 @@
-import { TopicContent } from '../types'
+import type { TopicContent } from '../../types'
 
 export const algoThinking: TopicContent = {
   id: 'intro-algo-thinking',
-  title: {
-    en: 'Algorithm Thinking Framework',
-    zh: '算法思维框架',
-  },
-  description: {
-    en: 'Master the fundamental framework that solves 80% of coding interview problems',
-    zh: '掌握能解决80%编程面试题的核心思维框架',
-  },
-  timeEstimate: '45-60 minutes',
+  title: { en: 'Algorithmic Thinking Framework', zh: '算法思维框架' },
+  description: { en: 'Learn the core patterns and thinking frameworks that solve 90% of problems', zh: '学习解决90%问题的核心模式和思维框架' },
+  timeEstimate: '45 min',
   contentType: 'content',
   hasVisualizer: false,
   content: {
-    en: `## Why Algorithms Matter
-
-Most developers approach LeetCode problems randomly, treating each as a unique puzzle. This is inefficient. In reality, **~80% of coding interview problems fall into 10-15 core patterns**. Once you recognize these patterns, the solution becomes mechanical.
-
-## The Core Insight: Pattern Recognition
-
-Algorithm thinking is not about memorizing solutions—it's about **pattern recognition and template application**. Every complex problem can be decomposed into:
-
-1. **Problem Type Identification**: What fundamental category is this?
-2. **Data Structure Selection**: Which structure serves this problem best?
-3. **Technique Application**: Which algorithm template applies?
-4. **Edge Case Handling**: What boundaries break the naive solution?
-
-## The 10 Core Patterns
-
-\`\`\`
-1. Sliding Window      → Fixed/Variable size window problems
-2. Two Pointers       → Converging, fast/slow, partition problems
-3. Binary Search      → Sorted array problems, search space optimization
-4. Dynamic Programming → Optimal substructure, overlapping subproblems
-5. Graph Traversal    → BFS/DFS for connectivity, paths, cycles
-6. Tree Recursion     → Divide-and-conquer, backtracking
-7. Hash Map/Set       → Frequency, existence, grouping problems
-8. Heap/Priority Queue → K largest/smallest, frequency problems
-9. Monotonic Stack    → Next/previous element, span problems
-10. Prefix/Suffix Sum → Range queries, subarray problems
-\`\`\`
-
-## Why Templates Matter
-
-A template is a **reusable code structure** that solves a category of problems. Instead of solving 100 unique problems, you master 10 templates and apply them 100 times.
-
-### Template Benefits:
-- **Speed**: Write solution faster (interview time is limited)
-- **Correctness**: Proven structure reduces bugs
-- **Confidence**: You know what works before you code
-- **Adaptability**: Small tweaks, big results
-
-## The Three-Step Approach
-
-### Step 1: Identify Pattern
-Read the problem. Ask:
-- Is this about finding something in an array? → Sliding Window, Binary Search, Two Pointers
-- Is this about sequences? → Dynamic Programming
-- Is this about relationships? → Graph, Tree, Union-Find
-- Is this about frequencies? → Hash Map, Heap
-
-### Step 2: Select Data Structure
-- Need fast lookup? → Hash Map/Set
-- Need sorted data? → Heap, BST
-- Need sequence? → Array, Linked List
-- Need relationships? → Graph
-
-### Step 3: Apply Template
-Pull the appropriate template, adjust variables, test edge cases.
-
-## Example: From Random to Systematic
-
-**Problem**: "Find two numbers in an array that sum to target"
-
-**Random approach**:
-- Try nested loops? (Brute force, O(n²))
-- Hope it passes?
-
-**Systematic approach**:
-- Pattern: "Find pair with property" → Two Sum Pattern
-- Data structure: Hash Map (for O(1) lookup)
-- Template: One-pass hash store + lookup
-- Result: O(n) solution, written in 2 minutes
-
-## The Compounding Effect
-
-Early investment in understanding templates pays massive dividends:
-- First template: Takes 1 hour to deeply understand
-- Second template: 40 minutes (you're faster)
-- Tenth template: 15 minutes (patterns repeat)
-- Real interview: 20 minutes to solve a medium problem (template + small tweaks)
-
-## Building Your Mental Models
-
-As you learn each pattern, build three things:
-
-1. **Template Code**: The skeleton that solves this pattern
-2. **Problem Recognition**: Signals that tell you which pattern applies
-3. **Variant Handling**: Common twists and how templates adapt
-
-This framework transforms algorithm problems from "magic tricks you memorize" to "systematic problems you solve with templates."`,
-
-    zh: `## 为什么算法很重要
-
-大多数开发者随机学习LeetCode题目，把每道题当作独立的难题。这样做效率很低。实际上，**~80%的编程面试题都归纳于10-15个核心模式**。一旦你认识这些模式，解题就变成了机械的应用。
-
-## 核心洞察：模式识别
-
-算法思维不是关于死记硬背解题方案——而是关于**模式识别和模板应用**。每个复杂问题都可以分解为：
-
-1. **问题类型识别**：这是哪个基础类别？
-2. **数据结构选择**：哪个结构最适合？
-3. **技术应用**：应用哪个算法模板？
-4. **边界处理**：哪些边界会破坏简单方案？
-
-## 10个核心模式
-
-\`\`\`
-1. 滑动窗口        → 固定/可变窗口问题
-2. 双指针         → 两端相向、快慢指针、分割问题
-3. 二分查找       → 有序数组问题、搜索空间优化
-4. 动态规划       → 最优子结构、重叠子问题
-5. 图遍历         → BFS/DFS、连接性、路径、环检测
-6. 树递归         → 分治、回溯
-7. 哈希表/集合    → 频率、存在性、分组
-8. 堆/优先队列    → K大/K小、频率问题
-9. 单调栈         → 下一个/前一个元素、跨度问题
-10. 前缀/后缀和   → 范围查询、子数组问题
-\`\`\`
-
-## 为什么模板很重要
-
-模板是**可复用的代码结构**，解决一类问题。与其解决100个独立问题，不如掌握10个模板，并应用100次。
-
-### 模板的好处：
-- **速度**：快速编写解决方案（面试时间有限）
-- **正确性**：成熟的结构减少错误
-- **自信**：你知道什么可行，再动手编码
-- **适应性**：小改动，大效果
-
-## 三步法
-
-### 第一步：识别模式
-读题时问自己：
-- 在数组中找东西？ → 滑动窗口、二分查找、双指针
-- 关于序列？ → 动态规划
-- 关于关系？ → 图、树、并查集
-- 关于频率？ → 哈希表、堆
-
-### 第二步：选择数据结构
-- 需要快速查找？ → 哈希表/集合
-- 需要有序数据？ → 堆、二叉搜索树
-- 需要序列？ → 数组、链表
-- 需要关系？ → 图
-
-### 第三步：应用模板
-取出合适的模板，调整变量，测试边界情况。
-
-## 例子：从随意到系统
-
-**问题**："在数组中找两个数，其和等于目标值"
-
-**随意做法**：
-- 用嵌套循环？(暴力，O(n²))
-- 希望能通过？
-
-**系统做法**：
-- 模式："找具有某性质的对" → Two Sum模式
-- 数据结构：哈希表（O(1)查找）
-- 模板：一遍扫描存储+查找
-- 结果：O(n)解决方案，2分钟内完成
-
-## 复利效应
-
-早期投资理解模板会产生巨大回报：
-- 第一个模板：深入理解需要1小时
-- 第二个模板：40分钟（你更快了）
-- 第十个模板：15分钟（模式重复）
-- 真实面试：20分钟解决中等难度题（模板+小调整）
-
-## 构建心智模型
-
-学习每个模式时，构建三样东西：
-
-1. **模板代码**：解决此模式的框架
-2. **问题识别**：告诉你应用哪个模式的信号
-3. **变体处理**：常见变化及模板如何适应
-
-这个框架把算法题从"你死记硬背的魔法技巧"转变为"你用模板系统地解决的问题"。`,
+    en: [
+      "## Why Templates Beat Memorization",
+      "",
+      "Memorizing 300+ LeetCode solutions is impossible and pointless. Instead, successful problem-solving relies on recognizing patterns and applying proven templates. When you see a new problem, you should think: \"This is a variation of pattern X\" rather than \"I've never seen this before.\"",
+      "",
+      "The 10 core patterns cover 90% of technical interview problems. Learning these templates is like having a toolkit - once you understand when to use each tool, problem-solving becomes systematic, not mysterious.",
+      "",
+      "## The 10 Core Patterns",
+      "",
+      "**1. Two Pointers** - Used when you need to traverse or compare two parts of a sequence. Works on sorted arrays, linked lists, and finding pairs.",
+      "",
+      "**2. Sliding Window** - Fixed or variable-size window moving through data. Essential for substring, subarray, and range problems.",
+      "",
+      "**3. Binary Search** - Efficient search in sorted data or search space problems. Not just finding elements - used for optimization problems too.",
+      "",
+      "**4. Prefix Sum / Difference Array** - Transform range queries/updates into O(1) operations. Builds on array indexing cleverness.",
+      "",
+      "**5. Hash Table** - Trading space for speed. Frequency counting, lookups, and eliminating duplicates happen in O(1).",
+      "",
+      "**6. Tree Traversal** - DFS/BFS frameworks. Every tree problem is a traversal variation with different operations at each node.",
+      "",
+      "**7. Heap / Priority Queue** - Efficient access to min/max elements. Used in scheduling, merging, and top-K problems.",
+      "",
+      "**8. Graph DFS/BFS** - Component detection, pathfinding, topological sort. Often combined with Union-Find for connectivity.",
+      "",
+      "**9. Backtracking** - Systematic exploration of decision trees. All permutation, combination, and subset problems follow the Choose-Explore-Unchoose pattern.",
+      "",
+      "**10. Dynamic Programming** - Optimal substructure + overlapping subproblems. Define state, find transitions, use memoization or iteration.",
+      "",
+      "## How to Identify Which Pattern to Use",
+      "",
+      "**Problem asks for:**",
+      "- \"Find a pair/element with property X\" → Two Pointers or Hash Table",
+      "- \"Longest/shortest substring/subarray with property X\" → Sliding Window",
+      "- \"Find element in sorted data\" → Binary Search",
+      "- \"Count elements with property X\" → Frequency Map",
+      "- \"Generate all combinations/permutations/subsets\" → Backtracking",
+      "- \"Find optimal value (max/min)\" → Dynamic Programming or Greedy",
+      "- \"Connected components, shortest path\" → Graph DFS/BFS or Union-Find",
+      "- \"Traverse a tree\" → DFS (recursive or stack) or BFS (queue)",
+      "",
+      "## The Difference Between Pattern and Solution",
+      "",
+      "A **pattern** is the algorithm template and approach. A **solution** is implementing that pattern for a specific problem. The same pattern (e.g., two pointers) solves Container With Most Water, Valid Palindrome, and Merge Sorted Arrays differently.",
+      "",
+      "Master the pattern → Apply it flexibly → Problem-solving becomes systematic.",
+      "",
+      "## Learning Strategy",
+      "",
+      "1. **Learn the template** with a simple example",
+      "2. **Understand the mental model** - why does this approach work?",
+      "3. **Code it repeatedly** until muscle memory kicks in",
+      "4. **Apply to variations** - same pattern, different problems",
+      "5. **Combine patterns** - hard problems often need two patterns",
+      "",
+      "This course walks through each pattern with theory, code templates, and multiple practice problems. By the end, you'll recognize patterns instantly and solve problems systematically."
+    ].join('\n'),
+    zh: [
+      "## 为什么模板优于死记硬背",
+      "",
+      "背诵300多道LeetCode题目解法是不可能也没有意义的。成功的问题解决依赖于识别模式并应用已验证的模板。当你看到新问题时，应该思考：「这是模式X的变体」而不是「我从未见过这种题目」。",
+      "",
+      "10个核心模式覆盖了90%的技术面试题。学习这些模板就像拥有一个工具箱——一旦你理解了何时使用每个工具，问题解决就变成了系统的过程，而不是神秘的。",
+      "",
+      "## 10个核心模式",
+      "",
+      "**1. 双指针** - 当你需要遍历或比较序列的两部分时使用。适用于排序数组、链表和查找配对问题。",
+      "",
+      "**2. 滑动窗口** - 固定或可变大小的窗口通过数据移动。对于子字符串、子数组和范围问题至关重要。",
+      "",
+      "**3. 二分查找** - 在排序数据或搜索空间问题中进行高效查找。不仅是查找元素——也用于优化问题。",
+      "",
+      "**4. 前缀和/差分数组** - 将范围查询/更新转化为O(1)操作。基于数组索引的巧妙性。",
+      "",
+      "**5. 哈希表** - 用空间换速度。频率计数、查找和消除重复在O(1)内完成。",
+      "",
+      "**6. 树的遍历** - DFS/BFS框架。每个树问题都是遍历的变体，在每个节点执行不同的操作。",
+      "",
+      "**7. 堆/优先队列** - 高效访问最小/最大元素。用于调度、合并和Top-K问题。",
+      "",
+      "**8. 图的DFS/BFS** - 连通分量检测、寻路、拓扑排序。通常与Union-Find结合用于连通性问题。",
+      "",
+      "**9. 回溯** - 系统地探索决策树。所有排列、组合和子集问题都遵循选择-探索-撤销模式。",
+      "",
+      "**10. 动态规划** - 最优子结构+重叠子问题。定义状态、找到转移、使用记忆化或迭代。",
+      "",
+      "## 如何识别使用哪种模式",
+      "",
+      "**问题要求：**",
+      "- 「找具有属性X的配对/元素」→ 双指针或哈希表",
+      "- 「最长/最短具有属性X的子字符串/子数组」→ 滑动窗口",
+      "- 「在排序数据中查找元素」→ 二分查找",
+      "- 「计算具有属性X的元素」→ 频率Map",
+      "- 「生成所有组合/排列/子集」→ 回溯",
+      "- 「找最优值（最大/最小）」→ 动态规划或贪心",
+      "- 「连通分量、最短路径」→ 图DFS/BFS或Union-Find",
+      "- 「遍历树」→ DFS（递归或栈）或BFS（队列）",
+      "",
+      "## 模式与解决方案的区别",
+      "",
+      "**模式**是算法模板和方法。**解决方案**是为特定问题实现该模式。相同的模式（如双指针）以不同方式解决盛水最多的容器、验证回文和合并排序数组。",
+      "",
+      "掌握模式 → 灵活应用 → 问题解决变得系统化。",
+      "",
+      "## 学习策略",
+      "",
+      "1. **学习模板** 用简单例子",
+      "2. **理解心智模型** - 为什么这种方法有效？",
+      "3. **反复编码** 直到肌肉记忆启动",
+      "4. **应用变体** - 相同模式，不同问题",
+      "5. **结合模式** - 难题通常需要两个模式",
+      "",
+      "这个课程通过理论、代码模板和多个练习问题来讲解每个模式。到最后，你将即时识别模式并系统地解决问题。"
+    ].join('\n'),
   },
   leetcode: [],
 }

@@ -1,411 +1,339 @@
-import { TopicContent } from '../../types';
+import type { TopicContent } from '../../types'
 
 export const unionFindContent: TopicContent = {
   id: 'graphs-union-find',
-  title: {
-    en: 'Union-Find (Disjoint Set Union)',
-    zh: '并查集（不相交集合并集）'
-  },
-  description: {
-    en: 'Master the Union-Find data structure for efficient connectivity and cycle detection',
-    zh: '掌握并查集数据结构，高效处理连接性和环检测问题'
-  },
-  timeEstimate: '45 minutes',
+  title: { en: 'Union-Find (Disjoint Set Union)', zh: '并查集（DSU）' },
+  description: { en: 'Master union-find data structure with path compression and union by rank', zh: '掌握带路径压缩和按秩合并的并查集数据结构' },
+  timeEstimate: '40 min',
   contentType: 'content+practice',
   hasVisualizer: false,
   content: {
-    en: `# Union-Find (Disjoint Set Union)
-
-Union-Find is a data structure that efficiently handles two operations: union (combining two sets) and find (determining if two elements are in the same set). With path compression and union by rank optimizations, both operations approach O(1) time.
-
-## Core Concept
-
-Each element belongs to a set (tree). Union-Find tracks which elements belong to the same connected component.
-
-**Two fundamental operations**:
-- **find(x)**: Determine the root/parent of element x (which set does it belong to?)
-- **union(x, y)**: Merge the sets containing x and y
-
-## Basic Implementation
-
-Without optimizations (acceptable for small datasets):
-
-\`\`\`javascript
-class UnionFind {
-  constructor(n) {
-    // parent[i] initially points to itself
-    this.parent = Array.from({ length: n }, (_, i) => i);
-  }
-
-  find(x) {
-    if (this.parent[x] !== x) {
-      this.parent[x] = this.find(this.parent[x]); // Path compression
-    }
-    return this.parent[x];
-  }
-
-  union(x, y) {
-    const rootX = this.find(x);
-    const rootY = this.find(y);
-
-    if (rootX !== rootY) {
-      this.parent[rootX] = rootY;
-    }
-  }
-
-  isConnected(x, y) {
-    return this.find(x) === this.find(y);
-  }
-}
-\`\`\`
-
-## Optimized Implementation (Path Compression + Union by Rank)
-
-These optimizations make operations nearly O(1):
-
-\`\`\`javascript
-class OptimizedUnionFind {
-  constructor(n) {
-    this.parent = Array.from({ length: n }, (_, i) => i);
-    this.rank = Array(n).fill(0);
-  }
-
-  find(x) {
-    if (this.parent[x] !== x) {
-      // Path compression: point directly to root
-      this.parent[x] = this.find(this.parent[x]);
-    }
-    return this.parent[x];
-  }
-
-  union(x, y) {
-    const rootX = this.find(x);
-    const rootY = this.find(y);
-
-    if (rootX === rootY) return;
-
-    // Union by rank: attach smaller tree under larger tree
-    if (this.rank[rootX] < this.rank[rootY]) {
-      this.parent[rootX] = rootY;
-    } else if (this.rank[rootX] > this.rank[rootY]) {
-      this.parent[rootY] = rootX;
-    } else {
-      this.parent[rootY] = rootX;
-      this.rank[rootX]++;
-    }
-  }
-
-  isConnected(x, y) {
-    return this.find(x) === this.find(y);
-  }
-
-  countComponents() {
-    const roots = new Set();
-    for (let i = 0; i < this.parent.length; i++) {
-      roots.add(this.find(i));
-    }
-    return roots.size;
-  }
-}
-\`\`\`
-
-## Optimizations Explained
-
-**Path Compression**: When finding a root, make each node point directly to the root. This flattens the tree.
-
-**Union by Rank**: Attach the smaller tree under the larger one to keep trees shallow.
-
-Together, these reduce amortized time complexity to nearly O(1) per operation (technically O(α(n)) where α is inverse Ackermann function).
-
-## Common Problem Patterns
-
-### Pattern 1: Connectivity Questions
-
-\`\`\`javascript
-// Given edges, determine if two nodes are connected
-function isConnected(n, edges, x, y) {
-  const uf = new OptimizedUnionFind(n);
-
-  for (const [a, b] of edges) {
-    uf.union(a, b);
-  }
-
-  return uf.isConnected(x, y);
-}
-\`\`\`
-
-### Pattern 2: Count Connected Components
-
-\`\`\`javascript
-function countComponents(n, edges) {
-  const uf = new OptimizedUnionFind(n);
-
-  for (const [a, b] of edges) {
-    uf.union(a, b);
-  }
-
-  return uf.countComponents();
-}
-\`\`\`
-
-### Pattern 3: Detect Cycles in Undirected Graph
-
-Union-Find efficiently detects cycles: if union fails (nodes already connected), there's a cycle.
-
-\`\`\`javascript
-function hasCycle(n, edges) {
-  const uf = new OptimizedUnionFind(n);
-
-  for (const [a, b] of edges) {
-    // If nodes are already connected, this edge creates a cycle
-    if (uf.isConnected(a, b)) {
-      return true;
-    }
-    uf.union(a, b);
-  }
-
-  return false;
-}
-\`\`\`
-
-### Pattern 4: Find Redundant Edge
-
-\`\`\`javascript
-function findRedundantConnection(edges) {
-  const n = edges.length;
-  const uf = new OptimizedUnionFind(n + 1);
-
-  for (const [a, b] of edges) {
-    if (uf.isConnected(a, b)) {
-      return [a, b]; // This edge creates the cycle
-    }
-    uf.union(a, b);
-  }
-
-  return [];
-}
-\`\`\`
-
-## When to Use Union-Find
-
-✓ **Good for**:
-- Connectivity problems
-- Finding connected components
-- Cycle detection in undirected graphs
-- Minimum spanning tree (Kruskal's algorithm)
-- Image processing (connected regions)
-
-✗ **Not good for**:
-- Weighted shortest paths (use Dijkstra)
-- Directed graph cycle detection (use DFS)
-- Dynamic graph modifications (requires rebuild)
-
-## Complexity Analysis
-
-| Operation | Without Optimization | With Path Compression & Rank |
-|-----------|----------------------|------------------------------|
-| find()    | O(n)                 | O(α(n)) ≈ O(1)               |
-| union()   | O(n)                 | O(α(n)) ≈ O(1)               |
-
-For all practical purposes, α(n) ≤ 5 for any realistic n, so treat as O(1).`,
-    zh: `# 并查集（不相交集合并集）
-
-并查集是一种高效处理两种操作的数据结构：union（合并两个集合）和find（判断两个元素是否在同一个集合）。通过路径压缩和按秩合并优化，两种操作的时间接近O(1)。
-
-## 核心概念
-
-每个元素属于一个集合（树）。并查集跟踪哪些元素属于同一个连通分量。
-
-**两个基本操作**：
-- **find(x)**：确定元素x的根/父节点（它属于哪个集合？）
-- **union(x, y)**：合并包含x和y的集合
-
-## 基础实现
-
-不带优化（对于小数据集可接受）：
-
-\`\`\`javascript
-class UnionFind {
-  constructor(n) {
-    // parent[i]初始指向自己
-    this.parent = Array.from({ length: n }, (_, i) => i);
-  }
-
-  find(x) {
-    if (this.parent[x] !== x) {
-      this.parent[x] = this.find(this.parent[x]); // 路径压缩
-    }
-    return this.parent[x];
-  }
-
-  union(x, y) {
-    const rootX = this.find(x);
-    const rootY = this.find(y);
-
-    if (rootX !== rootY) {
-      this.parent[rootX] = rootY;
-    }
-  }
-
-  isConnected(x, y) {
-    return this.find(x) === this.find(y);
-  }
-}
-\`\`\`
-
-## 优化实现（路径压缩 + 按秩合并）
-
-这些优化使操作时间接近O(1)：
-
-\`\`\`javascript
-class OptimizedUnionFind {
-  constructor(n) {
-    this.parent = Array.from({ length: n }, (_, i) => i);
-    this.rank = Array(n).fill(0);
-  }
-
-  find(x) {
-    if (this.parent[x] !== x) {
-      // 路径压缩：直接指向根
-      this.parent[x] = this.find(this.parent[x]);
-    }
-    return this.parent[x];
-  }
-
-  union(x, y) {
-    const rootX = this.find(x);
-    const rootY = this.find(y);
-
-    if (rootX === rootY) return;
-
-    // 按秩合并：将较小树接到较大树下
-    if (this.rank[rootX] < this.rank[rootY]) {
-      this.parent[rootX] = rootY;
-    } else if (this.rank[rootX] > this.rank[rootY]) {
-      this.parent[rootY] = rootX;
-    } else {
-      this.parent[rootY] = rootX;
-      this.rank[rootX]++;
-    }
-  }
-
-  isConnected(x, y) {
-    return this.find(x) === this.find(y);
-  }
-
-  countComponents() {
-    const roots = new Set();
-    for (let i = 0; i < this.parent.length; i++) {
-      roots.add(this.find(i));
-    }
-    return roots.size;
-  }
-}
-\`\`\`
-
-## 优化解释
-
-**路径压缩**：查找根时，使每个节点直接指向根。这展平了树。
-
-**按秩合并**：将较小树接到较大树下，以保持树的浅层结构。
-
-结合起来，这些将摊销时间复杂度降低到每次操作接近O(1)（技术上O(α(n))，其中α是反阿克曼函数）。
-
-## 常见问题模式
-
-### 模式1：连通性问题
-
-\`\`\`javascript
-// 给定边，判断两个节点是否连通
-function isConnected(n, edges, x, y) {
-  const uf = new OptimizedUnionFind(n);
-
-  for (const [a, b] of edges) {
-    uf.union(a, b);
-  }
-
-  return uf.isConnected(x, y);
-}
-\`\`\`
-
-### 模式2：计算连通分量
-
-\`\`\`javascript
-function countComponents(n, edges) {
-  const uf = new OptimizedUnionFind(n);
-
-  for (const [a, b] of edges) {
-    uf.union(a, b);
-  }
-
-  return uf.countComponents();
-}
-\`\`\`
-
-### 模式3：无向图中的环检测
-
-并查集有效检测环：如果union失败（节点已连接），存在环。
-
-\`\`\`javascript
-function hasCycle(n, edges) {
-  const uf = new OptimizedUnionFind(n);
-
-  for (const [a, b] of edges) {
-    // 如果节点已连接，这条边会创建环
-    if (uf.isConnected(a, b)) {
-      return true;
-    }
-    uf.union(a, b);
-  }
-
-  return false;
-}
-\`\`\`
-
-### 模式4：查找冗余边
-
-\`\`\`javascript
-function findRedundantConnection(edges) {
-  const n = edges.length;
-  const uf = new OptimizedUnionFind(n + 1);
-
-  for (const [a, b] of edges) {
-    if (uf.isConnected(a, b)) {
-      return [a, b]; // 这条边创建了环
-    }
-    uf.union(a, b);
-  }
-
-  return [];
-}
-\`\`\`
-
-## 何时使用并查集
-
-✓ **适用于**：
-- 连通性问题
-- 查找连通分量
-- 无向图中的环检测
-- 最小生成树（Kruskal算法）
-- 图像处理（连通区域）
-
-✗ **不适用于**：
-- 加权最短路径（使用Dijkstra）
-- 有向图环检测（使用DFS）
-- 动态图修改（需要重建）
-
-## 复杂度分析
-
-| 操作   | 无优化   | 带路径压缩与秩  |
-|--------|----------|------------------|
-| find() | O(n)     | O(α(n)) ≈ O(1)   |
-| union()| O(n)     | O(α(n)) ≈ O(1)   |
-
-对于所有实际目的，α(n) ≤ 5（任何现实的n），所以视为O(1)。`
+    en: [
+      "## Union-Find Overview",
+      "",
+      "Union-Find (or Disjoint Set Union) is a data structure that efficiently tracks and merges equivalence classes. Perfect for connectivity and cycle detection problems.",
+      "",
+      "**Core operations:**",
+      "- `find(x)`: Which set does x belong to? (Find the root/representative)",
+      "- `union(x, y)`: Merge the sets containing x and y",
+      "- Both operations: O(α(n)) ≈ O(1) with optimizations",
+      "",
+      "## Basic Union-Find Implementation",
+      "",
+      "```javascript",
+      "class UnionFind {",
+      "  constructor(n) {",
+      "    this.parent = Array.from({length: n}, (_, i) => i)",
+      "    this.rank = Array(n).fill(0)",
+      "  }",
+      "  ",
+      "  find(x) {",
+      "    if (this.parent[x] !== x) {",
+      "      this.parent[x] = this.find(this.parent[x])  // Path compression",
+      "    }",
+      "    return this.parent[x]",
+      "  }",
+      "  ",
+      "  union(x, y) {",
+      "    const rootX = this.find(x)",
+      "    const rootY = this.find(y)",
+      "    if (rootX === rootY) return false  // Already in same set",
+      "    ",
+      "    // Union by rank",
+      "    if (this.rank[rootX] < this.rank[rootY]) {",
+      "      this.parent[rootX] = rootY",
+      "    } else if (this.rank[rootX] > this.rank[rootY]) {",
+      "      this.parent[rootY] = rootX",
+      "    } else {",
+      "      this.parent[rootY] = rootX",
+      "      this.rank[rootX]++",
+      "    }",
+      "    return true",
+      "  }",
+      "}",
+      "```",
+      "",
+      "## Path Compression",
+      "",
+      "When finding the root, make every node point directly to the root. This flattens the tree, making future operations faster.",
+      "",
+      "```",
+      "Before: 4 → 3 → 2 → 1 (long path)",
+      "After:  4 → 1, 3 → 1, 2 → 1 (flattened)",
+      "```",
+      "",
+      "Each find now traverses fewer nodes. This is the key to near-constant time operations.",
+      "",
+      "## Union by Rank",
+      "",
+      "When merging two sets, attach the smaller tree under the larger tree. This keeps the tree shallow.",
+      "",
+      "Without union by rank: Union on worst case creates a chain (O(n) find).",
+      "With union by rank: Always keeps depth ~log(n) (O(log n) find, O(1) with compression).",
+      "",
+      "## Cycle Detection in Undirected Graphs",
+      "",
+      "If adding an edge would connect two nodes that are already in the same set, adding that edge would create a cycle.",
+      "",
+      "```javascript",
+      "function hasCycle(edges, n) {",
+      "  const uf = new UnionFind(n)",
+      "  for (const [u, v] of edges) {",
+      "    if (uf.find(u) === uf.find(v)) {",
+      "      return true  // u and v already connected, edge creates cycle",
+      "    }",
+      "    uf.union(u, v)",
+      "  }",
+      "  return false",
+      "}",
+      "```",
+      "",
+      "## Connected Components",
+      "",
+      "Count distinct groups.",
+      "",
+      "```javascript",
+      "function countComponents(n, edges) {",
+      "  const uf = new UnionFind(n)",
+      "  for (const [u, v] of edges) {",
+      "    uf.union(u, v)",
+      "  }",
+      "  ",
+      "  const roots = new Set()",
+      "  for (let i = 0; i < n; i++) {",
+      "    roots.add(uf.find(i))",
+      "  }",
+      "  return roots.size",
+      "}",
+      "```",
+      "",
+      "## Minimum Cost to Connect Points",
+      "",
+      "Connect all points with minimum total cost (essentially Kruskal's algorithm).",
+      "",
+      "```javascript",
+      "function minCostToConnectPoints(points) {",
+      "  // Build all edges with distances",
+      "  const edges = []",
+      "  for (let i = 0; i < points.length; i++) {",
+      "    for (let j = i + 1; j < points.length; j++) {",
+      "      const dist = Math.abs(points[i][0] - points[j][0]) +",
+      "                   Math.abs(points[i][1] - points[j][1])",
+      "      edges.push([dist, i, j])",
+      "    }",
+      "  }",
+      "  ",
+      "  // Sort by distance",
+      "  edges.sort((a, b) => a[0] - b[0])",
+      "  ",
+      "  // Greedily add edges",
+      "  const uf = new UnionFind(points.length)",
+      "  let cost = 0",
+      "  let edgesAdded = 0",
+      "  for (const [dist, u, v] of edges) {",
+      "    if (uf.find(u) !== uf.find(v)) {",
+      "      uf.union(u, v)",
+      "      cost += dist",
+      "      edgesAdded++",
+      "      if (edgesAdded === points.length - 1) break",
+      "    }",
+      "  }",
+      "  return cost",
+      "}",
+      "```",
+      "",
+      "## Union-Find vs DFS/BFS",
+      "",
+      "| Problem | Union-Find | DFS/BFS |",
+      "|---------|-----------|---------|",
+      "| Cycle detection | ✅ Efficient | ✅ Works |",
+      "| Connected components | ✅ Clean | ✅ Works |",
+      "| Find path between nodes | ❌ Doesn't track paths | ✅ Tracks paths |",
+      "| Minimum spanning tree | ✅ Natural fit | ❌ Less natural |",
+      "| Online connectivity | ✅ Incremental | ❌ Requires full graph |",
+      "",
+      "## Time Complexity",
+      "",
+      "With both path compression and union by rank:",
+      "- **Find**: O(α(n)) ≈ O(1) in practice",
+      "- **Union**: O(α(n)) ≈ O(1) in practice",
+      "- **α(n)**: Inverse Ackermann function, practically never exceeds 4 for any realistic input",
+      "",
+      "## When to Use Union-Find",
+      "",
+      "- Connectivity queries (are x and y in same component?)",
+      "- Cycle detection",
+      "- Minimum spanning trees (Kruskal's algorithm)",
+      "- Equivalence classes",
+      "- Online union-find where graph is built incrementally",
+      "",
+      "Avoid for problems where you need to track actual paths between nodes - use DFS/BFS instead."
+    ].join('\n'),
+    zh: [
+      "## 并查集概述",
+      "",
+      "并查集（或不相交集合并）是有效追踪和合并等价类的数据结构。对于连通性和循环检测问题完美。",
+      "",
+      "**核心操作：**",
+      "- `find(x)`：x属于哪个集合？（找到根/代表）",
+      "- `union(x, y)`：合并包含x和y的集合",
+      "- 两个操作：带优化O(α(n)) ≈ O(1)",
+      "",
+      "## 基本并查集实现",
+      "",
+      "```javascript",
+      "class UnionFind {",
+      "  constructor(n) {",
+      "    this.parent = Array.from({length: n}, (_, i) => i)",
+      "    this.rank = Array(n).fill(0)",
+      "  }",
+      "  ",
+      "  find(x) {",
+      "    if (this.parent[x] !== x) {",
+      "      this.parent[x] = this.find(this.parent[x])  // 路径压缩",
+      "    }",
+      "    return this.parent[x]",
+      "  }",
+      "  ",
+      "  union(x, y) {",
+      "    const rootX = this.find(x)",
+      "    const rootY = this.find(y)",
+      "    if (rootX === rootY) return false  // 已在同一集合",
+      "    ",
+      "    // 按秩合并",
+      "    if (this.rank[rootX] < this.rank[rootY]) {",
+      "      this.parent[rootX] = rootY",
+      "    } else if (this.rank[rootX] > this.rank[rootY]) {",
+      "      this.parent[rootY] = rootX",
+      "    } else {",
+      "      this.parent[rootY] = rootX",
+      "      this.rank[rootX]++",
+      "    }",
+      "    return true",
+      "  }",
+      "}",
+      "```",
+      "",
+      "## 路径压缩",
+      "",
+      "找根时，让每个节点直接指向根。这压缩了树，使未来操作更快。",
+      "",
+      "```",
+      "之前：4 → 3 → 2 → 1（长路径）",
+      "之后：4 → 1, 3 → 1, 2 → 1（压缩）",
+      "```",
+      "",
+      "每个find现在遍历更少节点。这是近乎常数时间操作的关键。",
+      "",
+      "## 按秩合并",
+      "",
+      "合并两个集合时，在较大树下附加较小树。这保持树浅。",
+      "",
+      "没有按秩合并：最坏情况union创建链（O(n) find）。",
+      "有按秩合并：始终保持深度~log(n)（O(log n) find，O(1)带压缩）。",
+      "",
+      "## 无向图中的循环检测",
+      "",
+      "如果添加边会连接两个已在同一集合中的节点，添加该边会创建循环。",
+      "",
+      "```javascript",
+      "function hasCycle(edges, n) {",
+      "  const uf = new UnionFind(n)",
+      "  for (const [u, v] of edges) {",
+      "    if (uf.find(u) === uf.find(v)) {",
+      "      return true  // u和v已连接，边创建循环",
+      "    }",
+      "    uf.union(u, v)",
+      "  }",
+      "  return false",
+      "}",
+      "```",
+      "",
+      "## 连通分量",
+      "",
+      "计数不同的组。",
+      "",
+      "```javascript",
+      "function countComponents(n, edges) {",
+      "  const uf = new UnionFind(n)",
+      "  for (const [u, v] of edges) {",
+      "    uf.union(u, v)",
+      "  }",
+      "  ",
+      "  const roots = new Set()",
+      "  for (let i = 0; i < n; i++) {",
+      "    roots.add(uf.find(i))",
+      "  }",
+      "  return roots.size",
+      "}",
+      "```",
+      "",
+      "## 连接点的最小成本",
+      "",
+      "用最小总成本连接所有点（本质上是Kruskal算法）。",
+      "",
+      "```javascript",
+      "function minCostToConnectPoints(points) {",
+      "  // 用距离构建所有边",
+      "  const edges = []",
+      "  for (let i = 0; i < points.length; i++) {",
+      "    for (let j = i + 1; j < points.length; j++) {",
+      "      const dist = Math.abs(points[i][0] - points[j][0]) +",
+      "                   Math.abs(points[i][1] - points[j][1])",
+      "      edges.push([dist, i, j])",
+      "    }",
+      "  }",
+      "  ",
+      "  // 按距离排序",
+      "  edges.sort((a, b) => a[0] - b[0])",
+      "  ",
+      "  // 贪心添加边",
+      "  const uf = new UnionFind(points.length)",
+      "  let cost = 0",
+      "  let edgesAdded = 0",
+      "  for (const [dist, u, v] of edges) {",
+      "    if (uf.find(u) !== uf.find(v)) {",
+      "      uf.union(u, v)",
+      "      cost += dist",
+      "      edgesAdded++",
+      "      if (edgesAdded === points.length - 1) break",
+      "    }",
+      "  }",
+      "  return cost",
+      "}",
+      "```",
+      "",
+      "## 并查集vs DFS/BFS",
+      "",
+      "| 问题 | 并查集 | DFS/BFS |",
+      "|------|---------|----------|",
+      "| 循环检测 | ✅有效 | ✅有效 |",
+      "| 连通分量 | ✅干净 | ✅有效 |",
+      "| 找节点间路径 | ❌不追踪路径 | ✅追踪路径 |",
+      "| 最小生成树 | ✅自然 | ❌不自然 |",
+      "| 在线连通性 | ✅增量式 | ❌需完整图 |",
+      "",
+      "## 时间复杂度",
+      "",
+      "带路径压缩和按秩合并：",
+      "- **Find**：O(α(n)) ≈ O(1)实际上",
+      "- **Union**：O(α(n)) ≈ O(1)实际上",
+      "- **α(n)**：逆Ackermann函数，实际上对任何现实输入永不超过4",
+      "",
+      "## 何时使用并查集",
+      "",
+      "- 连通性查询（x和y在同一分量中吗？）",
+      "- 循环检测",
+      "- 最小生成树（Kruskal算法）",
+      "- 等价类",
+      "- 在线并查集，其中图增量构建",
+      "",
+      "避免需要追踪节点间实际路径的问题 - 使用DFS/BFS代替。"
+    ].join('\n'),
   },
   leetcode: [
     { id: 547, title: 'Number of Provinces', titleZh: '省份数量', difficulty: 'Medium' },
     { id: 684, title: 'Redundant Connection', titleZh: '冗余连接', difficulty: 'Medium' },
-    { id: 1584, title: 'Min Cost to Connect All Points', titleZh: '连接所有点的最小费用', difficulty: 'Medium' }
-  ]
-};
+    { id: 1584, title: 'Min Cost to Connect All Points', titleZh: '连接所有点的最小费用', difficulty: 'Medium' },
+  ],
+}

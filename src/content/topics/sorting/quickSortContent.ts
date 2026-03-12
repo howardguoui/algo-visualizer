@@ -1,459 +1,299 @@
-import { TopicContent } from '../../types';
+import type { TopicContent } from '../../types'
 
 export const quickSortContent: TopicContent = {
   id: 'sorting-quick-sort',
-  title: {
-    en: 'Quick Sort - Partitioning Paradigm',
-    zh: '快速排序 - 分割范式'
-  },
-  description: {
-    en: 'Master the most practical sorting algorithm with average O(n log n) and intelligent pivot selection',
-    zh: '掌握最实用的排序算法，平均O(n log n)和智能枢轴选择'
-  },
-  timeEstimate: '50 minutes',
+  title: { en: 'Quick Sort', zh: '快速排序' },
+  description: { en: 'Master the most practical sorting algorithm with pivot selection and partition logic', zh: '掌握最实用的排序算法，掌握支点选择和分割逻辑' },
+  timeEstimate: '45 min',
   contentType: 'all',
-  hasVisualizer: false,
+  hasVisualizer: true,
   visualizerKey: 'quickSort',
   content: {
-    en: `# Quick Sort - The Partitioning Paradigm
-
-Quick sort is the most practical general-purpose sorting algorithm. It uses partitioning to divide the problem and runs in O(n log n) average time with O(log n) space. Despite O(n²) worst case, careful pivot selection makes this rare.
-
-## Core Idea: Partition
-
-The key operation is **partitioning**: rearrange array so that:
-- All elements <= pivot are on the left
-- Pivot is in its final position
-- All elements > pivot are on the right
-
-This single operation reduces the problem size and builds the sort recursively.
-
-## Basic Implementation
-
-\`\`\`javascript
-function quickSort(arr) {
-  return quickSortHelper(arr, 0, arr.length - 1);
-}
-
-function quickSortHelper(arr, low, high) {
-  if (low < high) {
-    // Partition and get pivot index
-    const pivotIndex = partition(arr, low, high);
-
-    // Recursively sort left and right partitions
-    quickSortHelper(arr, low, pivotIndex - 1);
-    quickSortHelper(arr, pivotIndex + 1, high);
-  }
-
-  return arr;
-}
-
-function partition(arr, low, high) {
-  // Choose rightmost as pivot
-  const pivot = arr[high];
-  let i = low - 1;
-
-  // Rearrange: elements <= pivot go left
-  for (let j = low; j < high; j++) {
-    if (arr[j] <= pivot) {
-      i++;
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-  }
-
-  // Place pivot in final position
-  [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
-  return i + 1;
-}
-\`\`\`
-
-**Partition logic**:
-- `i` tracks boundary between <= pivot and > pivot
-- When we find an element <= pivot, swap it into the left partition
-- Finally, put pivot in its correct position
-
-## Example Walkthrough
-
-Array: [3, 7, 8, 5, 2, 1, 9, 5, 4], pivot = 4
-
-```
-Start: [3, 7, 8, 5, 2, 1, 9, 5, 4]
-       i points to position before first element
-
-j=0: arr[0]=3 <= 4? Yes → i=0, swap → [3, 7, 8, 5, 2, 1, 9, 5, 4]
-j=1: arr[1]=7 <= 4? No  → skip
-j=2: arr[2]=8 <= 4? No  → skip
-j=3: arr[3]=5 <= 4? No  → skip
-j=4: arr[4]=2 <= 4? Yes → i=1, swap → [3, 2, 8, 5, 7, 1, 9, 5, 4]
-j=5: arr[5]=1 <= 4? Yes → i=2, swap → [3, 2, 1, 5, 7, 8, 9, 5, 4]
-j=6: arr[6]=9 <= 4? No  → skip
-j=7: arr[7]=5 <= 4? No  → skip
-
-Final swap: place pivot at i+1=3
-Result: [3, 2, 1, 4, 7, 8, 9, 5, 5]
-         └─ <= 4 ─┘ │ └─ > 4 ──┘
-              Partition complete! Pivot (4) is in correct final position.
-```
-
-Now recursively sort [3,2,1] and [7,8,9,5,5]
-
-## Pivot Selection Strategies
-
-**Poor pivot choice** leads to O(n²). **Good pivot selection** ensures O(n log n).
-
-### Strategy 1: Last Element (Simple, Risky)
-
-\`\`\`javascript
-const pivot = arr[high]; // Easy but worst-case on sorted data
-\`\`\`
-
-### Strategy 2: Random Pivot (Better)
-
-\`\`\`javascript
-function partition(arr, low, high) {
-  // Pick random element and swap to end
-  const randomIndex = low + Math.floor(Math.random() * (high - low + 1));
-  [arr[randomIndex], arr[high]] = [arr[high], arr[randomIndex]];
-
-  const pivot = arr[high];
-  // ... rest of partition logic
-}
-\`\`\`
-
-Randomization avoids worst-case on any input pattern.
-
-### Strategy 3: Median-of-Three (Sophisticated)
-
-\`\`\`javascript
-function medianOfThree(arr, low, high) {
-  const mid = Math.floor((low + high) / 2);
-
-  if (arr[low] > arr[mid]) [arr[low], arr[mid]] = [arr[mid], arr[low]];
-  if (arr[low] > arr[high]) [arr[low], arr[high]] = [arr[high], arr[low]];
-  if (arr[mid] > arr[high]) [arr[mid], arr[high]] = [arr[high], arr[mid]];
-
-  return mid; // Middle is now median
-}
-
-function partition(arr, low, high) {
-  const pivotIndex = medianOfThree(arr, low, high);
-  [arr[pivotIndex], arr[high]] = [arr[high], arr[pivotIndex]];
-
-  const pivot = arr[high];
-  // ... rest of partition logic
-}
-\`\`\`
-
-Median-of-three helps avoid worst case even on partially sorted data.
-
-## Time Complexity Analysis
-
-**Best Case: O(n log n)**
-- Balanced partition: pivot always divides array in half
-- log n levels, O(n) work per level
-
-**Average Case: O(n log n)**
-- Random partition usually close to balanced
-- Expected height is O(log n)
-
-**Worst Case: O(n²)**
-- Unbalanced partition: pivot is always smallest/largest
-- Linear depth (n levels), O(n) work per level
-- Happens with sorted data and bad pivot selection
-
-**Space Complexity: O(log n)**
-- Recursion depth (best/average case)
-- O(n) worst case with terrible partitions
-
-## Stability
-
-Quick sort is **NOT stable** because partitioning moves elements around without preserving order. If you need stable sort, use merge sort.
-
-## In-Place Sorting
-
-Quick sort sorts in-place, modifying the input array directly. This is space-efficient.
-
-## Comparison with Merge Sort
-
-| Property | Quick Sort | Merge Sort |
-|----------|-----------|-----------|
-| Best | O(n log n) | O(n log n) |
-| Average | O(n log n) | O(n log n) |
-| Worst | O(n²) | O(n log n) |
-| Space | O(log n) | O(n) |
-| Stable | No | Yes |
-| Cache | Better | Good |
-| Practical | Faster | More predictable |
-
-## When to Use Quick Sort
-
-✓ **Good for**:
-- General-purpose sorting (most practical)
-- Cache-friendly (better locality)
-- In-place sorting needed
-- Average O(n log n) acceptable
-- Large datasets (with good pivot selection)
-
-✗ **Avoid for**:
-- Stable sort required (use merge sort)
-- Worst-case O(n²) unacceptable
-- Real-time systems (merge sort more predictable)
-- When input is adversarially sorted
-
-## Advanced: Using Quick Sort for Selection
-
-Quick sort's partition can find k-th smallest in O(n) average time:
-
-\`\`\`javascript
-function findKthSmallest(arr, k) {
-  function select(low, high) {
-    if (low === high) return arr[low];
-
-    const pivotIndex = partition(arr, low, high);
-
-    if (k === pivotIndex) {
-      return arr[k];
-    } else if (k < pivotIndex) {
-      return select(low, pivotIndex - 1);
-    } else {
-      return select(pivotIndex + 1, high);
-    }
-  }
-
-  return select(0, arr.length - 1);
-}
-\`\`\`
-
-This is O(n) average vs O(n log n) for sorting and selecting.
-
-## Key Insights
-
-1. **Partition is key** - Single operation that creates recursive structure
-2. **Pivot selection matters** - Good pivot ensures balanced splits
-3. **In-place efficient** - O(log n) space for average case
-4. **Unstable but practical** - Most real-world sorting uses quick sort
-5. **Selection connection** - Same partition logic solves k-th selection`,
-    zh: `# 快速排序 - 分割范式
-
-快速排序是最实用的通用排序算法。它使用分割来分解问题，平均运行时间为O(n log n)，空间为O(log n)。尽管最坏情况为O(n²)，聪明的枢轴选择使这种情况很少见。
-
-## 核心思想：分割
-
-关键操作是**分割**：重新排列数组使得：
-- 所有元素<= 枢轴在左边
-- 枢轴在其最终位置
-- 所有元素 > 枢轴在右边
-
-这个单一操作减少问题大小并递归构建排序。
-
-## 基础实现
-
-\`\`\`javascript
-function quickSort(arr) {
-  return quickSortHelper(arr, 0, arr.length - 1);
-}
-
-function quickSortHelper(arr, low, high) {
-  if (low < high) {
-    // 分割并获取枢轴索引
-    const pivotIndex = partition(arr, low, high);
-
-    // 递归排序左右分割
-    quickSortHelper(arr, low, pivotIndex - 1);
-    quickSortHelper(arr, pivotIndex + 1, high);
-  }
-
-  return arr;
-}
-
-function partition(arr, low, high) {
-  // 选择最右元素作为枢轴
-  const pivot = arr[high];
-  let i = low - 1;
-
-  // 重新排列：<= 枢轴的元素放左边
-  for (let j = low; j < high; j++) {
-    if (arr[j] <= pivot) {
-      i++;
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-  }
-
-  // 将枢轴放在最终位置
-  [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
-  return i + 1;
-}
-\`\`\`
-
-**分割逻辑**：
-- `i`跟踪<= 枢轴和 > 枢轴之间的边界
-- 找到<= 枢轴的元素时，交换到左分割
-- 最后，将枢轴放在正确位置
-
-## 例子演练
-
-数组：[3, 7, 8, 5, 2, 1, 9, 5, 4], 枢轴 = 4
-
-```
-开始：[3, 7, 8, 5, 2, 1, 9, 5, 4]
-      i指向第一个元素前的位置
-
-j=0: arr[0]=3 <= 4? 是 → i=0, 交换 → [3, 7, 8, 5, 2, 1, 9, 5, 4]
-j=1: arr[1]=7 <= 4? 否 → 跳过
-j=2: arr[2]=8 <= 4? 否 → 跳过
-j=3: arr[3]=5 <= 4? 否 → 跳过
-j=4: arr[4]=2 <= 4? 是 → i=1, 交换 → [3, 2, 8, 5, 7, 1, 9, 5, 4]
-j=5: arr[5]=1 <= 4? 是 → i=2, 交换 → [3, 2, 1, 5, 7, 8, 9, 5, 4]
-j=6: arr[6]=9 <= 4? 否 → 跳过
-j=7: arr[7]=5 <= 4? 否 → 跳过
-
-最终交换：将枢轴放在i+1=3
-结果：[3, 2, 1, 4, 7, 8, 9, 5, 5]
-      └─ <= 4 ─┘ │ └─ > 4 ──┘
-             分割完成！枢轴(4)在正确的最终位置。
-```
-
-现在递归排序[3,2,1]和[7,8,9,5,5]
-
-## 枢轴选择策略
-
-**差的枢轴选择**导致O(n²)。**好的枢轴选择**确保O(n log n)。
-
-### 策略1：最后元素（简单，有风险）
-
-\`\`\`javascript
-const pivot = arr[high]; // 简单但排序数据时最坏情况
-\`\`\`
-
-### 策略2：随机枢轴（更好）
-
-\`\`\`javascript
-function partition(arr, low, high) {
-  // 选择随机元素并交换到末尾
-  const randomIndex = low + Math.floor(Math.random() * (high - low + 1));
-  [arr[randomIndex], arr[high]] = [arr[high], arr[randomIndex]];
-
-  const pivot = arr[high];
-  // ...分割逻辑的其余部分
-}
-\`\`\`
-
-随机化避免了任何输入模式的最坏情况。
-
-### 策略3：三数中值（更精细）
-
-\`\`\`javascript
-function medianOfThree(arr, low, high) {
-  const mid = Math.floor((low + high) / 2);
-
-  if (arr[low] > arr[mid]) [arr[low], arr[mid]] = [arr[mid], arr[low]];
-  if (arr[low] > arr[high]) [arr[low], arr[high]] = [arr[high], arr[low]];
-  if (arr[mid] > arr[high]) [arr[mid], arr[high]] = [arr[high], arr[mid]];
-
-  return mid; // 中间现在是中值
-}
-
-function partition(arr, low, high) {
-  const pivotIndex = medianOfThree(arr, low, high);
-  [arr[pivotIndex], arr[high]] = [arr[high], arr[pivotIndex]];
-
-  const pivot = arr[high];
-  // ...分割逻辑的其余部分
-}
-\`\`\`
-
-三数中值甚至在部分排序数据上帮助避免最坏情况。
-
-## 时间复杂度分析
-
-**最优情况：O(n log n)**
-- 平衡分割：枢轴总是将数组分成两半
-- log n级，每级O(n)工作
-
-**平均情况：O(n log n)**
-- 随机分割通常接近平衡
-- 期望高度是O(log n)
-
-**最坏情况：O(n²)**
-- 不平衡分割：枢轴总是最小/最大
-- 线性深度（n级），每级O(n)工作
-- 排序数据和差的枢轴选择时发生
-
-**空间复杂度：O(log n)**
-- 递归深度（最优/平均情况）
-- 最坏情况O(n)带可怕分割
-
-## 稳定性
-
-快速排序**不稳定**，因为分割移动元素而不保持顺序。需要稳定排序时，使用归并排序。
-
-## 原地排序
-
-快速排序原地排序，直接修改输入数组。这是空间高效的。
-
-## 与归并排序的比较
-
-| 属性 | 快速排序 | 归并排序 |
-|------|---------|---------|
-| 最优 | O(n log n) | O(n log n) |
-| 平均 | O(n log n) | O(n log n) |
-| 最坏 | O(n²) | O(n log n) |
-| 空间 | O(log n) | O(n) |
-| 稳定 | 否 | 是 |
-| 缓存 | 更好 | 好 |
-| 实用 | 更快 | 更可预测 |
-
-## 何时使用快速排序
-
-✓ **适用于**：
-- 通用排序（最实用）
-- 缓存友好（更好的位置性）
-- 需要原地排序
-- 平均O(n log n)可接受
-- 大数据集（带好的枢轴选择）
-
-✗ **避免用于**：
-- 需要稳定排序（使用归并排序）
-- 最坏情况O(n²)不可接受
-- 实时系统（归并排序更可预测）
-- 输入被对抗性排序
-
-## 高级：使用快速排序用于选择
-
-快速排序的分割可在O(n)平均时间内找到第k小：
-
-\`\`\`javascript
-function findKthSmallest(arr, k) {
-  function select(low, high) {
-    if (low === high) return arr[low];
-
-    const pivotIndex = partition(arr, low, high);
-
-    if (k === pivotIndex) {
-      return arr[k];
-    } else if (k < pivotIndex) {
-      return select(low, pivotIndex - 1);
-    } else {
-      return select(pivotIndex + 1, high);
-    }
-  }
-
-  return select(0, arr.length - 1);
-}
-\`\`\`
-
-这是O(n)平均对比排序和选择的O(n log n)。
-
-## 关键洞察
-
-1. **分割是关键** - 单一操作创建递归结构
-2. **枢轴选择重要** - 好的枢轴确保平衡分割
-3. **原地高效** - 平均情况O(log n)空间
-4. **不稳定但实用** - 大多数实际排序使用快速排序
-5. **选择连接** - 相同分割逻辑解决第k选择`
+    en: [
+      "## Quick Sort Core Idea",
+      "",
+      "Quick sort is a divide-and-conquer algorithm that:",
+      "1. **Selects a pivot** element",
+      "2. **Partitions** the array: elements < pivot go left, > pivot go right",
+      "3. **Recursively sorts** left and right partitions",
+      "",
+      "The key difference from merge sort: quick sort does the hard work during partition, not during merge.",
+      "",
+      "## Algorithm",
+      "",
+      "```javascript",
+      "function quickSort(arr, low = 0, high = arr.length - 1) {",
+      "  if (low < high) {",
+      "    const pi = partition(arr, low, high)",
+      "    quickSort(arr, low, pi - 1)",
+      "    quickSort(arr, pi + 1, high)",
+      "  }",
+      "  return arr",
+      "}",
+      "",
+      "function partition(arr, low, high) {",
+      "  const pivot = arr[high]  // Choose last element as pivot",
+      "  let i = low - 1",
+      "  ",
+      "  for (let j = low; j < high; j++) {",
+      "    if (arr[j] < pivot) {",
+      "      i++",
+      "      [arr[i], arr[j]] = [arr[j], arr[i]]  // Swap",
+      "    }",
+      "  }",
+      "  [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]]  // Place pivot",
+      "  return i + 1",
+      "}",
+      "```",
+      "",
+      "## Partition Visualization",
+      "",
+      "**Example:** Array [3, 7, 2, 5, 1, 8, 4], pivot = 4 (last element)",
+      "",
+      "```",
+      "Start:        [3, 7, 2, 5, 1, 8, 4]  pivot=4, i=-1",
+      "",
+      "j=0, arr[0]=3 < 4: i=0, swap → [3, 7, 2, 5, 1, 8, 4]",
+      "j=1, arr[1]=7 ≥ 4: no action",
+      "j=2, arr[2]=2 < 4: i=1, swap → [3, 2, 7, 5, 1, 8, 4]",
+      "j=3, arr[3]=5 ≥ 4: no action",
+      "j=4, arr[4]=1 < 4: i=2, swap → [3, 2, 1, 5, 7, 8, 4]",
+      "j=5, arr[5]=8 ≥ 4: no action",
+      "",
+      "Place pivot at i+1=3: [3, 2, 1, 4, 7, 8, 5]",
+      "Pivot (4) is now in final position!",
+      "Return 3 (pivot index)",
+      "",
+      "Left partition [3, 2, 1], Right partition [7, 8, 5]",
+      "```",
+      "",
+      "## Pivot Selection Strategies",
+      "",
+      "The pivot choice dramatically affects performance:",
+      "",
+      "**1. Last element (simple but risky)**",
+      "```javascript",
+      "const pivot = arr[high]",
+      "```",
+      "Worst case: sorted array with last element as pivot → O(n²)",
+      "",
+      "**2. Random element (good on average)**",
+      "```javascript",
+      "const randomIndex = low + Math.floor(Math.random() * (high - low + 1))",
+      "const pivot = arr[randomIndex]",
+      "```",
+      "Avoids worst case on sorted data",
+      "",
+      "**3. Median-of-three (practical)**",
+      "```javascript",
+      "const first = arr[low]",
+      "const middle = arr[Math.floor((low + high) / 2)]",
+      "const last = arr[high]",
+      "const pivot = median(first, middle, last)",
+      "```",
+      "Good balance between simplicity and avoiding worst case",
+      "",
+      "## Complexity Analysis",
+      "",
+      "| Metric | Value | When |",
+      "|--------|-------|------|",
+      "| Time (best/avg) | O(n log n) | Good pivot selection |",
+      "| Time (worst) | O(n²) | Bad pivot (sorted array with naive pivot) |",
+      "| Space | O(log n) | Recursion stack (average depth) |",
+      "| Stable | No | Elements with same key may reorder |",
+      "| In-place | Yes | Only O(log n) extra space |",
+      "",
+      "## Why Quick Sort in Practice",
+      "",
+      "Despite O(n²) worst case, quick sort is faster than merge sort in practice because:",
+      "- **In-place:** No extra array allocation",
+      "- **Cache friendly:** Works on contiguous memory",
+      "- **Average case:** O(n log n) with good pivot selection",
+      "- **Simple:** Minimal overhead compared to merge sort",
+      "",
+      "## Avoiding Worst Case",
+      "",
+      "Always use a good pivot selection strategy:",
+      "",
+      "```javascript",
+      "function quickSortRandom(arr, low = 0, high = arr.length - 1) {",
+      "  if (low < high) {",
+      "    // Randomize pivot to avoid worst case on sorted data",
+      "    const randomIndex = low + Math.floor(Math.random() * (high - low + 1))",
+      "    [arr[randomIndex], arr[high]] = [arr[high], arr[randomIndex]]",
+      "    const pi = partition(arr, low, high)",
+      "    quickSortRandom(arr, low, pi - 1)",
+      "    quickSortRandom(arr, pi + 1, high)",
+      "  }",
+      "  return arr",
+      "}",
+      "```",
+      "",
+      "## Stability",
+      "",
+      "Quick sort is **not stable** because of in-place partition. If stability is critical, use merge sort.",
+      "",
+      "## When to Use Quick Sort",
+      "",
+      "- General purpose sorting (it's the standard)",
+      "- Arrays where extra space is limited",
+      "- When average O(n log n) is acceptable",
+      "- When cache locality matters",
+      "",
+      "## When NOT to Use Quick Sort",
+      "",
+      "- Must guarantee O(n log n) worst case (use merge sort)",
+      "- Stability is critical (use merge sort)",
+      "- Highly adversarial input (use random pivot or heap sort)",
+      "",
+      "## Comparison: Quick Sort vs Merge Sort",
+      "",
+      "Quick sort is faster in practice due to better cache locality and no extra array. Merge sort guarantees O(n log n) worst case. Most libraries use hybrid approaches (intro sort) that start with quick sort and switch to heap sort if recursion depth gets too deep."
+    ].join('\n'),
+    zh: [
+      "## 快速排序核心想法",
+      "",
+      "快速排序是分治算法，：",
+      "1. **选择支点**元素",
+      "2. **分割**数组：元素 < 支点走左，> 支点走右",
+      "3. **递归排序**左右分割",
+      "",
+      "与归并排序的关键区别：快速排序在分割时做艰难工作，不在合并时。",
+      "",
+      "## 算法",
+      "",
+      "```javascript",
+      "function quickSort(arr, low = 0, high = arr.length - 1) {",
+      "  if (low < high) {",
+      "    const pi = partition(arr, low, high)",
+      "    quickSort(arr, low, pi - 1)",
+      "    quickSort(arr, pi + 1, high)",
+      "  }",
+      "  return arr",
+      "}",
+      "",
+      "function partition(arr, low, high) {",
+      "  const pivot = arr[high]  // 选择最后元素为支点",
+      "  let i = low - 1",
+      "  ",
+      "  for (let j = low; j < high; j++) {",
+      "    if (arr[j] < pivot) {",
+      "      i++",
+      "      [arr[i], arr[j]] = [arr[j], arr[i]]  // 交换",
+      "    }",
+      "  }",
+      "  [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]]  // 放置支点",
+      "  return i + 1",
+      "}",
+      "```",
+      "",
+      "## 分割可视化",
+      "",
+      "**示例：**数组[3, 7, 2, 5, 1, 8, 4]，支点 = 4（最后元素）",
+      "",
+      "```",
+      "开始：        [3, 7, 2, 5, 1, 8, 4]  支点=4，i=-1",
+      "",
+      "j=0，arr[0]=3 < 4：i=0，交换 → [3, 7, 2, 5, 1, 8, 4]",
+      "j=1，arr[1]=7 ≥ 4：无动作",
+      "j=2，arr[2]=2 < 4：i=1，交换 → [3, 2, 7, 5, 1, 8, 4]",
+      "j=3，arr[3]=5 ≥ 4：无动作",
+      "j=4，arr[4]=1 < 4：i=2，交换 → [3, 2, 1, 5, 7, 8, 4]",
+      "j=5，arr[5]=8 ≥ 4：无动作",
+      "",
+      "在i+1=3放置支点：[3, 2, 1, 4, 7, 8, 5]",
+      "支点(4)现在在最终位置！",
+      "返回3（支点索引）",
+      "",
+      "左分割[3, 2, 1]，右分割[7, 8, 5]",
+      "```",
+      "",
+      "## 支点选择策略",
+      "",
+      "支点选择极大影响性能：",
+      "",
+      "**1. 最后元素（简单但有风险）**",
+      "```javascript",
+      "const pivot = arr[high]",
+      "```",
+      "最坏情况：排序数组最后元素为支点 → O(n²)",
+      "",
+      "**2. 随机元素（平均很好）**",
+      "```javascript",
+      "const randomIndex = low + Math.floor(Math.random() * (high - low + 1))",
+      "const pivot = arr[randomIndex]",
+      "```",
+      "避免排序数据最坏情况",
+      "",
+      "**3. 三数中值（实用）**",
+      "```javascript",
+      "const first = arr[low]",
+      "const middle = arr[Math.floor((low + high) / 2)]",
+      "const last = arr[high]",
+      "const pivot = median(first, middle, last)",
+      "```",
+      "简洁和避免最坏情况的好平衡",
+      "",
+      "## 复杂度分析",
+      "",
+      "| 指标 | 值 | 何时 |",
+      "|------|-----|------|",
+      "| 时间（最好/平均） | O(n log n) | 好支点选择 |",
+      "| 时间（最坏） | O(n²) | 坏支点（排序数组幼稚支点） |",
+      "| 空间 | O(log n) | 递归栈（平均深度） |",
+      "| 稳定 | 否 | 相同键元素可能重排 |",
+      "| 原地 | 是 | 仅O(log n)额外空间 |",
+      "",
+      "## 为什么在实际中快速排序",
+      "",
+      "尽管O(n²)最坏情况，快速排序比归并排序快实际上因为：",
+      "- **原地：**无额外数组分配",
+      "- **缓存友好：**在连续内存工作",
+      "- **平均情况：**好支点选择O(n log n)",
+      "- **简单：**与归并排序相比最小开销",
+      "",
+      "## 避免最坏情况",
+      "",
+      "总使用好支点选择策略：",
+      "",
+      "```javascript",
+      "function quickSortRandom(arr, low = 0, high = arr.length - 1) {",
+      "  if (low < high) {",
+      "    // 随机支点以避免排序数据最坏情况",
+      "    const randomIndex = low + Math.floor(Math.random() * (high - low + 1))",
+      "    [arr[randomIndex], arr[high]] = [arr[high], arr[randomIndex]]",
+      "    const pi = partition(arr, low, high)",
+      "    quickSortRandom(arr, low, pi - 1)",
+      "    quickSortRandom(arr, pi + 1, high)",
+      "  }",
+      "  return arr",
+      "}",
+      "```",
+      "",
+      "## 稳定性",
+      "",
+      "快速排序**不稳定**因为原地分割。如果稳定性关键，用归并排序。",
+      "",
+      "## 何时使用快速排序",
+      "",
+      "- 通用排序（它是标准的）",
+      "- 额外空间有限的数组",
+      "- 平均O(n log n)可接受",
+      "- 缓存局部性重要",
+      "",
+      "## 何时不使用快速排序",
+      "",
+      "- 必须保证O(n log n)最坏情况（用归并排序）",
+      "- 稳定性关键（用归并排序）",
+      "- 高度对抗输入（用随机支点或堆排序）",
+      "",
+      "## 比较：快速排序vs归并排序",
+      "",
+      "快速排序实际更快因为更好缓存局部性和无额外数组。归并排序保证O(n log n)最坏情况。大多库用混合方法（内省排序），开始快速排序，如果递归深度太深切换到堆排序。"
+    ].join('\n'),
   },
   leetcode: [
     { id: 912, title: 'Sort an Array', titleZh: '排序数组', difficulty: 'Medium' },
-    { id: 215, title: 'Kth Largest Element in an Array', titleZh: '数组中的第K个最大元素', difficulty: 'Medium' }
-  ]
-};
+    { id: 215, title: 'Kth Largest Element in an Array', titleZh: '数组中的第K个最大元素', difficulty: 'Medium' },
+  ],
+}

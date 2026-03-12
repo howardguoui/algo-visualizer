@@ -1,323 +1,157 @@
-import { TopicContent } from '../types'
+import type { TopicContent } from '../../types'
 
 export const arrayFundamentals: TopicContent = {
   id: 'arrays-fundamentals',
-  title: {
-    en: 'Array Fundamentals',
-    zh: '数组基础',
-  },
-  description: {
-    en: 'Understand array memory layout, indexing, and core operations that form the foundation of algorithm design',
-    zh: '理解数组内存布局、索引和核心操作，这些是算法设计的基础',
-  },
-  timeEstimate: '50-70 minutes',
-  contentType: 'content',
+  title: { en: 'Array Fundamentals', zh: '数组基础' },
+  description: { en: 'Understand array memory layout and time complexity of common operations', zh: '理解数组内存布局和常见操作的时间复杂度' },
+  timeEstimate: '30 min',
+  contentType: 'content+practice',
   hasVisualizer: false,
   content: {
-    en: `## What is an Array?
-
-An array is a **contiguous block of memory** that stores elements of the same type. This simple fact drives all array operations:
-
-### Memory Layout
-
-\`\`\`
-Array: [10, 20, 30, 40, 50]
-Index:  [0,  1,  2,  3,  4]
-
-Memory: [10][20][30][40][50]
-Address: 0x100 0x104 0x108 0x10c 0x110  (4 bytes per int)
-\`\`\`
-
-Because elements are **contiguous in memory**, we get constant-time random access.
-
-## Time Complexity Analysis
-
-### Access by Index: O(1)
-\`\`\`javascript
-const arr = [10, 20, 30, 40, 50];
-const element = arr[2];  // Direct memory lookup: O(1)
-\`\`\`
-
-Memory address calculation: \`baseAddress + (index × elementSize)\`
-
-No matter if you access arr[0] or arr[1000000], it's always one computation.
-
-### Search (unsorted): O(n)
-\`\`\`javascript
-function findElement(arr, target) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === target) return i;
-  }
-  return -1;  // O(n) - must check each element
-}
-\`\`\`
-
-### Insertion at Beginning: O(n)
-\`\`\`javascript
-// Insert 5 at index 0
-[10, 20, 30] → [5, 10, 20, 30]
-
-// Must shift ALL elements right
-arr.unshift(5);  // O(n) operation
-\`\`\`
-
-Why? After insertion, the array is still **contiguous**. To insert at index 0:
-1. Shift element at index 0 → index 1: O(1)
-2. Shift element at index 1 → index 2: O(1)
-3. Shift element at index n-1 → index n: O(1)
-4. Total: n shifts = **O(n)**
-
-### Insertion at End: O(1) amortized
-\`\`\`javascript
-arr.push(100);  // O(1) if space available
-\`\`\`
-
-When array is full, it doubles capacity (amortized O(1)).
-
-### Deletion: O(n) for middle, O(1) for end
-\`\`\`javascript
-// Delete from middle - must shift remaining elements
-[10, 20, 30, 40]
-Delete index 1 → [10, 30, 40]  // Shift 30, 40 left: O(n)
-
-// Delete from end - just reduce size
-[10, 20, 30, 40]
-Delete index 3 → [10, 20, 30]  // O(1)
-\`\`\`
-
-## Dynamic Arrays
-
-Most modern languages use **dynamic arrays** (vector, ArrayList, Python list) that:
-- Start with capacity C
-- When full, allocate 2C and copy all elements
-- Copying happens rarely, so insertion amortizes to O(1)
-
-\`\`\`javascript
-const arr = [];
-arr.push(1);   // capacity: 1, size: 1
-arr.push(2);   // capacity: 2, size: 2
-arr.push(3);   // capacity: 4 (doubled!), size: 3
-arr.push(4);   // capacity: 4, size: 4
-arr.push(5);   // capacity: 8 (doubled!), size: 5
-\`\`\`
-
-## Common Array Operations
-
-### Reverse
-\`\`\`javascript
-function reverse(arr) {
-  let left = 0, right = arr.length - 1;
-  while (left < right) {
-    [arr[left], arr[right]] = [arr[right], arr[left]];
-    left++;
-    right--;
-  }
-}
-// Time: O(n), Space: O(1)
-\`\`\`
-
-### Remove Duplicates (sorted array)
-\`\`\`javascript
-function removeDuplicates(arr) {
-  if (arr.length === 0) return 0;
-  let slow = 0;
-  for (let fast = 1; fast < arr.length; fast++) {
-    if (arr[fast] !== arr[slow]) {
-      slow++;
-      arr[slow] = arr[fast];
-    }
-  }
-  return slow + 1;  // new length
-}
-// Time: O(n), Space: O(1)
-\`\`\`
-
-### Rotate Array
-\`\`\`javascript
-function rotate(arr, k) {
-  k = k % arr.length;  // Handle k > length
-  reverse(arr, 0, arr.length - 1);
-  reverse(arr, 0, k - 1);
-  reverse(arr, k, arr.length - 1);
-}
-// Time: O(n), Space: O(1)
-
-// Example: [1,2,3,4,5], k=2
-// Step 1: reverse all → [5,4,3,2,1]
-// Step 2: reverse first k → [4,5,3,2,1]
-// Step 3: reverse rest → [4,5,1,2,3]
-\`\`\`
-
-## Key Insights
-
-1. **Arrays excel at random access** (O(1)) due to contiguous memory
-2. **Arrays suffer at insertions/deletions** in the middle (O(n)) because maintaining contiguity requires shifting
-3. **Size matters**: Small arrays often outperform linked lists due to cache locality
-4. **Two-pointer technique works well with arrays** because you have O(1) access to both ends
-
-Arrays are the foundation—master their properties and you'll design algorithms efficiently.`,
-
-    zh: `## 什么是数组？
-
-数组是一个**连续的内存块**，存储相同类型的元素。这个简单事实驱动所有数组操作：
-
-### 内存布局
-
-\`\`\`
-数组：[10, 20, 30, 40, 50]
-索引： [0,  1,  2,  3,  4]
-
-内存：[10][20][30][40][50]
-地址：0x100 0x104 0x108 0x10c 0x110  (每个int占4字节)
-\`\`\`
-
-因为元素在内存中**连续**，我们得到常数时间随机访问。
-
-## 时间复杂度分析
-
-### 按索引访问：O(1)
-\`\`\`javascript
-const arr = [10, 20, 30, 40, 50];
-const element = arr[2];  // 直接内存查找：O(1)
-\`\`\`
-
-内存地址计算：\`基地址 + (索引 × 元素大小)\`
-
-无论访问arr[0]还是arr[1000000]，都只是一次计算。
-
-### 搜索（无序）：O(n)
-\`\`\`javascript
-function findElement(arr, target) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] === target) return i;
-  }
-  return -1;  // O(n) - 必须检查每个元素
-}
-\`\`\`
-
-### 在开头插入：O(n)
-\`\`\`javascript
-// 在索引0处插入5
-[10, 20, 30] → [5, 10, 20, 30]
-
-// 必须将所有元素右移
-arr.unshift(5);  // O(n)操作
-\`\`\`
-
-为什么？插入后，数组仍然是**连续**的。在索引0插入：
-1. 把索引0的元素移到索引1：O(1)
-2. 把索引1的元素移到索引2：O(1)
-3. ...
-4. 总共：n次移位 = **O(n)**
-
-### 在末尾插入：摊销O(1)
-\`\`\`javascript
-arr.push(100);  // 如果有空间：O(1)
-\`\`\`
-
-当数组满时，容量加倍（摊销O(1)）。
-
-### 删除：中间O(n)，末尾O(1)
-\`\`\`javascript
-// 从中间删除 - 必须左移后续元素
-[10, 20, 30, 40]
-删除索引1 → [10, 30, 40]  // 移位30, 40：O(n)
-
-// 从末尾删除 - 只需减小大小
-[10, 20, 30, 40]
-删除索引3 → [10, 20, 30]  // O(1)
-\`\`\`
-
-## 动态数组
-
-大多数现代语言使用**动态数组**（vector、ArrayList、Python list），其特点是：
-- 初始容量C
-- 满时，分配2C并复制所有元素
-- 复制很少发生，所以插入摊销为O(1)
-
-\`\`\`javascript
-const arr = [];
-arr.push(1);   // 容量：1，大小：1
-arr.push(2);   // 容量：2，大小：2
-arr.push(3);   // 容量：4（加倍！），大小：3
-arr.push(4);   // 容量：4，大小：4
-arr.push(5);   // 容量：8（加倍！），大小：5
-\`\`\`
-
-## 常见数组操作
-
-### 反转
-\`\`\`javascript
-function reverse(arr) {
-  let left = 0, right = arr.length - 1;
-  while (left < right) {
-    [arr[left], arr[right]] = [arr[right], arr[left]];
-    left++;
-    right--;
-  }
-}
-// 时间：O(n)，空间：O(1)
-\`\`\`
-
-### 移除重复（有序数组）
-\`\`\`javascript
-function removeDuplicates(arr) {
-  if (arr.length === 0) return 0;
-  let slow = 0;
-  for (let fast = 1; fast < arr.length; fast++) {
-    if (arr[fast] !== arr[slow]) {
-      slow++;
-      arr[slow] = arr[fast];
-    }
-  }
-  return slow + 1;  // 新长度
-}
-// 时间：O(n)，空间：O(1)
-\`\`\`
-
-### 旋转数组
-\`\`\`javascript
-function rotate(arr, k) {
-  k = k % arr.length;  // 处理k > 长度的情况
-  reverse(arr, 0, arr.length - 1);
-  reverse(arr, 0, k - 1);
-  reverse(arr, k, arr.length - 1);
-}
-// 时间：O(n)，空间：O(1)
-
-// 例子：[1,2,3,4,5], k=2
-// 步骤1：反转所有 → [5,4,3,2,1]
-// 步骤2：反转前k个 → [4,5,3,2,1]
-// 步骤3：反转其余 → [4,5,1,2,3]
-\`\`\`
-
-## 关键洞察
-
-1. **数组擅长随机访问**（O(1)），因为内存连续
-2. **数组在中间插入/删除时表现差**（O(n)），因为需要移位来维持连续性
-3. **大小很重要**：小数组通常因缓存局部性而优于链表
-4. **双指针技术对数组效果很好**，因为你有O(1)访问两端的能力
-
-数组是基础——掌握其性质，你将有效地设计算法。`,
+    en: [
+      "## How Arrays Work in Memory",
+      "",
+      "An array is a contiguous block of memory where each element occupies the same amount of space. When you declare `int arr[10]`, the operating system reserves 10 consecutive memory addresses. If each integer takes 4 bytes, the entire array occupies 40 bytes in a row.",
+      "",
+      "This contiguous layout is what makes arrays powerful but also limits what they can do efficiently.",
+      "",
+      "## O(1) Random Access - The Superpower",
+      "",
+      "Because arrays are contiguous and each element has the same size, accessing any element by index is instant. Whether you access `arr[0]` or `arr[999]`, the CPU can calculate the memory address with a single formula: `base_address + index * element_size`. This is why array access is O(1).",
+      "",
+      "```javascript",
+      "const arr = [10, 20, 30, 40, 50]",
+      "console.log(arr[0])  // O(1) - instant",
+      "console.log(arr[4])  // O(1) - instant",
+      "console.log(arr[100]) // O(1) - instant (but out of bounds)",
+      "```",
+      "",
+      "This random access capability makes arrays ideal for problems where you need quick lookups.",
+      "",
+      "## O(n) Insertion and Deletion",
+      "",
+      "While reading is fast, modifying the array is not. When you insert an element in the middle of an array, all elements to the right must shift one position to make space. Similarly, deleting an element requires shifting all elements to the left to fill the gap.",
+      "",
+      "```javascript",
+      "// Inserting at index 2 in [10, 20, 30, 40]",
+      "// Step 1: Shift right: [10, 20, _, 30, 40]",
+      "// Step 2: Insert: [10, 20, 25, 30, 40]",
+      "// This requires 2 shifts (O(n) in worst case)",
+      "```",
+      "",
+      "Inserting at the beginning is the worst case - O(n) because all n elements must shift. Inserting at the end (if space exists) is O(1). On average, insertion is O(n).",
+      "",
+      "## Dynamic Arrays and Amortized O(1) Append",
+      "",
+      "Static arrays have fixed size. Once full, you can't add more elements. Languages like Python, JavaScript, and Java provide dynamic arrays (ArrayList, Array) that grow automatically.",
+      "",
+      "When a dynamic array is full and you append a new element, the system allocates a larger array (usually double the size) and copies all elements. This copying is O(n), but it happens rarely. If you append n elements to an initially empty dynamic array, the total time is still O(n) amortized - averaged over many operations, each append is O(1).",
+      "",
+      "```javascript",
+      "// Dynamic array grows when needed",
+      "const arr = []  // capacity: 1, size: 0",
+      "arr.push(1)     // capacity: 1, size: 1",
+      "arr.push(2)     // GROW! capacity: 2, size: 2 (O(n) copy)",
+      "arr.push(3)     // GROW! capacity: 4, size: 3 (O(n) copy)",
+      "arr.push(4)     // capacity: 4, size: 4",
+      "arr.push(5)     // GROW! capacity: 8, size: 5 (O(n) copy)",
+      "// Growing happens at powers of 2, making append amortized O(1)",
+      "```",
+      "",
+      "## Time Complexity Summary",
+      "",
+      "| Operation | Time | Why |",
+      "|-----------|------|-----|",
+      "| Access by index | O(1) | Direct address calculation |",
+      "| Append (if space) | O(1) | Just add to end |",
+      "| Append (if full) | O(n) | Allocate new space, copy all |",
+      "| Insert middle | O(n) | Shift elements right |",
+      "| Delete middle | O(n) | Shift elements left |",
+      "| Search (unsorted) | O(n) | Must check each element |",
+      "| Search (sorted) | O(log n) | Use binary search |",
+      "",
+      "## Space Complexity",
+      "",
+      "An array storing n elements uses O(n) space. This is optimal - you must store the elements somehow. When solving problems, watch out for creating new arrays that require O(n) extra space. Sometimes you can solve problems using only O(1) extra space by modifying the input array in place.",
+      "",
+      "## Key Insight",
+      "",
+      "Arrays excel at random access but suffer when you need frequent insertions or deletions in the middle. This is why linked lists exist for that use case. However, arrays are still the most used data structure because random access is so valuable and modifications happen at the ends most often."
+    ].join('\n'),
+    zh: [
+      "## 数组在内存中如何工作",
+      "",
+      "数组是一个连续的内存块，其中每个元素占据相同的空间量。当你声明 `int arr[10]` 时，操作系统保留10个连续的内存地址。如果每个整数占用4字节，整个数组在内存中占用40字节的连续块。",
+      "",
+      "这种连续布局是使数组强大的原因，但也限制了它们可以高效做什么。",
+      "",
+      "## O(1)随机访问 - 超级能力",
+      "",
+      "因为数组是连续的，每个元素大小相同，通过索引访问任何元素都是瞬间的。无论你访问 `arr[0]` 还是 `arr[999]`，CPU都可以用一个公式计算内存地址：`基址 + 索引 * 元素大小`。这就是为什么数组访问是O(1)。",
+      "",
+      "```javascript",
+      "const arr = [10, 20, 30, 40, 50]",
+      "console.log(arr[0])  // O(1) - 瞬间",
+      "console.log(arr[4])  // O(1) - 瞬间",
+      "console.log(arr[100]) // O(1) - 瞬间（但超出范围）",
+      "```",
+      "",
+      "这种随机访问能力使数组非常适合需要快速查找的问题。",
+      "",
+      "## O(n)插入和删除",
+      "",
+      "虽然读取很快，但修改数组不是。当你在数组中间插入元素时，所有右边的元素必须向右移动一个位置以腾出空间。类似地，删除元素需要所有元素向左移动以填充间隙。",
+      "",
+      "```javascript",
+      "// 在[10, 20, 30, 40]的索引2处插入",
+      "// 步骤1：向右移动：[10, 20, _, 30, 40]",
+      "// 步骤2：插入：[10, 20, 25, 30, 40]",
+      "// 这需要2次移动（最坏情况O(n)）",
+      "```",
+      "",
+      "在开头插入是最坏情况 - O(n)因为所有n个元素都必须移动。在末尾插入（如果有空间）是O(1)。平均来说，插入是O(n)。",
+      "",
+      "## 动态数组和摊销O(1)追加",
+      "",
+      "静态数组大小固定。一旦满了，就无法添加更多元素。Python、JavaScript和Java等语言提供动态数组（ArrayList、Array），可以自动增长。",
+      "",
+      "当动态数组满了你追加新元素时，系统分配一个更大的数组（通常是原大小的两倍）并复制所有元素。这个复制是O(n)，但很少发生。如果你向最初为空的动态数组追加n个元素，总时间仍然是摊销O(n) - 平均而言，每次追加是O(1)。",
+      "",
+      "```javascript",
+      "// 动态数组在需要时增长",
+      "const arr = []  // 容量：1，大小：0",
+      "arr.push(1)     // 容量：1，大小：1",
+      "arr.push(2)     // 增长！容量：2，大小：2（O(n)复制）",
+      "arr.push(3)     // 增长！容量：4，大小：3（O(n)复制）",
+      "arr.push(4)     // 容量：4，大小：4",
+      "arr.push(5)     // 增长！容量：8，大小：5（O(n)复制）",
+      "// 增长发生在2的幂处，使追加摊销O(1)",
+      "```",
+      "",
+      "## 时间复杂度总结",
+      "",
+      "| 操作 | 时间 | 原因 |",
+      "|------|------|-----|",
+      "| 按索引访问 | O(1) | 直接地址计算 |",
+      "| 追加（如果有空间） | O(1) | 只是添加到末尾 |",
+      "| 追加（如果满） | O(n) | 分配新空间，复制全部 |",
+      "| 在中间插入 | O(n) | 向右移动元素 |",
+      "| 删除中间 | O(n) | 向左移动元素 |",
+      "| 搜索（未排序） | O(n) | 必须检查每个元素 |",
+      "| 搜索（已排序） | O(log n) | 使用二分查找 |",
+      "",
+      "## 空间复杂度",
+      "",
+      "存储n个元素的数组使用O(n)空间。这是最优的 - 你必须以某种方式存储元素。解决问题时，注意避免创建需要O(n)额外空间的新数组。有时你可以通过原地修改输入数组来仅用O(1)额外空间解决问题。",
+      "",
+      "## 关键洞察",
+      "",
+      "数组在随机访问方面出色，但在需要频繁在中间插入或删除时会受苦。这就是为什么为这个用例存在链表。然而，数组仍然是最常用的数据结构，因为随机访问是如此宝贵，修改通常发生在末尾。"
+    ].join('\n'),
   },
   leetcode: [
-    {
-      id: 27,
-      title: 'Remove Element',
-      titleZh: '移除元素',
-      difficulty: 'Easy',
-    },
-    {
-      id: 26,
-      title: 'Remove Duplicates from Sorted Array',
-      titleZh: '删除有序数组中的重复项',
-      difficulty: 'Easy',
-    },
-    {
-      id: 977,
-      title: 'Squares of a Sorted Array',
-      titleZh: '有序数组的平方',
-      difficulty: 'Easy',
-    },
+    { id: 27, title: 'Remove Element', titleZh: '移除元素', difficulty: 'Easy' },
+    { id: 26, title: 'Remove Duplicates from Sorted Array', titleZh: '删除排序数组中的重复项', difficulty: 'Easy' },
+    { id: 977, title: 'Squares of a Sorted Array', titleZh: '有序数组的平方', difficulty: 'Easy' },
   ],
 }

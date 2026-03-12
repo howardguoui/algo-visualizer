@@ -1,305 +1,273 @@
-import { TopicContent } from '../../types';
+import type { TopicContent } from '../../types'
 
 export const dpIntroContent: TopicContent = {
   id: 'dp-intro',
-  title: {
-    en: 'Dynamic Programming Fundamentals',
-    zh: '动态规划基础'
-  },
-  description: {
-    en: 'Understand the three pillars of DP: optimal substructure, overlapping subproblems, and state',
-    zh: '理解动态规划的三个支柱：最优子结构、重叠子问题和状态'
-  },
-  timeEstimate: '40 minutes',
+  title: { en: 'Dynamic Programming Introduction', zh: '动态规划导论' },
+  description: { en: 'Understand the 3 pillars of DP: optimal substructure, overlapping subproblems, and state definition', zh: '理解DP的3个支柱：最优子结构、重叠子问题、状态定义' },
+  timeEstimate: '35 min',
   contentType: 'content',
   hasVisualizer: false,
   content: {
-    en: `# Dynamic Programming Fundamentals
-
-Dynamic programming is an optimization technique for solving problems by breaking them into overlapping subproblems and storing results to avoid redundant computation. Not all problems can be solved with DP—only those with specific characteristics.
-
-## The Three Pillars of Dynamic Programming
-
-### 1. Optimal Substructure
-
-An optimal solution is composed of optimal solutions to subproblems. If you know the best way to solve subproblem(s), you can combine them to get the best solution to the full problem.
-
-**Example**: Finding longest path in a graph
-- Longest path to destination = max(longest path via neighbor 1, longest path via neighbor 2, ...)
-- The optimal solution includes optimal solutions to reach each neighbor
-
-**Checking for optimal substructure**:
-- Can the problem be decomposed into subproblems?
-- Can you express: f(n) = combine(f(n-1), f(n-2), ...)?
-
-### 2. Overlapping Subproblems
-
-The same subproblems are solved multiple times. Without caching, exponential time results.
-
-**Example**: Fibonacci(5)
-```
-fib(5)
-├── fib(4)
-│   ├── fib(3)
-│   │   ├── fib(2)  ← computed again
-│   │   └── fib(1)
-│   └── fib(2)      ← computed again
-└── fib(3)          ← computed again
-```
-
-Notice fib(3), fib(2), fib(1) are computed multiple times.
-
-Without memoization: O(2^n)
-With memoization: O(n)
-
-**Checking for overlapping subproblems**:
-- Does solving the problem require solving the same subproblem multiple times?
-- Can a lookup/cache help?
-
-### 3. State Definition (The Most Important)
-
-State is the minimum information needed to uniquely identify a subproblem. This is the foundation of DP.
-
-**The key question**: "What does f(i) represent?"
-
-For coin change with coins [1,2,5] and amount 7:
-- State f(i) = minimum coins needed to make amount i
-- Base case: f(0) = 0 (zero coins make amount 0)
-- Transition: f(i) = 1 + min(f(i-1), f(i-2), f(i-5)) where i-coin >= 0
-
-## Two Approaches: Top-Down vs Bottom-Up
-
-### Top-Down (Memoization)
-
-Solve recursively, cache results:
-
-\`\`\`javascript
-function fib(n, memo = {}) {
-  if (n in memo) return memo[n]; // Check cache first
-  if (n <= 1) return n;
-
-  memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
-  return memo[n];
-}
-\`\`\`
-
-**Pros**: Natural recursive thought process, computes only needed states
-**Cons**: Recursion depth, function call overhead
-
-### Bottom-Up (Tabulation)
-
-Build solutions from smallest subproblems upward:
-
-\`\`\`javascript
-function fib(n) {
-  if (n <= 1) return n;
-
-  const dp = [0, 1];
-  for (let i = 2; i <= n; i++) {
-    dp[i] = dp[i - 1] + dp[i - 2];
-  }
-  return dp[n];
-}
-\`\`\`
-
-**Pros**: No recursion overhead, clear iteration order, easier to understand
-**Cons**: Might compute unnecessary states
-
-## The DP Problem-Solving Process
-
-1. **Identify State**: What's the minimum info to define a subproblem?
-2. **Define Recurrence**: How do solutions combine? f(n) = ?
-3. **Find Base Cases**: When do we stop recursing?
-4. **Choose Approach**: Top-down (memoization) or bottom-up (tabulation)?
-5. **Optimize Space**: Can we reduce dimensions?
-
-## Recognizing DP Problems
-
-Problems that benefit from DP often ask:
-- "Find the maximum/minimum..."
-- "Count the number of ways..."
-- "Determine if it's possible..."
-- "Find the longest/shortest..."
-
-Look for:
-- Can be broken into subproblems?
-- Same subproblems appear multiple times?
-- Optimal solution uses optimal subsolutions?
-
-## Space Optimization Example
-
-Fibonacci starting with 2D approach:
-
-\`\`\`javascript
-// 1D array (remember last two values)
-function fib(n) {
-  let prev = 0, curr = 1;
-  for (let i = 2; i <= n; i++) {
-    [prev, curr] = [curr, prev + curr];
-  }
-  return curr;
-}
-\`\`\`
-
-From O(n) space to O(1) space by recognizing we only need two previous values.
-
-## Common DP Patterns
-
-- **Linear DP**: f(i) depends on f(i-1), f(i-2), etc. (Fibonacci, climbing stairs)
-- **Grid DP**: f(i,j) depends on f(i-1,j), f(i,j-1), etc. (Paths, matrices)
-- **Knapsack DP**: f(i,w) = best solution using items 0..i with weight limit w
-- **Interval DP**: f(i,j) = solution for subarray/substring [i...j]
-
-## Key Insights
-
-- DP is an **optimization**: only use when there are overlapping subproblems
-- **State definition is critical**: Wrong state = wrong solution
-- **Recurrence must be correct**: Test with small examples
-- **Both approaches work**: Choose based on clarity and efficiency needs
-- **Space optimization** is an advanced technique: master basic DP first`,
-    zh: `# 动态规划基础
-
-动态规划是一种优化技术，通过将问题分解为重叠的子问题并存储结果以避免冗余计算来解决问题。并非所有问题都能用动态规划解决—仅那些具有特定特征的问题。
-
-## 动态规划的三个支柱
-
-### 1. 最优子结构
-
-最优解由子问题的最优解组成。如果你知道解决子问题的最佳方式，你可以组合它们来得到完整问题的最佳解。
-
-**例子**：在图中查找最长路径
-- 到目标的最长路径 = max(经过邻接点1的最长路径, 经过邻接点2的最长路径, ...)
-- 最优解包括到达每个邻接点的最优解
-
-**检查最优子结构**：
-- 问题能否分解为子问题？
-- 能否表达：f(n) = combine(f(n-1), f(n-2), ...)?
-
-### 2. 重叠子问题
-
-相同的子问题被求解多次。不缓存会导致指数时间。
-
-**例子**：Fibonacci(5)
-```
-fib(5)
-├── fib(4)
-│   ├── fib(3)
-│   │   ├── fib(2)  ← 再次计算
-│   │   └── fib(1)
-│   └── fib(2)      ← 再次计算
-└── fib(3)          ← 再次计算
-```
-
-注意fib(3), fib(2), fib(1)被多次计算。
-
-无备忘：O(2^n)
-有备忘：O(n)
-
-**检查重叠子问题**：
-- 解决问题是否需要多次解决相同子问题？
-- 缓存能否帮助？
-
-### 3. 状态定义（最重要）
-
-状态是唯一标识子问题所需的最小信息。这是动态规划的基础。
-
-**关键问题**："f(i)代表什么？"
-
-对于硬币兑换，硬币[1,2,5]，金额7：
-- 状态f(i) = 组成金额i所需的最少硬币数
-- 基础情况：f(0) = 0（零硬币组成金额0）
-- 转移：f(i) = 1 + min(f(i-1), f(i-2), f(i-5))，其中i-coin >= 0
-
-## 两种方法：自顶向下与自底向上
-
-### 自顶向下（备忘）
-
-递归求解，缓存结果：
-
-\`\`\`javascript
-function fib(n, memo = {}) {
-  if (n in memo) return memo[n]; // 先检查缓存
-  if (n <= 1) return n;
-
-  memo[n] = fib(n - 1, memo) + fib(n - 2, memo);
-  return memo[n];
-}
-\`\`\`
-
-**优点**：自然的递归思维过程，仅计算需要的状态
-**缺点**：递归深度，函数调用开销
-
-### 自底向上（制表）
-
-从最小子问题向上构建解：
-
-\`\`\`javascript
-function fib(n) {
-  if (n <= 1) return n;
-
-  const dp = [0, 1];
-  for (let i = 2; i <= n; i++) {
-    dp[i] = dp[i - 1] + dp[i - 2];
-  }
-  return dp[n];
-}
-\`\`\`
-
-**优点**：无递归开销，清晰的迭代顺序，易于理解
-**缺点**：可能计算不必要的状态
-
-## 动态规划问题解决过程
-
-1. **确定状态**：定义子问题所需的最小信息？
-2. **定义递推**：解如何组合？f(n) = ?
-3. **找到基础**：何时停止递推？
-4. **选择方法**：自顶向下（备忘）还是自底向上（制表）？
-5. **优化空间**：能否减少维度？
-
-## 识别动态规划问题
-
-从DP受益的问题通常询问：
-- "查找最大/最小..."
-- "计算方式数..."
-- "确定是否可能..."
-- "查找最长/最短..."
-
-寻找：
-- 能否分解为子问题？
-- 相同子问题是否出现多次？
-- 最优解是否使用最优子解？
-
-## 空间优化示例
-
-从斐波那契的2D方法开始：
-
-\`\`\`javascript
-// 1D数组（记住最后两个值）
-function fib(n) {
-  let prev = 0, curr = 1;
-  for (let i = 2; i <= n; i++) {
-    [prev, curr] = [curr, prev + curr];
-  }
-  return curr;
-}
-\`\`\`
-
-从O(n)空间优化到O(1)空间，通过认识我们仅需要两个前值。
-
-## 常见动态规划模式
-
-- **线性DP**：f(i)依赖f(i-1), f(i-2)等（斐波那契、爬楼梯）
-- **网格DP**：f(i,j)依赖f(i-1,j), f(i,j-1)等（路径、矩阵）
-- **背包DP**：f(i,w) = 使用物品0..i且重量限制w的最佳解
-- **区间DP**：f(i,j) = 子数组/子串[i...j]的解
-
-## 关键洞察
-
-- DP是一种**优化**：仅在有重叠子问题时使用
-- **状态定义很关键**：错误的状态 = 错误的解
-- **递推必须正确**：用小例子测试
-- **两种方法都有效**：根据清晰度和效率需求选择
-- **空间优化**是高级技术：先掌握基本动态规划`
+    en: [
+      "## What Makes a Problem Solvable by DP?",
+      "",
+      "Dynamic Programming (DP) is about solving problems efficiently by avoiding redundant work. It applies when two conditions are met:",
+      "",
+      "**1. Optimal Substructure**",
+      "The optimal solution to a problem can be built from optimal solutions to subproblems.",
+      "",
+      "Example: Longest increasing subsequence of [1, 3, 2, 4] is built from [1] + longest increasing subsequence of [3, 2, 4] starting after 1.",
+      "",
+      "**2. Overlapping Subproblems**",
+      "The same subproblems are solved multiple times.",
+      "",
+      "Without DP (naive recursion): Computing fib(5) computes fib(3) twice, fib(2) three times.",
+      "With DP (memoization): Compute each subproblem once, reuse results.",
+      "",
+      "## Top-Down vs Bottom-Up",
+      "",
+      "### Top-Down (Memoization - Recursion with Caching)",
+      "",
+      "```javascript",
+      "function fib(n, memo = {}) {",
+      "  if (n in memo) return memo[n]  // Return cached result",
+      "  if (n <= 1) return n",
+      "  ",
+      "  memo[n] = fib(n - 1, memo) + fib(n - 2, memo)",
+      "  return memo[n]",
+      "}",
+      "```",
+      "",
+      "**Pros:**",
+      "- Natural, looks like the recursive solution",
+      "- Only compute states you actually need",
+      "- Easy to understand the problem structure",
+      "",
+      "**Cons:**",
+      "- Recursion overhead (call stack)",
+      "- Can hit stack overflow for very deep recursion",
+      "",
+      "### Bottom-Up (Tabulation - Iteration with Array)",
+      "",
+      "```javascript",
+      "function fib(n) {",
+      "  if (n <= 1) return n",
+      "  ",
+      "  const dp = [0, 1]",
+      "  for (let i = 2; i <= n; i++) {",
+      "    dp[i] = dp[i - 1] + dp[i - 2]",
+      "  }",
+      "  return dp[n]",
+      "}",
+      "```",
+      "",
+      "**Pros:**",
+      "- No recursion overhead",
+      "- Iterative, no stack issues",
+      "- Can optimize space by keeping only necessary values",
+      "",
+      "**Cons:**",
+      "- Need to figure out iteration order",
+      "- Might compute states you don't need",
+      "",
+      "## State Definition - The Core of DP",
+      "",
+      "The hardest part of DP is defining what \"state\" represents. Clear state definition makes the problem solvable.",
+      "",
+      "**Example: Maximum Subarray Sum**",
+      "",
+      "Bad state: `dp[i]` = \"result for array i\" (unclear)",
+      "",
+      "Good state: `dp[i]` = \"maximum sum of subarray ending at index i\"",
+      "",
+      "Why? Because to find dp[i], we know we must include element at index i. We only ask: do we extend the subarray from i-1, or start fresh?",
+      "",
+      "```javascript",
+      "function maxSubarray(nums) {",
+      "  let dp = nums[0]        // Max ending at index 0",
+      "  let maxSum = nums[0]",
+      "  ",
+      "  for (let i = 1; i < nums.length; i++) {",
+      "    dp = Math.max(nums[i], dp + nums[i])  // Extend or start new",
+      "    maxSum = Math.max(maxSum, dp)",
+      "  }",
+      "  return maxSum",
+      "}",
+      "```",
+      "",
+      "## Example: Climbing Stairs",
+      "",
+      "**Problem:** You can climb 1 or 2 stairs per step. How many ways to climb n stairs?",
+      "",
+      "**Optimal substructure:** Ways to reach stair n = ways to reach stair (n-1) + ways to reach stair (n-2). Because from stair (n-1), you climb 1 step to reach n. From stair (n-2), you climb 2 steps to reach n.",
+      "",
+      "**Overlapping subproblems:** Computing ways to reach stair 5 requires computing ways to reach stair 3 and 4. Computing ways to reach stair 4 also requires computing ways to reach stair 3.",
+      "",
+      "**State definition:** `dp[i]` = number of ways to reach stair i",
+      "",
+      "```javascript",
+      "function climbStairs(n) {",
+      "  if (n <= 1) return 1",
+      "  const dp = [1, 1]  // dp[0]=1 (already at start), dp[1]=1 (one way: one step)",
+      "  for (let i = 2; i <= n; i++) {",
+      "    dp[i] = dp[i - 1] + dp[i - 2]",
+      "  }",
+      "  return dp[n]",
+      "}",
+      "```",
+      "",
+      "## When NOT to Use DP",
+      "",
+      "- Problems without overlapping subproblems (like simple traversal with no redundancy)",
+      "- Problems optimally solved greedily (shortest path in DAG with careful thinking, but usually needs DP)",
+      "- Problems that can be solved with basic math (some sequence problems)",
+      "",
+      "## DP Complexity Analysis",
+      "",
+      "Time = (Number of unique states) × (Work per state)",
+      "",
+      "Space = (Number of unique states) for memoization/DP table",
+      "",
+      "**Example: Fibonacci**",
+      "- States: n (fib(0) to fib(n))",
+      "- Work per state: O(1) (just two additions)",
+      "- Time: O(n) × O(1) = O(n)",
+      "- Space: O(n) for table",
+      "",
+      "## Key Insight",
+      "",
+      "DP is not about mathematical cleverness. It's about recognizing that you're solving the same subproblems repeatedly, and caching results to avoid redundant work. If you can describe the state clearly and define the transition, DP becomes systematic and solvable."
+    ].join('\n'),
+    zh: [
+      "## 什么使问题可用DP解决？",
+      "",
+      "动态规划（DP）是通过避免冗余工作有效解决问题。当满足两个条件时适用：",
+      "",
+      "**1. 最优子结构**",
+      "问题的最优解可以从子问题的最优解构建。",
+      "",
+      "示例：[1, 3, 2, 4]的最长递增子序列是从[1]构建的 + [3, 2, 4]在1之后的最长递增子序列。",
+      "",
+      "**2. 重叠子问题**",
+      "相同子问题被多次解决。",
+      "",
+      "不用DP（幼稚递归）：计算fib(5)计算fib(3)两次，fib(2)三次。",
+      "用DP（记忆化）：计算每个子问题一次，重用结果。",
+      "",
+      "## 自顶向下vs自底向上",
+      "",
+      "### 自顶向下（记忆化 - 带缓存的递归）",
+      "",
+      "```javascript",
+      "function fib(n, memo = {}) {",
+      "  if (n in memo) return memo[n]  // 返回缓存结果",
+      "  if (n <= 1) return n",
+      "  ",
+      "  memo[n] = fib(n - 1, memo) + fib(n - 2, memo)",
+      "  return memo[n]",
+      "}",
+      "```",
+      "",
+      "**优点：**",
+      "- 自然，看起来像递归解",
+      "- 仅计算你实际需要的状态",
+      "- 易于理解问题结构",
+      "",
+      "**缺点：**",
+      "- 递归开销（调用栈）",
+      "- 很深的递归可能栈溢出",
+      "",
+      "### 自底向上（制表 - 用数组迭代）",
+      "",
+      "```javascript",
+      "function fib(n) {",
+      "  if (n <= 1) return n",
+      "  ",
+      "  const dp = [0, 1]",
+      "  for (let i = 2; i <= n; i++) {",
+      "    dp[i] = dp[i - 1] + dp[i - 2]",
+      "  }",
+      "  return dp[n]",
+      "}",
+      "```",
+      "",
+      "**优点：**",
+      "- 无递归开销",
+      "- 迭代式，无栈问题",
+      "- 可通过仅保持必要值优化空间",
+      "",
+      "**缺点：**",
+      "- 需弄清迭代顺序",
+      "- 可能计算不需要的状态",
+      "",
+      "## 状态定义 - DP的核心",
+      "",
+      "DP最难的部分是定义\"状态\"代表什么。清晰的状态定义使问题可解。",
+      "",
+      "**示例：最大子数组和**",
+      "",
+      "坏状态：`dp[i]` = \"数组i的结果\"（不清楚）",
+      "",
+      "好状态：`dp[i]` = \"在索引i处结束的子数组的最大和\"",
+      "",
+      "为什么？因为找到dp[i]，我们知道必须包括索引i的元素。我们只问：我们是否从i-1扩展子数组，还是重新开始？",
+      "",
+      "```javascript",
+      "function maxSubarray(nums) {",
+      "  let dp = nums[0]        // 在索引0处结束的最大",
+      "  let maxSum = nums[0]",
+      "  ",
+      "  for (let i = 1; i < nums.length; i++) {",
+      "    dp = Math.max(nums[i], dp + nums[i])  // 扩展或开始新",
+      "    maxSum = Math.max(maxSum, dp)",
+      "  }",
+      "  return maxSum",
+      "}",
+      "```",
+      "",
+      "## 示例：爬楼梯",
+      "",
+      "**问题：**你每步可以爬1或2个楼梯。爬n个楼梯有多少种方式？",
+      "",
+      "**最优子结构：**到达楼梯n的方式 = 到达楼梯(n-1)的方式 + 到达楼梯(n-2)的方式。因为从楼梯(n-1)，你爬1步到达n。从楼梯(n-2)，你爬2步到达n。",
+      "",
+      "**重叠子问题：**计算到达楼梯5的方式需要计算到达楼梯3和4的方式。计算到达楼梯4也需要计算到达楼梯3。",
+      "",
+      "**状态定义：**`dp[i]` = 到达楼梯i的方式数",
+      "",
+      "```javascript",
+      "function climbStairs(n) {",
+      "  if (n <= 1) return 1",
+      "  const dp = [1, 1]  // dp[0]=1（已在开始），dp[1]=1（一个方式：一步）",
+      "  for (let i = 2; i <= n; i++) {",
+      "    dp[i] = dp[i - 1] + dp[i - 2]",
+      "  }",
+      "  return dp[n]",
+      "}",
+      "```",
+      "",
+      "## 何时不使用DP",
+      "",
+      "- 无重叠子问题的问题（如无冗余的简单遍历）",
+      "- 最优用贪心解决的问题（DAG中最短路径，仔细思考，但通常需DP）",
+      "- 可用基础数学解决的问题（某些序列问题）",
+      "",
+      "## DP复杂度分析",
+      "",
+      "时间 = （唯一状态数）×（每个状态的工作）",
+      "",
+      "空间 = （唯一状态数）用于记忆化/DP表",
+      "",
+      "**示例：Fibonacci**",
+      "- 状态：n（fib(0)到fib(n)）",
+      "- 每个状态的工作：O(1)（仅两个加法）",
+      "- 时间：O(n) × O(1) = O(n)",
+      "- 空间：O(n)用于表",
+      "",
+      "## 关键洞察",
+      "",
+      "DP不是关于数学聪明。它是关于认识到你重复解决相同子问题，并缓存结果以避免冗余工作。如果你能清楚地描述状态并定义转移，DP变成系统和可解。"
+    ].join('\n'),
   },
-  leetcode: []
-};
+  leetcode: [],
+}

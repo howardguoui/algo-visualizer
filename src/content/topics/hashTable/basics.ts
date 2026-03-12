@@ -1,739 +1,390 @@
-import { TopicContent } from '../types'
+import type { TopicContent } from '../../types'
 
 export const hashTableBasics: TopicContent = {
-  id: 'hashtable-basics',
-  title: {
-    en: 'Hash Table Fundamentals',
-    zh: '哈希表基础',
-  },
-  description: {
-    en: 'Master hash table design, collision handling, and patterns for frequency counting, grouping, and two-sum problems',
-    zh: '掌握哈希表设计、冲突处理，以及频率计数、分组和两数之和问题的模式',
-  },
-  timeEstimate: '75-90 minutes',
+  id: 'hash-table-basics',
+  title: { en: 'Hash Table Patterns', zh: '哈希表模式' },
+  description: { en: 'Master 5 patterns: frequency count, two sum, anagrams, sliding window + map, LRU cache', zh: '掌握5种模式：频率计数、两数之和、字谜、滑动窗口+映射、LRU缓存' },
+  timeEstimate: '45 min',
   contentType: 'content+practice',
   hasVisualizer: false,
   content: {
-    en: `## Hash Table Basics
-
-A hash table (or hash map) is a **key-value data structure** that provides O(1) average-case lookup by using a hash function to convert keys into array indices.
-
-### Hash Function
-
-\`\`\`javascript
-// Simple hash function
-function hash(key) {
-  let sum = 0;
-  for (let i = 0; i < key.length; i++) {
-    sum += key.charCodeAt(i);
-  }
-  return sum % 10;  // Map to index 0-9
-}
-
-// Problem: Multiple keys hash to same value (collision)
-hash("abc") = 97 + 98 + 99 = 294 % 10 = 4
-hash("aaa") = 97 + 97 + 97 = 291 % 10 = 1
-hash("jab") = 106 + 97 + 98 = 301 % 10 = 1  // Collision!
-\`\`\`
-
-### Collision Handling
-
-#### 1. Chaining
-\`\`\`javascript
-// Store array of [key, value] pairs at each index
-class HashTableChaining {
-  constructor(size = 10) {
-    this.size = size;
-    this.table = Array(size).fill().map(() => []);
-  }
-
-  hash(key) {
-    let sum = 0;
-    for (const char of key) {
-      sum += char.charCodeAt(0);
-    }
-    return sum % this.size;
-  }
-
-  set(key, value) {
-    const index = this.hash(key);
-    const bucket = this.table[index];
-
-    // Check if key exists
-    for (let i = 0; i < bucket.length; i++) {
-      if (bucket[i][0] === key) {
-        bucket[i][1] = value;
-        return;
-      }
-    }
-
-    // Add new pair
-    bucket.push([key, value]);
-  }
-
-  get(key) {
-    const index = this.hash(key);
-    const bucket = this.table[index];
-
-    for (const [k, v] of bucket) {
-      if (k === key) return v;
-    }
-
-    return undefined;
-  }
-
-  // Time: O(1) average, O(n) worst (poor hash function)
-  // Space: O(n)
-}
-\`\`\`
-
-#### 2. Open Addressing
-\`\`\`javascript
-// Find alternative index if collision occurs
-class HashTableOpenAddressing {
-  constructor(size = 10) {
-    this.size = size;
-    this.table = new Array(size);
-  }
-
-  hash(key) {
-    // Linear probing: hash(key, i) = (hash(key) + i) % size
-    let sum = 0;
-    for (const char of key) {
-      sum += char.charCodeAt(0);
-    }
-    return sum % this.size;
-  }
-
-  set(key, value) {
-    let index = this.hash(key);
-
-    // Linear probing: keep incrementing until empty slot
-    let i = 0;
-    while (this.table[(index + i) % this.size] !== undefined) {
-      i++;
-    }
-
-    this.table[(index + i) % this.size] = [key, value];
-  }
-
-  get(key) {
-    let index = this.hash(key);
-
-    // Linear probing: keep searching
-    let i = 0;
-    while (this.table[(index + i) % this.size] !== undefined) {
-      if (this.table[(index + i) % this.size][0] === key) {
-        return this.table[(index + i) % this.size][1];
-      }
-      i++;
-    }
-
-    return undefined;
-  }
-}
-\`\`\`
-
-### Native Hash Table (Use This!)
-
-In practice, use built-in hash tables:
-
-\`\`\`javascript
-// Map in JavaScript (similar to HashMap in Java)
-const map = new Map();
-map.set('key', 'value');
-map.get('key');  // 'value'
-map.has('key');  // true
-map.delete('key');
-map.size;  // number of entries
-
-// Object (works for string keys)
-const obj = {};
-obj['key'] = 'value';
-obj['key'];  // 'value'
-delete obj['key'];
-\`\`\`
-
-## Pattern 1: Two Sum
-
-Find two numbers that sum to target.
-
-\`\`\`javascript
-function twoSum(arr, target) {
-  const seen = new Map();
-
-  for (let i = 0; i < arr.length; i++) {
-    const complement = target - arr[i];
-
-    if (seen.has(complement)) {
-      return [seen.get(complement), i];
-    }
-
-    seen.set(arr[i], i);
-  }
-
-  return [];
-  // Time: O(n), Space: O(n)
-}
-
-// Example: arr = [2, 7, 11, 15], target = 9
-// i=0: arr[0]=2, complement=9-2=7
-//      7 not in seen, add 2→0 to seen
-//      seen: {2: 0}
-// i=1: arr[1]=7, complement=9-7=2
-//      2 in seen at index 0, return [0, 1]
-// Result: [0, 1] (indices of 2 and 7)
-\`\`\`
-
-**Key insight**: Store seen numbers and check if complement exists.
-
-## Pattern 2: Frequency Counting
-
-\`\`\`javascript
-function frequencyCount(arr) {
-  const freq = new Map();
-
-  for (const num of arr) {
-    freq.set(num, (freq.get(num) || 0) + 1);
-  }
-
-  return freq;
-  // Time: O(n), Space: O(k) where k is unique elements
-}
-
-function mostFrequent(arr) {
-  const freq = frequencyCount(arr);
-  let maxCount = 0;
-  let maxNum = null;
-
-  for (const [num, count] of freq) {
-    if (count > maxCount) {
-      maxCount = count;
-      maxNum = num;
-    }
-  }
-
-  return maxNum;
-}
-
-// Example: arr = [1, 1, 1, 2, 2, 3]
-// freq: {1: 3, 2: 2, 3: 1}
-// Most frequent: 1 (appears 3 times)
-\`\`\`
-
-## Pattern 3: Anagram Grouping
-
-Group anagrams together.
-
-\`\`\`javascript
-function groupAnagrams(strs) {
-  const map = new Map();
-
-  for (const str of strs) {
-    // Canonical form: sorted characters
-    const sorted = str.split('').sort().join('');
-
-    if (!map.has(sorted)) {
-      map.set(sorted, []);
-    }
-
-    map.get(sorted).push(str);
-  }
-
-  return Array.from(map.values());
-  // Time: O(n × m log m) where m is max string length
-  // Space: O(n × m)
-}
-
-// Example: strs = ["eat", "tea", "ate", "eta", "tan", "nat"]
-// "eat" → sorted = "aet"
-// "tea" → sorted = "aet" (same)
-// "ate" → sorted = "aet" (same)
-// "tan" → sorted = "ant"
-// "nat" → sorted = "ant" (same)
-// Result: [["eat", "tea", "ate"], ["tan", "nat"]]
-\`\`\`
-
-## Pattern 4: Sliding Window with Hash Map
-
-Maintain hash map of elements in current window.
-
-\`\`\`javascript
-function characterReplacement(s, k) {
-  const charCount = new Map();
-  let left = 0;
-  let maxCount = 0;
-  let maxLen = 0;
-
-  for (let right = 0; right < s.length; right++) {
-    const rightChar = s[right];
-    charCount.set(rightChar, (charCount.get(rightChar) || 0) + 1);
-    maxCount = Math.max(maxCount, charCount.get(rightChar));
-
-    // If window is invalid (too many characters to replace)
-    while (right - left + 1 - maxCount > k) {
-      const leftChar = s[left];
-      charCount.set(leftChar, charCount.get(leftChar) - 1);
-      left++;
-    }
-
-    maxLen = Math.max(maxLen, right - left + 1);
-  }
-
-  return maxLen;
-  // Time: O(n), Space: O(26) = O(1) for lowercase letters
-}
-
-// Example: s = "ABAB", k = 2
-// "A" → maxCount=1, len=1
-// "AB" → maxCount=1, len=2
-// "ABA" → maxCount=2, len=3
-// "ABAB" → maxCount=2, len=4
-// We can replace at most 2 characters, so we can make "AAAA"
-\`\`\`
-
-## Pattern 5: Longest Consecutive Sequence
-
-Find longest sequence of consecutive numbers.
-
-\`\`\`javascript
-function longestConsecutive(nums) {
-  const numSet = new Set(nums);
-  let maxLen = 0;
-
-  for (const num of numSet) {
-    // Only start from sequence beginning
-    if (!numSet.has(num - 1)) {
-      let current = num;
-      let length = 1;
-
-      // Count consecutive numbers
-      while (numSet.has(current + 1)) {
-        current++;
-        length++;
-      }
-
-      maxLen = Math.max(maxLen, length);
-    }
-  }
-
-  return maxLen;
-  // Time: O(n), Space: O(n)
-}
-
-// Example: nums = [100, 4, 200, 1, 3, 2]
-// numSet: {100, 4, 200, 1, 3, 2}
-// Start from 100: 100 → maxLen = 1
-// Start from 4: 4 → 3 (no 5) → maxLen = 1
-// Start from 200: 200 → maxLen = 1
-// Start from 1: 1 → 2 → 3 → 4 (have all!) → length = 4
-// Skip 2, 3, 4 (have predecessors)
-// Result: 4
-\`\`\`
-
-## Why Hash Maps Excel
-
-| Operation | Array | Hash Map |
-|---|---|---|
-| Get by index | O(1) | - |
-| Get by key | O(n) | O(1) average |
-| Insert | O(n) | O(1) average |
-| Delete | O(n) | O(1) average |
-| Frequency count | O(n²) | O(n) |
-| Find pair | O(n²) | O(n) |
-
-## Problem Recognition
-
-| Pattern | Use |
-|---|---|
-| "Find two elements with property" | Hash map for complement |
-| "Count frequencies" | Hash map |
-| "Group by property" | Hash map |
-| "Largest subarray with constraint" | Sliding window + hash map |
-| "Consecutive sequence" | Set for O(1) lookup |
-| "Anagrams" | Hash map with canonical key |
-| "Duplicate detection" | Set |
-
-## Key Insights
-
-1. **Hash maps solve "find" problems** by trading space for O(1) lookup
-2. **Canonical keys enable grouping**: Sort, encode, or transform before hashing
-3. **Complement pattern**: For two-sum, store seen values and check complement
-4. **Frequency + sliding window**: Maintain hash map inside window for constraints
-5. **Set for existence checks**: Faster than array when checking membership`,
-
-    zh: `## 哈希表基础
-
-哈希表（或哈希映射）是一个**键值数据结构**，通过使用哈希函数将键转换为数组索引，提供O(1)平均情况下的查找。
-
-### 哈希函数
-
-\`\`\`javascript
-// 简单哈希函数
-function hash(key) {
-  let sum = 0;
-  for (let i = 0; i < key.length; i++) {
-    sum += key.charCodeAt(i);
-  }
-  return sum % 10;  // 映射到索引0-9
-}
-
-// 问题：多个键哈希到相同值（冲突）
-hash("abc") = 97 + 98 + 99 = 294 % 10 = 4
-hash("aaa") = 97 + 97 + 97 = 291 % 10 = 1
-hash("jab") = 106 + 97 + 98 = 301 % 10 = 1  // 冲突！
-\`\`\`
-
-### 冲突处理
-
-#### 1. 链接法
-\`\`\`javascript
-// 在每个索引处存储[key, value]对的数组
-class HashTableChaining {
-  constructor(size = 10) {
-    this.size = size;
-    this.table = Array(size).fill().map(() => []);
-  }
-
-  hash(key) {
-    let sum = 0;
-    for (const char of key) {
-      sum += char.charCodeAt(0);
-    }
-    return sum % this.size;
-  }
-
-  set(key, value) {
-    const index = this.hash(key);
-    const bucket = this.table[index];
-
-    // 检查键是否存在
-    for (let i = 0; i < bucket.length; i++) {
-      if (bucket[i][0] === key) {
-        bucket[i][1] = value;
-        return;
-      }
-    }
-
-    // 添加新对
-    bucket.push([key, value]);
-  }
-
-  get(key) {
-    const index = this.hash(key);
-    const bucket = this.table[index];
-
-    for (const [k, v] of bucket) {
-      if (k === key) return v;
-    }
-
-    return undefined;
-  }
-
-  // 时间：O(1)平均，O(n)最坏（哈希函数不好）
-  // 空间：O(n)
-}
-\`\`\`
-
-#### 2. 开放寻址法
-\`\`\`javascript
-// 如果冲突，找替代索引
-class HashTableOpenAddressing {
-  constructor(size = 10) {
-    this.size = size;
-    this.table = new Array(size);
-  }
-
-  hash(key) {
-    // 线性探测：hash(key, i) = (hash(key) + i) % size
-    let sum = 0;
-    for (const char of key) {
-      sum += char.charCodeAt(0);
-    }
-    return sum % this.size;
-  }
-
-  set(key, value) {
-    let index = this.hash(key);
-
-    // 线性探测：继续增加直到找到空槽
-    let i = 0;
-    while (this.table[(index + i) % this.size] !== undefined) {
-      i++;
-    }
-
-    this.table[(index + i) % this.size] = [key, value];
-  }
-
-  get(key) {
-    let index = this.hash(key);
-
-    // 线性探测：继续搜索
-    let i = 0;
-    while (this.table[(index + i) % this.size] !== undefined) {
-      if (this.table[(index + i) % this.size][0] === key) {
-        return this.table[(index + i) % this.size][1];
-      }
-      i++;
-    }
-
-    return undefined;
-  }
-}
-\`\`\`
-
-### 原生哈希表（使用这个！）
-
-在实际中，使用内置哈希表：
-
-\`\`\`javascript
-// JavaScript中的Map（类似Java中的HashMap）
-const map = new Map();
-map.set('key', 'value');
-map.get('key');  // 'value'
-map.has('key');  // true
-map.delete('key');
-map.size;  // 条目数量
-
-// 对象（适用于字符串键）
-const obj = {};
-obj['key'] = 'value';
-obj['key'];  // 'value'
-delete obj['key'];
-\`\`\`
-
-## 模式1：两数之和
-
-找两个数字，其和等于目标。
-
-\`\`\`javascript
-function twoSum(arr, target) {
-  const seen = new Map();
-
-  for (let i = 0; i < arr.length; i++) {
-    const complement = target - arr[i];
-
-    if (seen.has(complement)) {
-      return [seen.get(complement), i];
-    }
-
-    seen.set(arr[i], i);
-  }
-
-  return [];
-  // 时间：O(n)，空间：O(n)
-}
-
-// 例子：arr = [2, 7, 11, 15], target = 9
-// i=0: arr[0]=2, complement=9-2=7
-//      7不在seen中，添加2→0到seen
-//      seen: {2: 0}
-// i=1: arr[1]=7, complement=9-7=2
-//      2在seen中的索引0，返回[0, 1]
-// 结果：[0, 1]（2和7的索引）
-\`\`\`
-
-**关键洞察**：存储已见数字，检查补数是否存在。
-
-## 模式2：频率计数
-
-\`\`\`javascript
-function frequencyCount(arr) {
-  const freq = new Map();
-
-  for (const num of arr) {
-    freq.set(num, (freq.get(num) || 0) + 1);
-  }
-
-  return freq;
-  // 时间：O(n)，空间：O(k)，k是唯一元素数
-}
-
-function mostFrequent(arr) {
-  const freq = frequencyCount(arr);
-  let maxCount = 0;
-  let maxNum = null;
-
-  for (const [num, count] of freq) {
-    if (count > maxCount) {
-      maxCount = count;
-      maxNum = num;
-    }
-  }
-
-  return maxNum;
-}
-
-// 例子：arr = [1, 1, 1, 2, 2, 3]
-// freq: {1: 3, 2: 2, 3: 1}
-// 最频繁：1（出现3次）
-\`\`\`
-
-## 模式3：字母异位词分组
-
-将字母异位词分组在一起。
-
-\`\`\`javascript
-function groupAnagrams(strs) {
-  const map = new Map();
-
-  for (const str of strs) {
-    // 规范形式：排序字符
-    const sorted = str.split('').sort().join('');
-
-    if (!map.has(sorted)) {
-      map.set(sorted, []);
-    }
-
-    map.get(sorted).push(str);
-  }
-
-  return Array.from(map.values());
-  // 时间：O(n × m log m)，m是最大字符串长度
-  // 空间：O(n × m)
-}
-
-// 例子：strs = ["eat", "tea", "ate", "eta", "tan", "nat"]
-// "eat" → 排序 = "aet"
-// "tea" → 排序 = "aet"（相同）
-// "ate" → 排序 = "aet"（相同）
-// "tan" → 排序 = "ant"
-// "nat" → 排序 = "ant"（相同）
-// 结果：[["eat", "tea", "ate"], ["tan", "nat"]]
-\`\`\`
-
-## 模式4：哈希表滑动窗口
-
-维护当前窗口中元素的哈希表。
-
-\`\`\`javascript
-function characterReplacement(s, k) {
-  const charCount = new Map();
-  let left = 0;
-  let maxCount = 0;
-  let maxLen = 0;
-
-  for (let right = 0; right < s.length; right++) {
-    const rightChar = s[right];
-    charCount.set(rightChar, (charCount.get(rightChar) || 0) + 1);
-    maxCount = Math.max(maxCount, charCount.get(rightChar));
-
-    // 如果窗口无效（要替换的字符太多）
-    while (right - left + 1 - maxCount > k) {
-      const leftChar = s[left];
-      charCount.set(leftChar, charCount.get(leftChar) - 1);
-      left++;
-    }
-
-    maxLen = Math.max(maxLen, right - left + 1);
-  }
-
-  return maxLen;
-  // 时间：O(n)，空间：O(26) = O(1)（小写字母）
-}
-
-// 例子：s = "ABAB", k = 2
-// "A" → maxCount=1, len=1
-// "AB" → maxCount=1, len=2
-// "ABA" → maxCount=2, len=3
-// "ABAB" → maxCount=2, len=4
-// 我们最多可以替换2个字符，所以可以制作"AAAA"
-\`\`\`
-
-## 模式5：最长连续序列
-
-找最长的连续数字序列。
-
-\`\`\`javascript
-function longestConsecutive(nums) {
-  const numSet = new Set(nums);
-  let maxLen = 0;
-
-  for (const num of numSet) {
-    // 只从序列开始的地方开始
-    if (!numSet.has(num - 1)) {
-      let current = num;
-      let length = 1;
-
-      // 计数连续数字
-      while (numSet.has(current + 1)) {
-        current++;
-        length++;
-      }
-
-      maxLen = Math.max(maxLen, length);
-    }
-  }
-
-  return maxLen;
-  // 时间：O(n)，空间：O(n)
-}
-
-// 例子：nums = [100, 4, 200, 1, 3, 2]
-// numSet: {100, 4, 200, 1, 3, 2}
-// 从100开始：100 → maxLen = 1
-// 从4开始：4 → 3（无5） → maxLen = 1
-// 从200开始：200 → maxLen = 1
-// 从1开始：1 → 2 → 3 → 4（都有！） → length = 4
-// 跳过2, 3, 4（有前驱）
-// 结果：4
-\`\`\`
-
-## 为什么哈希表优秀
-
-| 操作 | 数组 | 哈希表 |
-|---|---|---|
-| 按索引获取 | O(1) | - |
-| 按键获取 | O(n) | O(1)平均 |
-| 插入 | O(n) | O(1)平均 |
-| 删除 | O(n) | O(1)平均 |
-| 频率计数 | O(n²) | O(n) |
-| 找对 | O(n²) | O(n) |
-
-## 问题识别
-
-| 模式 | 使用 |
-|---|---|
-| "找两个具有性质的元素" | 哈希表补数 |
-| "计数频率" | 哈希表 |
-| "按性质分组" | 哈希表 |
-| "最大子数组有约束" | 滑动窗口+哈希表 |
-| "连续序列" | Set用于O(1)查找 |
-| "字母异位词" | 哈希表规范键 |
-| "重复检测" | Set |
-
-## 关键洞察
-
-1. **哈希表解决"查找"问题**，通过用空间换O(1)查找
-2. **规范键启用分组**：排序、编码或转换后哈希
-3. **补数模式**：对于两数之和，存储已见值并检查补数
-4. **频率+滑动窗口**：在窗口内维护哈希表以满足约束
-5. **Set用于存在性检查**：检查成员时比数组更快`,
+    en: [
+      "## Why Hash Tables are Powerful",
+      "",
+      "Hash tables trade space for speed. Instead of searching through n elements (O(n)), you can look up in O(1) average time. The cost: using O(n) extra space to store the hash table.",
+      "",
+      "Most interviews love hash tables because they're space-efficient optimizations and teach you to think creatively about trading resources.",
+      "",
+      "## Pattern 1: Frequency Counting",
+      "",
+      "Count how many times each element appears. Return elements meeting some frequency criteria.",
+      "",
+      "```javascript",
+      "function topKFrequent(nums, k) {",
+      "  // Count frequencies",
+      "  const count = {}",
+      "  for (const num of nums) {",
+      "    count[num] = (count[num] || 0) + 1",
+      "  }",
+      "  ",
+      "  // Bucket sort by frequency",
+      "  const buckets = Array(nums.length + 1).fill(null).map(() => [])",
+      "  for (const [num, freq] of Object.entries(count)) {",
+      "    buckets[freq].push(num)",
+      "  }",
+      "  ",
+      "  // Collect top k",
+      "  const result = []",
+      "  for (let i = buckets.length - 1; i >= 0 && result.length < k; i--) {",
+      "    result.push(...buckets[i])",
+      "  }",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "The trick: instead of sorting by value, bucket elements by frequency. This is O(n) instead of O(n log n).",
+      "",
+      "## Pattern 2: Two Sum",
+      "",
+      "Find two numbers in array that sum to target.",
+      "",
+      "```javascript",
+      "function twoSum(nums, target) {",
+      "  const seen = {}",
+      "  for (let i = 0; i < nums.length; i++) {",
+      "    const complement = target - nums[i]",
+      "    if (complement in seen) {",
+      "      return [seen[complement], i]",
+      "    }",
+      "    seen[nums[i]] = i",
+      "  }",
+      "  return []",
+      "}",
+      "```",
+      "",
+      "For each number, check if its complement (target - number) was already seen. Store numbers in a map as you go.",
+      "",
+      "## Pattern 3: Anagram Detection",
+      "",
+      "Two strings are anagrams if they contain the same characters with the same frequency.",
+      "",
+      "```javascript",
+      "function isAnagram(s, t) {",
+      "  if (s.length !== t.length) return false",
+      "  const count = {}",
+      "  for (const char of s) {",
+      "    count[char] = (count[char] || 0) + 1",
+      "  }",
+      "  for (const char of t) {",
+      "    count[char]--",
+      "    if (count[char] < 0) return false",
+      "  }",
+      "  return true",
+      "}",
+      "```",
+      "",
+      "Count frequency in first string. For second string, decrement counters. If any goes negative, not an anagram.",
+      "",
+      "**Group Anagrams Problem:**",
+      "",
+      "```javascript",
+      "function groupAnagrams(strs) {",
+      "  const groups = {}",
+      "  for (const str of strs) {",
+      "    const key = str.split('').sort().join('')  // Sorted form is the key",
+      "    if (!groups[key]) groups[key] = []",
+      "    groups[key].push(str)",
+      "  }",
+      "  return Object.values(groups)",
+      "}",
+      "```",
+      "",
+      "All anagrams have the same sorted form. Use sorted form as the map key.",
+      "",
+      "## Pattern 4: Sliding Window + Map",
+      "",
+      "Combine sliding window with a hash map for character frequency problems.",
+      "",
+      "```javascript",
+      "function findAnagrams(s, p) {",
+      "  const result = []",
+      "  const pCount = {}, windowCount = {}",
+      "  for (const char of p) pCount[char] = (pCount[char] || 0) + 1",
+      "  ",
+      "  let matched = 0  // How many characters have matching frequency",
+      "  for (let right = 0; right < s.length; right++) {",
+      "    const char = s[right]",
+      "    windowCount[char] = (windowCount[char] || 0) + 1",
+      "    if (windowCount[char] === pCount[char]) matched++",
+      "    ",
+      "    // Shrink from left",
+      "    if (right >= p.length) {",
+      "      const leftChar = s[right - p.length]",
+      "      if (windowCount[leftChar] === pCount[leftChar]) matched--",
+      "      windowCount[leftChar]--",
+      "    }",
+      "    ",
+      "    if (matched === Object.keys(pCount).length) {",
+      "      result.push(right - p.length + 1)",
+      "    }",
+      "  }",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "The key optimization: track `matched` count instead of comparing maps each iteration. This is O(n) instead of O(n * alphabet_size).",
+      "",
+      "## Pattern 5: LRU Cache",
+      "",
+      "Least Recently Used cache: fixed capacity, evict least recently used item when full.",
+      "",
+      "```javascript",
+      "class LRUCache {",
+      "  constructor(capacity) {",
+      "    this.capacity = capacity",
+      "    this.cache = new Map()  // JavaScript Map maintains insertion order",
+      "  }",
+      "  ",
+      "  get(key) {",
+      "    if (!this.cache.has(key)) return -1",
+      "    // Move to end (most recently used)",
+      "    const value = this.cache.get(key)",
+      "    this.cache.delete(key)",
+      "    this.cache.set(key, value)",
+      "    return value",
+      "  }",
+      "  ",
+      "  put(key, value) {",
+      "    if (this.cache.has(key)) {",
+      "      this.cache.delete(key)",
+      "    } else if (this.cache.size === this.capacity) {",
+      "      // Remove least recently used (first element)",
+      "      const firstKey = this.cache.keys().next().value",
+      "      this.cache.delete(firstKey)",
+      "    }",
+      "    this.cache.set(key, value)",
+      "  }",
+      "}",
+      "```",
+      "",
+      "JavaScript Map preserves insertion order. Mark accessed items as most recent by deleting and re-inserting them.",
+      "",
+      "## Hash Function Basics",
+      "",
+      "A hash function maps data to fixed-size values. Good properties:",
+      "- **Deterministic**: same input always gives same output",
+      "- **Uniform**: different inputs map across the full range",
+      "- **Fast**: computable in constant time",
+      "",
+      "Collisions happen when two different inputs hash to the same value. Handling methods:",
+      "- **Chaining**: store linked list at each bucket",
+      "- **Open addressing**: probe for next empty slot",
+      "",
+      "## Time Complexity Reality",
+      "",
+      "Hash table operations are O(1) on average, O(n) worst case (all collisions). In practice, collision-resistant hash functions and resizing make O(1) the norm.",
+      "",
+      "| Operation | Average | Worst |",
+      "|-----------|---------|-------|",
+      "| Lookup | O(1) | O(n) |",
+      "| Insert | O(1) | O(n) |",
+      "| Delete | O(1) | O(n) |",
+      "",
+      "## Space-Time Tradeoff",
+      "",
+      "Every hash table problem is fundamentally about trading space for time. Before using a hash table, ask: \"Am I trading enough space to get meaningful speedup?\" Sometimes O(n) space for O(1) lookups is worth it. Sometimes it's not."
+    ].join('\n'),
+    zh: [
+      "## 为什么哈希表强大",
+      "",
+      "哈希表用空间换速度。与其搜索n个元素（O(n)），你可以用O(1)平均时间查找。代价：使用O(n)额外空间存储哈希表。",
+      "",
+      "大多数面试喜欢哈希表，因为它们是空间效率优化并教你思考如何交换资源。",
+      "",
+      "## 模式1：频率计数",
+      "",
+      "计数每个元素出现多少次。返回满足某些频率标准的元素。",
+      "",
+      "```javascript",
+      "function topKFrequent(nums, k) {",
+      "  // 计数频率",
+      "  const count = {}",
+      "  for (const num of nums) {",
+      "    count[num] = (count[num] || 0) + 1",
+      "  }",
+      "  ",
+      "  // 按频率桶排序",
+      "  const buckets = Array(nums.length + 1).fill(null).map(() => [])",
+      "  for (const [num, freq] of Object.entries(count)) {",
+      "    buckets[freq].push(num)",
+      "  }",
+      "  ",
+      "  // 收集前k个",
+      "  const result = []",
+      "  for (let i = buckets.length - 1; i >= 0 && result.length < k; i--) {",
+      "    result.push(...buckets[i])",
+      "  }",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "技巧：与其按值排序，不如按频率分桶元素。这是O(n)而不是O(n log n)。",
+      "",
+      "## 模式2：两数之和",
+      "",
+      "找数组中两个和为目标的数字。",
+      "",
+      "```javascript",
+      "function twoSum(nums, target) {",
+      "  const seen = {}",
+      "  for (let i = 0; i < nums.length; i++) {",
+      "    const complement = target - nums[i]",
+      "    if (complement in seen) {",
+      "      return [seen[complement], i]",
+      "    }",
+      "    seen[nums[i]] = i",
+      "  }",
+      "  return []",
+      "}",
+      "```",
+      "",
+      "对每个数字，检查其补数（目标 - 数字）是否之前见过。当你继续时在映射中存储数字。",
+      "",
+      "## 模式3：字谜检测",
+      "",
+      "如果两个字符串包含相同字符且频率相同，它们是字谜。",
+      "",
+      "```javascript",
+      "function isAnagram(s, t) {",
+      "  if (s.length !== t.length) return false",
+      "  const count = {}",
+      "  for (const char of s) {",
+      "    count[char] = (count[char] || 0) + 1",
+      "  }",
+      "  for (const char of t) {",
+      "    count[char]--",
+      "    if (count[char] < 0) return false",
+      "  }",
+      "  return true",
+      "}",
+      "```",
+      "",
+      "在第一个字符串中计数频率。对于第二个字符串，递减计数器。如果任何一个变为负，不是字谜。",
+      "",
+      "**分组字谜问题：**",
+      "",
+      "```javascript",
+      "function groupAnagrams(strs) {",
+      "  const groups = {}",
+      "  for (const str of strs) {",
+      "    const key = str.split('').sort().join('')  // 排序形式是键",
+      "    if (!groups[key]) groups[key] = []",
+      "    groups[key].push(str)",
+      "  }",
+      "  return Object.values(groups)",
+      "}",
+      "```",
+      "",
+      "所有字谜有相同的排序形式。使用排序形式作为映射键。",
+      "",
+      "## 模式4：滑动窗口 + 映射",
+      "",
+      "结合滑动窗口和哈希映射用于字符频率问题。",
+      "",
+      "```javascript",
+      "function findAnagrams(s, p) {",
+      "  const result = []",
+      "  const pCount = {}, windowCount = {}",
+      "  for (const char of p) pCount[char] = (pCount[char] || 0) + 1",
+      "  ",
+      "  let matched = 0  // 多少字符有匹配的频率",
+      "  for (let right = 0; right < s.length; right++) {",
+      "    const char = s[right]",
+      "    windowCount[char] = (windowCount[char] || 0) + 1",
+      "    if (windowCount[char] === pCount[char]) matched++",
+      "    ",
+      "    // 从左收缩",
+      "    if (right >= p.length) {",
+      "      const leftChar = s[right - p.length]",
+      "      if (windowCount[leftChar] === pCount[leftChar]) matched--",
+      "      windowCount[leftChar]--",
+      "    }",
+      "    ",
+      "    if (matched === Object.keys(pCount).length) {",
+      "      result.push(right - p.length + 1)",
+      "    }",
+      "  }",
+      "  return result",
+      "}",
+      "```",
+      "",
+      "关键优化：追踪`matched`计数而不是每次迭代比较映射。这是O(n)而不是O(n * 字母表大小)。",
+      "",
+      "## 模式5：LRU缓存",
+      "",
+      "最近最少使用缓存：固定容量，满时驱逐最少使用的项。",
+      "",
+      "```javascript",
+      "class LRUCache {",
+      "  constructor(capacity) {",
+      "    this.capacity = capacity",
+      "    this.cache = new Map()  // JavaScript Map维护插入顺序",
+      "  }",
+      "  ",
+      "  get(key) {",
+      "    if (!this.cache.has(key)) return -1",
+      "    // 移到末尾（最近使用）",
+      "    const value = this.cache.get(key)",
+      "    this.cache.delete(key)",
+      "    this.cache.set(key, value)",
+      "    return value",
+      "  }",
+      "  ",
+      "  put(key, value) {",
+      "    if (this.cache.has(key)) {",
+      "      this.cache.delete(key)",
+      "    } else if (this.cache.size === this.capacity) {",
+      "      // 删除最少使用（第一个元素）",
+      "      const firstKey = this.cache.keys().next().value",
+      "      this.cache.delete(firstKey)",
+      "    }",
+      "    this.cache.set(key, value)",
+      "  }",
+      "}",
+      "```",
+      "",
+      "JavaScript Map保留插入顺序。通过删除并重新插入来标记访问的项为最近。",
+      "",
+      "## 哈希函数基础",
+      "",
+      "哈希函数将数据映射到固定大小的值。好的属性：",
+      "- **确定性**：相同输入总是给相同输出",
+      "- **均匀**：不同输入映射遍历完整范围",
+      "- **快速**：在常数时间内可计算",
+      "",
+      "碰撞发生在两个不同输入哈希到相同值时。处理方法：",
+      "- **链式**：在每个桶存储链表",
+      "- **开放寻址**：探测下一个空槽",
+      "",
+      "## 时间复杂度现实",
+      "",
+      "哈希表操作平均O(1)，最坏O(n)（所有碰撞）。实践上，碰撞抵抗哈希函数和调整大小使O(1)成为常态。",
+      "",
+      "| 操作 | 平均 | 最坏 |",
+      "|------|------|-----|",
+      "| 查找 | O(1) | O(n) |",
+      "| 插入 | O(1) | O(n) |",
+      "| 删除 | O(1) | O(n) |",
+      "",
+      "## 空间-时间权衡",
+      "",
+      "每个哈希表问题根本上是关于用空间换时间。使用哈希表前，问自己：「我是否用足够的空间换有意义的加速？」有时O(n)空间以O(1)查找值得。有时不值得。"
+    ].join('\n'),
   },
   leetcode: [
-    {
-      id: 1,
-      title: 'Two Sum',
-      titleZh: '两数之和',
-      difficulty: 'Easy',
-    },
-    {
-      id: 49,
-      title: 'Group Anagrams',
-      titleZh: '字母异位词分组',
-      difficulty: 'Medium',
-    },
-    {
-      id: 128,
-      title: 'Longest Consecutive Sequence',
-      titleZh: '最长连续序列',
-      difficulty: 'Medium',
-    },
-    {
-      id: 146,
-      title: 'LRU Cache',
-      titleZh: 'LRU 缓存',
-      difficulty: 'Medium',
-    },
+    { id: 1, title: 'Two Sum', titleZh: '两数之和', difficulty: 'Easy' },
+    { id: 49, title: 'Group Anagrams', titleZh: '字母异位词分组', difficulty: 'Medium' },
+    { id: 128, title: 'Longest Consecutive Sequence', titleZh: '最长连续序列', difficulty: 'Medium' },
+    { id: 146, title: 'LRU Cache', titleZh: 'LRU缓存', difficulty: 'Medium' },
   ],
 }

@@ -1,415 +1,317 @@
-import { TopicContent } from '../types'
+import type { TopicContent } from '../../types'
 
 export const prefixSum: TopicContent = {
   id: 'arrays-prefix-sum',
-  title: {
-    en: 'Prefix Sum and Difference Array',
-    zh: '前缀和与差分数组',
-  },
-  description: {
-    en: 'Optimize range queries and updates with prefix sum and difference array techniques',
-    zh: '使用前缀和与差分数组技术优化范围查询和范围更新',
-  },
-  timeEstimate: '60-75 minutes',
+  title: { en: 'Prefix Sum & Difference Arrays', zh: '前缀和与差分数组' },
+  description: { en: 'Convert range queries to O(1) with prefix sums, range updates to O(1) with difference arrays', zh: '用前缀和将范围查询转化为O(1)，用差分数组将范围更新转化为O(1)' },
+  timeEstimate: '35 min',
   contentType: 'content+practice',
   hasVisualizer: false,
   content: {
-    en: `## Prefix Sum: Solving Range Sum Queries
-
-A prefix sum array stores the cumulative sum up to each index. This allows O(1) range sum queries.
-
-### Building Prefix Sum
-
-\`\`\`javascript
-function buildPrefixSum(arr) {
-  const prefix = new Array(arr.length + 1).fill(0);
-
-  for (let i = 0; i < arr.length; i++) {
-    prefix[i + 1] = prefix[i] + arr[i];
-  }
-
-  return prefix;  // O(n) preprocessing
-}
-
-// Example: arr = [1, 2, 3, 4, 5]
-// prefix = [0, 1, 3, 6, 10, 15]
-//          ^  ^  ^  ^  ^   ^
-//          0  1  1+2 1+2+3 ... sum of all
-\`\`\`
-
-**Why index 0?** Having prefix[0] = 0 simplifies the formula.
-
-### Range Sum Query
-
-\`\`\`javascript
-// Query: sum of elements from index i to j (inclusive)
-function rangeSum(prefix, i, j) {
-  return prefix[j + 1] - prefix[i];
-}
-
-// Example: rangeSum(prefix, 1, 3) = prefix[4] - prefix[1]
-//                                  = 10 - 1 = 9
-//                                  = 2 + 3 + 4 = 9 ✓
-\`\`\`
-
-### Time Complexity
-
-- Preprocessing: O(n)
-- Query: O(1)
-- Total for m queries: O(n + m) vs naive O(n × m)
-
-### Example: Subarray Sum Equals K
-
-Find count of subarrays that sum to k.
-
-\`\`\`javascript
-function subarraySum(arr, k) {
-  // Key insight: if sum(0, j) - sum(0, i-1) = k
-  // then sum(0, i-1) = sum(0, j) - k
-
-  const sumMap = new Map();
-  sumMap.set(0, 1);  // Empty prefix sum is 0
-
-  let currentSum = 0;
-  let count = 0;
-
-  for (let i = 0; i < arr.length; i++) {
-    currentSum += arr[i];
-
-    // How many times has (currentSum - k) appeared?
-    if (sumMap.has(currentSum - k)) {
-      count += sumMap.get(currentSum - k);
-    }
-
-    // Record current sum
-    sumMap.set(currentSum, (sumMap.get(currentSum) || 0) + 1);
-  }
-
-  return count;
-  // Time: O(n), Space: O(n)
-}
-
-// Example: arr = [1, 1, 1], k = 2
-// i=0: currentSum=1, 1-2=-1 not in map
-//      map: {0:1, 1:1}
-// i=1: currentSum=2, 2-2=0 in map with count 1
-//      count += 1 → count=1 (subarray [1,1] at indices 0-1)
-//      map: {0:1, 1:1, 2:1}
-// i=2: currentSum=3, 3-2=1 in map with count 1
-//      count += 1 → count=2 (subarray [1,1] at indices 1-2)
-//      map: {0:1, 1:1, 2:1, 3:1}
-// Result: 2
-\`\`\`
-
-## Difference Array: Solving Range Updates
-
-When you need to **update all elements in a range**, a difference array is more efficient than updating each element.
-
-### Building and Applying Difference Array
-
-\`\`\`javascript
-function rangeUpdate(n, updates) {
-  // updates is array of [start, end, value]
-  const diff = new Array(n + 1).fill(0);
-
-  // Record range updates
-  for (const [start, end, value] of updates) {
-    diff[start] += value;
-    diff[end + 1] -= value;  // Undo after range
-  }
-
-  // Reconstruct final array using prefix sum
-  const result = new Array(n).fill(0);
-  let currentValue = 0;
-
-  for (let i = 0; i < n; i++) {
-    currentValue += diff[i];
-    result[i] = currentValue;
-  }
-
-  return result;
-  // Time: O(n + m) vs naive O(n × m)
-}
-
-// Example: n=5, updates=[[1,2,3], [0,1,1]]
-// Step 1: Build diff array
-//   [1,2,3]: diff[1]+=3, diff[3]-=3
-//   [0,1,1]: diff[0]+=1, diff[2]-=1
-//   diff = [1, 3, -1, -3, 0, 0]
-//
-// Step 2: Reconstruct via prefix sum
-//   i=0: current=0+1=1, result[0]=1
-//   i=1: current=1+3=4, result[1]=4
-//   i=2: current=4-1=3, result[2]=3
-//   i=3: current=3-3=0, result[3]=0
-//   i=4: current=0+0=0, result[4]=0
-//   result = [1, 4, 3, 0, 0]
-\`\`\`
-
-### Why This Works
-
-When we increment diff[start] and decrement diff[end + 1]:
-- All positions [start, end] accumulate the increment
-- Positions after end cancel it out
-
-This clever encoding allows batch updates in O(1) per update!
-
-## 2D Prefix Sum
-
-For 2D arrays, extend the 1D concept.
-
-\`\`\`javascript
-function buildPrefix2D(matrix) {
-  const m = matrix.length, n = matrix[0].length;
-  const prefix = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
-
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      prefix[i][j] = matrix[i-1][j-1]
-                     + prefix[i-1][j]
-                     + prefix[i][j-1]
-                     - prefix[i-1][j-1];
-    }
-  }
-
-  return prefix;
-}
-
-function rangeSum2D(prefix, r1, c1, r2, c2) {
-  // Sum from (r1,c1) to (r2,c2)
-  return prefix[r2+1][c2+1]
-         - prefix[r1][c2+1]
-         - prefix[r2+1][c1]
-         + prefix[r1][c1];
-}
-
-// Time: O(1) query after O(m×n) preprocessing
-\`\`\`
-
-## Problem Recognition
-
-| Pattern | Solution |
-|---|---|
-| "Sum of range" | Prefix sum |
-| "Range query after updates" | Difference array |
-| "Update all elements in range" | Difference array |
-| "Rectangle sum" | 2D prefix sum |
-| "Count subarrays with property" | Prefix sum + HashMap |
-
-## Key Insights
-
-1. **Prefix sum trades space for time**: O(n) space for O(1) queries
-2. **Difference array enables batch updates**: Record changes, apply once
-3. **Both use prefix sum concept**: Difference array is reconstructed via prefix sum
-4. **Optimal for offline queries**: When all queries are known upfront`,
-
-    zh: `## 前缀和：解决范围求和查询
-
-前缀和数组存储到每个索引的累计和。这允许O(1)的范围和查询。
-
-### 构建前缀和
-
-\`\`\`javascript
-function buildPrefixSum(arr) {
-  const prefix = new Array(arr.length + 1).fill(0);
-
-  for (let i = 0; i < arr.length; i++) {
-    prefix[i + 1] = prefix[i] + arr[i];
-  }
-
-  return prefix;  // O(n)预处理
-}
-
-// 例子：arr = [1, 2, 3, 4, 5]
-// prefix = [0, 1, 3, 6, 10, 15]
-//          ^  ^  ^  ^  ^   ^
-//          0  1  1+2 1+2+3 ... 全部和
-\`\`\`
-
-**为什么索引0？** 设置prefix[0] = 0简化了公式。
-
-### 范围和查询
-
-\`\`\`javascript
-// 查询：从索引i到j（含）的元素和
-function rangeSum(prefix, i, j) {
-  return prefix[j + 1] - prefix[i];
-}
-
-// 例子：rangeSum(prefix, 1, 3) = prefix[4] - prefix[1]
-//                                = 10 - 1 = 9
-//                                = 2 + 3 + 4 = 9 ✓
-\`\`\`
-
-### 时间复杂度
-
-- 预处理：O(n)
-- 查询：O(1)
-- m次查询总计：O(n + m) vs 朴素O(n × m)
-
-### 例子：子数组和等于K
-
-找出和等于k的子数组个数。
-
-\`\`\`javascript
-function subarraySum(arr, k) {
-  // 关键洞察：如果 sum(0, j) - sum(0, i-1) = k
-  // 那么 sum(0, i-1) = sum(0, j) - k
-
-  const sumMap = new Map();
-  sumMap.set(0, 1);  // 空前缀和为0
-
-  let currentSum = 0;
-  let count = 0;
-
-  for (let i = 0; i < arr.length; i++) {
-    currentSum += arr[i];
-
-    // (currentSum - k)出现过多少次？
-    if (sumMap.has(currentSum - k)) {
-      count += sumMap.get(currentSum - k);
-    }
-
-    // 记录当前和
-    sumMap.set(currentSum, (sumMap.get(currentSum) || 0) + 1);
-  }
-
-  return count;
-  // 时间：O(n)，空间：O(n)
-}
-
-// 例子：arr = [1, 1, 1], k = 2
-// i=0: currentSum=1, 1-2=-1不在map中
-//      map: {0:1, 1:1}
-// i=1: currentSum=2, 2-2=0在map中，计数为1
-//      count += 1 → count=1 (子数组[1,1]在索引0-1)
-//      map: {0:1, 1:1, 2:1}
-// i=2: currentSum=3, 3-2=1在map中，计数为1
-//      count += 1 → count=2 (子数组[1,1]在索引1-2)
-//      map: {0:1, 1:1, 2:1, 3:1}
-// 结果：2
-\`\`\`
-
-## 差分数组：解决范围更新
-
-当需要**更新范围内的所有元素**时，差分数组比更新每个元素更高效。
-
-### 构建并应用差分数组
-
-\`\`\`javascript
-function rangeUpdate(n, updates) {
-  // updates是[start, end, value]的数组
-  const diff = new Array(n + 1).fill(0);
-
-  // 记录范围更新
-  for (const [start, end, value] of updates) {
-    diff[start] += value;
-    diff[end + 1] -= value;  // 在范围后撤销
-  }
-
-  // 使用前缀和重建最终数组
-  const result = new Array(n).fill(0);
-  let currentValue = 0;
-
-  for (let i = 0; i < n; i++) {
-    currentValue += diff[i];
-    result[i] = currentValue;
-  }
-
-  return result;
-  // 时间：O(n + m) vs 朴素O(n × m)
-}
-
-// 例子：n=5, updates=[[1,2,3], [0,1,1]]
-// 步骤1：构建差分数组
-//   [1,2,3]: diff[1]+=3, diff[3]-=3
-//   [0,1,1]: diff[0]+=1, diff[2]-=1
-//   diff = [1, 3, -1, -3, 0, 0]
-//
-// 步骤2：通过前缀和重建
-//   i=0: current=0+1=1, result[0]=1
-//   i=1: current=1+3=4, result[1]=4
-//   i=2: current=4-1=3, result[2]=3
-//   i=3: current=3-3=0, result[3]=0
-//   i=4: current=0+0=0, result[4]=0
-//   result = [1, 4, 3, 0, 0]
-\`\`\`
-
-### 为什么有效
-
-当我们在diff[start]增加并在diff[end + 1]减少时：
-- 所有位置[start, end]都累积增加
-- end之后的位置抵消它
-
-这种巧妙的编码允许每次更新O(1)的批量更新！
-
-## 2D前缀和
-
-对于2D数组，扩展1D概念。
-
-\`\`\`javascript
-function buildPrefix2D(matrix) {
-  const m = matrix.length, n = matrix[0].length;
-  const prefix = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
-
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      prefix[i][j] = matrix[i-1][j-1]
-                     + prefix[i-1][j]
-                     + prefix[i][j-1]
-                     - prefix[i-1][j-1];
-    }
-  }
-
-  return prefix;
-}
-
-function rangeSum2D(prefix, r1, c1, r2, c2) {
-  // 从(r1,c1)到(r2,c2)的和
-  return prefix[r2+1][c2+1]
-         - prefix[r1][c2+1]
-         - prefix[r2+1][c1]
-         + prefix[r1][c1];
-}
-
-// 时间：O(1)查询，O(m×n)预处理
-\`\`\`
-
-## 问题识别
-
-| 模式 | 解决方案 |
-|---|---|
-| "范围和" | 前缀和 |
-| "更新后范围查询" | 差分数组 |
-| "更新范围内所有元素" | 差分数组 |
-| "矩形和" | 2D前缀和 |
-| "计数具有性质的子数组" | 前缀和+哈希表 |
-
-## 关键洞察
-
-1. **前缀和用空间换时间**：O(n)空间换O(1)查询
-2. **差分数组启用批量更新**：记录更改，一次应用
-3. **两者都使用前缀和概念**：差分数组通过前缀和重建
-4. **对离线查询最优**：当所有查询事先已知`,
+    en: [
+      "## The Prefix Sum Idea",
+      "",
+      "A prefix sum array stores the cumulative sum up to each position. If you want to know the sum of elements from index i to j, you don't sum them repeatedly - you compute it from the prefix sum array in O(1).",
+      "",
+      "Without prefix sum: sum from index 2 to 5 requires checking elements [2], [3], [4], [5] = O(n) per query.",
+      "",
+      "With prefix sum: sum from index 2 to 5 = prefix[6] - prefix[2] = O(1) per query.",
+      "",
+      "## Building a Prefix Sum Array",
+      "",
+      "```javascript",
+      "function buildPrefixSum(arr) {",
+      "  const prefix = [0]  // prefix[0] = 0 (empty sum)",
+      "  for (let i = 0; i < arr.length; i++) {",
+      "    prefix[i + 1] = prefix[i] + arr[i]",
+      "  }",
+      "  return prefix",
+      "  // prefix[i] = sum of arr[0] to arr[i-1]",
+      "}",
+      "```",
+      "",
+      "**Example:**",
+      "```",
+      "arr = [1, 2, 3, 4, 5]",
+      "prefix = [0, 1, 3, 6, 10, 15]",
+      "  index:   0  1  2  3   4   5",
+      "```",
+      "",
+      "- `prefix[0] = 0` (sum of no elements)",
+      "- `prefix[1] = 1` (sum of arr[0])",
+      "- `prefix[2] = 3` (sum of arr[0] + arr[1])",
+      "- `prefix[5] = 15` (sum of all elements)",
+      "",
+      "## Querying Range Sum",
+      "",
+      "To find sum of elements from index i to j (inclusive):",
+      "",
+      "```javascript",
+      "function rangeSum(prefix, i, j) {",
+      "  return prefix[j + 1] - prefix[i]",
+      "}",
+      "```",
+      "",
+      "For our example, sum from index 1 to 3:",
+      "- `rangeSum(prefix, 1, 3) = prefix[4] - prefix[1] = 10 - 1 = 9`",
+      "- This is arr[1] + arr[2] + arr[3] = 2 + 3 + 4 = 9 ✓",
+      "",
+      "## Real Problem: Range Sum Query 1D",
+      "",
+      "Given an array, answer multiple range sum queries. Naïve approach is O(n) per query. Prefix sum is O(1) per query after O(n) preprocessing.",
+      "",
+      "```javascript",
+      "class NumArray {",
+      "  constructor(nums) {",
+      "    this.prefix = [0]",
+      "    for (const num of nums) {",
+      "      this.prefix.push(this.prefix[this.prefix.length - 1] + num)",
+      "    }",
+      "  }",
+      "  ",
+      "  sumRange(left, right) {",
+      "    return this.prefix[right + 1] - this.prefix[left]",
+      "  }",
+      "}",
+      "```",
+      "",
+      "## Difference Arrays for Range Updates",
+      "",
+      "Prefix sum is great for queries. For updates (especially range updates), we use difference arrays. Instead of modifying all elements in a range (O(n)), we only update two boundary points (O(1)).",
+      "",
+      "**Difference array approach:**",
+      "- To add value `v` to range [i, j], do: `diff[i] += v` and `diff[j+1] -= v`",
+      "- Then compute prefix sum of the difference array to get final array",
+      "",
+      "## Building with Difference Array",
+      "",
+      "```javascript",
+      "function updateRange(arr, i, j, val) {",
+      "  const diff = new Array(arr.length + 1).fill(0)",
+      "  ",
+      "  // For each update, mark boundaries in difference array",
+      "  diff[i] += val",
+      "  diff[j + 1] -= val",
+      "  ",
+      "  // Reconstruct final array from difference array",
+      "  let current = 0",
+      "  for (let k = 0; k < arr.length; k++) {",
+      "    current += diff[k]",
+      "    arr[k] += current",
+      "  }",
+      "  return arr",
+      "}",
+      "```",
+      "",
+      "**Example: Add 5 to range [1, 3]**",
+      "```",
+      "Before: [1, 2, 3, 4, 5]",
+      "Difference array: [0, 5, 0, 0, -5, 0]",
+      "Reconstruct: current = 0",
+      "  k=0: current += diff[0] = 0, arr[0] = 1 + 0 = 1",
+      "  k=1: current += diff[1] = 5, arr[1] = 2 + 5 = 7",
+      "  k=2: current += diff[2] = 5, arr[2] = 3 + 5 = 8",
+      "  k=3: current += diff[3] = 5, arr[3] = 4 + 5 = 9",
+      "  k=4: current += diff[4] = 0, arr[4] = 5 + 0 = 5",
+      "After: [1, 7, 8, 9, 5]",
+      "```",
+      "",
+      "## Optimal Pattern for Multiple Range Updates",
+      "",
+      "If you need multiple range updates and then one query at the end:",
+      "",
+      "```javascript",
+      "class RangeUpdateProcessor {",
+      "  constructor(n) {",
+      "    this.diff = new Array(n + 1).fill(0)",
+      "  }",
+      "  ",
+      "  addRange(i, j, val) {",
+      "    // O(1) per update",
+      "    this.diff[i] += val",
+      "    this.diff[j + 1] -= val",
+      "  }",
+      "  ",
+      "  getArray() {",
+      "    // O(n) to reconstruct final array",
+      "    const result = []",
+      "    let current = 0",
+      "    for (let i = 0; i < this.diff.length - 1; i++) {",
+      "      current += this.diff[i]",
+      "      result.push(current)",
+      "    }",
+      "    return result",
+      "  }",
+      "}",
+      "```",
+      "",
+      "## Time Complexity Comparison",
+      "",
+      "| Problem | Naïve | Prefix Sum | Difference |",
+      "|---------|-------|-----------|-----------|",
+      "| Single range query | O(n) | O(1) after O(n) build | N/A |",
+      "| m range queries | O(m*n) | O(m) after O(n) build | N/A |",
+      "| Single range update | O(n) | N/A | O(1) |",
+      "| m range updates + final query | O(m*n) | N/A | O(m + n) |",
+      "",
+      "## Key Insight",
+      "",
+      "Prefix sum trades space for time: use O(n) extra space to answer queries in O(1). Difference array inverts this for updates: answer multiple O(1) updates, then spend O(n) to reconstruct. Choose based on what you need to optimize."
+    ].join('\n'),
+    zh: [
+      "## 前缀和的想法",
+      "",
+      "前缀和数组存储每个位置的累积和。如果你想知道从索引i到j的元素和，你不必重复求和 - 你从前缀和数组用O(1)计算它。",
+      "",
+      "没有前缀和：从索引2到5的和需要检查元素[2], [3], [4], [5] = O(n)每次查询。",
+      "",
+      "有前缀和：从索引2到5的和 = prefix[6] - prefix[2] = O(1)每次查询。",
+      "",
+      "## 构建前缀和数组",
+      "",
+      "```javascript",
+      "function buildPrefixSum(arr) {",
+      "  const prefix = [0]  // prefix[0] = 0（空和）",
+      "  for (let i = 0; i < arr.length; i++) {",
+      "    prefix[i + 1] = prefix[i] + arr[i]",
+      "  }",
+      "  return prefix",
+      "  // prefix[i] = arr[0]到arr[i-1]的和",
+      "}",
+      "```",
+      "",
+      "**示例：**",
+      "```",
+      "arr = [1, 2, 3, 4, 5]",
+      "prefix = [0, 1, 3, 6, 10, 15]",
+      "  索引：   0  1  2  3   4   5",
+      "```",
+      "",
+      "- `prefix[0] = 0`（没有元素的和）",
+      "- `prefix[1] = 1`（arr[0]的和）",
+      "- `prefix[2] = 3`（arr[0] + arr[1]的和）",
+      "- `prefix[5] = 15`（所有元素的和）",
+      "",
+      "## 查询范围和",
+      "",
+      "要找从索引i到j（包括）的元素和：",
+      "",
+      "```javascript",
+      "function rangeSum(prefix, i, j) {",
+      "  return prefix[j + 1] - prefix[i]",
+      "}",
+      "```",
+      "",
+      "对于我们的例子，从索引1到3的和：",
+      "- `rangeSum(prefix, 1, 3) = prefix[4] - prefix[1] = 10 - 1 = 9`",
+      "- 这是arr[1] + arr[2] + arr[3] = 2 + 3 + 4 = 9 ✓",
+      "",
+      "## 真实问题：区间和查询1D",
+      "",
+      "给定一个数组，回答多个范围和查询。幼稚的方法是O(n)每次查询。前缀和在O(n)预处理后O(1)每次查询。",
+      "",
+      "```javascript",
+      "class NumArray {",
+      "  constructor(nums) {",
+      "    this.prefix = [0]",
+      "    for (const num of nums) {",
+      "      this.prefix.push(this.prefix[this.prefix.length - 1] + num)",
+      "    }",
+      "  }",
+      "  ",
+      "  sumRange(left, right) {",
+      "    return this.prefix[right + 1] - this.prefix[left]",
+      "  }",
+      "}",
+      "```",
+      "",
+      "## 差分数组用于范围更新",
+      "",
+      "前缀和对查询很好。对于更新（特别是范围更新），我们使用差分数组。与修改范围中的所有元素（O(n)）不同，我们只更新两个边界点（O(1)）。",
+      "",
+      "**差分数组方法：**",
+      "- 要添加值`v`到范围[i, j]，做：`diff[i] += v`和`diff[j+1] -= v`",
+      "- 然后计算差分数组的前缀和以获得最终数组",
+      "",
+      "## 用差分数组构建",
+      "",
+      "```javascript",
+      "function updateRange(arr, i, j, val) {",
+      "  const diff = new Array(arr.length + 1).fill(0)",
+      "  ",
+      "  // 对于每个更新，在差分数组中标记边界",
+      "  diff[i] += val",
+      "  diff[j + 1] -= val",
+      "  ",
+      "  // 从差分数组重建最终数组",
+      "  let current = 0",
+      "  for (let k = 0; k < arr.length; k++) {",
+      "    current += diff[k]",
+      "    arr[k] += current",
+      "  }",
+      "  return arr",
+      "}",
+      "```",
+      "",
+      "**示例：添加5到范围[1, 3]**",
+      "```",
+      "之前：[1, 2, 3, 4, 5]",
+      "差分数组：[0, 5, 0, 0, -5, 0]",
+      "重建：current = 0",
+      "  k=0: current += diff[0] = 0, arr[0] = 1 + 0 = 1",
+      "  k=1: current += diff[1] = 5, arr[1] = 2 + 5 = 7",
+      "  k=2: current += diff[2] = 5, arr[2] = 3 + 5 = 8",
+      "  k=3: current += diff[3] = 5, arr[3] = 4 + 5 = 9",
+      "  k=4: current += diff[4] = 0, arr[4] = 5 + 0 = 5",
+      "之后：[1, 7, 8, 9, 5]",
+      "```",
+      "",
+      "## 多个范围更新的最优模式",
+      "",
+      "如果你需要多个范围更新然后最后一个查询：",
+      "",
+      "```javascript",
+      "class RangeUpdateProcessor {",
+      "  constructor(n) {",
+      "    this.diff = new Array(n + 1).fill(0)",
+      "  }",
+      "  ",
+      "  addRange(i, j, val) {",
+      "    // O(1)每个更新",
+      "    this.diff[i] += val",
+      "    this.diff[j + 1] -= val",
+      "  }",
+      "  ",
+      "  getArray() {",
+      "    // O(n)重建最终数组",
+      "    const result = []",
+      "    let current = 0",
+      "    for (let i = 0; i < this.diff.length - 1; i++) {",
+      "      current += this.diff[i]",
+      "      result.push(current)",
+      "    }",
+      "    return result",
+      "  }",
+      "}",
+      "```",
+      "",
+      "## 时间复杂度比较",
+      "",
+      "| 问题 | 幼稚 | 前缀和 | 差分 |",
+      "|------|------|---------|------|",
+      "| 单个范围查询 | O(n) | O(1)构建后O(n) | N/A |",
+      "| m个范围查询 | O(m*n) | 构建后O(m) | N/A |",
+      "| 单个范围更新 | O(n) | N/A | O(1) |",
+      "| m个范围更新+最终查询 | O(m*n) | N/A | O(m + n) |",
+      "",
+      "## 关键洞察",
+      "",
+      "前缀和用空间换时间：用O(n)额外空间以O(1)回答查询。差分数组反转这一点用于更新：O(1)回答多个更新，然后花费O(n)重建。根据需要优化的内容选择。"
+    ].join('\n'),
   },
   leetcode: [
-    {
-      id: 303,
-      title: 'Range Sum Query - Immutable',
-      titleZh: '区域和检索 - 数组不可变',
-      difficulty: 'Easy',
-    },
-    {
-      id: 304,
-      title: 'Range Sum Query 2D - Immutable',
-      titleZh: '二维区域和检索 - 矩阵不可变',
-      difficulty: 'Medium',
-    },
-    {
-      id: 560,
-      title: 'Subarray Sum Equals K',
-      titleZh: '和为K的子数组',
-      difficulty: 'Medium',
-    },
+    { id: 303, title: 'Range Sum Query - Immutable', titleZh: '区间和检索 - 数组不可变', difficulty: 'Easy' },
+    { id: 560, title: 'Subarray Sum Equals K', titleZh: '和为K的子数组', difficulty: 'Medium' },
+    { id: 304, title: 'Range Sum Query 2D - Immutable', titleZh: '二维区间和检索 - 数组不可变', difficulty: 'Medium' },
   ],
 }

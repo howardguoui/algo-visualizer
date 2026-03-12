@@ -1,378 +1,360 @@
-import { TopicContent } from '../../types';
+import type { TopicContent } from '../../types'
 
 export const binaryHeapContent: TopicContent = {
   id: 'heaps-binary-heap',
-  title: {
-    en: 'Binary Heap and Priority Queue',
-    zh: '二叉堆与优先级队列'
-  },
-  description: {
-    en: 'Master heap operations and priority queues for Top-K problems and efficient selection',
-    zh: '掌握堆操作和优先级队列，用于Top-K问题和高效选择'
-  },
-  timeEstimate: '50 minutes',
+  title: { en: 'Binary Heap & Priority Queue', zh: '二叉堆与优先队列' },
+  description: { en: 'Master heap structure, heapify operation, and the Top-K pattern', zh: '掌握堆结构、堆化操作和Top-K模式' },
+  timeEstimate: '40 min',
   contentType: 'content+practice',
   hasVisualizer: false,
   content: {
-    en: `# Binary Heap and Priority Queue
-
-A binary heap is a complete binary tree where each node is either greater than or equal to (max-heap) or less than or equal to (min-heap) its children. This structure enables O(log n) insertion and extraction while maintaining sorted order.
-
-## Heap Properties
-
-**Complete Binary Tree**: All levels are fully filled except possibly the last, which is filled left to right.
-
-**Heap Property**:
-- **Max-Heap**: Parent >= Children (largest element at root)
-- **Min-Heap**: Parent <= Children (smallest element at root)
-
-**Array Representation**:
-- Root at index 0
-- Left child of index i at index 2i + 1
-- Right child of index i at index 2i + 2
-- Parent of index i at index floor((i - 1) / 2)
-
-## Core Heap Operations
-
-### Insertion (Heapify Up)
-
-Insert at the end, then bubble up to restore heap property:
-
-\`\`\`javascript
-function insert(heap, value) {
-  heap.push(value);
-  let idx = heap.length - 1;
-
-  // Bubble up: compare with parent and swap if needed
-  while (idx > 0) {
-    const parentIdx = Math.floor((idx - 1) / 2);
-    if (heap[idx] > heap[parentIdx]) {
-      // Swap with parent (for max-heap)
-      [heap[idx], heap[parentIdx]] = [heap[parentIdx], heap[idx]];
-      idx = parentIdx;
-    } else {
-      break;
-    }
-  }
-}
-\`\`\`
-
-**Time Complexity**: O(log n) - at most heap height swaps
-
-### Extraction (Heapify Down)
-
-Remove root, move last element to root, then bubble down:
-
-\`\`\`javascript
-function extractMax(heap) {
-  if (heap.length === 0) return null;
-
-  const max = heap[0];
-  heap[0] = heap[heap.length - 1];
-  heap.pop();
-
-  let idx = 0;
-  // Bubble down: swap with larger child
-  while (true) {
-    let largest = idx;
-    const left = 2 * idx + 1;
-    const right = 2 * idx + 2;
-
-    if (left < heap.length && heap[left] > heap[largest]) {
-      largest = left;
-    }
-    if (right < heap.length && heap[right] > heap[largest]) {
-      largest = right;
-    }
-
-    if (largest !== idx) {
-      [heap[idx], heap[largest]] = [heap[largest], heap[idx]];
-      idx = largest;
-    } else {
-      break;
-    }
-  }
-
-  return max;
-}
-\`\`\`
-
-**Time Complexity**: O(log n) - at most heap height swaps
-
-### Heapify (Build Heap)
-
-Convert array into heap in O(n) time:
-
-\`\`\`javascript
-function buildHeap(arr) {
-  // Start from last non-leaf node and heapify down
-  for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {
-    heapifyDown(arr, i);
-  }
-  return arr;
-}
-\`\`\`
-
-## Priority Queue Implementation
-
-JavaScript doesn't have built-in heaps, so we use array-based heaps:
-
-\`\`\`javascript
-class MaxPriorityQueue {
-  constructor() {
-    this.heap = [];
-  }
-
-  enqueue(val) {
-    this.heap.push(val);
-    this._bubbleUp(this.heap.length - 1);
-  }
-
-  dequeue() {
-    if (this.heap.length === 0) return null;
-    const max = this.heap[0];
-    this.heap[0] = this.heap.pop();
-    this._bubbleDown(0);
-    return max;
-  }
-
-  _bubbleUp(idx) {
-    while (idx > 0) {
-      const parentIdx = Math.floor((idx - 1) / 2);
-      if (this.heap[idx] > this.heap[parentIdx]) {
-        [this.heap[idx], this.heap[parentIdx]] =
-          [this.heap[parentIdx], this.heap[idx]];
-        idx = parentIdx;
-      } else break;
-    }
-  }
-
-  _bubbleDown(idx) {
-    while (true) {
-      let largest = idx;
-      const left = 2 * idx + 1;
-      const right = 2 * idx + 2;
-
-      if (left < this.heap.length &&
-          this.heap[left] > this.heap[largest]) {
-        largest = left;
-      }
-      if (right < this.heap.length &&
-          this.heap[right] > this.heap[largest]) {
-        largest = right;
-      }
-
-      if (largest !== idx) {
-        [this.heap[idx], this.heap[largest]] =
-          [this.heap[largest], this.heap[idx]];
-        idx = largest;
-      } else break;
-    }
-  }
-}
-\`\`\`
-
-## Top-K Problems Pattern
-
-The heap excels at Top-K problems where you need the k largest (or smallest) elements:
-
-**Strategy for Top-K Largest**:
-1. Create a min-heap of size k
-2. Iterate through all elements
-3. If element > min of heap, remove min and insert element
-4. Result: k largest elements remain
-
-**Time**: O(n log k) - better than O(n log n) sorting when k << n
-
-## Key Insights
-
-- **Insert/Extract**: O(log n) operations maintain sorted property
-- **Top-K Problems**: Use heap of size k for O(n log k) efficiency
-- **Heapify Building**: O(n) linear time construction vs O(n log n) insertions
-- **Array Indexing**: Master parent/child index formulas
-- **Max vs Min**: Just flip comparison operators`,
-    zh: `# 二叉堆与优先级队列
-
-二叉堆是一种完全二叉树，其中每个节点都大于等于（最大堆）或小于等于（最小堆）其子节点。这个结构实现了O(log n)的插入和提取，同时维持排序顺序。
-
-## 堆的特性
-
-**完全二叉树**：除最后一层可能未满外，所有层都完全填充。最后一层从左到右填充。
-
-**堆特性**：
-- **最大堆**：父节点 >= 子节点（最大元素在根）
-- **最小堆**：父节点 <= 子节点（最小元素在根）
-
-**数组表示**：
-- 根在索引0
-- 索引i的左子节点在索引2i + 1
-- 索引i的右子节点在索引2i + 2
-- 索引i的父节点在索引floor((i - 1) / 2)
-
-## 核心堆操作
-
-### 插入（向上调整）
-
-在末尾插入，然后向上冒泡以恢复堆特性：
-
-\`\`\`javascript
-function insert(heap, value) {
-  heap.push(value);
-  let idx = heap.length - 1;
-
-  // 向上冒泡：与父节点比较并交换
-  while (idx > 0) {
-    const parentIdx = Math.floor((idx - 1) / 2);
-    if (heap[idx] > heap[parentIdx]) {
-      // 与父节点交换（最大堆）
-      [heap[idx], heap[parentIdx]] = [heap[parentIdx], heap[idx]];
-      idx = parentIdx;
-    } else {
-      break;
-    }
-  }
-}
-\`\`\`
-
-**时间复杂度**：O(log n) - 最多堆高度次交换
-
-### 提取（向下调整）
-
-移除根，将最后一个元素移到根，然后向下冒泡：
-
-\`\`\`javascript
-function extractMax(heap) {
-  if (heap.length === 0) return null;
-
-  const max = heap[0];
-  heap[0] = heap[heap.length - 1];
-  heap.pop();
-
-  let idx = 0;
-  // 向下冒泡：与较大的子节点交换
-  while (true) {
-    let largest = idx;
-    const left = 2 * idx + 1;
-    const right = 2 * idx + 2;
-
-    if (left < heap.length && heap[left] > heap[largest]) {
-      largest = left;
-    }
-    if (right < heap.length && heap[right] > heap[largest]) {
-      largest = right;
-    }
-
-    if (largest !== idx) {
-      [heap[idx], heap[largest]] = [heap[largest], heap[idx]];
-      idx = largest;
-    } else {
-      break;
-    }
-  }
-
-  return max;
-}
-\`\`\`
-
-**时间复杂度**：O(log n) - 最多堆高度次交换
-
-### 建堆（Heapify）
-
-在O(n)时间内将数组转换为堆：
-
-\`\`\`javascript
-function buildHeap(arr) {
-  // 从最后一个非叶子节点开始向下调整
-  for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {
-    heapifyDown(arr, i);
-  }
-  return arr;
-}
-\`\`\`
-
-## 优先级队列实现
-
-JavaScript没有内置堆，所以使用基于数组的堆：
-
-\`\`\`javascript
-class MaxPriorityQueue {
-  constructor() {
-    this.heap = [];
-  }
-
-  enqueue(val) {
-    this.heap.push(val);
-    this._bubbleUp(this.heap.length - 1);
-  }
-
-  dequeue() {
-    if (this.heap.length === 0) return null;
-    const max = this.heap[0];
-    this.heap[0] = this.heap.pop();
-    this._bubbleDown(0);
-    return max;
-  }
-
-  _bubbleUp(idx) {
-    while (idx > 0) {
-      const parentIdx = Math.floor((idx - 1) / 2);
-      if (this.heap[idx] > this.heap[parentIdx]) {
-        [this.heap[idx], this.heap[parentIdx]] =
-          [this.heap[parentIdx], this.heap[idx]];
-        idx = parentIdx;
-      } else break;
-    }
-  }
-
-  _bubbleDown(idx) {
-    while (true) {
-      let largest = idx;
-      const left = 2 * idx + 1;
-      const right = 2 * idx + 2;
-
-      if (left < this.heap.length &&
-          this.heap[left] > this.heap[largest]) {
-        largest = left;
-      }
-      if (right < this.heap.length &&
-          this.heap[right] > this.heap[largest]) {
-        largest = right;
-      }
-
-      if (largest !== idx) {
-        [this.heap[idx], this.heap[largest]] =
-          [this.heap[largest], this.heap[idx]];
-        idx = largest;
-      } else break;
-    }
-  }
-}
-\`\`\`
-
-## Top-K问题模式
-
-堆擅长于需要k个最大（或最小）元素的Top-K问题：
-
-**Top-K最大元素策略**：
-1. 创建大小为k的最小堆
-2. 遍历所有元素
-3. 如果元素 > 堆的最小值，移除最小值并插入元素
-4. 结果：k个最大元素保留
-
-**时间**：O(n log k) - 当k远小于n时优于O(n log n)排序
-
-## 关键洞察
-
-- **插入/提取**：O(log n)操作维持排序特性
-- **Top-K问题**：使用大小为k的堆实现O(n log k)效率
-- **堆的构建**：O(n)线性时间构建优于O(n log n)逐个插入
-- **数组索引**：掌握父子节点索引公式
-- **最大堆vs最小堆**：只需反转比较运算符`
+    en: [
+      "## What is a Heap?",
+      "",
+      "A heap is a complete binary tree where each parent is larger (max heap) or smaller (min heap) than its children. The key insight: this is NOT a sorted array. It's a partial ordering that enables efficient min/max access.",
+      "",
+      "```",
+      "Max Heap:         Min Heap:",
+      "       9               1",
+      "      / \\             / \\",
+      "     7   8           2   3",
+      "    / \\ /           / \\ /",
+      "   3  5 2         8  9 4 5",
+      "",
+      "Parent >= children   Parent <= children",
+      "```",
+      "",
+      "## Heap as Array",
+      "",
+      "Heaps are stored as arrays where the structure is implicit:",
+      "- Node at index i has:",
+      "  - Left child at index 2*i + 1",
+      "  - Right child at index 2*i + 2",
+      "  - Parent at index Math.floor((i - 1) / 2)",
+      "",
+      "This array representation avoids pointers and works perfectly with dynamic arrays.",
+      "",
+      "## Heapify Down (Bubble Down)",
+      "",
+      "When a node violates the heap property, swap it with the larger (max heap) or smaller (min heap) child recursively.",
+      "",
+      "```javascript",
+      "function heapifyDown(arr, i) {",
+      "  const size = arr.length",
+      "  while (true) {",
+      "    let largest = i",
+      "    const left = 2 * i + 1",
+      "    const right = 2 * i + 2",
+      "    ",
+      "    if (left < size && arr[left] > arr[largest]) {",
+      "      largest = left",
+      "    }",
+      "    if (right < size && arr[right] > arr[largest]) {",
+      "      largest = right",
+      "    }",
+      "    ",
+      "    if (largest === i) break  // Heap property satisfied",
+      "    ",
+      "    [arr[i], arr[largest]] = [arr[largest], arr[i]]",
+      "    i = largest",
+      "  }",
+      "}",
+      "```",
+      "",
+      "**Time**: O(log n) - each swap goes down one level.",
+      "",
+      "## Heapify Up (Bubble Up)",
+      "",
+      "When inserting a new element, add at the end and bubble up.",
+      "",
+      "```javascript",
+      "function heapifyUp(arr, i) {",
+      "  while (i > 0) {",
+      "    const parent = Math.floor((i - 1) / 2)",
+      "    if (arr[i] <= arr[parent]) break",
+      "    [arr[i], arr[parent]] = [arr[parent], arr[i]]",
+      "    i = parent",
+      "  }",
+      "}",
+      "```",
+      "",
+      "**Time**: O(log n) - moves up through parent links.",
+      "",
+      "## Building a Heap",
+      "",
+      "To build a heap from unsorted array, heapify down from the last non-leaf node.",
+      "",
+      "```javascript",
+      "function buildHeap(arr) {",
+      "  for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {",
+      "    heapifyDown(arr, i)",
+      "  }",
+      "}",
+      "```",
+      "",
+      "**Time**: O(n) - surprisingly efficient! Most nodes are leaves, only O(n) nodes to heapify.",
+      "",
+      "## Priority Queue Operations",
+      "",
+      "A priority queue is a heap interface for common operations:",
+      "",
+      "```javascript",
+      "class MaxHeap {",
+      "  constructor() { this.heap = [] }",
+      "  ",
+      "  push(val) {",
+      "    this.heap.push(val)",
+      "    this.heapifyUp(this.heap.length - 1)",
+      "  }",
+      "  ",
+      "  pop() {",
+      "    if (this.heap.length === 0) return null",
+      "    const max = this.heap[0]",
+      "    const last = this.heap.pop()",
+      "    if (this.heap.length) {",
+      "      this.heap[0] = last",
+      "      this.heapifyDown(0)",
+      "    }",
+      "    return max",
+      "  }",
+      "  ",
+      "  peek() { return this.heap[0] }",
+      "  ",
+      "  heapifyUp(i) {",
+      "    while (i > 0) {",
+      "      const parent = Math.floor((i - 1) / 2)",
+      "      if (this.heap[i] <= this.heap[parent]) break",
+      "      [this.heap[i], this.heap[parent]] = [this.heap[parent], this.heap[i]]",
+      "      i = parent",
+      "    }",
+      "  }",
+      "  ",
+      "  heapifyDown(i) {",
+      "    const size = this.heap.length",
+      "    while (true) {",
+      "      let largest = i",
+      "      const left = 2 * i + 1",
+      "      const right = 2 * i + 2",
+      "      if (left < size && this.heap[left] > this.heap[largest]) largest = left",
+      "      if (right < size && this.heap[right] > this.heap[largest]) largest = right",
+      "      if (largest === i) break",
+      "      [this.heap[i], this.heap[largest]] = [this.heap[largest], this.heap[i]]",
+      "      i = largest",
+      "    }",
+      "  }",
+      "}",
+      "```",
+      "",
+      "| Operation | Time |",
+      "|-----------|------|",
+      "| Push | O(log n) |",
+      "| Pop | O(log n) |",
+      "| Peek | O(1) |",
+      "",
+      "## The Top-K Pattern",
+      "",
+      "Find the k largest (or smallest) elements. Heaps are perfect for this.",
+      "",
+      "**Approach 1: Max Heap, extract k times**",
+      "```javascript",
+      "function findKLargest(nums, k) {",
+      "  const heap = new MaxHeap()",
+      "  for (const num of nums) heap.push(num)",
+      "  const result = []",
+      "  for (let i = 0; i < k; i++) result.push(heap.pop())",
+      "  return result",
+      "}",
+      "// Time: O(n log n) build + O(k log n) extraction = O(n log n)",
+      "```",
+      "",
+      "**Approach 2: Min Heap of size k**",
+      "```javascript",
+      "function findKLargest(nums, k) {",
+      "  const heap = new MinHeap()",
+      "  for (const num of nums) {",
+      "    heap.push(num)",
+      "    if (heap.size() > k) heap.pop()  // Keep only k largest",
+      "  }",
+      "  return heap.heap",
+      "}",
+      "// Time: O(n log k) - better if k << n",
+      "```",
+      "",
+      "In approach 2, we maintain a min heap of the k largest elements. The top of this heap is the k-th largest. When a new element is larger than the heap top, we pop the small element and insert the large one.",
+      "",
+      "## When to Use Heaps",
+      "",
+      "- **Scheduling**: priority queue for tasks",
+      "- **Top-K problems**: most efficient for k << n",
+      "- **Median finding**: combine min and max heaps",
+      "- **Dijkstra's algorithm**: priority queue for edge weights",
+      "- **Heap sort**: convert unsorted array to sorted in O(n log n)"
+    ].join('\n'),
+    zh: [
+      "## 什么是堆？",
+      "",
+      "堆是一个完全二叉树，其中每个父节点大于（最大堆）或小于（最小堆）其子节点。关键洞察：这不是排序数组。它是一个部分排序，启用高效的最小/最大访问。",
+      "",
+      "```",
+      "最大堆：          最小堆：",
+      "       9               1",
+      "      / \\             / \\",
+      "     7   8           2   3",
+      "    / \\ /           / \\ /",
+      "   3  5 2         8  9 4 5",
+      "",
+      "父 >= 子          父 <= 子",
+      "```",
+      "",
+      "## 堆作为数组",
+      "",
+      "堆作为数组存储，其中结构是隐式的：",
+      "- 索引i处的节点有：",
+      "  - 左子在索引2*i + 1",
+      "  - 右子在索引2*i + 2",
+      "  - 父在索引Math.floor((i - 1) / 2)",
+      "",
+      "这个数组表示避免指针且与动态数组完美工作。",
+      "",
+      "## 堆化下沉（下降冒泡）",
+      "",
+      "当节点违反堆属性时，递归地与较大（最大堆）或较小（最小堆）的孩子交换。",
+      "",
+      "```javascript",
+      "function heapifyDown(arr, i) {",
+      "  const size = arr.length",
+      "  while (true) {",
+      "    let largest = i",
+      "    const left = 2 * i + 1",
+      "    const right = 2 * i + 2",
+      "    ",
+      "    if (left < size && arr[left] > arr[largest]) {",
+      "      largest = left",
+      "    }",
+      "    if (right < size && arr[right] > arr[largest]) {",
+      "      largest = right",
+      "    }",
+      "    ",
+      "    if (largest === i) break  // 堆属性满足",
+      "    ",
+      "    [arr[i], arr[largest]] = [arr[largest], arr[i]]",
+      "    i = largest",
+      "  }",
+      "}",
+      "```",
+      "",
+      "**时间**：O(log n) - 每次交换向下一个级别。",
+      "",
+      "## 堆化上升（上升冒泡）",
+      "",
+      "插入新元素时，添加在末尾并上升冒泡。",
+      "",
+      "```javascript",
+      "function heapifyUp(arr, i) {",
+      "  while (i > 0) {",
+      "    const parent = Math.floor((i - 1) / 2)",
+      "    if (arr[i] <= arr[parent]) break",
+      "    [arr[i], arr[parent]] = [arr[parent], arr[i]]",
+      "    i = parent",
+      "  }",
+      "}",
+      "```",
+      "",
+      "**时间**：O(log n) - 通过父链接向上移动。",
+      "",
+      "## 构建堆",
+      "",
+      "要从无序数组构建堆，从最后一个非叶节点堆化下沉。",
+      "",
+      "```javascript",
+      "function buildHeap(arr) {",
+      "  for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {",
+      "    heapifyDown(arr, i)",
+      "  }",
+      "}",
+      "```",
+      "",
+      "**时间**：O(n) - 令人惊讶的高效！大多数节点是叶，仅O(n)个节点堆化。",
+      "",
+      "## 优先队列操作",
+      "",
+      "优先队列是堆接口用于常见操作：",
+      "",
+      "```javascript",
+      "class MaxHeap {",
+      "  constructor() { this.heap = [] }",
+      "  ",
+      "  push(val) {",
+      "    this.heap.push(val)",
+      "    this.heapifyUp(this.heap.length - 1)",
+      "  }",
+      "  ",
+      "  pop() {",
+      "    if (this.heap.length === 0) return null",
+      "    const max = this.heap[0]",
+      "    const last = this.heap.pop()",
+      "    if (this.heap.length) {",
+      "      this.heap[0] = last",
+      "      this.heapifyDown(0)",
+      "    }",
+      "    return max",
+      "  }",
+      "  ",
+      "  peek() { return this.heap[0] }",
+      "  ",
+      "  // heapifyUp和heapifyDown实现如上",
+      "}",
+      "```",
+      "",
+      "| 操作 | 时间 |",
+      "|------|------|",
+      "| 推入 | O(log n) |",
+      "| 弹出 | O(log n) |",
+      "| 窥视 | O(1) |",
+      "",
+      "## Top-K模式",
+      "",
+      "找k个最大（或最小）的元素。堆对此完美。",
+      "",
+      "**方法1：最大堆，提取k次**",
+      "```javascript",
+      "function findKLargest(nums, k) {",
+      "  const heap = new MaxHeap()",
+      "  for (const num of nums) heap.push(num)",
+      "  const result = []",
+      "  for (let i = 0; i < k; i++) result.push(heap.pop())",
+      "  return result",
+      "}",
+      "// 时间：O(n log n)构建 + O(k log n)提取 = O(n log n)",
+      "```",
+      "",
+      "**方法2：大小k的最小堆**",
+      "```javascript",
+      "function findKLargest(nums, k) {",
+      "  const heap = new MinHeap()",
+      "  for (const num of nums) {",
+      "    heap.push(num)",
+      "    if (heap.size() > k) heap.pop()  // 仅保留k个最大",
+      "  }",
+      "  return heap.heap",
+      "}",
+      "// 时间：O(n log k) - 如果k << n更好",
+      "```",
+      "",
+      "在方法2中，我们维护k个最大元素的最小堆。这个堆的顶部是第k个最大。当新元素大于堆顶时，我们弹出小元素并插入大元素。",
+      "",
+      "## 何时使用堆",
+      "",
+      "- **调度**：任务的优先队列",
+      "- **Top-K问题**：当k << n时最高效",
+      "- **中位数查找**：结合最小和最大堆",
+      "- **Dijkstra算法**：边权重的优先队列",
+      "- **堆排序**：将无序数组转换为排序数组，O(n log n)"
+    ].join('\n'),
   },
   leetcode: [
     { id: 215, title: 'Kth Largest Element in an Array', titleZh: '数组中的第K个最大元素', difficulty: 'Medium' },
     { id: 347, title: 'Top K Frequent Elements', titleZh: '前K个高频元素', difficulty: 'Medium' },
-    { id: 23, title: 'Merge k Sorted Lists', titleZh: '合并K个升序链表', difficulty: 'Hard' },
-    { id: 295, title: 'Find Median from Data Stream', titleZh: '数据流的中位数', difficulty: 'Hard' }
-  ]
-};
+    { id: 295, title: 'Find Median from Data Stream', titleZh: '数据流的中位数', difficulty: 'Hard' },
+  ],
+}
