@@ -2478,6 +2478,721 @@ function lastStoneWeightII(stones) {
     ],
     hint: 'Partition stones into two groups minimizing |sum(A)-sum(B)|. This equals: find largest subset sum <= total/2. 0/1 knapsack: dp[j]=achievable? Answer = total - 2*max achievable.',
   },
+
+  // ── Batch B1 ─────────────────────────────────────────────────────────────
+
+  61: {
+    id: 61,
+    title: 'Rotate List',
+    titleZh: '旋转链表',
+    difficulty: 'Medium',
+    leetcodeSlug: 'rotate-list',
+    tags: ['Linked List', 'Two Pointers'],
+    description: `Given the head of a linked list, rotate the list to the **right** by \`k\` places.
+
+**Note:** \`solve(arr, k)\` converts array → list → array for testing.`,
+    examples: [
+      { input: 'head = [1,2,3,4,5], k = 2', output: '[4,5,1,2,3]' },
+      { input: 'head = [0,1,2], k = 4', output: '[2,0,1]' },
+    ],
+    constraints: ['The number of nodes in the list is in the range [0, 500].', '-100 <= Node.val <= 100', '0 <= k <= 2 * 10^9'],
+    starterCode: `class ListNode {
+  constructor(val, next) { this.val = val===undefined?0:val; this.next = next===undefined?null:next; }
+}
+const buildList = arr => { if(!arr?.length)return null; let h=new ListNode(arr[0]),c=h; for(let i=1;i<arr.length;i++){c.next=new ListNode(arr[i]);c=c.next;} return h; };
+const listToArr = h => { const r=[]; while(h){r.push(h.val);h=h.next;} return r; };
+
+/**
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode}
+ */
+function rotateRight(head, k) {
+
+}
+
+// Test adapter (do not remove)
+function solve(arr, k) { return listToArr(rotateRight(buildList(arr), k)); }`,
+    starterCodePython: `class ListNode:
+    def __init__(self, val=0, next=None): self.val = val; self.next = next
+
+def build_list(arr):
+    if not arr: return None
+    head = ListNode(arr[0]); cur = head
+    for v in arr[1:]: cur.next = ListNode(v); cur = cur.next
+    return head
+
+def list_to_arr(head):
+    res = []
+    while head: res.append(head.val); head = head.next
+    return res
+
+class Solution:
+    def rotateRight(self, head: ListNode, k: int) -> ListNode:
+        pass
+
+def solve(arr, k): return list_to_arr(Solution().rotateRight(build_list(arr), k))`,
+    testCases: [
+      { label: '[1,2,3,4,5], k=2', args: [[1,2,3,4,5], 2], expected: [4,5,1,2,3] },
+      { label: '[0,1,2], k=4', args: [[0,1,2], 4], expected: [2,0,1] },
+      { label: 'Empty', args: [[], 0], expected: [] },
+      { label: 'Single, k=1', args: [[1], 1], expected: [1] },
+      { label: 'k=0', args: [[1,2,3], 0], expected: [1,2,3] },
+    ],
+    hint: 'Find length n, reduce k = k % n. Connect tail to head (circular). Walk (n - k) steps to find new tail; newHead = newTail.next; newTail.next = null.',
+  },
+
+  901: {
+    id: 901,
+    title: 'Online Stock Span',
+    titleZh: '股票价格跨度',
+    difficulty: 'Medium',
+    leetcodeSlug: 'online-stock-span',
+    tags: ['Stack', 'Design', 'Monotonic Stack', 'Data Stream'],
+    description: `Design an algorithm that collects daily price quotes and returns the **span** of the stock's price for the current day.
+
+The span is the number of consecutive days (ending today) where the price was **≤ today's price**.
+
+**Note:** \`solve(prices)\` creates a \`StockSpanner\`, calls \`next\` on each price, and returns all spans.`,
+    examples: [
+      { input: 'prices = [100,80,60,70,60,75,85]', output: '[1,1,1,2,1,4,6]' },
+    ],
+    constraints: ['1 <= price <= 10^5', 'At most 10^4 calls to next.'],
+    starterCode: `var StockSpanner = function() {
+
+};
+
+/**
+ * @param {number} price
+ * @return {number}
+ */
+StockSpanner.prototype.next = function(price) {
+
+};
+
+// Test adapter (do not remove)
+function solve(prices) {
+  const s = new StockSpanner();
+  return prices.map(p => s.next(p));
+}`,
+    starterCodePython: `class StockSpanner:
+    def __init__(self):
+        pass
+
+    def next(self, price: int) -> int:
+        pass
+
+def solve(prices):
+    s = StockSpanner()
+    return [s.next(p) for p in prices]`,
+    testCases: [
+      { label: '[100,80,60,70,60,75,85]', args: [[100,80,60,70,60,75,85]], expected: [1,1,1,2,1,4,6] },
+      { label: '[30,40,100,90,110]', args: [[30,40,100,90,110]], expected: [1,2,3,1,5] },
+      { label: 'All same', args: [[5,5,5,5]], expected: [1,2,3,4] },
+      { label: 'Descending', args: [[5,4,3,2,1]], expected: [1,1,1,1,1] },
+    ],
+    hint: 'Monotonic stack of (price, span) pairs. For each new price, pop all entries with price ≤ current, accumulating spans. Push (currentPrice, totalSpan). O(1) amortized.',
+  },
+
+  523: {
+    id: 523,
+    title: 'Continuous Subarray Sum',
+    titleZh: '连续的子数组和',
+    difficulty: 'Medium',
+    leetcodeSlug: 'continuous-subarray-sum',
+    tags: ['Array', 'Hash Table', 'Math', 'Prefix Sum'],
+    description: `Given an integer array \`nums\` and integer \`k\`, return \`true\` if \`nums\` has a **good subarray** — length **≥ 2** with sum that is a **multiple of k**.`,
+    examples: [
+      { input: 'nums = [23,2,4,6,7], k = 6', output: 'true', explanation: '[2,4] sums to 6.' },
+      { input: 'nums = [23,2,6,4,7], k = 6', output: 'true', explanation: '[23,2,6,4,7] sums to 42.' },
+      { input: 'nums = [23,2,6,4,7], k = 13', output: 'false' },
+    ],
+    constraints: ['1 <= nums.length <= 10^5', '0 <= nums[i] <= 10^9', '1 <= k <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {boolean}
+ */
+function checkSubarraySum(nums, k) {
+
+}`,
+    starterCodePython: `class Solution:
+    def checkSubarraySum(self, nums: list[int], k: int) -> bool:
+        pass`,
+    testCases: [
+      { label: '[23,2,4,6,7], k=6', args: [[23,2,4,6,7], 6], expected: true },
+      { label: '[23,2,6,4,7], k=6', args: [[23,2,6,4,7], 6], expected: true },
+      { label: '[23,2,6,4,7], k=13', args: [[23,2,6,4,7], 13], expected: false },
+      { label: '[0,0], k=1', args: [[0,0], 1], expected: true },
+      { label: '[1,0], k=2', args: [[1,0], 2], expected: false },
+    ],
+    hint: 'Prefix sum mod k. If prefix[j] % k == prefix[i] % k and j-i >= 2, then sum(i+1..j) is a multiple of k. Store first index of each remainder (seed {0: -1}). When same remainder seen again with gap ≥ 2, return true.',
+  },
+
+  525: {
+    id: 525,
+    title: 'Contiguous Array',
+    titleZh: '连续数组',
+    difficulty: 'Medium',
+    leetcodeSlug: 'contiguous-array',
+    tags: ['Array', 'Hash Table', 'Prefix Sum'],
+    description: `Given a binary array \`nums\`, return the maximum length of a contiguous subarray with **equal numbers of 0s and 1s**.`,
+    examples: [
+      { input: 'nums = [0,1]', output: '2' },
+      { input: 'nums = [0,1,0]', output: '2', explanation: '[0,1] or [1,0].' },
+    ],
+    constraints: ['1 <= nums.length <= 10^5', 'nums[i] is 0 or 1.'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function findMaxLength(nums) {
+
+}`,
+    starterCodePython: `class Solution:
+    def findMaxLength(self, nums: list[int]) -> int:
+        pass`,
+    testCases: [
+      { label: '[0,1]', args: [[0,1]], expected: 2 },
+      { label: '[0,1,0]', args: [[0,1,0]], expected: 2 },
+      { label: '[0,0,0,1,1,1]', args: [[0,0,0,1,1,1]], expected: 6 },
+      { label: '[0,1,1,0,1,1,1,0]', args: [[0,1,1,0,1,1,1,0]], expected: 4 },
+      { label: 'All zeros', args: [[0,0,0]], expected: 0 },
+    ],
+    hint: 'Replace 0s with -1s. Now find longest subarray with sum 0. Use prefix sum + map: if prefix[i] == prefix[j], subarray (i+1..j) has sum 0. Map stores first occurrence index of each prefix sum (seed {0: -1}).',
+  },
+
+  724: {
+    id: 724,
+    title: 'Find Pivot Index',
+    titleZh: '寻找数组的中心下标',
+    difficulty: 'Easy',
+    leetcodeSlug: 'find-pivot-index',
+    tags: ['Array', 'Prefix Sum'],
+    description: `Given array \`nums\`, return the **leftmost pivot index** — the index where the sum of all numbers **strictly to the left** equals the sum **strictly to the right**.
+
+Return \`-1\` if no such index exists.`,
+    examples: [
+      { input: 'nums = [1,7,3,6,5,6]', output: '3', explanation: 'leftSum = 11, rightSum = 11.' },
+      { input: 'nums = [1,2,3]', output: '-1' },
+      { input: 'nums = [2,1,-1]', output: '0', explanation: 'leftSum = 0, rightSum = 0.' },
+    ],
+    constraints: ['1 <= nums.length <= 10^4', '-1000 <= nums[i] <= 1000'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function pivotIndex(nums) {
+
+}`,
+    starterCodePython: `class Solution:
+    def pivotIndex(self, nums: list[int]) -> int:
+        pass`,
+    testCases: [
+      { label: '[1,7,3,6,5,6]', args: [[1,7,3,6,5,6]], expected: 3 },
+      { label: '[1,2,3]', args: [[1,2,3]], expected: -1 },
+      { label: '[2,1,-1]', args: [[2,1,-1]], expected: 0 },
+      { label: '[0]', args: [[0]], expected: 0 },
+      { label: '[-1,-1,-1,-1,-1,0]', args: [[-1,-1,-1,-1,-1,0]], expected: 2 },
+    ],
+    hint: 'Compute total sum. For each i, leftSum = running sum before i, rightSum = total - leftSum - nums[i]. Return i when leftSum == rightSum.',
+  },
+
+  1016: {
+    id: 1016,
+    title: 'Binary String With Substrings Representing 1 to N',
+    titleZh: '子串能表示从 1 到 N 数字的二进制串',
+    difficulty: 'Medium',
+    leetcodeSlug: 'binary-string-with-substrings-representing-1-to-n',
+    tags: ['String'],
+    description: `Given a binary string \`s\` and a positive integer \`n\`, return \`true\` if the binary representations of **all** integers in the range \`[1, n]\` are **substrings** of \`s\`.`,
+    examples: [
+      { input: 's = "0110", n = 3', output: 'true', explanation: '"1", "10", "11" are all substrings.' },
+      { input: 's = "0110", n = 4', output: 'false', explanation: '"100" is not a substring.' },
+    ],
+    constraints: ['1 <= s.length <= 1000', '1 <= n <= 10^9'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {number} n
+ * @return {boolean}
+ */
+function queryString(s, n) {
+
+}`,
+    starterCodePython: `class Solution:
+    def queryString(self, s: str, n: int) -> bool:
+        pass`,
+    testCases: [
+      { label: '"0110", n=3', args: ['0110', 3], expected: true },
+      { label: '"0110", n=4', args: ['0110', 4], expected: false },
+      { label: '"1", n=1', args: ['1', 1], expected: true },
+      { label: '"11", n=2', args: ['11', 2], expected: false },
+      { label: '"11011", n=3', args: ['11011', 3], expected: true },
+    ],
+    hint: 'Key insight: if n > 2*s.length, return false immediately (pigeonhole). Otherwise check each i from 1..n: convert i to binary and test s.includes(i.toString(2)).',
+  },
+
+  1219: {
+    id: 1219,
+    title: 'Path with Maximum Gold',
+    titleZh: '黄金矿工',
+    difficulty: 'Medium',
+    leetcodeSlug: 'path-with-maximum-gold',
+    tags: ['Array', 'Backtracking', 'Matrix'],
+    description: `In a gold mine \`grid\`, each cell has gold (0 = no gold). Starting at any non-zero cell, move in 4 directions without revisiting. Stop at 0 or boundary.
+
+Return the **maximum gold** collectible.`,
+    examples: [
+      { input: 'grid = [[0,6,0],[5,8,7],[0,9,0]]', output: '24', explanation: '9 → 8 → 7.' },
+      { input: 'grid = [[1,0,7],[2,0,6],[3,4,5],[0,3,0],[9,0,20]]', output: '28' },
+    ],
+    constraints: ['1 <= m, n <= 15', '0 <= grid[i][j] <= 100', 'At most 25 non-zero cells.'],
+    starterCode: `/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+function getMaximumGold(grid) {
+
+}`,
+    starterCodePython: `class Solution:
+    def getMaximumGold(self, grid: list[list[int]]) -> int:
+        pass`,
+    testCases: [
+      { label: '[[0,6,0],[5,8,7],[0,9,0]]', args: [[[0,6,0],[5,8,7],[0,9,0]]], expected: 24 },
+      { label: '[[1,0,7],[2,0,6],[3,4,5],[0,3,0],[9,0,20]]', args: [[[1,0,7],[2,0,6],[3,4,5],[0,3,0],[9,0,20]]], expected: 28 },
+      { label: '[[1]]', args: [[[1]]], expected: 1 },
+      { label: '[[0,1],[0,0]]', args: [[[0,1],[0,0]]], expected: 1 },
+    ],
+    hint: 'DFS + backtracking. From each non-zero cell, set cell to 0, recurse in 4 directions, restore cell. Track max gold. O(4^25) bounded by at-most-25 non-zero cells.',
+  },
+
+  1242: {
+    id: 1242,
+    title: 'Web Crawler Multithreaded',
+    titleZh: '多线程网页爬虫',
+    difficulty: 'Hard',
+    leetcodeSlug: 'web-crawler-multithreaded',
+    tags: ['Depth-First Search', 'Breadth-First Search', 'Concurrency'],
+    description: `Given a \`startUrl\` and a \`HtmlParser\` interface (\`getUrls(url)\`), crawl all URLs with the **same hostname** as \`startUrl\`. Return all visited URLs in any order.
+
+Hostname = the URL up to and including the 3rd \`/\` (e.g. \`"http://news.yahoo.com"\`).
+
+**Note:** \`solve(startUrl, urlMap)\` uses a mock parser; result is sorted for comparison.`,
+    examples: [
+      { input: 'startUrl = "http://news.yahoo.com/news/topics/"', output: 'all reachable same-hostname URLs (sorted)' },
+    ],
+    constraints: ['1 <= urls.length <= 1000'],
+    starterCode: `/**
+ * @param {string} startUrl
+ * @param {HtmlParser} htmlParser
+ * @return {string[]}
+ */
+function crawl(startUrl, htmlParser) {
+
+}
+
+// Test adapter (do not remove)
+function solve(startUrl, urlMap) {
+  const htmlParser = { getUrls: url => urlMap[url] || [] };
+  return crawl(startUrl, htmlParser).sort();
+}`,
+    starterCodePython: `class Solution:
+    def crawl(self, startUrl: str, htmlParser) -> list[str]:
+        pass
+
+def solve(start_url, url_map):
+    class Parser:
+        def getUrls(self, url): return url_map.get(url, [])
+    return sorted(Solution().crawl(start_url, Parser()))`,
+    testCases: [
+      {
+        label: 'Basic crawl',
+        args: [
+          'http://news.yahoo.com/news/topics/',
+          {
+            'http://news.yahoo.com/news/topics/': ['http://news.yahoo.com/news/topics/', 'http://news.yahoo.com/news'],
+            'http://news.yahoo.com/news': ['http://news.yahoo.com/news/topics/', 'http://news.yahoo.com/us'],
+            'http://news.yahoo.com/us': [],
+          },
+        ],
+        expected: ['http://news.yahoo.com/news', 'http://news.yahoo.com/news/topics/', 'http://news.yahoo.com/us'],
+      },
+      {
+        label: 'Cross-domain filtered',
+        args: [
+          'http://news.yahoo.com/news',
+          {
+            'http://news.yahoo.com/news': ['http://news.yahoo.com/us', 'http://en.wikipedia.org/wiki/Internet'],
+            'http://news.yahoo.com/us': [],
+          },
+        ],
+        expected: ['http://news.yahoo.com/news', 'http://news.yahoo.com/us'],
+      },
+    ],
+    hint: 'BFS from startUrl. Extract hostname: url.split("/").slice(0,3).join("/"). Only enqueue URLs with the same hostname. Use a visited Set. (Multithreading is optional; single-thread BFS is accepted.)',
+  },
+
+  1477: {
+    id: 1477,
+    title: 'Find Two Non-overlapping Sub-arrays Each With Target Sum',
+    titleZh: '找两个和为目标值且不重叠的子数组',
+    difficulty: 'Medium',
+    leetcodeSlug: 'find-two-non-overlapping-sub-arrays-each-with-target-sum',
+    tags: ['Array', 'Hash Table', 'Binary Search', 'Dynamic Programming', 'Sliding Window'],
+    description: `Given array \`arr\` (all **positive**) and integer \`target\`, find two **non-overlapping** subarrays each summing to \`target\`, minimizing the sum of their lengths.
+
+Return the **minimum total length**, or \`-1\` if impossible.`,
+    examples: [
+      { input: 'arr = [3,2,2,4,3], target = 3', output: '2', explanation: '[3] + [3], length 1+1.' },
+      { input: 'arr = [7,3,4,7], target = 7', output: '2' },
+      { input: 'arr = [4,3,2,6,2,3,4], target = 6', output: '-1' },
+    ],
+    constraints: ['1 <= arr.length <= 10^5', '1 <= arr[i] <= 1000', '1 <= target <= 10^8'],
+    starterCode: `/**
+ * @param {number[]} arr
+ * @param {number} target
+ * @return {number}
+ */
+function minSumOfLengths(arr, target) {
+
+}`,
+    starterCodePython: `class Solution:
+    def minSumOfLengths(self, arr: list[int], target: int) -> int:
+        pass`,
+    testCases: [
+      { label: '[3,2,2,4,3], target=3', args: [[3,2,2,4,3], 3], expected: 2 },
+      { label: '[7,3,4,7], target=7', args: [[7,3,4,7], 7], expected: 2 },
+      { label: '[4,3,2,6,2,3,4], target=6', args: [[4,3,2,6,2,3,4], 6], expected: -1 },
+      { label: '[1,2,3,1,2,3], target=6', args: [[1,2,3,1,2,3], 6], expected: 6 },
+      { label: '[1,1,1,2,1,1,1], target=3', args: [[1,1,1,2,1,1,1], 3], expected: 6 },
+    ],
+    hint: 'Sliding window (all positive) to find windows with sum=target. Maintain best[i] = min subarray length ending at or before i. For each valid window ending at r with left=l: answer = min(answer, windowLen + best[l-1]); then update best[r] = min(best[r-1], windowLen).',
+  },
+
+  370: {
+    id: 370,
+    title: 'Range Addition',
+    titleZh: '区间加法',
+    difficulty: 'Medium',
+    leetcodeSlug: 'range-addition',
+    tags: ['Array', 'Prefix Sum'],
+    description: `You have an integer array of size \`length\` initialized with zeros. Given \`updates\` where each is \`[startIndex, endIndex, inc]\`, add \`inc\` to each element from \`startIndex\` to \`endIndex\` inclusive.
+
+Return the modified array after all updates.`,
+    examples: [
+      { input: 'length = 5, updates = [[1,3,2],[2,4,3],[0,2,-2]]', output: '[-2,0,3,5,3]' },
+    ],
+    constraints: ['1 <= length <= 10^5', '0 <= updates.length <= 10^4', '0 <= startIndex <= endIndex < length', '-1000 <= inc <= 1000'],
+    starterCode: `/**
+ * @param {number} length
+ * @param {number[][]} updates
+ * @return {number[]}
+ */
+function getModifiedArray(length, updates) {
+
+}`,
+    starterCodePython: `class Solution:
+    def getModifiedArray(self, length: int, updates: list[list[int]]) -> list[int]:
+        pass`,
+    testCases: [
+      { label: 'length=5, [[1,3,2],[2,4,3],[0,2,-2]]', args: [5, [[1,3,2],[2,4,3],[0,2,-2]]], expected: [-2,0,3,5,3] },
+      { label: 'length=3, [[0,2,1]]', args: [3, [[0,2,1]]], expected: [1,1,1] },
+      { label: 'No updates', args: [4, []], expected: [0,0,0,0] },
+      { label: 'Point update', args: [5, [[2,2,5]]], expected: [0,0,5,0,0] },
+    ],
+    hint: 'Difference array: for update [s,e,inc], set diff[s]+=inc and diff[e+1]-=inc. After all updates, take prefix sum of diff[] to build the result. O(length + updates) total.',
+  },
+
+  28: {
+    id: 28,
+    title: 'Find the Index of the First Occurrence in a String',
+    titleZh: '找出字符串中第一个匹配项的下标',
+    difficulty: 'Easy',
+    leetcodeSlug: 'find-the-index-of-the-first-occurrence-in-a-string',
+    tags: ['Two Pointers', 'String', 'String Matching'],
+    description: `Given two strings \`haystack\` and \`needle\`, return the index of the **first occurrence** of \`needle\` in \`haystack\`, or \`-1\` if not found.`,
+    examples: [
+      { input: 'haystack = "sadbutsad", needle = "sad"', output: '0' },
+      { input: 'haystack = "leetcode", needle = "leeto"', output: '-1' },
+    ],
+    constraints: ['1 <= haystack.length, needle.length <= 10^4', 'All lowercase English letters.'],
+    starterCode: `/**
+ * @param {string} haystack
+ * @param {string} needle
+ * @return {number}
+ */
+function strStr(haystack, needle) {
+
+}`,
+    starterCodePython: `class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        pass`,
+    testCases: [
+      { label: '"sadbutsad","sad"', args: ['sadbutsad', 'sad'], expected: 0 },
+      { label: '"leetcode","leeto"', args: ['leetcode', 'leeto'], expected: -1 },
+      { label: '"aaa","aa"', args: ['aaa', 'aa'], expected: 0 },
+      { label: 'needle longer', args: ['ab', 'abc'], expected: -1 },
+      { label: 'full match', args: ['hello', 'hello'], expected: 0 },
+    ],
+    hint: 'Sliding window of size needle.length across haystack. Check each slice. For O(n+m) use KMP: build failure function, then scan haystack without backtracking.',
+  },
+
+  187: {
+    id: 187,
+    title: 'Repeated DNA Sequences',
+    titleZh: '重复的DNA序列',
+    difficulty: 'Medium',
+    leetcodeSlug: 'repeated-dna-sequences',
+    tags: ['Hash Table', 'String', 'Sliding Window', 'Rolling Hash', 'Bit Manipulation'],
+    description: `Given a DNA string \`s\` (A, C, G, T), return all **10-letter-long** substrings that appear **more than once**. Return in any order.
+
+**Note:** \`solve(s)\` sorts the result for deterministic comparison.`,
+    examples: [
+      { input: 's = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"', output: '["AAAAACCCCC","CCCCCAAAAA"]' },
+      { input: 's = "AAAAAAAAAAAAA"', output: '["AAAAAAAAAA"]' },
+    ],
+    constraints: ['1 <= s.length <= 10^5', 's[i] is A, C, G, or T.'],
+    starterCode: `/**
+ * @param {string} s
+ * @return {string[]}
+ */
+function findRepeatedDnaSequences(s) {
+
+}
+
+// Test adapter — sorts result for deterministic comparison
+function solve(s) { return findRepeatedDnaSequences(s).sort(); }`,
+    starterCodePython: `class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> list[str]:
+        pass
+
+def solve(s): return sorted(Solution().findRepeatedDnaSequences(s))`,
+    testCases: [
+      { label: 'Two repeats', args: ['AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT'], expected: ['AAAAACCCCC','CCCCCAAAAA'] },
+      { label: 'One repeat', args: ['AAAAAAAAAAAAA'], expected: ['AAAAAAAAAA'] },
+      { label: 'Short — no window', args: ['ACGT'], expected: [] },
+      { label: 'Exactly 10 — no repeat', args: ['AAAAAAAAAA'], expected: [] },
+    ],
+    hint: 'Slide a window of size 10. Count each substring with a Map; add to result Set when count becomes exactly 2 (avoids duplicates at count 3+).',
+  },
+
+  81: {
+    id: 81,
+    title: 'Search in Rotated Sorted Array II',
+    titleZh: '搜索旋转排序数组 II',
+    difficulty: 'Medium',
+    leetcodeSlug: 'search-in-rotated-sorted-array-ii',
+    tags: ['Array', 'Binary Search'],
+    description: `Given a rotated sorted array \`nums\` that may contain **duplicates** and a \`target\`, return \`true\` if \`target\` is in \`nums\`, otherwise \`false\`.`,
+    examples: [
+      { input: 'nums = [2,5,6,0,0,1,2], target = 0', output: 'true' },
+      { input: 'nums = [2,5,6,0,0,1,2], target = 3', output: 'false' },
+    ],
+    constraints: ['1 <= nums.length <= 5000', '-10^4 <= nums[i], target <= 10^4'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {boolean}
+ */
+function search(nums, target) {
+
+}`,
+    starterCodePython: `class Solution:
+    def search(self, nums: list[int], target: int) -> bool:
+        pass`,
+    testCases: [
+      { label: '[2,5,6,0,0,1,2], target=0', args: [[2,5,6,0,0,1,2], 0], expected: true },
+      { label: '[2,5,6,0,0,1,2], target=3', args: [[2,5,6,0,0,1,2], 3], expected: false },
+      { label: '[1,1,3,1], target=3', args: [[1,1,3,1], 3], expected: true },
+      { label: '[1,3,1,1,1], target=3', args: [[1,3,1,1,1], 3], expected: true },
+      { label: 'Single match', args: [[5], 5], expected: true },
+    ],
+    hint: 'Binary search with duplicate handling: when nums[lo]==nums[mid], just lo++ (cannot determine sorted half). Otherwise check which half is sorted and narrow the search range.',
+  },
+
+  392: {
+    id: 392,
+    title: 'Is Subsequence',
+    titleZh: '判断子序列',
+    difficulty: 'Easy',
+    leetcodeSlug: 'is-subsequence',
+    tags: ['Two Pointers', 'String', 'Dynamic Programming'],
+    description: `Given strings \`s\` and \`t\`, return \`true\` if \`s\` is a **subsequence** of \`t\` (characters appear in order, not necessarily contiguous).`,
+    examples: [
+      { input: 's = "ace", t = "abcde"', output: 'true' },
+      { input: 's = "aec", t = "abcde"', output: 'false' },
+    ],
+    constraints: ['0 <= s.length <= 100', '0 <= t.length <= 10^4', 'All lowercase letters.'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+function isSubsequence(s, t) {
+
+}`,
+    starterCodePython: `class Solution:
+    def isSubsequence(self, s: str, t: str) -> bool:
+        pass`,
+    testCases: [
+      { label: '"ace","abcde"', args: ['ace', 'abcde'], expected: true },
+      { label: '"aec","abcde"', args: ['aec', 'abcde'], expected: false },
+      { label: 'Empty s', args: ['', 'ahbgdc'], expected: true },
+      { label: 'Same strings', args: ['abc', 'abc'], expected: true },
+      { label: 's longer than t', args: ['axc', 'ah'], expected: false },
+    ],
+    hint: 'Two pointers: pointer i on s, j on t. Advance i when s[i]==t[j]. Always advance j. Return i==s.length when j exhausted.',
+  },
+
+  566: {
+    id: 566,
+    title: 'Reshape the Matrix',
+    titleZh: '重塑矩阵',
+    difficulty: 'Easy',
+    leetcodeSlug: 'reshape-the-matrix',
+    tags: ['Array', 'Matrix', 'Simulation'],
+    description: `Given matrix \`mat\` and integers \`r\`, \`c\`, reshape it to \`r x c\` in row-major order. If impossible (different total elements), return the original matrix.`,
+    examples: [
+      { input: 'mat = [[1,2],[3,4]], r = 1, c = 4', output: '[[1,2,3,4]]' },
+      { input: 'mat = [[1,2],[3,4]], r = 2, c = 4', output: '[[1,2],[3,4]]', explanation: 'Cannot reshape — return original.' },
+    ],
+    constraints: ['1 <= m, n <= 100', '1 <= r, c <= 300', '-1000 <= mat[i][j] <= 1000'],
+    starterCode: `/**
+ * @param {number[][]} mat
+ * @param {number} r
+ * @param {number} c
+ * @return {number[][]}
+ */
+function matrixReshape(mat, r, c) {
+
+}`,
+    starterCodePython: `class Solution:
+    def matrixReshape(self, mat: list[list[int]], r: int, c: int) -> list[list[int]]:
+        pass`,
+    testCases: [
+      { label: '[[1,2],[3,4]], r=1, c=4', args: [[[1,2],[3,4]], 1, 4], expected: [[1,2,3,4]] },
+      { label: 'Impossible shape', args: [[[1,2],[3,4]], 2, 4], expected: [[1,2],[3,4]] },
+      { label: '[[1,2,3],[4,5,6]], r=3, c=2', args: [[[1,2,3],[4,5,6]], 3, 2], expected: [[1,2],[3,4],[5,6]] },
+      { label: 'Same shape', args: [[[1,2],[3,4]], 2, 2], expected: [[1,2],[3,4]] },
+    ],
+    hint: 'Check m*n == r*c. Use flat index k = row*cols+col. For each k: new[k/c][k%c] = mat[k/oldCols][k%oldCols]. Or flatten then chunk into rows of c.',
+  },
+
+  658: {
+    id: 658,
+    title: 'Find K Closest Elements',
+    titleZh: '找到 K 个最接近的元素',
+    difficulty: 'Medium',
+    leetcodeSlug: 'find-k-closest-elements',
+    tags: ['Array', 'Two Pointers', 'Binary Search', 'Sorting', 'Heap (Priority Queue)'],
+    description: `Given a **sorted** array \`arr\`, and integers \`k\` and \`x\`, return the \`k\` closest elements to \`x\` in ascending order. When equidistant, prefer the smaller element.`,
+    examples: [
+      { input: 'arr = [1,2,3,4,5], k = 4, x = 3', output: '[1,2,3,4]' },
+      { input: 'arr = [1,2,3,4,5], k = 4, x = -1', output: '[1,2,3,4]' },
+    ],
+    constraints: ['1 <= k <= arr.length <= 10^4', 'arr is sorted ascending.', '-10^4 <= arr[i], x <= 10^4'],
+    starterCode: `/**
+ * @param {number[]} arr
+ * @param {number} k
+ * @param {number} x
+ * @return {number[]}
+ */
+function findClosestElements(arr, k, x) {
+
+}`,
+    starterCodePython: `class Solution:
+    def findClosestElements(self, arr: list[int], k: int, x: int) -> list[int]:
+        pass`,
+    testCases: [
+      { label: '[1,2,3,4,5], k=4, x=3', args: [[1,2,3,4,5], 4, 3], expected: [1,2,3,4] },
+      { label: '[1,2,3,4,5], k=4, x=-1', args: [[1,2,3,4,5], 4, -1], expected: [1,2,3,4] },
+      { label: '[1,2,3,4,5], k=4, x=100', args: [[1,2,3,4,5], 4, 100], expected: [2,3,4,5] },
+      { label: '[1,1,2,3,4], k=3, x=2', args: [[1,1,2,3,4], 3, 2], expected: [1,2,3] },
+      { label: 'k=1', args: [[1,3,5,7,9], 1, 4], expected: [3] },
+    ],
+    hint: 'Binary search for left boundary lo of the k-window. Compare arr[mid] vs arr[mid+k]: if x-arr[mid] > arr[mid+k]-x, move window right (lo=mid+1). Return arr.slice(lo, lo+k).',
+  },
+
+  808: {
+    id: 808,
+    title: 'Soup Servings',
+    titleZh: '汤',
+    difficulty: 'Medium',
+    leetcodeSlug: 'soup-servings',
+    tags: ['Math', 'Dynamic Programming', 'Probability and Statistics'],
+    description: `Two soups A and B, each starting with \`n\` ml. Four equally likely operations (each prob 0.25):
+1. Serve 100ml A, 0ml B
+2. Serve 75ml A, 25ml B
+3. Serve 50ml A, 50ml B
+4. Serve 25ml A, 75ml B
+
+Stop when a soup runs empty. Return: **P(A empty first) + 0.5 × P(both empty simultaneously)**.
+
+**Note:** \`solve(n)\` rounds to 5 decimal places.`,
+    examples: [
+      { input: 'n = 50', output: '0.62500' },
+      { input: 'n = 100', output: '0.71875' },
+    ],
+    constraints: ['0 <= n <= 10^9'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {number}
+ */
+function soupServings(n) {
+
+}
+
+// Test adapter — rounds to 5 decimal places
+function solve(n) { return parseFloat(soupServings(n).toFixed(5)); }`,
+    starterCodePython: `class Solution:
+    def soupServings(self, n: int) -> float:
+        pass
+
+def solve(n): return round(Solution().soupServings(n), 5)`,
+    testCases: [
+      { label: 'n=50', args: [50], expected: 0.625 },
+      { label: 'n=100', args: [100], expected: 0.71875 },
+      { label: 'n=0', args: [0], expected: 0.5 },
+      { label: 'Large n', args: [1000000], expected: 1.0 },
+    ],
+    hint: 'Scale n by ceil division by 25. Memoized dp(a, b) = probability with a, b units left (in 25ml chunks). For n large enough (scaled ≥ 179), the answer is always 1.0. Base cases: a≤0,b≤0 → 0.5; a≤0 → 1.0; b≤0 → 0.',
+  },
+
+  882: {
+    id: 882,
+    title: 'Reachable Nodes In Subdivided Graph',
+    titleZh: '细分图中的可抵达节点',
+    difficulty: 'Hard',
+    leetcodeSlug: 'reachable-nodes-in-subdivided-graph',
+    tags: ['Graph', 'Heap (Priority Queue)', 'Shortest Path'],
+    description: `Given an undirected graph where each edge \`[u, v, cnt]\` has \`cnt\` subdivision nodes inserted between \`u\` and \`v\`. Starting at node \`0\`, you can travel at most \`maxMoves\` steps.
+
+Return the **total number of nodes** (original + subdivision) reachable.`,
+    examples: [
+      { input: 'edges = [[0,1,10],[0,2,1],[1,2,2]], maxMoves = 6, n = 3', output: '13' },
+      { input: 'edges = [[0,1,4],[1,2,6],[0,2,8],[1,3,12]], maxMoves = 10, n = 4', output: '23' },
+    ],
+    constraints: ['0 <= edges.length <= n*(n-1)/2', '0 <= u < v < n', 'cnt > 0', '0 <= maxMoves <= 10^9', '1 <= n <= 3000'],
+    starterCode: `/**
+ * @param {number[][]} edges
+ * @param {number} maxMoves
+ * @param {number} n
+ * @return {number}
+ */
+function reachableNodes(edges, maxMoves, n) {
+
+}`,
+    starterCodePython: `class Solution:
+    def reachableNodes(self, edges: list[list[int]], maxMoves: int, n: int) -> int:
+        pass`,
+    testCases: [
+      { label: '[[0,1,10],[0,2,1],[1,2,2]], moves=6, n=3', args: [[[0,1,10],[0,2,1],[1,2,2]], 6, 3], expected: 13 },
+      { label: '[[0,1,4],[1,2,6],[0,2,8],[1,3,12]], moves=10, n=4', args: [[[0,1,4],[1,2,6],[0,2,8],[1,3,12]], 10, 4], expected: 23 },
+      { label: 'No edges', args: [[], 10, 3], expected: 1 },
+      { label: '[[0,1,0]], moves=1, n=2', args: [[[0,1,0]], 1, 2], expected: 2 },
+    ],
+    hint: 'Dijkstra from node 0 → dist[]. Count original nodes where dist[v] <= maxMoves. For each edge (u,v,cnt): subdivision nodes reachable = min(cnt, max(0, maxMoves-dist[u])) + min(cnt, max(0, maxMoves-dist[v])), capped at cnt.',
+  },
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {

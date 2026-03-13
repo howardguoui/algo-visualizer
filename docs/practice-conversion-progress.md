@@ -28,7 +28,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 
 ---
 
-## Batch B1 — Array, Prefix Sum, Sliding Window, Binary Search (18 problems) `[ ] Not started`
+## Batch B1 — Array, Prefix Sum, Sliding Window, Binary Search (18 problems) `[x] Done`
 
 | ID | Problem | Difficulty | Topic |
 |---|---|---|---|
@@ -311,7 +311,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 |---|---|---|---|
 | Initial (topic pages) | 58 problems | — | b04187d |
 | Final topic batch | +17 problems (215, 347, 200, 207, 547, 684, 1584, 46, 47, 77, 78, 51, 322, 518, 416, 494, 1049) | — | 0a2453a |
-| B1 | _pending_ | | |
+| B1 | 18 problems (61,901,523,525,724,1016,1219,1242,1477,370,28,187,81,392,566,658,808,882) | 2026-03-13 | pending |
 | B2 | _pending_ | | |
 | B3 | _pending_ | | |
 | B4 | _pending_ | | |
