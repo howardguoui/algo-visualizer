@@ -4105,6 +4105,763 @@ function escapeGhosts(ghosts, target) {
     ],
     hint: 'You escape iff your Manhattan distance to target is **strictly less** than every ghost\'s Manhattan distance to target. A ghost that arrives at the same time or earlier can always intercept you there.',
   },
+
+  // ── Batch B3: Heap, Trie & Data Structure Design ──────────────────────────
+
+  1955: {
+    id: 1955,
+    title: 'Count Number of Special Subsequences',
+    titleZh: '统计特殊子序列的数目',
+    difficulty: 'Hard',
+    leetcodeSlug: 'count-number-of-special-subsequences',
+    tags: ['array', 'dynamic-programming'],
+    description: 'A sequence is special if it consists of all 0s followed by all 1s followed by all 2s (each part non-empty).\n\nReturn the number of different special subsequences modulo 10^9 + 7.',
+    examples: [
+      { input: 'nums = [0,1,2,2]', output: '3', explanation: 'Three distinct special subsequences.' },
+      { input: 'nums = [2,2,0,0]', output: '0', explanation: 'No valid special subsequences — 2 appears before 0.' },
+      { input: 'nums = [0,1,2]', output: '1', explanation: 'Only one special subsequence.' },
+    ],
+    constraints: ['1 <= nums.length <= 10^5', 'nums[i] is 0, 1, or 2'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function countSpecialSubsequences(nums) {
+
+}`,
+    starterCodePython: `class Solution:
+    def countSpecialSubsequences(self, nums: list[int]) -> int:
+        pass`,
+    testCases: [
+      { label: '[0,1,2,2]', args: [[0,1,2,2]], expected: 3 },
+      { label: '[2,2,0,0]', args: [[2,2,0,0]], expected: 0 },
+      { label: '[0,1,2]', args: [[0,1,2]], expected: 1 },
+      { label: '[0,0,1,2]', args: [[0,0,1,2]], expected: 3 },
+    ],
+    hint: 'Track dp[0], dp[1], dp[2]. When you see num=k: dp[k] = dp[k]*2 + (k===0 ? 1 : dp[k-1]). Final answer is dp[2] mod 10^9+7.',
+  },
+
+  1962: {
+    id: 1962,
+    title: 'Remove Stones to Minimize the Total',
+    titleZh: '移除石子使总数最小',
+    difficulty: 'Medium',
+    leetcodeSlug: 'remove-stones-to-minimize-the-total',
+    tags: ['array', 'heap', 'greedy'],
+    description: 'Given a 0-indexed integer array piles and an integer k, apply exactly k operations: choose any pile and remove floor(piles[i] / 2) stones from it. Return the minimum possible total number of stones remaining.',
+    examples: [
+      { input: 'piles = [5,4,9], k = 2', output: '12', explanation: 'Remove 4 from pile 9 → 5. Remove 2 from largest 5 → 3. Total = 5+4+3=12.' },
+      { input: 'piles = [4,3,6,7], k = 3', output: '12', explanation: '' },
+    ],
+    constraints: ['1 <= piles.length <= 10^5', '1 <= piles[i] <= 10^4', '1 <= k <= 10^5'],
+    starterCode: `/**
+ * @param {number[]} piles
+ * @param {number} k
+ * @return {number}
+ */
+function minStoneSum(piles, k) {
+
+}`,
+    starterCodePython: `class Solution:
+    def minStoneSum(self, piles: list[int], k: int) -> int:
+        pass`,
+    testCases: [
+      { label: '[5,4,9] k=2 → 12', args: [[5,4,9], 2], expected: 12 },
+      { label: '[4,3,6,7] k=3 → 12', args: [[4,3,6,7], 3], expected: 12 },
+      { label: '[1] k=5 → 1', args: [[1], 5], expected: 1 },
+      { label: '[8,2] k=2 → 4', args: [[8,2], 2], expected: 4 },
+    ],
+    hint: 'Use a max-heap. Each operation, pop the largest pile, remove floor(largest/2), push back the remainder. Repeat k times. Return the sum of all piles.',
+  },
+
+  211: {
+    id: 211,
+    title: 'Design Add and Search Words Data Structure',
+    titleZh: '添加与搜索单词 - 数据结构设计',
+    difficulty: 'Medium',
+    leetcodeSlug: 'design-add-and-search-words-data-structure',
+    tags: ['trie', 'design', 'string', 'depth-first-search'],
+    description: 'Design a data structure supporting addWord(word) and search(word), where \'.\' in search matches any single letter.',
+    examples: [
+      { input: 'ops=["WordDictionary","addWord","addWord","addWord","search","search","search","search"]\nvals=[[],["bad"],["dad"],["mad"],["pad"],["bad"],[".ad"],["b.."]]', output: '[null,null,null,null,false,true,true,true]', explanation: '' },
+    ],
+    constraints: ['1 <= word.length <= 25', 'word in addWord consists of lowercase letters', 'word in search consists of lowercase letters or \'.\''],
+    starterCode: `class WordDictionary {
+  constructor() {
+
+  }
+
+  /** @param {string} word */
+  addWord(word) {
+
+  }
+
+  /** @param {string} word @return {boolean} */
+  search(word) {
+
+  }
+}
+
+function solve(ops, vals) {
+  let obj;
+  return ops.map((op, i) => {
+    if (op === 'WordDictionary') { obj = new WordDictionary(); return null; }
+    if (op === 'addWord') { obj.addWord(vals[i][0]); return null; }
+    if (op === 'search') return obj.search(vals[i][0]);
+  });
+}`,
+    starterCodePython: `class WordDictionary:
+    def __init__(self):
+        pass
+
+    def addWord(self, word: str) -> None:
+        pass
+
+    def search(self, word: str) -> bool:
+        pass`,
+    testCases: [
+      { label: 'add bad/dad/mad, search pad/.ad/b..', args: [['WordDictionary','addWord','addWord','addWord','search','search','search','search'],[[], ['bad'],['dad'],['mad'],['pad'],['bad'],['.ad'],['b..']] ], expected: [null,null,null,null,false,true,true,true] },
+    ],
+    hint: 'Build a Trie for addWord. For search, use DFS — at each \'.\', branch into all children recursively.',
+  },
+
+  648: {
+    id: 648,
+    title: 'Replace Words',
+    titleZh: '单词替换',
+    difficulty: 'Medium',
+    leetcodeSlug: 'replace-words',
+    tags: ['trie', 'string', 'hash-table'],
+    description: 'Given a list of roots and a sentence, replace each word in the sentence with the shortest root that forms a prefix of that word. If no root matches, keep the original word.',
+    examples: [
+      { input: 'dictionary = ["cat","bat","rat"], sentence = "the cattle was rattled by the battery"', output: '"the cat was rat by the bat"', explanation: '' },
+      { input: 'dictionary = ["a","b","c"], sentence = "aadsfasf absbs bbab cadsfafs"', output: '"a a b c"', explanation: '' },
+    ],
+    constraints: ['1 <= dictionary.length <= 1000', '1 <= sentence.length <= 10^6'],
+    starterCode: `/**
+ * @param {string[]} dictionary
+ * @param {string} sentence
+ * @return {string}
+ */
+function replaceWords(dictionary, sentence) {
+
+}`,
+    starterCodePython: `class Solution:
+    def replaceWords(self, dictionary: list[str], sentence: str) -> str:
+        pass`,
+    testCases: [
+      { label: 'cat/bat/rat', args: [['cat','bat','rat'], 'the cattle was rattled by the battery'], expected: 'the cat was rat by the bat' },
+      { label: 'a/b/c', args: [['a','b','c'], 'aadsfasf absbs bbab cadsfafs'], expected: 'a a b c' },
+      { label: 'no root match', args: [['xyz'], 'the cat sat'], expected: 'the cat sat' },
+    ],
+    hint: 'Insert all roots into a Trie. For each word, walk the Trie: if you reach a terminal node (end-of-root), return that prefix. Otherwise return the original word.',
+  },
+
+  677: {
+    id: 677,
+    title: 'Map Sum Pairs',
+    titleZh: '键值映射',
+    difficulty: 'Medium',
+    leetcodeSlug: 'map-sum-pairs',
+    tags: ['trie', 'design', 'hash-table', 'string'],
+    description: 'Design a map with insert(key, val) (overwrites if key exists) and sum(prefix) returning the sum of all values whose keys start with the given prefix.',
+    examples: [
+      { input: 'ops=["MapSum","insert","sum","insert","sum"]\nvals=[[],["apple",3],["ap"],["app",2],["ap"]]', output: '[null,null,3,null,5]', explanation: 'After apple=3: sum("ap")=3. After app=2: sum("ap")=3+2=5.' },
+    ],
+    constraints: ['1 <= key.length, prefix.length <= 50', '1 <= val <= 1000', 'At most 50 calls'],
+    starterCode: `class MapSum {
+  constructor() {
+
+  }
+
+  /** @param {string} key @param {number} val */
+  insert(key, val) {
+
+  }
+
+  /** @param {string} prefix @return {number} */
+  sum(prefix) {
+
+  }
+}
+
+function solve(ops, vals) {
+  let obj;
+  return ops.map((op, i) => {
+    if (op === 'MapSum') { obj = new MapSum(); return null; }
+    if (op === 'insert') { obj.insert(vals[i][0], vals[i][1]); return null; }
+    if (op === 'sum') return obj.sum(vals[i][0]);
+  });
+}`,
+    starterCodePython: `class MapSum:
+    def __init__(self):
+        pass
+
+    def insert(self, key: str, val: int) -> None:
+        pass
+
+    def sum(self, prefix: str) -> int:
+        pass`,
+    testCases: [
+      { label: 'apple=3, app=2, sum(ap)=5', args: [['MapSum','insert','sum','insert','sum'],[[], ['apple',3],['ap'],['app',2],['ap']]], expected: [null,null,3,null,5] },
+      { label: 'overwrite key: a=3 then a=2, sum(a)=2', args: [['MapSum','insert','insert','sum'],[[], ['a',3],['a',2],['a']]], expected: [null,null,null,2] },
+    ],
+    hint: 'Use a HashMap or Trie. For sum(prefix), iterate all keys that start with prefix (HashMap) or DFS the prefix subtree (Trie) summing leaf values.',
+  },
+
+  1949: {
+    id: 1949,
+    title: 'Strong Friendship',
+    titleZh: '强友谊',
+    difficulty: 'Hard',
+    leetcodeSlug: 'strong-friendship',
+    tags: ['graph', 'hash-table', 'array'],
+    description: 'Given n users (numbered 1 to n) and a list of bidirectional friendship pairs, return the number of non-friend pairs (user1, user2) where user1 < user2 and they share at least 3 common friends.',
+    examples: [
+      { input: 'n = 5, friendships = [[1,2],[1,3],[1,4],[1,5],[2,3],[2,4],[2,5],[3,4],[3,5]]', output: '1', explanation: 'Pair (4,5): not friends, common friends = {1,2,3} = 3. Only this pair qualifies.' },
+      { input: 'n = 3, friendships = [[1,2],[2,3],[1,3]]', output: '0', explanation: 'All pairs are already friends.' },
+    ],
+    constraints: ['2 <= n <= 1000', '1 <= friendships.length <= 2000', 'Friendships are unique and bidirectional'],
+    starterCode: `/**
+ * @param {number} n
+ * @param {number[][]} friendships
+ * @return {number}
+ */
+function strongFriendship(n, friendships) {
+
+}`,
+    starterCodePython: `def strongFriendship(n: int, friendships: list[list[int]]) -> int:
+    pass`,
+    testCases: [
+      { label: 'n=5, pair (4,5) qualifies', args: [5, [[1,2],[1,3],[1,4],[1,5],[2,3],[2,4],[2,5],[3,4],[3,5]]], expected: 1 },
+      { label: 'n=3, all pairs friends', args: [3, [[1,2],[2,3],[1,3]]], expected: 0 },
+      { label: 'n=4, no pair has 3+ common', args: [4, [[1,2],[1,3],[2,3]]], expected: 0 },
+    ],
+    hint: 'Build a friend-set for each user. For each non-friend pair (u, v), count |friends(u) ∩ friends(v)|. If >= 3, count it. O(n^2 * k) where k is avg degree.',
+  },
+
+  284: {
+    id: 284,
+    title: 'Peeking Iterator',
+    titleZh: '顶端迭代器',
+    difficulty: 'Medium',
+    leetcodeSlug: 'peeking-iterator',
+    tags: ['design', 'iterator', 'array'],
+    description: 'Design a PeekingIterator that wraps an existing iterator and supports peek() (return next element without advancing), next() (return and advance), and hasNext().',
+    examples: [
+      { input: 'arr=[1,2,3], ops=["peek","next","next","peek","next","hasNext"]', output: '[1,1,2,3,3,false]', explanation: 'peek returns 1 without advancing; next returns 1 and advances; etc.' },
+    ],
+    constraints: ['1 <= arr.length <= 1000', '1 <= arr[i] <= 1000', 'At most 1000 calls to peek, next, hasNext'],
+    starterCode: `class PeekingIterator {
+  /** @param {{ next: () => {value: number, done: boolean}, hasNext: () => boolean }} iterator */
+  constructor(iterator) {
+
+  }
+
+  /** @return {number} */
+  peek() {
+
+  }
+
+  /** @return {number} */
+  next() {
+
+  }
+
+  /** @return {boolean} */
+  hasNext() {
+
+  }
+}
+
+function solve(arr, ops) {
+  let i = 0;
+  const iter = { next: () => ({ value: arr[i++], done: false }), hasNext: () => i < arr.length };
+  const obj = new PeekingIterator(iter);
+  return ops.map(op => {
+    if (op === 'peek') return obj.peek();
+    if (op === 'next') return obj.next();
+    if (op === 'hasNext') return obj.hasNext();
+  });
+}`,
+    starterCodePython: `class PeekingIterator:
+    def __init__(self, iterator):
+        pass
+
+    def peek(self) -> int:
+        pass
+
+    def next(self) -> int:
+        pass
+
+    def hasNext(self) -> bool:
+        pass`,
+    testCases: [
+      { label: '[1,2,3] peek/next/next/peek/next/hasNext', args: [[1,2,3], ['peek','next','next','peek','next','hasNext']], expected: [1,1,2,3,3,false] },
+      { label: '[5] next/hasNext', args: [[5], ['next','hasNext']], expected: [5,false] },
+    ],
+    hint: 'Cache a "peeked" value. On peek(), fetch the next element from the underlying iterator and store it without advancing externally. On next(), return the cached value (fetching if empty). hasNext() checks cache or the underlying iterator.',
+  },
+
+  316: {
+    id: 316,
+    title: 'Remove Duplicate Letters',
+    titleZh: '去除重复字母',
+    difficulty: 'Medium',
+    leetcodeSlug: 'remove-duplicate-letters',
+    tags: ['string', 'stack', 'greedy', 'monotonic-stack'],
+    description: 'Given a string s, remove duplicate letters so that every letter appears once and only once. Return the smallest lexicographic result among all possible results.',
+    examples: [
+      { input: 's = "bcabc"', output: '"abc"', explanation: '' },
+      { input: 's = "cbacdcbc"', output: '"acdb"', explanation: '' },
+    ],
+    constraints: ['1 <= s.length <= 10^4', 's consists of lowercase English letters'],
+    starterCode: `/**
+ * @param {string} s
+ * @return {string}
+ */
+function removeDuplicateLetters(s) {
+
+}`,
+    starterCodePython: `class Solution:
+    def removeDuplicateLetters(self, s: str) -> str:
+        pass`,
+    testCases: [
+      { label: 'bcabc → abc', args: ['bcabc'], expected: 'abc' },
+      { label: 'cbacdcbc → acdb', args: ['cbacdcbc'], expected: 'acdb' },
+      { label: 'single char', args: ['a'], expected: 'a' },
+      { label: 'already unique', args: ['abc'], expected: 'abc' },
+    ],
+    hint: 'Use a monotonic stack. Track last occurrence of each character. Pop the stack when current char is smaller AND the top still appears later in the string. Use a visited set to skip already-stacked chars.',
+  },
+
+  785: {
+    id: 785,
+    title: 'Is Graph Bipartite?',
+    titleZh: '判断二分图',
+    difficulty: 'Medium',
+    leetcodeSlug: 'is-graph-bipartite',
+    tags: ['graph', 'breadth-first-search', 'depth-first-search', 'union-find'],
+    description: 'Given an undirected graph as an adjacency list, determine if it is bipartite — i.e., its nodes can be colored with two colors such that no two adjacent nodes share the same color.',
+    examples: [
+      { input: 'graph = [[1,2,3],[0,2],[0,1,3],[0,2]]', output: 'false', explanation: '0-1-2-0 is an odd cycle.' },
+      { input: 'graph = [[1,3],[0,2],[1,3],[0,2]]', output: 'true', explanation: 'Color {0,2} red, {1,3} blue.' },
+    ],
+    constraints: ['1 <= graph.length <= 100', 'graph[i] contains no self-loops and no duplicates'],
+    starterCode: `/**
+ * @param {number[][]} graph
+ * @return {boolean}
+ */
+function isBipartite(graph) {
+
+}`,
+    starterCodePython: `class Solution:
+    def isBipartite(self, graph: list[list[int]]) -> bool:
+        pass`,
+    testCases: [
+      { label: 'odd cycle → false', args: [[[1,2,3],[0,2],[0,1,3],[0,2]]], expected: false },
+      { label: 'bipartite → true', args: [[[1,3],[0,2],[1,3],[0,2]]], expected: true },
+      { label: 'single node', args: [[[]]], expected: true },
+      { label: 'two connected nodes', args: [[[1],[0]]], expected: true },
+    ],
+    hint: 'BFS/DFS with 2-coloring. Color each unvisited node 0, then color its neighbors 1 (and vice versa). If a neighbor already has the same color as the current node, return false.',
+  },
+
+  885: {
+    id: 885,
+    title: 'Spiral Matrix III',
+    titleZh: '螺旋矩阵 III',
+    difficulty: 'Medium',
+    leetcodeSlug: 'spiral-matrix-iii',
+    tags: ['array', 'matrix', 'simulation'],
+    description: 'Given an rows × cols matrix, starting at (rStart, cStart), walk clockwise in a spiral and collect all grid positions in visited order. Skip out-of-boundary positions but continue the spiral.',
+    examples: [
+      { input: 'rows=1, cols=4, rStart=0, cStart=0', output: '[[0,0],[0,1],[0,2],[0,3]]', explanation: '' },
+      { input: 'rows=5, cols=6, rStart=1, cStart=4', output: '[[1,4],[1,5],[2,5],[2,4],[2,3],[1,3],[0,3],[0,4],[0,5],[3,5],[3,4],[3,3],[3,2],[2,2],[1,2],[0,2],[4,5],[4,4],[4,3],[4,2],[4,1],[3,1],[2,1],[1,1],[0,1],[4,0],[3,0],[2,0],[1,0],[0,0]]', explanation: '' },
+    ],
+    constraints: ['1 <= rows, cols <= 100', '0 <= rStart < rows', '0 <= cStart < cols'],
+    starterCode: `/**
+ * @param {number} rows
+ * @param {number} cols
+ * @param {number} rStart
+ * @param {number} cStart
+ * @return {number[][]}
+ */
+function spiralMatrixIII(rows, cols, rStart, cStart) {
+
+}`,
+    starterCodePython: `class Solution:
+    def spiralMatrixIII(self, rows: int, cols: int, rStart: int, cStart: int) -> list[list[int]]:
+        pass`,
+    testCases: [
+      { label: '1×4 from (0,0)', args: [1, 4, 0, 0], expected: [[0,0],[0,1],[0,2],[0,3]] },
+      { label: '1×1 from (0,0)', args: [1, 1, 0, 0], expected: [[0,0]] },
+      { label: '2×2 from (0,0)', args: [2, 2, 0, 0], expected: [[0,0],[0,1],[1,1],[1,0]] },
+    ],
+    hint: 'Simulate the spiral: directions are E, S, W, N. Step counts go 1, 1, 2, 2, 3, 3, ... (increase every 2 turns). For each step, move and add to result only if in bounds. Stop when rows*cols positions are collected.',
+  },
+
+  1159: {
+    id: 1159,
+    title: 'Market Analysis II',
+    titleZh: '市场分析 II',
+    difficulty: 'Hard',
+    leetcodeSlug: 'market-analysis-ii',
+    tags: ['array', 'hash-table', 'sorting'],
+    description: 'Given a list of transactions [sellerId, itemId] in chronological order, for each seller with at least 2 sales, return [sellerId, secondItemId]. Return the results sorted by sellerId ascending.',
+    examples: [
+      { input: 'transactions = [[1,3],[2,2],[1,8],[2,10]]', output: '[[1,8],[2,10]]', explanation: 'Seller 1: 2nd item = 8. Seller 2: 2nd item = 10.' },
+      { input: 'transactions = [[1,5],[2,3],[3,7],[1,9]]', output: '[[1,9]]', explanation: 'Only seller 1 has >= 2 sales.' },
+    ],
+    constraints: ['1 <= transactions.length <= 10^5', '1 <= sellerId, itemId <= 10^5'],
+    starterCode: `/**
+ * @param {number[][]} transactions
+ * @return {number[][]}
+ */
+function marketAnalysis(transactions) {
+
+}`,
+    starterCodePython: `def marketAnalysis(transactions: list[list[int]]) -> list[list[int]]:
+    pass`,
+    testCases: [
+      { label: '[[1,3],[2,2],[1,8],[2,10]]', args: [[[1,3],[2,2],[1,8],[2,10]]], expected: [[1,8],[2,10]] },
+      { label: '[[1,5],[2,3],[3,7],[1,9]]', args: [[[1,5],[2,3],[3,7],[1,9]]], expected: [[1,9]] },
+      { label: 'no seller with 2 sales', args: [[[1,5],[2,3]]], expected: [] },
+    ],
+    hint: 'Use a HashMap to track each seller\'s sales in order. After all transactions, collect sellers with >= 2 sales and return [sellerId, sales[1]], sorted by sellerId.',
+  },
+
+  652: {
+    id: 652,
+    title: 'Find Duplicate Subtrees',
+    titleZh: '寻找重复的子树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'find-duplicate-subtrees',
+    tags: ['tree', 'hash-table', 'depth-first-search'],
+    description: 'Given the root of a binary tree, return all duplicate subtrees — one representative root node per unique duplicate structure. Two subtrees are duplicate if they have the same structure and node values.',
+    examples: [
+      { input: 'root = [1,2,3,4,null,2,4,null,null,4]', output: '[[2,4],[4]]', explanation: 'Subtree [2,4] and leaf [4] each appear more than once.' },
+      { input: 'root = [2,1,1]', output: '[[1]]', explanation: 'Leaf node 1 appears twice.' },
+    ],
+    constraints: ['1 <= nodes <= 10^4', '-200 <= Node.val <= 200'],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift();if(arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left)}i++;if(i<arr.length){if(arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right)}i++}}return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode[]}
+ */
+function findDuplicateSubtrees(root) {
+
+}
+
+function solve(arr) {
+  const result = findDuplicateSubtrees(buildTree(arr));
+  return result.map(n => n.val).sort((a, b) => a - b);
+}`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def findDuplicateSubtrees(self, root: TreeNode) -> list[TreeNode]:
+        pass`,
+    testCases: [
+      { label: '[1,2,3,4,null,2,4,null,null,4] → [2,4]', args: [[1,2,3,4,null,2,4,null,null,4]], expected: [2,4] },
+      { label: '[2,1,1] → [1]', args: [[2,1,1]], expected: [1] },
+      { label: 'no duplicates [1,2,3]', args: [[1,2,3]], expected: [] },
+    ],
+    hint: 'Post-order DFS: serialize each subtree as a string (e.g., "val,left,right"). Use a HashMap to count occurrences. When count reaches exactly 2, add the root node to results.',
+  },
+
+  1475: {
+    id: 1475,
+    title: 'Final Prices With a Special Discount in a Shop',
+    titleZh: '商品折扣后的最终价格',
+    difficulty: 'Easy',
+    leetcodeSlug: 'final-prices-with-a-special-discount-in-a-shop',
+    tags: ['array', 'stack', 'monotonic-stack'],
+    description: 'Given an array prices, for each item i, the discount is prices[j] where j > i is the first index with prices[j] <= prices[i]. If no such j exists, no discount. Return the final price array.',
+    examples: [
+      { input: 'prices = [8,4,6,2,3]', output: '[4,2,4,2,3]', explanation: 'Item 0: 8-4=4. Item 1: 4-2=2. Item 2: 6-2=4. Items 3,4: no discount.' },
+      { input: 'prices = [1,2,3,4,5]', output: '[1,2,3,4,5]', explanation: 'No later item is cheaper or equal.' },
+      { input: 'prices = [10,1,1,6]', output: '[9,0,1,6]', explanation: '' },
+    ],
+    constraints: ['1 <= prices.length <= 500', '1 <= prices[i] <= 10^3'],
+    starterCode: `/**
+ * @param {number[]} prices
+ * @return {number[]}
+ */
+function finalPrices(prices) {
+
+}`,
+    starterCodePython: `class Solution:
+    def finalPrices(self, prices: list[int]) -> list[int]:
+        pass`,
+    testCases: [
+      { label: '[8,4,6,2,3] → [4,2,4,2,3]', args: [[8,4,6,2,3]], expected: [4,2,4,2,3] },
+      { label: '[1,2,3,4,5] → same', args: [[1,2,3,4,5]], expected: [1,2,3,4,5] },
+      { label: '[10,1,1,6] → [9,0,1,6]', args: [[10,1,1,6]], expected: [9,0,1,6] },
+    ],
+    hint: 'Use a monotonic stack (non-decreasing). Push indices. When current price <= stack top price, the current item provides the discount for the stack top. Pop and subtract.',
+  },
+
+  129: {
+    id: 129,
+    title: 'Sum Root to Leaf Numbers',
+    titleZh: '求根节点到叶节点数字之和',
+    difficulty: 'Medium',
+    leetcodeSlug: 'sum-root-to-leaf-numbers',
+    tags: ['tree', 'depth-first-search', 'math'],
+    description: 'Given a binary tree where each node contains a digit (0-9), each root-to-leaf path forms a number. Return the total sum of all such numbers.',
+    examples: [
+      { input: 'root = [1,2,3]', output: '25', explanation: 'Paths: 12 + 13 = 25.' },
+      { input: 'root = [4,9,0,5,1]', output: '1026', explanation: 'Paths: 495 + 491 + 40 = 1026.' },
+    ],
+    constraints: ['1 <= nodes <= 1000', '0 <= Node.val <= 9', 'depth <= 10'],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift();if(arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left)}i++;if(i<arr.length){if(arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right)}i++}}return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+function sumNumbers(root) {
+
+}
+
+function solve(arr) { return sumNumbers(buildTree(arr)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def sumNumbers(self, root: TreeNode) -> int:
+        pass`,
+    testCases: [
+      { label: '[1,2,3] → 25', args: [[1,2,3]], expected: 25 },
+      { label: '[4,9,0,5,1] → 1026', args: [[4,9,0,5,1]], expected: 1026 },
+      { label: 'single node [5] → 5', args: [[5]], expected: 5 },
+    ],
+    hint: 'DFS with a running number. At each node: current = current * 10 + node.val. At a leaf, add current to the total. Recurse on left and right children.',
+  },
+
+  257: {
+    id: 257,
+    title: 'Binary Tree Paths',
+    titleZh: '二叉树的所有路径',
+    difficulty: 'Easy',
+    leetcodeSlug: 'binary-tree-paths',
+    tags: ['tree', 'depth-first-search', 'string', 'backtracking'],
+    description: 'Given the root of a binary tree, return all root-to-leaf paths in any order.',
+    examples: [
+      { input: 'root = [1,2,3,null,5]', output: '["1->2->5","1->3"]', explanation: '' },
+      { input: 'root = [1]', output: '["1"]', explanation: '' },
+    ],
+    constraints: ['1 <= nodes <= 100', '-100 <= Node.val <= 100'],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift();if(arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left)}i++;if(i<arr.length){if(arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right)}i++}}return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {string[]}
+ */
+function binaryTreePaths(root) {
+
+}
+
+function solve(arr) { return binaryTreePaths(buildTree(arr)).sort(); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def binaryTreePaths(self, root: TreeNode) -> list[str]:
+        pass`,
+    testCases: [
+      { label: '[1,2,3,null,5]', args: [[1,2,3,null,5]], expected: ['1->2->5','1->3'] },
+      { label: 'single node [1]', args: [[1]], expected: ['1'] },
+      { label: '[1,2,3]', args: [[1,2,3]], expected: ['1->2','1->3'] },
+    ],
+    hint: 'DFS with path accumulation. At each leaf, push the current path string. Build path by appending "->node.val" as you recurse; backtrack on return.',
+  },
+
+  386: {
+    id: 386,
+    title: 'Lexicographical Numbers',
+    titleZh: '字典序排数',
+    difficulty: 'Medium',
+    leetcodeSlug: 'lexicographical-numbers',
+    tags: ['depth-first-search', 'trie'],
+    description: 'Given an integer n, return all numbers from 1 to n sorted in lexicographical order.',
+    examples: [
+      { input: 'n = 13', output: '[1,10,11,12,13,2,3,4,5,6,7,8,9]', explanation: '' },
+      { input: 'n = 2', output: '[1,2]', explanation: '' },
+    ],
+    constraints: ['1 <= n <= 5 * 10^4'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {number[]}
+ */
+function lexicalOrder(n) {
+
+}`,
+    starterCodePython: `class Solution:
+    def lexicalOrder(self, n: int) -> list[int]:
+        pass`,
+    testCases: [
+      { label: 'n=13', args: [13], expected: [1,10,11,12,13,2,3,4,5,6,7,8,9] },
+      { label: 'n=2', args: [2], expected: [1,2] },
+      { label: 'n=1', args: [1], expected: [1] },
+      { label: 'n=20', args: [20], expected: [1,10,11,12,13,14,15,16,17,18,19,2,20,3,4,5,6,7,8,9] },
+    ],
+    hint: 'DFS on the implicit 10-ary trie. For each prefix curr (1-9 initially), add curr to result, then try curr*10 to curr*10+9 (while <= n). Otherwise increment curr and continue.',
+  },
+
+  404: {
+    id: 404,
+    title: 'Sum of Left Leaves',
+    titleZh: '左叶子之和',
+    difficulty: 'Easy',
+    leetcodeSlug: 'sum-of-left-leaves',
+    tags: ['tree', 'depth-first-search', 'breadth-first-search'],
+    description: 'Given the root of a binary tree, return the sum of all left leaves (leaf nodes that are left children).',
+    examples: [
+      { input: 'root = [3,9,20,null,null,15,7]', output: '24', explanation: 'Left leaves are 9 and 15. Sum = 9 + 15 = 24.' },
+      { input: 'root = [1]', output: '0', explanation: 'No left leaves.' },
+    ],
+    constraints: ['1 <= nodes <= 1000', '-1000 <= Node.val <= 1000'],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift();if(arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left)}i++;if(i<arr.length){if(arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right)}i++}}return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+function sumOfLeftLeaves(root) {
+
+}
+
+function solve(arr) { return sumOfLeftLeaves(buildTree(arr)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def sumOfLeftLeaves(self, root: TreeNode) -> int:
+        pass`,
+    testCases: [
+      { label: '[3,9,20,null,null,15,7] → 24', args: [[3,9,20,null,null,15,7]], expected: 24 },
+      { label: 'single node [1] → 0', args: [[1]], expected: 0 },
+      { label: '[1,2,3,4,5] → 4', args: [[1,2,3,4,5]], expected: 4 },
+    ],
+    hint: 'DFS with an isLeft flag. Pass isLeft=true when recursing left, false for right. Add node.val to the sum only when isLeft is true AND the node is a leaf (no children).',
+  },
+
+  513: {
+    id: 513,
+    title: 'Find Bottom Left Tree Value',
+    titleZh: '找树左下角的值',
+    difficulty: 'Medium',
+    leetcodeSlug: 'find-bottom-left-tree-value',
+    tags: ['tree', 'depth-first-search', 'breadth-first-search'],
+    description: 'Given the root of a binary tree, return the leftmost value in the last row of the tree.',
+    examples: [
+      { input: 'root = [2,1,3]', output: '1', explanation: 'Last row has 1 and 3; leftmost is 1.' },
+      { input: 'root = [1,2,3,4,null,5,6,null,null,7]', output: '7', explanation: 'Last row has only node 7.' },
+    ],
+    constraints: ['1 <= nodes <= 10^4', '-2^31 <= Node.val <= 2^31 - 1'],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift();if(arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left)}i++;if(i<arr.length){if(arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right)}i++}}return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+function findBottomLeftValue(root) {
+
+}
+
+function solve(arr) { return findBottomLeftValue(buildTree(arr)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def findBottomLeftValue(self, root: TreeNode) -> int:
+        pass`,
+    testCases: [
+      { label: '[2,1,3] → 1', args: [[2,1,3]], expected: 1 },
+      { label: '[1,2,3,4,null,5,6,null,null,7] → 7', args: [[1,2,3,4,null,5,6,null,null,7]], expected: 7 },
+      { label: 'single node [1] → 1', args: [[1]], expected: 1 },
+    ],
+    hint: 'BFS level-order: for each level, record the first (leftmost) node. After BFS, the last recorded leftmost node is the answer. Alternatively, DFS left-first tracking depth and updating result at each new max depth.',
+  },
+
+  572: {
+    id: 572,
+    title: 'Subtree of Another Tree',
+    titleZh: '另一棵树的子树',
+    difficulty: 'Easy',
+    leetcodeSlug: 'subtree-of-another-tree',
+    tags: ['tree', 'depth-first-search', 'hash-function', 'string-matching'],
+    description: 'Given roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values as subRoot.',
+    examples: [
+      { input: 'root = [3,4,5,1,2], subRoot = [4,1,2]', output: 'true', explanation: 'Subtree rooted at node 4 matches subRoot.' },
+      { input: 'root = [3,4,5,1,2,null,null,null,null,0], subRoot = [4,1,2]', output: 'false', explanation: 'Node 2 has an extra left child 0.' },
+    ],
+    constraints: ['1 <= root nodes <= 2000', '1 <= subRoot nodes <= 1000', '-10^4 <= Node.val <= 10^4'],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift();if(arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left)}i++;if(i<arr.length){if(arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right)}i++}}return root; };
+
+/**
+ * @param {TreeNode} root
+ * @param {TreeNode} subRoot
+ * @return {boolean}
+ */
+function isSubtree(root, subRoot) {
+
+}
+
+function solve(rootArr, subArr) { return isSubtree(buildTree(rootArr), buildTree(subArr)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def isSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:
+        pass`,
+    testCases: [
+      { label: '[3,4,5,1,2] sub [4,1,2] → true', args: [[3,4,5,1,2], [4,1,2]], expected: true },
+      { label: '[3,4,5,1,2,null,null,null,null,0] sub [4,1,2] → false', args: [[3,4,5,1,2,null,null,null,null,0], [4,1,2]], expected: false },
+      { label: 'identical trees → true', args: [[1,2,3], [1,2,3]], expected: true },
+    ],
+    hint: 'Write a helper isSameTree(s, t). Then isSubtree = isSameTree(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot).',
+  },
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {
