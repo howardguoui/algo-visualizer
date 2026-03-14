@@ -106,7 +106,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 
 ---
 
-## Batch B4 — Binary Tree Traversal (21 problems) `[ ] Not started`
+## Batch B4 — Binary Tree Traversal (21 problems) `[x] Done`
 
 | ID | Problem | Difficulty | Topic |
 |---|---|---|---|
@@ -314,7 +314,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 | B1 | 18 problems (61,901,523,525,724,1016,1219,1242,1477,370,28,187,81,392,566,658,808,882) | 2026-03-13 | pending |
 | B2 | 20 problems (232,503,957,1286,1648,1814,133,242,290,380,387,389,442,448,894,913,355,451,692,789) | 2026-03-13 | pending |
 | B3 | 19 problems (1955,1962,211,648,677,1949,284,316,785,885,1159,652,1475,129,257,386,404,513,572) | 2026-03-13 | pending |
-| B4 | _pending_ | | |
+| B4 | 21 problems (112,113,617,623,933,975,1011,1029,1030,1035,1079,1194,1243,1248,1387,1484,1544,1568,2217,774,1498) | 2026-03-14 | pending |
 | B5 | _pending_ | | |
 | B6 | _pending_ | | |
 | B7 | _pending_ | | |

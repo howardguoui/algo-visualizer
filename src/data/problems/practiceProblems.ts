@@ -4862,6 +4862,932 @@ class Solution:
     ],
     hint: 'Write a helper isSameTree(s, t). Then isSubtree = isSameTree(root, subRoot) || isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot).',
   },
+
+  // ─── Batch B4 — Binary Tree Traversal & Two Views (21 problems) ───────────
+
+  112: {
+    id: 112,
+    title: 'Path Sum',
+    titleZh: '路径总和',
+    difficulty: 'Easy',
+    leetcodeSlug: 'path-sum',
+    tags: ['Tree', 'DFS', 'Binary Tree'],
+    description: `Given the root of a binary tree and an integer \`targetSum\`, return \`true\` if the tree has a **root-to-leaf** path such that adding up all the values along the path equals \`targetSum\`.
+
+A **leaf** is a node with no children.`,
+    examples: [
+      { input: 'root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22', output: 'true', explanation: 'The path 5→4→11→2 sums to 22.' },
+      { input: 'root = [1,2,3], targetSum = 5', output: 'false', explanation: 'The paths are [1,2]=3 and [1,3]=4. Neither equals 5.' },
+      { input: 'root = [], targetSum = 0', output: 'false', explanation: 'Empty tree has no root-to-leaf paths.' },
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [0, 5000].',
+      '-1000 <= Node.val <= 1000',
+      '-1000 <= targetSum <= 1000',
+    ],
+    starterCode: `/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {boolean}
+ */
+function hasPathSum(root, targetSum) {
+
+}
+
+class TreeNode { constructor(val, left, right) { this.val = val; this.left = left ?? null; this.right = right ?? null; } }
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+function solve(arr, target) { return hasPathSum(buildTree(arr), target); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def hasPathSum(self, root: TreeNode, targetSum: int) -> bool:
+        pass`,
+    testCases: [
+      { label: '[5,4,8,11,null,13,4,7,2,null,null,null,1], 22 → true', args: [[5,4,8,11,null,13,4,7,2,null,null,null,1], 22], expected: true },
+      { label: '[1,2,3], 5 → false', args: [[1,2,3], 5], expected: false },
+      { label: 'empty, 0 → false', args: [[], 0], expected: false },
+      { label: '[1,2], 1 → false (1 is not a leaf)', args: [[1,2], 1], expected: false },
+      { label: '[1], 1 → true (single leaf node)', args: [[1], 1], expected: true },
+    ],
+    hint: 'DFS: at each leaf node, check if remaining sum equals node.val. Recurse by subtracting current node value. A leaf has no children — do not count non-leaf nodes as valid endpoints.',
+  },
+
+  113: {
+    id: 113,
+    title: 'Path Sum II',
+    titleZh: '路径总和 II',
+    difficulty: 'Medium',
+    leetcodeSlug: 'path-sum-ii',
+    tags: ['Tree', 'DFS', 'Backtracking', 'Binary Tree'],
+    description: `Given the root of a binary tree and an integer \`targetSum\`, return all **root-to-leaf paths** where the sum of the node values in the path equals \`targetSum\`. Each path should be returned as a list of node values.
+
+A **leaf** is a node with no children.`,
+    examples: [
+      { input: 'root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22', output: '[[5,4,11,2],[5,8,4,5]]' },
+      { input: 'root = [1,2,3], targetSum = 5', output: '[]' },
+      { input: 'root = [1,2], targetSum = 0', output: '[]' },
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [0, 5000].',
+      '-1000 <= Node.val <= 1000',
+      '-1000 <= targetSum <= 1000',
+    ],
+    starterCode: `/**
+ * @param {TreeNode} root
+ * @param {number} targetSum
+ * @return {number[][]}
+ */
+function pathSum(root, targetSum) {
+
+}
+
+class TreeNode { constructor(val, left, right) { this.val = val; this.left = left ?? null; this.right = right ?? null; } }
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+function solve(arr, target) { return pathSum(buildTree(arr), target).sort((a,b)=>a[0]-b[0]||a[1]-b[1]); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def pathSum(self, root: TreeNode, targetSum: int) -> list[list[int]]:
+        pass`,
+    testCases: [
+      { label: '[5,4,8,11,null,13,4,7,2,null,null,5,1], 22 → [[5,4,11,2],[5,8,4,5]]', args: [[5,4,8,11,null,13,4,7,2,null,null,5,1], 22], expected: [[5,4,11,2],[5,8,4,5]] },
+      { label: '[1,2,3], 5 → []', args: [[1,2,3], 5], expected: [] },
+      { label: '[1,2], 0 → []', args: [[1,2], 0], expected: [] },
+      { label: '[1], 1 → [[1]]', args: [[1], 1], expected: [[1]] },
+    ],
+    hint: 'DFS with backtracking: maintain a current path array. When you reach a leaf and remaining sum equals leaf.val, push a copy of the path to results. After each recursive call, pop the last element to backtrack.',
+  },
+
+  617: {
+    id: 617,
+    title: 'Merge Two Binary Trees',
+    titleZh: '合并二叉树',
+    difficulty: 'Easy',
+    leetcodeSlug: 'merge-two-binary-trees',
+    tags: ['Tree', 'DFS', 'Binary Tree'],
+    description: `You are given two binary trees \`root1\` and \`root2\`.
+
+Imagine that when you put one of them to cover the other, some nodes of the two trees overlap while the others are not. You need to merge the two trees into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the non-null node will be used as the node of the new tree.
+
+Return the **merged tree**.`,
+    examples: [
+      { input: 'root1 = [1,3,2,5], root2 = [2,1,3,null,4,null,7]', output: '[3,4,5,5,4,null,7]' },
+      { input: 'root1 = [1], root2 = [1,2]', output: '[2,2]' },
+    ],
+    constraints: [
+      'The number of nodes in both trees is in the range [0, 2000].',
+      '-10^4 <= Node.val <= 10^4',
+    ],
+    starterCode: `/**
+ * @param {TreeNode} root1
+ * @param {TreeNode} root2
+ * @return {TreeNode}
+ */
+function mergeTrees(root1, root2) {
+
+}
+
+class TreeNode { constructor(val, left, right) { this.val = val; this.left = left ?? null; this.right = right ?? null; } }
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+const treeToArr = root => { if(!root)return[]; const res=[],q=[root]; while(q.length){const n=q.shift();res.push(n?n.val:null);if(n){q.push(n.left);q.push(n.right);}} while(res.length&&res[res.length-1]===null)res.pop(); return res; };
+function solve(arr1, arr2) { return treeToArr(mergeTrees(buildTree(arr1), buildTree(arr2))); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def mergeTrees(self, root1: TreeNode, root2: TreeNode) -> TreeNode:
+        pass`,
+    testCases: [
+      { label: '[1,3,2,5] + [2,1,3,null,4,null,7] → [3,4,5,5,4,null,7]', args: [[1,3,2,5], [2,1,3,null,4,null,7]], expected: [3,4,5,5,4,null,7] },
+      { label: '[1] + [1,2] → [2,2]', args: [[1], [1,2]], expected: [2,2] },
+      { label: 'empty + [1] → [1]', args: [[], [1]], expected: [1] },
+      { label: '[1] + empty → [1]', args: [[1], []], expected: [1] },
+    ],
+    hint: 'Recursive: if either node is null, return the other. Otherwise create a node with sum of values, then recursively merge left children and right children.',
+  },
+
+  623: {
+    id: 623,
+    title: 'Add One Row to Tree',
+    titleZh: '在二叉树中增加一行',
+    difficulty: 'Medium',
+    leetcodeSlug: 'add-one-row-to-tree',
+    tags: ['Tree', 'BFS', 'DFS', 'Binary Tree'],
+    description: `Given the root of a binary tree and two integers \`val\` and \`depth\`, add a row of nodes with value \`val\` at the given depth \`depth\`.
+
+The root node is at depth \`1\`.
+
+The adding rule is: for each node \`cur\` at depth \`depth - 1\`:
+- Create two tree nodes with value \`val\` as \`cur\`'s left and right subtree roots.
+- \`cur\`'s original left subtree becomes the left subtree of the new left node.
+- \`cur\`'s original right subtree becomes the right subtree of the new right node.
+
+If \`depth == 1\`, create a new root with value \`val\` and make the original tree its left subtree.`,
+    examples: [
+      { input: 'root = [4,2,6,3,1,5], val = 1, depth = 2', output: '[4,1,1,2,null,null,6,3,1,5]' },
+      { input: 'root = [4,2,null,3,1], val = 1, depth = 3', output: '[4,2,null,1,1,3,null,null,1]' },
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [1, 10^4].',
+      '-100 <= Node.val <= 100',
+      '-10^5 <= val <= 10^5',
+      '1 <= depth <= the depth of tree + 1',
+    ],
+    starterCode: `/**
+ * @param {TreeNode} root
+ * @param {number} val
+ * @param {number} depth
+ * @return {TreeNode}
+ */
+function addOneRow(root, val, depth) {
+
+}
+
+class TreeNode { constructor(val, left, right) { this.val = val; this.left = left ?? null; this.right = right ?? null; } }
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+const treeToArr = root => { if(!root)return[]; const res=[],q=[root]; while(q.length){const n=q.shift();res.push(n?n.val:null);if(n){q.push(n.left);q.push(n.right);}} while(res.length&&res[res.length-1]===null)res.pop(); return res; };
+function solve(arr, val, depth) { return treeToArr(addOneRow(buildTree(arr), val, depth)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def addOneRow(self, root: TreeNode, val: int, depth: int) -> TreeNode:
+        pass`,
+    testCases: [
+      { label: '[4,2,6,3,1,5], val=1, depth=2 → [4,1,1,2,null,null,6,3,1,5]', args: [[4,2,6,3,1,5], 1, 2], expected: [4,1,1,2,null,null,6,3,1,5] },
+      { label: '[4,2,null,3,1], val=1, depth=3 → [4,2,null,1,1,3,null,null,1]', args: [[4,2,null,3,1], 1, 3], expected: [4,2,null,1,1,3,null,null,1] },
+      { label: '[1,2,3], val=5, depth=1 → [5,1,null,2,3]', args: [[1,2,3], 5, 1], expected: [5,1,null,2,3] },
+    ],
+    hint: 'BFS level-by-level until depth-1. For each node at depth-1, insert two new nodes between it and its children. Special case: depth=1 means create a new root with old root as left child.',
+  },
+
+  933: {
+    id: 933,
+    title: 'Number of Recent Calls',
+    titleZh: '最近的请求次数',
+    difficulty: 'Easy',
+    leetcodeSlug: 'number-of-recent-calls',
+    tags: ['Design', 'Queue', 'Data Stream'],
+    description: `You have a \`RecentCounter\` class which counts the number of recent requests within a certain time frame.
+
+Implement the \`RecentCounter\` class:
+- \`RecentCounter()\` Initializes the counter with zero recent requests.
+- \`int ping(int t)\` Adds a new request at time \`t\`, where \`t\` represents some time in milliseconds, and returns the number of requests that has happened in the past \`3000\` milliseconds (including the new request). Specifically, return the number of requests in the inclusive range \`[t - 3000, t]\`.
+
+It is **guaranteed** that every call to \`ping\` uses a strictly larger value of \`t\` than the previous call.`,
+    examples: [
+      { input: 'ping(1), ping(100), ping(3001), ping(3002)', output: '[1, 2, 3, 3]', explanation: 'ping(3001) counts [1,3001]: values 1,100,3001 = 3. ping(3002) counts [2,3002]: values 100,3001,3002 = 3.' },
+    ],
+    constraints: [
+      '1 <= t <= 10^9',
+      'Each test case will call ping with strictly increasing values of t.',
+      'At most 10^4 calls will be made to ping.',
+    ],
+    starterCode: `class RecentCounter {
+  constructor() {
+  }
+
+  /**
+   * @param {number} t
+   * @return {number}
+   */
+  ping(t) {
+  }
+}
+
+function solve(pings) {
+  const rc = new RecentCounter();
+  return pings.map(t => rc.ping(t));
+}`,
+    starterCodePython: `from collections import deque
+
+class RecentCounter:
+    def __init__(self):
+        pass
+
+    def ping(self, t: int) -> int:
+        pass`,
+    testCases: [
+      { label: '[1,100,3001,3002] → [1,2,3,3]', args: [[1,100,3001,3002]], expected: [1,2,3,3] },
+      { label: '[1] → [1]', args: [[1]], expected: [1] },
+      { label: '[1,3001,3002,6002] → [1,2,2,2]', args: [[1,3001,3002,6002]], expected: [1,2,2,2] },
+    ],
+    hint: 'Use a queue (array). On each ping(t), push t. Then remove elements from the front while queue[0] < t - 3000. Return queue.length.',
+  },
+
+  975: {
+    id: 975,
+    title: 'Odd Even Jump',
+    titleZh: '奇偶跳',
+    difficulty: 'Hard',
+    leetcodeSlug: 'odd-even-jump',
+    tags: ['Array', 'Dynamic Programming', 'Stack', 'Monotonic Stack', 'Ordered Set'],
+    description: `You are given an integer array \`arr\`. From some starting index, you can make a series of jumps. The (1st, 3rd, 5th, ...) jumps are called **odd-numbered jumps**, and the (2nd, 4th, 6th, ...) jumps are called **even-numbered jumps**.
+
+- For an **odd-numbered jump** from index \`i\`, find the **minimum** \`arr[j]\` such that \`j > i\` and \`arr[j] >= arr[i]\`. If there are multiple such \`j\`, take the **smallest** \`j\`.
+- For an **even-numbered jump** from index \`i\`, find the **maximum** \`arr[j]\` such that \`j > i\` and \`arr[j] <= arr[i]\`. If there are multiple such \`j\`, take the **smallest** \`j\`.
+
+An index \`i\` is **good** if, starting from index \`i\`, you can reach the last index (possibly 0 jumps). Return the **number of good starting indices**.`,
+    examples: [
+      { input: 'arr = [10,13,12,14,15]', output: '2', explanation: 'Indices 3 and 4 can reach the end.' },
+      { input: 'arr = [2,3,1,1,4]', output: '3', explanation: 'Indices 1, 3, and 4 can reach the end.' },
+      { input: 'arr = [5,1,3,4,2]', output: '3', explanation: 'Indices 1, 2, and 4 can reach the end.' },
+    ],
+    constraints: [
+      '1 <= arr.length <= 2 * 10^4',
+      '0 <= arr[i] < 10^5',
+    ],
+    starterCode: `/**
+ * @param {number[]} arr
+ * @return {number}
+ */
+function oddEvenJumps(arr) {
+
+}`,
+    starterCodePython: `class Solution:
+    def oddEvenJumps(self, arr: list[int]) -> int:
+        pass`,
+    testCases: [
+      { label: '[10,13,12,14,15] → 2', args: [[10,13,12,14,15]], expected: 2 },
+      { label: '[2,3,1,1,4] → 3', args: [[2,3,1,1,4]], expected: 3 },
+      { label: '[5,1,3,4,2] → 3', args: [[5,1,3,4,2]], expected: 3 },
+      { label: '[1] → 1', args: [[1]], expected: 1 },
+    ],
+    hint: 'DP + monotonic stack. For each index, precompute next_odd[i] (jump destination on odd jump) and next_even[i] (on even jump) using sorted order. Then dp_odd[i] = can reach end starting with odd jump from i; dp_even[i] = even jump. Work right to left.',
+  },
+
+  1011: {
+    id: 1011,
+    title: 'Capacity To Ship Packages Within D Days',
+    titleZh: 'D 天内送达包裹的能力',
+    difficulty: 'Medium',
+    leetcodeSlug: 'capacity-to-ship-packages-within-d-days',
+    tags: ['Array', 'Binary Search'],
+    description: `A conveyor belt has packages that must be shipped from one port to another within \`days\` days.
+
+The \`i\`-th package on the conveyor belt has a weight of \`weights[i]\`. Each day, we load the ship with packages on the conveyor belt in the order given by \`weights\`. We may not load more weight than the maximum weight capacity of the ship.
+
+Return the **least weight capacity** of the ship that will result in all the packages on the conveyor belt being shipped within \`days\` days.`,
+    examples: [
+      { input: 'weights = [1,2,3,4,5,6,7,8,9,10], days = 5', output: '15' },
+      { input: 'weights = [3,2,2,4,1,4], days = 3', output: '6' },
+      { input: 'weights = [1,2,3,1,1], days = 4', output: '3' },
+    ],
+    constraints: [
+      '1 <= days <= weights.length <= 5 * 10^4',
+      '1 <= weights[i] <= 500',
+    ],
+    starterCode: `/**
+ * @param {number[]} weights
+ * @param {number} days
+ * @return {number}
+ */
+function shipWithinDays(weights, days) {
+
+}`,
+    starterCodePython: `class Solution:
+    def shipWithinDays(self, weights: list[int], days: int) -> int:
+        pass`,
+    testCases: [
+      { label: '[1..10], days=5 → 15', args: [[1,2,3,4,5,6,7,8,9,10], 5], expected: 15 },
+      { label: '[3,2,2,4,1,4], days=3 → 6', args: [[3,2,2,4,1,4], 3], expected: 6 },
+      { label: '[1,2,3,1,1], days=4 → 3', args: [[1,2,3,1,1], 4], expected: 3 },
+    ],
+    hint: 'Binary search on capacity. Left = max(weights) (must fit each package), Right = sum(weights) (ship all in 1 day). For a given capacity, greedily count days needed. If days_needed <= days, try reducing capacity.',
+  },
+
+  1029: {
+    id: 1029,
+    title: 'Two City Scheduling',
+    titleZh: '两地调度',
+    difficulty: 'Medium',
+    leetcodeSlug: 'two-city-scheduling',
+    tags: ['Array', 'Greedy', 'Sorting'],
+    description: `A company is planning to interview \`2n\` people. Given the array \`costs\` where \`costs[i] = [aCosti, bCosti]\`, the cost of flying the \`i\`th person to city \`a\` is \`aCosti\`, and the cost of flying the \`i\`th person to city \`b\` is \`bCosti\`.
+
+Return the **minimum cost** to fly every person to a city such that exactly \`n\` people arrive in each city.`,
+    examples: [
+      { input: 'costs = [[10,20],[30,200],[400,50],[30,20]]', output: '110', explanation: 'Persons 0,1 to city A (10+30=40), persons 2,3 to city B (50+20=70). Total=110.' },
+      { input: 'costs = [[259,770],[448,54],[926,667],[184,139],[840,118],[577,469]]', output: '1859' },
+    ],
+    constraints: [
+      '2 * n == costs.length',
+      '2 <= costs.length <= 200',
+      '0 <= aCosti, bCosti <= 10^4',
+    ],
+    starterCode: `/**
+ * @param {number[][]} costs
+ * @return {number}
+ */
+function twoCitySchedCost(costs) {
+
+}`,
+    starterCodePython: `class Solution:
+    def twoCitySchedCost(self, costs: list[list[int]]) -> int:
+        pass`,
+    testCases: [
+      { label: '[[10,20],[30,200],[400,50],[30,20]] → 110', args: [[[10,20],[30,200],[400,50],[30,20]]], expected: 110 },
+      { label: '6 people → 1859', args: [[[259,770],[448,54],[926,667],[184,139],[840,118],[577,469]]], expected: 1859 },
+      { label: '[[515,563],[451,713],[537,709],[343,819],[855,779],[457,60],[650,359],[631,42]] → 3086', args: [[[515,563],[451,713],[537,709],[343,819],[855,779],[457,60],[650,359],[631,42]]], expected: 3086 },
+    ],
+    hint: 'Greedy: sort by (aCost - bCost). Sending someone to city A "costs" aCost but "saves" bCost. Sort by this difference ascending — the first n go to city A (biggest savings), rest to city B.',
+  },
+
+  1030: {
+    id: 1030,
+    title: 'Matrix Cells in Distance Order',
+    titleZh: '距离顺序排列矩阵单元格',
+    difficulty: 'Easy',
+    leetcodeSlug: 'matrix-cells-in-distance-order',
+    tags: ['Array', 'Math', 'Geometry', 'Sorting', 'Matrix', 'BFS'],
+    description: `You are given four integers \`rows\`, \`cols\`, \`rCenter\`, and \`cCenter\`. There is a \`rows x cols\` matrix and you are on the cell with coordinates \`(rCenter, cCenter)\`.
+
+Return the coordinates of all cells in the matrix, sorted by their **distance** from \`(rCenter, cCenter)\` from the smallest distance to the largest distance.
+
+The **distance** between two cells \`(r1, c1)\` and \`(r2, c2)\` is \`|r1 - r2| + |c1 - c2|\` (Manhattan distance).`,
+    examples: [
+      { input: 'rows = 1, cols = 2, rCenter = 0, cCenter = 0', output: '[[0,0],[0,1]]' },
+      { input: 'rows = 2, cols = 2, rCenter = 0, cCenter = 1', output: '[[0,1],[0,0],[1,1],[1,0]]' },
+    ],
+    constraints: [
+      '1 <= rows, cols <= 100',
+      '0 <= rCenter < rows',
+      '0 <= cCenter < cols',
+    ],
+    starterCode: `/**
+ * @param {number} rows
+ * @param {number} cols
+ * @param {number} rCenter
+ * @param {number} cCenter
+ * @return {number[][]}
+ */
+function allCellsDistOrder(rows, cols, rCenter, cCenter) {
+
+}
+
+function solve(rows, cols, rCenter, cCenter) {
+  const res = allCellsDistOrder(rows, cols, rCenter, cCenter);
+  return res.sort((a, b) => {
+    const da = Math.abs(a[0]-rCenter)+Math.abs(a[1]-cCenter);
+    const db = Math.abs(b[0]-rCenter)+Math.abs(b[1]-cCenter);
+    return da !== db ? da-db : a[0] !== b[0] ? a[0]-b[0] : a[1]-b[1];
+  });
+}`,
+    starterCodePython: `class Solution:
+    def allCellsDistOrder(self, rows: int, cols: int, rCenter: int, cCenter: int) -> list[list[int]]:
+        pass`,
+    testCases: [
+      { label: '1x2, center(0,0) → [[0,0],[0,1]]', args: [1, 2, 0, 0], expected: [[0,0],[0,1]] },
+      { label: '2x2, center(0,1) → [[0,1],[0,0],[1,1],[1,0]]', args: [2, 2, 0, 1], expected: [[0,1],[0,0],[1,1],[1,0]] },
+      { label: '2x3, center(1,2) sorted', args: [2, 3, 1, 2], expected: [[1,2],[0,2],[1,1],[0,1],[1,0],[0,0]] },
+    ],
+    hint: 'Approach 1: generate all cells, sort by Manhattan distance (tie-break by row then col). Approach 2: BFS from the center — BFS naturally expands in distance order.',
+  },
+
+  1035: {
+    id: 1035,
+    title: 'Uncrossed Lines',
+    titleZh: '不相交的线',
+    difficulty: 'Medium',
+    leetcodeSlug: 'uncrossed-lines',
+    tags: ['Array', 'Dynamic Programming'],
+    description: `You are given two integer arrays \`nums1\` and \`nums2\`. We write the integers of \`nums1\` and \`nums2\` (in the order they are given) on two separate horizontal lines.
+
+We may draw connecting lines: a straight line connecting \`nums1[i]\` and \`nums2[j]\` such that:
+- \`nums1[i] == nums2[j]\`, and
+- the line we draw does not intersect any other connecting lines.
+
+Return the **maximum number of connecting lines** we can draw.`,
+    examples: [
+      { input: 'nums1 = [1,4,2], nums2 = [1,2,4]', output: '2', explanation: 'We can draw lines 1-1 and 2-2 (or 1-1 and 4-4).' },
+      { input: 'nums1 = [2,5,1,2,5], nums2 = [10,5,2,1,5,2]', output: '3' },
+      { input: 'nums1 = [1,3,7,1,7,5], nums2 = [1,9,2,5,1]', output: '2' },
+    ],
+    constraints: [
+      '1 <= nums1.length, nums2.length <= 500',
+      '1 <= nums1[i], nums2[j] <= 2000',
+    ],
+    starterCode: `/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+function maxUncrossedLines(nums1, nums2) {
+
+}`,
+    starterCodePython: `class Solution:
+    def maxUncrossedLines(self, nums1: list[int], nums2: list[int]) -> int:
+        pass`,
+    testCases: [
+      { label: '[1,4,2] vs [1,2,4] → 2', args: [[1,4,2],[1,2,4]], expected: 2 },
+      { label: '[2,5,1,2,5] vs [10,5,2,1,5,2] → 3', args: [[2,5,1,2,5],[10,5,2,1,5,2]], expected: 3 },
+      { label: '[1,3,7,1,7,5] vs [1,9,2,5,1] → 2', args: [[1,3,7,1,7,5],[1,9,2,5,1]], expected: 2 },
+    ],
+    hint: 'This is exactly the Longest Common Subsequence (LCS) problem! Non-crossing connecting lines correspond to a common subsequence in relative order. Use 2D DP: dp[i][j] = max lines using nums1[:i] and nums2[:j].',
+  },
+
+  1079: {
+    id: 1079,
+    title: 'Letter Tile Possibilities',
+    titleZh: '活字印刷',
+    difficulty: 'Medium',
+    leetcodeSlug: 'letter-tile-possibilities',
+    tags: ['Hash Table', 'Math', 'String', 'Backtracking', 'Counting'],
+    description: `You have \`n\` tiles, where each tile has one letter \`tiles[i]\` printed on it.
+
+Return the **number of possible non-empty sequences of letters** you can make using the letters printed on those tiles.`,
+    examples: [
+      { input: 'tiles = "AAB"', output: '8', explanation: 'Possible sequences: A, B, AA, AB, BA, AAB, ABA, BAA.' },
+      { input: 'tiles = "AAABBC"', output: '188' },
+      { input: 'tiles = "V"', output: '1' },
+    ],
+    constraints: [
+      '1 <= tiles.length <= 7',
+      'tiles consists of uppercase English letters.',
+    ],
+    starterCode: `/**
+ * @param {string} tiles
+ * @return {number}
+ */
+function numTilePossibilities(tiles) {
+
+}`,
+    starterCodePython: `class Solution:
+    def numTilePossibilities(self, tiles: str) -> int:
+        pass`,
+    testCases: [
+      { label: '"AAB" → 8', args: ['AAB'], expected: 8 },
+      { label: '"AAABBC" → 188', args: ['AAABBC'], expected: 188 },
+      { label: '"V" → 1', args: ['V'], expected: 1 },
+      { label: '"AB" → 4', args: ['AB'], expected: 4 },
+    ],
+    hint: 'Count frequency of each letter. Backtrack: at each step, try placing each unique letter (by count, not position). Decrement its count, add 1 to result, recurse (can place more), then restore count. Every recursive call represents a completed sequence.',
+  },
+
+  1194: {
+    id: 1194,
+    title: 'Tournament Results',
+    titleZh: '锦标赛优胜者',
+    difficulty: 'Medium',
+    leetcodeSlug: 'tournament-results',
+    tags: ['Array', 'Hash Table', 'Sorting'],
+    description: `**Note:** This is an algorithmic adaptation of a database problem.
+
+Given a list of tournament match results where each entry is \`[winner, loser]\`, compute the overall standings.
+
+Return an array of all players sorted by:
+1. **Number of wins** (descending)
+2. **Player name** (lexicographically ascending) for ties
+
+Each entry in the output should be \`[playerName, wins]\`.`,
+    examples: [
+      { input: 'results = [["Alice","Bob"],["Alice","Charlie"],["Bob","Charlie"],["Dave","Alice"]]', output: '[["Alice",2],["Bob",1],["Dave",1],["Charlie",0]]', explanation: 'Alice has 2 wins, Bob and Dave have 1 win each (Bob < Dave alphabetically), Charlie has 0 wins.' },
+    ],
+    constraints: [
+      '1 <= results.length <= 10^4',
+      'Each result is a pair [winner, loser] of distinct player names.',
+    ],
+    starterCode: `/**
+ * @param {string[][]} results - array of [winner, loser] pairs
+ * @return {Array} - array of [playerName, wins] sorted by wins desc, name asc
+ */
+function tournamentResults(results) {
+
+}`,
+    starterCodePython: `class Solution:
+    def tournamentResults(self, results: list[list[str]]) -> list:
+        pass`,
+    testCases: [
+      { label: 'basic standings', args: [[['Alice','Bob'],['Alice','Charlie'],['Bob','Charlie'],['Dave','Alice']]], expected: [['Alice',2],['Bob',1],['Dave',1],['Charlie',0]] },
+      { label: 'single match', args: [[['A','B']]], expected: [['A',1],['B',0]] },
+      { label: 'round-robin (all tie)', args: [[['A','B'],['B','C'],['C','A']]], expected: [['A',1],['B',1],['C',1]] },
+    ],
+    hint: 'Use a Map to track wins. First collect all unique players from both sides. Then increment winner counts. Finally sort by wins descending, then alphabetically.',
+  },
+
+  1243: {
+    id: 1243,
+    title: 'Array Transformation',
+    titleZh: '数组变换',
+    difficulty: 'Easy',
+    leetcodeSlug: 'array-transformation',
+    tags: ['Array', 'Simulation'],
+    description: `Given an initial integer array \`arr\`, every day you produce a new array using the following rules:
+- If an element is **smaller** than both its left neighbor and its right neighbor, increment it by \`1\`.
+- If an element is **larger** than both its left neighbor and its right neighbor, decrement it by \`1\`.
+- The first and last elements never change.
+
+After some days, the array does not change. Return that final array.`,
+    examples: [
+      { input: 'arr = [6,2,3,4]', output: '[6,3,3,4]', explanation: 'Day 1: arr[1]=2 is local min → 3. Day 2 is stable.' },
+      { input: 'arr = [1,6,3,4]', output: '[1,4,4,4]', explanation: 'Day 1: [1,5,4,4]. Day 2: [1,4,4,4]. Day 3: stable.' },
+    ],
+    constraints: [
+      '3 <= arr.length <= 100',
+      '1 <= arr[i] <= 100',
+    ],
+    starterCode: `/**
+ * @param {number[]} arr
+ * @return {number[]}
+ */
+function transformArray(arr) {
+
+}`,
+    starterCodePython: `class Solution:
+    def transformArray(self, arr: list[int]) -> list[int]:
+        pass`,
+    testCases: [
+      { label: '[6,2,3,4] → [6,3,3,4]', args: [[6,2,3,4]], expected: [6,3,3,4] },
+      { label: '[1,6,3,4] → [1,4,4,4]', args: [[1,6,3,4]], expected: [1,4,4,4] },
+      { label: '[1,2,3] → [1,2,3] (monotonic, no change)', args: [[1,2,3]], expected: [1,2,3] },
+    ],
+    hint: 'Simulate day by day. Each day, apply all changes simultaneously using a copy. Keep going until no change occurs in a full pass. Track whether anything changed each day.',
+  },
+
+  1248: {
+    id: 1248,
+    title: 'Count Number of Nice Subarrays',
+    titleZh: '统计「优美子数组」',
+    difficulty: 'Medium',
+    leetcodeSlug: 'count-number-of-nice-subarrays',
+    tags: ['Array', 'Hash Table', 'Math', 'Sliding Window', 'Prefix Sum'],
+    description: `Given an array of integers \`nums\` and an integer \`k\`. A continuous subarray is called **nice** if there are exactly \`k\` odd numbers on it.
+
+Return the **number of nice sub-arrays**.`,
+    examples: [
+      { input: 'nums = [1,1,2,1,1], k = 3', output: '2', explanation: 'The subarrays [1,1,2,1] and [1,2,1,1] both have 3 odd numbers.' },
+      { input: 'nums = [2,4,6], k = 1', output: '0', explanation: 'No odd numbers in the array.' },
+      { input: 'nums = [2,2,2,1,2,2,1,2,2,2], k = 2', output: '16' },
+    ],
+    constraints: [
+      '1 <= nums.length <= 50000',
+      '1 <= nums[i] <= 10^5',
+      '1 <= k <= nums.length',
+    ],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+function numberOfSubarrays(nums, k) {
+
+}`,
+    starterCodePython: `class Solution:
+    def numberOfSubarrays(self, nums: list[int], k: int) -> int:
+        pass`,
+    testCases: [
+      { label: '[1,1,2,1,1], k=3 → 2', args: [[1,1,2,1,1], 3], expected: 2 },
+      { label: '[2,4,6], k=1 → 0', args: [[2,4,6], 1], expected: 0 },
+      { label: '[2,2,2,1,2,2,1,2,2,2], k=2 → 16', args: [[2,2,2,1,2,2,1,2,2,2], 2], expected: 16 },
+    ],
+    hint: 'Prefix sum approach: let prefix[i] = number of odd elements in nums[0..i-1]. For each j, count how many i < j have prefix[j]-prefix[i] = k. Use a hash map to store prefix frequencies. Alternatively: "exactly k" = "at most k" - "at most k-1" with sliding window.',
+  },
+
+  1387: {
+    id: 1387,
+    title: 'Sort Integers by The Power Value',
+    titleZh: '将整数按权重排序',
+    difficulty: 'Medium',
+    leetcodeSlug: 'sort-integers-by-the-power-value',
+    tags: ['Dynamic Programming', 'Memoization', 'Sorting'],
+    description: `The **power** of an integer \`x\` is defined as the number of steps needed to transform \`x\` into \`1\` using:
+- if \`x\` is even: \`x = x / 2\`
+- if \`x\` is odd: \`x = 3 * x + 1\`
+
+Given three integers \`lo\`, \`hi\` and \`k\`, sort all integers in the interval \`[lo, hi]\` by their power values in **ascending order**. If two or more integers have the **same** power value, sort them by their value in ascending order.
+
+Return the \`k\`-th integer in the range sorted by power value (1-indexed).`,
+    examples: [
+      { input: 'lo = 12, hi = 15, k = 2', output: '13', explanation: 'Powers: 12→9, 13→9, 14→17, 15→17. Sorted: [12,13,14,15]. k=2 → 13.' },
+      { input: 'lo = 7, hi = 11, k = 4', output: '7' },
+    ],
+    constraints: [
+      '1 <= lo <= hi <= 1000',
+      '1 <= k <= hi - lo + 1',
+    ],
+    starterCode: `/**
+ * @param {number} lo
+ * @param {number} hi
+ * @param {number} k
+ * @return {number}
+ */
+function getKth(lo, hi, k) {
+
+}`,
+    starterCodePython: `class Solution:
+    def getKth(self, lo: int, hi: int, k: int) -> int:
+        pass`,
+    testCases: [
+      { label: 'lo=12, hi=15, k=2 → 13', args: [12, 15, 2], expected: 13 },
+      { label: 'lo=7, hi=11, k=4 → 7', args: [7, 11, 4], expected: 7 },
+      { label: 'lo=1, hi=1, k=1 → 1', args: [1, 1, 1], expected: 1 },
+    ],
+    hint: 'Use memoization to compute power values efficiently (Collatz sequence). Create pairs [power, value] for each number in [lo, hi], sort by (power, value), return the k-th element (1-indexed).',
+  },
+
+  1484: {
+    id: 1484,
+    title: 'Group Sold Products By The Date',
+    titleZh: '按日期分组销售产品',
+    difficulty: 'Easy',
+    leetcodeSlug: 'group-sold-products-by-the-date',
+    tags: ['Array', 'Hash Table', 'String', 'Sorting'],
+    description: `**Note:** This is an algorithmic adaptation of a database problem.
+
+Given an array of \`[date, product]\` pairs representing sales records, for each sell date return:
+1. The \`sell_date\`
+2. The number of **distinct** products sold on that date (\`num_sold\`)
+3. The distinct product names sorted **lexicographically** and joined with commas (\`products\`)
+
+Return results sorted by \`sell_date\` ascending. Each result should be \`[sell_date, num_sold, products_string]\`.`,
+    examples: [
+      { input: 'activities = [["2020-05-30","Headphone"],["2020-06-01","Pencil"],["2020-06-02","Mask"],["2020-05-30","Basketball"],["2020-06-01","Bible"],["2020-06-02","Mask"],["2020-05-30","T-Shirt"]]', output: '[["2020-05-30",3,"Basketball,Headphone,T-Shirt"],["2020-06-01",2,"Bible,Pencil"],["2020-06-02",1,"Mask"]]' },
+    ],
+    constraints: [
+      '1 <= activities.length <= 10^4',
+      'activities[i].length == 2',
+      '1 <= date.length, product.length <= 10',
+    ],
+    starterCode: `/**
+ * @param {string[][]} activities - array of [date, product] pairs
+ * @return {Array} - array of [date, numDistinct, productsStr]
+ */
+function groupSoldProducts(activities) {
+
+}`,
+    starterCodePython: `class Solution:
+    def groupSoldProducts(self, activities: list[list[str]]) -> list:
+        pass`,
+    testCases: [
+      { label: 'basic grouping → 3 dates', args: [[['2020-05-30','Headphone'],['2020-06-01','Pencil'],['2020-06-02','Mask'],['2020-05-30','Basketball'],['2020-06-01','Bible'],['2020-06-02','Mask'],['2020-05-30','T-Shirt']]], expected: [['2020-05-30',3,'Basketball,Headphone,T-Shirt'],['2020-06-01',2,'Bible,Pencil'],['2020-06-02',1,'Mask']] },
+      { label: 'single record', args: [[['2020-01-01','Apple']]], expected: [['2020-01-01',1,'Apple']] },
+    ],
+    hint: 'Use a Map<date, Set<product>>. Iterate activities, adding each product to the Set for its date. Sort dates, then for each date: count = Set.size, products = [...Set].sort().join(",").',
+  },
+
+  1544: {
+    id: 1544,
+    title: 'Make The String Great',
+    titleZh: '整理字符串',
+    difficulty: 'Easy',
+    leetcodeSlug: 'make-the-string-great',
+    tags: ['String', 'Stack'],
+    description: `Given a string \`s\` of lower and upper case English letters.
+
+A good string has no two adjacent characters \`s[i]\` and \`s[i+1]\` where one is the lowercase version of the other.
+
+To make the string good, you can choose two adjacent bad characters and remove them. Repeat until the string becomes good.
+
+Return the string after making it good. The answer is **guaranteed** to be unique.`,
+    examples: [
+      { input: 's = "leEeetcode"', output: '"leetcode"', explanation: '"Ee" is a bad pair → remove → "leetcode".' },
+      { input: 's = "abBAcC"', output: '""', explanation: 'Remove all bad pairs step by step.' },
+      { input: 's = "s"', output: '"s"' },
+    ],
+    constraints: [
+      '1 <= s.length <= 100',
+      's contains only lower and upper case English letters.',
+    ],
+    starterCode: `/**
+ * @param {string} s
+ * @return {string}
+ */
+function makeGood(s) {
+
+}`,
+    starterCodePython: `class Solution:
+    def makeGood(self, s: str) -> str:
+        pass`,
+    testCases: [
+      { label: '"leEeetcode" → "leetcode"', args: ['leEeetcode'], expected: 'leetcode' },
+      { label: '"abBAcC" → ""', args: ['abBAcC'], expected: '' },
+      { label: '"s" → "s"', args: ['s'], expected: 's' },
+      { label: '"Aa" → ""', args: ['Aa'], expected: '' },
+      { label: '"aAbB" → ""', args: ['aAbB'], expected: '' },
+    ],
+    hint: 'Use a stack. For each character, check if the stack top and the current char are the same letter in different cases: same char but one upper and one lower (differ by 32 in ASCII, or compare toLowerCase). If so, pop the stack. Otherwise push. Join stack at the end.',
+  },
+
+  1568: {
+    id: 1568,
+    title: 'Minimum Number of Days to Disconnect Island',
+    titleZh: '使陆地分离的最少天数',
+    difficulty: 'Hard',
+    leetcodeSlug: 'minimum-number-of-days-to-disconnect-island',
+    tags: ['Array', 'DFS', 'BFS', 'Matrix', 'Strongly Connected Component'],
+    description: `You are given an \`m x n\` binary grid \`grid\` where \`1\` represents land and \`0\` represents water. An **island** is a maximal 4-directionally connected group of \`1\`s.
+
+The grid is **connected** if we have **exactly one island**, otherwise it is **disconnected**.
+
+In one day, we are allowed to change **any** single land cell (\`1\`) into a water cell (\`0\`).
+
+Return the **minimum number of days** to disconnect the grid.`,
+    examples: [
+      { input: 'grid = [[0,1,1,0],[0,1,1,0],[0,0,0,0]]', output: '2', explanation: 'Need to remove 2 land cells to disconnect.' },
+      { input: 'grid = [[1,1]]', output: '2', explanation: 'Must remove both cells to disconnect.' },
+    ],
+    constraints: [
+      'm == grid.length',
+      'n == grid[i].length',
+      '1 <= m, n <= 30',
+      'grid[i][j] is either 0 or 1.',
+    ],
+    starterCode: `/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+function minDays(grid) {
+
+}`,
+    starterCodePython: `class Solution:
+    def minDays(self, grid: list[list[int]]) -> int:
+        pass`,
+    testCases: [
+      { label: '[[0,1,1,0],[0,1,1,0],[0,0,0,0]] → 2', args: [[[0,1,1,0],[0,1,1,0],[0,0,0,0]]], expected: 2 },
+      { label: '[[1,1]] → 2', args: [[[1,1]]], expected: 2 },
+      { label: '[[1,0,1,0]] → 0 (already disconnected)', args: [[[1,0,1,0]]], expected: 0 },
+      { label: '[[0,0],[0,0]] → 0 (no island)', args: [[[0,0],[0,0]]], expected: 0 },
+    ],
+    hint: 'The answer is always 0, 1, or 2. Check 0: if already disconnected (0 or 2+ islands). Check 1: try removing each land cell and test connectivity. Otherwise return 2 (any corner or edge cell of the island is an articulation point or you can always disconnect in 2 days).',
+  },
+
+  2217: {
+    id: 2217,
+    title: 'Find Palindrome With Fixed Length',
+    titleZh: '找到指定长度的回文数',
+    difficulty: 'Medium',
+    leetcodeSlug: 'find-palindrome-with-fixed-length',
+    tags: ['Array', 'Math'],
+    description: `Given an integer array \`queries\` and a positive integer \`intLength\`, return an array \`answer\` where \`answer[i]\` is either the \`queries[i]\`-th smallest **positive palindrome** of length \`intLength\` or \`-1\` if no such palindrome exists.
+
+A **palindrome** is a number that reads the same backwards and forwards. Palindromes cannot have leading zeroes.`,
+    examples: [
+      { input: 'queries = [1,2,3,4,5,90], intLength = 3', output: '[101,111,121,131,141,999]' },
+      { input: 'queries = [2,4,6], intLength = 4', output: '[1111,1331,1551]' },
+    ],
+    constraints: [
+      '1 <= queries.length <= 5 * 10^4',
+      '1 <= queries[i] <= 10^9',
+      '1 <= intLength <= 15',
+    ],
+    starterCode: `/**
+ * @param {number[]} queries
+ * @param {number} intLength
+ * @return {number[]}
+ */
+function kthPalindrome(queries, intLength) {
+
+}`,
+    starterCodePython: `class Solution:
+    def kthPalindrome(self, queries: list[int], intLength: int) -> list[int]:
+        pass`,
+    testCases: [
+      { label: 'queries=[1,2,3,4,5,90], intLength=3 → [101,111,121,131,141,999]', args: [[1,2,3,4,5,90], 3], expected: [101,111,121,131,141,999] },
+      { label: 'queries=[2,4,6], intLength=4 → [1111,1331,1551]', args: [[2,4,6], 4], expected: [1111,1331,1551] },
+      { label: 'queries=[1], intLength=1 → [1]', args: [[1], 1], expected: [1] },
+      { label: 'queries=[1000000000], intLength=3 → [-1]', args: [[1000000000], 3], expected: [-1] },
+    ],
+    hint: 'The k-th palindrome of length n is determined by its first half (ceil(n/2) digits). The first valid prefix starts at 10^(halfLen-1). Prefix for k-th = start + (k-1). Mirror the prefix to form the palindrome. Return -1 if prefix exceeds 10^halfLen - 1.',
+  },
+
+  774: {
+    id: 774,
+    title: 'Minimize Max Distance to Gas Station',
+    titleZh: '最小化去加油站的最大距离',
+    difficulty: 'Hard',
+    leetcodeSlug: 'minimize-max-distance-to-gas-station',
+    tags: ['Array', 'Binary Search'],
+    description: `You are given an integer array \`stations\` representing positions of gas stations on the x-axis. You are also given an integer \`k\`.
+
+You should add \`k\` new gas stations. You can add stations anywhere on the x-axis (not necessarily at integer positions).
+
+Return the **minimum possible value** of the **maximum distance** between adjacent gas stations after adding \`k\` new stations.
+
+Answers within \`10^{-6}\` of the actual answer will be accepted.`,
+    examples: [
+      { input: 'stations = [1,2,3,4,5,6,7,8,9,10], k = 9', output: '0.500000' },
+      { input: 'stations = [23,24,36,39,46,56,57,65,84,98], k = 1', output: '14.000000' },
+    ],
+    constraints: [
+      '10 <= stations.length <= 2000',
+      '0 <= stations[i] <= 10^8',
+      'stations is sorted in a strictly increasing order.',
+      '1 <= k <= 10^6',
+    ],
+    starterCode: `/**
+ * @param {number[]} stations
+ * @param {number} k
+ * @return {number}
+ */
+function minmaxGasDist(stations, k) {
+
+}
+
+function solve(stations, k) {
+  return Math.round(minmaxGasDist(stations, k) * 1e6) / 1e6;
+}`,
+    starterCodePython: `class Solution:
+    def minmaxGasDist(self, stations: list[int], k: int) -> float:
+        pass`,
+    testCases: [
+      { label: '[1..10], k=9 → 0.5', args: [[1,2,3,4,5,6,7,8,9,10], 9], expected: 0.5 },
+      { label: '[23,24,36,39,46,56,57,65,84,98], k=1 → 14', args: [[23,24,36,39,46,56,57,65,84,98], 1], expected: 14 },
+    ],
+    hint: 'Binary search on the answer (max gap d). For a given d, stations needed for gap g = ceil(g/d) - 1. If total needed <= k, try smaller d. Adjust until within 1e-6 precision.',
+  },
+
+  1498: {
+    id: 1498,
+    title: 'Number of Subsequences That Satisfy the Given Sum Condition',
+    titleZh: '满足条件的子序列数目',
+    difficulty: 'Medium',
+    leetcodeSlug: 'number-of-subsequences-that-satisfy-the-given-sum-condition',
+    tags: ['Array', 'Two Pointers', 'Binary Search', 'Sorting'],
+    description: `You are given an array of integers \`nums\` and an integer \`target\`.
+
+Return the number of **non-empty** subsequences of \`nums\` such that the sum of the minimum and maximum element on it is less than or equal to \`target\`. Since the answer may be too large, return it **modulo \`10^9 + 7\`**.`,
+    examples: [
+      { input: 'nums = [3,5,6,7], target = 9', output: '4', explanation: 'Valid subsequences: [3],[3,5],[3,5,6],[3,6].' },
+      { input: 'nums = [3,3,6,8], target = 10', output: '6' },
+      { input: 'nums = [2,3,3,4,6,7], target = 12', output: '61' },
+    ],
+    constraints: [
+      '1 <= nums.length <= 10^5',
+      '1 <= nums[i] <= 10^6',
+      '1 <= target <= 10^6',
+    ],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+function numSubseq(nums, target) {
+
+}`,
+    starterCodePython: `class Solution:
+    def numSubseq(self, nums: list[int], target: int) -> int:
+        pass`,
+    testCases: [
+      { label: '[3,5,6,7], target=9 → 4', args: [[3,5,6,7], 9], expected: 4 },
+      { label: '[3,3,6,8], target=10 → 6', args: [[3,3,6,8], 10], expected: 6 },
+      { label: '[2,3,3,4,6,7], target=12 → 61', args: [[2,3,3,4,6,7], 12], expected: 61 },
+    ],
+    hint: 'Sort nums. Two pointers: left=0, right=n-1. If nums[left]+nums[right]<=target, all 2^(right-left) subsequences with nums[left] as min are valid (add mod 10^9+7). Move left++. Else move right--. Precompute powers of 2 mod 10^9+7.',
+  },
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {
