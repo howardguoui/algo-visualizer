@@ -3193,6 +3193,918 @@ function reachableNodes(edges, maxMoves, n) {
     ],
     hint: 'Dijkstra from node 0 → dist[]. Count original nodes where dist[v] <= maxMoves. For each edge (u,v,cnt): subdivision nodes reachable = min(cnt, max(0, maxMoves-dist[u])) + min(cnt, max(0, maxMoves-dist[v])), capped at cnt.',
   },
+
+  // ── Batch B2 ─────────────────────────────────────────────────────────────
+
+  232: {
+    id: 232,
+    title: 'Implement Queue using Stacks',
+    titleZh: '用栈实现队列',
+    difficulty: 'Easy',
+    leetcodeSlug: 'implement-queue-using-stacks',
+    tags: ['Stack', 'Design', 'Queue'],
+    description: `Implement a FIFO queue using only two stacks, supporting \`push(x)\`, \`pop()\`, \`peek()\`, and \`empty()\`.
+
+**Note:** \`solve(ops, vals)\` runs the operation sequence and returns results.`,
+    examples: [
+      { input: 'ops=["MyQueue","push","push","peek","pop","empty"], vals=[[],[1],[2],[],[],[]]', output: '[null,null,null,1,1,false]' },
+    ],
+    constraints: ['1 <= x <= 9', 'At most 100 calls.', 'peek/pop called only on non-empty queue.'],
+    starterCode: `var MyQueue = function() {
+
+};
+
+MyQueue.prototype.push = function(x) {
+
+};
+
+MyQueue.prototype.pop = function() {
+
+};
+
+MyQueue.prototype.peek = function() {
+
+};
+
+MyQueue.prototype.empty = function() {
+
+};
+
+// Test adapter (do not remove)
+function solve(ops, vals) {
+  let q;
+  return ops.map((op, i) => {
+    if (op === 'MyQueue') { q = new MyQueue(); return null; }
+    if (op === 'push') { q.push(vals[i][0]); return null; }
+    if (op === 'pop') return q.pop();
+    if (op === 'peek') return q.peek();
+    if (op === 'empty') return q.empty();
+  });
+}`,
+    starterCodePython: `class MyQueue:
+    def __init__(self): pass
+    def push(self, x: int) -> None: pass
+    def pop(self) -> int: pass
+    def peek(self) -> int: pass
+    def empty(self) -> bool: pass
+
+def solve(ops, vals):
+    q = None; results = []
+    for op, val in zip(ops, vals):
+        if op == 'MyQueue': q = MyQueue(); results.append(None)
+        elif op == 'push': q.push(val[0]); results.append(None)
+        elif op == 'pop': results.append(q.pop())
+        elif op == 'peek': results.append(q.peek())
+        elif op == 'empty': results.append(q.empty())
+    return results`,
+    testCases: [
+      { label: 'push,push,peek,pop,empty', args: [['MyQueue','push','push','peek','pop','empty'], [[],[1],[2],[],[],[]]], expected: [null,null,null,1,1,false] },
+      { label: 'push,pop,empty', args: [['MyQueue','push','pop','empty'], [[],[5],[],[]]], expected: [null,null,5,true] },
+      { label: 'FIFO order', args: [['MyQueue','push','push','push','pop','pop','pop'], [[],[1],[2],[3],[],[],[]]], expected: [null,null,null,null,1,2,3] },
+    ],
+    hint: 'Two stacks: inStack and outStack. push → inStack. pop/peek: if outStack empty, pour all from inStack into outStack (reverses order). Amortized O(1) per operation.',
+  },
+
+  503: {
+    id: 503,
+    title: 'Next Greater Element II',
+    titleZh: '下一个更大元素 II',
+    difficulty: 'Medium',
+    leetcodeSlug: 'next-greater-element-ii',
+    tags: ['Array', 'Stack', 'Monotonic Stack'],
+    description: `Given a **circular** array \`nums\`, return the **next greater number** for every element. The next greater number is the first greater number found by searching circularly. Return \`-1\` if no such number exists.`,
+    examples: [
+      { input: 'nums = [1,2,1]', output: '[2,-1,2]', explanation: '1→2, 2→-1, 1→2 (wraps around).' },
+      { input: 'nums = [1,2,3,4,3]', output: '[2,3,4,-1,4]' },
+    ],
+    constraints: ['1 <= nums.length <= 10^4', '-10^9 <= nums[i] <= 10^9'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+function nextGreaterElements(nums) {
+
+}`,
+    starterCodePython: `class Solution:
+    def nextGreaterElements(self, nums: list[int]) -> list[int]:
+        pass`,
+    testCases: [
+      { label: '[1,2,1]', args: [[1,2,1]], expected: [2,-1,2] },
+      { label: '[1,2,3,4,3]', args: [[1,2,3,4,3]], expected: [2,3,4,-1,4] },
+      { label: '[5,4,3,2,1]', args: [[5,4,3,2,1]], expected: [-1,5,5,5,5] },
+      { label: 'Single', args: [[1]], expected: [-1] },
+    ],
+    hint: 'Monotonic decreasing stack storing indices. Iterate twice (i % n) to simulate the circular wrap. Initialize result to -1. When nums[i%n] > nums[stack.top()], pop and record the answer.',
+  },
+
+  957: {
+    id: 957,
+    title: 'Prison Cells After N Days',
+    titleZh: 'N天后的牢房',
+    difficulty: 'Medium',
+    leetcodeSlug: 'prison-cells-after-n-days',
+    tags: ['Array', 'Hash Table', 'Math', 'Bit Manipulation'],
+    description: `There are 8 prison cells. Each day, a cell becomes occupied iff both its neighbors were the same state (both occupied or both free); otherwise free. The first and last cells are always free after each day.
+
+Given the initial \`cells\` and integer \`n\`, return the state after \`n\` days.`,
+    examples: [
+      { input: 'cells = [0,1,0,1,1,0,0,1], n = 7', output: '[0,0,1,1,0,0,0,0]' },
+      { input: 'cells = [1,0,0,1,0,0,1,0], n = 1000000000', output: '[0,0,1,1,1,1,1,0]' },
+    ],
+    constraints: ['cells.length == 8', '0 <= n <= 10^9'],
+    starterCode: `/**
+ * @param {number[]} cells
+ * @param {number} n
+ * @return {number[]}
+ */
+function prisonAfterNDays(cells, n) {
+
+}`,
+    starterCodePython: `class Solution:
+    def prisonAfterNDays(self, cells: list[int], n: int) -> list[int]:
+        pass`,
+    testCases: [
+      { label: '[0,1,0,1,1,0,0,1], n=7', args: [[0,1,0,1,1,0,0,1], 7], expected: [0,0,1,1,0,0,0,0] },
+      { label: 'Large n=1000000000', args: [[1,0,0,1,0,0,1,0], 1000000000], expected: [0,0,1,1,1,1,1,0] },
+      { label: 'n=1', args: [[1,1,0,1,1,0,1,1], 1], expected: [0,1,0,0,1,0,1,0] },
+    ],
+    hint: 'States cycle with period ≤ 256. Detect the cycle: store seen states in a map. Once a repeat is found, reduce n by cycle length, then simulate the remaining days.',
+  },
+
+  1286: {
+    id: 1286,
+    title: 'Iterator for Combination',
+    titleZh: '字母组合迭代器',
+    difficulty: 'Medium',
+    leetcodeSlug: 'iterator-for-combination',
+    tags: ['String', 'Backtracking', 'Design', 'Iterator'],
+    description: `Design the \`CombinationIterator\` class that iterates over all combinations of sorted characters of a given length in **lexicographical order**.
+
+**Note:** \`solve(ops, vals)\` runs the operation sequence.`,
+    examples: [
+      { input: 'CombinationIterator("abc", 2): next()→"ab", next()→"ac", next()→"bc", hasNext()→false', output: '[null,"ab","ac","bc",false]' },
+    ],
+    constraints: ['1 <= combinationLength <= characters.length <= 15', 'characters is sorted ascending.', 'At most 10^4 calls.'],
+    starterCode: `/**
+ * @param {string} characters
+ * @param {number} combinationLength
+ */
+var CombinationIterator = function(characters, combinationLength) {
+
+};
+
+CombinationIterator.prototype.next = function() {
+
+};
+
+CombinationIterator.prototype.hasNext = function() {
+
+};
+
+// Test adapter (do not remove)
+function solve(ops, vals) {
+  let iter;
+  return ops.map((op, i) => {
+    if (op === 'CombinationIterator') { iter = new CombinationIterator(...vals[i]); return null; }
+    if (op === 'next') return iter.next();
+    if (op === 'hasNext') return iter.hasNext();
+  });
+}`,
+    starterCodePython: `class CombinationIterator:
+    def __init__(self, characters: str, combinationLength: int): pass
+    def next(self) -> str: pass
+    def hasNext(self) -> bool: pass
+
+def solve(ops, vals):
+    it = None; results = []
+    for op, val in zip(ops, vals):
+        if op == 'CombinationIterator': it = CombinationIterator(*val); results.append(None)
+        elif op == 'next': results.append(it.next())
+        elif op == 'hasNext': results.append(it.hasNext())
+    return results`,
+    testCases: [
+      {
+        label: '"abc" len=2',
+        args: [['CombinationIterator','next','next','next','hasNext'], [['abc',2],[],[],[],[]]],
+        expected: [null,'ab','ac','bc',false],
+      },
+      {
+        label: '"ab" len=1',
+        args: [['CombinationIterator','hasNext','next','hasNext','next','hasNext'], [['ab',1],[],[],[],[],[]]],
+        expected: [null,true,'a',true,'b',false],
+      },
+    ],
+    hint: 'Pre-generate all combinations via DFS/backtracking in sorted order, store in array. next() returns combinations[idx++], hasNext() checks idx < combinations.length.',
+  },
+
+  1648: {
+    id: 1648,
+    title: 'Sell Diminishing-Valued Colored Balls',
+    titleZh: '销售价值减少的颜色球',
+    difficulty: 'Medium',
+    leetcodeSlug: 'sell-diminishing-valued-colored-balls',
+    tags: ['Array', 'Math', 'Binary Search', 'Sorting', 'Greedy', 'Heap (Priority Queue)'],
+    description: `You have \`inventory[i]\` balls of color \`i\`. Selling a ball from a pile of size \`k\` earns \`k\` coins (that pile shrinks to \`k-1\`).
+
+Sell exactly \`orders\` balls to **maximize** total value. Return the answer mod \`10^9 + 7\`.`,
+    examples: [
+      { input: 'inventory = [2,5], orders = 4', output: '14', explanation: 'Sell at prices 5,4,3,2 = 14.' },
+      { input: 'inventory = [3,5], orders = 6', output: '19' },
+    ],
+    constraints: ['1 <= inventory.length <= 10^5', '1 <= inventory[i] <= 10^9', '1 <= orders <= min(sum, 10^9)'],
+    starterCode: `/**
+ * @param {number[]} inventory
+ * @param {number} orders
+ * @return {number}
+ */
+function maxProfit(inventory, orders) {
+
+}`,
+    starterCodePython: `class Solution:
+    def maxProfit(self, inventory: list[int], orders: int) -> int:
+        pass`,
+    testCases: [
+      { label: '[2,5], orders=4', args: [[2,5], 4], expected: 14 },
+      { label: '[3,5], orders=6', args: [[3,5], 6], expected: 19 },
+      { label: '[1000000000], orders=1000000000', args: [[1000000000], 1000000000], expected: 21 },
+      { label: '[2,8,4,10,6], orders=20', args: [[2,8,4,10,6], 20], expected: 110 },
+    ],
+    hint: 'Sort descending. Between consecutive inventory levels, compute how many balls can be sold at each "height" using arithmetic sum. Track remaining orders. Apply mod carefully to avoid overflow.',
+  },
+
+  1814: {
+    id: 1814,
+    title: 'Count Nice Pairs in an Array',
+    titleZh: '统计一个数组中好对子的数目',
+    difficulty: 'Medium',
+    leetcodeSlug: 'count-nice-pairs-in-an-array',
+    tags: ['Array', 'Hash Table', 'Math', 'Counting'],
+    description: `Let \`rev(x)\` reverse the decimal digits of \`x\`. A pair \`(i, j)\` with \`i < j\` is **nice** if \`nums[i] + rev(nums[j]) == nums[j] + rev(nums[i])\`.
+
+Return the count of nice pairs modulo \`10^9 + 7\`.`,
+    examples: [
+      { input: 'nums = [42,11,1,97]', output: '2', explanation: 'Pairs (0,3) and (1,2).' },
+      { input: 'nums = [13,10,35,24,76]', output: '4' },
+    ],
+    constraints: ['1 <= nums.length <= 10^5', '0 <= nums[i] <= 10^9'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function countNicePairs(nums) {
+
+}`,
+    starterCodePython: `class Solution:
+    def countNicePairs(self, nums: list[int]) -> int:
+        pass`,
+    testCases: [
+      { label: '[42,11,1,97]', args: [[42,11,1,97]], expected: 2 },
+      { label: '[13,10,35,24,76]', args: [[13,10,35,24,76]], expected: 4 },
+      { label: '[1,1,1,1]', args: [[1,1,1,1]], expected: 6 },
+      { label: 'No pairs', args: [[1,2,3,4]], expected: 0 },
+    ],
+    hint: 'Rearrange: nice pair iff nums[i]-rev(nums[i]) == nums[j]-rev(nums[j]). Group by diff value. For a group of size k, pairs = k*(k-1)/2. Sum all groups mod 10^9+7.',
+  },
+
+  133: {
+    id: 133,
+    title: 'Clone Graph',
+    titleZh: '克隆图',
+    difficulty: 'Medium',
+    leetcodeSlug: 'clone-graph',
+    tags: ['Hash Table', 'Depth-First Search', 'Breadth-First Search', 'Graph'],
+    description: `Given a reference to a node in a **connected undirected graph**, return a **deep copy** (clone) of the graph. Each node has a \`val\` (unique int 1-100) and \`neighbors\` list.
+
+**Note:** \`solve(adjList)\` builds a graph from an adjacency list, clones it, and returns the adjacency list of the clone.`,
+    examples: [
+      { input: 'adjList = [[2,4],[1,3],[2,4],[1,3]]', output: '[[2,4],[1,3],[2,4],[1,3]]' },
+      { input: 'adjList = [[]]', output: '[[]]' },
+    ],
+    constraints: ['0 <= nodes <= 100', '1 <= Node.val <= 100', 'All node values are unique.'],
+    starterCode: `function Node(val, neighbors) {
+  this.val = val === undefined ? 0 : val;
+  this.neighbors = neighbors === undefined ? [] : neighbors;
+}
+
+/**
+ * @param {Node} node
+ * @return {Node}
+ */
+function cloneGraph(node) {
+
+}
+
+// Test adapter: builds graph from adjList, clones, returns adjList of clone
+function solve(adjList) {
+  if (!adjList || adjList.length === 0) return [];
+  const nodes = adjList.map((_, i) => new Node(i + 1));
+  adjList.forEach((neighbors, i) => { nodes[i].neighbors = neighbors.map(v => nodes[v - 1]); });
+  const cloned = cloneGraph(nodes[0]);
+  if (!cloned) return [];
+  const visited = new Map();
+  const queue = [cloned];
+  visited.set(cloned.val, cloned);
+  while (queue.length) {
+    const cur = queue.shift();
+    for (const nb of cur.neighbors) {
+      if (!visited.has(nb.val)) { visited.set(nb.val, nb); queue.push(nb); }
+    }
+  }
+  const result = new Array(visited.size);
+  for (const [val, node] of visited) result[val - 1] = node.neighbors.map(n => n.val).sort((a,b)=>a-b);
+  return result;
+}`,
+    starterCodePython: `class Node:
+    def __init__(self, val=0, neighbors=None): self.val = val; self.neighbors = neighbors or []
+
+class Solution:
+    def cloneGraph(self, node: Node) -> Node:
+        pass
+
+def solve(adj_list):
+    if not adj_list: return []
+    nodes = [Node(i+1) for i in range(len(adj_list))]
+    for i, neighbors in enumerate(adj_list): nodes[i].neighbors = [nodes[v-1] for v in neighbors]
+    from collections import deque
+    cloned = Solution().cloneGraph(nodes[0])
+    if not cloned: return []
+    visited = {}; queue = deque([cloned]); visited[cloned.val] = cloned
+    while queue:
+        cur = queue.popleft()
+        for nb in cur.neighbors:
+            if nb.val not in visited: visited[nb.val] = nb; queue.append(nb)
+    result = [None] * len(visited)
+    for val, node in visited.items(): result[val-1] = sorted(n.val for n in node.neighbors)
+    return result`,
+    testCases: [
+      { label: '[[2,4],[1,3],[2,4],[1,3]]', args: [[[2,4],[1,3],[2,4],[1,3]]], expected: [[2,4],[1,3],[2,4],[1,3]] },
+      { label: '[[]]', args: [[[]]], expected: [[]] },
+      { label: '[[2],[1]]', args: [[[2],[1]]], expected: [[2],[1]] },
+    ],
+    hint: 'DFS or BFS with a visited map (original node → cloned node). When visiting a node, create its clone and recurse on neighbors. The map handles revisits and cycles.',
+  },
+
+  242: {
+    id: 242,
+    title: 'Valid Anagram',
+    titleZh: '有效的字母异位词',
+    difficulty: 'Easy',
+    leetcodeSlug: 'valid-anagram',
+    tags: ['Hash Table', 'String', 'Sorting'],
+    description: `Given two strings \`s\` and \`t\`, return \`true\` if \`t\` is an anagram of \`s\` (same characters, same counts).`,
+    examples: [
+      { input: 's = "anagram", t = "nagaram"', output: 'true' },
+      { input: 's = "rat", t = "car"', output: 'false' },
+    ],
+    constraints: ['1 <= s.length, t.length <= 5 * 10^4', 's and t consist of lowercase English letters.'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+function isAnagram(s, t) {
+
+}`,
+    starterCodePython: `class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        pass`,
+    testCases: [
+      { label: '"anagram","nagaram"', args: ['anagram', 'nagaram'], expected: true },
+      { label: '"rat","car"', args: ['rat', 'car'], expected: false },
+      { label: 'Different lengths', args: ['ab', 'a'], expected: false },
+      { label: 'Same string', args: ['abc', 'abc'], expected: true },
+      { label: '"aacc","ccac"', args: ['aacc', 'ccac'], expected: false },
+    ],
+    hint: 'Count character frequencies: increment for s, decrement for t. If all counts are 0 at the end, it\'s an anagram. Or sort both strings and compare.',
+  },
+
+  290: {
+    id: 290,
+    title: 'Word Pattern',
+    titleZh: '单词规律',
+    difficulty: 'Easy',
+    leetcodeSlug: 'word-pattern',
+    tags: ['Hash Table', 'String'],
+    description: `Given a \`pattern\` and string \`s\`, return \`true\` if \`s\` follows the **same pattern** (bijective mapping between each letter and each word).`,
+    examples: [
+      { input: 'pattern = "abba", s = "dog cat cat dog"', output: 'true' },
+      { input: 'pattern = "abba", s = "dog cat cat fish"', output: 'false' },
+      { input: 'pattern = "aaaa", s = "dog cat cat dog"', output: 'false' },
+    ],
+    constraints: ['1 <= pattern.length <= 300', '1 <= s.length <= 3000', 'All chars are lowercase.'],
+    starterCode: `/**
+ * @param {string} pattern
+ * @param {string} s
+ * @return {boolean}
+ */
+function wordPattern(pattern, s) {
+
+}`,
+    starterCodePython: `class Solution:
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        pass`,
+    testCases: [
+      { label: '"abba","dog cat cat dog"', args: ['abba', 'dog cat cat dog'], expected: true },
+      { label: '"abba","dog cat cat fish"', args: ['abba', 'dog cat cat fish'], expected: false },
+      { label: '"aaaa","dog cat cat dog"', args: ['aaaa', 'dog cat cat dog'], expected: false },
+      { label: '"ab","dog dog"', args: ['ab', 'dog dog'], expected: false },
+      { label: 'Length mismatch', args: ['aaa', 'aa bb cc dd'], expected: false },
+    ],
+    hint: 'Two maps: char→word and word→char. For each (char, word) pair, check consistency in both directions. Return false on any mismatch.',
+  },
+
+  380: {
+    id: 380,
+    title: 'Insert Delete GetRandom O(1)',
+    titleZh: 'O(1) 时间插入、删除和获取随机元素',
+    difficulty: 'Medium',
+    leetcodeSlug: 'insert-delete-getrandom-o1',
+    tags: ['Array', 'Hash Table', 'Math', 'Design', 'Randomized'],
+    description: `Implement \`RandomizedSet\` with O(1) average:
+- \`insert(val)\`: Insert if absent → \`true\`; already present → \`false\`
+- \`remove(val)\`: Remove if present → \`true\`; absent → \`false\`
+- \`getRandom()\`: Return a uniformly random element
+
+**Note:** \`solve\` adapter marks getRandom calls as \`"random"\` (non-deterministic).`,
+    examples: [
+      { input: '["RandomizedSet","insert","remove","insert","getRandom","remove","insert","getRandom"]', output: '[null,true,false,true,rand,true,false,rand]' },
+    ],
+    constraints: ['-2^31 <= val <= 2^31-1', 'At most 2*10^5 calls.', 'getRandom called when non-empty.'],
+    starterCode: `var RandomizedSet = function() {
+
+};
+
+RandomizedSet.prototype.insert = function(val) {
+
+};
+
+RandomizedSet.prototype.remove = function(val) {
+
+};
+
+RandomizedSet.prototype.getRandom = function() {
+
+};
+
+// Test adapter — getRandom results marked "random" (not checked for value)
+function solve(ops, vals) {
+  let rs;
+  return ops.map((op, i) => {
+    if (op === 'RandomizedSet') { rs = new RandomizedSet(); return null; }
+    if (op === 'insert') return rs.insert(vals[i][0]);
+    if (op === 'remove') return rs.remove(vals[i][0]);
+    if (op === 'getRandom') { rs.getRandom(); return 'random'; }
+  });
+}`,
+    starterCodePython: `class RandomizedSet:
+    def __init__(self): pass
+    def insert(self, val: int) -> bool: pass
+    def remove(self, val: int) -> bool: pass
+    def getRandom(self) -> int: pass
+
+def solve(ops, vals):
+    rs = None; results = []
+    for op, val in zip(ops, vals):
+        if op == 'RandomizedSet': rs = RandomizedSet(); results.append(None)
+        elif op == 'insert': results.append(rs.insert(val[0]))
+        elif op == 'remove': results.append(rs.remove(val[0]))
+        elif op == 'getRandom': rs.getRandom(); results.append('random')
+    return results`,
+    testCases: [
+      {
+        label: 'Basic flow',
+        args: [
+          ['RandomizedSet','insert','remove','insert','getRandom','remove','insert','getRandom'],
+          [[],[1],[2],[2],[],[1],[2],[]],
+        ],
+        expected: [null,true,false,true,'random',true,false,'random'],
+      },
+      {
+        label: 'Insert duplicate',
+        args: [['RandomizedSet','insert','insert','remove','remove'], [[],[1],[1],[1],[1]]],
+        expected: [null,true,false,true,false],
+      },
+    ],
+    hint: 'HashMap(val → arrayIndex) + array. Insert: append to array, map val→lastIdx. Remove: swap val with last element, update map, pop last. getRandom: random index into array. All O(1).',
+  },
+
+  387: {
+    id: 387,
+    title: 'First Unique Character in a String',
+    titleZh: '字符串中的第一个唯一字符',
+    difficulty: 'Easy',
+    leetcodeSlug: 'first-unique-character-in-a-string',
+    tags: ['Hash Table', 'String', 'Queue'],
+    description: `Given a string \`s\`, find the **first non-repeating** character and return its index. If none exists, return \`-1\`.`,
+    examples: [
+      { input: 's = "leetcode"', output: '0' },
+      { input: 's = "loveleetcode"', output: '2' },
+      { input: 's = "aabb"', output: '-1' },
+    ],
+    constraints: ['1 <= s.length <= 10^5', 's consists of only lowercase letters.'],
+    starterCode: `/**
+ * @param {string} s
+ * @return {number}
+ */
+function firstUniqChar(s) {
+
+}`,
+    starterCodePython: `class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        pass`,
+    testCases: [
+      { label: '"leetcode"', args: ['leetcode'], expected: 0 },
+      { label: '"loveleetcode"', args: ['loveleetcode'], expected: 2 },
+      { label: '"aabb"', args: ['aabb'], expected: -1 },
+      { label: 'Single char', args: ['z'], expected: 0 },
+      { label: 'All repeating', args: ['aadadaad'], expected: -1 },
+    ],
+    hint: 'Count character frequencies in one pass. Then scan left to right and return the first index where the count is 1.',
+  },
+
+  389: {
+    id: 389,
+    title: 'Find the Difference',
+    titleZh: '找不同',
+    difficulty: 'Easy',
+    leetcodeSlug: 'find-the-difference',
+    tags: ['Hash Table', 'String', 'Bit Manipulation', 'Sorting'],
+    description: `String \`t\` is generated by randomly shuffling \`s\` then adding **one extra** character. Find and return that added character.`,
+    examples: [
+      { input: 's = "abcd", t = "abcde"', output: '"e"' },
+      { input: 's = "", t = "y"', output: '"y"' },
+    ],
+    constraints: ['0 <= s.length <= 1000', 't.length == s.length + 1', 'All lowercase letters.'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {string} t
+ * @return {character}
+ */
+function findTheDifference(s, t) {
+
+}`,
+    starterCodePython: `class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        pass`,
+    testCases: [
+      { label: '"abcd","abcde"', args: ['abcd', 'abcde'], expected: 'e' },
+      { label: '"","y"', args: ['', 'y'], expected: 'y' },
+      { label: '"a","aa"', args: ['a', 'aa'], expected: 'a' },
+      { label: '"ae","aea"', args: ['ae', 'aea'], expected: 'a' },
+    ],
+    hint: 'XOR all characters in s and t — every matched pair cancels, leaving only the extra char. Or count char frequencies and find the one with an odd total count.',
+  },
+
+  442: {
+    id: 442,
+    title: 'Find All Duplicates in an Array',
+    titleZh: '数组中重复的数据',
+    difficulty: 'Medium',
+    leetcodeSlug: 'find-all-duplicates-in-an-array',
+    tags: ['Array', 'Hash Table'],
+    description: `Given an array \`nums\` of length \`n\` where each integer is in \`[1, n]\` and appears **once or twice**, return all integers that appear **twice**.
+
+Must run in O(n) time with O(1) extra space.`,
+    examples: [
+      { input: 'nums = [4,3,2,7,8,2,3,1]', output: '[2,3]' },
+      { input: 'nums = [1,1,2]', output: '[1]' },
+    ],
+    constraints: ['n == nums.length', '1 <= n <= 10^5', '1 <= nums[i] <= n'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+function findDuplicates(nums) {
+
+}`,
+    starterCodePython: `class Solution:
+    def findDuplicates(self, nums: list[int]) -> list[int]:
+        pass`,
+    testCases: [
+      { label: '[4,3,2,7,8,2,3,1]', args: [[4,3,2,7,8,2,3,1]], expected: [2,3] },
+      { label: '[1,1,2]', args: [[1,1,2]], expected: [1] },
+      { label: '[1]', args: [[1]], expected: [] },
+      { label: '[2,2]', args: [[2,2]], expected: [2] },
+    ],
+    hint: 'Use the index as a hash: for each num, negate nums[abs(num)-1]. If it\'s already negative, abs(num) appeared twice → add to result. O(n) time, O(1) extra space.',
+  },
+
+  448: {
+    id: 448,
+    title: 'Find All Numbers Disappeared in an Array',
+    titleZh: '找到所有数组中消失的数字',
+    difficulty: 'Easy',
+    leetcodeSlug: 'find-all-numbers-disappeared-in-an-array',
+    tags: ['Array', 'Hash Table'],
+    description: `Given array \`nums\` of length \`n\` where each integer is in \`[1, n]\`, return all integers in \`[1, n]\` that do **not** appear in \`nums\`.`,
+    examples: [
+      { input: 'nums = [4,3,2,7,8,2,3,1]', output: '[5,6]' },
+      { input: 'nums = [1,1]', output: '[2]' },
+    ],
+    constraints: ['n == nums.length', '1 <= n <= 10^5', '1 <= nums[i] <= n'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+function findDisappearedNumbers(nums) {
+
+}`,
+    starterCodePython: `class Solution:
+    def findDisappearedNumbers(self, nums: list[int]) -> list[int]:
+        pass`,
+    testCases: [
+      { label: '[4,3,2,7,8,2,3,1]', args: [[4,3,2,7,8,2,3,1]], expected: [5,6] },
+      { label: '[1,1]', args: [[1,1]], expected: [2] },
+      { label: '[2,2]', args: [[2,2]], expected: [1] },
+      { label: 'No missing', args: [[1,2,3,4]], expected: [] },
+    ],
+    hint: 'Mark visited: negate nums[nums[i]-1] for each i. Then scan: indices with positive values (1-indexed) are the missing numbers. O(n) time, O(1) extra space.',
+  },
+
+  894: {
+    id: 894,
+    title: 'All Possible Full Binary Trees',
+    titleZh: '所有可能的真二叉树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'all-possible-full-binary-trees',
+    tags: ['Dynamic Programming', 'Tree', 'Recursion', 'Memoization'],
+    description: `A **full binary tree** has every node with 0 or 2 children. Given \`n\`, return all structurally unique full binary trees with \`n\` nodes (each value = 0).
+
+**Note:** \`solve(n)\` returns the **count** of unique trees.`,
+    examples: [
+      { input: 'n = 7', output: '5 trees' },
+      { input: 'n = 3', output: '1 tree' },
+    ],
+    constraints: ['1 <= n <= 20'],
+    starterCode: `function TreeNode(val, left, right) {
+  this.val = val === undefined ? 0 : val;
+  this.left = left === undefined ? null : left;
+  this.right = right === undefined ? null : right;
+}
+
+/**
+ * @param {number} n
+ * @return {TreeNode[]}
+ */
+function allPossibleFBT(n) {
+
+}
+
+// Test adapter — returns count of trees
+function solve(n) { return allPossibleFBT(n).length; }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+class Solution:
+    def allPossibleFBT(self, n: int) -> list[TreeNode]:
+        pass
+
+def solve(n): return len(Solution().allPossibleFBT(n))`,
+    testCases: [
+      { label: 'n=7', args: [7], expected: 5 },
+      { label: 'n=3', args: [3], expected: 1 },
+      { label: 'n=1', args: [1], expected: 1 },
+      { label: 'n=2 (even → impossible)', args: [2], expected: 0 },
+      { label: 'n=5', args: [5], expected: 2 },
+    ],
+    hint: 'For n nodes: root + left(i) + right(n-1-i). i must be odd (1,3,5,...,n-2). Memoize by n. Even n → return []. The count follows Catalan numbers.',
+  },
+
+  913: {
+    id: 913,
+    title: 'Cat and Mouse',
+    titleZh: '猫和老鼠',
+    difficulty: 'Hard',
+    leetcodeSlug: 'cat-and-mouse',
+    tags: ['Math', 'Dynamic Programming', 'Graph', 'Topological Sort', 'Game Theory', 'Memoization'],
+    description: `A game on an undirected graph. Mouse starts at node 1, Cat at node 2, hole at node 0. Players alternate (Mouse first). Mouse wins if it reaches node 0; Cat wins if it reaches the Mouse's node (Cat can't enter node 0). Return 1 (Mouse wins), 2 (Cat wins), or 0 (Draw) with optimal play.`,
+    examples: [
+      { input: 'graph = [[2,5],[3],[0,4,5],[1,4,5],[2,3],[0,2,3]]', output: '0' },
+      { input: 'graph = [[1,3],[0],[3],[0,2]]', output: '1' },
+    ],
+    constraints: ['3 <= graph.length <= 50', 'graph[i] does not contain duplicates.'],
+    starterCode: `/**
+ * @param {number[][]} graph
+ * @return {number}
+ */
+function catMouseGame(graph) {
+
+}`,
+    starterCodePython: `class Solution:
+    def catMouseGame(self, graph: list[list[int]]) -> int:
+        pass`,
+    testCases: [
+      { label: '[[2,5],[3],[0,4,5],[1,4,5],[2,3],[0,2,3]]', args: [[[2,5],[3],[0,4,5],[1,4,5],[2,3],[0,2,3]]], expected: 0 },
+      { label: '[[1,3],[0],[3],[0,2]]', args: [[[1,3],[0],[3],[0,2]]], expected: 1 },
+      { label: 'Mouse wins in one move', args: [[[1],[0,2],[1]]], expected: 1 },
+    ],
+    hint: 'State = (mouse_pos, cat_pos, turn). BFS backward from terminal states: mouse@0 → 1 (win), mouse@cat → 2 (loss). Propagate "color" backwards. Draw if state never resolved after 2*n*n steps.',
+  },
+
+  355: {
+    id: 355,
+    title: 'Design Twitter',
+    titleZh: '设计推特',
+    difficulty: 'Medium',
+    leetcodeSlug: 'design-twitter',
+    tags: ['Hash Table', 'Linked List', 'Design', 'Heap (Priority Queue)'],
+    description: `Design a simplified Twitter with:
+- \`postTweet(userId, tweetId)\`
+- \`getNewsFeed(userId)\` → 10 most recent tweet IDs from the user and their followees
+- \`follow(followerId, followeeId)\`
+- \`unfollow(followerId, followeeId)\`
+
+**Note:** \`solve(ops, vals)\` runs the operation sequence.`,
+    examples: [
+      { input: 'postTweet(1,5), getNewsFeed(1) → [5], follow(1,2), postTweet(2,6), getNewsFeed(1) → [6,5]', output: '[null,null,[5],null,null,[6,5],null,[5]]' },
+    ],
+    constraints: ['1 <= userId, tweetId <= 500', 'All tweetIds are unique.', 'At most 3*10^4 calls.'],
+    starterCode: `var Twitter = function() {
+
+};
+
+Twitter.prototype.postTweet = function(userId, tweetId) {
+
+};
+
+Twitter.prototype.getNewsFeed = function(userId) {
+
+};
+
+Twitter.prototype.follow = function(followerId, followeeId) {
+
+};
+
+Twitter.prototype.unfollow = function(followerId, followeeId) {
+
+};
+
+// Test adapter (do not remove)
+function solve(ops, vals) {
+  let tw;
+  return ops.map((op, i) => {
+    if (op === 'Twitter') { tw = new Twitter(); return null; }
+    if (op === 'postTweet') { tw.postTweet(...vals[i]); return null; }
+    if (op === 'getNewsFeed') return tw.getNewsFeed(...vals[i]);
+    if (op === 'follow') { tw.follow(...vals[i]); return null; }
+    if (op === 'unfollow') { tw.unfollow(...vals[i]); return null; }
+  });
+}`,
+    starterCodePython: `class Twitter:
+    def __init__(self): pass
+    def postTweet(self, userId: int, tweetId: int) -> None: pass
+    def getNewsFeed(self, userId: int) -> list[int]: pass
+    def follow(self, followerId: int, followeeId: int) -> None: pass
+    def unfollow(self, followerId: int, followeeId: int) -> None: pass
+
+def solve(ops, vals):
+    tw = None; results = []
+    for op, val in zip(ops, vals):
+        if op == 'Twitter': tw = Twitter(); results.append(None)
+        elif op == 'postTweet': tw.postTweet(*val); results.append(None)
+        elif op == 'getNewsFeed': results.append(tw.getNewsFeed(*val))
+        elif op == 'follow': tw.follow(*val); results.append(None)
+        elif op == 'unfollow': tw.unfollow(*val); results.append(None)
+    return results`,
+    testCases: [
+      {
+        label: 'Basic twitter flow',
+        args: [
+          ['Twitter','postTweet','getNewsFeed','follow','postTweet','getNewsFeed','unfollow','getNewsFeed'],
+          [[],[1,5],[1],[1,2],[2,6],[1],[1,2],[1]],
+        ],
+        expected: [null,null,[5],null,null,[6,5],null,[5]],
+      },
+      {
+        label: 'Self follow ignored',
+        args: [['Twitter','postTweet','follow','getNewsFeed'], [[],[1,1],[1,1],[1]]],
+        expected: [null,null,null,[1]],
+      },
+    ],
+    hint: 'Global timestamp counter. User → Set(followees), User → list of (timestamp, tweetId). getNewsFeed: merge up to 10 latest tweets from self + followees using a max-heap.',
+  },
+
+  451: {
+    id: 451,
+    title: 'Sort Characters By Frequency',
+    titleZh: '根据字符出现频率排序',
+    difficulty: 'Medium',
+    leetcodeSlug: 'sort-characters-by-frequency',
+    tags: ['Hash Table', 'String', 'Sorting', 'Heap (Priority Queue)', 'Bucket Sort', 'Counting'],
+    description: `Given a string \`s\`, sort it in **decreasing order** based on character frequency. Ties are broken **alphabetically** (for deterministic output).
+
+**Note:** \`solve(s)\` normalizes output (freq-desc, then alpha) for comparison.`,
+    examples: [
+      { input: 's = "tree"', output: '"eert"', explanation: 'e×2, then r,t alphabetically.' },
+      { input: 's = "Aabb"', output: '"bbAa"', explanation: 'b×2, then A,a.' },
+    ],
+    constraints: ['1 <= s.length <= 5*10^5', 's consists of uppercase/lowercase letters and digits.'],
+    starterCode: `/**
+ * @param {string} s
+ * @return {string}
+ */
+function frequencySort(s) {
+
+}
+
+// Test adapter — normalizes by (freq desc, char asc) for deterministic comparison
+function solve(s) {
+  const out = frequencySort(s);
+  const freq = {};
+  for (const c of out) freq[c] = (freq[c] || 0) + 1;
+  return Object.entries(freq)
+    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
+    .map(([c, f]) => c.repeat(f))
+    .join('');
+}`,
+    starterCodePython: `class Solution:
+    def frequencySort(self, s: str) -> str:
+        pass
+
+def solve(s):
+    out = Solution().frequencySort(s)
+    from collections import Counter
+    freq = Counter(out)
+    return ''.join(c * f for c, f in sorted(freq.items(), key=lambda x: (-x[1], x[0])))`,
+    testCases: [
+      { label: '"tree"', args: ['tree'], expected: 'eert' },
+      { label: '"Aabb"', args: ['Aabb'], expected: 'bbAa' },
+      { label: '"aab"', args: ['aab'], expected: 'aab' },
+      { label: 'Single char', args: ['a'], expected: 'a' },
+    ],
+    hint: 'Count frequencies. Sort by (-frequency, char). Build result by repeating each character by its count. Bucket sort also works in O(n).',
+  },
+
+  692: {
+    id: 692,
+    title: 'Top K Frequent Words',
+    titleZh: '前K个高频单词',
+    difficulty: 'Medium',
+    leetcodeSlug: 'top-k-frequent-words',
+    tags: ['Hash Table', 'String', 'Trie', 'Sorting', 'Heap (Priority Queue)', 'Bucket Sort', 'Counting'],
+    description: `Given an array of strings \`words\` and integer \`k\`, return the \`k\` most frequent words sorted by frequency (highest first). Ties broken **alphabetically**.`,
+    examples: [
+      { input: 'words = ["i","love","leetcode","i","love","coding"], k = 2', output: '["i","love"]' },
+      { input: 'words = ["the","day","is","sunny","the","the","the","sunny","is","is"], k = 4', output: '["the","sunny","is","day"]' },
+    ],
+    constraints: ['1 <= words.length <= 500', '1 <= words[i].length <= 10', '1 <= k <= unique word count'],
+    starterCode: `/**
+ * @param {string[]} words
+ * @param {number} k
+ * @return {string[]}
+ */
+function topKFrequent(words, k) {
+
+}`,
+    starterCodePython: `class Solution:
+    def topKFrequent(self, words: list[str], k: int) -> list[str]:
+        pass`,
+    testCases: [
+      { label: '["i","love","leetcode","i","love","coding"], k=2', args: [['i','love','leetcode','i','love','coding'], 2], expected: ['i','love'] },
+      { label: '4-word test', args: [['the','day','is','sunny','the','the','the','sunny','is','is'], 4], expected: ['the','sunny','is','day'] },
+      { label: 'k=1', args: [['a','b','a'], 1], expected: ['a'] },
+      { label: 'Alphabetical tiebreak', args: [['b','a'], 2], expected: ['a','b'] },
+    ],
+    hint: 'Count word frequencies. Sort by (-frequency, word) — Python tuple comparison or JS custom comparator. Return first k elements.',
+  },
+
+  789: {
+    id: 789,
+    title: 'Escape The Ghosts',
+    titleZh: '逃脱阻碍者',
+    difficulty: 'Medium',
+    leetcodeSlug: 'escape-the-ghosts',
+    tags: ['Array', 'Math'],
+    description: `You start at \`(0,0)\` and must reach \`target\`. Ghosts start at given positions. Everyone moves simultaneously (1 Manhattan step per turn).
+
+Return \`true\` if you can reach the target **strictly before** any ghost; \`false\` otherwise.`,
+    examples: [
+      { input: 'ghosts = [[1,0]], target = [2,0]', output: 'false', explanation: 'Ghost dist=1, you need 2.' },
+      { input: 'ghosts = [[1,0]], target = [0,3]', output: 'true', explanation: 'You=3, Ghost=4.' },
+      { input: 'ghosts = [[2,0]], target = [1,0]', output: 'false', explanation: 'Tied — ghost blocks target.' },
+    ],
+    constraints: ['1 <= ghosts.length <= 100', '-10^4 <= coords <= 10^4'],
+    starterCode: `/**
+ * @param {number[][]} ghosts
+ * @param {number[]} target
+ * @return {boolean}
+ */
+function escapeGhosts(ghosts, target) {
+
+}`,
+    starterCodePython: `class Solution:
+    def escapeGhosts(self, ghosts: list[list[int]], target: list[int]) -> bool:
+        pass`,
+    testCases: [
+      { label: 'ghosts=[[1,0]], target=[2,0]', args: [[[1,0]], [2,0]], expected: false },
+      { label: 'ghosts=[[1,0]], target=[0,3]', args: [[[1,0]], [0,3]], expected: true },
+      { label: 'Tie — false', args: [[[2,0]], [1,0]], expected: false },
+      { label: 'No ghosts', args: [[], [5,5]], expected: true },
+      { label: 'Multiple ghosts, safe', args: [[[5,0],[-5,0],[0,5],[0,-5]], [1,1]], expected: true },
+    ],
+    hint: 'You escape iff your Manhattan distance to target is **strictly less** than every ghost\'s Manhattan distance to target. A ghost that arrives at the same time or earlier can always intercept you there.',
+  },
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {

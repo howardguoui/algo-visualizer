@@ -53,7 +53,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 
 ---
 
-## Batch B2 — Stack, Queue & Hash Table (20 problems) `[ ] Not started`
+## Batch B2 — Stack, Queue & Hash Table (20 problems) `[x] Done`
 
 | ID | Problem | Difficulty | Topic |
 |---|---|---|---|
@@ -312,7 +312,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 | Initial (topic pages) | 58 problems | — | b04187d |
 | Final topic batch | +17 problems (215, 347, 200, 207, 547, 684, 1584, 46, 47, 77, 78, 51, 322, 518, 416, 494, 1049) | — | 0a2453a |
 | B1 | 18 problems (61,901,523,525,724,1016,1219,1242,1477,370,28,187,81,392,566,658,808,882) | 2026-03-13 | pending |
-| B2 | _pending_ | | |
+| B2 | 20 problems (232,503,957,1286,1648,1814,133,242,290,380,387,389,442,448,894,913,355,451,692,789) | 2026-03-13 | pending |
 | B3 | _pending_ | | |
 | B4 | _pending_ | | |
 | B5 | _pending_ | | |
