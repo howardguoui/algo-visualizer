@@ -9435,6 +9435,749 @@ def solve(m, k, adds, calcs_after_count):
     hint: 'Use a queue to keep the last m elements. To compute MK average efficiently, use three sorted structures (or a segment tree / order-statistics tree): bottom k, middle m-2k, top k. Track their sums for O(log n) per operation.',
   },
 
+  // ─── Batch B9 — BFS + Classic DP + DP Game ───────────────────────────────────
+
+  115: {
+    id: 115,
+    title: 'Distinct Subsequences',
+    titleZh: '不同的子序列',
+    difficulty: 'Hard',
+    leetcodeSlug: 'distinct-subsequences',
+    tags: ['String', 'Dynamic Programming'],
+    description: `Given two strings \`s\` and \`t\`, return the number of distinct subsequences of \`s\` which equals \`t\`.
+
+The test cases are generated so that the answer fits in a 32-bit signed integer.`,
+    examples: [
+      { input: 's = "rabbbit", t = "rabbit"', output: '3', explanation: 'There are 3 ways to choose which "b" to drop.' },
+      { input: 's = "babgbag", t = "bag"', output: '5' },
+    ],
+    constraints: ['1 <= s.length, t.length <= 1000', 's and t consist of lowercase English letters.'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {string} t
+ * @return {number}
+ */
+function numDistinct(s, t) {
+
+}
+
+function solve(s, t) { return numDistinct(s, t); }`,
+    starterCodePython: `class Solution:
+    def numDistinct(self, s: str, t: str) -> int:
+        pass
+
+def solve(s, t): return Solution().numDistinct(s, t)`,
+    testCases: [
+      { label: '"rabbbit","rabbit" → 3', args: ['rabbbit', 'rabbit'], expected: 3 },
+      { label: '"babgbag","bag" → 5', args: ['babgbag', 'bag'], expected: 5 },
+    ],
+    hint: 'dp[i][j] = number of ways to form t[0..j-1] using s[0..i-1]. If s[i-1]==t[j-1]: dp[i][j] = dp[i-1][j-1] + dp[i-1][j] (use it or skip it). Otherwise dp[i][j] = dp[i-1][j]. Base: dp[i][0] = 1.',
+  },
+
+  140: {
+    id: 140,
+    title: 'Word Break II',
+    titleZh: '单词拆分 II',
+    difficulty: 'Hard',
+    leetcodeSlug: 'word-break-ii',
+    tags: ['Array', 'Hash Table', 'String', 'Dynamic Programming', 'Backtracking', 'Trie', 'Memoization'],
+    description: `Given a string \`s\` and a dictionary of strings \`wordDict\`, add spaces in \`s\` to construct a sentence where each word is a valid dictionary word. Return **all such possible sentences** in any order.
+
+Note that the same word in the dictionary may be reused multiple times.`,
+    examples: [
+      { input: 's = "catsanddog", wordDict = ["cat","cats","and","sand","dog"]', output: '["cats and dog","cat sand dog"]' },
+      { input: 's = "pineapplepenapple", wordDict = ["apple","pen","applepen","pine","pineapple"]', output: '["pine apple pen apple","pineapple pen apple","pine applepen apple"]' },
+      { input: 's = "catsandog", wordDict = ["cats","dog","sand","and","cat"]', output: '[]' },
+    ],
+    constraints: ['1 <= s.length <= 20', '1 <= wordDict.length <= 1000', '1 <= wordDict[i].length <= 10'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {string[]} wordDict
+ * @return {string[]}
+ */
+function wordBreak(s, wordDict) {
+
+}
+
+function solve(s, wordDict) { return wordBreak(s, wordDict).sort(); }`,
+    starterCodePython: `class Solution:
+    def wordBreak(self, s: str, wordDict: list[str]) -> list[str]:
+        pass
+
+def solve(s, wordDict): return sorted(Solution().wordBreak(s, wordDict))`,
+    testCases: [
+      { label: '"catsanddog" → sorted sentences', args: ['catsanddog', ['cat','cats','and','sand','dog']], expected: ['cat sand dog', 'cats and dog'] },
+      { label: '"catsandog" → []', args: ['catsandog', ['cats','dog','sand','and','cat']], expected: [] },
+    ],
+    hint: 'Backtrack with memoization: memo[i] = list of sentences formed from s[i:]. At each index, try every word in the dict; if s[i:i+len(word)]==word, recurse on i+len(word) and prepend word to each result.',
+  },
+
+  310: {
+    id: 310,
+    title: 'Minimum Height Trees',
+    titleZh: '最小高度树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'minimum-height-trees',
+    tags: ['DFS', 'BFS', 'Graph', 'Topological Sort'],
+    description: `A tree is an undirected graph with no cycles. Given \`n\` nodes labeled \`0\` to \`n-1\` and a list of undirected \`edges\`, find all roots that minimize the tree height.
+
+Return a list of all such root labels. The answer can be returned in any order.`,
+    examples: [
+      { input: 'n = 4, edges = [[1,0],[1,2],[1,3]]', output: '[1]' },
+      { input: 'n = 6, edges = [[3,0],[3,1],[3,2],[3,4],[5,4]]', output: '[3,4]' },
+    ],
+    constraints: ['1 <= n <= 2 * 10^4', 'edges.length == n - 1', '0 <= ai, bi <= n - 1'],
+    starterCode: `/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {number[]}
+ */
+function findMinHeightTrees(n, edges) {
+
+}
+
+function solve(n, edges) { return findMinHeightTrees(n, edges).sort((a,b)=>a-b); }`,
+    starterCodePython: `class Solution:
+    def findMinHeightTrees(self, n: int, edges: list[list[int]]) -> list[int]:
+        pass
+
+def solve(n, edges): return sorted(Solution().findMinHeightTrees(n, edges))`,
+    testCases: [
+      { label: 'n=4, [[1,0],[1,2],[1,3]] → [1]', args: [4, [[1,0],[1,2],[1,3]]], expected: [1] },
+      { label: 'n=6, [[3,0],[3,1],[3,2],[3,4],[5,4]] → [3,4]', args: [6, [[3,0],[3,1],[3,2],[3,4],[5,4]]], expected: [3,4] },
+      { label: 'n=1, [] → [0]', args: [1, []], expected: [0] },
+    ],
+    hint: 'Topological trimming: repeatedly remove leaf nodes (degree 1). The remaining 1 or 2 nodes are the roots of minimum height trees. Stop when ≤ 2 nodes remain.',
+  },
+
+  417: {
+    id: 417,
+    title: 'Pacific Atlantic Water Flow',
+    titleZh: '太平洋大西洋水流问题',
+    difficulty: 'Medium',
+    leetcodeSlug: 'pacific-atlantic-water-flow',
+    tags: ['Array', 'DFS', 'BFS', 'Matrix'],
+    description: `There is an \`m x n\` rectangular island that borders both the Pacific Ocean (top/left edges) and Atlantic Ocean (bottom/right edges). Rain water flows to adjacent cells with equal or lower height, then to the ocean.
+
+Find all cells from which water can flow to **both** oceans. Return their coordinates in any order.`,
+    examples: [
+      { input: 'heights = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]', output: '[[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]' },
+      { input: 'heights = [[1]]', output: '[[0,0]]' },
+    ],
+    constraints: ['m == heights.length', 'n == heights[0].length', '1 <= m, n <= 200', '0 <= heights[i][j] <= 10^5'],
+    starterCode: `/**
+ * @param {number[][]} heights
+ * @return {number[][]}
+ */
+function pacificAtlantic(heights) {
+
+}
+
+function solve(heights) { return pacificAtlantic(heights).sort((a,b)=>a[0]-b[0]||a[1]-b[1]); }`,
+    starterCodePython: `class Solution:
+    def pacificAtlantic(self, heights: list[list[int]]) -> list[list[int]]:
+        pass
+
+def solve(heights): return sorted(Solution().pacificAtlantic(heights))`,
+    testCases: [
+      { label: '5×5 grid → 7 cells', args: [[[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]], expected: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]] },
+      { label: '[[1]] → [[0,0]]', args: [[[1]]], expected: [[0,0]] },
+    ],
+    hint: 'BFS/DFS in reverse: starting from Pacific border cells, find all reachable cells (moving to equal or higher). Do the same from Atlantic border. The intersection is the answer.',
+  },
+
+  516: {
+    id: 516,
+    title: 'Longest Palindromic Subsequence',
+    titleZh: '最长回文子序列',
+    difficulty: 'Medium',
+    leetcodeSlug: 'longest-palindromic-subsequence',
+    tags: ['String', 'Dynamic Programming'],
+    description: `Given a string \`s\`, find the length of the **longest palindromic subsequence** in \`s\`.`,
+    examples: [
+      { input: 's = "bbbab"', output: '4', explanation: '"bbbb" is the longest palindromic subsequence.' },
+      { input: 's = "cbbd"', output: '2', explanation: '"bb".' },
+    ],
+    constraints: ['1 <= s.length <= 1000', 's consists only of lowercase English letters.'],
+    starterCode: `/**
+ * @param {string} s
+ * @return {number}
+ */
+function longestPalindromeSubseq(s) {
+
+}
+
+function solve(s) { return longestPalindromeSubseq(s); }`,
+    starterCodePython: `class Solution:
+    def longestPalindromeSubseq(self, s: str) -> int:
+        pass
+
+def solve(s): return Solution().longestPalindromeSubseq(s)`,
+    testCases: [
+      { label: '"bbbab" → 4', args: ['bbbab'], expected: 4 },
+      { label: '"cbbd" → 2', args: ['cbbd'], expected: 2 },
+    ],
+    hint: 'dp[i][j] = LPS length of s[i..j]. If s[i]==s[j]: dp[i][j] = dp[i+1][j-1] + 2. Else: max(dp[i+1][j], dp[i][j-1]). Fill diagonally, or equivalently it equals the LCS of s and reverse(s).',
+  },
+
+  542: {
+    id: 542,
+    title: '01 Matrix',
+    titleZh: '01 矩阵',
+    difficulty: 'Medium',
+    leetcodeSlug: '01-matrix',
+    tags: ['Array', 'BFS', 'Dynamic Programming', 'Matrix'],
+    description: `Given an \`m x n\` binary matrix \`mat\`, return the distance of the nearest \`0\` for each cell. The distance between two adjacent cells is \`1\`.`,
+    examples: [
+      { input: 'mat = [[0,0,0],[0,1,0],[0,0,0]]', output: '[[0,0,0],[0,1,0],[0,0,0]]' },
+      { input: 'mat = [[0,0,0],[0,1,0],[1,1,1]]', output: '[[0,0,0],[0,1,0],[1,2,1]]' },
+    ],
+    constraints: ['m == mat.length', 'n == mat[0].length', '1 <= m, n <= 10^4', '1 <= m * n <= 10^4', 'mat[i][j] is 0 or 1.', 'At least one 0 in mat.'],
+    starterCode: `/**
+ * @param {number[][]} mat
+ * @return {number[][]}
+ */
+function updateMatrix(mat) {
+
+}
+
+function solve(mat) { return updateMatrix(mat); }`,
+    starterCodePython: `class Solution:
+    def updateMatrix(self, mat: list[list[int]]) -> list[list[int]]:
+        pass
+
+def solve(mat): return Solution().updateMatrix(mat)`,
+    testCases: [
+      { label: '[[0,0,0],[0,1,0],[0,0,0]] → [[0,0,0],[0,1,0],[0,0,0]]', args: [[[0,0,0],[0,1,0],[0,0,0]]], expected: [[0,0,0],[0,1,0],[0,0,0]] },
+      { label: '[[0,0,0],[0,1,0],[1,1,1]] → [[0,0,0],[0,1,0],[1,2,1]]', args: [[[0,0,0],[0,1,0],[1,1,1]]], expected: [[0,0,0],[0,1,0],[1,2,1]] },
+    ],
+    hint: 'Multi-source BFS: enqueue all 0-cells with distance 0. BFS outward, setting dist[r][c] = dist[neighbor] + 1 for each unvisited cell. Alternatively, two-pass DP (top-left then bottom-right).',
+  },
+
+  960: {
+    id: 960,
+    title: 'Delete Columns to Make Sorted III',
+    titleZh: '删列造序 III',
+    difficulty: 'Hard',
+    leetcodeSlug: 'delete-columns-to-make-sorted-iii',
+    tags: ['Array', 'String', 'Dynamic Programming'],
+    description: `You are given an array of \`n\` strings \`strs\`, all of the same length. We may choose any deletion indices, and we delete all the characters in those positions for each string.
+
+For example, if we have \`strs = ["abcdef","uvwxyz"]\` and deletion indices \`{0, 2, 3}\`, the final array is \`["bef","vyz"]\`.
+
+After deletions, the final array must be **sorted lexicographically**. Return the minimum number of columns to delete.`,
+    examples: [
+      { input: 'strs = ["babca","bbazb"]', output: '3', explanation: 'Delete columns 0, 1, 4 to get ["bc","az"] which is sorted.' },
+      { input: 'strs = ["edcba"]', output: '4', explanation: 'Delete all but last column.' },
+      { input: 'strs = ["ghi","def","abc"]', output: '0' },
+    ],
+    constraints: ['n == strs.length', '1 <= n <= 100', '1 <= strs[i].length <= 100'],
+    starterCode: `/**
+ * @param {string[]} strs
+ * @return {number}
+ */
+function minDeletionSize(strs) {
+
+}
+
+function solve(strs) { return minDeletionSize(strs); }`,
+    starterCodePython: `class Solution:
+    def minDeletionSize(self, strs: list[str]) -> int:
+        pass
+
+def solve(strs): return Solution().minDeletionSize(strs)`,
+    testCases: [
+      { label: '["babca","bbazb"] → 3', args: [['babca','bbazb']], expected: 3 },
+      { label: '["edcba"] → 4', args: [['edcba']], expected: 4 },
+      { label: '["ghi","def","abc"] → 0', args: [['ghi','def','abc']], expected: 0 },
+    ],
+    hint: 'LIS variant. dp[j] = max columns we can keep ending at column j. Column j can extend column i if strs[r][i] <= strs[r][j] for all rows r. Answer = cols - max(dp[j]).',
+  },
+
+  967: {
+    id: 967,
+    title: 'Numbers With Same Consecutive Differences',
+    titleZh: '连续差相同的数字',
+    difficulty: 'Medium',
+    leetcodeSlug: 'numbers-with-same-consecutive-differences',
+    tags: ['Backtracking', 'BFS'],
+    description: `Return all non-negative integers of length \`n\` such that the absolute difference between every two consecutive digits is \`k\`.
+
+Return the answer in any order. Note that every number in the answer must not have leading zeros except for the number \`0\` itself.`,
+    examples: [
+      { input: 'n = 3, k = 7', output: '[181,292,707,818,929]' },
+      { input: 'n = 2, k = 1', output: '[10,12,21,23,32,34,43,45,54,56,65,67,76,78,87,89,98]' },
+    ],
+    constraints: ['2 <= n <= 9', '0 <= k <= 9'],
+    starterCode: `/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number[]}
+ */
+function numsSameConsecDiff(n, k) {
+
+}
+
+function solve(n, k) { return numsSameConsecDiff(n, k).sort((a,b)=>a-b); }`,
+    starterCodePython: `class Solution:
+    def numsSameConsecDiff(self, n: int, k: int) -> list[int]:
+        pass
+
+def solve(n, k): return sorted(Solution().numsSameConsecDiff(n, k))`,
+    testCases: [
+      { label: 'n=3,k=7 → [181,292,707,818,929]', args: [3, 7], expected: [181,292,707,818,929] },
+      { label: 'n=2,k=1 → 17 numbers', args: [2, 1], expected: [10,12,21,23,32,34,43,45,54,56,65,67,76,78,87,89,98] },
+    ],
+    hint: 'BFS/DFS: start with digits 1-9 (no leading zeros). At each step, the next digit is last_digit ± k (if in [0,9]). Handle k=0 specially to avoid duplicates. Continue until n digits are formed.',
+  },
+
+  1437: {
+    id: 1437,
+    title: 'Check If All 1\'s Are at Least Length K Places Away',
+    titleZh: '是否所有 1 都至少相隔 k 位',
+    difficulty: 'Easy',
+    leetcodeSlug: 'check-if-all-1s-are-at-least-length-k-places-away',
+    tags: ['Array'],
+    description: `Given a binary array \`nums\` and an integer \`k\`, return \`true\` if all \`1\`'s are at least \`k\` places away from each other, otherwise return \`false\`.`,
+    examples: [
+      { input: 'nums = [1,0,0,0,1,0,0,1], k = 2', output: 'true' },
+      { input: 'nums = [1,0,0,1,0,1], k = 2', output: 'false', explanation: 'The 1s at indices 0 and 3 are only 3 apart, but 3 and 5 are only 2 apart (need ≥ 2 → ok), wait 3 and 5 differ by 2 which equals k so it\'s false.' },
+    ],
+    constraints: ['1 <= nums.length <= 10^5', '0 <= k <= nums.length', 'nums[i] is 0 or 1.'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {boolean}
+ */
+function kLengthApart(nums, k) {
+
+}
+
+function solve(nums, k) { return kLengthApart(nums, k); }`,
+    starterCodePython: `class Solution:
+    def kLengthApart(self, nums: list[int], k: int) -> bool:
+        pass
+
+def solve(nums, k): return Solution().kLengthApart(nums, k)`,
+    testCases: [
+      { label: '[1,0,0,0,1,0,0,1], k=2 → true', args: [[1,0,0,0,1,0,0,1], 2], expected: true },
+      { label: '[1,0,0,1,0,1], k=2 → false', args: [[1,0,0,1,0,1], 2], expected: false },
+    ],
+    hint: 'Track the index of the last seen 1. When you encounter a new 1, check if current_index - last_index - 1 >= k. Update last_index.',
+  },
+
+  2206: {
+    id: 2206,
+    title: 'Divide Array Into Equal Pairs',
+    titleZh: '将数组划分成相等数对',
+    difficulty: 'Easy',
+    leetcodeSlug: 'divide-array-into-equal-pairs',
+    tags: ['Array', 'Hash Table', 'Bit Manipulation', 'Counting'],
+    description: `You are given an integer array \`nums\` consisting of \`2 * n\` integers. Divide \`nums\` into \`n\` pairs such that each element belongs to exactly one pair and every element in each pair is equal.
+
+Return \`true\` if this is possible, otherwise return \`false\`.`,
+    examples: [
+      { input: 'nums = [3,2,3,2,2,2]', output: 'true', explanation: 'Pairs: (3,3),(2,2),(2,2).' },
+      { input: 'nums = [1,2,3,4]', output: 'false' },
+    ],
+    constraints: ['nums.length == 2 * n', '1 <= n <= 500', '1 <= nums[i] <= 500'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+function divideArray(nums) {
+
+}
+
+function solve(nums) { return divideArray(nums); }`,
+    starterCodePython: `class Solution:
+    def divideArray(self, nums: list[int]) -> bool:
+        pass
+
+def solve(nums): return Solution().divideArray(nums)`,
+    testCases: [
+      { label: '[3,2,3,2,2,2] → true', args: [[3,2,3,2,2,2]], expected: true },
+      { label: '[1,2,3,4] → false', args: [[1,2,3,4]], expected: false },
+    ],
+    hint: 'Count frequency of each number. Every number must appear an even number of times to form pairs.',
+  },
+
+  3092: {
+    id: 3092,
+    title: 'Most Frequent IDs',
+    titleZh: '最频繁的 ID',
+    difficulty: 'Medium',
+    leetcodeSlug: 'most-frequent-ids',
+    tags: ['Array', 'Hash Table', 'Heap (Priority Queue)', 'Ordered Set'],
+    description: `You have a collection of IDs that can change over time. Given two integer arrays \`nums\` and \`freq\` of equal length where \`nums[i]\` is an ID and \`freq[i]\` is its frequency change (positive = add, negative = remove), return an array \`ans\` where \`ans[i]\` is the count of the most frequent ID after the \`i\`-th step.`,
+    examples: [
+      { input: 'nums = [2,3,2,1], freq = [3,2,-3,1]', output: '[3,3,2,2]', explanation: 'After step 1: {2:3}→max 3. After step 2: {2:3,3:2}→3. After step 3: {2:0,3:2}→2. After step 4: {2:0,3:2,1:1}→2.' },
+      { input: 'nums = [5,5,3], freq = [2,-2,1]', output: '[2,0,1]' },
+    ],
+    constraints: ['1 <= nums.length == freq.length <= 10^5', '1 <= nums[i] <= 10^5', '-10^5 <= freq[i] <= 10^5'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @param {number[]} freq
+ * @return {number[]}
+ */
+function mostFrequentIDs(nums, freq) {
+
+}
+
+function solve(nums, freq) { return mostFrequentIDs(nums, freq); }`,
+    starterCodePython: `class Solution:
+    def mostFrequentIDs(self, nums: list[int], freq: list[int]) -> list[int]:
+        pass
+
+def solve(nums, freq): return Solution().mostFrequentIDs(nums, freq)`,
+    testCases: [
+      { label: '[2,3,2,1],[3,2,-3,1] → [3,3,2,2]', args: [[2,3,2,1],[3,2,-3,1]], expected: [3,3,2,2] },
+      { label: '[5,5,3],[2,-2,1] → [2,0,1]', args: [[5,5,3],[2,-2,1]], expected: [2,0,1] },
+    ],
+    hint: 'Maintain a count map. Use a max-heap of (count, id). After updating count[id], push the new (count, id) onto heap. On query, pop stale entries (where heap top count != count[id]). Return heap top.',
+  },
+
+  10: {
+    id: 10,
+    title: 'Regular Expression Matching',
+    titleZh: '正则表达式匹配',
+    difficulty: 'Hard',
+    leetcodeSlug: 'regular-expression-matching',
+    tags: ['String', 'Dynamic Programming', 'Recursion'],
+    description: `Given an input string \`s\` and a pattern \`p\`, implement regular expression matching with support for \`'.'\` and \`'*'\`:
+- \`'.'\` matches any single character.
+- \`'*'\` matches zero or more of the preceding element.
+
+The matching should cover the **entire** input string (not partial).`,
+    examples: [
+      { input: 's = "aa", p = "a"', output: 'false', explanation: '"a" does not match the entire string "aa".' },
+      { input: 's = "aa", p = "a*"', output: 'true', explanation: '"a*" matches zero or more "a"s.' },
+      { input: 's = "ab", p = ".*"', output: 'true', explanation: '".*" matches any string.' },
+    ],
+    constraints: ['1 <= s.length <= 20', '1 <= p.length <= 30', 's contains only lowercase letters.', 'p contains only lowercase letters, \'.\', and \'*\'.'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {string} p
+ * @return {boolean}
+ */
+function isMatch(s, p) {
+
+}
+
+function solve(s, p) { return isMatch(s, p); }`,
+    starterCodePython: `class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        pass
+
+def solve(s, p): return Solution().isMatch(s, p)`,
+    testCases: [
+      { label: '"aa","a" → false', args: ['aa', 'a'], expected: false },
+      { label: '"aa","a*" → true', args: ['aa', 'a*'], expected: true },
+      { label: '"ab",".*" → true', args: ['ab', '.*'], expected: true },
+      { label: '"aab","c*a*b" → true', args: ['aab', 'c*a*b'], expected: true },
+    ],
+    hint: 'dp[i][j] = s[0..i-1] matches p[0..j-1]. If p[j-1]!="*": dp[i][j] = dp[i-1][j-1] && (s[i-1]==p[j-1] || p[j-1]=="." ). If p[j-1]=="*": zero uses = dp[i][j-2]; or one+ uses (if chars match) = dp[i-1][j].',
+  },
+
+  122: {
+    id: 122,
+    title: 'Best Time to Buy and Sell Stock II',
+    titleZh: '买卖股票的最佳时机 II',
+    difficulty: 'Medium',
+    leetcodeSlug: 'best-time-to-buy-and-sell-stock-ii',
+    tags: ['Array', 'Dynamic Programming', 'Greedy'],
+    description: `You are given an integer array \`prices\` where \`prices[i]\` is the price of a stock on day \`i\`. On each day, you may decide to buy and/or sell the stock. You can only hold **at most one** share at a time, but you can buy and sell on the same day.
+
+Return the **maximum profit** you can achieve.`,
+    examples: [
+      { input: 'prices = [7,1,5,3,6,4]', output: '7', explanation: 'Buy day2=1, sell day3=5 (+4). Buy day4=3, sell day5=6 (+3). Total 7.' },
+      { input: 'prices = [1,2,3,4,5]', output: '4', explanation: 'Buy day1, sell day5. Or sum all upward moves.' },
+      { input: 'prices = [7,6,4,3,1]', output: '0' },
+    ],
+    constraints: ['1 <= prices.length <= 3 * 10^4', '0 <= prices[i] <= 10^4'],
+    starterCode: `/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+function maxProfit(prices) {
+
+}
+
+function solve(prices) { return maxProfit(prices); }`,
+    starterCodePython: `class Solution:
+    def maxProfit(self, prices: list[int]) -> int:
+        pass
+
+def solve(prices): return Solution().maxProfit(prices)`,
+    testCases: [
+      { label: '[7,1,5,3,6,4] → 7', args: [[7,1,5,3,6,4]], expected: 7 },
+      { label: '[1,2,3,4,5] → 4', args: [[1,2,3,4,5]], expected: 4 },
+      { label: '[7,6,4,3,1] → 0', args: [[7,6,4,3,1]], expected: 0 },
+    ],
+    hint: 'Greedy: sum every upward price movement. If prices[i] > prices[i-1], add the difference to profit. Equivalently, dp: hold = max(hold, -prices[i]); cash = max(cash, hold+prices[i]).',
+  },
+
+  123: {
+    id: 123,
+    title: 'Best Time to Buy and Sell Stock III',
+    titleZh: '买卖股票的最佳时机 III',
+    difficulty: 'Hard',
+    leetcodeSlug: 'best-time-to-buy-and-sell-stock-iii',
+    tags: ['Array', 'Dynamic Programming'],
+    description: `You are given an array \`prices\` where \`prices[i]\` is the price of a stock on day \`i\`. You may complete **at most two transactions**. Return the **maximum profit**. You may not hold more than one share at a time.`,
+    examples: [
+      { input: 'prices = [3,3,5,0,0,3,1,4]', output: '6', explanation: 'Buy day4=0, sell day6=3 (+3). Buy day7=1, sell day8=4 (+3). Total 6.' },
+      { input: 'prices = [1,2,3,4,5]', output: '4' },
+      { input: 'prices = [7,6,4,3,1]', output: '0' },
+    ],
+    constraints: ['1 <= prices.length <= 10^5', '0 <= prices[i] <= 10^5'],
+    starterCode: `/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+function maxProfit(prices) {
+
+}
+
+function solve(prices) { return maxProfit(prices); }`,
+    starterCodePython: `class Solution:
+    def maxProfit(self, prices: list[int]) -> int:
+        pass
+
+def solve(prices): return Solution().maxProfit(prices)`,
+    testCases: [
+      { label: '[3,3,5,0,0,3,1,4] → 6', args: [[3,3,5,0,0,3,1,4]], expected: 6 },
+      { label: '[1,2,3,4,5] → 4', args: [[1,2,3,4,5]], expected: 4 },
+      { label: '[7,6,4,3,1] → 0', args: [[7,6,4,3,1]], expected: 0 },
+    ],
+    hint: 'Track four variables: buy1 (min price seen), profit1 (max profit after 1 sale), buy2 (min effective cost after using profit1), profit2 (max profit after 2 sales). Update all in one pass.',
+  },
+
+  174: {
+    id: 174,
+    title: 'Dungeon Game',
+    titleZh: '地下城游戏',
+    difficulty: 'Hard',
+    leetcodeSlug: 'dungeon-game',
+    tags: ['Array', 'Dynamic Programming', 'Matrix'],
+    description: `The knight starts at the top-left cell and must reach the bottom-right cell to rescue the princess. Each cell has an integer (negative = demon drains health, positive = health orb). The knight dies if HP ever drops to 0 or below.
+
+Return the **minimum initial health** the knight needs.`,
+    examples: [
+      { input: 'dungeon = [[-2,-3,3],[-5,-10,1],[10,30,-5]]', output: '7', explanation: 'Path right→right→down→down requires min HP=7.' },
+      { input: 'dungeon = [[0]]', output: '1' },
+    ],
+    constraints: ['m == dungeon.length', 'n == dungeon[0].length', '1 <= m, n <= 200', '-1000 <= dungeon[i][j] <= 1000'],
+    starterCode: `/**
+ * @param {number[][]} dungeon
+ * @return {number}
+ */
+function calculateMinimumHP(dungeon) {
+
+}
+
+function solve(dungeon) { return calculateMinimumHP(dungeon); }`,
+    starterCodePython: `class Solution:
+    def calculateMinimumHP(self, dungeon: list[list[int]]) -> int:
+        pass
+
+def solve(dungeon): return Solution().calculateMinimumHP(dungeon)`,
+    testCases: [
+      { label: '[[-2,-3,3],[-5,-10,1],[10,30,-5]] → 7', args: [[[-2,-3,3],[-5,-10,1],[10,30,-5]]], expected: 7 },
+      { label: '[[0]] → 1', args: [[[0]]], expected: 1 },
+    ],
+    hint: 'DP from bottom-right to top-left. dp[i][j] = min HP needed when entering cell (i,j). dp[i][j] = max(1, min(dp[i+1][j], dp[i][j+1]) - dungeon[i][j]). Answer is dp[0][0].',
+  },
+
+  188: {
+    id: 188,
+    title: 'Best Time to Buy and Sell Stock IV',
+    titleZh: '买卖股票的最佳时机 IV',
+    difficulty: 'Hard',
+    leetcodeSlug: 'best-time-to-buy-and-sell-stock-iv',
+    tags: ['Array', 'Dynamic Programming'],
+    description: `You are given an integer \`k\` and an array \`prices\` where \`prices[i]\` is the stock price on day \`i\`. Find the **maximum profit** using **at most \`k\` transactions**.`,
+    examples: [
+      { input: 'k = 2, prices = [2,4,1]', output: '2', explanation: 'Buy day1=2, sell day2=4.' },
+      { input: 'k = 2, prices = [3,2,6,5,0,3]', output: '7', explanation: 'Buy day2=2, sell day3=6 (+4). Buy day5=0, sell day6=3 (+3).' },
+    ],
+    constraints: ['1 <= k <= 100', '1 <= prices.length <= 1000', '0 <= prices[i] <= 1000'],
+    starterCode: `/**
+ * @param {number} k
+ * @param {number[]} prices
+ * @return {number}
+ */
+function maxProfit(k, prices) {
+
+}
+
+function solve(k, prices) { return maxProfit(k, prices); }`,
+    starterCodePython: `class Solution:
+    def maxProfit(self, k: int, prices: list[int]) -> int:
+        pass
+
+def solve(k, prices): return Solution().maxProfit(k, prices)`,
+    testCases: [
+      { label: 'k=2,[2,4,1] → 2', args: [2, [2,4,1]], expected: 2 },
+      { label: 'k=2,[3,2,6,5,0,3] → 7', args: [2, [3,2,6,5,0,3]], expected: 7 },
+    ],
+    hint: 'If k >= n/2, treat as unlimited transactions (greedy). Otherwise, dp[t][d] = max profit using t transactions up to day d. Or track buy[t] and sell[t] arrays updated each day.',
+  },
+
+  213: {
+    id: 213,
+    title: 'House Robber II',
+    titleZh: '打家劫舍 II',
+    difficulty: 'Medium',
+    leetcodeSlug: 'house-robber-ii',
+    tags: ['Array', 'Dynamic Programming'],
+    description: `You are a professional robber planning to rob houses arranged in a **circle**. Adjacent houses have security systems connected. You cannot rob two adjacent houses. Given an integer array \`nums\` representing the amount of money in each house, return the **maximum** amount you can rob tonight.`,
+    examples: [
+      { input: 'nums = [2,3,2]', output: '3', explanation: 'Rob house 2 (value 3).' },
+      { input: 'nums = [1,2,3,1]', output: '4', explanation: 'Rob houses 1 and 3 (1+3=4).' },
+      { input: 'nums = [1,2,3]', output: '3' },
+    ],
+    constraints: ['1 <= nums.length <= 100', '0 <= nums[i] <= 1000'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function rob(nums) {
+
+}
+
+function solve(nums) { return rob(nums); }`,
+    starterCodePython: `class Solution:
+    def rob(self, nums: list[int]) -> int:
+        pass
+
+def solve(nums): return Solution().rob(nums)`,
+    testCases: [
+      { label: '[2,3,2] → 3', args: [[2,3,2]], expected: 3 },
+      { label: '[1,2,3,1] → 4', args: [[1,2,3,1]], expected: 4 },
+      { label: '[1,2,3] → 3', args: [[1,2,3]], expected: 3 },
+    ],
+    hint: 'Since houses are circular, either we include house 0 or house n-1 (not both). Run linear house robber twice: once on nums[0..n-2] and once on nums[1..n-1]. Return the max.',
+  },
+
+  309: {
+    id: 309,
+    title: 'Best Time to Buy and Sell Stock with Cooldown',
+    titleZh: '买卖股票的最佳时机含冷冻期',
+    difficulty: 'Medium',
+    leetcodeSlug: 'best-time-to-buy-and-sell-stock-with-cooldown',
+    tags: ['Array', 'Dynamic Programming'],
+    description: `You are given an array \`prices\` where \`prices[i]\` is the price on day \`i\`. After selling, you must wait **one cooldown day** before buying again. Find the **maximum profit** with unlimited transactions.`,
+    examples: [
+      { input: 'prices = [1,2,3,0,2]', output: '3', explanation: 'Buy day1, sell day2, cooldown day3, buy day4, sell day5. Profit = 1+2=3.' },
+      { input: 'prices = [1]', output: '0' },
+    ],
+    constraints: ['1 <= prices.length <= 5000', '0 <= prices[i] <= 1000'],
+    starterCode: `/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+function maxProfit(prices) {
+
+}
+
+function solve(prices) { return maxProfit(prices); }`,
+    starterCodePython: `class Solution:
+    def maxProfit(self, prices: list[int]) -> int:
+        pass
+
+def solve(prices): return Solution().maxProfit(prices)`,
+    testCases: [
+      { label: '[1,2,3,0,2] → 3', args: [[1,2,3,0,2]], expected: 3 },
+      { label: '[1] → 0', args: [[1]], expected: 0 },
+    ],
+    hint: 'States: hold (holding stock), sold (just sold, in cooldown), rest (not holding, not in cooldown). Transitions: hold = max(hold, rest-price); sold = hold+price; rest = max(rest, sold). Answer = max(sold, rest).',
+  },
+
+  337: {
+    id: 337,
+    title: 'House Robber III',
+    titleZh: '打家劫舍 III',
+    difficulty: 'Medium',
+    leetcodeSlug: 'house-robber-iii',
+    tags: ['Dynamic Programming', 'DFS', 'Binary Tree'],
+    description: `The thief has found a new place to rob: a binary tree. The only constraint is that adjacent nodes (parent-child) cannot be robbed on the same night.
+
+Given the \`root\` of the binary tree, return the **maximum amount of money** the thief can rob without alerting the police.`,
+    examples: [
+      { input: 'root = [3,2,3,null,3,null,1]', output: '7', explanation: 'Rob root (3) + left-right (3) + right-right (1) = 7.' },
+      { input: 'root = [3,4,5,1,3,null,1]', output: '9', explanation: 'Rob node 4 (4) + node 5 (5) = 9.' },
+    ],
+    constraints: ['Number of nodes: [1, 10^4]', '0 <= Node.val <= 10^4'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {number}
+ */
+function rob(root) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr) { return rob(build(arr)); }`,
+    starterCodePython: `class Solution:
+    def rob(self, root) -> int:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr): return Solution().rob(build(arr))`,
+    testCases: [
+      { label: '[3,2,3,null,3,null,1] → 7', args: [[3,2,3,null,3,null,1]], expected: 7 },
+      { label: '[3,4,5,1,3,null,1] → 9', args: [[3,4,5,1,3,null,1]], expected: 9 },
+    ],
+    hint: 'Post-order DFS returning [rob_this, skip_this] for each node. rob_this = node.val + skip_left + skip_right. skip_this = max(rob_left,skip_left) + max(rob_right,skip_right).',
+  },
+
+  1428: {
+    id: 1428,
+    title: 'Leftmost Column with at Least a One',
+    titleZh: '至少有一个 1 的最左端列',
+    difficulty: 'Medium',
+    leetcodeSlug: 'leftmost-column-with-at-least-a-one',
+    tags: ['Array', 'Binary Search', 'Interactive', 'Matrix'],
+    description: `**Adapted problem:** A row-sorted binary matrix (each row sorted ascending) is given. Find the **leftmost column index** that contains at least one \`1\`, or return \`-1\` if no such column exists.`,
+    examples: [
+      { input: 'matrix = [[0,0],[1,1]]', output: '0' },
+      { input: 'matrix = [[0,0],[0,1]]', output: '1' },
+      { input: 'matrix = [[0,0],[0,0]]', output: '-1' },
+      { input: 'matrix = [[0,0,0,1],[0,0,1,1],[0,1,1,1]]', output: '1' },
+    ],
+    constraints: ['rows == matrix.length', 'cols == matrix[i].length', '1 <= rows, cols <= 100', 'matrix[i][j] is 0 or 1.', 'matrix[i] is sorted ascending.'],
+    starterCode: `/**
+ * @param {number[][]} matrix
+ * @return {number}
+ */
+function leftMostColumnWithOne(matrix) {
+
+}
+
+function solve(matrix) { return leftMostColumnWithOne(matrix); }`,
+    starterCodePython: `class Solution:
+    def leftMostColumnWithOne(self, matrix: list[list[int]]) -> int:
+        pass
+
+def solve(matrix): return Solution().leftMostColumnWithOne(matrix)`,
+    testCases: [
+      { label: '[[0,0],[1,1]] → 0', args: [[[0,0],[1,1]]], expected: 0 },
+      { label: '[[0,0],[0,1]] → 1', args: [[[0,0],[0,1]]], expected: 1 },
+      { label: '[[0,0],[0,0]] → -1', args: [[[0,0],[0,0]]], expected: -1 },
+      { label: '[[0,0,0,1],[0,0,1,1],[0,1,1,1]] → 1', args: [[[0,0,0,1],[0,0,1,1],[0,1,1,1]]], expected: 1 },
+    ],
+    hint: 'Start at top-right corner. If cell is 1, move left (record col). If cell is 0, move down. This finds the leftmost column in O(m+n). Or binary search each row for first 1, take min column.',
+  },
+
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {
