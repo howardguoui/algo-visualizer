@@ -5788,6 +5788,1055 @@ function numSubseq(nums, target) {
     ],
     hint: 'Sort nums. Two pointers: left=0, right=n-1. If nums[left]+nums[right]<=target, all 2^(right-left) subsequences with nums[left] as min are valid (add mod 10^9+7). Move left++. Else move right--. Precompute powers of 2 mod 10^9+7.',
   },
+
+  // ── Batch B5 — Binary Tree Post Order (20 problems) ──────────────────────
+
+  100: {
+    id: 100,
+    title: 'Same Tree',
+    titleZh: '相同的树',
+    difficulty: 'Easy',
+    leetcodeSlug: 'same-tree',
+    tags: ['Tree', 'DFS', 'BFS', 'Binary Tree'],
+    description: `Given the roots of two binary trees \`p\` and \`q\`, write a function to check if they are the same or not.
+
+Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+
+**Note:** The \`solve(arr1, arr2)\` adapter builds both trees from level-order arrays.`,
+    examples: [
+      { input: 'p = [1,2,3], q = [1,2,3]', output: 'true' },
+      { input: 'p = [1,2], q = [1,null,2]', output: 'false' },
+      { input: 'p = [1,2,1], q = [1,1,2]', output: 'false' },
+    ],
+    constraints: [
+      'The number of nodes in both trees is in the range [0, 100].',
+      '-10^4 <= Node.val <= 10^4',
+    ],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+
+/**
+ * @param {TreeNode} p
+ * @param {TreeNode} q
+ * @return {boolean}
+ */
+function isSameTree(p, q) {
+
+}
+
+// Test adapter (do not remove)
+function solve(arr1, arr2) { return isSameTree(buildTree(arr1), buildTree(arr2)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None): self.val=val; self.left=left; self.right=right
+
+def build_tree(arr):
+    if not arr: return None
+    root=TreeNode(arr[0]); q=[root]; i=1
+    while i<len(arr):
+        node=q.pop(0)
+        if i<len(arr) and arr[i] is not None: node.left=TreeNode(arr[i]); q.append(node.left)
+        i+=1
+        if i<len(arr) and arr[i] is not None: node.right=TreeNode(arr[i]); q.append(node.right)
+        i+=1
+    return root
+
+class Solution:
+    def isSameTree(self, p, q):
+        pass
+
+def solve(arr1, arr2): return Solution().isSameTree(build_tree(arr1), build_tree(arr2))`,
+    testCases: [
+      { label: '[1,2,3] vs [1,2,3] → true', args: [[1,2,3], [1,2,3]], expected: true },
+      { label: '[1,2] vs [1,null,2] → false', args: [[1,2], [1,null,2]], expected: false },
+      { label: '[1,2,1] vs [1,1,2] → false', args: [[1,2,1], [1,1,2]], expected: false },
+      { label: 'Both empty → true', args: [[], []], expected: true },
+    ],
+    hint: 'Recursively compare: if both null → true; if one null → false; if values differ → false; then recurse left & right.',
+  },
+
+  110: {
+    id: 110,
+    title: 'Balanced Binary Tree',
+    titleZh: '平衡二叉树',
+    difficulty: 'Easy',
+    leetcodeSlug: 'balanced-binary-tree',
+    tags: ['Tree', 'DFS', 'Binary Tree'],
+    description: `Given a binary tree, determine if it is **height-balanced**.
+
+A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.
+
+**Note:** The \`solve(arr)\` adapter builds the tree from a level-order array.`,
+    examples: [
+      { input: 'root = [3,9,20,null,null,15,7]', output: 'true' },
+      { input: 'root = [1,2,2,3,3,null,null,4,4]', output: 'false' },
+      { input: 'root = []', output: 'true' },
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [0, 5000].',
+      '-10^4 <= Node.val <= 10^4',
+    ],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {boolean}
+ */
+function isBalanced(root) {
+
+}
+
+// Test adapter (do not remove)
+function solve(arr) { return isBalanced(buildTree(arr)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None): self.val=val; self.left=left; self.right=right
+
+def build_tree(arr):
+    if not arr: return None
+    root=TreeNode(arr[0]); q=[root]; i=1
+    while i<len(arr):
+        node=q.pop(0)
+        if i<len(arr) and arr[i] is not None: node.left=TreeNode(arr[i]); q.append(node.left)
+        i+=1
+        if i<len(arr) and arr[i] is not None: node.right=TreeNode(arr[i]); q.append(node.right)
+        i+=1
+    return root
+
+class Solution:
+    def isBalanced(self, root):
+        pass
+
+def solve(arr): return Solution().isBalanced(build_tree(arr))`,
+    testCases: [
+      { label: '[3,9,20,null,null,15,7] → true', args: [[3,9,20,null,null,15,7]], expected: true },
+      { label: '[1,2,2,3,3,null,null,4,4] → false', args: [[1,2,2,3,3,null,null,4,4]], expected: false },
+      { label: 'Empty → true', args: [[]], expected: true },
+      { label: '[1,2,3,4,5,6,null,8] → true', args: [[1,2,3,4,5,6,null,8]], expected: true },
+    ],
+    hint: 'Post-order DFS: define a helper that returns -1 if unbalanced, or height otherwise. If |leftH - rightH| > 1, return -1. isBalanced(root) = (helper(root) !== -1).',
+  },
+
+  331: {
+    id: 331,
+    title: 'Verify Preorder Serialization of a Binary Tree',
+    titleZh: '验证二叉树的前序序列化',
+    difficulty: 'Medium',
+    leetcodeSlug: 'verify-preorder-serialization-of-a-binary-tree',
+    tags: ['String', 'Stack', 'Tree', 'Binary Tree'],
+    description: `One way to serialize a binary tree is to use **preorder traversal**. When we encounter a non-null node, we record the node's value. If it is a null node, we record using a sentinel value such as \`'#'\`.
+
+Given a string of comma-separated values \`preorder\`, return \`true\` if it is a correct preorder traversal serialization of some binary tree.`,
+    examples: [
+      { input: 'preorder = "9,3,4,#,#,1,#,#,2,#,6,#,#"', output: 'true' },
+      { input: 'preorder = "1,#"', output: 'false' },
+      { input: 'preorder = "9,#,#,1"', output: 'false' },
+    ],
+    constraints: [
+      '1 <= preorder.length <= 10^4',
+      "preorder consists of integers in the range [0, 100] and '#' separated by commas.",
+    ],
+    starterCode: `/**
+ * @param {string} preorder
+ * @return {boolean}
+ */
+function isValidSerialization(preorder) {
+
+}
+
+function solve(preorder) { return isValidSerialization(preorder); }`,
+    starterCodePython: `class Solution:
+    def isValidSerialization(self, preorder: str) -> bool:
+        pass
+
+def solve(preorder): return Solution().isValidSerialization(preorder)`,
+    testCases: [
+      { label: '"9,3,4,#,#,1,#,#,2,#,6,#,#" → true', args: ['9,3,4,#,#,1,#,#,2,#,6,#,#'], expected: true },
+      { label: '"1,#" → false', args: ['1,#'], expected: false },
+      { label: '"9,#,#,1" → false', args: ['9,#,#,1'], expected: false },
+      { label: '"#" → true', args: ['#'], expected: true },
+    ],
+    hint: "Track available 'slots'. Start with 1. For each token: slots must be > 0. A non-null node uses 1 slot and creates 2 (net +1). A null '#' uses 1 slot (net -1). End: slots must be exactly 0.",
+  },
+
+  508: {
+    id: 508,
+    title: 'Most Frequent Subtree Sum',
+    titleZh: '出现次数最多的子树元素和',
+    difficulty: 'Medium',
+    leetcodeSlug: 'most-frequent-subtree-sum',
+    tags: ['Hash Table', 'Tree', 'DFS', 'Binary Tree'],
+    description: `Given the \`root\` of a binary tree, return the most frequent **subtree sum**. If there is a tie, return all the elements with the highest frequency in any order.
+
+The subtree sum of a node is defined as the sum of all the node values formed by the subtree rooted at that node (including the node itself).
+
+**Note:** The \`solve(arr)\` adapter builds the tree from a level-order array and returns the result sorted.`,
+    examples: [
+      { input: 'root = [5,2,-3]', output: '[2,-3,4]', explanation: 'All values occur once, return all of them.' },
+      { input: 'root = [5,2,-5]', output: '[2]', explanation: '2 occurs twice, -5 occurs once. Return [2].' },
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [1, 10^4].',
+      '-10^5 <= Node.val <= 10^5',
+    ],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+function findFrequentTreeSum(root) {
+
+}
+
+// Test adapter (do not remove)
+function solve(arr) { return findFrequentTreeSum(buildTree(arr)).sort((a,b)=>a-b); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None): self.val=val; self.left=left; self.right=right
+
+def build_tree(arr):
+    if not arr: return None
+    root=TreeNode(arr[0]); q=[root]; i=1
+    while i<len(arr):
+        node=q.pop(0)
+        if i<len(arr) and arr[i] is not None: node.left=TreeNode(arr[i]); q.append(node.left)
+        i+=1
+        if i<len(arr) and arr[i] is not None: node.right=TreeNode(arr[i]); q.append(node.right)
+        i+=1
+    return root
+
+class Solution:
+    def findFrequentTreeSum(self, root):
+        pass
+
+def solve(arr): return sorted(Solution().findFrequentTreeSum(build_tree(arr)))`,
+    testCases: [
+      { label: '[5,2,-3] → [-3,2,4]', args: [[5,2,-3]], expected: [-3,2,4] },
+      { label: '[5,2,-5] → [2]', args: [[5,2,-5]], expected: [2] },
+    ],
+    hint: 'Post-order DFS: compute subtree sum for each node (leftSum + rightSum + node.val), track frequency in a map. Return all sums with the maximum frequency.',
+  },
+
+  563: {
+    id: 563,
+    title: 'Binary Tree Tilt',
+    titleZh: '二叉树的坡度',
+    difficulty: 'Easy',
+    leetcodeSlug: 'binary-tree-tilt',
+    tags: ['Tree', 'DFS', 'Binary Tree'],
+    description: `Given the \`root\` of a binary tree, return the **sum of every tree node's tilt**.
+
+The **tilt** of a tree node is the **absolute difference** between the sum of all left subtree node values and all right subtree node values. If a node does not have a left child, the left subtree sum is \`0\`. Same for the right child.
+
+**Note:** The \`solve(arr)\` adapter builds the tree from a level-order array.`,
+    examples: [
+      { input: 'root = [1,2,3]', output: '1', explanation: 'Node 2: tilt=0. Node 3: tilt=0. Node 1: |2-3|=1. Total=1.' },
+      { input: 'root = [4,2,9,3,5,null,7]', output: '15' },
+      { input: 'root = [21,7,14,1,1,2,2,3,3]', output: '9' },
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [0, 10^4].',
+      '-1000 <= Node.val <= 1000',
+    ],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+function findTilt(root) {
+
+}
+
+// Test adapter (do not remove)
+function solve(arr) { return findTilt(buildTree(arr)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None): self.val=val; self.left=left; self.right=right
+
+def build_tree(arr):
+    if not arr: return None
+    root=TreeNode(arr[0]); q=[root]; i=1
+    while i<len(arr):
+        node=q.pop(0)
+        if i<len(arr) and arr[i] is not None: node.left=TreeNode(arr[i]); q.append(node.left)
+        i+=1
+        if i<len(arr) and arr[i] is not None: node.right=TreeNode(arr[i]); q.append(node.right)
+        i+=1
+    return root
+
+class Solution:
+    def findTilt(self, root):
+        pass
+
+def solve(arr): return Solution().findTilt(build_tree(arr))`,
+    testCases: [
+      { label: '[1,2,3] → 1', args: [[1,2,3]], expected: 1 },
+      { label: '[4,2,9,3,5,null,7] → 15', args: [[4,2,9,3,5,null,7]], expected: 15 },
+      { label: '[21,7,14,1,1,2,2,3,3] → 9', args: [[21,7,14,1,1,2,2,3,3]], expected: 9 },
+    ],
+    hint: 'Post-order DFS: have a helper that returns the subtree sum. At each node, accumulate tilt += |leftSum - rightSum|. Return leftSum + rightSum + node.val. Total tilt is a running external variable.',
+  },
+
+  606: {
+    id: 606,
+    title: 'Construct String from Binary Tree',
+    titleZh: '根据二叉树创建字符串',
+    difficulty: 'Easy',
+    leetcodeSlug: 'construct-string-from-binary-tree',
+    tags: ['String', 'Tree', 'DFS', 'Binary Tree'],
+    description: `Given the \`root\` of a binary tree, construct a string using **preorder traversal** with parentheses representing the structure.
+
+Omit all empty parenthesis pairs that do not affect the one-to-one mapping between the string and the original binary tree.
+
+**Note:** The \`solve(arr)\` adapter builds the tree from a level-order array.`,
+    examples: [
+      { input: 'root = [1,2,3,4]', output: '"1(2(4))(3)"', explanation: 'Empty right child parentheses omitted.' },
+      { input: 'root = [1,2,3,null,4]', output: '"1(2()(4))(3)"', explanation: 'Left empty kept since right exists.' },
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [1, 10^4].',
+      '-1000 <= Node.val <= 1000',
+    ],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {string}
+ */
+function tree2str(root) {
+
+}
+
+// Test adapter (do not remove)
+function solve(arr) { return tree2str(buildTree(arr)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None): self.val=val; self.left=left; self.right=right
+
+def build_tree(arr):
+    if not arr: return None
+    root=TreeNode(arr[0]); q=[root]; i=1
+    while i<len(arr):
+        node=q.pop(0)
+        if i<len(arr) and arr[i] is not None: node.left=TreeNode(arr[i]); q.append(node.left)
+        i+=1
+        if i<len(arr) and arr[i] is not None: node.right=TreeNode(arr[i]); q.append(node.right)
+        i+=1
+    return root
+
+class Solution:
+    def tree2str(self, root):
+        pass
+
+def solve(arr): return Solution().tree2str(build_tree(arr))`,
+    testCases: [
+      { label: '[1,2,3,4] → "1(2(4))(3)"', args: [[1,2,3,4]], expected: '1(2(4))(3)' },
+      { label: '[1,2,3,null,4] → "1(2()(4))(3)"', args: [[1,2,3,null,4]], expected: '1(2()(4))(3)' },
+      { label: '[1] → "1"', args: [[1]], expected: '1' },
+    ],
+    hint: 'Preorder DFS. For each node: start with str(val). If right child exists, must add both "(left)(right)". If only left, add "(left)". If only right, add "()(right)". If leaf, add nothing.',
+  },
+
+  687: {
+    id: 687,
+    title: 'Longest Univalue Path',
+    titleZh: '最长同值路径',
+    difficulty: 'Medium',
+    leetcodeSlug: 'longest-univalue-path',
+    tags: ['Tree', 'DFS', 'Binary Tree'],
+    description: `Given the \`root\` of a binary tree, return the length of the longest path where each node in the path has the same value. This path may or may not pass through the root.
+
+The length of the path between two nodes is represented by the number of **edges** between them.
+
+**Note:** The \`solve(arr)\` adapter builds the tree from a level-order array.`,
+    examples: [
+      { input: 'root = [5,4,5,1,1,null,5]', output: '2' },
+      { input: 'root = [1,4,5,4,4,null,5]', output: '2' },
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [0, 10^4].',
+      '-1000 <= Node.val <= 1000',
+      'The depth of the tree will not exceed 1000.',
+    ],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {number}
+ */
+function longestUnivaluePath(root) {
+
+}
+
+// Test adapter (do not remove)
+function solve(arr) { return longestUnivaluePath(buildTree(arr)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None): self.val=val; self.left=left; self.right=right
+
+def build_tree(arr):
+    if not arr: return None
+    root=TreeNode(arr[0]); q=[root]; i=1
+    while i<len(arr):
+        node=q.pop(0)
+        if i<len(arr) and arr[i] is not None: node.left=TreeNode(arr[i]); q.append(node.left)
+        i+=1
+        if i<len(arr) and arr[i] is not None: node.right=TreeNode(arr[i]); q.append(node.right)
+        i+=1
+    return root
+
+class Solution:
+    def longestUnivaluePath(self, root):
+        pass
+
+def solve(arr): return Solution().longestUnivaluePath(build_tree(arr))`,
+    testCases: [
+      { label: '[5,4,5,1,1,null,5] → 2', args: [[5,4,5,1,1,null,5]], expected: 2 },
+      { label: '[1,4,5,4,4,null,5] → 2', args: [[1,4,5,4,4,null,5]], expected: 2 },
+      { label: '[1] → 0', args: [[1]], expected: 0 },
+    ],
+    hint: 'Post-order DFS. Helper returns length of longest univalue path going downward from this node. leftPath = (left?.val===node.val) ? helper(left)+1 : 0, same for right. Update global max with leftPath+rightPath. Return max(leftPath, rightPath).',
+  },
+
+  832: {
+    id: 832,
+    title: 'Flipping an Image',
+    titleZh: '翻转图像',
+    difficulty: 'Easy',
+    leetcodeSlug: 'flipping-an-image',
+    tags: ['Array', 'Two Pointers', 'Bit Manipulation', 'Matrix', 'Simulation'],
+    description: `Given an \`n x n\` binary matrix \`image\`, flip the image **horizontally**, then **invert** it, and return the resulting image.
+
+To flip horizontally: each row is reversed.
+To invert: each \`0\` is replaced by \`1\`, and each \`1\` is replaced by \`0\`.`,
+    examples: [
+      { input: 'image = [[1,1,0],[1,0,1],[0,0,0]]', output: '[[1,0,0],[0,1,0],[1,1,1]]', explanation: 'Row 1: [1,1,0]→flip→[0,1,1]→invert→[1,0,0].' },
+      { input: 'image = [[1,1,0,0],[1,0,0,1],[0,1,1,1],[1,0,1,0]]', output: '[[1,1,0,0],[0,1,1,0],[0,0,0,1],[1,0,1,0]]' },
+    ],
+    constraints: [
+      'n == image.length == image[i].length',
+      '1 <= n <= 20',
+      'image[i][j] is either 0 or 1.',
+    ],
+    starterCode: `/**
+ * @param {number[][]} image
+ * @return {number[][]}
+ */
+function flipAndInvertImage(image) {
+
+}
+
+function solve(image) { return flipAndInvertImage(image); }`,
+    starterCodePython: `class Solution:
+    def flipAndInvertImage(self, image: list[list[int]]) -> list[list[int]]:
+        pass
+
+def solve(image): return Solution().flipAndInvertImage(image)`,
+    testCases: [
+      { label: '[[1,1,0],[1,0,1],[0,0,0]] → [[1,0,0],[0,1,0],[1,1,1]]', args: [[[1,1,0],[1,0,1],[0,0,0]]], expected: [[1,0,0],[0,1,0],[1,1,1]] },
+      { label: '[[1,1,0,0],[1,0,0,1],[0,1,1,1],[1,0,1,0]] → [[1,1,0,0],[0,1,1,0],[0,0,0,1],[1,0,1,0]]', args: [[[1,1,0,0],[1,0,0,1],[0,1,1,1],[1,0,1,0]]], expected: [[1,1,0,0],[0,1,1,0],[0,0,0,1],[1,0,1,0]] },
+      { label: '[[1]] → [[0]]', args: [[[1]]], expected: [[0]] },
+    ],
+    hint: 'For each row: reverse it, then XOR each element with 1. Optimize with two pointers: if arr[l]===arr[r], both flip; if different, a swap+flip is a no-op. Flip middle element if odd length.',
+  },
+
+  896: {
+    id: 896,
+    title: 'Monotonic Array',
+    titleZh: '单调数列',
+    difficulty: 'Easy',
+    leetcodeSlug: 'monotonic-array',
+    tags: ['Array'],
+    description: `An array is **monotonic** if it is either monotone increasing or monotone decreasing.
+
+An array \`nums\` is monotone increasing if for all \`i <= j\`, \`nums[i] <= nums[j]\`. Monotone decreasing if for all \`i <= j\`, \`nums[i] >= nums[j]\`.
+
+Given an integer array \`nums\`, return \`true\` if the given array is monotonic, or \`false\` otherwise.`,
+    examples: [
+      { input: 'nums = [1,2,2,3]', output: 'true' },
+      { input: 'nums = [6,5,4,4]', output: 'true' },
+      { input: 'nums = [1,3,2]', output: 'false' },
+    ],
+    constraints: [
+      '1 <= nums.length <= 10^5',
+      '-10^5 <= nums[i] <= 10^5',
+    ],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+function isMonotonic(nums) {
+
+}
+
+function solve(nums) { return isMonotonic(nums); }`,
+    starterCodePython: `class Solution:
+    def isMonotonic(self, nums: list[int]) -> bool:
+        pass
+
+def solve(nums): return Solution().isMonotonic(nums)`,
+    testCases: [
+      { label: '[1,2,2,3] → true', args: [[1,2,2,3]], expected: true },
+      { label: '[6,5,4,4] → true', args: [[6,5,4,4]], expected: true },
+      { label: '[1,3,2] → false', args: [[1,3,2]], expected: false },
+      { label: '[1] → true', args: [[1]], expected: true },
+    ],
+    hint: 'Track two flags: increasing and decreasing. If any pair has nums[i] > nums[i+1], set increasing=false. If nums[i] < nums[i+1], set decreasing=false. Return increasing || decreasing.',
+  },
+
+  930: {
+    id: 930,
+    title: 'Binary Subarrays With Sum',
+    titleZh: '和相同的二元子数组',
+    difficulty: 'Medium',
+    leetcodeSlug: 'binary-subarrays-with-sum',
+    tags: ['Array', 'Hash Table', 'Sliding Window', 'Prefix Sum'],
+    description: `Given a binary array \`nums\` and an integer \`goal\`, return the number of non-empty **subarrays** with a sum equal to \`goal\`.
+
+A **subarray** is a contiguous part of the array.`,
+    examples: [
+      { input: 'nums = [1,0,1,0,1], goal = 2', output: '4' },
+      { input: 'nums = [0,0,0,0,0], goal = 0', output: '15' },
+    ],
+    constraints: [
+      '1 <= nums.length <= 3 * 10^4',
+      'nums[i] is either 0 or 1.',
+      '0 <= goal <= nums.length',
+    ],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @param {number} goal
+ * @return {number}
+ */
+function numSubarraysWithSum(nums, goal) {
+
+}
+
+function solve(nums, goal) { return numSubarraysWithSum(nums, goal); }`,
+    starterCodePython: `class Solution:
+    def numSubarraysWithSum(self, nums: list[int], goal: int) -> int:
+        pass
+
+def solve(nums, goal): return Solution().numSubarraysWithSum(nums, goal)`,
+    testCases: [
+      { label: '[1,0,1,0,1], goal=2 → 4', args: [[1,0,1,0,1], 2], expected: 4 },
+      { label: '[0,0,0,0,0], goal=0 → 15', args: [[0,0,0,0,0], 0], expected: 15 },
+      { label: '[1,1,1], goal=2 → 2', args: [[1,1,1], 2], expected: 2 },
+    ],
+    hint: 'Prefix sum + hash map: map[prefixSum] = count. For each element add nums[i] to prefixSum, add map[prefixSum - goal] to result. Alternatively, use atMost(goal) - atMost(goal-1) with a sliding window.',
+  },
+
+  988: {
+    id: 988,
+    title: 'Smallest String Starting From Leaf',
+    titleZh: '从叶结点开始的最小字符串',
+    difficulty: 'Medium',
+    leetcodeSlug: 'smallest-string-starting-from-leaf',
+    tags: ['String', 'Tree', 'DFS', 'Binary Tree'],
+    description: `You are given the \`root\` of a binary tree where each node has a value in the range \`[0, 25]\` representing the letters \`'a'\` to \`'z'\`.
+
+Return the **lexicographically smallest** string that starts at a leaf of this tree and ends at the root.
+
+**Note:** The \`solve(arr)\` adapter builds the tree from a level-order array of integers (0='a', 25='z').`,
+    examples: [
+      { input: 'root = [0,1,2,3,4,3,4]', output: '"dba"', explanation: 'Paths leaf→root: "dba","eba","dca","eca". Smallest: "dba".' },
+      { input: 'root = [25,1,3,1,3,0,2]', output: '"adz"' },
+      { input: 'root = [2,2,1,null,1,0,null,0]', output: '"abc"' },
+    ],
+    constraints: [
+      'The number of nodes in the tree is in the range [1, 8500].',
+      '0 <= Node.val <= 25',
+    ],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const buildTree = arr => { if(!arr?.length)return null; const root=new TreeNode(arr[0]),q=[root]; let i=1; while(i<arr.length){const n=q.shift(); if(i<arr.length&&arr[i]!=null){n.left=new TreeNode(arr[i]);q.push(n.left);}i++; if(i<arr.length&&arr[i]!=null){n.right=new TreeNode(arr[i]);q.push(n.right);}i++;} return root; };
+
+/**
+ * @param {TreeNode} root
+ * @return {string}
+ */
+function smallestFromLeaf(root) {
+
+}
+
+// Test adapter (do not remove)
+function solve(arr) { return smallestFromLeaf(buildTree(arr)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None): self.val=val; self.left=left; self.right=right
+
+def build_tree(arr):
+    if not arr: return None
+    root=TreeNode(arr[0]); q=[root]; i=1
+    while i<len(arr):
+        node=q.pop(0)
+        if i<len(arr) and arr[i] is not None: node.left=TreeNode(arr[i]); q.append(node.left)
+        i+=1
+        if i<len(arr) and arr[i] is not None: node.right=TreeNode(arr[i]); q.append(node.right)
+        i+=1
+    return root
+
+class Solution:
+    def smallestFromLeaf(self, root):
+        pass
+
+def solve(arr): return Solution().smallestFromLeaf(build_tree(arr))`,
+    testCases: [
+      { label: '[0,1,2,3,4,3,4] → "dba"', args: [[0,1,2,3,4,3,4]], expected: 'dba' },
+      { label: '[25,1,3,1,3,0,2] → "adz"', args: [[25,1,3,1,3,0,2]], expected: 'adz' },
+      { label: '[2,2,1,null,1,0,null,0] → "abc"', args: [[2,2,1,null,1,0,null,0]], expected: 'abc' },
+    ],
+    hint: 'DFS with path tracking. At each leaf, build the leaf-to-root string (reverse of path) and compare with current best. Convert val to char: String.fromCharCode(97 + val).',
+  },
+
+  1008: {
+    id: 1008,
+    title: 'Construct Binary Search Tree from Preorder Traversal',
+    titleZh: '从前序遍历重建二叉树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'construct-binary-search-tree-from-preorder-traversal',
+    tags: ['Array', 'Stack', 'Tree', 'Binary Search Tree', 'Monotonic Stack', 'Binary Tree'],
+    description: `Given an array of integers \`preorder\`, which represents the **preorder traversal** of a BST, construct the tree and return its root.
+
+It is **guaranteed** that there is always possible to find a BST with the given requirements for the given test cases.
+
+**Note:** The \`solve(arr)\` adapter returns the BST as a level-order array.`,
+    examples: [
+      { input: 'preorder = [8,5,1,7,10,12]', output: '[8,5,10,1,7,null,12]' },
+      { input: 'preorder = [1,3]', output: '[1,null,3]' },
+    ],
+    constraints: [
+      '1 <= preorder.length <= 100',
+      '1 <= preorder[i] <= 10^8',
+      'All the values of preorder are unique.',
+    ],
+    starterCode: `class TreeNode {
+  constructor(val, left, right) { this.val=val===undefined?0:val; this.left=left===undefined?null:left; this.right=right===undefined?null:right; }
+}
+const treeToArr = root => { if(!root)return[]; const res=[],q=[root]; while(q.length){const n=q.shift();res.push(n?n.val:null);if(n){q.push(n.left);q.push(n.right);}} while(res.length&&res[res.length-1]===null)res.pop(); return res; };
+
+/**
+ * @param {number[]} preorder
+ * @return {TreeNode}
+ */
+function bstFromPreorder(preorder) {
+
+}
+
+// Test adapter (do not remove)
+function solve(preorder) { return treeToArr(bstFromPreorder(preorder)); }`,
+    starterCodePython: `class TreeNode:
+    def __init__(self, val=0, left=None, right=None): self.val=val; self.left=left; self.right=right
+
+def tree_to_arr(root):
+    if not root: return []
+    res=[]; q=[root]
+    while q:
+        node=q.pop(0); res.append(node.val if node else None)
+        if node: q.append(node.left); q.append(node.right)
+    while res and res[-1] is None: res.pop()
+    return res
+
+class Solution:
+    def bstFromPreorder(self, preorder):
+        pass
+
+def solve(preorder): return tree_to_arr(Solution().bstFromPreorder(preorder))`,
+    testCases: [
+      { label: '[8,5,1,7,10,12] → [8,5,10,1,7,null,12]', args: [[8,5,1,7,10,12]], expected: [8,5,10,1,7,null,12] },
+      { label: '[1,3] → [1,null,3]', args: [[1,3]], expected: [1,null,3] },
+      { label: '[5] → [5]', args: [[5]], expected: [5] },
+    ],
+    hint: 'Recursive partition: first element is root, elements < root go left, elements > root go right. Alternatively, use a monotonic stack: maintain a decreasing stack; when a value is larger than the top, it becomes the right child of the last popped element.',
+  },
+
+  1021: {
+    id: 1021,
+    title: 'Remove Outermost Parentheses',
+    titleZh: '删除最外层的括号',
+    difficulty: 'Easy',
+    leetcodeSlug: 'remove-outermost-parentheses',
+    tags: ['String', 'Stack'],
+    description: `A valid parentheses string is **primitive** if it is nonempty, and there does not exist a way to split it into two nonempty valid parentheses strings.
+
+Given a valid parentheses string \`s\`, consider its **primitive decomposition**: \`s = P_1 + P_2 + ... + P_k\`, where each \`P_i\` is a primitive valid parentheses string.
+
+Return \`s\` after removing the outermost parentheses of every primitive string in the primitive decomposition of \`s\`.`,
+    examples: [
+      { input: 's = "(()())(())"', output: '"()()()"', explanation: 'Decomposed into "(()())" and "(())". Removing outermost: "()()" + "()" = "()()()".' },
+      { input: 's = "(()())(())(()())"', output: '"()()()()()"' },
+      { input: 's = "()()"', output: '""' },
+    ],
+    constraints: [
+      '1 <= s.length <= 10^5',
+      "s[i] is either '(' or ')'.",
+      's is a valid parentheses string.',
+    ],
+    starterCode: `/**
+ * @param {string} s
+ * @return {string}
+ */
+function removeOuterParentheses(s) {
+
+}
+
+function solve(s) { return removeOuterParentheses(s); }`,
+    starterCodePython: `class Solution:
+    def removeOuterParentheses(self, s: str) -> str:
+        pass
+
+def solve(s): return Solution().removeOuterParentheses(s)`,
+    testCases: [
+      { label: '"(()())(())" → "()()()"', args: ['(()())(())'], expected: '()()()' },
+      { label: '"(()())(())(()())" → "()()()()()"', args: ['(()())(())(()())'], expected: '()()()()()' },
+      { label: '"()()" → ""', args: ['()()'], expected: '' },
+    ],
+    hint: "Track depth. Increment on '(', decrement on ')'. Include '(' when depth > 1 (already incremented), include ')' when depth > 0 (before decrement). The outermost '(' goes from depth 0→1; outermost ')' goes from depth 1→0 — both are excluded.",
+  },
+
+  1040: {
+    id: 1040,
+    title: 'Moving Stones Until Consecutive II',
+    titleZh: '移动石子直到连续 II',
+    difficulty: 'Hard',
+    leetcodeSlug: 'moving-stones-until-consecutive-ii',
+    tags: ['Array', 'Math', 'Two Pointers', 'Sorting'],
+    description: `There are some stones in different positions on the X-axis. You are given an integer array \`stones\`.
+
+An **endpoint stone** is one with the smallest or largest position. In one move, you pick up an endpoint stone and move it to an unoccupied position so that it is **no longer an endpoint stone**.
+
+The game ends when you cannot make any more moves (i.e., the stones are in consecutive positions).
+
+Return \`[minimum, maximum]\` number of moves to end the game.`,
+    examples: [
+      { input: 'stones = [7,4,9]', output: '[1,2]' },
+      { input: 'stones = [6,5,4,3,10]', output: '[2,3]' },
+    ],
+    constraints: [
+      '3 <= stones.length <= 10^4',
+      '1 <= stones[i] <= 10^9',
+      'All the values of stones are unique.',
+    ],
+    starterCode: `/**
+ * @param {number[]} stones
+ * @return {number[]}
+ */
+function numMovesStonesII(stones) {
+
+}
+
+function solve(stones) { return numMovesStonesII(stones); }`,
+    starterCodePython: `class Solution:
+    def numMovesStonesII(self, stones: list[int]) -> list[int]:
+        pass
+
+def solve(stones): return Solution().numMovesStonesII(stones)`,
+    testCases: [
+      { label: '[7,4,9] → [1,2]', args: [[7,4,9]], expected: [1,2] },
+      { label: '[6,5,4,3,10] → [2,3]', args: [[6,5,4,3,10]], expected: [2,3] },
+      { label: '[1,2,3] → [0,0]', args: [[1,2,3]], expected: [0,0] },
+    ],
+    hint: 'Sort first. Max = max(stones[n-2]-stones[0]-n+2, stones[n-1]-stones[1]-n+2). Min: sliding window — find largest count of stones fitting in a window of size n. Moves = n - count. Special case: if n-1 stones already fill n-1 consecutive positions, min = 2.',
+  },
+
+  1092: {
+    id: 1092,
+    title: 'Shortest Common Supersequence',
+    titleZh: '最短公共超序列',
+    difficulty: 'Hard',
+    leetcodeSlug: 'shortest-common-supersequence',
+    tags: ['String', 'Dynamic Programming'],
+    description: `Given two strings \`str1\` and \`str2\`, return the shortest string that has both \`str1\` and \`str2\` as **subsequences**. If there are multiple valid strings, return any of them.
+
+A string \`s\` is a **subsequence** of string \`t\` if deleting some characters from \`t\` results in \`s\`.`,
+    examples: [
+      { input: 'str1 = "abac", str2 = "cab"', output: '"cabac"', explanation: '"abac" subseq of "cabac": c**abac**. "cab" subseq: **cab**ac.' },
+      { input: 'str1 = "aaaaaaaa", str2 = "aaaaaaaa"', output: '"aaaaaaaa"' },
+    ],
+    constraints: [
+      '1 <= str1.length, str2.length <= 1000',
+      'str1 and str2 consist of lowercase English letters.',
+    ],
+    starterCode: `/**
+ * @param {string} str1
+ * @param {string} str2
+ * @return {string}
+ */
+function shortestCommonSupersequence(str1, str2) {
+
+}
+
+function solve(str1, str2) { return shortestCommonSupersequence(str1, str2); }`,
+    starterCodePython: `class Solution:
+    def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
+        pass
+
+def solve(str1, str2): return Solution().shortestCommonSupersequence(str1, str2)`,
+    testCases: [
+      { label: '"abac","cab" → "cabac"', args: ['abac', 'cab'], expected: 'cabac' },
+      { label: '"aaaaaaaa","aaaaaaaa" → "aaaaaaaa"', args: ['aaaaaaaa', 'aaaaaaaa'], expected: 'aaaaaaaa' },
+      { label: '"abc","ac" → "abc"', args: ['abc', 'ac'], expected: 'abc' },
+    ],
+    hint: 'Build LCS DP table. Backtrack from dp[m][n]: if chars match, include once, go diag; elif dp[i-1][j] >= dp[i][j-1], take str1[i-1] and go up; else take str2[j-1] and go left. Append remaining chars. Reverse the collected result.',
+  },
+
+  1157: {
+    id: 1157,
+    title: 'Online Majority Element In Subarray',
+    titleZh: '子数组中占绝大多数的元素',
+    difficulty: 'Hard',
+    leetcodeSlug: 'online-majority-element-in-subarray',
+    tags: ['Array', 'Binary Search', 'Design', 'Segment Tree', 'Random'],
+    description: `Design a data structure that efficiently finds the **majority element** of a given subarray.
+
+The majority element of a subarray is an element that occurs \`threshold\` times or more in the subarray.
+
+Implement the \`MajorityChecker\` class:
+- \`MajorityChecker(int[] arr)\` Initializes the instance with the given array.
+- \`int query(int left, int right, int threshold)\` Returns the majority element in \`arr[left...right]\` that occurs at least \`threshold\` times, or \`-1\` if no such element exists.
+
+**Note:** The \`solve(arr, queries)\` adapter accepts the array and a list of \`[left, right, threshold]\` queries.`,
+    examples: [
+      { input: 'arr=[1,1,2,2,1,1], queries=[[0,5,4],[0,3,3],[2,3,2]]', output: '[1,-1,2]' },
+    ],
+    constraints: [
+      '2 <= arr.length <= 2 * 10^4',
+      '2 * threshold > right - left + 1',
+      '1 <= arr[i] <= 2 * 10^4',
+      '1 <= queries.length <= 10^4',
+    ],
+    starterCode: `/**
+ * @param {number[]} arr
+ */
+class MajorityChecker {
+  constructor(arr) {
+
+  }
+
+  /**
+   * @param {number} left
+   * @param {number} right
+   * @param {number} threshold
+   * @return {number}
+   */
+  query(left, right, threshold) {
+
+  }
+}
+
+function solve(arr, queries) {
+  const mc = new MajorityChecker(arr);
+  return queries.map(([l, r, t]) => mc.query(l, r, t));
+}`,
+    starterCodePython: `class MajorityChecker:
+    def __init__(self, arr: list[int]):
+        pass
+
+    def query(self, left: int, right: int, threshold: int) -> int:
+        pass
+
+def solve(arr, queries):
+    mc = MajorityChecker(arr)
+    return [mc.query(l, r, t) for l, r, t in queries]`,
+    testCases: [
+      { label: 'arr=[1,1,2,2,1,1], queries=[[0,5,4],[0,3,3],[2,3,2]] → [1,-1,2]', args: [[1,1,2,2,1,1], [[0,5,4],[0,3,3],[2,3,2]]], expected: [1,-1,2] },
+      { label: 'arr=[1,1,1,1,1], query=[0,4,3] → [1]', args: [[1,1,1,1,1], [[0,4,3]]], expected: [1] },
+    ],
+    hint: 'Precompute: for each value, store sorted list of indices. For each query [l,r,threshold]: apply Boyer-Moore voting on arr[l..r] to get a candidate (O(r-l+1)), then binary search in that value\'s index list to count occurrences in [l,r]. If count >= threshold, return candidate; else return -1.',
+  },
+
+  1207: {
+    id: 1207,
+    title: 'Unique Number of Occurrences',
+    titleZh: '独一无二的出现次数',
+    difficulty: 'Easy',
+    leetcodeSlug: 'unique-number-of-occurrences',
+    tags: ['Array', 'Hash Table'],
+    description: `Given an array of integers \`arr\`, return \`true\` if the number of occurrences of each value in the array is **unique** or \`false\` otherwise.`,
+    examples: [
+      { input: 'arr = [1,2,2,1,1,3]', output: 'true', explanation: '1 appears 3 times, 2 appears 2 times, 3 appears 1 time. All unique.' },
+      { input: 'arr = [1,2]', output: 'false', explanation: 'Both 1 and 2 appear exactly 1 time.' },
+      { input: 'arr = [-3,0,1,-3,1,1,1,-3,10,0]', output: 'true' },
+    ],
+    constraints: [
+      '1 <= arr.length <= 1000',
+      '-1000 <= arr[i] <= 1000',
+    ],
+    starterCode: `/**
+ * @param {number[]} arr
+ * @return {boolean}
+ */
+function uniqueOccurrences(arr) {
+
+}
+
+function solve(arr) { return uniqueOccurrences(arr); }`,
+    starterCodePython: `class Solution:
+    def uniqueOccurrences(self, arr: list[int]) -> bool:
+        pass
+
+def solve(arr): return Solution().uniqueOccurrences(arr)`,
+    testCases: [
+      { label: '[1,2,2,1,1,3] → true', args: [[1,2,2,1,1,3]], expected: true },
+      { label: '[1,2] → false', args: [[1,2]], expected: false },
+      { label: '[-3,0,1,-3,1,1,1,-3,10,0] → true', args: [[-3,0,1,-3,1,1,1,-3,10,0]], expected: true },
+    ],
+    hint: 'Count occurrences in a hash map, then check if the set of occurrence counts has the same size as the map (i.e., all counts are distinct).',
+  },
+
+  1450: {
+    id: 1450,
+    title: 'Number of Students Doing Homework at a Given Time',
+    titleZh: '在既定时间做作业的学生人数',
+    difficulty: 'Easy',
+    leetcodeSlug: 'number-of-students-doing-homework-at-a-given-time',
+    tags: ['Array'],
+    description: `Given two integer arrays \`startTime\` and \`endTime\` and given an integer \`queryTime\`.
+
+The \`ith\` student started doing their homework at the time \`startTime[i]\` and finished it at time \`endTime[i]\`.
+
+Return the number of students doing their homework at time \`queryTime\`. More formally, return the number of students where \`queryTime\` lays in the interval \`[startTime[i], endTime[i]]\` inclusive.`,
+    examples: [
+      { input: 'startTime = [1,2,3], endTime = [3,2,7], queryTime = 4', output: '1', explanation: 'Only student 3 (start=3, end=7) is doing homework at time 4.' },
+      { input: 'startTime = [4], endTime = [4], queryTime = 4', output: '1' },
+    ],
+    constraints: [
+      'startTime.length == endTime.length',
+      '1 <= startTime.length <= 100',
+      '1 <= startTime[i] <= endTime[i] <= 1000',
+      '1 <= queryTime <= 1000',
+    ],
+    starterCode: `/**
+ * @param {number[]} startTime
+ * @param {number[]} endTime
+ * @param {number} queryTime
+ * @return {number}
+ */
+function busyStudent(startTime, endTime, queryTime) {
+
+}
+
+function solve(startTime, endTime, queryTime) { return busyStudent(startTime, endTime, queryTime); }`,
+    starterCodePython: `class Solution:
+    def busyStudent(self, startTime: list[int], endTime: list[int], queryTime: int) -> int:
+        pass
+
+def solve(startTime, endTime, queryTime): return Solution().busyStudent(startTime, endTime, queryTime)`,
+    testCases: [
+      { label: 'start=[1,2,3],end=[3,2,7],q=4 → 1', args: [[1,2,3], [3,2,7], 4], expected: 1 },
+      { label: 'start=[4],end=[4],q=4 → 1', args: [[4], [4], 4], expected: 1 },
+      { label: 'start=[1,1,1,1],end=[1,3,2,4],q=7 → 0', args: [[1,1,1,1], [1,3,2,4], 7], expected: 0 },
+      { label: 'start=[9,8,7,6,5],end=[10,10,10,10,10],q=5 → 1', args: [[9,8,7,6,5], [10,10,10,10,10], 5], expected: 1 },
+    ],
+    hint: 'Simple linear scan: count students where startTime[i] <= queryTime <= endTime[i]. O(n) time.',
+  },
+
+  1465: {
+    id: 1465,
+    title: 'Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts',
+    titleZh: '切割后面积最大的蛋糕',
+    difficulty: 'Medium',
+    leetcodeSlug: 'maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts',
+    tags: ['Array', 'Greedy', 'Sorting'],
+    description: `You are given a rectangular cake of size \`h x w\` and two arrays \`horizontalCuts\` and \`verticalCuts\` where:
+- \`horizontalCuts[i]\` is the distance from the top of the cake to the \`ith\` horizontal cut.
+- \`verticalCuts[j]\` is the distance from the left of the cake to the \`jth\` vertical cut.
+
+Return the maximum area of a piece of cake after you cut at each horizontal and vertical position. Since the answer can be large, return this **modulo \`10^9 + 7\`**.`,
+    examples: [
+      { input: 'h=5, w=4, horizontalCuts=[1,2,4], verticalCuts=[1,3]', output: '4', explanation: 'Max height gap=2, max width gap=2. Area=4.' },
+      { input: 'h=5, w=4, horizontalCuts=[3,1], verticalCuts=[1]', output: '6' },
+      { input: 'h=5, w=4, horizontalCuts=[3], verticalCuts=[3]', output: '9' },
+    ],
+    constraints: [
+      '2 <= h, w <= 10^9',
+      '1 <= horizontalCuts.length <= min(h-1, 10^5)',
+      '1 <= verticalCuts.length <= min(w-1, 10^5)',
+      'All values in horizontalCuts and verticalCuts are distinct.',
+    ],
+    starterCode: `/**
+ * @param {number} h
+ * @param {number} w
+ * @param {number[]} horizontalCuts
+ * @param {number[]} verticalCuts
+ * @return {number}
+ */
+function maxArea(h, w, horizontalCuts, verticalCuts) {
+
+}
+
+function solve(h, w, horizontalCuts, verticalCuts) { return maxArea(h, w, horizontalCuts, verticalCuts); }`,
+    starterCodePython: `class Solution:
+    def maxArea(self, h: int, w: int, horizontalCuts: list[int], verticalCuts: list[int]) -> int:
+        pass
+
+def solve(h, w, horizontalCuts, verticalCuts): return Solution().maxArea(h, w, horizontalCuts, verticalCuts)`,
+    testCases: [
+      { label: 'h=5,w=4,hC=[1,2,4],vC=[1,3] → 4', args: [5, 4, [1,2,4], [1,3]], expected: 4 },
+      { label: 'h=5,w=4,hC=[3,1],vC=[1] → 6', args: [5, 4, [3,1], [1]], expected: 6 },
+      { label: 'h=5,w=4,hC=[3],vC=[3] → 9', args: [5, 4, [3], [3]], expected: 9 },
+    ],
+    hint: 'Sort both cut arrays. Find max gap in horizontal cuts (including 0 and h) and max gap in vertical cuts (including 0 and w). Answer = (maxHGap * maxVGap) % (10^9+7). Use BigInt in JavaScript to avoid integer overflow.',
+  },
+
+  2175: {
+    id: 2175,
+    title: 'The Change in Global Rankings',
+    titleZh: '全球排名的变化',
+    difficulty: 'Medium',
+    leetcodeSlug: 'the-change-in-global-rankings',
+    tags: ['Array', 'Sorting', 'Hash Table'],
+    description: `**Note:** This is an algorithmic adaptation of a database problem.
+
+You are given:
+- \`teamPoints\`: an array of \`[team_id, name, points]\` entries.
+- \`pointsChange\`: an array of \`[team_id, change]\` entries (can be positive or negative).
+
+For each team, add its \`change\` to get new points. Rank teams by points **descending**, with ties broken by name **ascending** (alphabetical).
+
+Return an array of \`[team_id, name, old_rank - new_rank]\` sorted by \`team_id\`. A positive value means the team improved its rank.`,
+    examples: [
+      { input: 'teamPoints=[[1,"Ater",1300],[2,"Bon",1700],[3,"Cho",1200]], pointsChange=[[1,200],[2,-200],[3,300]]', output: '[[1,"Ater",1],[2,"Bon",-1],[3,"Cho",0]]', explanation: 'Old ranks: Bon=1,Ater=2,Cho=3. New points all 1500 → Ater=1,Bon=2,Cho=3. Changes: 1,−1,0.' },
+    ],
+    constraints: [
+      '1 <= teamPoints.length <= 10^5',
+      'All team_id values are unique.',
+      'Points are non-negative integers.',
+    ],
+    starterCode: `/**
+ * @param {Array<[number, string, number]>} teamPoints
+ * @param {Array<[number, number]>} pointsChange
+ * @return {Array<[number, string, number]>}
+ */
+function changeInRanking(teamPoints, pointsChange) {
+
+}
+
+function solve(teamPoints, pointsChange) { return changeInRanking(teamPoints, pointsChange); }`,
+    starterCodePython: `class Solution:
+    def changeInRanking(self, teamPoints, pointsChange):
+        pass
+
+def solve(teamPoints, pointsChange): return Solution().changeInRanking(teamPoints, pointsChange)`,
+    testCases: [
+      { label: 'basic ranking change', args: [[[1,'Ater',1300],[2,'Bon',1700],[3,'Cho',1200]], [[1,200],[2,-200],[3,300]]], expected: [[1,'Ater',1],[2,'Bon',-1],[3,'Cho',0]] },
+      { label: 'two teams swap', args: [[[1,'A',100],[2,'B',100]], [[1,0],[2,100]]], expected: [[1,'A',-1],[2,'B',1]] },
+    ],
+    hint: 'Build a map from team_id to change. Compute old ranks by sorting by points desc, name asc. Apply changes, compute new ranks. For each team, rank_change = old_rank - new_rank. Sort output by team_id.',
+  },
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {
