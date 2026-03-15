@@ -112,6 +112,15 @@ export function Sidebar({ isOpen }: Props) {
           <span>🎯</span>
           <span>{lang === 'zh' ? 'LeetCode 题单' : 'Problem Sets'}</span>
         </Link>
+
+        {/* Labuladong curriculum link */}
+        <Link
+          to="/labuladong"
+          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium no-underline transition-colors mt-0.5 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+        >
+          <span>📚</span>
+          <span>{lang === 'zh' ? 'Labuladong 课程' : 'Labuladong Curriculum'}</span>
+        </Link>
       </div>
 
       {/* Footer */}

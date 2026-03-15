@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { curriculum } from '../content/curriculum'
+import { labuladongChapters } from '../content/labuladong/curriculum'
 import { useLang } from '../context/LangContext'
 
 const CONTENT_TYPE_INFO = {
@@ -12,6 +13,8 @@ const CONTENT_TYPE_INFO = {
 export function HomePage() {
   const { lang, t } = useLang()
   const totalTopics = curriculum.flatMap(c => c.topics).length
+  const lbArticleCount = labuladongChapters.flatMap(ch => ch.sections.flatMap(s => s.articles)).length
+  const firstLbArticle = labuladongChapters[0]?.sections[0]?.articles[0]
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
@@ -49,6 +52,54 @@ export function HomePage() {
         >
           {t('Open Visualizer', '打开可视化器')}
         </Link>
+      </div>
+
+      {/* Labuladong Curriculum Banner */}
+      <div className="mb-10 p-6 bg-gradient-to-r from-indigo-900/40 to-slate-900 rounded-2xl border border-indigo-800/40">
+        <div className="flex items-start gap-4">
+          <span className="text-4xl shrink-0">📚</span>
+          <div className="flex-1">
+            <h2 className="text-xl font-bold text-white mb-1">
+              {t('Labuladong Full Curriculum', 'Labuladong 完整课程')}
+            </h2>
+            <p className="text-slate-400 text-sm mb-3">
+              {t(
+                `Complete bilingual curriculum with ${lbArticleCount}+ articles spanning 7 chapters — from data structure foundations to advanced DP and graphs.`,
+                `完整双语课程，共 ${lbArticleCount}+ 篇文章，涵盖 7 个章节 — 从数据结构基础到动态规划与图算法。`
+              )}
+            </p>
+            <div className="flex gap-3 flex-wrap">
+              {firstLbArticle && (
+                <Link
+                  to={`/labuladong/article/${firstLbArticle.id}`}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-medium text-sm transition-colors no-underline"
+                >
+                  {t('Start Reading →', '开始阅读 →')}
+                </Link>
+              )}
+              <Link
+                to="/labuladong/problem-set"
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg font-medium text-sm transition-colors no-underline"
+              >
+                {t('Problem Sets', '题单')}
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Chapter chips */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {labuladongChapters.map(ch => (
+            <Link
+              key={ch.id}
+              to={`/labuladong/article/${ch.sections[0]?.articles[0]?.id ?? 'lb-home'}`}
+              className="flex items-center gap-1.5 px-3 py-1 bg-slate-800 hover:bg-slate-700 rounded-full text-xs text-slate-300 no-underline transition-colors"
+            >
+              <span>{ch.icon}</span>
+              <span>{ch.label}</span>
+            </Link>
+          ))}
+        </div>
       </div>
 
       {/* Chapters grid */}
