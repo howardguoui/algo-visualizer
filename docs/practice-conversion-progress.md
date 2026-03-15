@@ -215,7 +215,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 
 ---
 
-## Batch B8 — Graphs (MST, Paths) + DFS/Backtracking (20 problems) `[ ] Not started`
+## Batch B8 — Graphs (MST, Paths) + DFS/Backtracking (20 problems) `[x] Done`
 
 | ID | Problem | Difficulty | Topic |
 |---|---|---|---|
@@ -318,7 +318,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 | B5 | 20 problems (100,110,331,508,563,606,687,832,896,930,988,1008,1021,1040,1092,1157,1207,1450,1465,2175) | 2026-03-15 | pending |
 | B6 | 20 problems (107,117,515,637,662,893,904,998,1116,1254,1474,1554,99,109,173,449,501,530,653,1050) | 2026-03-15 | pending |
 | B7 | 20 problems (315,327,341,493,669,671,948,1285,1427,1780,1790,1816,130,261,277,323,801,922,984,1275) | 2026-03-15 | pending |
-| B8 | _pending_ | | |
+| B8 | 20 problems (89,301,399,473,526,638,694,698,800,803,1038,1073,1100,1160,1331,1418,1715,1825,1976,1485) | 2026-03-15 | pending |
 | B9 | _pending_ | | |
 | B10 | _pending_ | | |
 

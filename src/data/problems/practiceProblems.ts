@@ -8649,6 +8649,792 @@ def solve(moves): return Solution().tictactoe(moves)`,
     hint: 'Simulate the board. After each move, check rows, columns, and both diagonals for the current player. If 9 moves played with no winner, return "Draw". Otherwise "Pending".',
   },
 
+  // ─── Batch B8 — DFS/Backtracking + Graph Paths ───────────────────────────────
+
+  89: {
+    id: 89,
+    title: 'Gray Code',
+    titleZh: '格雷编码',
+    difficulty: 'Medium',
+    leetcodeSlug: 'gray-code',
+    tags: ['Math', 'Backtracking', 'Bit Manipulation'],
+    description: `An **n-bit gray code sequence** is a sequence of \`2^n\` integers where:
+- Every integer is in the range \`[0, 2^n - 1]\`.
+- The first integer is \`0\`.
+- Each successive pair of integers differs in exactly one bit.
+- The first and last integers differ in exactly one bit.
+
+Given an integer \`n\`, return any valid n-bit gray code sequence.`,
+    examples: [
+      { input: 'n = 2', output: '[0,1,3,2]', explanation: '00→01→11→10, each pair differs by 1 bit.' },
+      { input: 'n = 1', output: '[0,1]' },
+    ],
+    constraints: ['1 <= n <= 16'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {number[]}
+ */
+function grayCode(n) {
+
+}
+
+function solve(n) { return grayCode(n); }`,
+    starterCodePython: `class Solution:
+    def grayCode(self, n: int) -> list[int]:
+        pass
+
+def solve(n): return Solution().grayCode(n)`,
+    testCases: [
+      { label: 'n=2 → [0,1,3,2]', args: [2], expected: [0,1,3,2] },
+      { label: 'n=1 → [0,1]', args: [1], expected: [0,1] },
+    ],
+    hint: 'Formula: i-th Gray code = i ^ (i >> 1). Generate all 2^n values with this formula. Alternatively, build iteratively: start with [0,1], then for each new bit prepend the reverse of the list with that bit set.',
+  },
+
+  301: {
+    id: 301,
+    title: 'Remove Invalid Parentheses',
+    titleZh: '删除无效的括号',
+    difficulty: 'Hard',
+    leetcodeSlug: 'remove-invalid-parentheses',
+    tags: ['String', 'DFS', 'BFS', 'Backtracking'],
+    description: `Given a string \`s\` that contains parentheses and letters, remove the **minimum** number of invalid parentheses to make the input string valid.
+
+Return a list of **unique** strings that are valid with the minimum number of removals. You may return the answer in any order.`,
+    examples: [
+      { input: 's = "()())()"', output: '["(())()","()()()"]' },
+      { input: 's = "(a)())()"', output: '["(a())()","(a)()()"]' },
+      { input: 's = ")("', output: '[""]' },
+    ],
+    constraints: ['1 <= s.length <= 25', 's consists of lowercase English letters and parentheses.', 'There will be at most 20 parentheses in s.'],
+    starterCode: `/**
+ * @param {string} s
+ * @return {string[]}
+ */
+function removeInvalidParentheses(s) {
+
+}
+
+function solve(s) { return removeInvalidParentheses(s).sort(); }`,
+    starterCodePython: `class Solution:
+    def removeInvalidParentheses(self, s: str) -> list[str]:
+        pass
+
+def solve(s): return sorted(Solution().removeInvalidParentheses(s))`,
+    testCases: [
+      { label: '"()())()" → ["(())()","()()()"]', args: ['()())()'], expected: ['(())()', '()()()'] },
+      { label: '"(a)())()" → sorted results', args: ['(a)())()'], expected: ['(a())()', '(a)()()'] },
+      { label: '")(" → [""]', args: [']('], expected: [''] },
+    ],
+    hint: 'BFS level by level: generate all strings with one fewer char at each level. Collect all valid strings at the first level that produces any valid string. Use a visited set to avoid duplicates.',
+  },
+
+  399: {
+    id: 399,
+    title: 'Evaluate Division',
+    titleZh: '除法求值',
+    difficulty: 'Medium',
+    leetcodeSlug: 'evaluate-division',
+    tags: ['Array', 'DFS', 'BFS', 'Union Find', 'Graph', 'Shortest Path'],
+    description: `You are given an array of variable pairs \`equations\` and a real-number array \`values\`, where \`equations[i] = [Ai, Bi]\` and \`values[i]\` represent the equation \`Ai / Bi = values[i]\`.
+
+Given some queries \`queries[i] = [Ci, Di]\`, return the answer to each query. If any answer does not exist, return \`-1.0\`.`,
+    examples: [
+      { input: 'equations = [["a","b"],["b","c"]], values = [2.0,3.0], queries = [["a","c"],["b","a"],["a","e"],["a","a"],["x","x"]]', output: '[6.0,0.5,-1.0,1.0,-1.0]' },
+      { input: 'equations = [["a","b"]], values = [0.5], queries = [["a","b"],["b","a"],["a","c"],["x","y"]]', output: '[0.5,2.0,-1.0,-1.0]' },
+    ],
+    constraints: ['1 <= equations.length <= 20', '1 <= queries.length <= 20'],
+    starterCode: `/**
+ * @param {string[][]} equations
+ * @param {number[]} values
+ * @param {string[][]} queries
+ * @return {number[]}
+ */
+function calcEquation(equations, values, queries) {
+
+}
+
+function solve(equations, values, queries) { return calcEquation(equations, values, queries); }`,
+    starterCodePython: `class Solution:
+    def calcEquation(self, equations: list[list[str]], values: list[float], queries: list[list[str]]) -> list[float]:
+        pass
+
+def solve(equations, values, queries): return Solution().calcEquation(equations, values, queries)`,
+    testCases: [
+      {
+        label: 'a/b=2,b/c=3 → [6,0.5,-1,1,-1]',
+        args: [[['a','b'],['b','c']], [2.0,3.0], [['a','c'],['b','a'],['a','e'],['a','a'],['x','x']]],
+        expected: [6.0,0.5,-1.0,1.0,-1.0],
+      },
+      {
+        label: 'a/b=0.5 → [0.5,2,-1,-1]',
+        args: [[['a','b']], [0.5], [['a','b'],['b','a'],['a','c'],['x','y']]],
+        expected: [0.5,2.0,-1.0,-1.0],
+      },
+    ],
+    hint: 'Build a weighted directed graph: a→b with weight v, b→a with weight 1/v. For each query, BFS/DFS from source to target, multiplying edge weights along the path. Return -1 if unreachable or unknown variable.',
+  },
+
+  473: {
+    id: 473,
+    title: 'Matchsticks to Square',
+    titleZh: '火柴拼正方形',
+    difficulty: 'Medium',
+    leetcodeSlug: 'matchsticks-to-square',
+    tags: ['Array', 'DFS', 'Backtracking', 'Bit Manipulation', 'Dynamic Programming'],
+    description: `You are given an integer array \`matchsticks\` where \`matchsticks[i]\` is the length of the \`i\`th matchstick. You want to use **all** the matchsticks to make one square. You should not break any stick, but you can link them up.
+
+Return \`true\` if you can make this square and \`false\` otherwise.`,
+    examples: [
+      { input: 'matchsticks = [1,1,2,2,2]', output: 'true', explanation: '1+1+2=4? No. Sides: 2, 2, 2, 2 — perimeter 8, side 2. Sticks [2],[2],[2],[1,1] ✓.' },
+      { input: 'matchsticks = [3,3,3,3,4]', output: 'false' },
+    ],
+    constraints: ['1 <= matchsticks.length <= 15', '1 <= matchsticks[i] <= 10^8'],
+    starterCode: `/**
+ * @param {number[]} matchsticks
+ * @return {boolean}
+ */
+function makesquare(matchsticks) {
+
+}
+
+function solve(matchsticks) { return makesquare(matchsticks); }`,
+    starterCodePython: `class Solution:
+    def makesquare(self, matchsticks: list[int]) -> bool:
+        pass
+
+def solve(matchsticks): return Solution().makesquare(matchsticks)`,
+    testCases: [
+      { label: '[1,1,2,2,2] → true', args: [[1,1,2,2,2]], expected: true },
+      { label: '[3,3,3,3,4] → false', args: [[3,3,3,3,4]], expected: false },
+    ],
+    hint: 'Total sum must be divisible by 4; side = sum/4. Sort descending (prune early). Backtrack: assign each matchstick to one of 4 buckets. Skip duplicate bucket values to avoid redundant states.',
+  },
+
+  526: {
+    id: 526,
+    title: 'Beautiful Arrangement',
+    titleZh: '优美的排列',
+    difficulty: 'Medium',
+    leetcodeSlug: 'beautiful-arrangement',
+    tags: ['Array', 'DFS', 'Backtracking', 'Bit Manipulation'],
+    description: `Suppose you have \`n\` integers labeled \`1\` through \`n\`. A permutation of those \`n\` integers \`perm\` is a **beautiful arrangement** if for every \`i\` (1-indexed), either:
+- \`perm[i]\` is divisible by \`i\`, or
+- \`i\` is divisible by \`perm[i]\`.
+
+Given an integer \`n\`, return the **number** of beautiful arrangements you can construct.`,
+    examples: [
+      { input: 'n = 2', output: '2', explanation: 'Arrangements: [1,2] and [2,1].' },
+      { input: 'n = 1', output: '1' },
+    ],
+    constraints: ['1 <= n <= 15'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {number}
+ */
+function countArrangement(n) {
+
+}
+
+function solve(n) { return countArrangement(n); }`,
+    starterCodePython: `class Solution:
+    def countArrangement(self, n: int) -> int:
+        pass
+
+def solve(n): return Solution().countArrangement(n)`,
+    testCases: [
+      { label: 'n=2 → 2', args: [2], expected: 2 },
+      { label: 'n=1 → 1', args: [1], expected: 1 },
+      { label: 'n=3 → 3', args: [3], expected: 3 },
+    ],
+    hint: 'Backtrack: fill positions 1..n one by one. At position i, try each unused number k where k%i==0 or i%k==0. Use a visited bitmask or boolean array to track used numbers.',
+  },
+
+  638: {
+    id: 638,
+    title: 'Shopping Offers',
+    titleZh: '大礼包',
+    difficulty: 'Medium',
+    leetcodeSlug: 'shopping-offers',
+    tags: ['Array', 'DFS', 'Backtracking', 'Memoization', 'Dynamic Programming'],
+    description: `In a store, items are priced individually. You have special \`offers\`, each a bundle of items at a reduced price. You want to buy **exactly** \`needs[i]\` of each item.
+
+You may use any offer multiple times (but cannot buy more than needed). Find the **minimum cost**.
+
+- \`price[i]\` — individual price of item i.
+- \`offers[j]\` — array where last element is price, others are quantities of each item.
+- \`needs[i]\` — required quantity of item i.`,
+    examples: [
+      { input: 'price = [2,5], special = [[3,0,5],[1,2,10]], needs = [3,2]', output: '14', explanation: 'Use offer 1 once (cost 10, get 1×A+2×B), then buy 2×A at 2 each = 14.' },
+      { input: 'price = [2,3,4], special = [[1,1,0,4],[2,2,1,9]], needs = [1,2,1]', output: '11' },
+    ],
+    constraints: ['n == price.length == needs.length', '1 <= n <= 6', '0 <= price[i], needs[i] <= 10', '1 <= special.length <= 100'],
+    starterCode: `/**
+ * @param {number[]} price
+ * @param {number[][]} special
+ * @param {number[]} needs
+ * @return {number}
+ */
+function shoppingOffers(price, special, needs) {
+
+}
+
+function solve(price, special, needs) { return shoppingOffers(price, special, needs); }`,
+    starterCodePython: `class Solution:
+    def shoppingOffers(self, price: list[int], special: list[list[int]], needs: list[int]) -> int:
+        pass
+
+def solve(price, special, needs): return Solution().shoppingOffers(price, special, needs)`,
+    testCases: [
+      { label: 'price=[2,5],special=[[3,0,5],[1,2,10]],needs=[3,2] → 14', args: [[2,5], [[3,0,5],[1,2,10]], [3,2]], expected: 14 },
+      { label: 'price=[2,3,4],special=[[1,1,0,4],[2,2,1,9]],needs=[1,2,1] → 11', args: [[2,3,4], [[1,1,0,4],[2,2,1,9]], [1,2,1]], expected: 11 },
+    ],
+    hint: 'DFS with memoization keyed on current needs state. At each state, try every valid offer (that doesn\'t exceed needs) or fall back to buying everything individually. Cache results by needs tuple.',
+  },
+
+  694: {
+    id: 694,
+    title: 'Number of Distinct Islands',
+    titleZh: '不同岛屿的数量',
+    difficulty: 'Medium',
+    leetcodeSlug: 'number-of-distinct-islands',
+    tags: ['Hash Table', 'DFS', 'BFS', 'Union Find', 'Hash Function'],
+    description: `Given a binary grid \`grid\` (1 = land, 0 = water), return the number of **distinct** islands.
+
+Two islands are considered distinct if and only if one island is not equal to another (i.e., you cannot translate one to match the other — rotation and reflection don't count for this problem).`,
+    examples: [
+      { input: 'grid = [[1,1,0,0,0],[1,1,0,0,0],[0,0,0,1,1],[0,0,0,1,1]]', output: '1', explanation: 'Both 2×2 islands have the same shape.' },
+      { input: 'grid = [[1,1,0,1,1],[1,0,0,0,0],[0,0,0,0,1],[1,1,0,1,1]]', output: '3' },
+    ],
+    constraints: ['m == grid.length', 'n == grid[0].length', '1 <= m, n <= 50', 'grid[i][j] is 0 or 1.'],
+    starterCode: `/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+function numDistinctIslands(grid) {
+
+}
+
+function solve(grid) { return numDistinctIslands(grid); }`,
+    starterCodePython: `class Solution:
+    def numDistinctIslands(self, grid: list[list[int]]) -> int:
+        pass
+
+def solve(grid): return Solution().numDistinctIslands(grid)`,
+    testCases: [
+      { label: '5×5 grid two identical islands → 1', args: [[[1,1,0,0,0],[1,1,0,0,0],[0,0,0,1,1],[0,0,0,1,1]]], expected: 1 },
+      { label: '5×5 grid three distinct → 3', args: [[[1,1,0,1,1],[1,0,0,0,0],[0,0,0,0,1],[1,1,0,1,1]]], expected: 3 },
+    ],
+    hint: 'DFS each island, recording the path as relative directions from the starting cell (e.g., "RDLB" for right/down/left/backtrack). Store each island\'s path string in a set. The set size is the answer.',
+  },
+
+  698: {
+    id: 698,
+    title: 'Partition to K Equal Sum Subsets',
+    titleZh: '划分为k个相等的子集',
+    difficulty: 'Medium',
+    leetcodeSlug: 'partition-to-k-equal-sum-subsets',
+    tags: ['Array', 'DFS', 'Backtracking', 'Bit Manipulation', 'Memoization'],
+    description: `Given an integer array \`nums\` and an integer \`k\`, return \`true\` if it is possible to divide this array into \`k\` non-empty subsets whose sums are all equal.`,
+    examples: [
+      { input: 'nums = [4,3,2,3,5,2,1], k = 4', output: 'true', explanation: 'Subsets: {5},{1,4},{2,3},{2,3}.' },
+      { input: 'nums = [1,2,3,4], k = 3', output: 'false' },
+    ],
+    constraints: ['1 <= k <= nums.length <= 16', '1 <= nums[i] <= 10^4', 'Sum of nums is divisible by k.'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {boolean}
+ */
+function canPartitionKSubsets(nums, k) {
+
+}
+
+function solve(nums, k) { return canPartitionKSubsets(nums, k); }`,
+    starterCodePython: `class Solution:
+    def canPartitionKSubsets(self, nums: list[int], k: int) -> bool:
+        pass
+
+def solve(nums, k): return Solution().canPartitionKSubsets(nums, k)`,
+    testCases: [
+      { label: '[4,3,2,3,5,2,1], k=4 → true', args: [[4,3,2,3,5,2,1], 4], expected: true },
+      { label: '[1,2,3,4], k=3 → false', args: [[1,2,3,4], 3], expected: false },
+    ],
+    hint: 'Target = sum/k. Sort descending. Backtrack with k buckets: try adding each unused number to a bucket. Prune: skip if bucket sum + num > target; skip duplicate bucket values. Use bitmask DP for O(2^n * n) solution.',
+  },
+
+  800: {
+    id: 800,
+    title: 'Similar RGB Color',
+    titleZh: '相似 RGB 颜色',
+    difficulty: 'Easy',
+    leetcodeSlug: 'similar-rgb-color',
+    tags: ['Math', 'String', 'Enumeration'],
+    description: `A RGB color \`"#AABBCC"\` can be represented as a shorthand \`"#ABC"\` only if \`AA == BB == CC\` (each pair is identical digits).
+
+Given a color \`color\` in the form \`"#AABBCC"\`, return a 7-character color that is most similar to \`color\` and has a shorthand representation.
+
+The similarity between colors \`#ABCDEF\` and \`#UVWXYZ\` is \`-(AB-UV)^2 - (CD-WX)^2 - (EF-YZ)^2\`.`,
+    examples: [
+      { input: 'color = "#09f166"', output: '"#11ee66"', explanation: '09→11 (diff 2^2=4), f1→ee (diff 3^2=9), 66→66 (0). Total similarity -13.' },
+    ],
+    constraints: ['color.length == 7', 'color[0] == \'#\'', 'All other characters are hex digits.'],
+    starterCode: `/**
+ * @param {string} color
+ * @return {string}
+ */
+function similarRGB(color) {
+
+}
+
+function solve(color) { return similarRGB(color); }`,
+    starterCodePython: `class Solution:
+    def similarRGB(self, color: str) -> str:
+        pass
+
+def solve(color): return Solution().similarRGB(color)`,
+    testCases: [
+      { label: '"#09f166" → "#11ee66"', args: ['#09f166'], expected: '#11ee66' },
+    ],
+    hint: 'For each 2-hex pair (e.g., "09"), find the nearest value of form 0x11*k (k=0..15 → 0x00, 0x11, 0x22,...,0xff). Round parsed value / 17 to nearest integer, then multiply by 17. Format back to hex.',
+  },
+
+  803: {
+    id: 803,
+    title: 'Bricks Falling When Hit',
+    titleZh: '打砖块',
+    difficulty: 'Hard',
+    leetcodeSlug: 'bricks-falling-when-hit',
+    tags: ['Array', 'Union Find', 'Matrix'],
+    description: `You are given an \`m x n\` binary grid \`grid\`, where each \`1\` represents a brick. A brick is **stable** if it is directly connected to the top of the grid, or at least one of its four adjacent bricks is stable.
+
+You are given an array \`hits\`, which are the positions of bricks to be erased. After each hit, zero or more bricks may fall. Return an array where the \`i\`th element is the number of bricks that fall after the \`i\`th erasure.`,
+    examples: [
+      { input: 'grid = [[1,0,0,0],[1,1,1,0]], hits = [[1,0]]', output: '[2]', explanation: 'Hitting (1,0) causes 2 bricks to fall.' },
+      { input: 'grid = [[1,0,0,0],[1,1,0,0]], hits = [[1,1],[1,0]]', output: '[0,0]' },
+    ],
+    constraints: ['m == grid.length', 'n == grid[0].length', '1 <= m, n <= 200', '1 <= hits.length <= 4 * 10^4'],
+    starterCode: `/**
+ * @param {number[][]} grid
+ * @param {number[][]} hits
+ * @return {number[]}
+ */
+function hitBricks(grid, hits) {
+
+}
+
+function solve(grid, hits) { return hitBricks(grid, hits); }`,
+    starterCodePython: `class Solution:
+    def hitBricks(self, grid: list[list[int]], hits: list[list[int]]) -> list[int]:
+        pass
+
+def solve(grid, hits): return Solution().hitBricks(grid, hits)`,
+    testCases: [
+      { label: '[[1,0,0,0],[1,1,1,0]], hits=[[1,0]] → [2]', args: [[[1,0,0,0],[1,1,1,0]], [[1,0]]], expected: [2] },
+      { label: '[[1,0,0,0],[1,1,0,0]], hits=[[1,1],[1,0]] → [0,0]', args: [[[1,0,0,0],[1,1,0,0]], [[1,1],[1,0]]], expected: [0,0] },
+    ],
+    hint: 'Reverse time: apply all hits first, then add bricks back in reverse. Use Union-Find with a virtual "roof" node (index m*n). When adding brick back, measure how many newly become stable (connected to roof).',
+  },
+
+  1038: {
+    id: 1038,
+    title: 'Binary Search Tree to Greater Sum Tree',
+    titleZh: '从二叉搜索树到更大和树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'binary-search-tree-to-greater-sum-tree',
+    tags: ['Tree', 'DFS', 'BST', 'Binary Tree'],
+    description: `Given the \`root\` of a BST, transform it into a **Greater Sum Tree** where each node's value is replaced by the sum of all values **greater than or equal to** the node's original value in the BST.`,
+    examples: [
+      { input: 'root = [4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]', output: '[30,36,21,36,35,26,15,null,null,null,33,null,null,null,8]' },
+      { input: 'root = [0,null,1]', output: '[1,null,1]' },
+    ],
+    constraints: ['Number of nodes: [1, 100]', '0 <= Node.val <= 100', 'All values unique.', 'root is a valid BST.'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {TreeNode|null}
+ */
+function bstToGst(root) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function serialize(root) { if(!root) return []; let res=[],q=[root]; while(q.length){let n=q.shift();if(!n){res.push(null);continue;}res.push(n.val);q.push(n.left,n.right);} while(res[res.length-1]==null)res.pop(); return res; }
+function solve(arr) { return serialize(bstToGst(build(arr))); }`,
+    starterCodePython: `class Solution:
+    def bstToGst(self, root):
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def serialize(root):
+    if not root: return []
+    res, q = [], [root]
+    while q:
+        n = q.pop(0)
+        if not n: res.append(None); continue
+        res.append(n.val); q.append(n.left); q.append(n.right)
+    while res and res[-1] is None: res.pop()
+    return res
+
+def solve(arr): return serialize(Solution().bstToGst(build(arr)))`,
+    testCases: [
+      { label: '[0,null,1] → [1,null,1]', args: [[0,null,1]], expected: [1,null,1] },
+      { label: '[4,1,6,...] → greater sum tree', args: [[4,1,6,0,2,5,7,null,null,null,3,null,null,null,8]], expected: [30,36,21,36,35,26,15,null,null,null,33,null,null,null,8] },
+    ],
+    hint: 'Reverse inorder traversal (right → root → left) accumulates a running suffix sum. At each node, add the running sum to node.val, then update the running sum.',
+  },
+
+  1073: {
+    id: 1073,
+    title: 'Adding Two Negabinary Numbers',
+    titleZh: '负二进制数相加',
+    difficulty: 'Medium',
+    leetcodeSlug: 'adding-two-negabinary-numbers',
+    tags: ['Array', 'Math'],
+    description: `Given two numbers \`arr1\` and \`arr2\` in **base -2** (negabinary), return the result of adding them together.
+
+Each array represents the number in order of most significant bit to least significant bit (big-endian). The result should also be in big-endian negabinary form with no leading zeros (except the number 0 itself).`,
+    examples: [
+      { input: 'arr1 = [1,1,1,1,1], arr2 = [1,0,1]', output: '[1,0,0,0,0]', explanation: '(-2)^4 = 16 in negabinary.' },
+      { input: 'arr1 = [0], arr2 = [0]', output: '[0]' },
+      { input: 'arr1 = [0], arr2 = [1]', output: '[1]' },
+    ],
+    constraints: ['1 <= arr1.length, arr2.length <= 1000', 'arr1[i] and arr2[i] are 0 or 1.', 'arr1 and arr2 have no leading zeros.'],
+    starterCode: `/**
+ * @param {number[]} arr1
+ * @param {number[]} arr2
+ * @return {number[]}
+ */
+function addNegabinary(arr1, arr2) {
+
+}
+
+function solve(arr1, arr2) { return addNegabinary(arr1, arr2); }`,
+    starterCodePython: `class Solution:
+    def addNegabinary(self, arr1: list[int], arr2: list[int]) -> list[int]:
+        pass
+
+def solve(arr1, arr2): return Solution().addNegabinary(arr1, arr2)`,
+    testCases: [
+      { label: '[1,1,1,1,1]+[1,0,1] → [1,0,0,0,0]', args: [[1,1,1,1,1],[1,0,1]], expected: [1,0,0,0,0] },
+      { label: '[0]+[0] → [0]', args: [[0],[0]], expected: [0] },
+      { label: '[0]+[1] → [1]', args: [[0],[1]], expected: [1] },
+    ],
+    hint: 'Add from LSB (right to left) with a carry. In base -2: sum = a + b + carry. New bit = sum & 1. New carry = -(sum >> 1). Handle carry = -1 specially. Strip leading zeros from result.',
+  },
+
+  1100: {
+    id: 1100,
+    title: 'Find K-Length Substrings With No Repeated Characters',
+    titleZh: '长度为 K 的无重复字符子串',
+    difficulty: 'Medium',
+    leetcodeSlug: 'find-k-length-substrings-with-no-repeated-characters',
+    tags: ['Hash Table', 'String', 'Sliding Window'],
+    description: `Given a string \`s\` and an integer \`k\`, return the number of substrings of length \`k\` with **no repeated characters**.`,
+    examples: [
+      { input: 's = "havefunonleetcode", k = 5', output: '6' },
+      { input: 's = "home", k = 5', output: '0', explanation: 'No substring of length 5.' },
+    ],
+    constraints: ['1 <= s.length <= 10^4', '1 <= k <= 10^4', 's consists of lowercase English letters.'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {number} k
+ * @return {number}
+ */
+function numKLenSubstrNoRepeats(s, k) {
+
+}
+
+function solve(s, k) { return numKLenSubstrNoRepeats(s, k); }`,
+    starterCodePython: `class Solution:
+    def numKLenSubstrNoRepeats(self, s: str, k: int) -> int:
+        pass
+
+def solve(s, k): return Solution().numKLenSubstrNoRepeats(s, k)`,
+    testCases: [
+      { label: '"havefunonleetcode", k=5 → 6', args: ['havefunonleetcode', 5], expected: 6 },
+      { label: '"home", k=5 → 0', args: ['home', 5], expected: 0 },
+    ],
+    hint: 'Fixed-size sliding window of length k. Use a frequency map. When window reaches size k, check if all chars are unique (map size == k). Slide: add right char, remove left char.',
+  },
+
+  1160: {
+    id: 1160,
+    title: 'Find Words That Can Be Formed by Characters',
+    titleZh: '拼写单词',
+    difficulty: 'Easy',
+    leetcodeSlug: 'find-words-that-can-be-formed-by-characters',
+    tags: ['Array', 'Hash Table', 'String', 'Counting'],
+    description: `You are given an array of strings \`words\` and a string \`chars\`. A word is **good** if it can be formed by characters from \`chars\` (each character can be used only once).
+
+Return the sum of lengths of all good words.`,
+    examples: [
+      { input: 'words = ["cat","bt","hat","tree"], chars = "atach"', output: '6', explanation: '"cat" (3) and "hat" (3) are good.' },
+      { input: 'words = ["hello","world","leetcode"], chars = "welldonehoneyr"', output: '10', explanation: '"hello" and "world" are good.' },
+    ],
+    constraints: ['1 <= words.length <= 1000', '1 <= words[i].length, chars.length <= 100', 'All strings consist of lowercase English letters.'],
+    starterCode: `/**
+ * @param {string[]} words
+ * @param {string} chars
+ * @return {number}
+ */
+function countCharacters(words, chars) {
+
+}
+
+function solve(words, chars) { return countCharacters(words, chars); }`,
+    starterCodePython: `class Solution:
+    def countCharacters(self, words: list[str], chars: str) -> int:
+        pass
+
+def solve(words, chars): return Solution().countCharacters(words, chars)`,
+    testCases: [
+      { label: '["cat","bt","hat","tree"], "atach" → 6', args: [['cat','bt','hat','tree'], 'atach'], expected: 6 },
+      { label: '["hello","world","leetcode"], "welldonehoneyr" → 10', args: [['hello','world','leetcode'], 'welldonehoneyr'], expected: 10 },
+    ],
+    hint: 'Build a frequency map for chars. For each word, build its frequency map. A word is good if for every character, word_count[c] <= chars_count[c].',
+  },
+
+  1331: {
+    id: 1331,
+    title: 'Rank Transform of an Array',
+    titleZh: '数组序号转换',
+    difficulty: 'Easy',
+    leetcodeSlug: 'rank-transform-of-an-array',
+    tags: ['Array', 'Hash Table', 'Sorting'],
+    description: `Given an integer array \`arr\`, replace each element with its **rank**. The rank represents how large the element is. Rules:
+- Rank is an integer starting from 1.
+- The larger the element, the larger the rank.
+- Equal elements must have the same rank.
+- Each rank should be as small as possible.`,
+    examples: [
+      { input: 'arr = [40,10,20,30]', output: '[4,1,2,3]' },
+      { input: 'arr = [100,100,100]', output: '[1,1,1]' },
+      { input: 'arr = [37,12,28,9,100,56,80,5,12]', output: '[5,3,4,2,8,6,7,1,3]' },
+    ],
+    constraints: ['0 <= arr.length <= 10^5', '-10^9 <= arr[i] <= 10^9'],
+    starterCode: `/**
+ * @param {number[]} arr
+ * @return {number[]}
+ */
+function arrayRankTransform(arr) {
+
+}
+
+function solve(arr) { return arrayRankTransform(arr); }`,
+    starterCodePython: `class Solution:
+    def arrayRankTransform(self, arr: list[int]) -> list[int]:
+        pass
+
+def solve(arr): return Solution().arrayRankTransform(arr)`,
+    testCases: [
+      { label: '[40,10,20,30] → [4,1,2,3]', args: [[40,10,20,30]], expected: [4,1,2,3] },
+      { label: '[100,100,100] → [1,1,1]', args: [[100,100,100]], expected: [1,1,1] },
+      { label: '[37,12,28,9,100,56,80,5,12] → [5,3,4,2,8,6,7,1,3]', args: [[37,12,28,9,100,56,80,5,12]], expected: [5,3,4,2,8,6,7,1,3] },
+    ],
+    hint: 'Sort unique values, assign rank 1,2,3... to each. Build a map from value to rank. Replace each element using the map.',
+  },
+
+  1418: {
+    id: 1418,
+    title: 'Display Table of Food Orders in a Restaurant',
+    titleZh: '点菜展示表',
+    difficulty: 'Medium',
+    leetcodeSlug: 'display-table-of-food-orders-in-a-restaurant',
+    tags: ['Array', 'Hash Table', 'String', 'Sorting'],
+    description: `Given a list of \`orders\`, each as \`[customerName, tableNumber, foodItem]\`, display the order count of each food item for each table.
+
+Return a 2D list where:
+- The first row is a header: \`["Table", ...sorted food items]\`.
+- Each subsequent row starts with the table number (as string), followed by the count of each food item for that table.
+- Rows are sorted by table number (ascending as integer).`,
+    examples: [
+      { input: 'orders = [["David","3","Ceviche"],["Corina","10","Beef Burrito"],["David","3","Fried Chicken"],["Carla","5","Water"],["Carla","5","Ceviche"],["Rous","3","Ceviche"]]', output: '[["Table","Beef Burrito","Ceviche","Fried Chicken","Water"],["3","0","3","1","0"],["5","0","1","0","1"],["10","1","0","0","0"]]' },
+    ],
+    constraints: ['1 <= orders.length <= 5 * 10^4', 'orders[i].length == 3'],
+    starterCode: `/**
+ * @param {string[][]} orders
+ * @return {string[][]}
+ */
+function displayTable(orders) {
+
+}
+
+function solve(orders) { return displayTable(orders); }`,
+    starterCodePython: `class Solution:
+    def displayTable(self, orders: list[list[str]]) -> list[list[str]]:
+        pass
+
+def solve(orders): return Solution().displayTable(orders)`,
+    testCases: [
+      {
+        label: '6 orders → 4-row table',
+        args: [[['David','3','Ceviche'],['Corina','10','Beef Burrito'],['David','3','Fried Chicken'],['Carla','5','Water'],['Carla','5','Ceviche'],['Rous','3','Ceviche']]],
+        expected: [['Table','Beef Burrito','Ceviche','Fried Chicken','Water'],['3','0','3','1','0'],['5','0','1','0','1'],['10','1','0','0','0']],
+      },
+    ],
+    hint: 'Collect unique food items (sorted) and unique table numbers (sorted numerically). Build a 2D count map[table][food]. Construct the header row and each table row.',
+  },
+
+  1715: {
+    id: 1715,
+    title: 'Count Apples and Oranges',
+    titleZh: '苹果和橘子的个数',
+    difficulty: 'Medium',
+    leetcodeSlug: 'count-apples-and-oranges',
+    tags: ['Database'],
+    description: `**Note:** This is a database problem adapted for algorithmic practice.
+
+You are given two tables as arrays:
+- \`boxes\`: each entry \`[box_id, chest_id, apple_count, orange_count]\`. A box may optionally contain a chest (chest_id can be null/0).
+- \`chests\`: each entry \`[chest_id, apple_count, orange_count]\`.
+
+Each box has its own apple/orange count, and may also contain a chest that adds more. Return the total apple count and total orange count across all boxes (including chests).
+
+Return \`[totalApples, totalOranges]\`.`,
+    examples: [
+      { input: 'boxes=[[1,0,2,1],[2,1,3,2]], chests=[[1,4,5]]', output: '[9,8]', explanation: 'Box1: 2 apples+1 orange (no chest). Box2: 3+4=7 apples, 2+5=7 oranges. Total: 2+7=9 apples, 1+7=8 oranges.' },
+    ],
+    constraints: ['1 <= boxes.length <= 1000', '0 <= chests.length <= 1000'],
+    starterCode: `/**
+ * @param {number[][]} boxes  [box_id, chest_id, apple_count, orange_count]  chest_id=0 means no chest
+ * @param {number[][]} chests [chest_id, apple_count, orange_count]
+ * @return {number[]} [totalApples, totalOranges]
+ */
+function countApplesOranges(boxes, chests) {
+
+}
+
+function solve(boxes, chests) { return countApplesOranges(boxes, chests); }`,
+    starterCodePython: `class Solution:
+    def countApplesOranges(self, boxes: list[list[int]], chests: list[list[int]]) -> list[int]:
+        pass
+
+def solve(boxes, chests): return Solution().countApplesOranges(boxes, chests)`,
+    testCases: [
+      { label: '2 boxes, 1 chest → [9,8]', args: [[[1,0,2,1],[2,1,3,2]], [[1,4,5]]], expected: [9,8] },
+      { label: '1 box no chest → box counts', args: [[[1,0,5,3]], []], expected: [5,3] },
+    ],
+    hint: 'Build a map from chest_id to its apple/orange counts. For each box, add box apples + (chest apples if chest_id != 0) and similarly for oranges. Sum all.',
+  },
+
+  1976: {
+    id: 1976,
+    title: 'Number of Ways to Arrive at Destination',
+    titleZh: '到达目的地的方案数',
+    difficulty: 'Medium',
+    leetcodeSlug: 'number-of-ways-to-arrive-at-destination',
+    tags: ['Dynamic Programming', 'Graph', 'Topological Sort', 'Shortest Path'],
+    description: `You are in a city with \`n\` intersections labeled \`0\` to \`n-1\`. Given a 2D array \`roads\` where \`roads[i] = [ui, vi, timei]\` (undirected weighted edges), find the number of ways to travel from intersection \`0\` to intersection \`n-1\` in the **shortest time**.
+
+Return the answer modulo \`10^9 + 7\`.`,
+    examples: [
+      { input: 'n = 7, roads = [[0,6,7],[0,1,2],[1,2,3],[1,3,3],[6,3,3],[3,5,1],[6,5,2],[0,4,5],[4,6,4]]', output: '4' },
+      { input: 'n = 2, roads = [[1,0,10]]', output: '1' },
+    ],
+    constraints: ['1 <= n <= 200', 'n - 1 <= roads.length <= n * (n - 1) / 2', '0 <= ui, vi <= n - 1', '1 <= timei <= 10^9'],
+    starterCode: `/**
+ * @param {number} n
+ * @param {number[][]} roads
+ * @return {number}
+ */
+function countPaths(n, roads) {
+
+}
+
+function solve(n, roads) { return countPaths(n, roads); }`,
+    starterCodePython: `class Solution:
+    def countPaths(self, n: int, roads: list[list[int]]) -> int:
+        pass
+
+def solve(n, roads): return Solution().countPaths(n, roads)`,
+    testCases: [
+      { label: 'n=7, 9 roads → 4', args: [7, [[0,6,7],[0,1,2],[1,2,3],[1,3,3],[6,3,3],[3,5,1],[6,5,2],[0,4,5],[4,6,4]]], expected: 4 },
+      { label: 'n=2, [[1,0,10]] → 1', args: [2, [[1,0,10]]], expected: 1 },
+    ],
+    hint: 'Dijkstra from node 0. Track dist[] and ways[]. When relaxing an edge: if shorter path found, update dist[v] and set ways[v] = ways[u]. If equal length path found, add ways[u] to ways[v]. Answer is ways[n-1] mod 10^9+7.',
+  },
+
+  1825: {
+    id: 1825,
+    title: 'Finding MK Average',
+    titleZh: '求出 MK 平均值',
+    difficulty: 'Hard',
+    leetcodeSlug: 'finding-mk-average',
+    tags: ['Design', 'Queue', 'Heap (Priority Queue)', 'Data Stream', 'Sorted List', 'Segment Tree'],
+    description: `Implement the \`MKAverage\` class:
+- \`MKAverage(int m, int k)\` — initializes with parameters \`m\` and \`k\`.
+- \`addElement(int num)\` — inserts \`num\` into the data structure.
+- \`calculateMKAverage()\` — returns the **MK Average** of the **last m elements**, defined as the floor of the average after removing the \`k\` smallest and \`k\` largest elements. Return \`-1\` if fewer than \`m\` elements have been added.
+
+**For this adaptation:** given a list of operations, simulate and return results of each \`calculateMKAverage\` call.`,
+    examples: [
+      { input: 'm = 3, k = 1, adds = [3,1,4,1,5,9,2,6], calcsAfter = [3,4,5,6,7,8]', output: '[-1,-1,4,3,5,6]', explanation: 'After 3 adds → avg of [1,4,3] drop min&max = [4] → 4. After 4 adds → last 3 = [4,1,5] drop min&max = [4] → 4? No: [1,4,5] drop 1&5 → [4] → 4 ... etc.' },
+    ],
+    constraints: ['3 <= m <= 10^5', '1 <= k*2 < m', '1 <= num <= 10^5', 'At most 10^5 calls.'],
+    starterCode: `class MKAverage {
+  /**
+   * @param {number} m
+   * @param {number} k
+   */
+  constructor(m, k) {
+
+  }
+
+  /** @param {number} num */
+  addElement(num) {
+
+  }
+
+  /** @return {number} */
+  calculateMKAverage() {
+
+  }
+}
+
+function solve(m, k, adds, calcsAfterCount) {
+  const obj = new MKAverage(m, k);
+  const res = [];
+  for (let i = 0; i < adds.length; i++) {
+    obj.addElement(adds[i]);
+    if (calcsAfterCount.includes(i + 1)) res.push(obj.calculateMKAverage());
+  }
+  return res;
+}`,
+    starterCodePython: `class MKAverage:
+    def __init__(self, m: int, k: int):
+        pass
+
+    def addElement(self, num: int) -> None:
+        pass
+
+    def calculateMKAverage(self) -> int:
+        pass
+
+def solve(m, k, adds, calcs_after_count):
+    obj = MKAverage(m, k)
+    res = []
+    for i, num in enumerate(adds):
+        obj.addElement(num)
+        if (i + 1) in calcs_after_count: res.append(obj.calculateMKAverage())
+    return res`,
+    testCases: [
+      {
+        label: 'm=3,k=1, adds=[3,1,4,1,5,9,2,6], calc after each',
+        args: [3, 1, [3,1,4,1,5,9,2,6], [1,2,3,4,5,6,7,8]],
+        expected: [-1,-1,4,1,4,5,2,6],
+      },
+    ],
+    hint: 'Use a queue to keep the last m elements. To compute MK average efficiently, use three sorted structures (or a segment tree / order-statistics tree): bottom k, middle m-2k, top k. Track their sums for O(log n) per operation.',
+  },
+
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {
