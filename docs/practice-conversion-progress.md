@@ -188,7 +188,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 
 ---
 
-## Batch B7 — BST Advanced + Graph Traversal + Union Find (20 problems) `[ ] Not started`
+## Batch B7 — BST Advanced + Graph Traversal + Union Find (20 problems) `[x] Done`
 
 | ID | Problem | Difficulty | Topic |
 |---|---|---|---|
@@ -317,7 +317,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 | B4 | 21 problems (112,113,617,623,933,975,1011,1029,1030,1035,1079,1194,1243,1248,1387,1484,1544,1568,2217,774,1498) | 2026-03-14 | pending |
 | B5 | 20 problems (100,110,331,508,563,606,687,832,896,930,988,1008,1021,1040,1092,1157,1207,1450,1465,2175) | 2026-03-15 | pending |
 | B6 | 20 problems (107,117,515,637,662,893,904,998,1116,1254,1474,1554,99,109,173,449,501,530,653,1050) | 2026-03-15 | pending |
-| B7 | _pending_ | | |
+| B7 | 20 problems (315,327,341,493,669,671,948,1285,1427,1780,1790,1816,130,261,277,323,801,922,984,1275) | 2026-03-15 | pending |
 | B8 | _pending_ | | |
 | B9 | _pending_ | | |
 | B10 | _pending_ | | |

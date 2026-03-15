@@ -7816,6 +7816,839 @@ def solve(records): return Solution().actorDirectorPairs(records)`,
     hint: 'Use a hash map keyed by "actor_id,director_id" to count cooperations. Collect pairs with count >= 3. Sort by actor_id then director_id.',
   },
 
+  // ─── Batch B7 — BST Advanced + Graph Traversal + Union Find ─────────────────
+
+  315: {
+    id: 315,
+    title: 'Count of Smaller Numbers After Self',
+    titleZh: '计算右侧小于当前元素的个数',
+    difficulty: 'Hard',
+    leetcodeSlug: 'count-of-smaller-numbers-after-self',
+    tags: ['Array', 'Binary Search', 'Divide and Conquer', 'Binary Indexed Tree', 'Merge Sort'],
+    description: `Given an integer array \`nums\`, return an integer array \`counts\` where \`counts[i]\` is the number of smaller elements to the right of \`nums[i]\`.`,
+    examples: [
+      { input: 'nums = [5,2,6,1]', output: '[2,1,1,0]', explanation: '5 has 2,1 to its right. 2 has 1. 6 has 1. 1 has none.' },
+      { input: 'nums = [-1]', output: '[0]' },
+      { input: 'nums = [-1,-1]', output: '[0,0]' },
+    ],
+    constraints: ['1 <= nums.length <= 10^5', '-10^4 <= nums[i] <= 10^4'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+function countSmaller(nums) {
+
+}
+
+function solve(nums) { return countSmaller(nums); }`,
+    starterCodePython: `class Solution:
+    def countSmaller(self, nums: list[int]) -> list[int]:
+        pass
+
+def solve(nums): return Solution().countSmaller(nums)`,
+    testCases: [
+      { label: '[5,2,6,1] → [2,1,1,0]', args: [[5,2,6,1]], expected: [2,1,1,0] },
+      { label: '[-1] → [0]', args: [[-1]], expected: [0] },
+      { label: '[-1,-1] → [0,0]', args: [[-1,-1]], expected: [0,0] },
+    ],
+    hint: 'Merge sort approach: during the merge step, count how many right-half elements are placed before a left-half element — that count is the answer for that element. Alternatively, use a Binary Indexed Tree (BIT) scanning right to left.',
+  },
+
+  327: {
+    id: 327,
+    title: 'Count of Range Sum',
+    titleZh: '区间和的个数',
+    difficulty: 'Hard',
+    leetcodeSlug: 'count-of-range-sum',
+    tags: ['Array', 'Binary Search', 'Divide and Conquer', 'Binary Indexed Tree', 'Merge Sort'],
+    description: `Given an integer array \`nums\` and two integers \`lower\` and \`upper\`, return the number of range sums that lie in \`[lower, upper]\` inclusive.
+
+Range sum \`S(i, j)\` is defined as the sum of the elements in \`nums\` between indices \`i\` and \`j\` inclusive, where \`i <= j\`.`,
+    examples: [
+      { input: 'nums = [-2,5,-1], lower = -2, upper = 2', output: '3', explanation: 'Ranges: [0,0]→-2, [2,2]→-1, [0,2]→2.' },
+      { input: 'nums = [0], lower = 0, upper = 0', output: '1' },
+    ],
+    constraints: ['1 <= nums.length <= 10^5', '-2^31 <= nums[i] <= 2^31 - 1', '-10^5 <= lower <= upper <= 10^5', 'Answers will fit in a 32-bit integer.'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @param {number} lower
+ * @param {number} upper
+ * @return {number}
+ */
+function countRangeSum(nums, lower, upper) {
+
+}
+
+function solve(nums, lower, upper) { return countRangeSum(nums, lower, upper); }`,
+    starterCodePython: `class Solution:
+    def countRangeSum(self, nums: list[int], lower: int, upper: int) -> int:
+        pass
+
+def solve(nums, lower, upper): return Solution().countRangeSum(nums, lower, upper)`,
+    testCases: [
+      { label: '[-2,5,-1], lower=-2, upper=2 → 3', args: [[-2,5,-1], -2, 2], expected: 3 },
+      { label: '[0], lower=0, upper=0 → 1', args: [[0], 0, 0], expected: 1 },
+    ],
+    hint: 'Build prefix sums. For each prefix[j], count prefix[i] in [prefix[j]-upper, prefix[j]-lower] for i<j. Use merge sort on prefix array: during merge, use two pointers to count valid pairs.',
+  },
+
+  341: {
+    id: 341,
+    title: 'Flatten Nested List Iterator',
+    titleZh: '扁平化嵌套列表迭代器',
+    difficulty: 'Medium',
+    leetcodeSlug: 'flatten-nested-list-iterator',
+    tags: ['Stack', 'Tree', 'Design', 'Iterator'],
+    description: `You are given a nested list of integers. Implement an iterator to flatten it.
+
+Each element is either an integer or a list whose elements may also be integers or other lists.
+
+Implement \`NestedIterator\`:
+- \`next()\` — returns the next integer.
+- \`hasNext()\` — returns whether there is a next integer.
+
+**For this adaptation:** given a nested array (using real nested JS/Python arrays), flatten it and simulate the iterator with an ops array of \`"next"\` / \`"hasNext"\` calls.`,
+    examples: [
+      { input: 'nestedList = [[1,1],2,[1,1]], ops = ["next","next","next","next","next"]', output: '[1,1,2,1,1]' },
+      { input: 'nestedList = [1,[4,[6]]], ops = ["next","hasNext","next","hasNext","next","hasNext"]', output: '[1,true,4,true,6,false]' },
+    ],
+    constraints: ['1 <= nestedList.length <= 500', 'Values in [-10^6, 10^6]'],
+    starterCode: `class NestedIterator {
+  constructor(nestedList) {
+    // nestedList is a nested array, e.g. [[1,1],2,[1,1]]
+  }
+
+  /** @return {number} */
+  next() {
+
+  }
+
+  /** @return {boolean} */
+  hasNext() {
+
+  }
+}
+
+function solve(nestedList, ops) {
+  const it = new NestedIterator(nestedList);
+  return ops.map(op => op === 'next' ? it.next() : it.hasNext());
+}`,
+    starterCodePython: `class NestedIterator:
+    def __init__(self, nestedList):
+        # nestedList is a nested Python list
+        pass
+
+    def next(self) -> int:
+        pass
+
+    def hasNext(self) -> bool:
+        pass
+
+def solve(nestedList, ops):
+    it = NestedIterator(nestedList)
+    return [it.next() if op == 'next' else it.hasNext() for op in ops]`,
+    testCases: [
+      { label: '[[1,1],2,[1,1]] next×5 → [1,1,2,1,1]', args: [[[1,1],2,[1,1]], ['next','next','next','next','next']], expected: [1,1,2,1,1] },
+      { label: '[1,[4,[6]]] mixed ops → [1,true,4,true,6,false]', args: [[1,[4,[6]]], ['next','hasNext','next','hasNext','next','hasNext']], expected: [1,true,4,true,6,false] },
+    ],
+    hint: 'Flatten the nested list eagerly into a plain array in the constructor. Then next()/hasNext() become simple index operations. Advanced: use a stack that lazily expands lists.',
+  },
+
+  493: {
+    id: 493,
+    title: 'Reverse Pairs',
+    titleZh: '翻转对',
+    difficulty: 'Hard',
+    leetcodeSlug: 'reverse-pairs',
+    tags: ['Array', 'Binary Search', 'Divide and Conquer', 'Binary Indexed Tree', 'Merge Sort'],
+    description: `Given an integer array \`nums\`, return the number of **reverse pairs** in the array.
+
+A reverse pair is a pair \`(i, j)\` where \`0 <= i < j < nums.length\` and \`nums[i] > 2 * nums[j]\`.`,
+    examples: [
+      { input: 'nums = [1,3,2,3,1]', output: '2', explanation: '(1,4): 3>2*1=2 and (3,4): 3>2*1=2.' },
+      { input: 'nums = [2,4,3,5,1]', output: '3' },
+    ],
+    constraints: ['1 <= nums.length <= 5 * 10^4', '-2^31 <= nums[i] <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function reversePairs(nums) {
+
+}
+
+function solve(nums) { return reversePairs(nums); }`,
+    starterCodePython: `class Solution:
+    def reversePairs(self, nums: list[int]) -> int:
+        pass
+
+def solve(nums): return Solution().reversePairs(nums)`,
+    testCases: [
+      { label: '[1,3,2,3,1] → 2', args: [[1,3,2,3,1]], expected: 2 },
+      { label: '[2,4,3,5,1] → 3', args: [[2,4,3,5,1]], expected: 3 },
+    ],
+    hint: 'Merge sort: during merge, for each element in the left half, use a pointer to count how many elements in the right half satisfy nums[i] > 2*nums[j] (before merging). Then merge normally.',
+  },
+
+  669: {
+    id: 669,
+    title: 'Trim a Binary Search Tree',
+    titleZh: '修剪二叉搜索树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'trim-a-binary-search-tree',
+    tags: ['Tree', 'DFS', 'BST', 'Binary Tree'],
+    description: `Given the \`root\` of a BST and two integers \`low\` and \`high\`, return the root of the trimmed tree such that all node values lie in \`[low, high]\`. The structure of the tree should be **preserved** (only remove nodes outside range).`,
+    examples: [
+      { input: 'root = [1,0,2], low = 1, high = 2', output: '[1,null,2]' },
+      { input: 'root = [3,0,4,null,2,null,null,1], low = 1, high = 3', output: '[3,2,null,1]' },
+    ],
+    constraints: ['Number of nodes: [1, 10^4]', '0 <= Node.val <= 10^4', 'All values unique.', '0 <= low <= high <= 10^4'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @param {number} low
+ * @param {number} high
+ * @return {TreeNode|null}
+ */
+function trimBST(root, low, high) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function serialize(root) { if(!root) return []; let res=[],q=[root]; while(q.length){let n=q.shift();if(!n){res.push(null);continue;}res.push(n.val);q.push(n.left,n.right);} while(res[res.length-1]==null)res.pop(); return res; }
+function solve(arr, low, high) { return serialize(trimBST(build(arr), low, high)); }`,
+    starterCodePython: `class Solution:
+    def trimBST(self, root, low: int, high: int):
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def serialize(root):
+    if not root: return []
+    res, q = [], [root]
+    while q:
+        n = q.pop(0)
+        if not n: res.append(None); continue
+        res.append(n.val); q.append(n.left); q.append(n.right)
+    while res and res[-1] is None: res.pop()
+    return res
+
+def solve(arr, low, high): return serialize(Solution().trimBST(build(arr), low, high))`,
+    testCases: [
+      { label: '[1,0,2], low=1, high=2 → [1,null,2]', args: [[1,0,2], 1, 2], expected: [1,null,2] },
+      { label: '[3,0,4,null,2,null,null,1], low=1, high=3 → [3,2,null,1]', args: [[3,0,4,null,2,null,null,1], 1, 3], expected: [3,2,null,1] },
+    ],
+    hint: 'Recurse: if root.val < low, return trimBST(root.right, low, high) (left subtree is all too small). If root.val > high, return trimBST(root.left, low, high). Otherwise trim both children.',
+  },
+
+  671: {
+    id: 671,
+    title: 'Second Minimum Node In a Binary Tree',
+    titleZh: '二叉树中第二小的节点',
+    difficulty: 'Easy',
+    leetcodeSlug: 'second-minimum-node-in-a-binary-tree',
+    tags: ['Tree', 'DFS', 'Binary Tree'],
+    description: `Given a non-empty special binary tree where every node has either 0 or 2 children, and the value of each parent node equals the smaller of its two children, find the **second minimum** value in the tree.
+
+If no such value exists, return \`-1\`.`,
+    examples: [
+      { input: 'root = [2,2,5,null,null,5,7]', output: '5' },
+      { input: 'root = [2,2,2]', output: '-1' },
+    ],
+    constraints: ['Number of nodes: [1, 25]', '1 <= Node.val <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {number}
+ */
+function findSecondMinimumValue(root) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr) { return findSecondMinimumValue(build(arr)); }`,
+    starterCodePython: `class Solution:
+    def findSecondMinimumValue(self, root) -> int:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr): return Solution().findSecondMinimumValue(build(arr))`,
+    testCases: [
+      { label: '[2,2,5,null,null,5,7] → 5', args: [[2,2,5,null,null,5,7]], expected: 5 },
+      { label: '[2,2,2] → -1', args: [[2,2,2]], expected: -1 },
+    ],
+    hint: 'Root is the minimum. DFS: whenever a node\'s value > root.val, that node is a candidate for second minimum (don\'t recurse deeper — all descendants are >= that value). Return the smallest candidate, or -1 if none found.',
+  },
+
+  948: {
+    id: 948,
+    title: 'Bag of Tokens',
+    titleZh: '令牌放置',
+    difficulty: 'Medium',
+    leetcodeSlug: 'bag-of-tokens',
+    tags: ['Array', 'Two Pointers', 'Greedy', 'Sorting'],
+    description: `You have \`power\` and an array of \`tokens\`. Each token has a value. You can play them in two ways:
+- **Face-up**: spend \`tokens[i]\` power, gain 1 point (if power >= tokens[i]).
+- **Face-down**: spend 1 point, gain \`tokens[i]\` power (if points >= 1).
+
+Return the **maximum** number of points you can achieve.`,
+    examples: [
+      { input: 'tokens = [100], power = 50', output: '0' },
+      { input: 'tokens = [200,100], power = 150', output: '1' },
+      { input: 'tokens = [100,200,300,400], power = 200', output: '2' },
+    ],
+    constraints: ['0 <= tokens.length <= 1000', '0 <= tokens[i], power < 10^4'],
+    starterCode: `/**
+ * @param {number[]} tokens
+ * @param {number} power
+ * @return {number}
+ */
+function bagOfTokensScore(tokens, power) {
+
+}
+
+function solve(tokens, power) { return bagOfTokensScore(tokens, power); }`,
+    starterCodePython: `class Solution:
+    def bagOfTokensScore(self, tokens: list[int], power: int) -> int:
+        pass
+
+def solve(tokens, power): return Solution().bagOfTokensScore(tokens, power)`,
+    testCases: [
+      { label: '[100], power=50 → 0', args: [[100], 50], expected: 0 },
+      { label: '[200,100], power=150 → 1', args: [[200,100], 150], expected: 1 },
+      { label: '[100,200,300,400], power=200 → 2', args: [[100,200,300,400], 200], expected: 2 },
+    ],
+    hint: 'Sort tokens. Use two pointers (lo, hi). Greedily play the cheapest token face-up to gain a point, or the most expensive face-down to gain power when you can\'t afford the cheapest. Track max points seen.',
+  },
+
+  1285: {
+    id: 1285,
+    title: 'Find the Start and End Number of Continuous Ranges',
+    titleZh: '找到连续区间的开始和结束数字',
+    difficulty: 'Easy',
+    leetcodeSlug: 'find-the-start-and-end-number-of-continuous-ranges',
+    tags: ['Database'],
+    description: `**Note:** This is a database problem adapted for algorithmic practice.
+
+Given a sorted array of distinct integers \`nums\`, group them into **consecutive ranges** and return an array of \`[start, end]\` pairs for each range, sorted by start.`,
+    examples: [
+      { input: 'nums = [0,1,2,4,5,7]', output: '[[0,2],[4,5],[7,7]]', explanation: 'Ranges: 0-2, 4-5, 7.' },
+      { input: 'nums = [0,1,2,3,4]', output: '[[0,4]]' },
+    ],
+    constraints: ['1 <= nums.length <= 10^5', 'nums is sorted and all values are distinct.'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+function findRanges(nums) {
+
+}
+
+function solve(nums) { return findRanges(nums); }`,
+    starterCodePython: `class Solution:
+    def findRanges(self, nums: list[int]) -> list[list[int]]:
+        pass
+
+def solve(nums): return Solution().findRanges(nums)`,
+    testCases: [
+      { label: '[0,1,2,4,5,7] → [[0,2],[4,5],[7,7]]', args: [[0,1,2,4,5,7]], expected: [[0,2],[4,5],[7,7]] },
+      { label: '[0,1,2,3,4] → [[0,4]]', args: [[0,1,2,3,4]], expected: [[0,4]] },
+      { label: '[1,3,5] → [[1,1],[3,3],[5,5]]', args: [[1,3,5]], expected: [[1,1],[3,3],[5,5]] },
+    ],
+    hint: 'Iterate with a start pointer. Whenever nums[i+1] != nums[i]+1 (or at the end), emit [start, nums[i]] and update start = nums[i+1].',
+  },
+
+  1427: {
+    id: 1427,
+    title: 'Perform String Shifts',
+    titleZh: '字符串的左右移',
+    difficulty: 'Easy',
+    leetcodeSlug: 'perform-string-shifts',
+    tags: ['Array', 'Math', 'String'],
+    description: `You are given a string \`s\` containing lowercase English letters, and a matrix \`shift\`, where \`shift[i] = [direction, amount]\`:
+- \`direction = 0\` means shift left by \`amount\`.
+- \`direction = 1\` means shift right by \`amount\`.
+
+Perform all the shifts and return the final string.`,
+    examples: [
+      { input: 's = "abc", shift = [[0,1],[1,2]]', output: '"cab"', explanation: 'Left 1 → "bca", right 2 → "cab".' },
+      { input: 's = "abcdefg", shift = [[1,1],[1,1],[0,2],[1,3]]', output: '"efgabcd"' },
+    ],
+    constraints: ['1 <= s.length <= 100', '1 <= shift.length <= 100', '0 <= shift[i][0] <= 1', '0 <= shift[i][1] <= 100'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {number[][]} shift
+ * @return {string}
+ */
+function stringShift(s, shift) {
+
+}
+
+function solve(s, shift) { return stringShift(s, shift); }`,
+    starterCodePython: `class Solution:
+    def stringShift(self, s: str, shift: list[list[int]]) -> str:
+        pass
+
+def solve(s, shift): return Solution().stringShift(s, shift)`,
+    testCases: [
+      { label: '"abc", [[0,1],[1,2]] → "cab"', args: ['abc', [[0,1],[1,2]]], expected: 'cab' },
+      { label: '"abcdefg", [[1,1],[1,1],[0,2],[1,3]] → "efgabcd"', args: ['abcdefg', [[1,1],[1,1],[0,2],[1,3]]], expected: 'efgabcd' },
+    ],
+    hint: 'Sum all shifts: left shifts subtract, right shifts add. Take total mod n (handle negative with ((total % n) + n) % n). Rotate the string by that amount to the right.',
+  },
+
+  1780: {
+    id: 1780,
+    title: 'Check if Number is a Sum of Powers of Three',
+    titleZh: '判断一个数字是否可以表示成三的幂的和',
+    difficulty: 'Medium',
+    leetcodeSlug: 'check-if-number-is-a-sum-of-powers-of-three',
+    tags: ['Math', 'Greedy'],
+    description: `Given an integer \`n\`, return \`true\` if it is possible to represent \`n\` as the sum of **distinct** powers of three. Otherwise, return \`false\`.
+
+An integer \`y\` is a power of three if there exists an integer \`x\` such that \`y == 3^x\`.`,
+    examples: [
+      { input: 'n = 12', output: 'true', explanation: '12 = 3^1 + 3^2 = 3 + 9.' },
+      { input: 'n = 91', output: 'true', explanation: '91 = 3^0 + 3^2 + 3^4 = 1+9+81.' },
+      { input: 'n = 21', output: 'false' },
+    ],
+    constraints: ['1 <= n <= 10^7'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {boolean}
+ */
+function checkPowersOfThree(n) {
+
+}
+
+function solve(n) { return checkPowersOfThree(n); }`,
+    starterCodePython: `class Solution:
+    def checkPowersOfThree(self, n: int) -> bool:
+        pass
+
+def solve(n): return Solution().checkPowersOfThree(n)`,
+    testCases: [
+      { label: 'n=12 → true', args: [12], expected: true },
+      { label: 'n=91 → true', args: [91], expected: true },
+      { label: 'n=21 → false', args: [21], expected: false },
+    ],
+    hint: 'Convert n to base 3. If any digit is 2, the answer is false (we can\'t use the same power twice). If all digits are 0 or 1, return true.',
+  },
+
+  1790: {
+    id: 1790,
+    title: 'Check if One String Swap Can Make Strings Equal',
+    titleZh: '仅执行一次字符串交换能否使两个字符串相等',
+    difficulty: 'Easy',
+    leetcodeSlug: 'check-if-one-string-swap-can-make-strings-equal',
+    tags: ['Hash Table', 'String', 'Counting'],
+    description: `You are given two strings \`s1\` and \`s2\` of equal length. A **string swap** is an operation where you choose some index in a string and swap the characters at that index with some other index in the **same** string.
+
+Return \`true\` if it is possible to make both strings equal by performing **at most one** string swap on **exactly one** of the strings. Otherwise, return \`false\`.`,
+    examples: [
+      { input: 's1 = "bank", s2 = "kanb"', output: 'true', explanation: 'Swap positions 0 and 3 in s1: "bank" → "kanb".' },
+      { input: 's1 = "attack", s2 = "defend"', output: 'false' },
+      { input: 's1 = "kelb", s2 = "kelb"', output: 'true', explanation: 'Already equal, no swap needed.' },
+      { input: 's1 = "abcd", s2 = "dcba"', output: 'false' },
+    ],
+    constraints: ['1 <= s1.length, s2.length <= 100', 's1.length == s2.length', 's1 and s2 consist of only lowercase English letters.'],
+    starterCode: `/**
+ * @param {string} s1
+ * @param {string} s2
+ * @return {boolean}
+ */
+function areAlmostEqual(s1, s2) {
+
+}
+
+function solve(s1, s2) { return areAlmostEqual(s1, s2); }`,
+    starterCodePython: `class Solution:
+    def areAlmostEqual(self, s1: str, s2: str) -> bool:
+        pass
+
+def solve(s1, s2): return Solution().areAlmostEqual(s1, s2)`,
+    testCases: [
+      { label: '"bank","kanb" → true', args: ['bank','kanb'], expected: true },
+      { label: '"attack","defend" → false', args: ['attack','defend'], expected: false },
+      { label: '"kelb","kelb" → true', args: ['kelb','kelb'], expected: true },
+      { label: '"abcd","dcba" → false', args: ['abcd','dcba'], expected: false },
+    ],
+    hint: 'Find all differing positions. There must be 0 or exactly 2 differences. If 2: verify s1[i]==s2[j] and s1[j]==s2[i].',
+  },
+
+  1816: {
+    id: 1816,
+    title: 'Truncate Sentence',
+    titleZh: '截断句子',
+    difficulty: 'Easy',
+    leetcodeSlug: 'truncate-sentence',
+    tags: ['Array', 'String'],
+    description: `A **sentence** is a list of words separated by spaces. Each word consists of only English letters (no punctuation).
+
+Given a sentence \`s\` and an integer \`k\`, return the sentence truncated to its **first \`k\` words**.`,
+    examples: [
+      { input: 's = "Hello how are you Contestant", k = 4', output: '"Hello how are you"' },
+      { input: 's = "What is the solution to this problem", k = 4', output: '"What is the solution"' },
+      { input: 's = "chopper is not a tanuki", k = 5', output: '"chopper is not a tanuki"' },
+    ],
+    constraints: ['1 <= s.length <= 500', 'k is in the range [1, number of words in s]'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {number} k
+ * @return {string}
+ */
+function truncateSentence(s, k) {
+
+}
+
+function solve(s, k) { return truncateSentence(s, k); }`,
+    starterCodePython: `class Solution:
+    def truncateSentence(self, s: str, k: int) -> str:
+        pass
+
+def solve(s, k): return Solution().truncateSentence(s, k)`,
+    testCases: [
+      { label: '"Hello how are you Contestant", k=4', args: ['Hello how are you Contestant', 4], expected: 'Hello how are you' },
+      { label: '"What is the solution to this problem", k=4', args: ['What is the solution to this problem', 4], expected: 'What is the solution' },
+      { label: '"chopper is not a tanuki", k=5', args: ['chopper is not a tanuki', 5], expected: 'chopper is not a tanuki' },
+    ],
+    hint: 'Split on spaces, take first k words, join with spaces.',
+  },
+
+  130: {
+    id: 130,
+    title: 'Surrounded Regions',
+    titleZh: '被围绕的区域',
+    difficulty: 'Medium',
+    leetcodeSlug: 'surrounded-regions',
+    tags: ['Array', 'DFS', 'BFS', 'Union Find', 'Matrix'],
+    description: `Given an \`m x n\` matrix \`board\` containing \`'X'\` and \`'O'\`, capture all regions that are **4-directionally surrounded** by \`'X'\`.
+
+A region is captured by flipping all \`'O'\`s into \`'X'\`s in that surrounded region. \`'O'\`s on the border or connected to a border \`'O'\` are NOT captured.`,
+    examples: [
+      { input: 'board = [["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]]', output: '[["X","X","X","X"],["X","X","X","X"],["X","X","X","X"],["X","O","X","X"]]' },
+      { input: 'board = [["X"]]', output: '[["X"]]' },
+    ],
+    constraints: ['m == board.length', 'n == board[0].length', '1 <= m, n <= 200', 'board[i][j] is \'X\' or \'O\'.'],
+    starterCode: `/**
+ * @param {character[][]} board
+ * @return {void} Modify board in-place
+ */
+function solve_board(board) {
+
+}
+
+function solve(board) {
+  // deep copy to avoid mutation of test input
+  const b = board.map(r => [...r]);
+  solve_board(b);
+  return b;
+}`,
+    starterCodePython: `class Solution:
+    def solve(self, board: list[list[str]]) -> None:
+        pass
+
+def solve(board):
+    import copy
+    b = copy.deepcopy(board)
+    Solution().solve(b)
+    return b`,
+    testCases: [
+      {
+        label: '4×4 board → flip interior Os',
+        args: [[['X','X','X','X'],['X','O','O','X'],['X','X','O','X'],['X','O','X','X']]],
+        expected: [['X','X','X','X'],['X','X','X','X'],['X','X','X','X'],['X','O','X','X']],
+      },
+      { label: '[["X"]] → [["X"]]', args: [[['X']]], expected: [['X']] },
+    ],
+    hint: 'Mark all \'O\'s reachable from the border (using DFS/BFS) as safe (e.g., temp marker \'S\'). Then flip remaining \'O\' to \'X\', and \'S\' back to \'O\'.',
+  },
+
+  261: {
+    id: 261,
+    title: 'Graph Valid Tree',
+    titleZh: '以图判树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'graph-valid-tree',
+    tags: ['DFS', 'BFS', 'Union Find', 'Graph'],
+    description: `Given \`n\` nodes labeled from \`0\` to \`n-1\` and a list of undirected \`edges\` where \`edges[i] = [a, b]\`, return \`true\` if these edges make up a **valid tree**.
+
+A valid tree has exactly \`n-1\` edges and is fully connected (no cycles).`,
+    examples: [
+      { input: 'n = 5, edges = [[0,1],[0,2],[0,3],[1,4]]', output: 'true' },
+      { input: 'n = 5, edges = [[0,1],[1,2],[2,3],[1,3],[1,4]]', output: 'false', explanation: 'Has a cycle.' },
+    ],
+    constraints: ['1 <= n <= 2000', '0 <= edges.length <= 5000', 'edges[i].length == 2', 'No self-loops or repeated edges.'],
+    starterCode: `/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {boolean}
+ */
+function validTree(n, edges) {
+
+}
+
+function solve(n, edges) { return validTree(n, edges); }`,
+    starterCodePython: `class Solution:
+    def validTree(self, n: int, edges: list[list[int]]) -> bool:
+        pass
+
+def solve(n, edges): return Solution().validTree(n, edges)`,
+    testCases: [
+      { label: 'n=5, [[0,1],[0,2],[0,3],[1,4]] → true', args: [5, [[0,1],[0,2],[0,3],[1,4]]], expected: true },
+      { label: 'n=5, [[0,1],[1,2],[2,3],[1,3],[1,4]] → false', args: [5, [[0,1],[1,2],[2,3],[1,3],[1,4]]], expected: false },
+    ],
+    hint: 'A valid tree must have exactly n-1 edges and be connected. Use Union-Find: if adding an edge creates a cycle (both nodes already in the same component), return false. After all edges, check all nodes are connected.',
+  },
+
+  277: {
+    id: 277,
+    title: 'Find the Celebrity',
+    titleZh: '搜寻名人',
+    difficulty: 'Medium',
+    leetcodeSlug: 'find-the-celebrity',
+    tags: ['Two Pointers', 'Graph', 'Interactive'],
+    description: `**Adapted problem:** There are \`n\` people at a party (0-indexed). A **celebrity** is someone who is known by everyone else but knows nobody else.
+
+Given a \`knows[i][j]\` matrix (knows[i][j]=true means i knows j), find the celebrity. Return their index, or \`-1\` if none exists.`,
+    examples: [
+      { input: 'knows = [[1,1,0],[0,1,0],[1,1,1]]', output: '1', explanation: 'Person 1 is known by 0 and 2, and knows nobody (knows[1][0]=false, knows[1][2]=false, knows[1][1]=true only self).' },
+      { input: 'knows = [[1,0,1],[1,1,0],[0,1,1]]', output: '-1' },
+    ],
+    constraints: ['n == knows.length == knows[0].length', '2 <= n <= 100', 'knows[i][j] is 0 or 1', 'knows[i][i] == 1'],
+    starterCode: `/**
+ * @param {number[][]} knows
+ * @return {number}
+ */
+function findCelebrity(knows) {
+
+}
+
+function solve(knows) { return findCelebrity(knows); }`,
+    starterCodePython: `class Solution:
+    def findCelebrity(self, knows: list[list[int]]) -> int:
+        pass
+
+def solve(knows): return Solution().findCelebrity(knows)`,
+    testCases: [
+      { label: '3×3 matrix → 1', args: [[[1,1,0],[0,1,0],[1,1,1]]], expected: 1 },
+      { label: '3×3 matrix → -1', args: [[[1,0,1],[1,1,0],[0,1,1]]], expected: -1 },
+    ],
+    hint: 'Two-pass: (1) Find candidate — start with 0, if candidate knows i, switch candidate to i (candidate can\'t be celebrity if they know someone). (2) Verify candidate — check everyone knows candidate and candidate knows nobody.',
+  },
+
+  323: {
+    id: 323,
+    title: 'Number of Connected Components in an Undirected Graph',
+    titleZh: '无向图中连通分量的数目',
+    difficulty: 'Medium',
+    leetcodeSlug: 'number-of-connected-components-in-an-undirected-graph',
+    tags: ['DFS', 'BFS', 'Union Find', 'Graph'],
+    description: `Given \`n\` nodes labeled \`0\` to \`n-1\` and a list of undirected \`edges\`, return the number of **connected components** in the graph.`,
+    examples: [
+      { input: 'n = 5, edges = [[0,1],[1,2],[3,4]]', output: '2' },
+      { input: 'n = 5, edges = [[0,1],[1,2],[2,3],[3,4]]', output: '1' },
+    ],
+    constraints: ['1 <= n <= 2000', '1 <= edges.length <= 5000', 'edges[i].length == 2', 'No repeated edges or self-loops.'],
+    starterCode: `/**
+ * @param {number} n
+ * @param {number[][]} edges
+ * @return {number}
+ */
+function countComponents(n, edges) {
+
+}
+
+function solve(n, edges) { return countComponents(n, edges); }`,
+    starterCodePython: `class Solution:
+    def countComponents(self, n: int, edges: list[list[int]]) -> int:
+        pass
+
+def solve(n, edges): return Solution().countComponents(n, edges)`,
+    testCases: [
+      { label: 'n=5, [[0,1],[1,2],[3,4]] → 2', args: [5, [[0,1],[1,2],[3,4]]], expected: 2 },
+      { label: 'n=5, [[0,1],[1,2],[2,3],[3,4]] → 1', args: [5, [[0,1],[1,2],[2,3],[3,4]]], expected: 1 },
+    ],
+    hint: 'Union-Find: initialize n components. For each edge, union both nodes and decrement component count if they were in different sets. Return final count. Alternatively, DFS/BFS from each unvisited node.',
+  },
+
+  801: {
+    id: 801,
+    title: 'Minimum Swaps To Make Sequences Increasing',
+    titleZh: '使序列递增的最小交换次数',
+    difficulty: 'Hard',
+    leetcodeSlug: 'minimum-swaps-to-make-sequences-increasing',
+    tags: ['Array', 'Dynamic Programming'],
+    description: `You are given two integer arrays \`nums1\` and \`nums2\` of the same length. In one operation, you can swap \`nums1[i]\` and \`nums2[i]\`.
+
+Return the minimum number of swaps needed to make both arrays **strictly increasing**.`,
+    examples: [
+      { input: 'nums1 = [1,3,5,4], nums2 = [1,2,3,7]', output: '1', explanation: 'Swap at index 3.' },
+      { input: 'nums1 = [0,3,5,8,9], nums2 = [2,1,4,6,9]', output: '1' },
+    ],
+    constraints: ['2 <= nums1.length <= 10^5', '0 <= nums1[i], nums2[i] <= 2 * 10^5'],
+    starterCode: `/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+function minSwap(nums1, nums2) {
+
+}
+
+function solve(nums1, nums2) { return minSwap(nums1, nums2); }`,
+    starterCodePython: `class Solution:
+    def minSwap(self, nums1: list[int], nums2: list[int]) -> int:
+        pass
+
+def solve(nums1, nums2): return Solution().minSwap(nums1, nums2)`,
+    testCases: [
+      { label: '[1,3,5,4],[1,2,3,7] → 1', args: [[1,3,5,4],[1,2,3,7]], expected: 1 },
+      { label: '[0,3,5,8,9],[2,1,4,6,9] → 1', args: [[0,3,5,8,9],[2,1,4,6,9]], expected: 1 },
+    ],
+    hint: 'DP with two states per index: keep[i] = min swaps to make both arrays increasing up to i without swapping at i; swap[i] = min swaps with a swap at i. Transition depends on whether keep/swap at i-1 keeps both arrays valid.',
+  },
+
+  922: {
+    id: 922,
+    title: 'Sort Array By Parity II',
+    titleZh: '按奇偶排序数组 II',
+    difficulty: 'Easy',
+    leetcodeSlug: 'sort-array-by-parity-ii',
+    tags: ['Array', 'Two Pointers', 'Sorting'],
+    description: `Given an array \`nums\` of integers, half of which are odd and half are even, rearrange the array so that whenever \`nums[i]\` is odd, \`i\` is odd, and whenever \`nums[i]\` is even, \`i\` is even.
+
+You may return any answer array that satisfies this condition.`,
+    examples: [
+      { input: 'nums = [4,2,5,7]', output: '[4,5,2,7]', explanation: 'Even indices have even numbers, odd indices have odd numbers.' },
+      { input: 'nums = [2,3]', output: '[2,3]' },
+    ],
+    constraints: ['2 <= nums.length <= 2 * 10^4', 'nums.length is even.', 'Half of integers in nums are even.'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+function sortArrayByParityII(nums) {
+
+}
+
+function solve(nums) { return sortArrayByParityII(nums); }`,
+    starterCodePython: `class Solution:
+    def sortArrayByParityII(self, nums: list[int]) -> list[int]:
+        pass
+
+def solve(nums): return Solution().sortArrayByParityII(nums)`,
+    testCases: [
+      {
+        label: '[4,2,5,7] → even at even idx, odd at odd idx',
+        args: [[4,2,5,7]],
+        expected: [4,5,2,7],
+      },
+      { label: '[2,3] → [2,3]', args: [[2,3]], expected: [2,3] },
+    ],
+    hint: 'Two pointers: one at even indices, one at odd indices. Walk even pointer until you find an odd number; walk odd pointer until you find an even number. Swap. Repeat.',
+  },
+
+  984: {
+    id: 984,
+    title: 'String Without AAA or BBB',
+    titleZh: '不含 AAA 或 BBB 的字符串',
+    difficulty: 'Medium',
+    leetcodeSlug: 'string-without-aaa-or-bbb',
+    tags: ['String', 'Greedy'],
+    description: `Given two integers \`a\` and \`b\`, return **any** string \`s\` such that:
+- \`s\` has length \`a + b\`.
+- \`s\` contains exactly \`a\` \`'a'\`s and exactly \`b\` \`'b'\`s.
+- \`s\` does not contain \`"aaa"\` or \`"bbb"\`.`,
+    examples: [
+      { input: 'a = 1, b = 2', output: '"abb"', explanation: '"bab" and "bba" also accepted.' },
+      { input: 'a = 4, b = 1', output: '"aabaa"' },
+    ],
+    constraints: ['0 <= a, b <= 100', 'It is guaranteed that such a string exists for the given a and b.'],
+    starterCode: `/**
+ * @param {number} a
+ * @param {number} b
+ * @return {string}
+ */
+function strWithout3a3b(a, b) {
+
+}
+
+function solve(a, b) { return strWithout3a3b(a, b); }`,
+    starterCodePython: `class Solution:
+    def strWithout3a3b(self, a: int, b: int) -> str:
+        pass
+
+def solve(a, b): return Solution().strWithout3a3b(a, b)`,
+    testCases: [
+      {
+        label: 'a=1,b=2 → valid string',
+        args: [1, 2],
+        expected: 'abb',
+      },
+      {
+        label: 'a=4,b=1 → valid string',
+        args: [4, 1],
+        expected: 'aabaa',
+      },
+    ],
+    hint: 'Greedy: always write the character with more remaining count. If last two chars are the same, switch to the other character. This ensures no three-in-a-row.',
+  },
+
+  1275: {
+    id: 1275,
+    title: 'Find Winner on a Tic Tac Toe Game',
+    titleZh: '找出井字棋的获胜者',
+    difficulty: 'Easy',
+    leetcodeSlug: 'find-winner-on-a-tic-tac-toe-game',
+    tags: ['Array', 'Hash Table', 'Matrix', 'Simulation'],
+    description: `Tic-tac-toe is played on a 3×3 grid. Two players take turns: Player A uses \`'A'\` and Player B uses \`'B'\`.
+
+Given a list of \`moves\` where \`moves[i] = [row, col]\` (Player A moves first), determine the result:
+- Return \`"A"\` if A wins, \`"B"\` if B wins.
+- Return \`"Draw"\` if all cells are filled with no winner.
+- Return \`"Pending"\` if there are still moves to be made.`,
+    examples: [
+      { input: 'moves = [[0,0],[2,0],[1,1],[2,1],[2,2]]', output: '"A"', explanation: 'A wins with diagonal.' },
+      { input: 'moves = [[0,0],[1,1],[0,1],[0,2],[1,0],[2,0]]', output: '"B"' },
+      { input: 'moves = [[0,0],[1,1],[2,0],[1,0],[1,2],[2,1],[0,1],[0,2],[2,2]]', output: '"Draw"' },
+    ],
+    constraints: ['1 <= moves.length <= 9', 'moves[i].length == 2', '0 <= moves[i][j] <= 2', 'No two moves use the same cell.'],
+    starterCode: `/**
+ * @param {number[][]} moves
+ * @return {string}
+ */
+function tictactoe(moves) {
+
+}
+
+function solve(moves) { return tictactoe(moves); }`,
+    starterCodePython: `class Solution:
+    def tictactoe(self, moves: list[list[int]]) -> str:
+        pass
+
+def solve(moves): return Solution().tictactoe(moves)`,
+    testCases: [
+      { label: '[[0,0],[2,0],[1,1],[2,1],[2,2]] → "A"', args: [[[0,0],[2,0],[1,1],[2,1],[2,2]]], expected: 'A' },
+      { label: '[[0,0],[1,1],[0,1],[0,2],[1,0],[2,0]] → "B"', args: [[[0,0],[1,1],[0,1],[0,2],[1,0],[2,0]]], expected: 'B' },
+      { label: 'draw → "Draw"', args: [[[0,0],[1,1],[2,0],[1,0],[1,2],[2,1],[0,1],[0,2],[2,2]]], expected: 'Draw' },
+    ],
+    hint: 'Simulate the board. After each move, check rows, columns, and both diagonals for the current player. If 9 moves played with no winner, return "Draw". Otherwise "Pending".',
+  },
+
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {
