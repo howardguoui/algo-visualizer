@@ -200,4 +200,8 @@ If a program crashes, you can check `/var/log` for error messages, or look for l
 
 Device files are in `/dev`, but usually the system mounts things like USB drives automatically for you. You can access these devices in the `/media` folder.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

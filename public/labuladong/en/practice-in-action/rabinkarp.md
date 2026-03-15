@@ -35,19 +35,22 @@ Let's get started.
 
 First, let me ask you a basic question: If you are given a string that represents a positive integer, how do you convert it to a number? It's very simple. The code below does this:
 
-```java
-String s = "8264";
-int number = 0;
-for (int i = 0; i < s.length(); i++) {
-    // convert the character to a number
-    number = 10 * number + (s.charAt(i) - '0');
-    System.out.println(number);
-}
-// print output:
-// 8
-// 82
-// 826
-// 8264
+```python
+s = "8264"
+number = 0
+for i in range(len(s)):
+    # convert character to number
+    number = 10 * number + (ord(s[i]) - ord('0'))
+    print(number)
+# print output:
+# 8
+# 82
+# 826
+# 8264
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

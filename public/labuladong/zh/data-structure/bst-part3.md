@@ -55,8 +55,8 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-int numTrees(int n);
+```python
+def numTrees(n: int) -> int:
 ``` 
 
 这就是一个正宗的穷举问题，那么什么方式能够正确地穷举有效 BST 的数量呢？
@@ -64,3 +64,7 @@ int numTrees(int n);
 我们前文说过，不要小看「穷举」，这是一件看起来简单但是比较有技术含量的事情，问题的关键就是不能数漏，也不能数多，你咋整？
 
 之前 [手把手刷二叉树第一期](</zh/algo/data-structure/binary-tree-part1/>) 说过，二叉树算法的关键就在于明确根节点需要做什么，其实 BST 作为一种特殊的二叉树，核心思路也是一样的。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

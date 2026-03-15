@@ -39,8 +39,8 @@ LeetCode| 力扣| 难度
 
 算法签名如下：
 
-```java
-int[] advantageCount(int[] nums1, int[] nums2);
+```python
+def advantageCount(nums1: List[int], nums2: List[int]) -> List[int]:
 ``` 
 
 比如输入：
@@ -53,3 +53,7 @@ nums2 = [13,25,32,11]
 你的算法应该返回 `[24,32,8,12]`，因为这样排列 `nums1` 的话有三个元素都有「优势」。
 
 **这就像田忌赛马的情景，`nums1` 就是田忌的马，`nums2` 就是齐王的马，数组中的元素就是马的战斗力，你就是孙膑，展示你真正的技术吧**。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

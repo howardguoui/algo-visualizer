@@ -53,12 +53,12 @@ From what you learned before, you know that a hash table is basically a `table` 
 
 For a normal array, picking a random element is simple. Just use a random number generator to get a random index in `[0, size)`, and you get a random element:
 
-```java
-int randomeElement(int[] arr) {
-    Random r = new Random();
-    // generate a random index in the range [0, arr.length)
-    return arr[r.nextInt(arr.length)];
-}
+```python
+import random
+
+def randomeElement(arr: List[int]) -> int:
+    # generate a random index in the range [0, len(arr))
+    return arr[random.randint(0, len(arr) - 1)]
 ``` 
 
 This algorithm is correct. Its time complexity is O(1), and each element is picked with probability `1/n`, where `n` is the length of the `arr` array.
@@ -132,4 +132,8 @@ The only solution is to traverse the entire `table` array using the `keys` metho
 
 Feeling stuck? This is why accumulating experience in designing classic data structures is essential. If you encounter similar issues during interviews or exams, it might be difficult to come up with a solution on the spot. Next, I will introduce how to enhance a hash table with arrays to easily implement the `randomKey()` API.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

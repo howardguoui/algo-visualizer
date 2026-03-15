@@ -70,17 +70,19 @@ return res
 
 我们的算法会被输入一个 `NestedInteger` 列表，我们需要做的就是写一个迭代器类 `NestedIterator`，将这个带有嵌套结构 `NestedInteger` 的列表「拍平」：
 
-```java
-public class NestedIterator implements Iterator<Integer> {
-    // 构造器输入一个 NestedInteger 列表
-    public NestedIterator(List<NestedInteger> nestedList) {}
-    
-    // 返回下一个整数
-    public Integer next() {}
+```python
+class NestedIterator:
+    def __init__(self, nestedList: List[NestedInteger]):
+        # 构造器输入一个 NestedInteger 列表
+        pass
 
-    // 是否还有下一个元素？
-    public boolean hasNext() {}
-}
+    # 返回下一个整数
+    def next(self) -> int:
+        pass
+
+    # 是否还有下一个元素？
+    def hasNext(self) -> bool:
+        pass
 ``` 
 
 我们写的这个 `NestedIterator` 类会被这样调用，**先调用`hasNext` 方法，后调用 `next` 方法**：
@@ -100,3 +102,7 @@ while (i.hasNext())
 那么话说回来，对于这个算法问题，我们怎么解决呢？`NestedInteger` 结构可以无限嵌套，怎么把这个结构「打平」，为迭代器的调用者屏蔽底层细节，得到扁平化的输出呢？
 
 ## 二、解题思路
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

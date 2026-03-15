@@ -46,23 +46,22 @@ First, I want to review a few key points about using binary heaps for priority q
 
 So, the simplest idea for heap sort is to use the priority queue directly: put all the elements into the priority queue, then take them out one by one, and you get a sorted array.
 
-```java
-// sort the array from smallest to largest using a priority queue
-void sort(int[] nums) {
-    // create a min heap that sorts elements from smallest to largest
-    SimpleMinPQ pq = new SimpleMinPQ(nums.length);
-    // first insert all elements into the priority queue
-    for (int num : nums) {
-        // push operation automatically builds a binary heap, with time complexity O(logN)
-        pq.push(num);
-    }
-    // then extract all elements, resulting in a sorted order from smallest to largest
-    for (int i = 0; i < nums.length; i++) {
-        // pop operation removes the smallest element from the top
-        // of the binary heap, with time complexity O(logN)
-        nums[i] = pq.pop();
-    }
-}
+```python
+# sort the array from smallest to largest using a priority queue
+def sort(nums):
+    # create a min heap that sorts elements from smallest to largest
+    pq = SimpleMinPQ(len(nums))
+    
+    # first insert all elements into the priority queue
+    for num in nums:
+        # push operation automatically builds a binary heap, with time complexity O(logN)
+        pq.push(num)
+    
+    # then extract all elements, resulting in a sorted order from smallest to largest
+    for i in range(len(nums)):
+        # pop operation removes the smallest element from the top
+        # of the binary heap, with time complexity O(logN)
+        nums[i] = pq.pop()
 ``` 
 
 Since the `push` and `pop` methods of a priority queue have a complexity of O(log⁡N)O(\log N)O(logN), the overall time complexity of sorting is O(Nlog⁡N)O(N \log N)O(NlogN), where `N` is the length of the input array.
@@ -83,4 +82,8 @@ Before explaining the heap sort code implementation in detail, I'll first presen
 
 These functions are extracted from the priority queue implementation in [Binary Heap Implementation of Priority Queue](</en/algo/data-structure-basic/binary-heap-implement/>), with the array passed in as a function parameter, and the other logic remains unchanged:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

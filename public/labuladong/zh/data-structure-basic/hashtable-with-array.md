@@ -53,12 +53,12 @@ interface Map<K, V> {
 
 在标准数组，随机获取一个元素很简单，只要用随机数生成器生成一个 `[0, size)` 的随机索引，就相当于找了一个随机元素：
 
-```java
-int randomeElement(int[] arr) {
-    Random r = new Random();
-    // 生成 [0, arr.length) 的随机索引
-    return arr[r.nextInt(arr.length)];
-}
+```python
+import random
+
+def randomeElement(arr: List[int]) -> int:
+    # 生成 [0, len(arr)) 的随机索引
+    return arr[random.randint(0, len(arr) - 1)]
 ``` 
 
 这个算法是正确的，它的复杂度是 O(1)，且每个元素被选中的概率都是 `1/n`，`n` 为 `arr` 数组的总元素个数。
@@ -131,3 +131,7 @@ int randomeElement(int[] arr) {
 唯一的办法就是通过 `keys` 方法遍历整个 `table` 数组，把所有的键都存储到一个数组中，然后再随机返回一个键。但这样复杂度就是 O(N)O(N)O(N) 了，还是不符合要求。
 
 是不是感觉已经走投无路了？所以说，还是要积累一些经典数据结构设计经验，如果面试笔试的时候遇到类似的问题，你现场想恐怕是很难的。下面我就来介绍一下如何用数组加强哈希表，轻松实现 `randomKey()` API。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

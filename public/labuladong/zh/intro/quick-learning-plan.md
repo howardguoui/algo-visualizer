@@ -133,96 +133,79 @@
 
 第一种，最简单的写法：
 
-```java
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    while (!q.isEmpty()) {
-        TreeNode cur = q.poll();
-        // 访问 cur 节点
-        System.out.println(cur.val);
+```python
+from collections import deque
 
-        // 把 cur 的左右子节点加入队列
-        if (cur.left != null) {
-            q.offer(cur.left);
-        }
-        if (cur.right != null) {
-            q.offer(cur.right);
-        }
-    }
-}
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    q.append(root)
+    while q:
+        cur = q.popleft()
+        # 访问 cur 节点
+        print(cur.val)
+
+        # 把 cur 的左右子节点加入队列
+        if cur.left is not None:
+            q.append(cur.left)
+        if cur.right is not None:
+            q.append(cur.right)
 ``` 
 
 第二种，可以利用 `step` 记录层数信息，较常用：
 
-```java
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    // 记录当前遍历到的层数（根节点视为第 1 层）
-    int depth = 1;
+```python
+from collections import deque
 
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        for (int i = 0; i < sz; i++) {
-            TreeNode cur = q.poll();
-            // 访问 cur 节点，同时知道它所在的层数
-            System.out.println("depth = " + depth + ", val = " + cur.val);
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    q.append(root)
+    # 记录当前遍历到的层数（根节点视为第 1 层）
+    depth = 1
 
-            // 把 cur 的左右子节点加入队列
-            if (cur.left != null) {
-                q.offer(cur.left);
-            }
-            if (cur.right != null) {
-                q.offer(cur.right);
-            }
-        }
-        depth++;
-    }
-}
+    while q:
+        sz = len(q)
+        for i in range(sz):
+            cur = q.popleft()
+            # 访问 cur 节点，同时知道它所在的层数
+            print(f"depth = {depth}, val = {cur.val}")
+
+            # 把 cur 的左右子节点加入队列
+            if cur.left is not None:
+                q.append(cur.left)
+            if cur.right is not None:
+                q.append(cur.right)
+        depth += 1
 ``` 
 
 第三种，使用自定义 `State` 类维护每个节点的信息，复杂一些但最灵活，会在图算法或复杂 BFS 算法中见到：
 
-```java
-class State {
-    TreeNode node;
-    int depth;
+```python
+class State:
+    def __init__(self, node, depth):
+        self.node = node
+        self.depth = depth
 
-    State(TreeNode node, int depth) {
-        this.node = node;
-        this.depth = depth;
-    }
-}
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    # 根节点的路径权重和是 1
+    q.append(State(root, 1))
 
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<State> q = new LinkedList<>();
-    // 根节点的路径权重和是 1
-    q.offer(new State(root, 1));
+    while q:
+        cur = q.popleft()
+        # 访问 cur 节点，同时知道它的路径权重和
+        print(f"depth = {cur.depth}, val = {cur.node.val}")
 
-    while (!q.isEmpty()) {
-        State cur = q.poll();
-        // 访问 cur 节点，同时知道它的路径权重和
-        System.out.println("depth = " + cur.depth + ", val = " + cur.node.val);
-
-        // 把 cur 的左右子节点加入队列
-        if (cur.node.left != null) {
-            q.offer(new State(cur.node.left, cur.depth + 1));
-        }
-        if (cur.node.right != null) {
-            q.offer(new State(cur.node.right, cur.depth + 1));
-        }
-    }
-}
+        # 把 cur 的左右子节点加入队列
+        if cur.node.left is not None:
+            q.append(State(cur.node.left, cur.depth + 1))
+        if cur.node.right is not None:
+            q.append(State(cur.node.right, cur.depth + 1))
 ``` 
 
 关键基础，建议用时 0.5 天
@@ -309,42 +292,39 @@ void levelOrderTraverse(TreeNode root) {
 
 滑动窗口代码模板（伪码）
 
-```java
-// 滑动窗口算法伪码框架
-void slidingWindow(String s) {
-    // 用合适的数据结构记录窗口中的数据，根据具体场景变通
-    // 比如说，我想记录窗口中元素出现的次数，就用 map
-    // 如果我想记录窗口中的元素和，就可以只用一个 int
-    Object window = ...
-    
-    int left = 0, right = 0;
-    while (right < s.length()) {
-        // c 是将移入窗口的字符
-        char c = s[right];
+```python
+# 滑动窗口算法伪码框架
+def slidingWindow(s: str):
+    # 用合适的数据结构记录窗口中的数据，根据具体场景变通
+    # 比如说，我想记录窗口中元素出现的次数，就用 map
+    # 如果我想记录窗口中的元素和，就可以只用一个 int
+    window = ...
+
+    left, right = 0, 0
+    while right < len(s):
+        # c 是将移入窗口的字符
+        c = s[right]
         window.add(c)
-        // 增大窗口
-        right++;
-        // 进行窗口内数据的一系列更新
+        # 增大窗口
+        right += 1
+        # 进行窗口内数据的一系列更新
         ...
 
-        // *** debug 输出的位置 ***
-        // 注意在最终的解法代码中不要 print
-        // 因为 IO 操作很耗时，可能导致超时
-        printf("window: [%d, %d)\n", left, right);
-        // ***********************
+        # *** debug 输出的位置 ***
+        # 注意在最终的解法代码中不要 print
+        # 因为 IO 操作很耗时，可能导致超时
+        # print(f"window: [{left}, {right})")
+        # ***********************
 
-        // 判断左侧窗口是否要收缩
-        while (left < right && window needs shrink) {
-            // d 是将移出窗口的字符
-            char d = s[left];
+        # 判断左侧窗口是否要收缩
+        while left < right and window needs shrink:
+            # d 是将移出窗口的字符
+            d = s[left]
             window.remove(d)
-            // 缩小窗口
-            left++;
-            // 进行窗口内数据的一系列更新
+            # 缩小窗口
+            left += 1
+            # 进行窗口内数据的一系列更新
             ...
-        }
-    }
-}
 ``` 
 
 习题，建议用时 1 天
@@ -358,65 +338,57 @@ void slidingWindow(String s) {
 
 二分搜索三种代码模板
 
-```java
-int binary_search(int[] nums, int target) {
-    int left = 0, right = nums.length - 1; 
-    while(left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1; 
-        } else if(nums[mid] == target) {
-            // 直接返回
-            return mid;
-        }
-    }
-    // 直接返回
-    return -1;
-}
+```python
+def binary_search(nums: List[int], target: int) -> int:
+    # 设置左右下标
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # 找到目标值
+            return mid
+    # 没有找到目标值
+    return -1
 
-int left_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // 别返回，锁定左侧边界
-            right = mid - 1;
-        }
-    }
-    // 判断 target 是否存在于 nums 中
-    if (left < 0 || left >= nums.length) {
-        return -1;
-    }
-    // 判断一下 nums[left] 是不是 target
-    return nums[left] == target ? left : -1;
-}
+def left_bound(nums: List[int], target: int) -> int:
+    # 设置左右下标
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # 存在目标值，缩小右边界
+            right = mid - 1
+    # 判断是否存在目标值
+    if left < 0 or left >= len(nums):
+        return -1
+    # 判断找到的左边界是否是目标值
+    return left if nums[left] == target else -1
 
-int right_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // 别返回，锁定右侧边界
-            left = mid + 1;
-        }
-    }
-    // 由于 while 的结束条件是 right == left - 1，且现在在求右边界
-    // 所以用 right 替代 left - 1 更好记
-    if (right < 0 || right >= nums.length) {
-        return -1;
-    }
-    return nums[right] == target ? right : -1;
-}
+def right_bound(nums: List[int], target: int) -> int:
+    # 设置左右下标
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # 存在目标值，缩小左边界
+            left = mid + 1
+    # 判断是否存在目标值
+    if right < 0 or right >= len(nums):
+        return -1
+    # 判断找到的右边界是否是目标值
+    return right if nums[right] == target else -1
 ``` 
 
 核心框架，建议用时 1~2 天
@@ -428,93 +400,75 @@ int right_bound(int[] nums, int target) {
 
 一维前缀和：
 
-```java
-class NumArray {
-    // 前缀和数组
-    private int[] preSum;
+```python
+class NumArray:
+    # 前缀和数组
+    def __init__(self, nums: List[int]):
+        # 输入一个数组，构造前缀和
+        # preSum[0] = 0，便于计算累加和
+        self.preSum = [0] * (len(nums) + 1)
+        # 计算 nums 的累加和
+        for i in range(1, len(self.preSum)):
+            self.preSum[i] = self.preSum[i - 1] + nums[i - 1]
 
-    // 输入一个数组，构造前缀和
-    public NumArray(int[] nums) {
-        // preSum[0] = 0，便于计算累加和
-        preSum = new int[nums.length + 1];
-        // 计算 nums 的累加和
-        for (int i = 1; i < preSum.length; i++) {
-            preSum[i] = preSum[i - 1] + nums[i - 1];
-        }
-    }
-
-    // 查询闭区间 [left, right] 的累加和
-    public int sumRange(int left, int right) {
-        return preSum[right + 1] - preSum[left];
-    }
-}
+    # 查询闭区间 [left, right] 的累加和
+    def sumRange(self, left: int, right: int) -> int:
+        return self.preSum[right + 1] - self.preSum[left]
 ``` 
 
 二维前缀和：
 
-```java
-class NumMatrix {
-    // preSum[i][j] 记录矩阵 [0, 0, i-1, j-1] 的元素和
-    private int[][] preSum;
+```python
+class NumMatrix:
+    # preSum[i][j] 记录矩阵 [0, 0, i-1, j-1] 的元素和
+    def __init__(self, matrix: List[List[int]]):
+        m = len(matrix)
+        n = len(matrix[0])
+        if m == 0 or n == 0:
+            return
+        # 构造前缀和矩阵
+        self.preSum = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                # 计算每个矩阵 [0, 0, i, j] 的元素和
+                self.preSum[i][j] = (self.preSum[i - 1][j] + self.preSum[i][j - 1] +
+                                     matrix[i - 1][j - 1] - self.preSum[i - 1][j - 1])
 
-    public NumMatrix(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        if (m == 0 || n == 0) return;
-        // 构造前缀和矩阵
-        preSum = new int[m + 1][n + 1];
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                // 计算每个矩阵 [0, 0, i, j] 的元素和
-                preSum[i][j] = preSum[i-1][j] + preSum[i][j-1] + matrix[i - 1][j - 1] - preSum[i-1][j-1];
-            }
-        }
-    }
-
-    // 计算子矩阵 [x1, y1, x2, y2] 的元素和
-    public int sumRegion(int x1, int y1, int x2, int y2) {
-        // 目标矩阵之和由四个相邻矩阵运算获得
-        return preSum[x2+1][y2+1] - preSum[x1][y2+1] - preSum[x2+1][y1] + preSum[x1][y1];
-    }
-}
+    # 计算子矩阵 [x1, y1, x2, y2] 的元素和
+    def sumRegion(self, x1: int, y1: int, x2: int, y2: int) -> int:
+        # 目标矩阵之和由四个相邻矩阵运算获得
+        return (self.preSum[x2 + 1][y2 + 1] - self.preSum[x1][y2 + 1] -
+                self.preSum[x2 + 1][y1] + self.preSum[x1][y1])
 ``` 
 
 差分数组代码模板
 
-```java
-// 差分数组工具类
-class Difference {
-    // 差分数组
-    private int[] diff;
-    
-    // 输入一个初始数组，区间操作将在这个数组上进行
-    public Difference(int[] nums) {
-        diff = new int[nums.length];
-        // 根据初始数组构造差分数组
-        diff[0] = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            diff[i] = nums[i] - nums[i - 1];
-        }
-    }
+```python
+# 差分数组工具类
+class Difference:
+    # 差分数组
+    def __init__(self, nums: List[int]):
+        assert len(nums) > 0
+        self.diff = [0] * len(nums)
+        # 根据初始数组构造差分数组
+        self.diff[0] = nums[0]
+        for i in range(1, len(nums)):
+            self.diff[i] = nums[i] - nums[i - 1]
 
-    // 给闭区间 [i, j] 增加 val（可以是负数）
-    public void increment(int i, int j, int val) {
-        diff[i] += val;
-        if (j + 1 < diff.length) {
-            diff[j + 1] -= val;
-        }
-    }
+    # 给闭区间 [i, j] 增加 val（可以是负数）
+    def increment(self, i: int, j: int, val: int) -> None:
+        self.diff[i] += val
+        if j + 1 < len(self.diff):
+            self.diff[j + 1] -= val
 
-    // 返回结果数组
-    public int[] result() {
-        int[] res = new int[diff.length];
-        // 根据差分数组构造结果数组
-        res[0] = diff[0];
-        for (int i = 1; i < diff.length; i++) {
-            res[i] = res[i - 1] + diff[i];
-        }
-        return res;
-    }
-}
+    # 返回结果数组
+    def result(self) -> List[int]:
+        res = [0] * len(self.diff)
+        # 根据差分数组构造结果数组
+        res[0] = self.diff[0]
+        for i in range(1, len(self.diff)):
+            res[i] = res[i - 1] + self.diff[i]
+        return res
 ``` 
 
 ### 队列/栈
@@ -632,73 +586,58 @@ LRU 是经典的数据结构设计问题，必须掌握；LFU 难度更大一些
 
 通用计算器代码实现
 
-```java
-class Solution {
-    public int calculate(String s) {
-        // key 是左括号的索引，value 是对应的右括号的索引
-        Map<Integer, Integer> rightIndex = new HashMap<>();
-        // 利用栈结构来找到对应的括号
-        Stack<Integer> stack = new Stack<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                stack.push(i);
-            } else if (s.charAt(i) == ')') {
-                rightIndex.put(stack.pop(), i);
-            }
-        }
-        return _calculate(s, 0, s.length() - 1, rightIndex);
-    }
+```python
+class Solution:
+    def calculate(self, s: str) -> int:
+        # key 是左括号的索引，value 是对应的右括号的索引
+        rightIndex = {}
+        # 利用栈结构来找到对应的括号
+        stack = []
+        for i in range(len(s)):
+            if s[i] == '(':
+                stack.append(i)
+            elif s[i] == ')':
+                rightIndex[stack.pop()] = i
+        return self._calculate(s, 0, len(s) - 1, rightIndex)
 
-    // 定义：返回 s[start..end] 内的表达式的计算结果
-    private int _calculate(String s, int start, int end, Map<Integer, Integer> rightIndex) {
-        // 需要把字符串转成双端队列方便操作
-        Stack<Integer> stk = new Stack<>();
-        // 记录算式中的数字
-        int num = 0;
-        // 记录 num 前的符号，初始化为 +
-        char sign = '+';
-        for (int i = start; i <= end; i++) {
-            char c = s.charAt(i);
-            if (Character.isDigit(c)) {
-                num = 10 * num + (c - '0');
-            }
-            if (c == '(') {
-                // 递归计算括号内的表达式
-                num = _calculate(s, i + 1, rightIndex.get(i) - 1, rightIndex);
-                i = rightIndex.get(i);
-            }
-            if (c == '+' || c == '-' || c == '*' || c == '/' || i == end) {
-                int pre;
-                switch (sign) {
-                    case '+':
-                        stk.push(num);
-                        break;
-                    case '-':
-                        stk.push(-num);
-                        break;
-                    // 只要拿出前一个数字做对应运算即可
-                    case '*':
-                        pre = stk.pop();
-                        stk.push(pre * num);
-                        break;
-                    case '/':
-                        pre = stk.pop();
-                        stk.push(pre / num);
-                        break;
-                }
-                // 更新符号为当前符号，数字清零
-                sign = c;
-                num = 0;
-            }
-        }
-        // 将栈中所有结果求和就是答案
-        int res = 0;
-        while (!stk.isEmpty()) {
-            res += stk.pop();
-        }
-        return res;
-    }
-}
+    # 定义：返回 s[start..end] 内的表达式的计算结果
+    def _calculate(self, s, start, end, rightIndex):
+        # 需要把字符串转成双端队列方便操作
+        stk = []
+        # 记录算式中的数字
+        num = 0
+        # 记录 num 前的符号，初始化为 +
+        sign = '+'
+        i = start 
+        while i <= end:
+            c = s[i]
+            if c.isdigit():
+                num = 10 * num + int(c)
+            if c == '(':
+                # 递归计算括号内的表达式
+                num = self._calculate(s, i + 1, rightIndex[i] - 1, rightIndex)
+                i = rightIndex[i]
+            if c in '+-*/' or i == end:
+                if sign == '+':
+                    stk.append(num)
+                elif sign == '-':
+                    stk.append(-num)
+                elif sign == '*':
+                    pre = stk.pop()
+                    stk.append(pre * num)
+                elif sign == '/':
+                    pre = stk.pop()
+                    stk.append(int(pre / num))                   
+
+                # 更新符号为当前符号，数字清零
+                sign = c
+                num = 0
+            i += 1
+        # 将栈中所有结果求和就是答案
+        res = 0
+        while stk:
+            res += stk.pop()
+        return res
 ``` 
 
 习题，建议用时 1 天
@@ -728,54 +667,44 @@ Union Find 代码模板
 
 这里直接给出效率最高的路径压缩代码实现：
 
-```java
-class UF {
-    // 连通分量个数
-    private int count;
-    // 存储每个节点的父节点
-    private int[] parent;
+```python
+class UF:
+    # 连通分量个数
+    _count: int
+    # 存储每个节点的父节点
+    parent: List[int]
 
-    // n 为图中节点的个数
-    public UF(int n) {
-        this.count = n;
-        parent = new int[n];
-        for (int i = 0; i < n; i++) {
-            parent[i] = i;
-        }
-    }
-    
-    // 将节点 p 和节点 q 连通
-    public void union(int p, int q) {
-        int rootP = find(p);
-        int rootQ = find(q);
-        
-        if (rootP == rootQ)
-            return;
-        
-        parent[rootQ] = rootP;
-        // 两个连通分量合并成一个连通分量
-        count--;
-    }
+    # n 为图中节点的个数
+    def __init__(self, n: int):
+        self._count = n
+        self.parent = [i for i in range(n)]
 
-    // 判断节点 p 和节点 q 是否连通
-    public boolean connected(int p, int q) {
-        int rootP = find(p);
-        int rootQ = find(q);
-        return rootP == rootQ;
-    }
+    # 将节点 p 和节点 q 连通
+    def union(self, p: int, q: int):
+        rootP = self.find(p)
+        rootQ = self.find(q)
 
-    public int find(int x) {
-        if (parent[x] != x) {
-            parent[x] = find(parent[x]);
-        }
-        return parent[x];
-    }
+        if rootP == rootQ:
+            return
 
-    // 返回图中的连通分量个数
-    public int count() {
-        return count;
-    }
-}
+        self.parent[rootQ] = rootP
+        # 两个连通分量合并成一个连通分量
+        self._count -= 1
+
+    # 判断节点 p 和节点 q 是否连通
+    def connected(self, p: int, q: int) -> bool:
+        rootP = self.find(p)
+        rootQ = self.find(q)
+        return rootP == rootQ
+
+    def find(self, x: int) -> int:
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    # 返回图中的连通分量个数
+    def count(self) -> int:
+        return self._count
 ``` 
 
 最小生成树问题也是比较实用的图论算法，你需要了解它的定义及使用场景。
@@ -803,66 +732,59 @@ Kruskal 和 Prim 是两种经典的最小生成树算法。其中 Kruskal 算法
 
 Dijkstra 算法模板（伪码）
 
-```java
-class State {
-    // 当前节点 ID
-    int node;
-    // 从起点 s 到当前 node 节点的最小路径权重和
-    int distFromStart;
+```python
+import heapq
+from typing import List
 
-    public State(int node, int distFromStart) {
-        this.node = node;
-        this.distFromStart = distFromStart;
-    }
-}
+class State:
+    # 当前节点 ID
+    def __init__(self, node: int, distFromStart: int):
+        self.node = node
+        # 从起点 s 到当前 node 节点的最小路径权重和
+        self.distFromStart = distFromStart
 
-// 输入不包含负权重边的加权图 graph 和起点 src
-// 返回从起点 src 到其他节点的最小路径权重和
-int[] dijkstra(Graph graph, int src) {
-    // 记录从起点 src 到其他节点的最小路径权重和
-    // distTo[i] 表示从起点 src 到节点 i 的最小路径权重和
-    int[] distTo = new int[graph.size()];
-    // 都初始化为正无穷，表示未计算
-    Arrays.fill(distTo, Integer.MAX_VALUE);
+    # 定义小顶堆所需的比较函数
+    def __lt__(self, other: "State") -> bool:
+        return self.distFromStart < other.distFromStart
 
-    // 优先级队列，distFromStart 较小的节点排在前面
-    Queue<State> pq = new PriorityQueue<>((a, b) -> {
-        return a.distFromStart - b.distFromStart;
-    });
+# 输入不包含负权重边的加权图 graph 和起点 src
+# 返回从起点 src 到其他节点的最小路径权重和
+def dijkstra(graph: Graph, src: int) -> List[int]:
+    # 记录从起点 src 到其他节点的最小路径权重和
+    # distTo[i] 表示从起点 src 到节点 i 的最小路径权重和
+    distTo: List[int] = [float('inf')] * graph.size()
 
-    // 从起点 src 开始进行 BFS
-    pq.offer(new State(src, 0));
-    distTo[src] = 0;
+    # 优先级队列，distFromStart 较小的节点排在前面
+    pq: List[State] = []
 
-    while (!pq.isEmpty()) {
-        State state = pq.poll();
-        int curNode = state.node;
-        int curDistFromStart = state.distFromStart;
+    # 从起点 src 开始进行 BFS
+    heapq.heappush(pq, State(src, 0))
+    distTo[src] = 0
 
-        if (distTo[curNode] < curDistFromStart) { // [!code highlight:5]
-            // 在 Dijkstra 算法中，队列中可能存在重复的节点 state
-            // 所以要在元素出队时进行判断，去除较差的重复节点
-            continue;
-        }
+    while pq:
+        state = heapq.heappop(pq)
+        curNode = state.node
+        curDistFromStart = state.distFromStart
 
-        for (Edge e : graph.neighbors(curNode)) {
-            int nextNode = e.to;
-            int nextDistFromStart = curDistFromStart + e.weight;
+        if distTo[curNode] < curDistFromStart: # [!code highlight:5]
+            # 在 Dijkstra 算法中，队列中可能存在重复的节点 state
+            # 所以要在元素出队时进行判断，去除较差的重复节点
+            continue
 
-            if (distTo[nextNode] <= nextDistFromStart) {
-                continue;
-            }
+        for e in graph.neighbors(curNode):
+            nextNode = e.to
+            nextDistFromStart = curDistFromStart + e.weight
 
-            // [!code highlight:6]
-            // 将 nextNode 节点加入优先级队列
-            pq.offer(new State(nextNode, nextDistFromStart));
-            // 记录 nextNode 节点到起点的最小路径权重和
-            distTo[nextNode] = nextDistFromStart;
-        }
-    }
+            if distTo[nextNode] <= nextDistFromStart:
+                continue
 
-    return distTo;
-}
+            # [!code highlight:6]
+            # 将 nextNode 节点加入优先级队列
+            heapq.heappush(pq, State(nextNode, nextDistFromStart))
+            # 记录 nextNode 节点到起点的最小路径权重和
+            distTo[nextNode] = nextDistFromStart
+
+    return distTo
 ``` 
 
 ### DFS/回溯算法
@@ -1024,45 +946,47 @@ LeetCode| 力扣| 难度
 
 nSum 万能函数
 
-```java
-// 注意：调用这个函数之前一定要先给 nums 排序
-// n 填写想求的是几数之和，start 从哪个索引开始计算（一般填 0），target 填想凑出的目标和
-List<List<Integer>> nSumTarget(int[] nums, int n, int start, long target) {
-    int sz = nums.length;
-    List<List<Integer>> res = new ArrayList<>();
-    // 至少是 2Sum，且数组大小不应该小于 n
-    if (n < 2 || sz < n) return res;
-    // 2Sum 是 base case
-    if (n == 2) {
-        // 双指针那一套操作
-        int lo = start, hi = sz - 1;
-        while (lo < hi) {
-            int sum = nums[lo] + nums[hi];
-            int left = nums[lo], right = nums[hi];
-            if (sum < target) {
-                while (lo < hi && nums[lo] == left) lo++;
-            } else if (sum > target) {
-                while (lo < hi && nums[hi] == right) hi--;
-            } else {
-                res.add(new ArrayList<>(Arrays.asList(left, right)));
-                while (lo < hi && nums[lo] == left) lo++;
-                while (lo < hi && nums[hi] == right) hi--;
-            }
-        }
-    } else {
-        // n > 2 时，递归计算 (n-1)Sum 的结果
-        for (int i = start; i < sz; i++) {
-            List<List<Integer>> sub = nSumTarget(nums, n - 1, i + 1, target - nums[i]);
-            for (List<Integer> arr : sub) {
-                // (n-1)Sum 加上 nums[i] 就是 nSum
-                arr.add(nums[i]);
-                res.add(arr);
-            }
-            while (i < sz - 1 && nums[i] == nums[i + 1]) i++;
-        }
-    }
-    return res;
-}
+```python
+# 注意：调用这个函数之前一定要先给 nums 排序
+# n 填写想求的是几数之和，start 从哪个索引开始计算（一般填 0），target 填想凑出的目标和
+def nSumTarget(nums: List[int], n: int, start: int, target: int) -> List[List[int]]:
+    sz = len(nums)
+    res = []
+    # 至少是 2Sum，且数组大小不应该小于 n
+    if n < 2 or sz < n:
+        return res
+    # 2Sum 是 base case
+    if n == 2:
+        # 双指针那一套操作
+        lo, hi = start, sz-1
+        while lo < hi:
+            sum = nums[lo] + nums[hi]
+            left, right = nums[lo], nums[hi]
+            if sum < target:
+                while lo < hi and nums[lo] == left:
+                    lo += 1
+            elif sum > target:
+                while lo < hi and nums[hi] == right:
+                    hi -= 1
+            else:
+                res.append([left, right])
+                while lo < hi and nums[lo] == left:
+                    lo += 1
+                while lo < hi and nums[hi] == right:
+                    hi -= 1
+        return res
+    else:
+        # n > 2 时，递归计算 (n-1)Sum 的结果
+        for i in range(start, sz):
+            if i > start and nums[i] == nums[i - 1]:
+                # 跳过重复元素
+                continue
+            subs = nSumTarget(nums, n-1, i+1, target-nums[i])
+            for sub in subs:
+                # (n-1)Sum 加上 nums[i] 就是 nSum
+                sub.append(nums[i])
+                res.append(sub)
+        return res
 ``` 
 
 ### 排序算法
@@ -1072,3 +996,7 @@ List<List<Integer>> nSumTarget(int[] nums, int n, int start, long target) {
 排序算法串讲，建议用时 1 天
 
 建议观看 [十大排序算法导读](</zh/algo/intro/sorting/>) 中的视频，了解十大排序算法的核心原理、复杂度分析和适用场景。
+
+## 评论
+
+请登录后查看/发表评论

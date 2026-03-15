@@ -60,21 +60,19 @@ Stability is a pretty important property, so pay close attention to it when choo
 
 The key point is whether extra space is needed, not whether a new array is returned. Here's what the distinction looks like in practice:
 
-```java
-// non-in-place sorting
-void sort(int[] nums) {
-    // requires an additional auxiliary array during sorting, consuming O(N) space
-    int[] tmp = new int[nums.length];
+```python
+# non-in-place sorting
+def sort(nums: list[int]):
+    # requires an additional auxiliary array during sorting, consuming O(N) space
+    tmp = [0] * len(nums)
 
-    // sort the nums array
+    # sort the nums array
     for ...
-}
 
-// in-place sorting
-void sort(int[] nums) {
-    // directly operate on nums, no additional auxiliary array needed, consuming O(1) space
+# in-place sorting
+def sort(nums: list[int]):
+    # directly operate on nums, no additional auxiliary array needed, consuming O(1) space
     for ...
-}
 ``` 
 
 :::
@@ -83,4 +81,8 @@ As you might expect, in-place sorting algorithms have a clear advantage when dea
 
 Those are the key metrics for evaluating sorting algorithms. In upcoming articles, I'll walk through several common sorting algorithms and analyze their strengths and weaknesses based on these metrics.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

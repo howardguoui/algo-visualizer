@@ -111,3 +111,7 @@ System.out.println(map.keysWithPrefix("th")); // ["that", "the", "them"]
 你想想上面这几个操作，用 HashMap 或者 TreeMap 能做到吗？应该只能强行遍历所有键，然后一个个比较字符串前缀，复杂度非常高。
 
 话说，这个 `keysWithPrefix` 方法，是不是很适合做自动补全功能呢？
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

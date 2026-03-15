@@ -59,10 +59,14 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-int minFallingPathSum(int[][] matrix);
+```python
+def minFallingPathSum(matrix: List[List[int]]) -> int
 ``` 
 
 今天这道题不算是困难的题目，所以**我借这道题来讲讲 base case 的返回值、备忘录的初始值、索引越界情况的返回值如何确定** 。
 
 不过还是要根据 [动态规划的标准套路](</zh/algo/essential-technique/dynamic-programming-framework/>) 讲一下这道题的解题思路。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

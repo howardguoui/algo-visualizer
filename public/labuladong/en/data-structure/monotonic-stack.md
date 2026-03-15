@@ -31,8 +31,8 @@ Sounds a bit like a heap? No. A monotonic stack is not used as widely. It is use
 
 Here is a problem: given an array `nums`, return a result array of the same length. For each index, store the next greater element. If there is no greater element, store -1. The function signature is:
 
-```java
-int[] calculateGreaterElement(int[] nums);
+```python
+def calculateGreaterElement(nums: List[int])
 ``` 
 
 For example, if the input is `nums = [2,1,2,4,3]`, you should return `[4,2,4,-1,-1]`. The first 2 has a next greater element 4; after 1, the next greater element is 2; the second 2 also has 4 as its next greater element; 4 has no greater element after it, so we put -1; 3 also has no greater element after it, so we put -1.
@@ -45,25 +45,22 @@ We can think about the problem like this: imagine the array elements as people s
 
 This picture is easy to understand. With this in mind, look at the code:
 
-```java
-int[] calculateGreaterElement(int[] nums) {
-    int n = nums.length;
-    // array to store the answers
-    int[] res = new int[n];
-    Stack<Integer> s = new Stack<>(); 
-    // push elements into the stack from the end
-    for (int i = n - 1; i >= 0; i--) {
-        // compare the heights
-        while (!s.isEmpty() && s.peek() <= nums[i]) {
-            // shorter ones step aside, they're blocked anyway...
-            s.pop();
-        }
-        // the greater element behind nums[i]
-        res[i] = s.isEmpty() ? -1 : s.peek();
-        s.push(nums[i]);
-    }
-    return res;
-}
+```python
+def calculateGreaterElement(nums):
+    n = len(nums)
+    # array to store the answers
+    res = [0]*n
+    s = []
+    # push elements into the stack backwards
+    for i in range(n-1, -1, -1):
+        # compare the heights
+        while s and s[-1] <= nums[i]:
+            # shorter ones step aside, they're blocked anyway...
+            s.pop()
+        # the greater element behind nums[i]
+        res[i] = -1 if not s else s[-1]
+        s.append(nums[i])
+    return res
 ``` 
 
 This is the standard monotonic stack template. The for loop scans from right to left, because we use a stack. Pushing from right to left is like popping from left to right. The while loop removes elements between two “taller” elements, because those in the middle are useless. If a taller element stands in front of them, they can never be the next greater element for any future element.
@@ -124,50 +121,41 @@ The problem is from [LeetCode 496. Next Greater Element I](<https://leetcode.com
 
 You are given two arrays `nums1` and `nums2`. For each element in `nums1`, find its next greater element in `nums2`. The function signature is:
 
-```java
-int[] nextGreaterElement(int[] nums1, int[] nums2);
+```python
+def nextGreaterElement(nums1: List[int], nums2: List[int]) -> List[int]:
 ``` 
 
 We can solve it by slightly changing our previous code. Since `nums1` is a subset of `nums2`, we can first compute the next greater element for every element in `nums2`, and store it in a map. Then, for each element in `nums1`, we just look it up in the map:
 
-```java
-class Solution {
-    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-        // record the next greater element for each element in nums2
-        int[] greater = nextGreaterElement(nums2);
-        // convert to a map: element x -> next greater element of x
-        HashMap<Integer, Integer> greaterMap = new HashMap<>();
-        for (int i = 0; i < nums2.length; i++) {
-            greaterMap.put(nums2[i], greater[i]);
-        }
-        // nums1 is a subset of nums2, so we can get the result based on greaterMap
-        int[] res = new int[nums1.length];
-        for (int i = 0; i < nums1.length; i++) {
-            res[i] = greaterMap.get(nums1[i]);
-        }
-        return res;
-    }
+```python
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        # record the next greater element for each element in nums2
+        greater = self.nextGreaterElementInternal(nums2)
+        # convert to a map: element x -> next greater element of x
+        greater_map = {}
+        for i in range(len(nums2)):
+            greater_map[nums2[i]] = greater[i]
+        # nums1 is a subset of nums2, so we can get the result based on greaterMap
+        res = [greater_map[num] for num in nums1]
+        return res
 
-    // calculate the next greater element for each element in nums
-    int[] nextGreaterElement(int[] nums) {
-        int n = nums.length;
-        // array to store the answers
-        int[] res = new int[n];
-        Stack<Integer> s = new Stack<>();
-        // push elements onto the stack in reverse order
-        for (int i = n - 1; i >= 0; i--) {
-            // determine the height (size) of elements
-            while (!s.isEmpty() && s.peek() <= nums[i]) {
-                // remove the shorter elements as they are blocked anyway
-                s.pop();
-            }
-            // the next greater element after nums[i]
-            res[i] = s.isEmpty() ? -1 : s.peek();
-            s.push(nums[i]);
-        }
-        return res;
-    }
-}
+    # calculate the next greater element for each element in nums
+    def nextGreaterElementInternal(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        # array to store the answers
+        res = [-1] * n  # Initialize with -1 as specified in the problem statement
+        stack = []
+        # push elements onto the stack in reverse order
+        for i in range(n - 1, -1, -1):
+            # determine the height (size) of elements
+            while stack and stack[-1] <= nums[i]:
+                # remove the shorter elements as they are blocked anyway
+                stack.pop()
+            # the next greater element after nums[i]
+            res[i] = stack[-1] if stack else -1
+            stack.append(nums[i])
+        return res
 ``` 
 
 Algorithm Visualization
@@ -178,8 +166,8 @@ Now look at LeetCode 739, “[Daily Temperatures](<https://leetcode.com/problems
 
 You are given an array `temperatures` that records the temperature of each day. Return an array of the same length that, for each day, tells you how many days you have to wait until a warmer temperature. If there is no future day with a warmer temperature, put 0. The function signature is:
 
-```java
-int[] dailyTemperatures(int[] temperatures);
+```python
+def dailyTemperatures(temperatures: List[int]) -> List[int]:
 ``` 
 
 For example, if `temperatures = [73,74,75,71,69,76]`, the answer is `[1,1,3,2,1,0]`. For day 1 with 73°F, on day 2 it is 74°F, which is warmer. So for day 1, you need to wait 1 day; and so on.
@@ -188,26 +176,22 @@ This is also a “next greater element” problem. But now we do not return the 
 
 We use the same idea, apply the monotonic stack template, and make small changes:
 
-```java
-class Solution {
-    public int[] dailyTemperatures(int[] temperatures) {
-        int n = temperatures.length;
-        int[] res = new int[n];
-        // Store element indices here, not the elements themselves
-        Stack<Integer> s = new Stack<>(); 
-        // Monotonic stack template
-        for (int i = n - 1; i >= 0; i--) {
-            while (!s.isEmpty() && temperatures[s.peek()] <= temperatures[i]) {
-                s.pop();
-            }
-            // Get the distance between indices
-            res[i] = s.isEmpty() ? 0 : (s.peek() - i); 
-            // Push the index onto the stack, not the element
-            s.push(i); 
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def dailyTemperatures(self, temperatures):
+        n = len(temperatures)
+        res = [0]*n
+        # Store element indices here, not elements
+        s = []
+        # Monotonic stack template
+        for i in range(n-1, -1, -1):
+            while s and temperatures[s[-1]] <= temperatures[i]:
+                s.pop()
+            # Get the index difference
+            res[i] = 0 if not s else s[-1] - i
+            # Push the index onto the stack, not the element
+            s.append(i)
+        return res
 ``` 
 
 We are done with monotonic stacks. Next we will talk about another key point: how to handle “circular arrays”.
@@ -220,14 +204,14 @@ For example, input `[2,1,2,4,3]`, you should return `[4,2,4,-1,4]`. Because with
 
 If you have read the [Circular Array Techniques](</en/algo/data-structure-basic/cycle-array/>) in the basics section, you should be familiar with this idea: we usually use the `%` operator (modulo) to simulate the circular behavior:
 
-```java
-int[] arr = {1,2,3,4,5};
-int n = arr.length, index = 0;
-while (true) {
-    // Rotate in a circular array
-    print(arr[index % n]);
-    index++;
-}
+```python
+arr = [1,2,3,4,5]
+n = len(arr)
+index = 0
+while True:
+    # Circulate in a circular array
+    print(arr[index % n])
+    index += 1
 ``` 
 
 We still need to use the monotonic stack template to solve this problem. The hard part is: for input `[2,1,2,4,3]`, how can the last element 3 find 4 as its next greater element?
@@ -240,24 +224,21 @@ This way, element 3 can find element 4 as its next greater element, and other el
 
 With this idea, the simplest way is to really build a new array of double length, then apply the template. But **we do not need to build a new array. We can use circular array tricks to _simulate_ the effect of doubling the array**. Let’s go straight to the code:
 
-```java
-class Solution {
-    public int[] nextGreaterElements(int[] nums) {
-        int n = nums.length;
-        int[] res = new int[n];
-        Stack<Integer> s = new Stack<>();
-        // Double the array length to simulate a circular array
-        for (int i = 2 * n - 1; i >= 0; i--) {
-            // Index i needs to be modulo, the rest is the same as the template
-            while (!s.isEmpty() && s.peek() <= nums[i % n]) {
-                s.pop();
-            }
-            res[i % n] = s.isEmpty() ? -1 : s.peek();
-            s.push(nums[i % n]);
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def nextGreaterElements(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        res = [0] * n
+        # Use an array to simulate a stack
+        s = []
+        # Double the array length to simulate a circular array
+        for i in range(2 * n - 1, -1, -1):
+            # Index i needs to be modulo, the rest is the same as the template
+            while s and s[-1] <= nums[i % n]:
+                s.pop()
+            res[i % n] = -1 if not s else s[-1]
+            s.append(nums[i % n])
+        return res
 ``` 
 
 Algorithm Visualization
@@ -270,4 +251,8 @@ Also, in real problems, you are rarely asked to directly compute the next (or pr
 
 I will compare several variants of the monotonic stack and give classic practice problems in [Monotonic Stack Variants and Exercises](</en/algo/problem-set/monotonic-stack/>). For more data structure design problems, see [Classic Data Structure Design Exercises](</en/algo/problem-set/ds-design/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

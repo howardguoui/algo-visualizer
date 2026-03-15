@@ -58,15 +58,14 @@ LeetCode| 力扣| 难度
 
 是的，就是这么一个简单的问题，首先告诉我，怎么把一个字符串形式的**正整数** ，转化成 int 型？
 
-```java
-String s = "458";
+```python
+s = "458"
 
-int n = 0;
-for (int i = 0; i < s.length(); i++) {
-    char c = s.charAt(i);
-    n = 10 * n + (c - '0');
-}
-// n 现在就等于 458
+n = 0
+for i in range(len(s)):
+    c = s[i]
+    n = 10 * n + (ord(c) - ord('0'))
+# n 现在就等于 458
 ``` 
 
 这个还是很简单的吧，老套路了。但是即便这么简单，依然有坑：**`(c - '0')` 的这个括号不能省略，否则可能造成整型溢出**。
@@ -85,40 +84,33 @@ for (int i = 0; i < s.length(); i++) {
 
 我们直接看代码，结合一张图就看明白了：
 
-```java
-int calculate(String s) {
-    Stack<Integer> stk = new Stack<>();
-    // 记录算式中的数字
-    int num = 0;
-    // 记录 num 前的符号，初始化为 +
-    char sign = '+';
-    for (int i = 0; i < s.length(); i++) {
-        char c = s.charAt(i);
-        // 如果是数字，连续读取到 num
-        if (Character.isDigit(c)) {
-            num = 10 * num + (c - '0');
-        }
-        // 如果不是数字，就是遇到了下一个符号，或者是算式的末尾
-        // 那么之前的数字和符号就要存进栈中
-        if (c == '+' || c == '-' || i == s.length() - 1) {
-            switch (sign) {
-                case '+':
-                    stk.push(num); break;
-                case '-':
-                    stk.push(-num); break;
-            }
-            // 更新符号为当前符号，数字清零
-            sign = c;
-            num = 0;
-        }
-    }
-    // 将栈中所有结果求和就是答案
-    int res = 0;
-    while (!stk.isEmpty()) {
-        res += stk.pop();
-    }
-    return res;
-}
+```python
+def calculate(s):
+    stk = []
+    # 记录算式中的数字
+    num = 0
+    # 记录 num 前的符号，初始化为 +
+    sign = '+'
+    for i in range(len(s)):
+        c = s[i]
+        # 如果是数字，连续读取到 num
+        if c.isdigit():
+            num = 10 * num + int(c)
+        # 如果不是数字，就是遇到了下一个符号，或者是算式的末尾
+        # 那么之前的数字和符号就要存进栈中
+        if c == '+' or c == '-' or i == len(s) - 1:
+            if sign == '+':
+                stk.append(num)
+            elif sign == '-':
+                stk.append(-num)
+            # 更新符号为当前符号，数字清零
+            sign = c
+            num = 0
+    # 将栈中所有结果求和就是答案
+    res = 0
+    while stk:
+        res += stk.pop()
+    return res
 ``` 
 
 我估计就是中间带 `switch` 语句的部分有点不好理解吧，`i` 就是从左到右扫描，`sign` 和 `num` 跟在它身后。当 `s[i]` 遇到一个运算符时，情况是这样的：
@@ -139,48 +131,37 @@ int calculate(String s) {
 
 比如上述例子就可以分解为 `+2`，`-3`，`*4`，`+5` 几对儿，我们刚才不是没有处理乘除号吗，很简单，**其他部分都不用变** ，在 `switch` 部分加上对应的 case 就行了：
 
-```java
-int calculate(String s) {
-    Stack<Integer> stk = new Stack<>();
-    // 记录算式中的数字
-    int num = 0;
-    // 记录 num 前的符号，初始化为 +
-    char sign = '+';
-    for (int i = 0; i < s.length(); i++) {
-        char c = s.charAt(i);
-        if (Character.isDigit(c)) {
-            num = 10 * num + (c - '0');
-        }
+```python
+def calculate(s: str) -> int:
+    stk = []
+    # 记录算式中的数字
+    num = 0
+    # 记录 num 前的符号，初始化为 +
+    sign = "+"
 
-        if (c == '+' || c == '-' || c == '/' || c == '*' || i == s.length() - 1) {
-            int pre;
-            switch (sign) {
-                case '+':
-                    stk.push(num); break;
-                case '-':
-                    stk.push(-num); break;
-                // 只要拿出前一个数字做对应运算即可
-                case '*':
-                    pre = stk.pop();
-                    stk.push(pre * num);
-                    break;
-                case '/':
-                    pre = stk.pop();
-                    stk.push(pre / num);
-                    break;
-            }
-            // 更新符号为当前符号，数字清零
-            sign = c;
-            num = 0;
-        }
-    }
-    // 将栈中所有结果求和就是答案
-    int res = 0;
-    while (!stk.isEmpty()) {
-        res += stk.pop();
-    }
-    return res;
-}
+    for i in range(len(s)):
+        if s[i].isdigit():
+            num = 10 * num + int(s[i])
+
+        # 遇到 +,-,*,/ 或者到了最末尾
+        if s[i] in "+-*/" or i == len(s) - 1:
+            if sign == "+":
+                stk.append(num)
+            elif sign == "-":
+                stk.append(-num)
+            # 只要拿出前一个数字做对应运算即可
+            elif sign == "*":
+                stk[-1] *= num
+            else:
+                # 遇到除号，需要拿出前一个数字做除法
+                stk[-1] = int(stk[-1] / num)
+
+            # 更新符号为当前符号，数字清零
+            sign = s[i]
+            num = 0
+
+    # 将栈中所有结果求和就是答案
+    return sum(stk)
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/calculator/3.jpg)
@@ -190,3 +171,7 @@ int calculate(String s) {
 现在我们思考一下如何处理字符串中可能出现的空格字符。其实按照目前的代码，我们根本不用特殊处理空格字符，你注意 if 条件，当字符 `c` 是空格时，不会对它做任何处理，直接跳过了。
 
 好了，我们现在的算法已经可以按照正确的法则计算加减乘除，并且自动忽略空格符，剩下的就是如何让算法正确识别括号了。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

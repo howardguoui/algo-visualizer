@@ -29,36 +29,31 @@ LeetCode| 力扣| 难度
 
 首先我们看一下快速排序的代码框架：
 
-```java
-void sort(int[] nums, int lo, int hi) {
-    if (lo >= hi) {
-        return;
-    }
-    // ****** 前序位置 ******
-    // 对 nums[lo..hi] 进行切分，将 nums[p] 排好序
-    // 使得 nums[lo..p-1] <= nums[p] < nums[p+1..hi]
-    int p = partition(nums, lo, hi);
+```python
+def sort(nums: List[int], lo: int, hi: int):
+    if lo >= hi:
+        return
+    # ****** 前序位置 ******
+    # 对 nums[lo..hi] 进行切分，将 nums[p] 排好序
+    # 使得 nums[lo..p-1] <= nums[p] < nums[p+1..hi]
+    p = partition(nums, lo, hi)
 
-    // 去左右子数组进行切分
-    sort(nums, lo, p - 1);
-    sort(nums, p + 1, hi);
-}
+    # 去左右子数组进行切分
+    sort(nums, lo, p - 1)
+    sort(nums, p + 1, hi)
 ``` 
 
 其实你对比之后可以发现，快速排序就是一个二叉树的前序遍历：
 
-```java
-// 二叉树遍历框架
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    // ***** 前序位置 *****
-    print(root.val);
-    // *******************
-    traverse(root.left);
-    traverse(root.right);
-}
+```python
+# 二叉树遍历框架
+def traverse(root: TreeNode):
+    if not root:
+        return
+    # 前序位置
+    print(root.val)
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 另外，前文 [归并排序详解](</zh/algo/practice-in-action/merge-sort/>) 用一句话总结了归并排序：先把左半边数组排好序，再把右半边数组排好序，然后把两半数组合并。
@@ -84,3 +79,7 @@ void traverse(TreeNode root) {
 **从二叉树的视角，我们可以把子数组`nums[lo..hi]` 理解成二叉树节点上的值，`sort` 函数理解成二叉树的遍历函数**。
 
 参照二叉树的前序遍历顺序，快速排序的运行过程如下 GIF：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

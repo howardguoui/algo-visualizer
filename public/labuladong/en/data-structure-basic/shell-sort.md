@@ -38,4 +38,8 @@ An array is called `h`-sorted if every group of elements that are `h` apart (tha
 
 This idea is hard to explain in words, so let's look at an example. When `h=3`, a `3`-sorted array looks like this:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

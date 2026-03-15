@@ -41,14 +41,12 @@ LeetCode| 力扣| 难度
 
 这样一直循环下去，我们发现只要踩到 4 的倍数，就落入了圈套，永远逃不出 4 的倍数，而且一定会输。所以这道题的解法非常简单：
 
-```java
-class Solution {
-    public boolean canWinNim(int n) {
-        // 如果上来就踩到 4 的倍数，那就认输吧
-        // 否则，可以把对方控制在 4 的倍数，必胜
-        return n % 4 != 0;
-    }
-}
+```python
+class Solution:
+    def canWinNim(self, n: int) -> bool:
+        # 如果上来就踩到 4 的倍数，那就认输吧
+        # 否则，可以把对方控制在 4 的倍数，必胜
+        return n % 4 != 0
 ``` 
 
 ## 二、石头游戏
@@ -77,12 +75,10 @@ class Solution {
 
 这道题又涉及到两人的博弈，也可以用动态规划算法暴力试，比较麻烦。但我们只要对规则深入思考，就会大惊失色：只要你足够聪明，你是必胜无疑的，因为你是先手。
 
-```java
-class Solution {
-    public boolean stoneGame(int[] piles) {
-        return true;
-    }
-}
+```python
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        return True
 ``` 
 
 这是为什么呢，因为题目有两个条件很重要：一是石头总共有偶数堆，石头的总数是奇数。这两个看似增加游戏公平性的条件，反而使该游戏成为了一个割韭菜游戏。我们以 `piles=[2, 1, 9, 5]` 讲解，假设这四堆石头从左到右的索引分别是 1，2，3，4。
@@ -113,12 +109,10 @@ class Solution {
 
 我们当然可以用一个布尔数组表示这些灯的开关情况，然后模拟这些操作过程，最后去数一下就能出结果。但是这样显得没有灵性，最好的解法是这样的：
 
-```java
-class Solution {
-    public int bulbSwitch(int n) {
-        return (int)Math.sqrt(n);
-    }
-}
+```python
+class Solution:
+    def bulbSwitch(self, n: int) -> int:
+        return int(n**0.5)
 ``` 
 
 什么？这个问题跟平方根有什么关系？其实这个解法挺精妙，如果没人告诉你解法，还真不好想明白。
@@ -138,3 +132,7 @@ class Solution {
 就假设现在总共有 16 盏灯，我们求 16 的平方根，等于 4，这就说明最后会有 4 盏灯亮着，它们分别是第 `1*1=1` 盏、第 `2*2=4` 盏、第 `3*3=9` 盏和第 `4*4=16` 盏。
 
 就算有的 `n` 平方根结果是小数，强转成 int 型，也相当于一个最大整数上界，比这个上界小的所有整数，平方后的索引都是最后亮着的灯的索引。所以说我们直接把平方根转成整数，就是这个问题的答案。
+
+## 评论
+
+请登录后查看/发表评论

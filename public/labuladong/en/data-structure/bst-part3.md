@@ -55,8 +55,8 @@ The problem is from [LeetCode 96. Unique Binary Search Trees](<https://leetcode.
 
 The function signature is:
 
-```java
-int numTrees(int n);
+```python
+def numTrees(n: int) -> int:
 ``` 
 
 This is a classic enumeration problem. So how do we correctly enumerate the number of valid BSTs?
@@ -65,4 +65,8 @@ As I've mentioned before, don't underestimate enumeration—it looks simple but 
 
 In [Binary Tree Series, Part 1](</en/algo/data-structure/binary-tree-part1/>), I explained that the key to binary tree algorithms is figuring out what the root node needs to do. Since a BST is just a special type of binary tree, the core idea is exactly the same.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

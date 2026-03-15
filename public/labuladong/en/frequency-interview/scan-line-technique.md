@@ -24,9 +24,9 @@ Given an array of intervals `[begin, end]` representing the start and end times 
 
 The function signature is as follows:
 
-```java
-// Return the number of meeting rooms to be reserved
-int minMeetingRooms(int[][] meetings);
+```python
+# Return the number of meeting rooms needed to be booked
+def minMeetingRooms(meetings: List[List[int]]) -> int:
 ``` 
 
 For example, given `meetings = [[0,30],[5,10],[15,20]]`, the algorithm should return 2, because the last two meetings conflict with the first one, so you need at least two meeting rooms to hold all meetings.
@@ -83,4 +83,8 @@ LeetCode Problem 1235, "[Maximum Profit in Job Scheduling](<https://leetcode.cn/
 
 Alright, with all these examples laid out, let's see how to solve today's problem.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

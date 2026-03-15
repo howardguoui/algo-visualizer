@@ -91,8 +91,8 @@ for (int i = 0; i < k; i++) {
 
 函数签名如下：
 
-```java
-int removeDuplicates(int[] nums);
+```python
+def removeDuplicates(nums: List[int]) -> int:
 ``` 
 
 简单解释一下什么是原地修改：
@@ -111,25 +111,21 @@ int removeDuplicates(int[] nums);
 
 看代码：
 
-```java
-class Solution {
-    public int removeDuplicates(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
-        }
-        int slow = 0, fast = 0;
-        while (fast < nums.length) {
-            if (nums[fast] != nums[slow]) {
-                slow++;
-                // 维护 nums[0..slow] 无重复
-                nums[slow] = nums[fast];
-            }
-            fast++;
-        }
-        // 数组长度为索引 + 1
-        return slow + 1;
-    }
-}
+```python
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        if len(nums) == 0:
+            return 0
+        slow = 0
+        fast = 0
+        while fast < len(nums):
+            if nums[fast] != nums[slow]:
+                slow += 1
+                # 维护 nums[0..slow] 无重复
+                nums[slow] = nums[fast]
+            fast += 1
+        # 数组长度为索引 + 1
+        return slow + 1
 ``` 
 
 你可以打开下面的可视化面板，多次点击 `while (fast < nums.length)` 这一行代码，即可看到两个指针维护 `nums[0..slow]` 无重复元素：
@@ -140,26 +136,24 @@ class Solution {
 
 其实和数组去重是一模一样的，唯一的区别是把数组赋值操作变成操作指针而已，你对照着之前的代码来看：
 
-```java
-class Solution {
-    public ListNode deleteDuplicates(ListNode head) {
-        if (head == null) return null;
-        ListNode slow = head, fast = head;
-        while (fast != null) {
-            if (fast.val != slow.val) {
-                // nums[slow] = nums[fast];
-                slow.next = fast;
-                // slow++;
-                slow = slow.next;
-            }
-            // fast++
-            fast = fast.next;
-        }
-        // 断开与后面重复元素的连接
-        slow.next = null;
-        return head;
-    }
-}
+```python
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        if head is None:
+            return None
+        slow = head
+        fast = head
+        while fast is not None:
+            if fast.val != slow.val:
+                # nums[slow] = nums[fast];
+                slow.next = fast
+                # slow++;
+                slow = slow.next
+            # fast++
+            fast = fast.next
+        # 断开与后面重复元素的连接
+        slow.next = None
+        return head
 ``` 
 
 算法执行的过程请看下面这个可视化面板：
@@ -235,9 +229,9 @@ for (int i = 0; i < actualLength; i++) {
 
 题目来源：[力扣 27. 移除元素](<https://leetcode.cn/problems/remove-element/>)。
 
-```java
-// 函数签名如下
-int removeElement(int[] nums, int val);
+```python
+# 函数签名如下
+def removeElement(nums: List[int], val: int) -> int:
 ``` 
 
 题目要求我们把 `nums` 中所有值为 `val` 的元素原地删除，依然需要使用快慢指针技巧：
@@ -246,20 +240,16 @@ int removeElement(int[] nums, int val);
 
 这和前面说到的数组去重问题解法思路是完全一样的，直接看代码：
 
-```java
-class Solution {
-    public int removeElement(int[] nums, int val) {
-        int fast = 0, slow = 0;
-        while (fast < nums.length) {
-            if (nums[fast] != val) {
-                nums[slow] = nums[fast];
-                slow++;
-            }
-            fast++;
-        }
-        return slow;
-    }
-}
+```python
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        fast, slow = 0, 0
+        while fast < len(nums):
+            if nums[fast] != val:
+                nums[slow] = nums[fast]
+                slow += 1
+            fast += 1
+        return slow
 ``` 
 
 你可以打开下面的可视化面板，多次点击 `while (fast < nums.length)` 这一行代码，即可看到两个指针维护 `nums[0..slow]` 无重复元素：
@@ -272,8 +262,8 @@ class Solution {
 
 给你输入一个数组 `nums`，请你**原地修改** ，将数组中的所有值为 0 的元素移到数组末尾，函数签名如下：
 
-```java
-void moveZeroes(int[] nums);
+```python
+def moveZeroes(nums: List[int]) -> None:
 ``` 
 
 比如说给你输入 `nums = [0,1,4,0,2]`，你的算法没有返回值，但是会把 `nums` 数组原地修改成 `[1,4,2,0,0]`。
@@ -284,31 +274,25 @@ void moveZeroes(int[] nums);
 
 题目让我们将所有 0 移到最后，其实就相当于移除 `nums` 中的所有 0，然后再把后面的元素都赋值为 0：
 
-```java
-class Solution {
-    public void moveZeroes(int[] nums) {
-        // 去除 nums 中的所有 0
-        // 返回去除 0 之后的数组长度
-        int p = removeElement(nums, 0);
-        // 将 p 之后的所有元素赋值为 0
-        for (; p < nums.length; p++) {
-            nums[p] = 0;
-        }
-    }
+```python
+class Solution:
+    def moveZeroes(self, nums):
+        # 去除 nums 中的所有 0
+        # 返回去除 0 之后的数组长度
+        p = self.removeElement(nums, 0)
+        # 将 p 之后的所有元素赋值为 0
+        for i in range(p, len(nums)):
+            nums[i] = 0
 
-    // 双指针技巧，复用 [27. 移除元素] 的解法。
-    int removeElement(int[] nums, int val) {
-        int fast = 0, slow = 0;
-        while (fast < nums.length) {
-            if (nums[fast] != val) {
-                nums[slow] = nums[fast];
-                slow++;
-            }
-            fast++;
-        }
-        return slow;
-    }
-}
+    # 双指针技巧，复用 [27. 移除元素] 的解法。
+    def removeElement(self, nums, val):
+        fast, slow = 0, 0
+        while fast < len(nums):
+            if nums[fast] != val:
+                nums[slow] = nums[fast]
+                slow += 1
+            fast += 1
+        return slow
 ``` 
 
 你可以点开下面的可视化面板，多次点击 `while (fast < nums.length)` 这行代码查看快慢指针的运动，然后多次点击 `nums[p] = 0;` 这行代码将后面的元素都改为 0：
@@ -348,21 +332,19 @@ while (right < nums.size()) {
 
 我在另一篇文章 [二分查找框架详解](</zh/algo/essential-technique/binary-search-framework/>) 中有详细探讨二分搜索代码的细节问题，这里只写最简单的二分算法，旨在突出它的双指针特性：
 
-```java
-int binarySearch(int[] nums, int target) {
-    // 一左一右两个指针相向而行
-    int left = 0, right = nums.length - 1;
-    while(left <= right) {
-        int mid = (right + left) / 2;
-        if(nums[mid] == target)
-            return mid; 
-        else if (nums[mid] < target)
-            left = mid + 1; 
-        else if (nums[mid] > target)
-            right = mid - 1;
-    }
-    return -1;
-}
+```python
+def binarySearch(nums: List[int], target: int) -> int:
+    # 一左一右两个指针相向而行
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = (right + left) // 2
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+    return -1
 ``` 
 
 ### `n` 数之和
@@ -415,27 +397,23 @@ int binarySearch(int[] nums, int target) {
 
 只要数组有序，就应该想到双指针技巧。这道题的解法有点类似二分查找，通过调节 `left` 和 `right` 就可以调整 `sum` 的大小：
 
-```java
-class Solution {
-    public int[] twoSum(int[] numbers, int target) {
-        // 一左一右两个指针相向而行
-        int left = 0, right = numbers.length - 1;
-        while (left < right) {
-            int sum = numbers[left] + numbers[right];
-            if (sum == target) {
-                // 题目要求的索引是从 1 开始的
-                return new int[]{left + 1, right + 1};
-            } else if (sum < target) {
-                // 让 sum 大一点
-                left++;
-            } else if (sum > target) {
-                // 让 sum 小一点
-                right--;
-            }
-        }
-        return new int[]{-1, -1};
-    }
-}
+```python
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        # 一左一右两个指针相向而行
+        left, right = 0, len(numbers) - 1
+        while left < right:
+            sum = numbers[left] + numbers[right]
+            if sum == target:
+                # 题目要求的索引是从 1 开始的
+                return [left + 1, right + 1]
+            elif sum < target:
+                # 让 sum 大一点
+                left += 1
+            elif sum > target:
+                # 让 sum 小一点
+                right -= 1
+        return [-1, -1]
 ``` 
 
 我在另一篇文章 [一个函数秒杀所有 nSum 问题](</zh/algo/practice-in-action/nsum/>) 中也运用类似的左右指针技巧给出了 `nSum` 问题的一种通用思路，本质上利用的也是双指针技巧。
@@ -444,19 +422,17 @@ class Solution {
 
 一般编程语言都会提供 `reverse` 函数，其实这个函数的原理非常简单，力扣第 344 题「[反转字符串](<https://leetcode.cn/problems/reverse-string/>)」就是类似的需求，让你反转一个 `char[]` 类型的字符数组，我们直接看代码吧：
 
-```java
-void reverseString(char[] s) {
-    // 一左一右两个指针相向而行
-    int left = 0, right = s.length - 1;
-    while (left < right) {
-        // 交换 s[left] 和 s[right]
-        char temp = s[left];
-        s[left] = s[right];
-        s[right] = temp;
-        left++;
-        right--;
-    }
-}
+```python
+def reverseString(s: List[str]) -> None:
+    # 一左一右两个指针相向而行
+    left, right = 0, len(s) - 1
+    while left < right:
+        # 交换 s[left] 和 s[right]
+        temp = s[left]
+        s[left] = s[right]
+        s[right] = temp    
+        left += 1
+        right -= 1
 ``` 
 
 关于数组翻转的更多进阶问题，可以参见 [二维数组的花式遍历](</zh/algo/practice-in-action/2d-array-traversal-summary/>)。
@@ -467,19 +443,16 @@ void reverseString(char[] s) {
 
 现在你应该能感觉到回文串问题和左右指针肯定有密切的联系，比如让你判断一个字符串是不是回文串，你可以写出下面这段代码：
 
-```java
-boolean isPalindrome(String s) {
-    // 一左一右两个指针相向而行
-    int left = 0, right = s.length() - 1;
-    while (left < right) {
-        if (s.charAt(left) != s.charAt(right)) {
-            return false;
-        }
-        left++;
-        right--;
-    }
-    return true;
-}
+```python
+def isPalindrome(s: str) -> bool:
+    # 一左一右两个指针相向而行
+    left, right = 0, len(s) - 1
+    while left < right:
+        if s[left] != s[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
 ``` 
 
 那接下来我提升一点难度，给你一个字符串，让你用双指针技巧从中找出最长的回文串，你会做吗？
@@ -514,27 +487,24 @@ boolean isPalindrome(String s) {
 
 函数签名如下：
 
-```java
-String longestPalindrome(String s);
+```python
+def longestPalindrome(s: str):
 ``` 
 
 找回文串的难点在于，回文串的的长度可能是奇数也可能是偶数，解决该问题的核心是**从中心向两端扩散的双指针技巧** 。
 
 如果回文串的长度为奇数，则它有一个中心字符；如果回文串的长度为偶数，则可以认为它有两个中心字符。所以我们可以先实现这样一个函数：
 
-```java
-// 在 s 中寻找以 s[l] 和 s[r] 为中心的最长回文串
-String palindrome(String s, int l, int r) {
-    // 防止索引越界
-    while (l >= 0 && r < s.length()
-            && s.charAt(l) == s.charAt(r)) {
-        // 双指针，向两边展开
-        l--; r++;
-    }
-
-    // 此时 s[l+1..r-1] 就是最长回文串
-    return s.substring(l + 1, r);
-}
+```python
+# 在 s 中寻找以 s[l] 和 s[r] 为中心的最长回文串
+def palindrome(s: str, l: int, r: int) -> str:
+    # 防止索引越界
+    while l >= 0 and r < len(s) and s[l] == s[r]:
+        # 双指针，向两边展开
+        l -= 1
+        r += 1
+    # 此时 s[l+1..r-1] 就是最长回文串
+    return s[l + 1: r]
 ``` 
 
 这样，如果输入相同的 `l` 和 `r`，就相当于寻找长度为奇数的回文串，如果输入相邻的 `l` 和 `r`，则相当于寻找长度为偶数的回文串。
@@ -550,34 +520,28 @@ for 0 <= i < len(s):
 
 翻译成代码，就可以解决最长回文子串这个问题：
 
-```java
-class Solution {
-    public String longestPalindrome(String s) {
-        String res = "";
-        for (int i = 0; i < s.length(); i++) {
-            // 以 s[i] 为中心的最长回文子串
-            String s1 = palindrome(s, i, i);
-            // 以 s[i] 和 s[i+1] 为中心的最长回文子串
-            String s2 = palindrome(s, i, i + 1);
-            // res = longest(res, s1, s2)
-            res = res.length() > s1.length() ? res : s1;
-            res = res.length() > s2.length() ? res : s2;
-        }
-        return res;
-    }
+```python
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        res = ""
+        for i in range(len(s)):
+            # 以 s[i] 为中心的最长回文子串
+            s1 = self.palindrome(s, i, i)
+            # 以 s[i] 和 s[i+1] 为中心的最长回文子串
+            s2 = self.palindrome(s, i, i + 1)
+            # res = longest(res, s1, s2)
+            res = res if len(res) > len(s1) else s1
+            res = res if len(res) > len(s2) else s2
+        return res
 
-    String palindrome(String s, int l, int r) {
-        // 防止索引越界
-        while (l >= 0 && r < s.length()
-                && s.charAt(l) == s.charAt(r)) {
-            // 向两边展开
-            l--;
-            r++;
-        }
-        // 此时 [l+1, r-1] 就是最长回文串
-        return s.substring(l + 1, r);
-    }
-}
+    def palindrome(self, s: str, l: int, r: int) -> str:
+        # 防止索引越界
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            # 向两边展开
+            l -= 1
+            r += 1
+        # 此时 s[l+1..r-1] 就是最长回文串
+        return s[l + 1:r]
 ``` 
 
 你可以点开下面的可视化面板，多次点击 `while (l >= 0 && r < s.length && s[l] === s[r])` 这一行代码，即可看到 `l, r` 两个指针向两边展开的过程：
@@ -587,3 +551,7 @@ class Solution {
 你应该能发现最长回文子串使用的左右指针和之前题目的左右指针有一些不同：之前的左右指针都是从两端向中间相向而行，而回文子串问题则是让左右指针从中心向两端扩展。不过这种情况也就回文串这类问题会遇到，所以我也把它归为左右指针了。
 
 到这里，数组相关的双指针技巧就全部讲完了，这些技巧的更多扩展延伸见 [更多数组双指针经典高频题](</zh/algo/problem-set/array-two-pointers/>)。
+
+## 评论
+
+请登录后查看/发表评论

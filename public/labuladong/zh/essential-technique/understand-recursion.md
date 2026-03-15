@@ -184,49 +184,43 @@ void traverse(TreeNode root) {
 
 目前不需要你彻底理解代码，只需留意代码中的递归部分：
 
-```java
-class Solution {
+```python
+class Solution:
+    def __init__(self):
+        self.res = []
 
-    List<List<Integer>> res = new LinkedList<>();
-
-    // 主函数，输入一组不重复的数字，返回它们的全排列
-    List<List<Integer>> permute(int[] nums) {
-        // 记录「路径」
-        LinkedList<Integer> track = new LinkedList<>();
-        // 「路径」中的元素会被标记为 true，避免重复使用
-        boolean[] used = new boolean[nums.length];
+    # 主函数，输入一组不重复的数字，返回它们的全排列
+    def permute(self, nums):
+        # 记录「路径」
+        track = []
+        # 「路径」中的元素会被标记为 true，避免重复使用
+        used = [False] * len(nums)
         
-        backtrack(nums, track, used);
-        return res;
-    }
+        self.backtrack(nums, track, used)
+        return self.res
 
-    // 路径：记录在 track 中
-    // 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
-    // 结束条件：nums 中的元素全都在 track 中出现
-    void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
-        // 触发结束条件
-        if (track.size() == nums.length) {
-            res.add(new LinkedList(track));
-            return;
-        }
+    # 路径：记录在 track 中
+    # 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
+    # 结束条件：nums 中的元素全都在 track 中出现
+    def backtrack(self, nums, track, used):
+        # 触发结束条件
+        if len(track) == len(nums):
+            self.res.append(track.copy())
+            return
 
-        for (int i = 0; i < nums.length; i++) {
-            // 排除不合法的选择
-            if (used[i]) { 
-                // nums[i] 已经在 track 中，跳过
-                continue;
-            }
-            // 做选择
-            track.add(nums[i]);
-            used[i] = true;
-            // 进入下一层决策树
-            backtrack(nums, track, used);
-            // 取消选择
-            track.removeLast();
-            used[i] = false;
-        }
-    }
-}
+        for i in range(len(nums)):
+            # 排除不合法的选择
+            if used[i]: 
+                # nums[i] 已经在 track 中，跳过
+                continue
+            # 做选择
+            track.append(nums[i])
+            used[i] = True
+            # 进入下一层决策树
+            self.backtrack(nums, track, used)
+            # 取消选择
+            track.pop()
+            used[i] = False
 ``` 
 
 抽出递归部分，应该能看出这个算法可以抽象成一棵多叉树：
@@ -335,24 +329,21 @@ int fib(int n) {
 
 maxDepth(root)={0if root=nullmax(maxDepth(root.left),maxDepth(root.right))+1otherwisemaxDepth(root) = \begin{cases} 0 & \text{if } root = null \\\ max(maxDepth(root.left), maxDepth(root.right)) + 1 & \text{otherwise} \end{cases}maxDepth(root)={0max(maxDepth(root.left),maxDepth(root.right))+1​if root=nullotherwise​
 
-```java
-// 分解问题的思路
-class Solution {
-    // 定义：输入一个节点，返回以该节点为根的二叉树的最大深度
-    public int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        // 利用定义，计算左右子树的最大深度
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
+```python
+# 分解问题的思路
+class Solution:
+    # 定义：输入一个节点，返回以该节点为根的二叉树的最大深度
+    def maxDepth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        # 利用定义，计算左右子树的最大深度
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
 
-        // 根据左右子树的最大深度推出原二叉树的最大深度
-        // 整棵树的最大深度等于左右子树的最大深度取最大值，
-        // 然后再加上根节点自己
-        return 1 + Math.max(leftMax, rightMax);
-    }
-}
+        # 根据左右子树的最大深度推出原二叉树的最大深度
+        # 整棵树的最大深度等于左右子树的最大深度取最大值，
+        # 然后再加上根节点自己
+        return 1 + max(leftMax, rightMax)
 ``` 
 
 对于这道题，我也配了一个可视化面板来展现递归函数的执行过程，其中橙色的是真实二叉树结构，粉色的是抽象出来的递归树结构，其中父节点的值是左右子节点的较大值加一。
@@ -407,40 +398,35 @@ void backtrack(int[] nums, List<Integer> track) {
 
 再来看力扣第 104 题「二叉树的最大深度」，我们也可以用「遍历」的思维模式来写解法，用标准的二叉树遍历函数 `traverse` 来遍历整棵树，在遍历的过程更新最大深度，这样当遍历完所有节点时，必然可以求出整棵树的最大深度：
 
-```java
-// 遍历的思路
-class Solution {
+```python
+# 遍历的思路
+class Solution:
 
-    // 记录遍历到的节点的深度
-    int depth = 0;
+    def __init__(self):
+        # 记录遍历到的节点的深度
+        self.depth = 0
+        # 记录最大深度
+        self.res = 0
 
-    // 记录最大深度
-    int res = 0;
+    def maxDepth(self, root: TreeNode) -> int:
+        self.traverse(root)
+        return self.res
 
-    public int maxDepth(TreeNode root) {
-        traverse(root);
-        return res;
-    }
+    # 遍历二叉树
+    def traverse(self, root: TreeNode):
+        if root is None:
+            return
 
-    // 遍历二叉树
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
+        # 前序遍历位置（进入节点）增加深度
+        self.depth += 1
+        # 遍历到叶子节点时记录最大深度
+        if root.left is None and root.right is None:
+            self.res = max(self.res, self.depth)
+        self.traverse(root.left)
+        self.traverse(root.right)
 
-        // 前序遍历位置（进入节点）增加深度
-        depth++;
-        // 遍历到叶子节点时记录最大深度
-        if (root.left == null && root.right == null) {
-            res = Math.max(res, depth);
-        }
-        traverse(root.left);
-        traverse(root.right);
-
-        // 后序遍历位置（离开节点）减少深度
-        depth--;
-    }
-}
+        # 后序遍历位置（离开节点）减少深度
+        self.depth -= 1
 ``` 
 
 对于这道题，我也配了一个可视化面板来展现递归函数的执行过程，其中橙色的是真实二叉树结构，粉色的是抽象出来的递归树结构。其实 `traverse` 就是一个普通的二叉树遍历函数，只不过它会在遍历的过程中记录当前深度，并在遍历到叶子节点时更新最大深度。
@@ -468,3 +454,7 @@ class Solution {
 其实，「分解问题」的思维模式就对应着后面要讲解的 [动态规划算法](</zh/algo/essential-technique/dynamic-programming-framework/>) 和 [分治算法](</zh/algo/essential-technique/divide-and-conquer/>)，「遍历」的思维模式就对应着后面要讲解的 [DFS/回溯算法](</zh/algo/essential-technique/backtrack-framework/>)。
 
 在 [二叉树习题章节](</zh/algo/intro/binary-tree-practice/>)，我专门把所有二叉树相关的题目都用这两种思维模式来解一遍。你只要把二叉树玩明白了，这些递归算法就都玩明白了，真的很简单。
+
+## 评论
+
+请登录后查看/发表评论

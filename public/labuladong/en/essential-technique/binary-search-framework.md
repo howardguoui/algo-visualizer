@@ -47,22 +47,19 @@ There are two main styles of binary search:
 
 No matter which style you use, the code follows this general framework:
 
-```java
-int binarySearch(int[] nums, int target) {
-    int left = 0, right = ...;
+```python
+def binarySearch(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
 
-    while(...) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
+    while ...:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
             ...
-        } else if (nums[mid] < target) {
+        elif nums[mid] < target:
             left = ...
-        } else if (nums[mid] > target) {
+        elif nums[mid] > target:
             right = ...
-        }
-    }
-    return ...;
-}
+    return ...
 ``` 
 
 The parts marked with `...` are where details can go wrong. When you read any binary search code, first look at these places. Later we will see how they change in different cases.
@@ -92,30 +89,26 @@ Keep these two rules in mind. Next, we will use the **both-ends-closed** style t
 
 This is the simplest case: search for a number. If it exists, return its index; otherwise, return -1.
 
-```java
-class Solution {
-    // standard binary search framework, search for the index of
-    // the target element, return -1 if it does not exist
-    public int search(int[] nums, int target) {
-        int left = 0;
-        // note
-        int right = nums.length - 1;
+```python
+class Solution:
+    # standard binary search framework, search for the index of
+    # the target element, return -1 if it does not exist
+    def search(self, nums: List[int], target: int) -> int:
+        left = 0
+        # note
+        right = len(nums) - 1
 
-        while(left <= right) {
-            int mid = left + (right - left) / 2;
-            if(nums[mid] == target) {
-                return mid;   
-            } else if (nums[mid] < target) {
-                // note
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                // note
-                right = mid - 1;
-            }
-        }
-        return -1;
-    }
-}
+        while left <= right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                # note
+                left = mid + 1
+            elif nums[mid] > target:
+                # note
+                right = mid - 1
+        return -1
 ``` 
 
 Algorithm Visualization
@@ -152,25 +145,22 @@ The next algorithms will handle these two “boundary search” cases, which are
 
 First, look at the code for finding the left boundary:
 
-```java
-int left_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    // the search range is [left, right]
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            // the search range becomes [mid+1, right]
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            // the search range becomes [left, mid-1]
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // shrink the right boundary
-            right = mid - 1;
-        }
-    }
-    return left;
-}
+```python
+def left_bound(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    # the search range is [left, right]
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            # the search range becomes [mid+1, right]
+            left = mid + 1
+        elif nums[mid] > target:
+            # the search range becomes [left, mid-1]
+            right = mid - 1
+        elif nums[mid] == target:
+            # shrink the right boundary
+            right = mid - 1
+    return left
 ``` 
 
 Algorithm Visualization
@@ -213,23 +203,20 @@ return left;
 
 Now look at the code for finding the right boundary:
 
-```java
-int right_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // here change to shrink the left boundary
-            left = mid + 1;
-        }
-    }
-    // finally change to return right
-    return right;
-}
+```python
+def right_bound(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # here, change it to shrink the left boundary
+            left = mid + 1
+    # finally, change it to return right
+    return right
 ``` 
 
 Algorithm Visualization
@@ -272,66 +259,57 @@ return right;
 
 All three cases use the same closed search interval `[left, right]`. The only difference is what we do when `nums[mid] == target`:
 
-```java
-int binary_search(int[] nums, int target) {
-    int left = 0, right = nums.length - 1; 
-    while(left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1; 
-        } else if(nums[mid] == target) {
-            // return directly
-            return mid;
-        }
-    }
-    // return directly
-    return -1;
-}
+```python
+def binary_search(nums: List[int], target: int) -> int:
+    # set left and right indexes
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # found the target value
+            return mid
+    # target value not found
+    return -1
 
-int left_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // do not return, lock the left boundary
-            right = mid - 1;
-        }
-    }
-    // determine if target exists in nums
-    if (left < 0 || left >= nums.length) {
-        return -1;
-    }
-    // check if nums[left] is the target
-    return nums[left] == target ? left : -1;
-}
+def left_bound(nums: List[int], target: int) -> int:
+    # set left and right indexes
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # target exists, narrow the right boundary
+            right = mid - 1
+    # determine if the target exists
+    if left < 0 or left >= len(nums):
+        return -1
+    # determine if the left boundary found is the target value
+    return left if nums[left] == target else -1
 
-int right_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // do not return, lock the right boundary
-            left = mid + 1;
-        }
-    }
-    // since the while loop ends with right == left - 1
-    // and we are now looking for the right boundary
-    // it's easier to remember to use right instead of left - 1
-    if (right < 0 || right >= nums.length) {
-        return -1;
-    }
-    return nums[right] == target ? right : -1;
-}
+def right_bound(nums: List[int], target: int) -> int:
+    # set left and right indexes
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # target exists, narrow the left boundary
+            left = mid + 1
+    # determine if the target exists
+    if right < 0 or right >= len(nums):
+        return -1
+    # determine if the right boundary found is the target value
+    return right if nums[right] == target else -1
 ``` 
 
 From this article, you learned:
@@ -348,4 +326,8 @@ You may also see another style on the internet: left-closed-right-open `[left, r
 
 In real problems you are rarely asked to just “write binary search code”. I will further explain how to use binary search thinking to improve brute-force solutions in [Applications of Binary Search](</en/algo/frequency-interview/binary-search-in-action/>) and [More Binary Search Exercises](</en/algo/problem-set/binary-search/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

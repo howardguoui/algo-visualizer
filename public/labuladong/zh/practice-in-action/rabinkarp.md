@@ -35,17 +35,20 @@ LeetCode| 力扣| 难度
 
 首先，我问你一个很基础的问题，给你输入一个字符串形式的正整数，如何把它转化成数字的形式？很简单，下面这段代码就可以做到：
 
-```java
-String s = "8264";
-int number = 0;
-for (int i = 0; i < s.length(); i++) {
-    // 将字符转化成数字
-    number = 10 * number + (s.charAt(i) - '0');
-    System.out.println(number);
-}
-// 打印输出：
-// 8
-// 82
-// 826
-// 8264
-```
+```python
+s = "8264"
+number = 0
+for i in range(len(s)):
+    # 将字符转化成数字
+    number = 10 * number + (ord(s[i]) - ord('0'))
+    print(number)
+# 打印输出：
+# 8
+# 82
+# 826
+# 8264
+``` 
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -32,154 +32,134 @@
 
 先定义观察者接口和发布者接口：
 
-```java
-// 观察者接口：竞拍者
-interface Bidder {
-    // itemName: 拍品名称, currentPrice: 当前最高价, leadingBidder: 当前最高出价者
-    void update(String itemName, int currentPrice, String leadingBidder);
-}
+```python
+from abc import ABC, abstractmethod
 
-// 发布者接口：拍卖
-interface Auction {
-    void register(Bidder bidder);
-    void unregister(Bidder bidder);
-    void notifyBidders();
-}
+# 观察者接口：竞拍者
+class Bidder(ABC):
+    @abstractmethod
+    def update(self, item_name: str, current_price: int, leading_bidder: str):
+        # item_name: 拍品名称, current_price: 当前最高价, leading_bidder: 当前最高出价者
+        pass
+
+# 发布者接口：拍卖
+class Auction(ABC):
+    @abstractmethod
+    def register(self, bidder: Bidder):
+        pass
+
+    @abstractmethod
+    def unregister(self, bidder: Bidder):
+        pass
+
+    @abstractmethod
+    def notify_bidders(self):
+        pass
 ``` 
 
 然后实现具体的拍卖会（具体发布者），它管理竞拍者列表，每次报价变化时通知所有人：
 
-```java
-class LiveAuction implements Auction {
-    private List<Bidder> bidders = new ArrayList<>();
-    // 拍品名称
-    private String itemName;
-    // 当前最高价
-    private int currentPrice;
-    // 当前最高出价者
-    private String leadingBidder;
+```python
+class LiveAuction(Auction):
+    def __init__(self, item_name: str, starting_price: int):
+        self._bidders: list[Bidder] = []
+        # 拍品名称
+        self._item_name = item_name
+        # 当前最高价
+        self._current_price = starting_price
+        # 当前最高出价者
+        self._leading_bidder = "None"
 
-    public LiveAuction(String itemName, int startingPrice) {
-        this.itemName = itemName;
-        this.currentPrice = startingPrice;
-        this.leadingBidder = "None";
-    }
+    def register(self, bidder: Bidder):
+        self._bidders.append(bidder)
 
-    @Override
-    public void register(Bidder bidder) {
-        bidders.add(bidder);
-    }
+    def unregister(self, bidder: Bidder):
+        self._bidders.remove(bidder)
 
-    @Override
-    public void unregister(Bidder bidder) {
-        bidders.remove(bidder);
-    }
+    def notify_bidders(self):
+        for bidder in self._bidders:
+            bidder.update(self._item_name, self._current_price, self._leading_bidder)
 
-    @Override
-    public void notifyBidders() {
-        for (Bidder bidder : bidders) {
-            bidder.update(itemName, currentPrice, leadingBidder);
-        }
-    }
-
-    // 有人出价
-    public void placeBid(String bidderName, int price) {
-        if (price > currentPrice) {
-            this.currentPrice = price;
-            this.leadingBidder = bidderName;
-            System.out.println(bidderName + " bids " + price);
-            // 通知所有竞拍者
-            notifyBidders();
-        } else {
-            System.out.println(bidderName + " bids " + price + ", below current price, invalid");
-        }
-    }
-}
+    # 有人出价
+    def place_bid(self, bidder_name: str, price: int):
+        if price > self._current_price:
+            self._current_price = price
+            self._leading_bidder = bidder_name
+            print(f"{bidder_name} bids {price}")
+            # 通知所有竞拍者
+            self.notify_bidders()
+        else:
+            print(f"{bidder_name} bids {price}, below current price, invalid")
 ``` 
 
 接下来实现两种具体观察者。`OnlineBidder` 是在线竞拍者，在控制台显示最新报价：
 
-```java
-class OnlineBidder implements Bidder {
-    private String name;
+```python
+class OnlineBidder(Bidder):
+    def __init__(self, name: str):
+        self._name = name
 
-    public OnlineBidder(String name) {
-        this.name = name;
-    }
+    def update(self, item_name: str, current_price: int, leading_bidder: str):
+        print(f"  [{self._name} notified] {item_name} price: {current_price}, leader: {leading_bidder}")
 
-    @Override
-    public void update(String itemName, int currentPrice, String leadingBidder) {
-        System.out.printf("  [%s notified] %s price: %d, leader: %s%n",
-                name, itemName, currentPrice, leadingBidder);
-    }
-
-    public String getName() {
-        return name;
-    }
-}
+    @property
+    def name(self) -> str:
+        return self._name
 ``` 
 
 `BidRecorder` 是一个记录器，负责记录每次出价的历史：
 
-```java
-class BidRecorder implements Bidder {
-    private List<String> history = new ArrayList<>();
+```python
+class BidRecorder(Bidder):
+    def __init__(self):
+        self._history: list[str] = []
 
-    @Override
-    public void update(String itemName, int currentPrice, String leadingBidder) {
-        String record = itemName + ": " + currentPrice + " (" + leadingBidder + ")";
-        history.add(record);
-        System.out.println("  [Recorder] recorded: " + record);
-    }
+    def update(self, item_name: str, current_price: int, leading_bidder: str):
+        record = f"{item_name}: {current_price} ({leading_bidder})"
+        self._history.append(record)
+        print(f"  [Recorder] recorded: {record}")
 
-    public void printHistory() {
-        System.out.println("=== Bid History ===");
-        for (String record : history) {
-            System.out.println("  " + record);
-        }
-    }
-}
+    def print_history(self):
+        print("=== Bid History ===")
+        for record in self._history:
+            print(f"  {record}")
 ``` 
 
 看一下客户端代码：
 
-```java
-public class Main {
-    public static void main(String[] args) {
-        LiveAuction auction = new LiveAuction("Antique Vase", 1000);
+```python
+auction = LiveAuction("Antique Vase", 1000)
 
-        OnlineBidder alice = new OnlineBidder("Alice");
-        OnlineBidder bob = new OnlineBidder("Bob");
-        BidRecorder recorder = new BidRecorder();
+alice = OnlineBidder("Alice")
+bob = OnlineBidder("Bob")
+recorder = BidRecorder()
 
-        // 三个观察者注册到拍卖会
-        auction.register(alice);
-        auction.register(bob);
-        auction.register(recorder);
+# 三个观察者注册到拍卖会
+auction.register(alice)
+auction.register(bob)
+auction.register(recorder)
 
-        // Alice 出价，所有人收到通知
-        auction.placeBid("Alice", 1500);
-        // Alice bids 1500
-        //   [Alice notified] Antique Vase price: 1500, leader: Alice
-        //   [Bob notified] Antique Vase price: 1500, leader: Alice
-        //   [Recorder] recorded: Antique Vase: 1500 (Alice)
+# Alice 出价，所有人收到通知
+auction.place_bid("Alice", 1500)
+# Alice bids 1500
+#   [Alice notified] Antique Vase price: 1500, leader: Alice
+#   [Bob notified] Antique Vase price: 1500, leader: Alice
+#   [Recorder] recorded: Antique Vase: 1500 (Alice)
 
-        // Bob 不想玩了，退出拍卖
-        auction.unregister(bob);
-        System.out.println("Bob left the auction");
+# Bob 不想玩了，退出拍卖
+auction.unregister(bob)
+print("Bob left the auction")
 
-        // Alice 再次出价，Bob 不再收到通知
-        auction.placeBid("Alice", 2000);
-        // Alice bids 2000
-        //   [Alice notified] Antique Vase price: 2000, leader: Alice
-        //   [Recorder] recorded: Antique Vase: 2000 (Alice)
+# Alice 再次出价，Bob 不再收到通知
+auction.place_bid("Alice", 2000)
+# Alice bids 2000
+#   [Alice notified] Antique Vase price: 2000, leader: Alice
+#   [Recorder] recorded: Antique Vase: 2000 (Alice)
 
-        recorder.printHistory();
-        // === Bid History ===
-        //   Antique Vase: 1500 (Alice)
-        //   Antique Vase: 2000 (Alice)
-    }
-}
+recorder.print_history()
+# === Bid History ===
+#   Antique Vase: 1500 (Alice)
+#   Antique Vase: 2000 (Alice)
 ``` 
 
 这个例子清晰地展示了观察者模式的几个核心操作：
@@ -202,59 +182,57 @@ public class Main {
 
 先定义事件类型和观察者接口：
 
-```java
-// 游戏事件类型
-enum GameEventType {
-    MONSTER_KILLED, ITEM_COLLECTED, LEVEL_COMPLETED
-}
+```python
+from enum import Enum
+from abc import ABC, abstractmethod
+from typing import Any
 
-// 游戏事件数据
-class GameEvent {
-    private final GameEventType type;
-    private final Map<String, Object> data;
+# 游戏事件类型
+class GameEventType(Enum):
+    MONSTER_KILLED = "MONSTER_KILLED"
+    ITEM_COLLECTED = "ITEM_COLLECTED"
+    LEVEL_COMPLETED = "LEVEL_COMPLETED"
 
-    public GameEvent(GameEventType type, Map<String, Object> data) {
-        this.type = type;
-        this.data = data;
-    }
+# 游戏事件数据
+class GameEvent:
+    def __init__(self, event_type: GameEventType, data: dict[str, Any]):
+        self._type = event_type
+        self._data = data
 
-    public GameEventType getType() { return type; }
-    public Object getData(String key) { return data.get(key); }
-}
+    def get_type(self) -> GameEventType:
+        return self._type
 
-// 观察者接口
-interface GameEventListener {
-    void onEvent(GameEvent event);
-}
+    def get_data(self, key: str) -> Any:
+        return self._data.get(key)
+
+# 观察者接口
+class GameEventListener(ABC):
+    @abstractmethod
+    def on_event(self, event: GameEvent) -> None:
+        pass
 ``` 
 
 然后实现发布者，这里我们做一个**事件中心** ，允许按事件类型订阅，这样观察者可以只关心自己感兴趣的事件：
 
-```java
-class EventCenter {
-    // key 是事件类型，value 是订阅了该类型的观察者列表
-    private Map<GameEventType, List<GameEventListener>> listeners = new HashMap<>();
+```python
+class EventCenter:
+    def __init__(self):
+        # key 是事件类型，value 是订阅了该类型的观察者列表
+        self._listeners: dict[GameEventType, list[GameEventListener]] = {}
 
-    public void subscribe(GameEventType type, GameEventListener listener) {
-        listeners.computeIfAbsent(type, k -> new ArrayList<>()).add(listener);
-    }
+    def subscribe(self, event_type: GameEventType, listener: GameEventListener) -> None:
+        self._listeners.setdefault(event_type, []).append(listener)
 
-    public void unsubscribe(GameEventType type, GameEventListener listener) {
-        List<GameEventListener> list = listeners.get(type);
-        if (list != null) {
-            list.remove(listener);
-        }
-    }
+    def unsubscribe(self, event_type: GameEventType, listener: GameEventListener) -> None:
+        lst = self._listeners.get(event_type)
+        if lst is not None:
+            lst.remove(listener)
 
-    public void publish(GameEvent event) {
-        List<GameEventListener> list = listeners.get(event.getType());
-        if (list != null) {
-            for (GameEventListener listener : list) {
-                listener.onEvent(event);
-            }
-        }
-    }
-}
+    def publish(self, event: GameEvent) -> None:
+        lst = self._listeners.get(event.get_type())
+        if lst is not None:
+            for listener in lst:
+                listener.on_event(event)
 ``` 
 
 注意这和第一个例子的区别：
@@ -263,106 +241,89 @@ class EventCenter {
 
 接下来实现几个具体的观察者：
 
-```java
-// 成就系统：追踪击杀数，检查是否解锁成就
-class AchievementSystem implements GameEventListener {
-    private int killCount = 0;
+```python
+# 成就系统：追踪击杀数，检查是否解锁成就
+class AchievementSystem(GameEventListener):
+    def __init__(self):
+        self._kill_count = 0
 
-    @Override
-    public void onEvent(GameEvent event) {
-        if (event.getType() == GameEventType.MONSTER_KILLED) {
-            killCount++;
-            System.out.println("  [Achievement] Kill count: " + killCount);
-            if (killCount == 1) {
-                System.out.println("  [Achievement] Unlocked: First Blood!");
-            } else if (killCount == 10) {
-                System.out.println("  [Achievement] Unlocked: Monster Hunter!");
-            }
-        }
-    }
-}
+    def on_event(self, event: GameEvent) -> None:
+        if event.get_type() == GameEventType.MONSTER_KILLED:
+            self._kill_count += 1
+            print(f"  [Achievement] Kill count: {self._kill_count}")
+            if self._kill_count == 1:
+                print("  [Achievement] Unlocked: First Blood!")
+            elif self._kill_count == 10:
+                print("  [Achievement] Unlocked: Monster Hunter!")
 
-// 统计模块：记录各类事件的发生次数
-class StatisticsTracker implements GameEventListener {
-    private Map<GameEventType, Integer> stats = new HashMap<>();
+# 统计模块：记录各类事件的发生次数
+class StatisticsTracker(GameEventListener):
+    def __init__(self):
+        self._stats: dict[GameEventType, int] = {}
 
-    @Override
-    public void onEvent(GameEvent event) {
-        stats.merge(event.getType(), 1, Integer::sum);
-        System.out.println("  [Stats] " + event.getType() + " total: " + stats.get(event.getType()));
-    }
+    def on_event(self, event: GameEvent) -> None:
+        event_type = event.get_type()
+        self._stats[event_type] = self._stats.get(event_type, 0) + 1
+        print(f"  [Stats] {event_type.value} total: {self._stats[event_type]}")
 
-    public void printStats() {
-        System.out.println("=== Game Statistics ===");
-        stats.forEach((type, count) -> System.out.println("  " + type + ": " + count));
-    }
-}
+    def print_stats(self) -> None:
+        print("=== Game Statistics ===")
+        for event_type, count in self._stats.items():
+            print(f"  {event_type.value}: {count}")
 
-// 音效系统：根据不同事件播放对应音效
-class SoundSystem implements GameEventListener {
-    @Override
-    public void onEvent(GameEvent event) {
-        switch (event.getType()) {
-            case MONSTER_KILLED:
-                String monster = (String) event.getData("monsterName");
-                System.out.println("  [Sound] Kill sound: " + monster + " defeated!");
-                break;
-            case ITEM_COLLECTED:
-                System.out.println("  [Sound] Pickup sound: Ding~");
-                break;
-            case LEVEL_COMPLETED:
-                System.out.println("  [Sound] Victory sound: Victory!");
-                break;
-        }
-    }
-}
+# 音效系统：根据不同事件播放对应音效
+class SoundSystem(GameEventListener):
+    def on_event(self, event: GameEvent) -> None:
+        if event.get_type() == GameEventType.MONSTER_KILLED:
+            monster = event.get_data("monsterName")
+            print(f"  [Sound] Kill sound: {monster} defeated!")
+        elif event.get_type() == GameEventType.ITEM_COLLECTED:
+            print("  [Sound] Pickup sound: Ding~")
+        elif event.get_type() == GameEventType.LEVEL_COMPLETED:
+            print("  [Sound] Victory sound: Victory!")
 ``` 
 
 最后看客户端如何使用：
 
-```java
-public class Main {
-    public static void main(String[] args) {
-        EventCenter eventCenter = new EventCenter();
+```python
+event_center = EventCenter()
 
-        AchievementSystem achievements = new AchievementSystem();
-        StatisticsTracker stats = new StatisticsTracker();
-        SoundSystem sound = new SoundSystem();
+achievements = AchievementSystem()
+stats = StatisticsTracker()
+sound = SoundSystem()
 
-        // 各模块按需订阅感兴趣的事件
-        eventCenter.subscribe(GameEventType.MONSTER_KILLED, achievements);
-        eventCenter.subscribe(GameEventType.MONSTER_KILLED, stats);
-        eventCenter.subscribe(GameEventType.MONSTER_KILLED, sound);
-        eventCenter.subscribe(GameEventType.ITEM_COLLECTED, stats);
-        eventCenter.subscribe(GameEventType.ITEM_COLLECTED, sound);
+# 各模块按需订阅感兴趣的事件
+event_center.subscribe(GameEventType.MONSTER_KILLED, achievements)
+event_center.subscribe(GameEventType.MONSTER_KILLED, stats)
+event_center.subscribe(GameEventType.MONSTER_KILLED, sound)
+event_center.subscribe(GameEventType.ITEM_COLLECTED, stats)
+event_center.subscribe(GameEventType.ITEM_COLLECTED, sound)
 
-        // 玩家击杀了一只史莱姆
-        System.out.println("Player killed Slime:");
-        eventCenter.publish(new GameEvent(
-                GameEventType.MONSTER_KILLED,
-                Map.of("monsterName", "Slime")
-        ));
-        //   [Achievement] Kill count: 1
-        //   [Achievement] Unlocked: First Blood!
-        //   [Stats] MONSTER_KILLED total: 1
-        //   [Sound] Kill sound: Slime defeated!
+# 玩家击杀了一只史莱姆
+print("Player killed Slime:")
+event_center.publish(GameEvent(
+    GameEventType.MONSTER_KILLED,
+    {"monsterName": "Slime"}
+))
+#   [Achievement] Kill count: 1
+#   [Achievement] Unlocked: First Blood!
+#   [Stats] MONSTER_KILLED total: 1
+#   [Sound] Kill sound: Slime defeated!
 
-        // 玩家捡到一个宝箱
-        System.out.println("\nPlayer collected Treasure Chest:");
-        eventCenter.publish(new GameEvent(
-                GameEventType.ITEM_COLLECTED,
-                Map.of("itemName", "Treasure Chest")
-        ));
-        //   [Stats] ITEM_COLLECTED total: 1
-        //   [Sound] Pickup sound: Ding~
-        // 注意：成就系统没有订阅 ITEM_COLLECTED，所以不会收到通知
+# 玩家捡到一个宝箱
+print("\nPlayer collected Treasure Chest:")
+event_center.publish(GameEvent(
+    GameEventType.ITEM_COLLECTED,
+    {"itemName": "Treasure Chest"}
+))
+#   [Stats] ITEM_COLLECTED total: 1
+#   [Sound] Pickup sound: Ding~
+# 注意：成就系统没有订阅 ITEM_COLLECTED，所以不会收到通知
 
-        stats.printStats();
-        // === Game Statistics ===
-        //   MONSTER_KILLED: 1
-        //   ITEM_COLLECTED: 1
-    }
-}
+stats.print_stats()
+# === Game Statistics ===
+#   MONSTER_KILLED: 1
+#   ITEM_COLLECTED: 1
 ``` 
 
 这个例子体现了观察者模式在实际开发中的价值：
@@ -396,3 +357,7 @@ public class Main {
   3. **内存泄漏风险** ：如果观察者注册后忘记注销，发布者会一直持有观察者的引用，可能导致对象无法被垃圾回收。
 
 总的来说，当你需要在一个对象状态变化时自动通知多个其他对象，并且不希望它们之间产生紧密耦合时，观察者模式是一个非常实用的选择。
+
+## 评论
+
+请登录后查看/发表评论

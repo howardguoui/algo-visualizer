@@ -25,8 +25,8 @@ LeetCode 53, “[Maximum Subarray](<https://leetcode.com/problems/maximum-subarr
 
 You are given an integer array `nums`. Find a subarray with the largest sum, and return that sum. The function signature is:
 
-```java
-int maxSubArray(int[] nums);
+```python
+def maxSubArray(nums: List[int]) -> int:
 ``` 
 
 For example, if `nums = [-3,1,3,-1,2,-4,2]`, the answer is 5, because the maximum subarray `[1,3,-1,2]` has sum 5.
@@ -43,4 +43,8 @@ Before, I thought sliding window could not work here. The reason is: when there 
 
 So I think the sliding window solution is good for expanding your thinking. But in real problems, it is easier to use DP / prefix sum ideas, because they follow a more standard template. Next, I will explain these three solutions.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

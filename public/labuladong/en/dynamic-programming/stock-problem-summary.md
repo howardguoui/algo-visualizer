@@ -294,35 +294,31 @@ return dp[n][0];
 
 This way, the base case is initialized once outside the loop, and the loop body doesn't need any conditional checks, making the code cleaner. Notice in the state transition equation that each new state only depends on one adjacent state. So we can use the space compression technique from [Space Compression in Dynamic Programming](</en/algo/dynamic-programming/space-optimization/>). Instead of using the entire `dp` array, we only need a variable to store the adjacent state, reducing space complexity to O(1):
 
-```java
-// Original version
-int maxProfit_k_1(int[] prices) {
-    int n = prices.length;
-    // dp[0] represents base case, dp[i] represents day i-1
-    int[][] dp = new int[n + 1][2];
-    dp[0][0] = 0;
-    dp[0][1] = Integer.MIN_VALUE;
+```python
+# Original version
+def maxProfit_k_1(prices: list[int]) -> int:
+    n = len(prices)
+    # dp[0] represents base case, dp[i] represents day i-1
+    dp = [[0] * 2 for _ in range(n + 1)]
+    dp[0][0] = 0
+    dp[0][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i-1]);
-        dp[i][1] = Math.max(dp[i-1][1], -prices[i-1]);
-    }
-    return dp[n][0];
-}
+    for i in range(1, n + 1):
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i-1])
+        dp[i][1] = max(dp[i-1][1], -prices[i-1])
+    return dp[n][0]
 
-// Space complexity optimized version
-int maxProfit_k_1(int[] prices) {
-    int n = prices.length;
-    // base case: dp[-1][0] = 0, dp[-1][1] = -infinity
-    int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
-    for (int i = 0; i < n; i++) {
-        // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
-        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
-        // dp[i][1] = max(dp[i-1][1], -prices[i])
-        dp_i_1 = Math.max(dp_i_1, -prices[i]);
-    }
-    return dp_i_0;
-}
+# Space complexity optimized version
+def maxProfit_k_1(prices: list[int]) -> int:
+    n = len(prices)
+    # base case: dp[-1][0] = 0, dp[-1][1] = -infinity
+    dp_i_0, dp_i_1 = 0, float("-inf")
+    for i in range(n):
+        # dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+        dp_i_0 = max(dp_i_0, dp_i_1 + prices[i])
+        # dp[i][1] = max(dp[i-1][1], -prices[i])
+        dp_i_1 = max(dp_i_1, -prices[i])
+    return dp_i_0
 ``` 
 
 Algorithm Visualization
@@ -391,32 +387,28 @@ dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
 
 Translating directly into code:
 
-```java
-// Original version
-int maxProfit_k_inf(int[] prices) {
-    int n = prices.length;
-    int[][] dp = new int[n + 1][2];
-    dp[0][0] = 0;
-    dp[0][1] = Integer.MIN_VALUE;
+```python
+# Original version
+def maxProfit_k_inf(prices: list[int]) -> int:
+    n = len(prices)
+    dp = [[0] * 2 for _ in range(n + 1)]
+    dp[0][0] = 0
+    dp[0][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i-1]);
-        dp[i][1] = Math.max(dp[i-1][1], dp[i-1][0] - prices[i-1]);
-    }
-    return dp[n][0];
-}
+    for i in range(1, n + 1):
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i-1])
+        dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i-1])
+    return dp[n][0]
 
-// Space complexity optimized version
-int maxProfit_k_inf(int[] prices) {
-    int n = prices.length;
-    int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
-    for (int i = 0; i < n; i++) {
-        int temp = dp_i_0;
-        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
-        dp_i_1 = Math.max(dp_i_1, temp - prices[i]);
-    }
-    return dp_i_0;
-}
+# Space complexity optimized version
+def maxProfit_k_inf(prices: list[int]) -> int:
+    n = len(prices)
+    dp_i_0, dp_i_1 = 0, float("-inf")
+    for i in range(n):
+        temp = dp_i_0
+        dp_i_0 = max(dp_i_0, dp_i_1 + prices[i])
+        dp_i_1 = max(dp_i_1, temp - prices[i])
+    return dp_i_0
 ``` 
 
 Algorithm Visualization
@@ -467,39 +459,35 @@ Explanation: When choosing to buy on day i, we transition from state i-2, not i-
 
 Since the state transition requires `dp[i-2][0]`, we need to offset by 2 positions, letting both `dp[0]` and `dp[1]` represent the base case, and `dp[i]` represent the state of day `i - 2`:
 
-```java
-// Original version
-int maxProfit_with_cool(int[] prices) {
-    int n = prices.length;
-    // dp[0], dp[1] represent base case, dp[i] represents day i-2
-    int[][] dp = new int[n + 2][2];
-    dp[0][0] = 0;
-    dp[0][1] = Integer.MIN_VALUE;
-    dp[1][0] = 0;
-    dp[1][1] = Integer.MIN_VALUE;
+```python
+# Original version
+def maxProfit_with_cool(prices: list[int]) -> int:
+    n = len(prices)
+    # dp[0], dp[1] represent base case, dp[i] represents day i-2
+    dp = [[0] * 2 for _ in range(n + 2)]
+    dp[0][0] = 0
+    dp[0][1] = float("-inf")
+    dp[1][0] = 0
+    dp[1][1] = float("-inf")
 
-    for (int i = 2; i <= n + 1; i++) {
-        // prices[i-2] is the stock price on day i-2
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i-2]);
-        dp[i][1] = Math.max(dp[i-1][1], dp[i-2][0] - prices[i-2]);
-    }
-    return dp[n + 1][0];
-}
+    for i in range(2, n + 2):
+        # prices[i-2] is the stock price on day i-2
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i-2])
+        dp[i][1] = max(dp[i-1][1], dp[i-2][0] - prices[i-2])
+    return dp[n + 1][0]
 
-// Space complexity optimized version
-int maxProfit_with_cool(int[] prices) {
-    int n = prices.length;
-    int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
-    // represents dp[i-2][0]
-    int dp_pre_0 = 0;
-    for (int i = 0; i < n; i++) {
-        int temp = dp_i_0;
-        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
-        dp_i_1 = Math.max(dp_i_1, dp_pre_0 - prices[i]);
-        dp_pre_0 = temp;
-    }
-    return dp_i_0;
-}
+# Space complexity optimized version
+def maxProfit_with_cool(prices: list[int]) -> int:
+    n = len(prices)
+    dp_i_0, dp_i_1 = 0, float("-inf")
+    # represents dp[i-2][0]
+    dp_pre_0 = 0
+    for i in range(n):
+        temp = dp_i_0
+        dp_i_0 = max(dp_i_0, dp_i_1 + prices[i])
+        dp_i_1 = max(dp_i_1, dp_pre_0 - prices[i])
+        dp_pre_0 = temp
+    return dp_i_0
 ``` 
 
 Algorithm Visualization
@@ -562,32 +550,28 @@ If you directly subtract `fee` in the first equation, some test cases will fail.
 
 Translating directly to code, note that when the state transition equation changes, the base case must also change accordingly:
 
-```java
-// Original version
-int maxProfit_with_fee(int[] prices, int fee) {
-    int n = prices.length;
-    int[][] dp = new int[n + 1][2];
-    dp[0][0] = 0;
-    dp[0][1] = Integer.MIN_VALUE;
+```python
+# Original version
+def maxProfit_with_fee(prices: list[int], fee: int) -> int:
+    n = len(prices)
+    dp = [[0] * 2 for _ in range(n + 1)]
+    dp[0][0] = 0
+    dp[0][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i-1]);
-        dp[i][1] = Math.max(dp[i-1][1], dp[i-1][0] - prices[i-1] - fee);
-    }
-    return dp[n][0];
-}
+    for i in range(1, n + 1):
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i-1])
+        dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i-1] - fee)
+    return dp[n][0]
 
-// Space complexity optimized version
-int maxProfit_with_fee(int[] prices, int fee) {
-    int n = prices.length;
-    int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
-    for (int i = 0; i < n; i++) {
-        int temp = dp_i_0;
-        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
-        dp_i_1 = Math.max(dp_i_1, temp - prices[i] - fee);
-    }
-    return dp_i_0;
-}
+# Space complexity optimized version
+def maxProfit_with_fee(prices: list[int], fee: int) -> int:
+    n = len(prices)
+    dp_i_0, dp_i_1 = 0, float("-inf")
+    for i in range(n):
+        temp = dp_i_0
+        dp_i_0 = max(dp_i_0, dp_i_1 + prices[i])
+        dp_i_1 = max(dp_i_1, temp - prices[i] - fee)
+    return dp_i_0
 ``` 
 
 Algorithm Visualization
@@ -683,40 +667,34 @@ return dp[n - 1][0];
 
 But when `k = 2`, since the effect of `k` is not eliminated, we must enumerate `k`:
 
-```java
-// Original version
-int maxProfit_k_2(int[] prices) {
-    int max_k = 2, n = prices.length;
-    int[][][] dp = new int[n + 1][max_k + 1][2];
-    // base case
-    for (int k = 0; k <= max_k; k++) {
-        dp[0][k][0] = 0;
-        dp[0][k][1] = Integer.MIN_VALUE;
-    }
+```python
+# Original version
+def maxProfit_k_2(prices: list[int]) -> int:
+    max_k, n = 2, len(prices)
+    dp = [[[0] * 2 for _ in range(max_k + 1)] for _ in range(n + 1)]
+    # base case
+    for k in range(max_k + 1):
+        dp[0][k][0] = 0
+        dp[0][k][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        for (int k = max_k; k >= 1; k--) {
-            dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i-1]);
-            dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i-1]);
-        }
-    }
-    // enumerated n × max_k × 2 states, correct
-    return dp[n][max_k][0];
-}
+    for i in range(1, n + 1):
+        for k in range(max_k, 0, -1):
+            dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i-1])
+            dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i-1])
+    # enumerated n × max_k × 2 states, correct
+    return dp[n][max_k][0]
 
-// Space complexity optimized version
-int maxProfit_k_2(int[] prices) {
-    // base case
-    int dp_i10 = 0, dp_i11 = Integer.MIN_VALUE;
-    int dp_i20 = 0, dp_i21 = Integer.MIN_VALUE;
-    for (int price : prices) {
-        dp_i20 = Math.max(dp_i20, dp_i21 + price);
-        dp_i21 = Math.max(dp_i21, dp_i10 - price);
-        dp_i10 = Math.max(dp_i10, dp_i11 + price);
-        dp_i11 = Math.max(dp_i11, -price);
-    }
-    return dp_i20;
-}
+# Space complexity optimized version
+def maxProfit_k_2(prices: list[int]) -> int:
+    # base case
+    dp_i10, dp_i11 = 0, float("-inf")
+    dp_i20, dp_i21 = 0, float("-inf")
+    for price in prices:
+        dp_i20 = max(dp_i20, dp_i21 + price)
+        dp_i21 = max(dp_i21, dp_i10 - price)
+        dp_i10 = max(dp_i10, dp_i11 + price)
+        dp_i11 = max(dp_i11, -price)
+    return dp_i20
 ``` 
 
 Algorithm Visualization
@@ -779,32 +757,26 @@ One transaction consists of buying and selling, which requires at least two days
 
 So we can directly reuse our previous code:
 
-```java
-int maxProfit_k_any(int max_k, int[] prices) {
-    int n = prices.length;
-    if (n <= 0) {
-        return 0;
-    }
-    if (max_k > n / 2) {
-        // reuse maxProfit_k_inf function
-        return maxProfit_k_inf(prices);
-    }
+```python
+def maxProfit_k_any(max_k: int, prices: list[int]) -> int:
+    n = len(prices)
+    if n <= 0:
+        return 0
+    if max_k > n // 2:
+        # reuse maxProfit_k_inf function
+        return maxProfit_k_inf(prices)
 
-    int[][][] dp = new int[n + 1][max_k + 1][2];
-    // base case
-    for (int k = 0; k <= max_k; k++) {
-        dp[0][k][0] = 0;
-        dp[0][k][1] = Integer.MIN_VALUE;
-    }
+    dp = [[[0] * 2 for _ in range(max_k + 1)] for _ in range(n + 1)]
+    # base case
+    for k in range(max_k + 1):
+        dp[0][k][0] = 0
+        dp[0][k][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        for (int k = max_k; k >= 1; k--) {
-            dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i-1]);
-            dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i-1]);
-        }
-    }
-    return dp[n][max_k][0];
-}
+    for i in range(1, n + 1):
+        for k in range(max_k, 0, -1):
+            dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i-1])
+            dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i-1])
+    return dp[n][max_k][0]
 ``` 
 
 Algorithm Visualization
@@ -829,59 +801,49 @@ So we just need to mix together the code we implemented earlier, **adding the`co
 
 Since state transition needs `dp[i-cooldown-1]`, we need to offset by `cooldown + 1` positions:
 
-```java
-// Consider the limit on the number of transactions,
-// cooldown period, and transaction fees simultaneously
-int maxProfit_all_in_one(int max_k, int[] prices, int cooldown, int fee) {
-    int n = prices.length;
-    if (n <= 0) {
-        return 0;
-    }
-    if (max_k > n / 2) {
-        // The case where the number of transactions k is unlimited
-        return maxProfit_k_inf(prices, cooldown, fee);
-    }
+```python
+# Consider the limit on the number of transactions,
+# cooldown period, and transaction fees simultaneously
+def maxProfit_all_in_one(max_k: int, prices: list[int], cooldown: int, fee: int) -> int:
+    n = len(prices)
+    if n <= 0:
+        return 0
+    if max_k > n // 2:
+        # The case where the number of transactions k is unlimited
+        return maxProfit_k_inf(prices, cooldown, fee)
 
-    // offset is cooldown + 1, ensuring access to dp[i - cooldown - 1]
-    int offset = cooldown + 1;
-    int[][][] dp = new int[n + offset][max_k + 1][2];
-    // base case: first offset rows are all base cases
-    for (int i = 0; i < offset; i++) {
-        for (int k = 0; k <= max_k; k++) {
-            dp[i][k][0] = 0;
-            dp[i][k][1] = Integer.MIN_VALUE;
-        }
-    }
+    # offset is cooldown + 1, ensuring access to dp[i - cooldown - 1]
+    offset = cooldown + 1
+    dp = [[[0] * 2 for _ in range(max_k + 1)] for _ in range(n + offset)]
+    # base case: first offset rows are all base cases
+    for i in range(offset):
+        for k in range(max_k + 1):
+            dp[i][k][0] = 0
+            dp[i][k][1] = float("-inf")
 
-    for (int i = offset; i < n + offset; i++) {
-        for (int k = max_k; k >= 1; k--) {
-            // prices[i - offset] is the stock price on day i-offset
-            dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i - offset]);
-            // Consider both cooldown and fee simultaneously
-            dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i - cooldown - 1][k-1][0] - prices[i - offset] - fee);
-        }
-    }
-    return dp[n + offset - 1][max_k][0];
-}
+    for i in range(offset, n + offset):
+        for k in range(max_k, 0, -1):
+            # prices[i - offset] is the stock price on day i-offset
+            dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i - offset])
+            # Consider both cooldown and fee simultaneously
+            dp[i][k][1] = max(dp[i-1][k][1], dp[i - cooldown - 1][k-1][0] - prices[i - offset] - fee)
+    return dp[n + offset - 1][max_k][0]
 
-// k is unlimited, including transaction fees and cooldown period
-int maxProfit_k_inf(int[] prices, int cooldown, int fee) {
-    int n = prices.length;
-    int offset = cooldown + 1;
-    int[][] dp = new int[n + offset][2];
-    // base case: first offset rows are all base cases
-    for (int i = 0; i < offset; i++) {
-        dp[i][0] = 0;
-        dp[i][1] = Integer.MIN_VALUE;
-    }
+# k is unlimited, including transaction fees and cooldown period
+def maxProfit_k_inf(prices: list[int], cooldown: int, fee: int) -> int:
+    n = len(prices)
+    offset = cooldown + 1
+    dp = [[0] * 2 for _ in range(n + offset)]
+    # base case: first offset rows are all base cases
+    for i in range(offset):
+        dp[i][0] = 0
+        dp[i][1] = float("-inf")
 
-    for (int i = offset; i < n + offset; i++) {
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i - offset]);
-        // Consider both cooldown and fee simultaneously
-        dp[i][1] = Math.max(dp[i-1][1], dp[i - cooldown - 1][0] - prices[i - offset] - fee);
-    }
-    return dp[n + offset - 1][0];
-}
+    for i in range(offset, n + offset):
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i - offset])
+        # Consider both cooldown and fee simultaneously
+        dp[i][1] = max(dp[i-1][1], dp[i - cooldown - 1][0] - prices[i - offset] - fee)
+    return dp[n + offset - 1][0]
 ``` 
 
 You can use this `maxProfit_all_in_one` function to solve all 6 problems we discussed earlier. Since we can't optimize the `dp` array, the execution efficiency isn't optimal, but the correctness is guaranteed.
@@ -892,4 +854,8 @@ The key is to enumerate all possible "states", then think about how to brute-for
 
 For the stock trading problem specifically, we identified three states and used a three-dimensional array. It's still just brute-force + update, but we can make it sound fancy—this is called "3D DP". Sounds impressive, doesn't it?
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

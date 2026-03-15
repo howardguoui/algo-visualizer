@@ -21,3 +21,7 @@
 ## 类型一，合并有序序列
 
 先来看第一类，类似于合并有序链表这样的题目。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -153,4 +153,8 @@ If you make sure that no code is a prefix of another, you don't need to look ahe
 
 In real encoding and decoding, NNN is usually large. Even if KKK is small, decoding several times slower is still a big problem. So we want our algorithm's time complexity to be O(N)O(N)O(N), and the compression rate to be as high as possible.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

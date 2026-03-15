@@ -18,17 +18,16 @@
   * [链表基础](</zh/algo/data-structure-basic/linkedlist-basic/>)
   * [单链表的双指针技巧汇总](</zh/algo/essential-technique/linked-list-skills-summary/>)
 
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)
+
 此页内容
 
-  * 链表的分解
-  * 82\. 删除排序链表中的重复元素 II
-  * 链表的合并
-  * 378\. 有序矩阵中第 K 小的元素
-  * 373\. 查找和最小的 K 对数字
-  * 链表运算题
-  * 2\. 两数相加
-  * 445\. 两数相加 II
-  * 链表环检测
-  * 287\. 寻找重复数
-
 AI 助教
+
+### AI 助教上线
+
+点击右下角的按钮就能唤出网站配套的「AI 助教」答疑解惑，能大幅提升学习效率，效果非常好！ 还没用过的话可以试一试~
+
+[了解详情](</zh/algo/intro/ai-assistant/>)

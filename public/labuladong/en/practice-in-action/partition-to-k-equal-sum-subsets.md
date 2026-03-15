@@ -32,8 +32,8 @@ You are given an array `nums` and a positive integer `k`. Please check whether `
 
 The function signature is:
 
-```java
-boolean canPartitionKSubsets(int[] nums, int k);
+```python
+def canPartitionKSubsets(nums: List[int], k: int) -> bool:
 ``` 
 
 Thinking Question
@@ -52,4 +52,8 @@ When we split the original set `S` into two equal subsets `S_1` and `S_2`, each 
 
 But if you want to split `S` into `k` equal subsets, then each element in `S` has **`k` choices**. This is essentially different from the standard knapsack setting, so you cannot directly use the knapsack DP approach. You have to use backtracking and brute-force search.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

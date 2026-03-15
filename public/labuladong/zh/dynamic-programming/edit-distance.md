@@ -65,9 +65,9 @@ exection -> execution (插入 'u')
 
 题目来源：[力扣 72. 编辑距离](<https://leetcode.cn/problems/edit-distance/>)。
 
-```java
-// 函数签名如下
-int minDistance(String s1, String s2)
+```python
+# 函数签名如下
+def minDistance(s1: str, s2: str) -> int:
 ``` 
 
 对于没有接触过动态规划问题的读者来说，这道题还是有一定难度的，是不是感觉完全无从下手？
@@ -133,47 +133,43 @@ else:
 
 有这个框架，问题就已经解决了。读者也许会问，这个「三选一」到底该怎么选择呢？很简单，全试一遍，哪个操作最后得到的编辑距离最小，就选谁。这里需要递归技巧，先看下暴力解法代码：
 
-```java
-class Solution {
-    public int minDistance(String s1, String s2) {
-        int m = s1.length(), n = s2.length();
-        // i，j 初始化指向最后一个索引
-        return dp(s1, m - 1, s2, n - 1);
-    }
+```python
+class Solution:
+    def minDistance(self, s1: str, s2: str) -> int:
+        m = len(s1)
+        n = len(s2)
+        # i，j 初始化指向最后一个索引
+        return self.dp(s1, m - 1, s2, n - 1)
 
-    // 定义：返回 s1[0..i] 和 s2[0..j] 的最小编辑距离
-    int dp(String s1, int i, String s2, int j) {
-        // base case
-        if (i == -1) return j + 1;
-        if (j == -1) return i + 1;
+    # 定义：返回 s1[0..i] 和 s2[0..j] 的最小编辑距离
+    def dp(self, s1: str, i: int, s2: str, j: int) -> int:
+        # base case
+        if i == -1:
+            return j + 1
+        if j == -1:
+            return i + 1
 
-        if (s1.charAt(i) == s2.charAt(j)) {
-            // 啥都不做
-            return dp(s1, i - 1, s2, j - 1);
-        }
+        if s1[i] == s2[j]:
+            # 啥都不做
+            return self.dp(s1, i - 1, s2, j - 1)
+
         return min(
-            // 插入
-            dp(s1, i, s2, j - 1) + 1,
-            // 删除
-            dp(s1, i - 1, s2, j) + 1,
-            // 替换
-            dp(s1, i - 1, s2, j - 1) + 1
-        );
-    }
-
-    int min(int a, int b, int c) {
-        return Math.min(a, Math.min(b, c));
-    }
-}
+            # 插入
+            self.dp(s1, i, s2, j - 1) + 1,
+            # 删除
+            self.dp(s1, i - 1, s2, j) + 1,
+            # 替换
+            self.dp(s1, i - 1, s2, j - 1) + 1
+        )
 ``` 
 
 下面来详细解释一下这段递归代码，base case 应该不用解释了，主要解释一下递归部分。
 
 都说递归代码的可解释性很好，这是有道理的，只要理解函数的定义，就能很清楚地理解算法的逻辑。我们这里 `dp` 函数的定义是这样的：
 
-```java
-// 定义：返回 s1[0..i] 和 s2[0..j] 的最小编辑距离
-int dp(String s1, int i, String s2, int j)
+```python
+# 定义：返回 s1[0..i] 和 s2[0..j] 的最小编辑距离
+def dp(s1: str, i: int, s2: str, j: int):
 ``` 
 
 **记住这个定义** 之后，先来看这段代码：
@@ -248,45 +244,38 @@ int dp(i, j) {
 
 既然暴力递归解法都写出来了，备忘录是很容易加的，原来的代码稍加修改即可：
 
-```java
-class Solution {
-    // 备忘录
-    int[][] memo;
-        
-    public int minDistance(String s1, String s2) {
-        int m = s1.length(), n = s2.length();
-        // 备忘录初始化为特殊值，代表还未计算
-        memo = new int[m][n];
-        for (int[] row : memo) {
-            Arrays.fill(row, -1);
-        }
-        return dp(s1, m - 1, s2, n - 1);
-    }
+```python
+class Solution:
+    def __init__(self):
+        self.memo = []
 
-    int dp(String s1, int i, String s2, int j) {
-        if (i == -1) return j + 1;
-        if (j == -1) return i + 1;
-        // 查备忘录，避免重叠子问题
-        if (memo[i][j] != -1) {
-            return memo[i][j];
-        }
-        // 状态转移，结果存入备忘录
-        if (s1.charAt(i) == s2.charAt(j)) {
-            memo[i][j] = dp(s1, i - 1, s2, j - 1);
-        } else {
-            memo[i][j] =  min(
-                dp(s1, i, s2, j - 1) + 1,
-                dp(s1, i - 1, s2, j) + 1,
-                dp(s1, i - 1, s2, j - 1) + 1
-            );
-        }
-        return memo[i][j];
-    }
+    def minDistance(self, s1: str, s2: str) -> int:
+        m, n = len(s1), len(s2)
+        # 备忘录初始化为特殊值，代表还未计算
+        self.memo = [[-1] * n for _ in range(m)]
+        return self.dp(s1, m - 1, s2, n - 1)
 
-    int min(int a, int b, int c) {
-        return Math.min(a, Math.min(b, c));
-    }
-}
+    def dp(self, s1: str, i: int, s2: str, j: int) -> int:
+        if i == -1:
+            return j + 1
+        if j == -1:
+            return i + 1
+
+        # 查备忘录，避免重叠子问题
+        if self.memo[i][j] != -1:
+            return self.memo[i][j]
+
+        # 状态转移，结果存入备忘录
+        if s1[i] == s2[j]:
+            self.memo[i][j] = self.dp(s1, i - 1, s2, j - 1)
+        else:
+            self.memo[i][j] = min(
+                self.dp(s1, i, s2, j - 1) + 1,
+                self.dp(s1, i - 1, s2, j) + 1,
+                self.dp(s1, i - 1, s2, j - 1) + 1
+            )
+
+        return self.memo[i][j]
 ``` 
 
 ### DP table 解法
@@ -311,35 +300,29 @@ dp[i+1][j+1]
 
 既然 `dp` 数组和递归 `dp` 函数含义一样，也就可以直接套用之前的思路写代码，**唯一不同的是，递归解法是自顶向下求解（从原问题开始，逐步分解到 base case），DP table 是自底向上求解（从 base case 开始，向原问题推演）** ：
 
-```java
-class Solution {
-    public int minDistance(String s1, String s2) {
-        int m = s1.length(), n = s2.length();
-        int[][] dp = new int[m + 1][n + 1];
-        // base case
-        for (int i = 1; i <= m; i++)
-            dp[i][0] = i;
-        for (int j = 1; j <= n; j++)
-            dp[0][j] = j;
-        // 自底向上求解
-        for (int i = 1; i <= m; i++)
-            for (int j = 1; j <= n; j++)
-                if (s1.charAt(i - 1) == s2.charAt(j - 1))
-                    dp[i][j] = dp[i - 1][j - 1];
-                else
+```python
+class Solution:
+    def minDistance(self, s1: str, s2: str) -> int:
+        m, n = len(s1), len(s2)
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        # base case
+        for i in range(1, m + 1):
+            dp[i][0] = i
+        for j in range(1, n + 1):
+            dp[0][j] = j
+        # 自底向上求解
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if s1[i - 1] == s2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+                else:
                     dp[i][j] = min(
                         dp[i - 1][j] + 1, 
                         dp[i][j - 1] + 1, 
                         dp[i - 1][j - 1] + 1
-                    );
-        // 储存着整个 s1 和 s2 的最小编辑距离
-        return dp[m][n];
-    }
-
-    int min(int a, int b, int c) {
-        return Math.min(a, Math.min(b, c));
-    }
-}
+                    )
+        # 储存着整个 s1 和 s2 的最小编辑距离
+        return dp[m][n]
 ``` 
 
 算法可视化
@@ -356,18 +339,16 @@ class Solution {
 
 这个其实很简单，代码稍加修改，给 dp 数组增加额外的信息即可：
 
-```java
-// int[][] dp;
-Node[][] dp;
+```python
+class Node:
+    val: int
+    choice: int
+    # 0 代表啥都不做
+    # 1 代表插入
+    # 2 代表删除
+    # 3 代表替换
 
-class Node {
-    int val;
-    int choice;
-    // 0 代表啥都不做
-    // 1 代表插入
-    // 2 代表删除
-    // 3 代表替换
-}
+dp: List[List[Node]] = []
 ``` 
 
 `val` 属性就是之前的 dp 数组的数值，`choice` 属性代表操作。在做最优选择时，顺便把操作记录下来，然后就从结果反推具体操作。
@@ -382,104 +363,90 @@ class Node {
 
 应大家的要求，我把这个思路也写出来，你可以自己运行试一下：
 
-```java
-int minDistance(String s1, String s2) {
-    int m = s1.length(), n = s2.length();
-    Node[][] dp = new Node[m + 1][n + 1];
-    // base case
-    for (int i = 0; i <= m; i++) {
-        // s1 转化成 s2 只需要删除一个字符
-        dp[i][0] = new Node(i, 2);
-    }
-    for (int j = 1; j <= n; j++) {
-        // s1 转化成 s2 只需要插入一个字符
-        dp[0][j] = new Node(j, 1);
-    }
-    // 状态转移方程
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (s1.charAt(i-1) == s2.charAt(j-1)){
-                // 如果两个字符相同，则什么都不需要做
-                Node node = dp[i - 1][j - 1];
-                dp[i][j] = new Node(node.val, 0);
-            } else {
-                // 否则，记录代价最小的操作
-                dp[i][j] = minNode(
+```python
+def minDistance(self, s1: str, s2: str) -> int:
+    m, n = len(s1), len(s2)
+    dp = [[Node() for _ in range(n + 1)] for _ in range(m + 1)]
+    # base case
+    for i in range(m + 1):
+        # s1 转化成 s2 只需要删除一个字符
+        dp[i][0] = Node(i, 2)
+    for j in range(1, n + 1):
+        # s1 转化成 s2 只需要插入一个字符
+        dp[0][j] = Node(j, 1)
+    # 状态转移方程
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i-1] == s2[j-1]:
+                # 如果两个字符相同，则什么都不需要做
+                node = dp[i - 1][j - 1]
+                dp[i][j] = Node(node.val, 0)
+            else:
+                # 否则，记录代价最小的操作
+                dp[i][j] = self.minNode(
                     dp[i - 1][j],
                     dp[i][j - 1],
                     dp[i-1][j-1]
-                );
-                // 并且将编辑距离加一
-                dp[i][j].val++;
-            }
-        }
-    }
-    // 根据 dp table 反推具体操作过程并打印
-    printResult(dp, s1, s2);
-    return dp[m][n].val;
-}
+                )
+                # 并且将编辑距离加一
+                dp[i][j].val += 1
+    # 根据 dp table 反推具体操作过程并打印
+    self.printResult(dp, s1, s2)
+    return dp[m][n].val
 
-// 计算 delete, insert, replace 中代价最小的操作
-Node minNode(Node a, Node b, Node c) {
-    Node res = new Node(a.val, 2);
+# 计算 delete, insert, replace 中代价最小的操作
+def minNode(self, a: Node, b: Node, c: Node) -> Node:
+    res = Node(a.val, 2)
     
-    if (res.val > b.val) {
-        res.val = b.val;
-        res.choice = 1;
-    }
-    if (res.val > c.val) {
-        res.val = c.val;
-        res.choice = 3;
-    }
-    return res;
-}
+    if res.val > b.val:
+        res.val = b.val
+        res.choice = 1
+    if res.val > c.val:
+        res.val = c.val
+        res.choice = 3
+    return res
 
-// 推导结果并把具体的操作打印出来
-void printResult(Node[][] dp, String s1, String s2) {
-    int rows = dp.length;
-    int cols = dp[0].length;
-    int i = rows - 1, j = cols - 1;
-    System.out.println("Change s1=" + s1 + " to s2=" + s2 + ":\n");
-    while (i != 0 && j != 0) {
-        char c1 = s1.charAt(i - 1);
-        char c2 = s2.charAt(j - 1);
-        int choice = dp[i][j].choice;
-        System.out.print("s1[" + (i - 1) + "]:");
-        switch (choice) {
-            case 0:
-                // 跳过，则两个指针同时前进
-                System.out.println("skip '" + c1 + "'");
-                i--; j--;
-                break;
-            case 1:
-                // 将 s2[j] 插入 s1[i]，则 s2 指针前进
-                System.out.println("insert '" + c2 + "'");
-                j--;
-                break;
-            case 2:
-                // 将 s1[i] 删除，则 s1 指针前进
-                System.out.println("delete '" + c1 + "'");
-                i--;
-                break;
-            case 3:
-                // 将 s1[i] 替换成 s2[j]，则两个指针同时前进
-                System.out.println(
-                    "replace '" + c1 + "'" + " with '" + c2 + "'");
-                i--; j--;
-                break;
-        }
-    }
-    // 如果 s1 还没有走完，则剩下的都是需要删除的
-    while (i > 0) {
-        System.out.print("s1[" + (i - 1) + "]:");
-        System.out.println("delete '" + s1.charAt(i - 1) + "'");
-        i--;
-    }
-    // 如果 s2 还没有走完，则剩下的都是需要插入 s1 的
-    while (j > 0) {
-        System.out.print("s1[0]:");
-        System.out.println("insert '" + s2.charAt(j - 1) + "'");
-        j--;
-    }
-}
-```
+# 推导结果并把具体的操作打印出来
+def printResult(self, dp, s1, s2):
+    rows = len(dp)
+    cols = len(dp[0])
+    i, j = rows - 1, cols - 1
+    print(f"Change s1={s1} to s2={s2}:\n")
+    while i != 0 and j != 0:
+        c1 = s1[i - 1]
+        c2 = s2[j - 1]
+        choice = dp[i][j].choice
+        print(f"s1[{i - 1}]:", end='')
+        if choice == 0:
+            # 跳过，则两个指针同时前进
+            print(f"skip '{c1}'")
+            i -= 1
+            j -= 1
+        elif choice == 1:
+            # 将 s2[j] 插入 s1[i]，则 s2 指针前进
+            print(f"insert '{c2}'")
+            j -= 1
+        elif choice == 2:
+            # 将 s1[i] 删除，则 s1 指针前进
+            print(f"delete '{c1}'")
+            i -= 1
+        elif choice == 3:
+            # 将 s1[i] 替换成 s2[j]，则两个指针同时前进
+            print(f"replace '{c1}' with '{c2}'")
+            i -= 1
+            j -= 1
+    # 如果 s1 还没有走完，则剩下的都是需要删除的
+    while i > 0:
+        print(f"s1[{i - 1}]:", end='')
+        print(f"delete '{s1[i - 1]}'")
+        i -= 1
+    # 如果 s2 还没有走完，则剩下的都是需要插入 s1 的
+    while j > 0:
+        print(f"s1[0]:", end='')
+        print(f"insert '{s2[j - 1]}'")
+        j -= 1
+``` 
+
+## 评论
+
+请登录后查看/发表评论

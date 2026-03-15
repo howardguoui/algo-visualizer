@@ -19,32 +19,31 @@ But even though the definition is simple, not many people can write efficient al
 
 For example, LeetCode problem 204 “[Count Primes](<https://leetcode.com/problems/count-primes/>)” asks you to write this function:
 
-```java
-// return the number of prime numbers in the interval [2, n)
-int countPrimes(int n)
+```python
+# Return the number of prime numbers in the interval [2, n)
+def countPrimes(n: int) -> int: 
 
-// for example, countPrimes(10) returns 4
-// because 2, 3, 5, 7 are prime numbers
+# For example, countPrimes(10) returns 4
+# because 2, 3, 5, 7 are prime numbers
 ``` 
 
 How would you write this function? Most people will probably write it like this:
 
-```java
-int countPrimes(int n) {
-    int count = 0;
-    for (int i = 2; i < n; i++)
-        if (isPrime(i)) count++;
-    return count;
-}
+```python
+def countPrimes(n: int) -> int:
+    count = 0
+    for i in range(2, n):
+        if isPrime(i):
+            count += 1
+    return count
 
-// determine if the integer n is a prime
-boolean isPrime(int n) {
-    for (int i = 2; i < n; i++)
-        if (n % i == 0)
-            // has other divisors
-            return false;
-    return true;
-}
+# Determine if the integer n is a prime
+def isPrime(n: int) -> bool:
+    for i in range(2, n):
+        if n % i == 0:
+            # There are other divisors
+            return False
+    return True
 ``` 
 
 With this code, the time complexity is O(n^2), which is too slow. The main issues are: **using the`isPrime` helper function is not efficient enough, and even if you use it, this version still has a lot of repeated computation**.
@@ -94,30 +93,23 @@ This GIF from Wikipedia shows the process clearly:
 
 By now, you may already understand the logic of this elimination method. Here is our first version of the code:
 
-```java
-class Solution {
-    public int countPrimes(int n) {
-        boolean[] isPrime = new boolean[n];
-        // initialize the array to true
-        Arrays.fill(isPrime, true);
+```python
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        # initialize the array to true
+        isPrime = [True] * n
+        for i in range(2, n):
+            if isPrime[i]:
+                # multiples of i cannot be prime
+                for j in range(2 * i, n, i):
+                    isPrime[j] = False
 
-        for (int i = 2; i < n; i++) {
-            if (isPrime[i]) {
-                // multiples of i cannot be prime
-                for (int j = 2 * i; j < n; j += i) {
-                    isPrime[j] = false;
-                }
-            }
-        }
-        
-        int count = 0;
-        for (int i = 2; i < n; i++) {
-            if (isPrime[i]) count++;
-        }
-        
-        return count;
-    }
-}
+        count = 0
+        for i in range(2, n):
+            if isPrime[i]: 
+                count += 1
+
+        return count
 ``` 
 
 If you understand the code above, you already know the main idea. But there are still two small optimizations.
@@ -150,23 +142,21 @@ for (int j = i * i; j < n; j += i)
 
 Now the prime counting algorithm is efficient. Here is the final complete code:
 
-```java
-class Solution {
-    public int countPrimes(int n) {
-        boolean[] isPrime = new boolean[n];
-        Arrays.fill(isPrime, true);
-        for (int i = 2; i * i < n; i++)
-            if (isPrime[i])
-                for (int j = i * i; j < n; j += i)
-                    isPrime[j] = false;
+```python
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        isPrime = [True] * n
+        for i in range(2, int(n ** 0.5) + 1):
+            if isPrime[i]:
+                for j in range(i * i, n, i):
+                    isPrime[j] = False
 
-        int count = 0;
-        for (int i = 2; i < n; i++)
-            if (isPrime[i]) count++;
+        count = 0
+        for i in range(2, n):
+            if isPrime[i]: 
+                count += 1
 
-        return count;
-    }
-}
+        return count
 ``` 
 
 Algorithm Visualization
@@ -182,4 +172,8 @@ The part in brackets is the sum of the reciprocals of primes. The final result i
 
 This is all for the prime counting algorithm. As you can see, even a simple problem can have many details to polish.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

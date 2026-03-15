@@ -92,453 +92,367 @@ You can use LeetCode problem 707, “[Design Linked List](<https://leetcode.com/
 
 ## Doubly Linked List Implementation
 
-```java
-import java.util.NoSuchElementException;
+```python
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+        self.prev = None
 
-public class MyLinkedList<E> {
-    // virtual head and tail nodes
-    final private Node<E> head, tail;
-    private int size;
+class MyLinkedList:
+    # virtual head and tail nodes
+    def __init__(self):
+        self.head = Node(None)
+        self.tail = Node(None)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.size = 0
 
-    // doubly linked list node
-    private static class Node<E> {
-        E val;
-        Node<E> next;
-        Node<E> prev;
+    # ***** Add *****
 
-        Node(E val) {
-            this.val = val;
-        }
-    }
+    def add_last(self, e):
+        x = Node(e)
+        temp = self.tail.prev
 
-    // constructor initializes virtual head and tail nodes
-    public MyLinkedList() {
-        this.head = new Node<>(null);
-        this.tail = new Node<>(null);
-        head.next = tail;
-        tail.prev = head;
-        this.size = 0;
-    }
+        temp.next = x
+        x.prev = temp
+        # temp <-> x
 
-    // ***** Add *****
+        x.next = self.tail
+        self.tail.prev = x
+        # temp <-> x <-> tail
+        self.size += 1
 
-    public void addLast(E e) {
-        Node<E> x = new Node<>(e);
-        Node<E> temp = tail.prev;
-        // temp <-> x
-        temp.next = x;
-        x.prev = temp;
+    def add_first(self, e):
+        x = Node(e)
+        temp = self.head.next
+        # head <-> temp
+        temp.prev = x
+        x.next = temp
 
-        x.next = tail;
-        tail.prev = x;
-        // temp <-> x <-> tail
-        size++;
-    }
+        self.head.next = x
+        x.prev = self.head
+        # head <-> x <-> temp
+        self.size += 1
 
-    public void addFirst(E e) {
-        Node<E> x = new Node<>(e);
-        Node<E> temp = head.next;
-        // head <-> temp
-        temp.prev = x;
-        x.next = temp;
+    def add(self, index, element):
+        self.check_position_index(index)
+        if index == self.size:
+            self.add_last(element)
+            return
 
-        head.next = x;
-        x.prev = head;
-        // head <-> x <-> temp
-        size++;
-    }
+        # find the Node corresponding to index
+        p = self.get_node(index)
+        temp = p.prev
+        # temp <-> p
 
-    public void add(int index, E element) {
-        checkPositionIndex(index);
-        if (index == size) {
-            addLast(element);
-            return;
-        }
+        # new Node to be inserted
+        x = Node(element)
 
-        // find the Node corresponding to index
-        Node<E> p = getNode(index);
-        Node<E> temp = p.prev;
-        // temp <-> p
+        p.prev = x
+        temp.next = x
 
-        // new Node to be inserted
-        Node<E> x = new Node<>(element);
+        x.prev = temp
+        x.next = p
 
-        p.prev = x;
-        temp.next = x;
+        # temp <-> x <-> p
 
-        x.prev = temp;
-        x.next = p;
+        self.size += 1
 
-        // temp <-> x <-> p
+    # ***** Remove *****
 
-        size++;
-    }
+    def remove_first(self):
+        if self.size < 1:
+            raise IndexError("No elements to remove")
+        # the existence of virtual nodes prevents us from having to consider null pointers
+        x = self.head.next
+        temp = x.next
+        # head <-> x <-> temp
+        self.head.next = temp
+        temp.prev = self.head
 
-    // ***** Remove *****
+        # head <-> temp
 
-    public E removeFirst() {
-        if (size < 1) {
-            throw new NoSuchElementException();
-        }
-        // the existence of virtual nodes prevents us from having to consider null pointers
-        Node<E> x = head.next;
-        Node<E> temp = x.next;
-        // head <-> x <-> temp
-        head.next = temp;
-        temp.prev = head;
+        self.size -= 1
+        return x.val
 
-        E val = x.val;
-        x.prev = null;
-        x.next = null;
-        // head <-> temp
+    def remove_last(self):
+        if self.size < 1:
+            raise IndexError("No elements to remove")
+        x = self.tail.prev
+        temp = x.prev
+        # temp <-> x <-> tail
 
-        size--;
-        return val;
-    }
+        self.tail.prev = temp
+        temp.next = self.tail
 
-    public E removeLast() {
-        if (size < 1) {
-            throw new NoSuchElementException();
-        }
-        Node<E> x = tail.prev;
-        Node<E> temp = tail.prev.prev;
-        // temp <-> x <-> tail
+        # temp <-> tail
 
-        tail.prev = temp;
-        temp.next = tail;
+        self.size -= 1
+        return x.val
 
-        E val = x.val;
-        x.prev = null;
-        x.next = null;
-        // temp <-> tail
+    def remove(self, index):
+        self.check_element_index(index)
+        # find the Node corresponding to index
+        x = self.get_node(index)
+        prev = x.prev
+        next = x.next
+        # prev <-> x <-> next
+        prev.next = next
+        next.prev = prev
 
-        size--;
-        return val;
-    }
+        self.size -= 1
 
-    public E remove(int index) {
-        checkElementIndex(index);
-        // find the Node corresponding to index
-        Node<E> x = getNode(index);
-        Node<E> prev = x.prev;
-        Node<E> next = x.next;
-        // prev <-> x <-> next
-        prev.next = next;
-        next.prev = prev;
+        return x.val
 
-        E val = x.val;
-        x.prev = null;
-        x.next = null;
-        // prev <-> next
+    # ***** Get *****
 
-        size--;
-        return val;
-    }
+    def get(self, index):
+        self.check_element_index(index)
+        # find the Node corresponding to index
+        p = self.get_node(index)
 
-    // ***** Get *****
+        return p.val
 
-    public E get(int index) {
-        checkElementIndex(index);
-        // find the Node corresponding to index
-        Node<E> p = getNode(index);
+    def get_first(self):
+        if self.size < 1:
+            raise IndexError("No elements in the list")
 
-        return p.val;
-    }
+        return self.head.next.val
 
-    public E getFirst() {
-        if (size < 1) {
-            throw new NoSuchElementException();
-        }
+    def get_last(self):
+        if self.size < 1:
+            raise IndexError("No elements in the list")
 
-        return head.next.val;
-    }
+        return self.tail.prev.val
 
-    public E getLast() {
-        if (size < 1) {
-            throw new NoSuchElementException();
-        }
+    # ***** Set *****
 
-        return tail.prev.val;
-    }
+    def set(self, index, val):
+        self.check_element_index(index)
+        # find the Node corresponding to index
+        p = self.get_node(index)
 
-    // ***** Set *****
+        old_val = p.val
+        p.val = val
 
-    public E set(int index, E val) {
-        checkElementIndex(index);
-        // find the Node corresponding to index
-        Node<E> p = getNode(index);
+        return old_val
 
-        E oldVal = p.val;
-        p.val = val;
+    # ***** Other utility functions *****
 
-        return oldVal;
-    }
+    def size(self):
+        return self.size
 
-    // ***** Other utility functions *****
+    def is_empty(self):
+        return self.size == 0
 
-    public int size() {
-        return size;
-    }
+    def get_node(self, index):
+        self.check_element_index(index)
+        p = self.head.next
+        # TODO: Can be optimized by deciding whether to
+        # traverse from head or tail based on index
+        for _ in range(index):
+            p = p.next
+        return p
 
-    public boolean isEmpty() {
-        return size == 0;
-    }
+    def is_element_index(self, index):
+        return 0 <= index < self.size
 
-    private Node<E> getNode(int index) {
-        checkElementIndex(index);
-        Node<E> p = head.next;
-        // TODO: Can be optimized by deciding whether to
-        // traverse from head or tail based on index
-        for (int i = 0; i < index; i++) {
-            p = p.next;
-        }
-        return p;
-    }
+    def is_position_index(self, index):
+        return 0 <= index <= self.size
 
-    private boolean isElementIndex(int index) {
-        return index >= 0 && index < size;
-    }
+    # Check if the index position can contain an element
+    def check_element_index(self, index):
+        if not self.is_element_index(index):
+            raise IndexError(f"Index: {index}, Size: {self.size}")
 
-    private boolean isPositionIndex(int index) {
-        return index >= 0 && index <= size;
-    }
+    # Check if the index position can add an element
+    def check_position_index(self, index):
+        if not self.is_position_index(index):
+            raise IndexError(f"Index: {index}, Size: {self.size}")
 
-    // Check if the index position can contain an element
-    private void checkElementIndex(int index) {
-        if (!isElementIndex(index))
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-    }
+    def display(self):
+        print(f"size = {self.size}")
+        p = self.head.next
+        while p != self.tail:
+            print(f"{p.val} <-> ", end="")
+            p = p.next
+        print("null
+")
 
-    // Check if the index position can add an element
-    private void checkPositionIndex(int index) {
-        if (!isPositionIndex(index))
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-    }
+if __name__ == "__main__":
+    list = MyLinkedList()
+    list.add_last(1)
+    list.add_last(2)
+    list.add_last(3)
+    list.add_first(0)
+    list.add(2, 100)
 
-    private void display() {
-        System.out.println("size = " + size);
-        for (Node<E> p = head.next; p != tail; p = p.next) {
-            System.out.print(p.val + " <-> ");
-        }
-        System.out.println("null");
-        System.out.println();
-    }
-
-    public static void main(String[] args) {
-        MyLinkedList<Integer> list = new MyLinkedList<>();
-        list.addLast(1);
-        list.addLast(2);
-        list.addLast(3);
-        list.addFirst(0);
-        list.add(2, 100);
-
-        list.display();
-        // size = 5
-        // 0 <-> 1 <-> 100 <-> 2 -> 3 -> null
-    }
-}
+    list.display()
+    # size = 5
+    # 0 <-> 1 <-> 100 <-> 2 <-> 3 <-> null
 ``` 
 
 ## Singly Linked List Implementation
 
-```java
-import java.util.NoSuchElementException;
+```python
+class MyLinkedList2:
 
-public class MyLinkedList2<E> {
+    class Node:
+        def __init__(self, val):
+            self.val = val
+            self.next = None
 
-    private static class Node<E> {
-        E val;
-        Node<E> next;
+    def __init__(self):
+        self.head = self.Node(None)
+        self.tail = self.head
+        self.size = 0
 
-        Node(E val) {
-            this.val = val;
-            this.next = null;
-        }
-    }
+    def add_first(self, e):
+        new_node = self.Node(e)
+        new_node.next = self.head.next
+        self.head.next = new_node
+        if self.size == 0:
+            self.tail = new_node
+        self.size += 1
 
-    private Node<E> head;
-    // actual reference to the tail node
-    private Node<E> tail;
-    private int size;
+    def add_last(self, e):
+        new_node = self.Node(e)
+        self.tail.next = new_node
+        self.tail = new_node
+        self.size += 1
 
-    public MyLinkedList2() {
-        this.head = new Node<>(null);
-        this.tail = head;
-        this.size = 0;
-    }
+    def add(self, index, element):
+        self.check_position_index(index)
 
-    public void addFirst(E e) {
-        Node<E> newNode = new Node<>(e);
-        newNode.next = head.next;
-        head.next = newNode;
-        if (size == 0) {
-            tail = newNode;
-        }
-        size++;
-    }
+        if index == self.size:
+            self.add_last(element)
+            return
 
-    public void addLast(E e) {
-        Node<E> newNode = new Node<>(e);
-        tail.next = newNode;
-        tail = newNode;
-        size++;
-    }
+        prev = self.head
+        for i in range(index):
+            prev = prev.next
+        new_node = self.Node(element)
+        new_node.next = prev.next
+        prev.next = new_node
+        self.size += 1
 
-    public void add(int index, E element) {
-        checkPositionIndex(index);
+    def remove_first(self):
+        if self.is_empty():
+            raise Exception("NoSuchElementException")
+        first = self.head.next
+        self.head.next = first.next
+        if self.size == 1:
+            self.tail = self.head
+        self.size -= 1
+        return first.val
 
-        if (index == size) {
-            addLast(element);
-            return;
-        }
+    def remove_last(self):
+        if self.is_empty():
+            raise Exception("NoSuchElementException")
 
-        Node<E> prev = head;
-        for (int i = 0; i < index; i++) {
-            prev = prev.next;
-        }
-        Node<E> newNode = new Node<>(element);
-        newNode.next = prev.next;
-        prev.next = newNode;
-        size++;
-    }
+        prev = self.head
+        while prev.next != self.tail:
+            prev = prev.next
+        val = self.tail.val
+        prev.next = None
+        self.tail = prev
+        self.size -= 1
+        return val
 
-    public E removeFirst() {
-        if (isEmpty()) {
-            throw new NoSuchElementException();
-        }
-        Node<E> first = head.next;
-        head.next = first.next;
-        if (size == 1) {
-            tail = head;
-        }
-        size--;
-        return first.val;
-    }
+    def remove(self, index):
+        self.check_element_index(index)
 
-    public E removeLast() {
-        if (isEmpty()) {
-            throw new NoSuchElementException();
-        }
+        prev = self.head
+        for i in range(index):
+            prev = prev.next
 
-        Node<E> prev = head;
-        while (prev.next != tail) {
-            prev = prev.next;
-        }
-        E val = tail.val;
-        prev.next = null;
-        tail = prev;
-        size--;
-        return val;
-    }
+        node_to_remove = prev.next
+        prev.next = node_to_remove.next
+        # deleting the last element
+        if index == self.size - 1:
+            self.tail = prev
+        self.size -= 1
+        return node_to_remove.val
 
-    public E remove(int index) {
-        checkElementIndex(index);
+    # ***** Retrieve *****
 
-        Node<E> prev = head;
-        for (int i = 0; i < index; i++) {
-            prev = prev.next;
-        }
+    def get_first(self):
+        if self.is_empty():
+            raise Exception("NoSuchElementException")
+        return self.head.next.val
 
-        Node<E> nodeToRemove = prev.next;
-        prev.next = nodeToRemove.next;
-        // deleting the last element
-        if (index == size - 1) {
-            tail = prev;
-        }
-        size--;
-        return nodeToRemove.val;
-    }
+    def get_last(self):
+        if self.is_empty():
+            raise Exception("NoSuchElementException")
+        return self.tail.val
 
-    // ***** Retrieve *****
+    def get(self, index):
+        self.check_element_index(index)
+        p = self.get_node(index)
+        return p.val
 
-    public E getFirst() {
-        if (isEmpty()) {
-            throw new NoSuchElementException();
-        }
-        return head.next.val;
-    }
+    # ***** Update *****
 
-    public E getLast() {
-        if (isEmpty()) {
-            throw new NoSuchElementException();
-        }
-        return tail.val;
-    }
+    def set(self, index, element):
+        self.check_element_index(index)
+        p = self.get_node(index)
 
-    public E get(int index) {
-        checkElementIndex(index);
-        Node<E> p = getNode(index);
-        return p.val;
-    }
+        old_val = p.val
+        p.val = element
 
-    // ***** Update *****
+        return old_val
 
-    public E set(int index, E element) {
-        checkElementIndex(index);
-        Node<E> p = getNode(index);
+    # ***** Other Utility Functions *****
+    def get_size(self):
+        return self.size
 
-        E oldVal = p.val;
-        p.val = element;
+    def is_empty(self):
+        return self.size == 0
 
-        return oldVal;
-    }
+    def is_element_index(self, index):
+        return 0 <= index < self.size
 
-    // ***** Other Utility Functions *****
-    public int size() {
-        return size;
-    }
+    def is_position_index(self, index):
+        return 0 <= index <= self.size
 
-    public boolean isEmpty() {
-        return size == 0;
-    }
+    # Check if the index position can have an element
+    def check_element_index(self, index):
+        if not self.is_element_index(index):
+            raise IndexError(f"Index: {index}, Size: {self.size}")
 
-    private boolean isElementIndex(int index) {
-        return index >= 0 && index < size;
-    }
+    # Check if the index position can add an element
+    def check_position_index(self, index):
+        if not self.is_position_index(index):
+            raise IndexError(f"Index: {index}, Size: {self.size}")
 
-    private boolean isPositionIndex(int index) {
-        return index >= 0 && index <= size;
-    }
+    # Return the Node corresponding to the index
+    # Note: Please ensure that the passed index is valid
+    def get_node(self, index):
+        p = self.head.next
+        for i in range(index):
+            p = p.next
+        return p
 
-    // Check if the index position can have an element
-    private void checkElementIndex(int index) {
-        if (!isElementIndex(index))
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-    }
+if __name__ == "__main__":
+    list = MyLinkedList2()
+    list.add_first(1)
+    list.add_first(2)
+    list.add_last(3)
+    list.add_last(4)
+    list.add(2, 5)
 
-    // Check if the index position can add an element
-    private void checkPositionIndex(int index) {
-        if (!isPositionIndex(index))
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-    }
+    print(list.remove_first())  # 2
+    print(list.remove_last())   # 4
+    print(list.remove(1))       # 5
 
-    // Return the Node corresponding to the index
-    // Note: Please ensure that the passed index is valid
-    private Node<E> getNode(int index) {
-        Node<E> p = head.next;
-        for (int i = 0; i < index; i++) {
-            p = p.next;
-        }
-        return p;
-    }
-
-    public static void main(String[] args) {
-        MyLinkedList2<Integer> list = new MyLinkedList2<>();
-        list.addFirst(1);
-        list.addFirst(2);
-        list.addLast(3);
-        list.addLast(4);
-        list.add(2, 5);
-
-        System.out.println(list.removeFirst()); // 2
-        System.out.println(list.removeLast()); // 4
-        System.out.println(list.remove(1)); // 5
-
-        System.out.println(list.getFirst()); // 1
-        System.out.println(list.getLast()); // 3
-        System.out.println(list.get(1)); // 3
-    }
-}
+    print(list.get_first())     # 1
+    print(list.get_last())      # 3
+    print(list.get(1))          # 3
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

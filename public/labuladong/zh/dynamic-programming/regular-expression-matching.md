@@ -30,8 +30,8 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-boolean isMatch(string s, string p);
+```python
+def isMatch(s: str, p: str) -> bool:
 ``` 
 
 对于我们将要实现的这个正则表达式，难点在那里呢？
@@ -46,21 +46,19 @@ boolean isMatch(string s, string p);
 
 **如果不考虑`*` 通配符，面对两个待匹配字符 `s[i]` 和 `p[j]`，我们唯一能做的就是看他俩是否匹配**：
 
-```java
-boolean isMatch(String s, String p) {
-    int i = 0, j = 0;
-    while (i < s.length() && j < p.length()) {
-        // 「.」通配符就是万金油
-        if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
-            // 匹配，接着匹配 s[i+1..] 和 p[j+1..]
-            i++; j++;
-        } else {
-            // 不匹配
-            return false;
-        }
-    }
-    return i == j;
-}
+```python
+def isMatch(s: str, p: str) -> bool:
+    i, j = 0, 0
+    while i < len(s) and j < len(p):
+        # 「.」通配符就是万金油
+        if s[i] == p[j] or p[j] == '.':
+            # 匹配，接着匹配 s[i+1..] 和 p[j+1..]
+            i += 1
+            j += 1
+        else:
+            # 不匹配
+            return False
+    return i == j
 ``` 
 
 那么考虑一下，如果加入 `*` 通配符，局面就会稍微复杂一些，不过只要分情况来分析，也不难理解。
@@ -79,24 +77,24 @@ boolean isMatch(String s, String p) {
 
 综上，可以把之前的代码针对 `*` 通配符进行一下改造：
 
-```java
-if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
-    // 匹配
-    if (j < p.length() - 1 && p.charAt(j + 1) == '*') {
-        // 有 * 通配符，可以匹配 0 次或多次
-    } else {
-        // 无 * 通配符，老老实实匹配 1 次
-        i++; j++;
-    }
-} else {
-    // 不匹配
-    if (j < p.length() - 1 && p.charAt(j + 1) == '*') {
-        // 有 * 通配符，只能匹配 0 次
-    } else {
-        // 无 * 通配符，匹配无法进行下去了
-        return false;
-    }
-}
+```python
+if s[i] == p[j] or p[j] == '.':
+    # 匹配
+    if j < len(p) - 1 and p[j + 1] == '*':
+        # 有 * 通配符，可以匹配 0 次或多次
+        pass
+    else:
+        # 无 * 通配符，老老实实匹配 1 次
+        i += 1
+        j += 1
+else:
+    # 不匹配
+    if j < len(p) - 1 and p[j + 1] == '*':
+        # 有 * 通配符，只能匹配 0 次
+        pass
+    else:
+        # 无 * 通配符，匹配无法进行下去了
+        return False
 ``` 
 
 整体的思路已经很清晰了，但现在的问题是，遇到 `*` 通配符时，到底应该匹配 0 次还是匹配多次？多次是几次？
@@ -109,4 +107,8 @@ if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
 
 ```
 boolean dp(String s, int i, String p, int j);
-```
+``` 
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

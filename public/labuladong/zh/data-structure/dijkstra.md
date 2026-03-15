@@ -49,42 +49,33 @@ Dijkstra 算法和标准的 BFS 算法的区别只有两个：
 
 对比来看，这是标准的图结构 BFS 遍历算法：
 
-```java
-// 图结构的 BFS 遍历，从节点 s 开始进行 BFS，且记录遍历步数（从起点 s 到当前节点的边的条数）
-// 每个节点自行维护 State 类，记录从 s 走来的遍历步数
-class State {
-    // 当前节点 ID
-    int node;
-    // 从起点 s 到当前节点的遍历步数
-    int step;
+```python
+# 图结构的 BFS 遍历，从节点 s 开始进行 BFS，且记录遍历步数（从起点 s 到当前节点的边的条数）
+# 每个节点自行维护 State 类，记录从 s 走来的遍历步数
+class State:
+    def __init__(self, node, step):
+        # 当前节点 ID
+        self.node = node
+        # 从起点 s 到当前节点的遍历步数
+        self.step = step
 
-    public State(int node, int step) {
-        this.node = node;
-        this.step = step;
-    }
-}
+def bfs(graph, s):
+    visited = [False] * len(graph)
+    from collections import deque
 
-void bfs(Graph graph, int s) {
-    boolean[] visited = new boolean[graph.size()];
-    Queue<State> q = new LinkedList<>();
+    q = deque([State(s, 0)])
+    visited[s] = True
 
-    q.offer(new State(s, 0));
-    visited[s] = true;
-
-    while (!q.isEmpty()) {
-        State state = q.poll();
-        int cur = state.node;
-        int step = state.step;
-        System.out.println("visit " + cur + " with step " + step);
-        for (Edge e : graph.neighbors(cur)) {
-            if (visited[e.to]) { // [!code highlight:5]
-                continue;
-            }
-            q.offer(new State(e.to, step + 1));
-            visited[e.to] = true;
-        }
-    }
-}
+    while q:
+        state = q.popleft()
+        cur = state.node
+        step = state.step
+        print(f"visit {cur} with step {step}")
+        for e in graph.neighbors(cur):
+            if visited[e.to]:  # [!code highlight:4]
+                continue
+            q.append(State(e.to, step + 1))
+            visited[e.to] = True
 ``` 
 
 这个算法中，我们用 `State.step` 记录从起点到当前节点的最少步数（边的条数），并使用 `visited` 数组记录访问过的节点，保证每个节点只会被访问一次（即入队和出队一次），避免算法进入死循环。
@@ -92,3 +83,7 @@ void bfs(Graph graph, int s) {
 在加权图场景中，最短路径问题想要计算的是从起点到其他节点的最小路径权重和，因为每条边可以有不同的权重，所以上述算法中计算的最少步数（边的条数）已经没有意义了，并不能得到权重和最小的路径。
 
 这是 Dijkstra 算法代码，其中不同的地方高亮标记了：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

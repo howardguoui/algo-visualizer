@@ -63,9 +63,9 @@ Output: 1
 
 The problem is from [LeetCode 300. Longest Increasing Subsequence](<https://leetcode.com/problems/longest-increasing-subsequence/>).
 
-```java
-// Function signature
-int lengthOfLIS(int[] nums);
+```python
+# Function signature
+def lengthOfLIS(nums: List[int]) -> int:
 ``` 
 
 For example, given `nums=[10,9,2,5,3,7,101,18]`, the longest increasing subsequence is `[2,3,7,101]`, so the algorithm should return 4.
@@ -155,29 +155,22 @@ for (int i = 0; i < nums.length; i++) {
 
 Combined with the base case we mentioned earlier, here's the complete code:
 
-```java
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        // dp[i] represents the length of the longest
-        // increasing subsequence ending with nums[i]
-        int[] dp = new int[nums.length]; 
-        // base case: initialize all elements of the dp array to 1
-        Arrays.fill(dp, 1);
-
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = 0; j < i; j++) {
-                if (nums[i] > nums[j])
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-            }
-        }
-
-        int res = 0;
-        for (int i = 0; i < dp.length; i++) {
-            res = Math.max(res, dp[i]);
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        # Definition: dp[i] represents the length of the
+        # longest increasing subsequence ending with nums[i]
+        dp = [1]*len(nums)
+        # base case: initialize all elements of dp array to 1
+        for i in range(len(nums)):
+            for j in range(i):
+                if nums[i] > nums[j]: 
+                    dp[i] = max(dp[i], dp[j] + 1) 
+        
+        res = 0
+        for i in range(len(dp)):
+            res = max(res, dp[i])
+        return res
 ``` 
 
 Algorithm Visualization
@@ -226,39 +219,34 @@ Tip
 
 [Binary Search Explained](</en/algo/essential-technique/binary-search-framework/>) covers binary search details and variants in depth. This is a perfect application. If you haven't read it, I highly recommend it.
 
-```java
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        int[] top = new int[nums.length];
-        // initialize the number of piles to 0
-        int piles = 0;
-        for (int i = 0; i < nums.length; i++) {
-            // the poker card to be processed
-            int poker = nums[i];
+```python
+class Solution:
+    def lengthOfLIS(self, nums):
+        top = [0] * len(nums)
+        # initialize the number of piles to 0
+        piles = 0
+        for i in range(len(nums)):
+            # the poker card to be processed
+            poker = nums[i]
 
-            // ***** binary search for the left boundary *****
-            int left = 0, right = piles;
-            while (left < right) {
-                int mid = (left + right) / 2;
-                if (top[mid] > poker) {
-                    right = mid;
-                } else if (top[mid] < poker) {
-                    left = mid + 1;
-                } else {
-                    right = mid;
-                }
-            }
-            // *********************************
-            
-            // no suitable pile found, create a new pile
-            if (left == piles) piles++;
-            // place this card on the top of the pile
-            top[left] = poker;
-        }
-        // the number of piles is the length of LIS
-        return piles;
-    }
-}
+            # binary search for the left boundary
+            left, right = 0, piles
+            while left < right:
+                mid = (left + right) // 2
+                if top[mid] > poker:
+                    right = mid
+                elif top[mid] < poker:
+                    left = mid + 1
+                else:
+                    right = mid
+
+            # no suitable pile found, create a new one
+            if left == piles:
+                piles += 1
+            # place this card on top of the pile
+            top[left] = poker
+        # the number of piles is the length of LIS
+        return piles
 ``` 
 
 Algorithm Visualization
@@ -332,51 +320,40 @@ Second, two envelopes with the same `w` can't contain each other, so for envelop
 
 Here's the solution code:
 
-```java
-class Solution {
-    public int maxEnvelopes(int[][] envelopes) {
-        int n = envelopes.length;
-        // Sort by width in ascending order, and if widths are
-        // the same, sort by height in descending order
-        Arrays.sort(envelopes, new Comparator<int[]>() 
-        {
-            public int compare(int[] a, int[] b) {
-                return a[0] == b[0] ? 
-                    b[1] - a[1] : a[0] - b[0];
-            }
-        });
-        // Find the LIS for the height array
-        int[] height = new int[n];
-        for (int i = 0; i < n; i++)
-            height[i] = envelopes[i][1];
+```python
+class Solution:
+    def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
+        n = len(envelopes)
+        # Sort by width in ascending order, and if widths are
+        # the same, sort by height in descending order
+        envelopes.sort(key=lambda x: (x[0], -x[1]))
+        
+        # Find the LIS for the height array
+        height = [envelopes[i][1] for i in range(n)]
 
-        return lengthOfLIS(height);
-    }
+        return self.lengthOfLIS(height)
 
-    // Return the length of the LIS in nums
-    public int lengthOfLIS(int[] nums) {
-        int piles = 0, n = nums.length;
-        int[] top = new int[n];
-        for (int i = 0; i < n; i++) {
-            // The poker card to be processed
-            int poker = nums[i];
-            int left = 0, right = piles;
-            // Binary search for the insertion position
-            while (left < right) {
-                int mid = (left + right) / 2;
-                if (top[mid] >= poker)
-                    right = mid;
-                else
-                    left = mid + 1;
-            }
-            if (left == piles) piles++;
-            // Place this card on the top of the pile
-            top[left] = poker;
-        }
-        // The number of piles is the length of the LIS
-        return piles;
-    }
-}
+    # Return the length of the LIS in nums
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        piles = 0
+        n = len(nums)
+        top = [0] * n
+        for i in range(n):
+            # The poker card to be processed
+            poker = nums[i]
+            left, right = 0, piles
+            # Binary search for the insertion position
+            while left < right:
+                mid = (left + right) // 2
+                if top[mid] >= poker:
+                    right = mid
+                else:
+                    left = mid + 1
+            if left == piles: piles += 1
+            # Place this card on the top of the pile
+            top[left] = poker
+        # The number of piles is the length of the LIS
+        return piles
 ``` 
 
 Algorithm Visualization
@@ -385,4 +362,8 @@ To reuse the previous function, I split the code into two functions. You could a
 
 With additional test cases, you must use the binary search version of `lengthOfLIS` to pass all tests. The algorithm's time complexity is O(NlogN)O(NlogN)O(NlogN), since both sorting and computing LIS take O(NlogN)O(NlogN)O(NlogN) time—combined, it's still O(NlogN)O(NlogN)O(NlogN). Space complexity is O(N)O(N)O(N) because the LIS function needs a `top` array.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

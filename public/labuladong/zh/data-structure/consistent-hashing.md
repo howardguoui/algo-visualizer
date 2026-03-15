@@ -114,122 +114,99 @@ hash(key) % N
 
 下面给出代码实现。以 Java 为例，哈希环用 `TreeMap` 实现，它的 `ceilingKey` 方法可以找到大于等于给定值的最小 key，正好对应「顺时针找到第一个节点」的操作：
 
-```java
-import java.util.*;
-import java.security.*;
+```python
+import hashlib
+import bisect
 
-public class ConsistentHash {
-    // 哈希环: 虚拟节点哈希值 -> 物理节点名称
-    private final TreeMap<Long, String> ring = new TreeMap<>();
-    // 每个物理节点对应的虚拟节点数量
-    private final int virtualNodes;
+class ConsistentHash:
+    # 哈希环: 虚拟节点哈希值 -> 物理节点名称
+    def __init__(self, virtual_nodes):
+        self.ring = {}
+        self.sorted_keys = []
+        # 每个物理节点对应的虚拟节点数量
+        self.virtual_nodes = virtual_nodes
 
-    public ConsistentHash(int virtualNodes) {
-        this.virtualNodes = virtualNodes;
-    }
+    def add_node(self, node):
+        # 一个物理节点映射成 virtual_nodes 个虚拟节点，分散到环上
+        for i in range(self.virtual_nodes):
+            h = self._hash(f"{node}#{i}")
+            self.ring[h] = node
+            bisect.insort(self.sorted_keys, h)
 
-    public void addNode(String node) {
-        // 一个物理节点映射成 virtualNodes 个虚拟节点，分散到环上
-        for (int i = 0; i < virtualNodes; i++) {
-            ring.put(hash(node + "#" + i), node);
-        }
-    }
+    def remove_node(self, node):
+        # 从环上摘除所有虚拟节点
+        for i in range(self.virtual_nodes):
+            h = self._hash(f"{node}#{i}")
+            del self.ring[h]
+            self.sorted_keys.remove(h)
 
-    public void removeNode(String node) {
-        // 从环上摘除所有虚拟节点
-        for (int i = 0; i < virtualNodes; i++) {
-            ring.remove(hash(node + "#" + i));
-        }
-    }
+    def get_node(self, key):
+        if not self.ring:
+            return None
+        h = self._hash(key)
+        # 顺时针找到第一个虚拟节点
+        idx = bisect.bisect_left(self.sorted_keys, h)
+        # 没找到说明 key 的哈希值超过了环上最大的节点，绕回到第一个节点
+        if idx == len(self.sorted_keys):
+            idx = 0
+        return self.ring[self.sorted_keys[idx]]
 
-    public String getNode(String key) {
-        if (ring.isEmpty()) return null;
-        long h = hash(key);
-        // 顺时针找到第一个虚拟节点
-        Long nodeHash = ring.ceilingKey(h);
-        // 没找到说明 key 的哈希值超过了环上最大的节点，绕回到第一个节点
-        if (nodeHash == null) {
-            nodeHash = ring.firstKey();
-        }
-        return ring.get(nodeHash);
-    }
+    # 计算哈希值，用 MD5 取前 8 字节
+    def _hash(self, key):
+        digest = hashlib.md5(key.encode()).digest()
+        h = 0
+        for i in range(8):
+            h = (h << 8) | digest[i]
+        return h
 
-    // 计算哈希值，用 MD5 取前 8 字节
-    private long hash(String key) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] digest = md.digest(key.getBytes());
-            long h = 0;
-            for (int i = 0; i < 8; i++) {
-                h = (h << 8) | (digest[i] & 0xFF);
-            }
-            return h;
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
+# 统计每个节点分到的 key 数量
+def get_distribution(ch, keys):
+    dist = {}
+    for key in keys:
+        node = ch.get_node(key)
+        dist[node] = dist.get(node, 0) + 1
+    return dict(sorted(dist.items()))
 
-    // 统计每个节点分到的 key 数量
-    private static Map<String, Integer> getDistribution(ConsistentHash ch, String[] keys) {
-        Map<String, Integer> dist = new TreeMap<>();
-        for (String key : keys) {
-            String node = ch.getNode(key);
-            dist.put(node, dist.getOrDefault(node, 0) + 1);
-        }
-        return dist;
-    }
+# 获取每个 key 的映射关系，用于计算迁移量
+def get_mapping(ch, keys):
+    mapping = {}
+    for key in keys:
+        mapping[key] = ch.get_node(key)
+    return mapping
 
-    // 获取每个 key 的映射关系，用于计算迁移量
-    private static Map<String, String> getMapping(ConsistentHash ch, String[] keys) {
-        Map<String, String> mapping = new HashMap<>();
-        for (String key : keys) {
-            mapping.put(key, ch.getNode(key));
-        }
-        return mapping;
-    }
+# 统计迁移的 key 数量
+def count_migrations(before, after):
+    count = 0
+    for key in before:
+        if before[key] != after[key]:
+            count += 1
+    return count
 
-    // 统计迁移的 key 数量
-    private static int countMigrations(Map<String, String> before, Map<String, String> after) {
-        int count = 0;
-        for (String key : before.keySet()) {
-            if (!before.get(key).equals(after.get(key))) {
-                count++;
-            }
-        }
-        return count;
-    }
+# 展示一致性哈希的分布和迁移量
+if __name__ == "__main__":
+    keys = [f"key-{i}" for i in range(10000)]
+    ch = ConsistentHash(200)
 
-    // 展示一致性哈希的分布和迁移量
-    public static void main(String[] args) {
-        String[] keys = new String[10000];
-        for (int i = 0; i < keys.length; i++) {
-            keys[i] = "key-" + i;
-        }
+    # 初始状态：3 个节点
+    ch.add_node("node-1")
+    ch.add_node("node-2")
+    ch.add_node("node-3")
+    mapping3 = get_mapping(ch, keys)
+    print(f"initial 3 nodes: {get_distribution(ch, keys)}")
 
-        ConsistentHash ch = new ConsistentHash(200);
+    # 扩容：添加第 4 个节点
+    ch.add_node("node-4")
+    mapping4 = get_mapping(ch, keys)
+    migrations_after_add = count_migrations(mapping3, mapping4)
+    print(f"after adding node-4: {get_distribution(ch, keys)}")
+    print(f"  migrated keys: {migrations_after_add} ({migrations_after_add * 100 // len(keys)}%)")
 
-        // 初始状态：3 个节点
-        ch.addNode("node-1");
-        ch.addNode("node-2");
-        ch.addNode("node-3");
-        Map<String, String> mapping3 = getMapping(ch, keys);
-        System.out.println("initial 3 nodes: " + getDistribution(ch, keys));
-
-        // 扩容：添加第 4 个节点
-        ch.addNode("node-4");
-        Map<String, String> mapping4 = getMapping(ch, keys);
-        int migrationsAfterAdd = countMigrations(mapping3, mapping4);
-        System.out.println("after adding node-4: " + getDistribution(ch, keys));
-        System.out.println("  migrated keys: " + migrationsAfterAdd + " (" + (migrationsAfterAdd * 100 / keys.length) + "%)");
-
-        // 缩容：移除 node-2
-        ch.removeNode("node-2");
-        Map<String, String> mappingAfterRemove = getMapping(ch, keys);
-        int migrationsAfterRemove = countMigrations(mapping4, mappingAfterRemove);
-        System.out.println("after removing node-2: " + getDistribution(ch, keys));
-        System.out.println("  migrated keys: " + migrationsAfterRemove + " (" + (migrationsAfterRemove * 100 / keys.length) + "%)");
-    }
-}
+    # 缩容：移除 node-2
+    ch.remove_node("node-2")
+    mapping_after_remove = get_mapping(ch, keys)
+    migrations_after_remove = count_migrations(mapping4, mapping_after_remove)
+    print(f"after removing node-2: {get_distribution(ch, keys)}")
+    print(f"  migrated keys: {migrations_after_remove} ({migrations_after_remove * 100 // len(keys)}%)")
 ``` 
 
 运行结果：
@@ -249,3 +226,7 @@ after removing node-2: {node-1=3471, node-3=3435, node-4=3094}
   2. **迁移量小** ：扩容时只有约 23% 的 key 需要迁移，缩容时只有约 26% 的 key 需要迁移，十分接近理论值 25%。相比之下，取模法从 3 台扩容到 4 台需要迁移约 75% 的数据。
 
 一致性哈希的核心就两点：**哈希环** 确保节点变化时只影响相邻数据，**虚拟节点** 确保负载均匀分布。理解了这两点，手写一致性哈希就不难了。
+
+## 评论
+
+请登录后查看/发表评论

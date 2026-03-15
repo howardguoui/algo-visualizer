@@ -58,20 +58,18 @@ The logic of quick sort is: to sort `nums[lo..hi]`, first find a partition point
 
 The code framework for quick sort:
 
-```java
-void sort(int[] nums, int lo, int hi) {
-    if (lo >= hi) {
-        return;
-    }
-    // ****** pre-order position ******
-    // partition the nums[lo..hi], put nums[p] in the right position
-    // such that nums[lo..p-1] <= nums[p] < nums[p+1..hi]
-    int p = partition(nums, lo, hi);
+```python
+def sort(nums: List[int], lo: int, hi: int):
+    if lo >= hi:
+        return
+    # ****** pre-order position ******
+    # partition the nums[lo..hi], put nums[p] in the right position
+    # such that nums[lo..p-1] <= nums[p] < nums[p+1..hi]
+    p = partition(nums, lo, hi)
 
-    // recursively partition the left and right subarrays
-    sort(nums, lo, p - 1);
-    sort(nums, p + 1, hi);
-}
+    # recursively partition the left and right subarrays
+    sort(nums, lo, p - 1)
+    sort(nums, p + 1, hi)
 ``` 
 
 First construct the partition point, then go to the left and right subarrays to construct partition points. Isn't this just a preorder traversal of a binary tree?
@@ -80,23 +78,21 @@ Now let's talk about merge sort's logic. To sort `nums[lo..hi]`, first sort `num
 
 The code framework for merge sort:
 
-```java
-// definition: sort nums[lo..hi]
-void sort(int[] nums, int lo, int hi) {
-    if (lo == hi) {
-        return;
-    }
-    int mid = (lo + hi) / 2;
-    // use the definition to sort nums[lo..mid]
-    sort(nums, lo, mid);
-    // use the definition to sort nums[mid+1..hi]
-    sort(nums, mid + 1, hi);
+```python
+# definition: sort the array nums[lo..hi]
+def sort(nums: List[int], lo: int, hi: int) -> None:
+    if lo == hi:
+        return
+    mid = (lo + hi) // 2
+    # Using the definition, sort the array nums[lo..mid]
+    sort(nums, lo, mid)
+    # Using the definition, sort the array nums[mid+1..hi]
+    sort(nums, mid + 1, hi)
 
-    // ****** Post-order position ******
-    // at this point, the two subarrays are already sorted
-    // merge the two sorted arrays to make nums[lo..hi] sorted
-    merge(nums, lo, mid, hi);
-}
+    # ****** Post-order position ******
+    # At this point, the two subarrays have been sorted
+    # Merge the two sorted arrays to make nums[lo..hi] sorted
+    merge(nums, lo, mid, hi)
 ``` 
 
 First sort the left and right subarrays, then merge them (similar to merging sorted linked lists). Isn't this the postorder traversal framework of a binary tree? Also, this is the legendary divide and conquer algorithm—nothing more than this.
@@ -121,58 +117,49 @@ If you cannot answer these, it means you only know the textbook understanding of
 
 First, let's review the binary tree recursive traversal framework mentioned in [Binary Tree DFS/BFS Traversal](</en/algo/data-structure-basic/binary-tree-traverse-basic/>):
 
-```java
-// Binary tree traversal framework
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    // pre-order position
-    traverse(root.left);
-    // in-order position
-    traverse(root.right);
-    // post-order position
-}
+```python
+# Binary tree traversal framework
+def traverse(root):
+    if root is None:
+        return
+    # Pre-order position
+    traverse(root.left)
+    # In-order position
+    traverse(root.right)
+    # Post-order position
 ``` 
 
 Ignore the terms preorder, inorder, and postorder for now. Look at the `traverse` function. What is it really doing?
 
 It is simply a function that visits every node in the binary tree. This is just like traversing an array or a linked list.
 
-```java
-// iterate through the array
-void traverse(int[] arr) {
-    for (int i = 0; i < arr.length; i++) {
+```python
+# iterate through the array
+def traverse(arr: List[int]) -> None:
+    for i in range(len(arr)):
+        pass
 
-    }
-}
+# recursively traverse the array
+def traverse_recursive(arr: List[int], i: int) -> None:
+    if i == len(arr):
+        return
+    # pre-order position
+    traverse_recursive(arr, i + 1)
+    # post-order position
 
-// recursively traverse the array
-void traverse(int[] arr, int i) {
-    if (i == arr.length) {
-        return;
-    }
-    // pre-order position
-    traverse(arr, i + 1);
-    // post-order position
-}
+# iterate through the singly linked list
+def traverse_linked_list(head: ListNode) -> None:
+    p = head
+    while p:
+        p = p.next
 
-// iterate through the singly linked list
-void traverse(ListNode head) {
-    for (ListNode p = head; p != null; p = p.next) {
-
-    }
-}
-
-// recursively traverse the singly linked list
-void traverse(ListNode head) {
-    if (head == null) {
-        return;
-    }
-    // pre-order position
-    traverse(head.next);
-    // post-order position
-}
+# recursively traverse the singly linked list
+def traverse_linked_list_recursive(head: ListNode) -> None:
+    if not head:
+        return
+    # pre-order position
+    traverse_linked_list_recursive(head.next)
+    # post-order position
 ``` 
 
 You can traverse a singly linked list or an array by iteration or recursion. **A binary tree is just a type of linked structure** , but it cannot be easily rewritten as a for loop. So we usually use recursion to traverse a binary tree.
@@ -187,16 +174,14 @@ For example, if you want to **print the values of a singly linked list in revers
 
 There are many ways, but if you understand recursion well, you can use the postorder position:
 
-```java
-// recursively traverse a singly linked list and print the elements in reverse order
-void traverse(ListNode head) {
-    if (head == null) {
-        return;
-    }
-    traverse(head.next);
-    // post-order position
-    print(head.val);
-}
+```python
+# recursively traverse a singly linked list and print the elements in reverse order
+def traverse(head):
+    if head is None:
+        return
+    traverse(head.next)
+    # post-order position
+    print(head.val)
 ``` 
 
 With the picture above, you can see why this code prints the linked list in reverse order. It uses the call stack from recursion to print from the end to the start.
@@ -251,40 +236,35 @@ How would you approach this problem? Simply traverse the tree once, use an exter
 
 Here's the solution code:
 
-```java
-// Traversal Idea
-class Solution {
+```python
+# Traversal Idea
+class Solution:
 
-    // Record the depth of the traversed node
-    int depth = 0;
+    def __init__(self):
+        # Record the depth of the traversed node
+        self.depth = 0
+        # Record the maximum depth
+        self.res = 0
 
-    // Record the maximum depth
-    int res = 0;
+    def maxDepth(self, root: TreeNode) -> int:
+        self.traverse(root)
+        return self.res
 
-    public int maxDepth(TreeNode root) {
-        traverse(root);
-        return res;
-    }
+    # Traverse the binary tree
+    def traverse(self, root: TreeNode):
+        if root is None:
+            return
 
-    // Traverse the binary tree
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
+        # Pre-order traversal position (entering a node) increases depth
+        self.depth += 1
+        # Record the maximum depth during traversal
+        if root.left is None and root.right is None:
+            self.res = max(self.res, self.depth)
+        self.traverse(root.left)
+        self.traverse(root.right)
 
-        // Pre-order traversal position (entering a node) increases depth
-        depth++;
-        // Record the maximum depth during traversal
-        if (root.left == null && root.right == null) {
-            res = Math.max(res, depth);
-        }
-        traverse(root.left);
-        traverse(root.right);
-
-        // Post-order traversal position (leaving a node) decreases depth
-        depth--;
-    }
-}
+        # Post-order traversal position (leaving a node) decreases depth
+        self.depth -= 1
 ``` 
 
 Visualization of Traversal Approach
@@ -299,27 +279,23 @@ Of course, you can easily see that the maximum depth of a binary tree can be der
 
 Here's the solution code:
 
-```java
-// Divide and Conquer Idea
-class Solution {
-    // Definition: Given a node, return the maximum
-    // depth of the binary tree rooted at that node
-    public int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        // Use the definition to calculate the maximum depth of the left and right subtrees
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
+```python
+# Divide and Conquer Idea
+class Solution:
+    # Definition: Given a node, return the maximum depth of the binary tree rooted at that node
+    def maxDepth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        # Use the definition to calculate the maximum depth of the left and right subtrees
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
 
-        // Derive the maximum depth of the original binary tree based
-        // on the maximum depth of the left and right subtrees
-        // The maximum depth of the entire tree is the
-        // maximum of the left and right subtree depths,
-        // plus one for the root node itself
-        return 1 + Math.max(leftMax, rightMax);
-    }
-}
+        # Derive the maximum depth of the original binary tree based
+        # on the maximum depth of the left and right subtrees
+        # The maximum depth of the entire tree is the
+        # maximum of the left and right subtree depths,
+        # plus one for the root node itself
+        return 1 + max(leftMax, rightMax)
 ``` 
 
 Visualization of Problem Decomposition Approach
@@ -332,28 +308,24 @@ If you understand the two approaches to the maximum depth problem, **let's revis
 
 The familiar solution uses the "traversal" approach, which I think needs little explanation:
 
-```java
-// Calculate the preorder traversal result using the traversal idea
-class Solution {
-    // store the result of the preorder traversal
-    List<Integer> res = new LinkedList<>();
+```python
+# Calculate the preorder traversal result using the traversal idea
+class Solution:
+    def __init__(self):
+        self.res = []
+    
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        self.traverse(root)
+        return self.res
 
-    public List<Integer> preorderTraversal(TreeNode root) {
-        traverse(root);
-        return res;
-    }
-
-    // binary tree traversal function
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // preorder position
-        res.add(root.val);
-        traverse(root.left);
-        traverse(root.right);
-    }
-}
+    # binary tree traversal function
+    def traverse(self, root: TreeNode):
+        if root is None:
+            return
+        # preorder position
+        self.res.append(root.val)
+        self.traverse(root.left)
+        self.traverse(root.right)
 ``` 
 
 But can you use the "problem decomposition" approach to compute the preorder traversal result?
@@ -368,26 +340,22 @@ So this can be decomposed, right? **A binary tree's preorder traversal result = 
 
 Therefore, you can implement the preorder traversal algorithm like this:
 
-```java
-class Solution {
-    // Definition: Given the root node of a binary tree,
-    // return the preorder traversal result of this tree
-    List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> res = new LinkedList<>();
-        if (root == null) {
-            return res;
-        }
-        // The result of preorder traversal, root.val is first
-        res.add(root.val);
-        // Using the function definition, followed by the
-        // preorder traversal result of the left subtree
-        res.addAll(preorderTraversal(root.left));
-        // Using the function definition, finally followed by the
-        // preorder traversal result of the right subtree
-        res.addAll(preorderTraversal(root.right)); 
-        return res;
-    }
-}
+```python
+class Solution:
+    # Definition: Given the root of a binary tree, return the preorder traversal of this tree
+    def preorderTraversal(self, root):
+        res = []
+        if root == None:
+            return res
+        # In the preorder traversal result, root.val is the first
+        res.append(root.val)
+        # Use the function definition to append the
+        # preorder traversal result of the left subtree
+        res.extend(self.preorderTraversal(root.left))
+        # Use the function definition to append the
+        # preorder traversal result of the right subtree
+        res.extend(self.preorderTraversal(root.right)) 
+        return res
 ``` 
 
 Inorder and postorder traversals are similar—just place `add(root.val)` at the corresponding inorder and postorder positions.
@@ -496,43 +464,39 @@ Now if you want me to find the longest "diameter" in the entire tree, the straig
 
 We just implemented the maximum depth algorithm, so the above approach can be written as the following code:
 
-```java
-class Solution {
-    // record the length of the maximum diameter
-    int maxDiameter = 0;
+```python
+class Solution:
 
-    public int diameterOfBinaryTree(TreeNode root) {
-        // calculate the diameter for each node and find the maximum diameter
-        traverse(root);
-        return maxDiameter;
-    }
+    def __init__(self):
+        # record the length of the maximum diameter
+        self.maxDiameter = 0
 
-    // traverse the binary tree
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // calculate the diameter for each node
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
-        int myDiameter = leftMax + rightMax;
-        // update the global maximum diameter
-        maxDiameter = Math.max(maxDiameter, myDiameter);
+    def diameterOfBinaryTree(self, root):
+        # calculate the diameter for each node, find the maximum diameter
+        self.traverse(root)
+        return self.maxDiameter
+
+    # traverse the binary tree
+    def traverse(self, root):
+        if root is None:
+            return
+        # calculate the diameter for each node
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
+        myDiameter = leftMax + rightMax
+        # update the global maximum diameter
+        self.maxDiameter = max(self.maxDiameter, myDiameter)
         
-        traverse(root.left);
-        traverse(root.right);
-    }
+        self.traverse(root.left)
+        self.traverse(root.right)
 
-    // calculate the maximum depth of the binary tree
-    int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
-        return 1 + Math.max(leftMax, rightMax);
-    }
-}
+    # calculate the maximum depth of the binary tree
+    def maxDepth(self, root):
+        if root is None:
+            return 0
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
+        return 1 + max(leftMax, rightMax)
 ``` 
 
 This solution is correct, but the running time is very long. The reason is also obvious: when `traverse` visits each node, it also calls the recursive function `maxDepth`, and `maxDepth` has to traverse all nodes of the subtree, so the worst-case time complexity is O(N^2).
@@ -543,29 +507,26 @@ So how do we optimize? We should put the logic for calculating "diameter" in pos
 
 So, slightly changing the code logic gives us a better solution:
 
-```java
-class Solution {
-    // record the length of the maximum diameter
-    int maxDiameter = 0;
+```python
+class Solution:
+    def __init__(self):
+        # record the length of the maximum diameter
+        self.maxDiameter = 0
 
-    public int diameterOfBinaryTree(TreeNode root) {
-        maxDepth(root);
-        return maxDiameter;
-    }
+    def diameterOfBinaryTree(self, root):
+        self.maxDepth(root)
+        return self.maxDiameter
 
-    int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
-        // post-order position, calculate the maximum diameter by the way
-        int myDiameter = leftMax + rightMax;
-        maxDiameter = Math.max(maxDiameter, myDiameter);
+    def maxDepth(self, root):
+        if root is None:
+            return 0
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
+        # post-order position, by the way, calculate the maximum diameter
+        myDiameter = leftMax + rightMax
+        self.maxDiameter = max(self.maxDiameter, myDiameter)
 
-        return 1 + Math.max(leftMax, rightMax);
-    }
-}
+        return 1 + max(leftMax, rightMax)
 ``` 
 
 Algorithm Visualization
@@ -610,36 +571,32 @@ How to understand this? Three examples will make it crystal clear.
 
 **First example** : given a binary tree, write a `count` function using the decomposition approach to count the total number of nodes. The code is straightforward—we've already seen it:
 
-```java
-// Definition: input a binary tree, return the total number of nodes in this binary tree
-int count(TreeNode root) {
-    if (root == null) {
-        return 0;
-    }
-    // The current node cares about the total number of nodes in each of its subtrees
-    // Because the result of the subproblems can be used
-    // to derive the result of the original problem
-    int leftCount = count(root.left);
-    int rightCount = count(root.right);
-    // In the postorder position, the total number of nodes in the left and right subtrees
-    // plus the current node itself is the total number of nodes in the entire tree
-    return leftCount + rightCount + 1;
-}
+```python
+# Definition: Given a binary tree, return the total number of nodes in the tree
+def count(root):
+    if root is None:
+        return 0
+    # The current node is concerned with the total number of nodes in its two subtrees
+    # Because the result of the subproblems can be used
+    # to derive the result of the original problem
+    leftCount = count(root.left)
+    rightCount = count(root.right)
+    # In the post-order position, the total number of nodes in the left and right
+    # subtrees plus the current node equals the total number of nodes in the tree
+    return leftCount + rightCount + 1
 ``` 
 
 **See? This is the decomposition mindset of dynamic programming. It always focuses on structurally identical subproblems, which correspond to "subtrees" in a binary tree**.
 
 Now look at a concrete DP problem. For instance, the Fibonacci example from [Dynamic Programming Framework Explained](</en/algo/essential-technique/dynamic-programming-framework/>)—our focus is on the return values of each subtree:
 
-```java
-// f(n) calculates the nth Fibonacci number
-int fib(int n) {
-    // base case
-    if (n == 0 || n == 1){
-        return n;
-    }
-    return fib(n - 1) + fib(n - 2);
-}
+```python
+# f(n) calculates the nth Fibonacci number
+def fib(n: int) -> int:
+    # base case
+    if n == 0 or n == 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/dynamic-programming/2.jpg)
@@ -730,14 +687,14 @@ void backtrack(int[] nums) {
 
 **Third example** : given a binary tree, write a `traverse` function that increments every node's value by one. Simple enough:
 
-```java
-void traverse(TreeNode root) {
-    if (root == null) return;
-    // increment the value of each traversed node by one
-    root.val++;
-    traverse(root.left);
-    traverse(root.right);
-}
+```python
+def traverse(root):
+    if root is None:
+        return
+    # increment the value of each traversed node by one
+    root.val += 1
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 **See? This is the traversal mindset of DFS. It always focuses on individual nodes, which corresponds to processing each "node" in a binary tree**.
@@ -769,32 +726,30 @@ Take a moment to digest these three examples. See the pattern? Dynamic programmi
 
 With this foundation, it's easy to understand why "making a choice" and "undoing a choice" are placed differently in backtracking vs. DFS code. Look at these two snippets:
 
-```java
-// DFS algorithm puts the logic of "making a
-// choice" and "undoing a choice" outside the for loop
-void dfs(Node root) {
-    if (root == null) return;
-    // make a choice
-    print("enter node %s", root);
-    for (Node child : root.children) {
-        dfs(child);
-    }
-    // undo a choice
-    print("leave node %s", root);
-}
+```python
+# The DFS algorithm puts the logic of "making a
+# choice" and "undoing a choice" outside the for loop
+def dfs(root):
+    if root is None:
+        return
+    # make a choice
+    print("enter node %s" % root)
+    for child in root.children:
+        dfs(child)
+    # undo a choice
+    print("leave node %s" % root)
 
-// Backtracking algorithm puts the logic of "making a
-// choice" and "undoing a choice" inside the for loop
-void backtrack(Node root) {
-    if (root == null) return;
-    for (Node child : root.children) {
-        // make a choice
-        print("I'm on the branch from %s to %s", root, child);
-        backtrack(child);
-        // undo a choice
-        print("I'll leave the branch from %s to %s", child, root);
-    }
-}
+# The backtracking algorithm puts the logic of "making
+# a choice" and "undoing a choice" inside the for loop
+def backtrack(root):
+    if root is None:
+        return
+    for child in root.children:
+        # make a choice
+        print("I'm on the branch from %s to %s" % (root, child))
+        backtrack(child)
+        # undo a choice
+        print("I'll leave the branch from %s to %s" % (child, root))
 ``` 
 
 See the difference? Backtracking must put "make a choice" and "undo the choice" inside the for loop—otherwise, how would you capture both endpoints of an "edge"?
@@ -803,32 +758,28 @@ See the difference? Backtracking must put "make a choice" and "undo the choice" 
 
 Binary tree problems mainly serve to build your recursive thinking. Level-order traversal, on the other hand, is iterative and relatively simple. Let's quickly go over the framework:
 
-```java
-// Input the root node of a binary tree, perform level-order traversal on the binary tree
-void levelTraverse(TreeNode root) {
-    if (root == null) return;
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
+```python
+# input the root of a binary tree, perform level order traversal of this binary tree
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return
+        q = collections.deque()
+        q.append(root)
+        depth = 0
+        # traverse each level of the binary tree from top to bottom
+        while q:
+            sz = len(q)
+            # traverse each node of each level from left to right
+            for i in range(sz):
+                cur = q.popleft()
 
-    int depth = 1;
-    // Traverse each level of the binary tree from top to bottom
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        // Traverse each node of the level from left to right
-        for (int i = 0; i < sz; i++) {
-            TreeNode cur = q.poll();
-
-            // put the nodes of the next level into the queue
-            if (cur.left != null) {
-                q.offer(cur.left);
-            }
-            if (cur.right != null) {
-                q.offer(cur.right);
-            }
-        }
-        depth++;
-    }
-}
+                # put the nodes of the next level into the queue
+                if cur.left:
+                    q.append(cur.left)
+                if cur.right:
+                    q.append(cur.right)
+            depth += 1
 ``` 
 
 The while loop handles top-to-bottom traversal, while the for loop handles left-to-right traversal:
@@ -851,34 +802,29 @@ Let me talk a bit more about level order traversal (and the [BFS algorithm frame
 
 If you know enough about binary trees, you might think of many ways to get the level order result using recursion, like the example below:
 
-```java
-class Solution {
-    List<List<Integer>> res = new ArrayList<>();
+```python
+class Solution:
+    def __init__(self):
+        self.res = []
 
-    public List<List<Integer>> levelTraverse(TreeNode root) {
-        if (root == null) {
-            return res;
-        }
-        // root is considered as level 0
-        traverse(root, 0);
-        return res;
-    }
+    def levelTraverse(self, root):
+        if root is None:
+            return self.res
+        # root is considered as level 0
+        self.traverse(root, 0)
+        return self.res
 
-    void traverse(TreeNode root, int depth) {
-        if (root == null) {
-            return;
-        }
-        // pre-order position, check if nodes of depth level are already stored
-        if (res.size() <= depth) {
-            // first time entering depth level
-            res.add(new LinkedList<>());
-        }
-        // pre-order position, add root node's value at depth level
-        res.get(depth).add(root.val);
-        traverse(root.left, depth + 1);
-        traverse(root.right, depth + 1);
-    }
-}
+    def traverse(self, root, depth):
+        if root is None:
+            return
+        # pre-order position, check if the nodes at level depth have already been stored
+        if len(self.res) <= depth:
+            # first time entering level depth
+            self.res.append([])
+        # pre-order position, add the value of root node at level depth
+        self.res[depth].append(root.val)
+        self.traverse(root.left, depth + 1)
+        self.traverse(root.right, depth + 1)
 ``` 
 
 This method does give you the level order result, but in essence, it is still a preorder traversal of the binary tree, or in other words, it uses DFS thinking, not true level order or BFS thinking. This is because the solution depends on preorder traversal's top-down, left-to-right order to get the right answer.
@@ -887,50 +833,45 @@ This method does give you the level order result, but in essence, it is still a 
 
 Some readers also shared another recursive way to do level order traversal:
 
-```java
-class Solution {
+```python
+class Solution:
+    def __init__(self):
+        self.res = []
 
-    List<List<Integer>> res = new LinkedList<>();
+    def levelTraverse(self, root):
+        if not root:
+            return self.res
+        nodes = [root]
+        self.traverse(nodes)
+        return self.res
 
-    public List<List<Integer>> levelTraverse(TreeNode root) {
-        if (root == null) {
-            return res;
-        }
-        List<TreeNode> nodes = new LinkedList<>();
-        nodes.add(root);
-        traverse(nodes);
-        return res;
-    }
-
-    void traverse(List<TreeNode> curLevelNodes) {
-        // base case
-        if (curLevelNodes.isEmpty()) {
-            return;
-        }
-        // pre-order position, calculate the values of the
-        // current level and the node list of the next level
-        List<Integer> nodeValues = new LinkedList<>();
-        List<TreeNode> nextLevelNodes = new LinkedList<>();
-        for (TreeNode node : curLevelNodes) {
-            nodeValues.add(node.val);
-            if (node.left != null) {
-                nextLevelNodes.add(node.left);
-            }
-            if (node.right != null) {
-                nextLevelNodes.add(node.right);
-            }
-        }
-        // add results in pre-order position to get top-down level order traversal
-        res.add(nodeValues);
-        traverse(nextLevelNodes);
-        // add results in post-order position to get bottom-up level order traversal
-        // res.add(nodeValues);
-    }
-}
+    def traverse(self, curLevelNodes):
+        # base case
+        if not curLevelNodes:
+            return
+        # pre-order position, calculate the values of the current
+        # level and the list of nodes for the next level
+        nodeValues = []
+        nextLevelNodes = []
+        for node in curLevelNodes:
+            nodeValues.append(node.val)
+            if node.left:
+                nextLevelNodes.append(node.left)
+            if node.right:
+                nextLevelNodes.append(node.right)
+        # add results at pre-order position, can get top-down level order traversal
+        self.res.append(nodeValues)
+        self.traverse(nextLevelNodes)
+        # add results at post-order position, can get bottom-up level order traversal result
+        # res.append(nodeValues)
 ``` 
 
 The `traverse` function here is a bit like a recursive function for traversing a singly linked list. It treats each level of the binary tree as a node in a linked list.
 
 Compared to the previous recursive solution, this one does a top-down "level order traversal." It is closer to the core idea of BFS. You can use this as a recursive way to implement BFS and expand your thinking.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

@@ -58,15 +58,14 @@ Let's start by breaking down the problem, beginning with the simplest one.
 
 Yes, this is a simple problem. First, tell me how to convert a string that represents a **positive integer** into an int type?
 
-```java
-String s = "458";
+```python
+s = "458"
 
-int n = 0;
-for (int i = 0; i < s.length(); i++) {
-    char c = s.charAt(i);
-    n = 10 * n + (c - '0');
-}
-// n is now equal to 458
+n = 0
+for i in range(len(s)):
+    c = s[i]
+    n = 10 * n + (ord(c) - ord('0'))
+# n is now equal to 458
 ``` 
 
 This is very simple and a common routine. But even for such a simple problem, there is a pitfall: **You cannot remove the parentheses in`(c - '0')`, or it may cause integer overflow**.
@@ -85,41 +84,34 @@ Now, let's move on. **If the input formula only contains addition and subtractio
 
 Let's look at the code and a picture to make it clear:
 
-```java
-int calculate(String s) {
-    Stack<Integer> stk = new Stack<>();
-    // record the numbers in the expression
-    int num = 0;
-    // record the sign before num, initialize as +
-    char sign = '+';
-    for (int i = 0; i < s.length(); i++) {
-        char c = s.charAt(i);
-        // if it's a digit, continuously read it into num
-        if (Character.isDigit(c)) {
-            num = 10 * num + (c - '0');
-        }
-        // if it's not a digit, it means we encountered the
-        // next sign or the end of the expression
-        // then the previous number and sign should be pushed into the stack
-        if (c == '+' || c == '-' || i == s.length() - 1) {
-            switch (sign) {
-                case '+':
-                    stk.push(num); break;
-                case '-':
-                    stk.push(-num); break;
-            }
-            // update the sign to the current one, reset num to zero
-            sign = c;
-            num = 0;
-        }
-    }
-    // sum up all the results in the stack to get the answer
-    int res = 0;
-    while (!stk.isEmpty()) {
-        res += stk.pop();
-    }
-    return res;
-}
+```python
+def calculate(s):
+    stk = []
+    # record the numbers in the formula
+    num = 0
+    # record the sign before num, initialized to +
+    sign = '+'
+    for i in range(len(s)):
+        c = s[i]
+        # if it's a digit, read it continuously into num
+        if c.isdigit():
+            num = 10 * num + int(c)
+        # if it's not a digit, then it means we've
+        # encountered the next sign or the end of the formula
+        # then the previous number and sign should be stored in the stack
+        if c == '+' or c == '-' or i == len(s) - 1:
+            if sign == '+':
+                stk.append(num)
+            elif sign == '-':
+                stk.append(-num)
+            # update the sign to the current sign and reset the number to zero
+            sign = c
+            num = 0
+    # the answer is the sum of all results in the stack
+    res = 0
+    while stk:
+        res += stk.pop()
+    return res
 ``` 
 
 Maybe the part with the `switch` statement is a bit hard to understand. `i` scans from left to right, and `sign` and `num` follow it. When `s[i]` meets an operator, here's what happens:
@@ -140,48 +132,38 @@ The idea is almost the same as just handling addition and subtraction. Let's use
 
 For example, this can be split into `+2`, `-3`, `*4`, `+5`. Before, we didn't handle multiplication and division. That's easy. **Everything else stays the same**. Just add the cases for multiplication and division in the `switch` part:
 
-```java
-int calculate(String s) {
-    Stack<Integer> stk = new Stack<>();
-    // record the numbers in the formula
-    int num = 0;
-    // record the sign before num, initialized as +
-    char sign = '+';
-    for (int i = 0; i < s.length(); i++) {
-        char c = s.charAt(i);
-        if (Character.isDigit(c)) {
-            num = 10 * num + (c - '0');
-        }
+```python
+def calculate(s: str) -> int:
+    stk = []
+    # record the numbers in the equation
+    num = 0
+    # record the sign before num, initialized as +
+    sign = "+"
 
-        if (c == '+' || c == '-' || c == '/' || c == '*' || i == s.length() - 1) {
-            int pre;
-            switch (sign) {
-                case '+':
-                    stk.push(num); break;
-                case '-':
-                    stk.push(-num); break;
-                // just take out the previous number and perform corresponding operation
-                case '*':
-                    pre = stk.pop();
-                    stk.push(pre * num);
-                    break;
-                case '/':
-                    pre = stk.pop();
-                    stk.push(pre / num);
-                    break;
-            }
-            // update the sign to the current sign, reset the number to zero
-            sign = c;
-            num = 0;
-        }
-    }
-    // sum up all the results in the stack to get the answer
-    int res = 0;
-    while (!stk.isEmpty()) {
-        res += stk.pop();
-    }
-    return res;
-}
+    for i in range(len(s)):
+        if s[i].isdigit():
+            num = 10 * num + int(s[i])
+
+        # encounter +,-,*,/ or reach the end
+        if s[i] in "+-*/" or i == len(s) - 1:
+            if sign == "+":
+                stk.append(num)
+            elif sign == "-":
+                stk.append(-num)
+            # just take out the previous number and perform the corresponding operation
+            elif sign == "*":
+                stk[-1] *= num
+            else:
+                # encounter division sign, need to take out the
+                # previous number and perform division
+                stk[-1] = int(stk[-1] / num)
+
+            # update the sign to the current sign, reset the number to zero
+            sign = s[i]
+            num = 0
+
+    # sum all results in the stack to get the answer
+    return sum(stk)
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/calculator/3.jpg)
@@ -192,4 +174,8 @@ Now let's think about spaces in the string. In our code, there is no need to han
 
 Now, our algorithm can calculate addition, subtraction, multiplication, and division correctly, and automatically ignores spaces. The last step is to make the algorithm handle parentheses correctly.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

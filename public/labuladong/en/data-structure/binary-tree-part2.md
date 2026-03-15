@@ -94,9 +94,9 @@ Output: [3,null,2,null,1]
 
 The problem is from [LeetCode 654. Maximum Binary Tree](<https://leetcode.com/problems/maximum-binary-tree/>).
 
-```java
-// function signature as follows
-TreeNode constructMaximumBinaryTree(int[] nums);
+```python
+# The function signature is as follows
+def constructMaximumBinaryTree(nums: List[int]) -> TreeNode:
 ``` 
 
 Each binary tree node can be seen as the root of a subtree. For the root, we first need to build the root itself, then build its left and right subtrees.
@@ -105,76 +105,64 @@ So, we scan the array to find the maximum value `maxVal`. This becomes the root 
 
 For example, if the input is `[3,2,1,6,0,5]`, the root does this:
 
-```java
-TreeNode constructMaximumBinaryTree([3,2,1,6,0,5]) {
-    // find the maximum value in the array
-    TreeNode root = new TreeNode(6);
-    // recursively construct the left and right subtrees
-    root.left = constructMaximumBinaryTree([3,2,1]);
-    root.right = constructMaximumBinaryTree([0,5]);
-    return root;
-}
+```python
+def constructMaximumBinaryTree([3,2,1,6,0,5]) -> TreeNode:
+    # find the maximum value in the array
+    root = TreeNode(6)
+    # recursively construct the left and right subtrees
+    root.left = constructMaximumBinaryTree([3,2,1])
+    root.right = constructMaximumBinaryTree([0,5])
+    return root
 
-// the maximum value in the current nums is the root node, and then
-// recursively call the left and right arrays to construct the left and right subtrees
-// in more detail, the pseudocode is as follows
-TreeNode constructMaximumBinaryTree(int[] nums) {
-    if (nums is empty) return null;
-    // find the maximum value in the array
-    int maxVal = Integer.MIN_VALUE;
-    int index = 0;
-    for (int i = 0; i < nums.length; i++) {
-        if (nums[i] > maxVal) {
-            maxVal = nums[i];
-            index = i;
-        }
-    }
+# the current maximum value in nums is the root node, then recursively
+# construct the left and right subtrees based on the indices of the subarrays
+# in more detail, the pseudocode is as follows
+def constructMaximumBinaryTree(nums: List[int]) -> TreeNode:
+    if not nums: 
+        return None
 
-    TreeNode root = new TreeNode(maxVal);
-    // recursively construct the left and right subtrees
-    root.left = constructMaximumBinaryTree(nums[0..index-1]);
-    root.right = constructMaximumBinaryTree(nums[index+1..nums.length-1]);
-    return root;
-}
+    # find the maximum value in the array
+    maxVal = max(nums)
+    index = nums.index(maxVal)
+
+    root = TreeNode(maxVal)
+    # recursively construct the left and right subtrees
+    root.left = constructMaximumBinaryTree(nums[:index])
+    root.right = constructMaximumBinaryTree(nums[index+1:])
+    return root
 ``` 
 
 **The maximum value in`nums` is the root. Then, recursively build the left and right subtrees using the left and right parts of the array.**
 
 With this idea, let's write a helper function `build` to control the indices:
 
-```java
-class Solution {
+```python
+class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+        return self.build(nums, 0, len(nums) - 1)
 
-    public TreeNode constructMaximumBinaryTree(int[] nums) {
-        return build(nums, 0, nums.length - 1);
-    }
+    # Definition: Construct the tree that meets the
+    # requirements from nums[lo..hi] and return the root node
+    def build(self, nums: List[int], lo: int, hi: int) -> TreeNode:
+        # base case
+        if lo > hi:
+            return None
 
-    // Definition: Construct a tree from nums[lo..hi]
-    // that meets the conditions, return the root node
-    TreeNode build(int[] nums, int lo, int hi) {
-        // base case
-        if (lo > hi) {
-            return null;
-        }
+        # Find the maximum value in the array and its corresponding index
+        index = -1
+        maxVal = float('-inf')
+        for i in range(lo, hi + 1):
+            if maxVal < nums[i]:
+                index = i
+                maxVal = nums[i]
 
-        // Find the maximum value in the array and its corresponding index
-        int index = -1, maxVal = Integer.MIN_VALUE;
-        for (int i = lo; i <= hi; i++) {
-            if (maxVal < nums[i]) {
-                index = i;
-                maxVal = nums[i];
-            }
-        }
-
-        // First construct the root node
-        TreeNode root = new TreeNode(maxVal);
-        // Recursively construct the left and right subtrees
-        root.left = build(nums, lo, index - 1);
-        root.right = build(nums, index + 1, hi);
+        # First, construct the root node
+        root = TreeNode(maxVal)
+        # Recursively construct the left and right subtrees
+        root.left = self.build(nums, lo, index - 1)
+        root.right = self.build(nums, index + 1, hi)
         
-        return root;
-    }
-}
+        return root
 ``` 
 
 Algorithm Visualization
@@ -217,9 +205,9 @@ Output: [-1]
 
 The problem is from [LeetCode 105. Construct Binary Tree from Preorder and Inorder Traversal](<https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/>).
 
-```java
-// The function signature is as follows
-TreeNode buildTree(int[] preorder, int[] inorder);
+```python
+# the function signature is as follows
+def buildTree(preorder: List[int], inorder: List[int]):
 ``` 
 
 Let’s get straight to the main idea. First, think about what the root node should do.
@@ -228,20 +216,22 @@ Let’s get straight to the main idea. First, think about what the root node sho
 
 First, let’s review the characteristics of preorder and inorder traversal results.
 
-```java
-void traverse(TreeNode root) {
-    // preorder traversal
-    preorder.add(root.val);
-    traverse(root.left);
-    traverse(root.right);
-}
+```python
+def traverse(root):
+    if not root:
+        return
+    # pre-order traversal
+    preorder.append(root.val)
+    traverse(root.left)
+    traverse(root.right)
 
-void traverse(TreeNode root) {
-    traverse(root.left);
-    // inorder traversal
-    inorder.add(root.val);
-    traverse(root.right);
-}
+def traverse(root):
+    if not root:
+        return
+    traverse(root.left)
+    # in-order traversal
+    inorder.append(root.val)
+    traverse(root.right)
 ``` 
 
 In the article [Binary Tree Frameworks](</en/algo/data-structure/flatten-nested-list-iterator/>), we discussed how different traversal orders affect the arrangement of elements in the `preorder` and `inorder` arrays:
@@ -254,40 +244,36 @@ The key is how to use the root value to split the `preorder` and `inorder` array
 
 In other words, what should be put in the `?` parts of the following code:
 
-```java
-TreeNode buildTree(int[] preorder, int[] inorder) {
-    // According to the function definition, construct the
-    // binary tree using preorder and inorder arrays
-    return build(preorder, 0, preorder.length - 1,
-                inorder, 0, inorder.length - 1);
-}
+```python
+def buildTree(preorder, inorder):
+    # According to the function definition, use
+    # preorder and inorder to construct the binary tree
+    return build(preorder, 0, len(preorder) - 1,
+                inorder, 0, len(inorder) - 1)
 
-// Definition of the build function:
-// If the preorder traversal array is preorder[preStart..preEnd],
-// and the inorder traversal array is inorder[inStart..inEnd],
-// construct the binary tree and return its root node
-TreeNode build(int[] preorder, int preStart, int preEnd, 
-            int[] inorder, int inStart, int inEnd) {
-    // The value of the root node corresponds to the first element of the preorder array
-    int rootVal = preorder[preStart];
-    // The index of rootVal in the inorder array
-    int index = 0;
-    for (int i = inStart; i <= inEnd; i++) {
-        if (inorder[i] == rootVal) {
-            index = i;
-            break;
-        }
-    }
+# Definition of build function:
+# If the preorder traversal array is preorder[preStart..preEnd],
+# and the inorder traversal array is inorder[inStart..inEnd],
+# construct the binary tree and return its root node
+def build(preorder, preStart, preEnd, 
+            inorder, inStart, inEnd):
+    # The value of the root node is the first element in the preorder traversal array
+    rootVal = preorder[preStart]
+    # The index of rootVal in the inorder traversal array
+    index = 0
+    for i in range(inStart, inEnd + 1):
+        if inorder[i] == rootVal:
+            index = i
+            break
 
-    TreeNode root = new TreeNode(rootVal);
-    // Recursively construct the left and right subtrees
+    root = TreeNode(rootVal)
+    # Recursively construct the left and right subtrees
     root.left = build(preorder, ?, ?,
-                    inorder, ?, ?);
+                    inorder, ?, ?)
 
     root.right = build(preorder, ?, ?,
-                    inorder, ?, ?);
-    return root;
-}
+                    inorder, ?, ?)
+    return root
 ``` 
 
 In the code, the variables `rootVal` and `index` correspond to this situation:
@@ -298,25 +284,25 @@ Some readers may notice that using a for loop to find `index` is not very effici
 
 Since the values in the tree are unique, we can use a HashMap to map values to their indexes. Then we can quickly find the `index` for `rootVal`:
 
-```java
-// store the value-to-index mapping in inorder
-HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+# store the mapping from values to indices in inorder
+val_to_index = {}
 
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-    for (int i = 0; i < inorder.length; i++) {
-        valToIndex.put(inorder[i], i);
-    }
-    return build(preorder, 0, preorder.length - 1,
-                 inorder, 0, inorder.length - 1);
-}
+def build_tree(preorder, inorder):
 
-TreeNode build(int[] preorder, int preStart, int preEnd, 
-               int[] inorder, int inStart, int inEnd) {
-    int rootVal = preorder[preStart];
-    // avoid using a for loop to find rootVal
-    int index = valToIndex.get(rootVal);
-    // ...
-}
+    for i in range(len(inorder)):
+        val_to_index[inorder[i]] = i
+
+    return build(preorder, 0, len(preorder) - 1,
+                 inorder, 0, len(inorder) - 1)
+
+def build(preorder, pre_start, pre_end, 
+          inorder, in_start, in_end):
+  
+    root_val = preorder[pre_start]
+    # avoid using for loop to find rootVal
+    index = val_to_index[root_val]
+    # ...
 ``` 
 
 Now, let’s look at the diagram and fill in the blanks. What should be filled in for these question marks:
@@ -361,46 +347,44 @@ root.right = build(preorder, preStart + leftSize + 1, preEnd,
 
 Now, the whole algorithm is complete. We just need to add the base case to finish the solution:
 
-```java
-class Solution {
-    // store the mapping of values to indices in inorder
-    HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+class Solution:
+    # store the mapping from values in inorder to their indices
+    valToIndex = dict()
 
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        for (int i = 0; i < inorder.length; i++) {
-            valToIndex.put(inorder[i], i);
-        }
-        return build(preorder, 0, preorder.length - 1,
-                    inorder, 0, inorder.length - 1);
-    }
+    def buildTree(self, preorder, inorder):
+        for i in range(len(inorder)):
+            self.valToIndex[inorder[i]] = i
+        return self.build(preorder, 0, len(preorder) - 1,
+                          inorder, 0, len(inorder) - 1)
 
-    // Definition: the preorder array is preorder[preStart..preEnd]
-    // the inorder array is inorder[inStart..inEnd]
-    // construct this binary tree and return the root node of the binary tree
-    TreeNode build(int[] preorder, int preStart, int preEnd,
-                   int[] inorder, int inStart, int inEnd) {
-        if (preStart > preEnd) {
-            return null;
-        }
+    # definition of the build function:
+    # if the preorder traversal array is preorder[preStart..preEnd],
+    # and the inorder traversal array is inorder[inStart..inEnd],
+    # construct the binary tree and return its root node
+    def build(self, preorder, preStart, preEnd,
+               inorder, inStart, inEnd):
+        if preStart > preEnd:
+            return None
 
-        // the value of the root node corresponds to the first element of the preorder array
-        int rootVal = preorder[preStart];
-        // the index of rootVal in the inorder array
-        int index = valToIndex.get(rootVal);
+        # the root node's value is the first element in the preorder array
+        rootVal = preorder[preStart]
+        # the index of rootVal in the inorder array
+        index = self.valToIndex[rootVal]
 
-        int leftSize = index - inStart;
+        leftSize = index - inStart
 
-        // first, construct the current root node
-        TreeNode root = new TreeNode(rootVal); 
-        // recursively construct the left and right subtrees
-        root.left = build(preorder, preStart + 1, preStart + leftSize,
-                inorder, inStart, index - 1);
+        # first construct the current root node
+        root = TreeNode(rootVal) 
 
-        root.right = build(preorder, preStart + leftSize + 1, preEnd,
-                inorder, index + 1, inEnd);
-        return root;
-    }
-}
+        # recursively construct the left and right subtrees
+        root.left = self.build(preorder, preStart + 1, preStart + leftSize,
+                               inorder, inStart, index - 1)
+
+        root.right = self.build(preorder, preStart + leftSize + 1, preEnd,
+                                inorder, index + 1, inEnd)
+
+        return root
 ``` 
 
 The main function only needs to call the `buildTree` function. The solution may look long and the function has many parameters, but all these parameters do is control the range in the arrays. Drawing a diagram makes everything clear.
@@ -441,27 +425,27 @@ Output: [-1]
 
 The problem is from [LeetCode 106. Construct Binary Tree from Inorder and Postorder Traversal](<https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/>).
 
-```java
-// The function signature is as follows
-TreeNode buildTree(int[] inorder, int[] postorder);
+```python
+# The function signature is as follows
+def buildTree(inorder: List[int], postorder: List[int]) -> TreeNode:
 ``` 
 
 Let's look at the features of postorder and inorder traversals:
 
-```java
-void traverse(TreeNode root) {
-    traverse(root.left);
-    traverse(root.right);
-    // postorder traversal
-    postorder.add(root.val);
-}
+```python
+def traverse(root):
+    if root:
+        traverse(root.left)
+        traverse(root.right)
+        # postorder traversal
+        postorder.append(root.val)
 
-void traverse(TreeNode root) {
-    traverse(root.left);
-    // inorder traversal
-    inorder.add(root.val);
-    traverse(root.right);
-}
+def traverse(root):
+    if root:
+        traverse(root.left)
+        # inorder traversal
+        inorder.append(root.val)
+        traverse(root.right)
 ``` 
 
 Because of the difference in traversal orders, the elements in the `postorder` and `inorder` arrays have the following layout:
@@ -472,40 +456,35 @@ The key difference from the previous problem is that postorder is the opposite o
 
 The overall algorithm structure is very similar to the previous problem. We still write a helper function called `build`:
 
-```java
-class Solution {
-    // Store the mapping from values to indices in the inorder array
-    HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        # store the mapping from value to index in inorder
+        valToIndex = {val: idx for idx, val in enumerate(inorder)}
 
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
-        for (int i = 0; i < inorder.length; i++) {
-            valToIndex.put(inorder[i], i);
-        }
-        return build(inorder, 0, inorder.length - 1,
-                    postorder, 0, postorder.length - 1);
-    }
+        # definition of build function:
+        # postorder traversal array is postorder[postStart..postEnd],
+        # inorder traversal array is inorder[inStart..inEnd],
+        # construct the binary tree, return the root node of this tree
+        def build(in_left, in_right, post_left, post_right):
+            if in_left > in_right: return
+            
+            # the value of the root node is the last element of the postorder traversal array
+            root_val = postorder[post_right]
+            # the index of rootVal in the inorder traversal array
+            index = valToIndex[root_val]
 
-    // Definition of the build function:
-    // The postorder traversal array is postorder[postStart..postEnd],
-    // The inorder traversal array is inorder[inStart..inEnd],
-    // Construct the binary tree and return its root node
-    TreeNode build(int[] inorder, int inStart, int inEnd,
-                int[] postorder, int postStart, int postEnd) {
-        // The value of the root node is the last element of the postorder traversal array
-        int rootVal = postorder[postEnd];
-        // The index of rootVal in the inorder traversal array
-        int index = valToIndex.get(rootVal);
+            root = TreeNode(root_val)
+            # recursively construct the left and right subtrees
+            size_left_subtree = index - in_left
+            root.left = build(inorder, ?, ?,
+                               postorder, ?, ?)
+            root.right = build(inorder, ?, ?,
+                                postorder, ?, ?)
+            
+            return root
 
-        TreeNode root = new TreeNode(rootVal);
-        // Recursively construct the left and right subtrees
-        root.left = build(inorder, ?, ?,
-                        postorder, ?, ?);
-
-        root.right = build(inorder, ?, ?,
-                        postorder, ?, ?);
-        return root;
-    }
-}
+        return build(0, len(inorder) - 1, 0, len(postorder) - 1)
 ``` 
 
 Now, the status of `postorder` and `inorder` is as follows:
@@ -526,45 +505,40 @@ root.right = build(inorder, index + 1, inEnd,
 
 Here is the complete solution code:
 
-```java
-class Solution {
-    // store the mapping from value to index in inorder
-    HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+class Solution:
+    # store the mapping from value to index in inorder
+    val_to_index = {}
 
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
-        for (int i = 0; i < inorder.length; i++) {
-            valToIndex.put(inorder[i], i);
-        }
-        return build(inorder, 0, inorder.length - 1,
-                    postorder, 0, postorder.length - 1);
-    }
+    def buildTree(self, inorder, postorder):
+        for i in range(len(inorder)):
+            self.val_to_index[inorder[i]] = i
+        return self.build(inorder, 0, len(inorder) - 1,
+                          postorder, 0, len(postorder) - 1)
 
-    // Definition: the inorder array is inorder[inStart..inEnd],
-    // the postorder array is postorder[postStart..postEnd],
-    // the build function constructs this binary tree
-    // and returns the root node of the binary tree
-    TreeNode build(int[] inorder, int inStart, int inEnd,
-                int[] postorder, int postStart, int postEnd) {
+    # Definition: the inorder array is inorder[inStart..inEnd],
+    # the postorder array is postorder[postStart..postEnd],
+    # the build function constructs this binary tree
+    # and returns the root node of the binary tree
+    def build(self, inorder, in_start, in_end,
+              postorder, post_start, post_end):
 
-        if (inStart > inEnd) {
-            return null;
-        }
-        // the value of the root node is the last element in the postorder array
-        int rootVal = postorder[postEnd];
-        // the index of rootVal in the inorder array
-        int index = valToIndex.get(rootVal);
-        // the number of nodes in the left subtree
-        int leftSize = index - inStart;
-        TreeNode root = new TreeNode(rootVal); 
-        // recursively construct the left and right subtrees
-        root.left = build(inorder, inStart, index - 1,
-                         postorder, postStart, postStart + leftSize - 1);
+        if in_start > in_end:
+            return None
+        # the value of the root node is the last element in the postorder array
+        root_val = postorder[post_end]
+        # the index of rootVal in the inorder array
+        index = self.val_to_index[root_val]
+        # the number of nodes in the left subtree
+        left_size = index - in_start
+        root = TreeNode(root_val) 
+        # recursively construct the left and right subtrees
+        root.left = self.build(inorder, in_start, index - 1,
+                               postorder, post_start, post_start + left_size - 1)
         
-        root.right = build(inorder, index + 1, inEnd,
-                          postorder, postStart + leftSize, postEnd - 1);
-        return root;
-    }
-}
+        root.right = self.build(inorder, index + 1, in_end,
+                                postorder, post_start + left_size, post_end - 1)
+        return root
 ``` 
 
 Algorithm Visualization
@@ -577,8 +551,10 @@ This is LeetCode Problem 889: [Construct Binary Tree from Preorder and Postorder
 
 The function signature is:
 
-```java
-TreeNode constructFromPrePost(int[] preorder, int[] postorder);
+```python
+from typing import List
+
+def constructFromPrePost(preorder: List[int], postorder: List[int]) -> TreeNode:
 ``` 
 
 This problem is different from the previous two:
@@ -615,56 +591,50 @@ However, the logic to restore the tree from preorder and postorder is not much d
 
 For details, see the code.
 
-```java
-class Solution {
-    // store the mapping of values to indices in postorder
-    HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+class Solution:
+    # store the mapping from value to index in postorder
+    valToIndex = dict()
 
-    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
-        for (int i = 0; i < postorder.length; i++) {
-            valToIndex.put(postorder[i], i);
-        }
-        return build(preorder, 0, preorder.length - 1,
-                    postorder, 0, postorder.length - 1);
-    }
+    def constructFromPrePost(self, preorder, postorder):
+        for i in range(len(postorder)):
+            self.valToIndex[postorder[i]] = i
+        return self.build(preorder, 0, len(preorder) - 1,
+                          postorder, 0, len(postorder) - 1)
 
-    // definition: construct a binary tree based on
-    // preorder[prestart..preend] and postorder[poststart..postend]
-    // and return the root node.
-    TreeNode build(int[] preorder, int preStart, int preEnd,
-                   int[] postorder, int postStart, int postEnd) {
-        if (preStart > preEnd) {
-            return null;
-        }
-        if (preStart == preEnd) {
-            return new TreeNode(preorder[preStart]);
-        }
+    # definition: construct the binary tree based on
+    # preorder[preStart..preEnd] and postorder[postStart..postEnd]
+    # build the binary tree and return the root node.
+    def build(self, preorder, preStart, preEnd,
+              postorder, postStart, postEnd):
+        if preStart > preEnd:
+            return None
+        if preStart == preEnd:
+            return TreeNode(preorder[preStart])
 
-        // the value of the root node corresponds to the first element in the preorder array
-        int rootVal = preorder[preStart];
-        // the value of root.left is the second element in the preorder array
-        // the key to constructing the binary tree from preorder and
-        // postorder traversals is determining the left subtree's root node
-        // and the element ranges of the left and right subtrees in preorder and postorder
-        int leftRootVal = preorder[preStart + 1];
-        // the index of leftrootval in the postorder array
-        int index = valToIndex.get(leftRootVal);
-        // the number of elements in the left subtree
-        int leftSize = index - postStart + 1;
+        # the value of the root node is the first element in the preorder array
+        rootVal = preorder[preStart]
+        # the value of root.left is the second element in preorder
+        # the key to constructing the binary tree using preorder and postorder is to determine the
+        # element range of the left and right subtrees using the root node of the left subtree
+        # determine the element range of the left and right subtrees in preorder and postorder
+        leftRootVal = preorder[preStart + 1]
+        # the index of leftRootVal in the postorder array
+        index = self.valToIndex[leftRootVal]
+        # the number of elements in the left subtree
+        leftSize = index - postStart + 1
+     
+        # first construct the current root node
+        root = TreeNode(rootVal) 
+        # recursively construct the left and right subtrees
+        # derive the index boundaries of the left and right subtrees based on the
+        # root node index and the number of elements in the left subtree
+        root.left = self.build(preorder, preStart + 1, preStart + leftSize,
+                               postorder, postStart, index)
+        root.right = self.build(preorder, preStart + leftSize + 1, preEnd,
+                                postorder, index + 1, postEnd - 1)
 
-        // first, construct the current root node
-        TreeNode root = new TreeNode(rootVal); 
-        // recursively construct the left and right subtrees
-        // derive the index boundaries of the left and right subtrees based on
-        // the left subtree's root node index and the number of elements
-        root.left = build(preorder, preStart + 1, preStart + leftSize,
-                postorder, postStart, index);
-        root.right = build(preorder, preStart + leftSize + 1, preEnd,
-                postorder, index + 1, postEnd - 1);
-
-        return root;
-    }
-}
+        return root
 ``` 
 
 Algorithm Visualization
@@ -685,4 +655,8 @@ To sum up, **constructing a binary tree usually uses the "divide the problem" id
 
 Do you understand the trick now?
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

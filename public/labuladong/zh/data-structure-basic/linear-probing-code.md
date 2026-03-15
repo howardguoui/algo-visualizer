@@ -26,3 +26,7 @@
 3、底层的 `table` 数组的大小在创建哈希表时就固定，假设 `table` 数组不会被装满，不考虑负载因子和动态扩缩容的问题。
 
 这些简化能够帮助我们聚焦增删查改的核心逻辑，并且可以借助 [可视化面板](</zh/algo/intro/visualize/>) 辅助大家学习理解。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

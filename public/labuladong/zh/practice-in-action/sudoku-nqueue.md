@@ -63,8 +63,8 @@ LeetCode| 力扣| 难度
 
 我来给你编一道简单的题目，请你实现这样一个函数：
 
-```java
-List<String> generateBinaryNumber(int n);
+```python
+def generateBinaryNumber(n: int) -> List[str]:
 ``` 
 
 函数的输入是一个正整数 `n`，请你返回所有长度为 `n` 的二进制数（0、1 组成），你可以按任意顺序返回答案。
@@ -91,3 +91,7 @@ List<String> generateBinaryNumber(int n);
 N 皇后问题相当于让你对一个 `N x N` 的二维数组中的每个位置进行穷举，其中每个位置可以不放皇后或者放置皇后（相当于 `0` 或 `1`），且不能存在多个皇后在同一行、同一列或同一对角线上。
 
 所以，只要你把这道简化版的题目的穷举过程搞明白，其他问题都迎刃而解了，无非是规则多了一些而已。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

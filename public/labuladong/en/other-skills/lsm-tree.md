@@ -105,4 +105,8 @@ If it exists, since keys within an `SSTable` are also sorted, we can use [binary
 
 This way, leveraging the LSM tree's level structure and the sorted nature of `SSTables`, we can use binary search to boost lookup efficiency and avoid linear scanning for key-value pairs.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

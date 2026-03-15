@@ -33,8 +33,8 @@ Calculating the Longest Common Subsequence (LCS) is a classic dynamic programmin
 
 Given two input strings `s1` and `s2`, find their longest common subsequence and return its length. The function signature is as follows:
 
-```java
-int longestCommonSubsequence(String s1, String s2);
+```python
+def longestCommonSubsequence(s1: str, s2: str) -> int:
 ``` 
 
 For instance, if `s1 = "zabcde", s2 = "acez"`, their longest common subsequence is `lcs = "ace"`, with a length of 3, so the algorithm returns 3.
@@ -45,4 +45,8 @@ Obviously, this approach has a very high complexity, as enumerating all subseque
 
 The correct approach is not to consider the entire strings, but to focus on each character of `s1` and `s2`. As summarized in the previous article [Subsequence Problem Template](</en/algo/dynamic-programming/subsequence-problem/>):
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

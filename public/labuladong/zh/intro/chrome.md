@@ -124,3 +124,7 @@ Chrome 插件的部分内容/功能免费提供给所有用户使用。
 可以在 GitHub 创建 Issue 反馈问题：
 
 <https://github.com/labuladong/fucking-algorithm/issues/>[](<https://github.com/labuladong/fucking-algorithm/issues/>)
+
+## 评论
+
+请登录后查看/发表评论

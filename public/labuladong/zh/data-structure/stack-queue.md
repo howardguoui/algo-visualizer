@@ -34,21 +34,24 @@ LeetCode| 力扣| 难度
 
 力扣第 232 题「[用栈实现队列](<https://leetcode.cn/problems/implement-queue-using-stacks/>)」让我们实现的 API 如下：
 
-```java
-class MyQueue {
-    
-    // 添加元素到队尾
-    public void push(int x);
-    
-    // 删除队头的元素并返回
-    public int pop();
-    
-    // 返回队头元素
-    public int peek();
-    
-    // 判断队列是否为空
-    public boolean empty();
-}
+```python
+class MyQueue:
+
+    # 添加元素到队尾
+    def push(self, x: int) -> None:
+        pass
+
+    # 删除队头的元素并返回
+    def pop(self) -> int:
+        pass
+
+    # 返回队头元素
+    def peek(self) -> int:
+        pass
+
+    # 判断队列是否为空
+    def empty(self) -> bool:
+        pass
 ``` 
 
 我们使用两个栈 `s1, s2` 就能实现一个队列的功能（这样放置栈可能更容易理解）：
@@ -67,42 +70,33 @@ class MyQueue {
 
 完整代码如下：
 
-```java
-class MyQueue {
-    private Stack<Integer> s1, s2;
+```python
+class MyQueue:
+    def __init__(self):
+        self.s1 = []
+        self.s2 = []
 
-    public MyQueue() {
-        s1 = new Stack<>();
-        s2 = new Stack<>();
-    }
+    # 添加元素到队尾
+    def push(self, x: int) -> None:
+        self.s1.append(x)
 
-    
-    // 添加元素到队尾
-    public void push(int x) {
-        s1.push(x);
-    }
+    # 删除队头元素并返回
+    def pop(self) -> int:
+        # 先调用 peek 保证 s2 非空
+        self.peek()
+        return self.s2.pop()
 
-    // 删除队头元素并返回
-    public int pop() {
-        // 先调用 peek 保证 s2 非空
-        peek();
-        return s2.pop();
-    }
+    # 返回队头元素
+    def peek(self) -> int:
+        if not self.s2:
+            # 把 s1 元素压入 s2
+            while self.s1:
+                self.s2.append(self.s1.pop())
+        return self.s2[-1]
 
-    // 返回队头元素
-    public int peek() {
-        if (s2.isEmpty())
-            // 把 s1 元素压入 s2
-            while (!s1.isEmpty())
-                s2.push(s1.pop());
-        return s2.peek();
-    }
-
-    // 判断队列是否为空
-    public boolean empty() {
-        return s1.isEmpty() && s2.isEmpty();
-    }
-}
+    # 判断队列是否为空
+    def empty(self) -> bool:
+        return not self.s1 and not self.s2
 ``` 
 
 至此，就用栈结构实现了一个队列，核心思想是利用两个栈互相配合。
@@ -123,46 +117,49 @@ class MyQueue {
 
 力扣第 225 题「[用队列实现栈](<https://leetcode.cn/problems/implement-stack-using-queues/>)」让我们实现如下 API：
 
-```java
-class MyStack {
+```python
+class MyStack:
+
+    # 添加元素到栈顶
+    def push(self, x: int) -> None:
+        pass
     
-    // 添加元素到栈顶
-    public void push(int x);
+    # 删除栈顶的元素并返回
+    def pop(self) -> int:
+        pass
     
-    // 删除栈顶的元素并返回
-    public int pop();
+    # 返回栈顶元素
+    def top(self) -> int:
+        pass
     
-    // 返回栈顶元素
-    public int top();
-    
-    // 判断栈是否为空
-    public boolean empty();
-}
+    # 判断栈是否为空
+    def empty(self) -> bool:
+        pass
 ``` 
 
 先说 `push` API，直接将元素加入队列，同时记录队尾元素，因为队尾元素相当于栈顶元素，如果要 `top` 查看栈顶元素的话可以直接返回：
 
-```java
-class MyStack {
-    Queue<Integer> q = new LinkedList<>();
-    int top_elem = 0;
-
-    // 添加元素到栈顶
-    public void push(int x) {
-        // x 是队列的队尾，是栈的栈顶
-        q.offer(x);
-        top_elem = x;
-    }
+```python
+class MyStack:
+    def __init__(self):
+        # 使用一个队列 q 来实现一个栈
+        self.q = []
+        # 栈顶元素
+        self.top_elem = 0
     
-    // 返回栈顶元素
-    public int top() {
-        return top_elem;
-    }
+    # 添加元素到栈顶
+    def push(self, x: int) -> None:
+        # x 是队列的队尾，是栈的栈顶
+        self.q.append(x)
+        self.top_elem = x
+    
+    # 返回栈顶元素
+    def top(self) -> int:
+        return self.top_elem
 
-    public boolean empty() {
-        return q.isEmpty();
-    }
-}
+    # 检查栈是否为空
+    def empty(self) -> bool:
+        return len(self.q) == 0
 ``` 
 
 我们的底层数据结构是先进先出的队列，每次 `pop` 只能从队头取元素；但是栈是后进先出，也就是说 `pop` API 要从队尾取元素：
@@ -173,86 +170,76 @@ class MyStack {
 
 ![diagram](https://labuladong.online/images/algo/stack-queue/6.jpg)
 
-```java
-class MyStack {
-    // 为了节约篇幅，省略上文给出的代码部分...
+```python
+class MyStack:
+    # 为了节约篇幅，省略上文给出的代码部分...
 
-    // 删除栈顶的元素并返回
-    public int pop() {
-        int size = q.size();
-        while (size > 1) {
-            q.offer(q.poll());
-            size--;
-        }
-        // 之前的队尾元素已经到了队头
-        return q.poll();
-    }
-}
+    # 删除栈顶的元素并返回
+    def pop(self):
+        size = len(self.q)
+        while size > 1:
+            self.q.append(self.q.pop(0))
+            size -= 1
+        # 之前的队尾元素已经到了队头
+        return self.q.pop(0)
 ``` 
 
 这样实现还有一点小问题就是，原来的队尾元素被推到队头并删除了，但是 `top_elem` 变量没有更新，我们还需要一点小修改：
 
-```java
-class MyStack {
-    // 为了节约篇幅，省略上文给出的代码部分...
+```python
+class MyStack:
+    # 为了节约篇幅，省略上文给出的代码部分...
 
-    // 删除栈顶的元素并返回
-    public int pop() {
-        int size = q.size();
-        // 留下队尾 2 个元素
-        while (size > 2) {
-            q.offer(q.poll());
-            size--;
-        }
-        // 记录新的队尾元素
-        top_elem = q.peek();
-        q.offer(q.poll());
-        // 删除之前的队尾元素
-        return q.poll();
-    }
-}
+    # 删除栈顶的元素并返回
+    def pop(self):
+        size = len(self.q)
+        # 留下队尾 2 个元素
+        while size > 2:
+            self.q.append(self.q.pop(0))
+            size -= 1
+        # 记录新的队尾元素
+        self.top_elem = self.q[0]
+        self.q.append(self.q.pop(0))
+        # 删除之前的队尾元素
+        return self.q.pop(0)
 ``` 
 
 这样就实现完了，完整的代码如下：
 
-```java
-class MyStack {
-    Queue<Integer> q = new LinkedList<>();
-    int top_elem = 0;
+```python
+from collections import deque
 
-    // 将元素 x 压入栈顶
-    public void push(int x) {
-        // x 是队列的队尾，是栈的栈顶
-        q.offer(x);
-        top_elem = x;
-    }
+class MyStack:
+    def __init__(self):
+        self.q = deque()
+        self.top_elem = 0
 
-    // 返回栈顶元素
-    public int top() {
-        return top_elem;
-    }
+    # 将元素 x 压入栈顶
+    def push(self, x: int) -> None:
+        # x 是队列的队尾，是栈的栈顶
+        self.q.append(x)
+        self.top_elem = x
 
-    
-    // 删除栈顶的元素并返回
-    public int pop() {
-        int size = q.size();
-        // 留下队尾 2 个元素
-        while (size > 2) {
-            q.offer(q.poll());
-            size--;
-        }
-        // 记录新的队尾元素
-        top_elem = q.peek();
-        q.offer(q.poll());
-        // 删除之前的队尾元素
-        return q.poll();
-    }
+    # 返回栈顶元素
+    def top(self) -> int:
+        return self.top_elem
 
-    // 判断栈是否为空
-    public boolean empty() {
-        return q.isEmpty();
-    }
-}
+    # 删除栈顶的元素并返回
+    def pop(self) -> int:
+        size = len(self.q)
+        # 留下队尾 2 个元素
+        while size > 2:
+            self.q.append(self.q.popleft())
+            size -= 1
+        # 记录新的队尾元素
+        self.top_elem = self.q[0]
+        self.q.append(self.q.popleft())
+        # 删除之前的队尾元素
+        return self.q.popleft()
+
+    # 判断栈是否为空
+    def empty(self) -> bool:
+        return not self.q
 ``` 
 
 很明显，用队列实现栈的话，`pop` 操作时间复杂度是 O(N)，其他操作都是 O(1)。
@@ -262,3 +249,7 @@ class MyStack {
 ![diagram](https://labuladong.online/images/algo/stack-queue/4.jpg)
 
 从栈 `s1` 搬运元素到 `s2` 之后，元素在 `s2` 中就变成了队列的先进先出顺序，这个特性有点类似「负负得正」，确实不太容易想到。
+
+## 评论
+
+请登录后查看/发表评论

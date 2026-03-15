@@ -36,71 +36,69 @@ How do we use DFS in a 2D grid? If you treat each cell in the grid as a node, th
 
 Based on the ideas from [A Framework for Learning Data Structures and Algorithms](</en/algo/essential-technique/algorithm-summary/>), we can rewrite the binary tree traversal template into a DFS template for a 2D grid:
 
-```java
-// Binary tree traversal framework
-void traverse(TreeNode root) {
-    traverse(root.left);
-    traverse(root.right);
-}
+```python
+# Binary tree traversal framework
+def traverse(root: TreeNode):
+    if not root:
+        return
+    traverse(root.left)
+    traverse(root.right)
 
-// Two-dimensional matrix traversal framework
-void dfs(int[][] grid, int i, int j, boolean[][] visited) {
-    int m = grid.length, n = grid[0].length;
-    if (i < 0 || j < 0 || i >= m || j >= n) {
-        // out of index bounds
-        return;
-    }
-    if (visited[i][j]) {
-        // already visited (i, j)
-        return;
-    }
+# 2D matrix traversal framework
+def dfs(grid: List[List[int]], i: int, j: int, visited: List[List[bool]]) -> None:
+    m, n = len(grid), len(grid[0])
+    if i < 0 or j < 0 or i >= m or j >= n:
+        # out of index boundary
+        return
+    if visited[i][j]:
+        # already visited (i, j)
+        return
 
-    // enter the current node (i, j)
-    visited[i][j] = true;
+    # enter the current node (i, j)
+    visited[i][j] = True
 
-    // enter adjacent nodes (quadtree)
-    // up
-    dfs(grid, i - 1, j, visited);
-    // down
-    dfs(grid, i + 1, j, visited);
-    // left
-    dfs(grid, i, j - 1, visited);
-    // right
-    dfs(grid, i, j + 1, visited);
-}
+    # enter the adjacent nodes (quad tree)
+    # up
+    dfs(grid, i - 1, j, visited)
+    # down
+    dfs(grid, i + 1, j, visited)
+    # left
+    dfs(grid, i, j - 1, visited)
+    # right
+    dfs(grid, i, j + 1, visited)
 ``` 
 
 Because a 2D grid is essentially a “graph”, we need a `visited` boolean array during traversal to avoid going back to the same cell again. If you understand the code above, then all island problems become easy.
 
 Here is a common trick when working with 2D arrays. You will sometimes see a “direction array” to handle moving up, down, left, and right. This is very similar to the code in [Union-Find Algorithm Explained](</en/algo/data-structure/union-find/>):
 
-```java
-// Direction array, representing up, down, left, right respectively
-int[][] dirs = new int[][]{{-1,0}, {1,0}, {0,-1}, {0,1}};
+```python
+# Direction array, representing up, down, left, and right respectively
+dirs = [[-1,0], [1,0], [0,-1], [0,1]]
 
-void dfs(int[][] grid, int i, int j, boolean[][] visited) {
-    int m = grid.length, n = grid[0].length;
-    if (i < 0 || j < 0 || i >= m || j >= n) {
-        // out of index bounds
-        return;
-    }
-    if (visited[i][j]) {
-        // already visited (i, j)
-        return;
-    }
+def dfs(grid: List[List[int]], i: int, j: int, visited: List[List[bool]]) -> None:
+    m, n = len(grid), len(grid[0])
+    if i < 0 or j < 0 or i >= m or j >= n:
+        # out of index boundary
+        return
+    if visited[i][j]:
+        # already visited (i, j)
+        return
 
-    // enter node (i, j)
-    visited[i][j] = true;
-    // recursively visit the nodes above, below, left and right
-    for (int[] d : dirs) {
-        int next_i = i + d[0];
-        int next_j = j + d[1];
-        dfs(grid, next_i, next_j, visited);
-    }
-    // leave node (i, j)
-}
+    # enter node (i, j)
+    visited[i][j] = True
+    # recursively visit the nodes above, below, left, and right
+    for d in dirs:
+        next_i = i + d[0]
+        next_j = j + d[1]
+        dfs(grid, next_i, next_j, visited)
+    # leave node (i, j)
 ``` 
 
 This style just uses a for loop to handle the four directions. You can choose whichever style you prefer. Next, we will solve problems using this framework together with the visual panel.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

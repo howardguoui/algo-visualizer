@@ -78,15 +78,13 @@ LeetCode Problem 509 "[Fibonacci Number](<https://leetcode.com/problems/fibonacc
 
 The mathematical definition of the Fibonacci sequence is recursive. The code implementation is as follows:
 
-```java
-// f(n) calculates the nth Fibonacci number
-int fib(int n) {
-    // base case
-    if (n == 0 || n == 1){
-        return n;
-    }
-    return fib(n - 1) + fib(n - 2);
-}
+```python
+# f(n) calculates the nth Fibonacci number
+def fib(n: int) -> int:
+    # base case
+    if n == 0 or n == 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
 ``` 
 
 Info
@@ -129,34 +127,29 @@ For the Fibonacci problem, we need a memoization table to record the value of th
 
 Of course, you can also use a hash table for storage. The idea is the same.
 
-```java
-int fib(int n) {
-    // initialize the memo array to all -1
-    // because the Fibonacci number is a non-negative integer, so
-    // initialize it with -1 to indicate that it has not been calculated
+```python
+def fib(n: int) -> int:
+    # initialize the memo array to all -1
+    # because the Fibonacci number is a non-negative integer, so
+    # initialize it with -1 to indicate that it has not been calculated
 
-    // because the index of the array starts at 0, so we need n + 1 spaces
-    // so we can record `f(0) ~ f(n)` in memo
-    int[] memo = new int[n + 1];
-    Arrays.fill(memo, -1);
+    # because the index of the array starts at 0, so we need n + 1 spaces
+    # so we can record `f(0) ~ f(n)` in memo
+    memo = [-1] * (n + 1)
 
-    return dp(memo, n);
-}
+    return self.dp(memo, n)
 
-// perform recursion with memoization
-int dp(int[] memo, int n) {
-    // base case
-    if (n == 0 || n == 1) {
-        return n;
-    }
-    // already calculated, no need to calculate again
-    if (memo[n] != -1) {
-        return memo[n];
-    }
-    // before returning the result, store it in the memo
-    memo[n] = dp(memo, n - 1) + dp(memo, n - 2);
-    return memo[n];
-}
+# perform recursion with memoization
+def dp(memo: list, n: int) -> int:
+    # base case
+    if n == 0 or n == 1:
+        return n
+    # already calculated, no need to calculate again
+    if memo[n] != -1:
+        return memo[n]
+    # before returning the result, store it in the memo
+    memo[n] = self.dp(memo, n - 1) + self.dp(memo, n - 2)
+    return memo[n]
 ``` 
 
 Now, let's draw the recursion tree to see what memoization actually does.
@@ -217,22 +210,20 @@ By now, you might have noticed that the entire computation is just calculating t
 
 With this insight, we no longer need to use recursion. We simply create an array (the DP table) and use a for loop to calculate values from the base cases from left to right.
 
-```java
-int fib(int n) {
-    if (n == 0 || n == 1) {
-        return n;
-    }
-    // dp table
-    int[] dp = new int[n + 1];
-    // base case
-    dp[0] = 0; dp[1] = 1;
-    // state transition
-    for (int i = 2; i <= n; i++) {
-        dp[i] = dp[i - 1] + dp[i - 2];
-    }
+```python
+def fib(n: int) -> int:
+    if n == 0 or n == 1:
+        return n
+    # dp table
+    dp = [0] * (n + 1)
+    # base case
+    dp[0] = 0
+    dp[1] = 1
+    # state transition
+    for i in range(2, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
 
-    return dp[n];
-}
+    return dp[n]
 ``` 
 
 Algorithm Visualization
@@ -269,23 +260,20 @@ Sharp readers may have noticed that according to the Fibonacci state transition 
 
 This means you can optimize further and bring the space complexity down to O(1)O(1)O(1). This gives us the most common algorithm for computing Fibonacci numbers:
 
-```java
-int fib(int n) {
-    if (n == 0 || n == 1) {
-        // base case
-        return n;
-    }
-    // represent dp[i - 1] and dp[i - 2] respectively
-    int dp_i_1 = 1, dp_i_2 = 0;
-    for (int i = 2; i <= n; i++) {
-        // dp[i] = dp[i - 1] + dp[i - 2];
-        int dp_i = dp_i_1 + dp_i_2;
-        // rolling update
-        dp_i_2 = dp_i_1;
-        dp_i_1 = dp_i;
-    }
-    return dp_i_1;
-}
+```python
+def fib(n: int) -> int:
+    if n == 0 or n == 1:
+        # base case
+        return n
+    # represent dp[i - 1] and dp[i - 2] respectively
+    dp_i_1, dp_i_2 = 1, 0
+    for i in range(2, n + 1):
+        # dp[i] = dp[i - 1] + dp[i - 2];
+        dp_i = dp_i_1 + dp_i_2
+        # rolling update
+        dp_i_2 = dp_i_1
+        dp_i_1 = dp_i
+    return dp_i_1
 ``` 
 
 Algorithm Visualization
@@ -308,9 +296,9 @@ This is LeetCode Problem 322: [Coin Change](<https://leetcode.com/problems/coin-
 
 You are given `k` types of coins, with denominations `c1, c2 ... ck`. Each type of coin has an unlimited supply. Given a total amount `amount`, find the **minimum** number of coins needed to make up that amount. If it is not possible, return -1. The function signature is as follows:
 
-```java
-// `coins` contains the denominations of available coins, and `amount` is the target amount
-int coinChange(int[] coins, int amount);
+```python
+# coins contains the denominations of available coins, amount is the target amount
+def coinChange(coins: List[int], amount: int) -> int:
 ``` 
 
 For example, if `k = 3`, the denominations are 1, 2, and 5, and the total amount `amount = 11`. The minimum number of coins required is 3, that is, 11 = 5 + 5 + 1.
@@ -349,51 +337,49 @@ According to this definition, our final answer is the return value of `dp(amount
 
 Once you understand these key points, you can write the pseudocode for the solution:
 
-```java
-// Pseudocode framework
-int coinChange(int[] coins, int amount) {
-    // The final result required by the problem is dp(amount)
-    return dp(coins, amount);
-}
+```python
+# Pseudocode framework
+def coinChange(coins: List[int], amount: int) -> int:
+    # The final result required by the problem is dp(amount)
+    return dp(coins, amount)
 
-// Definition: To make up the amount n, at least dp(coins, n) coins are needed
-int dp(int[] coins, int n) {
-    // Make a choice, choose the result that requires the fewest coins
-    for (int coin : coins) {
-        res = min(res, 1 + dp(coins, n - coin));
-    }
-    return res;
-}
+# Definition: To make up the amount n, at least dp(coins, n) coins are needed
+def dp(coins: List[int], n: int) -> int:
+    # Make a choice, choose the result that requires the fewest coins
+    # Initialize res to positive infinity
+    res = float('inf')
+    for coin in coins:
+        res = min(res, sub_problem + 1)
+    return res
 ``` 
 
 Based on the pseudocode, we add the base cases to get the final solution. Obviously, when the target amount is 0, the minimum number of coins needed is 0. When the target amount is less than 0, there is no solution, so return -1:
 
-```java
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        // the final result required by the problem is dp(amount)
-        return dp(coins, amount);
-    }
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        # the final result required by the problem is dp(amount)
+        return self.dp(coins, amount)
 
-    // definition: to make up the `amount`, at least dp(coins, amount) coins are needed
-    int dp(int[] coins, int amount) {
-        // base case
-        if (amount == 0) return 0;
-        if (amount < 0) return -1;
+    # definition: to make up the `amount`, at least dp(coins, amount) coins are needed
+    def dp(self, coins, amount):
+        # base case
+        if amount == 0: 
+            return 0
+        if amount < 0: 
+            return -1
 
-        int res = Integer.MAX_VALUE;
-        for (int coin : coins) {
-            // calculate the result of the subproblem
-            int subProblem = dp(coins, amount - coin);
-            // skip if the subproblem has no solution
-            if (subProblem == -1) continue;
-            // choose the optimal solution from the subproblem, then add one
-            res = Math.min(res, subProblem + 1);
-        }
+        res = float('inf')
+        for coin in coins:
+            # calculate the result of the subproblem
+            subProblem = self.dp(coins, amount - coin)
+            # skip if the subproblem has no solution
+            if subProblem == -1: 
+                continue
+            # choose the optimal solution in the subproblem, then add one
+            res = min(res, subProblem + 1)
 
-        return res == Integer.MAX_VALUE ? -1 : res;
-    }
-}
+        return res if res != float('inf') else -1
 ``` 
 
 Info
@@ -424,40 +410,35 @@ Next, consider the complexity for each subproblem. Since each recursion contains
 
 Similar to the previous Fibonacci example, with slight modification, we can use memoization to eliminate redundant subproblems:
 
-```java
-class Solution {
-    int[] memo;
+```python
+class Solution:
+    def __init__(self):
+        self.memo = []
+    
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        self.memo = [-666] * (amount + 1)
+        # Initialize the memo with a special value that won't be
+        # picked, representing it has not been calculated
+        return self.dp(coins, amount)
+    
+    def dp(self, coins, amount):
+        if amount == 0: return 0
+        if amount < 0: return -1
+        # Check the memo to prevent repeated calculations
+        if self.memo[amount] != -666:
+            return self.memo[amount]
 
-    public int coinChange(int[] coins, int amount) {
-        memo = new int[amount + 1];
-        // Initialize the memo with a special value that won't be
-        // picked, representing it has not been calculated
-        Arrays.fill(memo, -666);
-
-        return dp(coins, amount);
-    }
-
-    int dp(int[] coins, int amount) {
-        if (amount == 0) return 0;
-        if (amount < 0) return -1;
-        // Check the memo to prevent repeated calculations
-        if (memo[amount] != -666)
-            return memo[amount];
-
-        int res = Integer.MAX_VALUE;
-        for (int coin : coins) {
-            // Calculate the result of the subproblem
-            int subProblem = dp(coins, amount - coin); 
-            // Skip if the subproblem has no solution
-            if (subProblem == -1) continue;
-            // Choose the optimal solution in the subproblem, then add one
-            res = Math.min(res, subProblem + 1);
-        }
-        // Store the calculation result in the memo
-        memo[amount] = (res == Integer.MAX_VALUE) ? -1 : res;
-        return memo[amount];
-    }
-}
+        res = float('inf')
+        for coin in coins:
+            # Calculate the result of the subproblem
+            subProblem = self.dp(coins, amount - coin) 
+            # Skip if the subproblem has no solution
+            if subProblem == -1: continue
+            # Choose the optimal solution from the subproblems and add one
+            res = min(res, subProblem + 1)
+        # Store the calculation result in the memo
+        self.memo[amount] = res if res != float('inf') else -1
+        return self.memo[amount]
 ``` 
 
 Algorithm Visualization
@@ -472,29 +453,23 @@ Of course, we can also use a bottom-up approach with a dp table to eliminate ove
 
 Based on the dynamic programming framework provided at the beginning of this article, we can write the following solution:
 
-```java
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount + 1];
-        // The array size is amount + 1, and the initial value is also amount + 1
-        Arrays.fill(dp, amount + 1);
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        # The array size is amount + 1, and the initial value is also amount + 1
+        dp = [amount + 1] * (amount + 1)
 
-        // base case
-        dp[0] = 0;
-        // The outer for loop traverses all possible values of all states
-        for (int i = 0; i < dp.length; i++) {
-            // The inner for loop finds the minimum value among all choices
-            for (int coin : coins) {
-                // The subproblem has no solution, skip
-                if (i - coin < 0) {
-                    continue;
-                }
-                dp[i] = Math.min(dp[i], 1 + dp[i - coin]); 
-            }
-        }
-        return (dp[amount] == amount + 1) ? -1 : dp[amount];
-    }
-}
+        dp[0] = 0
+        # base case
+        # The outer for loop is traversing all possible values of all states
+        for i in range(len(dp)):
+            # The inner for loop is finding the minimum value among all choices
+            for coin in coins:
+                # The subproblem has no solution, skip
+                if i - coin < 0:
+                    continue
+                dp[i] = min(dp[i], 1 + dp[i - coin]) 
+        return -1 if dp[amount] == amount + 1 else dp[amount]
 ``` 
 
 Info
@@ -519,4 +494,8 @@ Memoization and DP tables are ways to "brute-force smartly." The idea of trading
 
 We will have a dedicated chapter on dynamic programming problems later. If you have any questions, feel free to come back and reread this article. I hope readers will focus more on "states" and "choices" when reading each problem and solution, so you can develop your own understanding of this framework and use it fluently.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

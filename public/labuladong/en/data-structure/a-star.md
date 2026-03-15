@@ -54,4 +54,8 @@ Since the destination is in the bottom-right corner, you should prioritize searc
 
 Specifically, for any node `x`, we define three quantities:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

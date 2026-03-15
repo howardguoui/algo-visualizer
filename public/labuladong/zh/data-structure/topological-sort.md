@@ -76,8 +76,8 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-int[] findOrder(int numCourses, int[][] prerequisites);
+```python
+def findOrder(numCourses: int, prerequisites: List[List[int]]) -> List[int]:
 ``` 
 
 这里我先说一下拓扑排序（Topological Sorting）这个名词，网上搜出来的定义很数学，这里干脆用百度百科的一幅图来让你直观地感受下：
@@ -94,14 +94,12 @@ int[] findOrder(int numCourses, int[][] prerequisites);
 
 首先，我们先判断一下题目输入的课程依赖是否成环，成环的话是无法进行拓扑排序的，所以我们可以复用前文 [环检测算法](</zh/algo/data-structure/cycle-detection/>) 中的逻辑：
 
-```java
-public int[] findOrder(int numCourses, int[][] prerequisites) {
-    if (!canFinish(numCourses, prerequisites)) {
-        // 不可能完成所有课程
-        return new int[]{};
-    }
-    // ...
-}
+```python
+def findOrder(numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+    if not canFinish(numCourses, prerequisites):
+        # 不可能完成所有课程
+        return []
+    # ...
 ``` 
 
 那么关键问题来了，如何进行拓扑排序？是不是又要秀什么高大上的技巧了？
@@ -118,61 +116,51 @@ public int[] findOrder(int numCourses, int[][] prerequisites) {
 
 直接看解法代码吧，在环检测的代码基础上添加了记录后序遍历结果的逻辑：
 
-```java
-class Solution {
-    // 记录后序遍历结果
-    List<Integer> postorder = new ArrayList<>();
-    // 记录是否存在环
-    boolean hasCycle = false;
-    boolean[] visited, onPath;
+```python
+class Solution:
 
-    // 主函数
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-        visited = new boolean[numCourses];
-        onPath = new boolean[numCourses];
-        // 遍历图
-        for (int i = 0; i < numCourses; i++) {
-            traverse(graph, i);
-        }
-        // 有环图无法进行拓扑排序
-        if (hasCycle) {
-            return new int[]{};
-        }
-        // 逆后序遍历结果即为拓扑排序结果
-        Collections.reverse(postorder);
-        int[] res = new int[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            res[i] = postorder.get(i);
-        }
-        return res;
-    }
+    def __init__(self):
+        # 记录后序遍历结果
+        self.postorder = []
+        # 记录是否存在环
+        self.hasCycle = False
+        self.visited = []
+        self.onPath = []
 
-    // 图遍历函数
-    void traverse(List<Integer>[] graph, int s) {
-        if (onPath[s]) {
-            // 发现环
-            hasCycle = true;
-        }
-        if (visited[s] || hasCycle) {
-            return;
-        }
-        // 前序遍历位置
-        onPath[s] = true;
-        visited[s] = true;
-        for (int t : graph[s]) {
-            traverse(graph, t);
-        }
-        // 后序遍历位置
-        postorder.add(s);
-        onPath[s] = false;
-    }
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        graph = self.buildGraph(numCourses, prerequisites)
+        self.visited = [False] * numCourses
+        self.onPath = [False] * numCourses
+        # 遍历图
+        for i in range(numCourses):
+            self.traverse(graph, i)
+        # 有环图无法进行拓扑排序
+        if self.hasCycle:
+            return []
+        # 逆后序遍历结果即为拓扑排序结果
+        self.postorder.reverse()
+        return self.postorder
 
-    // 建图函数
-    List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-        // 代码见前文
-    }
-}
+    # 图遍历函数
+    def traverse(self, graph: List[List[int]], s: int):
+        if self.onPath[s]:
+            # 发现环
+            self.hasCycle = True
+        if self.visited[s] or self.hasCycle:
+            return
+        # 前序遍历位置
+        self.onPath[s] = True
+        self.visited[s] = True
+        for t in graph[s]:
+            self.traverse(graph, t)
+        # 后序遍历位置
+        self.postorder.append(s)
+        self.onPath[s] = False
+
+    # 建图函数
+    def buildGraph(self, numCourses: int, prerequisites: List[List[int]]) -> List[List[int]]:
+        # 代码见前文
+        pass
 ``` 
 
 `visited` 为 true 的节点为绿色，`onPath` 为 true 的节点为橙色。
@@ -187,14 +175,13 @@ class Solution {
 
 我这里也避免数学证明，用一个直观地例子来解释，我们就说二叉树，这是我们说过很多次的二叉树遍历框架：
 
-```java
-void traverse(TreeNode root) {
-    // 前序遍历代码位置
+```python
+def traverse(root: TreeNode):
+    # 前序遍历代码位置
     traverse(root.left)
-    // 中序遍历代码位置
+    # 中序遍历代码位置
     traverse(root.right)
-    // 后序遍历代码位置
-}
+    # 后序遍历代码位置
 ``` 
 
 二叉树的后序遍历是什么时候？遍历完左右子树之后才会执行后序遍历位置的代码。换句话说，当左右子树的节点都被装到结果列表里面了，根节点才会被装进去。
@@ -229,58 +216,51 @@ void traverse(TreeNode root) {
 
 所以，我们稍微修改一下 BFS 版本的环检测算法，记录节点的遍历顺序，就可以得到拓扑排序的结果：
 
-```java
-class Solution {
+```python
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # 建图，和环检测算法相同
+        graph = self.buildGraph(numCourses, prerequisites)
+        # 计算入度，和环检测算法相同
+        indegree = [0] * numCourses
+        for edge in prerequisites:
+            from_arc, to = edge[1], edge[0]
+            indegree[to] += 1
 
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        // 建图，和环检测算法相同
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-        // 计算入度，和环检测算法相同
-        int[] indegree = new int[numCourses];
-        for (int[] edge : prerequisites) {
-            int from = edge[1], to = edge[0];
-            indegree[to]++;
-        }
+        # 根据入度初始化队列中的节点，和环检测算法相同
+        q = collections.deque()
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                q.append(i)
+                
+        # 记录拓扑排序结果
+        res = [0] * numCourses
+        # 记录遍历节点的顺序（索引）
+        count = 0
+        # 开始执行 BFS 算法
+        while q:
+            cur = q.popleft()
+            # 弹出节点的顺序即为拓扑排序结果
+            res[count] = cur
+            count += 1
+            for next_arc in graph[cur]:
+                indegree[next_arc] -= 1
+                if indegree[next_arc] == 0:
+                    q.append(next_arc)
 
-        // 根据入度初始化队列中的节点，和环检测算法相同
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < numCourses; i++) {
-            if (indegree[i] == 0) {
-                q.offer(i); 
-            }
-        }
+        if count != numCourses:
+            # 存在环，拓扑排序不存在
+            return []
+          
+        return res
 
-        // 记录拓扑排序结果
-        int[] res = new int[numCourses];
-        // 记录遍历节点的顺序（索引）
-        int count = 0;
-        // 开始执行 BFS 算法
-        while (!q.isEmpty()) {
-            int cur = q.poll();
-            // 弹出节点的顺序即为拓扑排序结果
-            res[count] = cur;
-            count++;
-            for (int next : graph[cur]) { 
-                indegree[next]--;
-                if (indegree[next] == 0) {
-                    q.offer(next);
-                }
-            }
-        }
-
-        if (count != numCourses) {
-            // 存在环，拓扑排序不存在
-            return new int[]{};
-        }
-        
-        return res;
-    }
-
-    // 建图函数
-    List<Integer>[] buildGraph(int n, int[][] edges) {
-        // 见前文
-    }
-}
+    def buildGraph(self, n: int, edges: List[List[int]]) -> List[List[int]]:
+        # 见前文
+        pass
 ``` 
 
 按道理，[图的遍历](</zh/algo/data-structure-basic/graph-basic/>) 都需要 `visited` 数组防止走回头路，这里的 BFS 算法其实是通过 `indegree` 数组实现的 `visited` 数组的作用，只有入度为 0 的节点才能入队，从而保证不会出现死循环。
+
+## 评论
+
+请登录后查看/发表评论

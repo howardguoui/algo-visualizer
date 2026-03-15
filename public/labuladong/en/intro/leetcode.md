@@ -17,12 +17,9 @@ On LeetCode, you are given a function signature and you need to implement the fu
 
 For example, LeetCode problem 1, Two Sum, asks you to implement a `twoSum` function:
 
-```java
-class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        
-    }
-}
+```python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
 ``` 
 
 This means you are given an input array `nums` and a target value `target`. You need to write the algorithm and finally return an array as the result.
@@ -86,12 +83,10 @@ The problem is from [LeetCode 704. Binary Search](<https://leetcode.com/problems
 
 You're given an empty function signature, and you need to implement the `search` function:
 
-```java
-class Solution {
-    public int search(int[] nums, int target) {
-        // your code here
-    }
-}
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        # your code here
 ``` 
 
 You're given a sorted array `nums` in ascending order, and you need to return the index of `target`, or `-1` if it's not found.
@@ -108,18 +103,14 @@ This matters because if there were duplicates, which index should you return? De
 
 This problem is designed to test binary search (which we'll cover in [Binary Search Algorithm](</en/algo/essential-technique/binary-search-framework/>)), but let's start with a straightforward solution:
 
-```java
-class Solution {
-    public int search(int[] nums, int target) {
-        // traverse the array, return the index if found
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == target) {
-                return i;
-            }
-        }
-        return -1;
-    }
-}
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        # traverse the array, return the index if found
+        for i in range(len(nums)):
+            if nums[i] == target:
+                return i
+        return -1
 ``` 
 
 Copy this into LeetCode's editor, hit "Run" to test it against the sample cases, or hit "Submit" to see if it passes all test cases.
@@ -227,51 +218,48 @@ In this tutorial, when I talk about "global variables", I mean class-level varia
 
 Here is an example. For the problem of preorder traversal of a binary tree, you are given the root of a binary tree and asked to return the preorder traversal result. You can write:
 
-```java
-class Solution {
-    // correct example, class-level global variable
-    LinkedList<Integer> res = new LinkedList<>();
+```python
+# Wrong example, do not define global variables at the file level
+# res = []
 
-    public List<Integer> preorderTraversal(TreeNode root) {
-        traverse(root);
-        return res;
-    }
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        # Correct example, class-level global variable
+        self.res = []
+        self.traverse(root)
+        return self.res
 
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // other functions within the class can access res
-        res.add(root.val);
-        traverse(root.left);
-        traverse(root.right);
-    }
-}
+    def traverse(self, root):
+        if not root:
+            return
+        # Other functions within the class can access res
+        self.res.append(root.val)
+        self.traverse(root.left)
+        self.traverse(root.right)
 ``` 
 
 For languages like Java/C++/Python, which use a `Solution` class, you can put shared variables inside the class. For Go/JavaScript, which do not use classes, you can define higher-order functions and use closures to let inner functions access shared variables.
 
 Or, you can pass the variable as a function parameter. This is also a good solution:
 
-```java
-class Solution {
-    public List<Integer> preorderTraversal(TreeNode root) {
-        // correct example, passed as an argument to other functions
-        LinkedList<Integer> res = new LinkedList<>();
-        traverse(root, res);
-        return res;
-    }
+```python
+# Wrong example, do not define global variables at the file level
+# res = []
 
-    void traverse(TreeNode root, LinkedList<Integer> res) {
-        if (root == null) {
-            return;
-        }
-        // access and modify the res variable
-        res.add(root.val);
-        traverse(root.left, res);
-        traverse(root.right, res);
-    }
-}
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        # Correct example, pass as a parameter to other functions
+        res = []
+        self.traverse(root, res)
+        return res
+
+    def traverse(self, root, res):
+        if not root:
+            return
+        # Access and modify the res variable
+        res.append(root.val)
+        self.traverse(root.left, res)
+        self.traverse(root.right, res)
 ``` 
 
 Important
@@ -288,4 +276,8 @@ Standard output is an IO operation, which is slow. If you keep print statements,
 
 That's all for now. Next, I will guide you through some easy LeetCode problems for practice. Reading is not enough—you need to try it yourself!
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

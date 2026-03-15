@@ -23,87 +23,59 @@
 
 首先贴一个 DFS 解法供大家参考：
 
-```java
-// 游戏面板仅支持提交 JavaScript 代码
-// 其他语言代码的作用是帮助大家理解算法逻辑
+```python
+# 游戏面板仅支持提交 JavaScript 代码
+# 其他语言代码的作用是帮助大家理解算法逻辑
 
-// 假设 Position 类
-class Position {
-    public int i, j;
+def solve_maze(game_controller):
+    # 获取起始位置和目标位置
+    start_pos = game_controller.get_position()
+    target_pos = game_controller.get_target_position()
     
-    public Position(int i, int j) {
-        this.i = i;
-        this.j = j;
-    }
-}
-
-// 假设 GameController 是一个接口
-interface GameController {
-    Position getPosition();
-    Position getTargetPosition();
-    void setPosition(int i, int j);
-    void setVisited(int i, int j, boolean visited);
-    boolean isBlock(int i, int j);
-    boolean isVisited(int i, int j);
-}
-
-public static void solveMaze(GameController gameController) {
-    // 获取起始位置和目标位置
-    Position startPos = gameController.getPosition();
-    Position targetPos = gameController.getTargetPosition();
+    # 四个方向：上、右、下、左
+    directions = [
+        [-1, 0],
+        [0, 1],
+        [1, 0],
+        [0, -1]
+    ]
     
-    // 四个方向：上、右、下、左
-    int[][] directions = {
-        {-1, 0},
-        {0, 1},
-        {1, 0},
-        {0, -1}
-    };
+    # 外部变量存储是否找到路径
+    path_found = [False]
     
-    // 外部变量存储是否找到路径
-    boolean[] pathFound = {false};
-    
-    class MazeSolver {
-        void dfs(int currentI, int currentJ) {
-            // Base case: 如果已经找到路径，直接返回
-            if (pathFound[0]) {
-                return;
-            }
+    def dfs(current_i, current_j):
+        # Base case: 如果已经找到路径，直接返回
+        if path_found[0]:
+            return
+        
+        # 检查是否到达目标位置
+        if current_i == target_pos['i'] and current_j == target_pos['j']:
+            path_found[0] = True
+            return
+        
+        # 标记当前位置为已访问
+        game_controller.set_visited(current_i, current_j, True)
+        
+        # 尝试四个方向
+        for direction in directions:
+            next_i = current_i + direction[0]
+            next_j = current_j + direction[1]
             
-            // 检查是否到达目标位置
-            if (currentI == targetPos.i && currentJ == targetPos.j) {
-                pathFound[0] = true;
-                return;
-            }
-            
-            // 标记当前位置为已访问
-            gameController.setVisited(currentI, currentJ, true);
-            
-            // 尝试四个方向
-            for (int[] dir : directions) {
-                int nextI = currentI + dir[0];
-                int nextJ = currentJ + dir[1];
-                
-                // 如果下一个位置是墙或者已访问，跳过
-                if (gameController.isBlock(nextI, nextJ) || gameController.isVisited(nextI, nextJ)) {
-                    continue;
-                }
+            # 如果下一个位置是墙或者已访问，跳过
+            if game_controller.is_block(next_i, next_j) or game_controller.is_visited(next_i, next_j):
+                continue
 
-                // 移动到下一个位置
-                gameController.setPosition(nextI, nextJ);
-                
-                // 递归搜索
-                dfs(nextI, nextJ);
-                
-                // 递归搜索完成后，回退
-                gameController.setPosition(currentI, currentJ);
-            }
-        }
-    }
+            # 移动到下一个位置
+            game_controller.set_position(next_i, next_j)
+            
+            # 递归搜索
+            dfs(next_i, next_j)
+            
+            # 递归搜索完成后，回退
+            game_controller.set_position(current_i, current_j)
     
-    // 从起始位置开始DFS
-    new MazeSolver().dfs(startPos.i, startPos.j);
-}
+    # 从起始位置开始DFS
+    dfs(start_pos['i'], start_pos['j'])
 ``` 
 
 对于 BFS 解法，稍微有点小技巧，因为你要在 BFS 遍历的同时记录路径。
@@ -112,110 +84,79 @@ public static void solveMaze(GameController gameController) {
 
 参考解法如下：
 
-```java
-// 游戏面板仅支持提交 JavaScript 代码
-// 其他语言代码的作用是帮助大家理解算法逻辑
+```python
+# 游戏面板仅支持提交 JavaScript 代码
+# 其他语言代码的作用是帮助大家理解算法逻辑
 
-import java.util.*;
+from collections import deque
 
-// 假设 Position 类
-class Position {
-    public int i, j;
+def solve_maze(game_controller):
+    # 获取起始位置和目标位置
+    start_pos = game_controller.get_position()
+    target_pos = game_controller.get_target_position()
     
-    public Position(int i, int j) {
-        this.i = i;
-        this.j = j;
-    }
-}
-
-// 假设 GameController 是一个接口
-interface GameController {
-    Position getPosition();
-    Position getTargetPosition();
-    void setPosition(int i, int j);
-    void setVisited(int i, int j, boolean visited);
-    boolean isBlock(int i, int j);
-    boolean isVisited(int i, int j);
-}
-
-// 重建路径并执行移动
-public static void reconstructAndExecutePath(GameController gameController, 
-                                           Map<String, Position> parent, 
-                                           Position startPos, Position targetPos) {
-    // 从目标位置开始，通过父节点重建路径
-    List<Position> path = new ArrayList<>();
-    Position current = new Position(targetPos.i, targetPos.j);
+    # 四个方向：上、右、下、左
+    directions = [
+        [-1, 0],
+        [0, 1],
+        [1, 0],
+        [0, -1]
+    ]
     
-    while (current != null) {
-        path.add(current);
-        String key = current.i + "," + current.j;
-        Position p = parent.get(key);
-        if (p != null && (p.i != -1 || p.j != -1)) {
-            current = p;
-        } else {
-            current = null;
-        }
-    }
+    # 使用队列存储待访问的位置和路径
+    queue = deque()
     
-    // 反转路径
-    Collections.reverse(path);
+    # 存储每个位置的前驱节点，用于重建路径
+    parent = {}
     
-    // 执行路径移动（跳过起始位置）
-    for (int i = 1; i < path.size(); i++) {
-        gameController.setPosition(path.get(i).i, path.get(i).j);
-    }
-}
-
-public static void solveMaze(GameController gameController) {
-    // 获取起始位置和目标位置
-    Position startPos = gameController.getPosition();
-    Position targetPos = gameController.getTargetPosition();
+    # 标记起始位置为已访问，并加入队列
+    game_controller.set_visited(start_pos['i'], start_pos['j'], True)
+    queue.append({'i': start_pos['i'], 'j': start_pos['j']})
+    parent[f"{start_pos['i']},{start_pos['j']}"] = None
     
-    // 四个方向：上、右、下、左
-    int[][] directions = {
-        {-1, 0},
-        {0, 1},
-        {1, 0},
-        {0, -1}
-    };
-    
-    // 使用队列存储待访问的位置和路径
-    Queue<Position> queue = new LinkedList<>();
-    
-    // 存储每个位置的前驱节点，用于重建路径
-    Map<String, Position> parent = new HashMap<>();
-    
-    // 标记起始位置为已访问，并加入队列
-    gameController.setVisited(startPos.i, startPos.j, true);
-    queue.offer(new Position(startPos.i, startPos.j));
-    parent.put(startPos.i + "," + startPos.j, new Position(-1, -1));
-    
-    // BFS 主循环
-    while (!queue.isEmpty()) {
-        Position current = queue.poll();
+    # BFS 主循环
+    while queue:
+        current = queue.popleft()
         
-        // 检查是否到达目标位置
-        if (current.i == targetPos.i && current.j == targetPos.j) {
-            // 找到目标，重建并执行路径
-            reconstructAndExecutePath(gameController, parent, startPos, targetPos);
-            return;
-        }
+        # 检查是否到达目标位置
+        if current['i'] == target_pos['i'] and current['j'] == target_pos['j']:
+            # 找到目标，重建并执行路径
+            reconstruct_and_execute_path(game_controller, parent, start_pos, target_pos)
+            return
         
-        // 探索四个方向
-        for (int[] dir : directions) {
-            int nextI = current.i + dir[0];
-            int nextJ = current.j + dir[1];
+        # 探索四个方向
+        for direction in directions:
+            next_i = current['i'] + direction[0]
+            next_j = current['j'] + direction[1]
             
-            // 如果下一个位置是墙或者已访问，跳过
-            if (gameController.isBlock(nextI, nextJ) || gameController.isVisited(nextI, nextJ)) {
-                continue;
-            }
+            # 如果下一个位置是墙或者已访问，跳过
+            if game_controller.is_block(next_i, next_j) or game_controller.is_visited(next_i, next_j):
+                continue
             
-            // 标记为已访问并加入队列
-            gameController.setVisited(nextI, nextJ, true);
-            queue.offer(new Position(nextI, nextJ));
-            parent.put(nextI + "," + nextJ, new Position(current.i, current.j));
-        }
-    }
-}
-```
+            # 标记为已访问并加入队列
+            game_controller.set_visited(next_i, next_j, True)
+            queue.append({'i': next_i, 'j': next_j})
+            parent[f"{next_i},{next_j}"] = {'i': current['i'], 'j': current['j']}
+
+# 重建路径并执行移动
+def reconstruct_and_execute_path(game_controller, parent, start_pos, target_pos):
+    # 从目标位置开始，通过父节点重建路径
+    path = []
+    current = {'i': target_pos['i'], 'j': target_pos['j']}
+    
+    while current is not None:
+        path.append(current)
+        key = f"{current['i']},{current['j']}"
+        current = parent[key]
+    
+    # 反转路径
+    path.reverse()
+    
+    # 执行路径移动（跳过起始位置）
+    for i in range(1, len(path)):
+        game_controller.set_position(path[i]['i'], path[i]['j'])
+``` 
+
+## 评论
+
+请登录后查看/发表评论

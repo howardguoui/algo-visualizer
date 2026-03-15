@@ -44,53 +44,46 @@
 
 对比多叉树的遍历框架看图的遍历框架吧：
 
-```java
-// 多叉树节点
-class Node {
-    int val;
-    List<Node> children;
-}
+```python
+# 多叉树节点
+class Node:
+    def __init__(self, val=0, children=None):
+        self.val = val
+        self.children = children if children is not None else []
 
-// 多叉树的遍历框架
-void traverse(Node root) {
-    // base case
-    if (root == null) {
-        return;
-    }
-    // 前序位置
-    System.out.println("visit " + root.val);
-    for (Node child : root.children) {
-        traverse(child);
-    }
-    // 后序位置
-}
+# 多叉树的遍历框架
+def traverse(root):
+    # base case
+    if root is None:
+        return
+    # 前序位置
+    print(f"visit {root.val}")
+    for child in root.children:
+        traverse(child)
+    # 后序位置
 
-// 图节点
-class Vertex {
-    int id;
-    Vertex[] neighbors;
-}
+# 图节点
+class Vertex:
+    def __init__(self, id=0, neighbors=None):
+        self.id = id
+        self.neighbors = neighbors if neighbors is not None else []
 
-// 图的遍历框架
-// 需要一个 visited 数组记录被遍历过的节点
-// 避免走回头路陷入死循环
-void traverse(Vertex s, boolean[] visited) {
-    // base case
-    if (s == null) {
-        return;
-    }
-    if (visited[s.id]) {
-        // 防止死循环
-        return;
-    }
-    // 前序位置
-    visited[s.id] = true;
-    System.out.println("visit " + s.id);
-    for (Vertex neighbor : s.neighbors) {
-        traverse(neighbor, visited);
-    }
-    // 后序位置
-}
+# 图的遍历框架
+# 需要一个 visited 数组记录被遍历过的节点
+# 避免走回头路陷入死循环
+def traverse_graph(s: Vertex, visited: List[bool]):
+    # base case
+    if s is None:
+        return
+    if visited[s.id]:
+        # 防止死循环
+        return
+    # 前序位置
+    visited[s.id] = True
+    print(f"visit {s.id}")
+    for neighbor in s.neighbors:
+        traverse_graph(neighbor, visited)
+    # 后序位置
 ``` 
 
 可以看到，图的遍历比多叉树的遍历多了一个 `visited` 数组，用来记录被遍历过的节点，避免遇到环时陷入死循环。
@@ -109,25 +102,21 @@ void traverse(Vertex s, boolean[] visited) {
 
 有了上面的铺垫，就可以写出基于邻接表/邻接矩阵的图遍历代码了。虽然邻接表/邻接矩阵的底层存储方式不同，但提供了统一的 API，所以直接使用 [图结构基础和通用实现](</zh/algo/data-structure-basic/graph-basic/>) 中那个 `Graph` 接口的方法即可：
 
-```java
-// 遍历图的所有节点
-void traverse(Graph graph, int s, boolean[] visited) {
-    // base case
-    if (s < 0 || s >= graph.size()) {
-        return;
-    }
-    if (visited[s]) {
-        // 防止死循环
-        return;
-    }
-    // 前序位置
-    visited[s] = true;
-    System.out.println("visit " + s);
-    for (Edge e : graph.neighbors(s)) {
-        traverse(graph, e.to, visited);
-    }
-    // 后序位置
-}
+```python
+# 遍历图的所有节点
+def traverse(graph, s, visited):
+    # base case
+    if s < 0 or s >= len(graph):
+        return
+    if visited[s]:
+        # 防止死循环
+        return
+    # 前序位置
+    visited[s] = True
+    print("visit", s)
+    for e in graph.neighbors(s):
+        traverse(graph, e.to, visited)
+    # 后序位置
 ``` 
 
 你可以打开下面的可视化面板，多次点击 `console.log` 这行代码，即可看到 DFS 遍历图的过程：
@@ -160,49 +149,42 @@ void traverse(Graph graph, int s, boolean[] visited) {
 
 先参考多叉树的遍历进行对比：
 
-```java
-// 多叉树节点
-class Node {
-    int val;
-    List<Node> children;
-}
+```python
+# 多叉树节点
+class Node:
+    def __init__(self, val=0, children=None):
+        self.val = val
+        self.children = children if children is not None else []
 
-// 遍历多叉树的树枝
-void traverseBranch(Node root) {
-    // base case
-    if (root == null) {
-        return;
-    }
-    for (Node child : root.children) {
-        System.out.println("visit branch: " + root.val + " -> " + child.val);
-        traverseBranch(child);
-    }
-}
+# 遍历多叉树的树枝
+def traverse_branch(root):
+    # base case
+    if root is None:
+        return
+    for child in root.children:
+        print(f"visit branch: {root.val} -> {child.val}")
+        traverse_branch(child)
 
-// 图节点
-class Vertex {
-    int id;
-    Vertex[] neighbors;
-}
+# 图节点
+class Vertex:
+    def __init__(self, id=0, neighbors=None):
+        self.id = id
+        self.neighbors = neighbors if neighbors is not None else []
 
-// 遍历图的边
-// 需要一个二维 visited 数组记录被遍历过的边，visited[u][v] 表示边 u->v 已经被遍历过
-void traverseEdges(Vertex s, boolean[][] visited) {
-    // base case
-    if (s == null) {
-        return;
-    }
-    for (Vertex neighbor : s.neighbors) {
-      // 如果边已经被遍历过，则跳过
-      if (visited[s.id][neighbor.id]) {
-        continue;
-      }
-      // 标记并访问边
-      visited[s.id][neighbor.id] = true;
-      System.out.println("visit edge: " + s.id + " -> " + neighbor.id);
-      traverseEdges(neighbor, visited);
-    }
-}
+# 遍历图的边
+# 需要一个二维 visited 数组记录被遍历过的边，visited[u][v] 表示边 u->v 已经被遍历过
+def traverse_edges(s, visited):
+    # base case
+    if s is None:
+        return
+    for neighbor in s.neighbors:
+        # 如果边已经被遍历过，则跳过
+        if visited[s.id][neighbor.id]:
+            continue
+        # 标记并访问边
+        visited[s.id][neighbor.id] = True
+        print(f"visit edge: {s.id} -> {neighbor.id}")
+        traverse_edges(neighbor, visited)
 ``` 
 
 提示
@@ -211,24 +193,20 @@ void traverseEdges(Vertex s, boolean[][] visited) {
 
 接下来，我们可以用 [图结构基础和通用实现](</zh/algo/data-structure-basic/graph-basic/>) 中的 `Graph` 接口来实现：
 
-```java
-// 从起点 s 开始遍历图的所有边
-void traverseEdges(Graph graph, int s, boolean[][] visited) {
-    // base case
-    if (s < 0 || s >= graph.size()) {
-        return;
-    }
-    for (Edge e : graph.neighbors(s)) {
-      // 如果边已经被遍历过，则跳过
-      if (visited[s][e.to]) {
-        continue;
-      }
-      // 标记并访问边
-      visited[s][e.to] = true;
-      System.out.println("visit edge: " + s + " -> " + e.to);
-      traverseEdges(graph, e.to, visited);
-    }
-}
+```python
+# 从起点 s 开始遍历图的所有边
+def traverse_edges(graph, s, visited):
+    # base case
+    if s < 0 or s >= len(graph):
+        return
+    for e in graph.neighbors(s):
+        # 如果边已经被遍历过，则跳过
+        if visited[s][e.to]:
+            continue
+        # 标记并访问边
+        visited[s][e.to] = True
+        print(f"visit edge: {s} -> {e.to}")
+        traverse_edges(graph, e.to, visited)
 ``` 
 
 显然，使用二维 `visited` 数组并不是一个很高效的实现方式，因为需要创建二维 `visited` 数组，这个算法的时间复杂度是 O(E+V2)O(E + V^2)O(E+V2)，空间复杂度是 O(V2)O(V^2)O(V2)，其中 EEE 是边的数量，VVV 是节点的数量。
@@ -242,3 +220,7 @@ void traverseEdges(Graph graph, int s, boolean[][] visited) {
 对于树结构，遍历所有「路径」和遍历所有「节点」是没什么区别的。而对于图结构，遍历所有「路径」和遍历所有「节点」稍有不同。
 
 因为对于树结构来说，只能由父节点指向子节点，所以从根节点 `root` 出发，到任意一个节点 `targetNode` 的路径都是唯一的。换句话说，我遍历一遍树结构的所有节点之后，必然可以找到 `root` 到 `targetNode` 的唯一路径：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

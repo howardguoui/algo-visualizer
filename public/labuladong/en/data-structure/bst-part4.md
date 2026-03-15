@@ -33,13 +33,14 @@ But for some problems, different traversal orders have different time complexity
 
 Let's look again at the post-order traversal framework:
 
-```java
-void traverse(TreeNode root) {
-    traverse(root.left);
-    traverse(root.right);
-    // the position of the post-order code
-    // process the current node here
-}
+```python
+def traverse(root):
+    if not root:
+        return
+    traverse(root.left)
+    traverse(root.right)
+    # position of post-order code
+    # process the current node here
 ``` 
 
 Based on this framework, when should you write code in the post-order position?
@@ -48,8 +49,12 @@ Based on this framework, when should you write code in the post-order position?
 
 Next, let's look at a classic algorithm problem to see the power of post-order. This is LeetCode 1373: [Maximum Sum BST in Binary Tree](<https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/>). The function signature is:
 
-```java
-int maxSumBST(TreeNode root);
+```python
+def maxSumBST(root: TreeNode)
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

@@ -64,19 +64,14 @@ This is a classic first problem on LeetCode. Let's try to solve it.
 
 The simplest way is brute-force. Use nested for loops: fix the first number with the outer loop, and use the inner loop to find another number. Check if their sum equals the target.
 
-```java
-class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = i + 1; j < nums.length; j++) {
-                if (nums[i] + nums[j] == target) {
-                    return new int[] {i, j};
-                }
-            }
-        }
-        return new int[0];
-    }
-}
+```python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                if nums[i] + nums[j] == target:
+                    return [i, j]
+        return []
 ``` 
 
 This uses for loops and if statements. Notice that when we loop over `j`, it starts from `i+1`. We can't start from `i` because we cannot use the same element twice. We also don't need to start from 0, because the combinations with earlier elements have already been checked.
@@ -119,21 +114,17 @@ This problem asks if there are duplicate elements in the array. Removing duplica
 
 We can add each number into a hash set. If we find a number that is already in the set, we return `true`.
 
-```java
-class Solution {
-    public boolean containsDuplicate(int[] nums) {
-        HashSet<Integer> set = new HashSet<>();
-        for (int num : nums) {
-            // if the element already exists, return true
-            if (set.contains(num)) {
-                return true;
-            }
-            // put the element into the hash set
-            set.add(num);
-        }
-        return false;
-    }
-}
+```python
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        count = set()
+        for num in nums:
+            # if the element already exists, return True
+            if num in count:
+                return True
+            # put the element into the hash set
+            count.add(num)
+        return False
 ``` 
 
 ## 136\. Single Number
@@ -175,24 +166,19 @@ The problem is from [LeetCode 136. Single Number](<https://leetcode.com/problems
 
 This problem asks you to find the number that appears only once in the array. When a problem is about counting elements, we usually use a hash map to store each element and its count.
 
-```java
-class Solution {
-    public int singleNumber(int[] nums) {
-        Map<Integer, Integer> count = new HashMap<>();
-        // traverse the array, count the frequency of each number
-        for (int num : nums) {
-            count.put(num, count.getOrDefault(num, 0) + 1);
-        }
+```python
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        count = {}
+        # traverse the array, count the frequency of each number
+        for num in nums:
+            count[num] = count.get(num, 0) + 1
 
-        // find the number that only appears once
-        for (int num : nums) {
-            if (count.get(num) == 1) {
-                return num;
-            }
-        }
-        return -1;
-    }
-}
+        # find the number that only appears once
+        for num in nums:
+            if count[num] == 1:
+                return num
+        return -1
 ``` 
 
 ## 20\. Valid Parentheses
@@ -237,34 +223,29 @@ The problem is from [LeetCode 20. Valid Parentheses](<https://leetcode.com/probl
 
 This is a classic parentheses problem. Such problems can usually be solved with a stack. The idea is: **when you see a left parenthesis, push it onto the stack; when you see a right parenthesis, pop the top left parenthesis from the stack and check if they match.**
 
-```java
-class Solution {
-    public boolean isValid(String str) {
-        Stack<Character> left = new Stack<>();
-        for (char c : str.toCharArray()) {
-            if (c == '(' || c == '{' || c == '[') {
-                // character c is a left parenthesis, push to the stack
-                left.push(c);
-            } else {
-                // character c is a right parenthesis
-                if (!left.isEmpty() && leftOf(c) == left.peek()) {
-                    left.pop();
-                } else {
-                    // does not match the most recent left parenthesis
-                    return false;
-                }
-            }
-        }
-        // check if all left parentheses have been matched
-        return left.isEmpty();
-    }
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        # use list to simulate stack
+        left = []
+        for c in s:
+            if c in '({[':
+                # character c is a left parenthesis, push to the stack
+                left.append(c)
+            else:
+                # character c is a right parenthesis
+                if left and self.leftOf(c) == left[-1]:
+                    left.pop()
+                else:
+                    # does not match the most recent left parenthesis
+                    return False
+        # check if all left parentheses have been matched
+        return not left
 
-    char leftOf(char c) {
-        if (c == '}') return '{';
-        if (c == ')') return '(';
-        return '[';
-    }
-}
+    def leftOf(self, c: str) -> str:
+        if c == '}': return '{'
+        if c == ')': return '('
+        return '['
 ``` 
 
 ## 2073\. Time Needed to Buy Tickets
@@ -312,38 +293,31 @@ The problem is from [LeetCode 2073. Time Needed to Buy Tickets](<https://leetcod
 
 This is an interesting problem based on a real-world scenario. If we use a queue to simulate the process, we can solve this problem easily. Let's look at the code:
 
-```java
-class Solution {
-    public int timeRequiredToBuy(int[] tickets, int k) {
-        // use queue to simulate the whole process
-        // initialize the queue, store the id of each person
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < tickets.length; i++) {
-            queue.offer(i);
-        }
+```python
+class Solution:
+    def timeRequiredToBuy(self, tickets: List[int], k: int) -> int:
+        # use queue to simulate the whole process
+        queue = collections.deque()
+        for i in range(len(tickets)):
+            queue.append(i)
 
-        int time = 0;
-        while (!queue.isEmpty()) {
-            // the person at the front of the queue buys a ticket
-            int front = queue.poll();
-            time++;
-            tickets[front]--;
+        time = 0
+        while queue:
+            # the person at the front of the queue buys a ticket
+            front = queue.popleft()
+            time += 1
+            tickets[front] -= 1
             
-            if (front == k && tickets[front] == 0) {
-                // if person k has bought the ticket, return the total time
-                return time;
-            }
+            if front == k and tickets[front] == 0:
+                # if person k has bought the ticket, return the total time
+                return time
 
-            if (tickets[front] == 0) {
-                continue;
-            }
+            if tickets[front] == 0:
+                continue
 
-            // if the person needs to buy more tickets, put him back to the end of the queue
-            queue.offer(front);
-        }
-        return time;
-    }
-}
+            # if the person needs to buy more tickets, put him back to the end of the queue
+            queue.append(front)
+        return time
 ``` 
 
 ## Summary & Next Steps
@@ -362,4 +336,8 @@ The next content will focus on two main parts:
 
 Finally, I wish you can explore the world of coding problems on your own soon!
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

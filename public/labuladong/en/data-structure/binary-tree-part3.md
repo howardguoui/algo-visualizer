@@ -71,9 +71,9 @@ Output: [[2,3],[3]]
 
 The problem is from [LeetCode 652. Find Duplicate Subtrees](<https://leetcode.com/problems/find-duplicate-subtrees/>).
 
-```java
-// function signature as follows
-List<TreeNode> findDuplicateSubtrees(TreeNode root);
+```python
+# The function signature is as follows
+def findDuplicateSubtrees(self, root: TreeNode) -> List[TreeNode]:
 ``` 
 
 Let me explain the problem simply. The input is the root node `root` of a binary tree. You need to return a list containing several tree nodes. Each of these nodes is the root of a subtree that appears more than once in the original binary tree.
@@ -92,4 +92,8 @@ Similarly, there are two duplicate subtrees with root value 2:
 
 So, in the `List` we return, there should be two `TreeNode`, with values 4 and 2. (It doesn’t matter which specific nodes.)
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

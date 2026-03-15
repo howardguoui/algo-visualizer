@@ -67,4 +67,8 @@ Tip
 
 Some of you may have seen other solutions for permutations/subsets/combinations before. The code you saw may be different from what I show in this article. That is because backtracking has two ways to view the brute-force process. I will explain them step by step in [Ball-and-Box Model: Two Views of Backtracking](</en/algo/practice-in-action/two-views-of-backtrack/>). It is not the right time to explain those other solutions now. Just follow the approach in this article.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

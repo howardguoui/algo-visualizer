@@ -110,4 +110,8 @@ For Xiao Ming, who is uninformed, he randomly picks a box and a ball, leading to
 
 For you, who is informed and knows the higher probability of drawing from Box 2, the probability is: 0 × 2/6 + 1 × 4/6 = 2/3
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

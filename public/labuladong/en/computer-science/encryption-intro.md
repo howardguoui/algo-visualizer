@@ -298,4 +298,8 @@ Technique| Key Features| Main Usage| Speed| Common Algorithms
   
 Next, we will look at some common authentication methods based on these cryptography algorithms.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

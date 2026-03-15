@@ -36,10 +36,14 @@ LeetCode| 力扣| 难度
 
 请你写一个算法，计算在不触动报警器的前提下，最多能够盗窃多少现金呢？函数签名如下：
 
-```java
-int rob(int[] nums);
+```python
+def rob(nums: List[int]) -> int:
 ``` 
 
 比如说输入 `nums=[2,1,7,9,3,1]`，算法返回 12，小偷可以盗窃 `nums[0], nums[3], nums[5]` 三个房屋，得到的现金之和为 2 + 9 + 1 = 12，是最优的选择。
 
 题目很容易理解，而且动态规划的特征很明显。我们前文 [动态规划详解](</zh/algo/essential-technique/dynamic-programming-framework/>) 做过总结，**解决动态规划问题就是找「状态」和「选择」，仅此而已** 。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

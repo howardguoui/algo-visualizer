@@ -62,38 +62,32 @@ For real BFS problems, the first way is simple but not often used because it’s
 
 The examples in this article are all medium difficulty, so the solutions are based on the second way:
 
-```java
-// BFS traversal of the graph starting from s, and record the steps
-// When the target node is reached, return the number of steps
-int bfs(int s, int target) {
-    boolean[] visited = new boolean[graph.size()];
-    Queue<Integer> q = new LinkedList<>();
-    q.offer(s);
-    visited[s] = true;
-    // record the number of steps taken from s to the current node
-    int step = 0;
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        for (int i = 0; i < sz; i++) {
-            int cur = q.poll();
-            System.out.println("visit " + cur + " at step " + step);
-            // determine if the target point is reached
-            if (cur == target) {
-                return step;
-            }
-            // add the neighbors to the queue to search around
-            for (int to : neighborsOf(cur)) {
-                if (!visited[to]) {
-                    q.offer(to);
-                    visited[to] = true;
-                }
-            }
-        }
-        step++;
-    }
-    // If we reach here, it means the target node was not found in the graph
-    return -1;
-}
+```python
+# BFS traversal of the graph starting from s, and record the steps
+def bfs(graph, s, target):
+    visited = [False] * len(graph)
+    q = deque([s])
+    visited[s] = True
+    # record the number of steps taken from s to the current node
+    step = 0
+    
+    while q:
+        sz = len(q)
+        for i in range(sz):
+            cur = q.popleft()
+            print(f"visit {cur} at step {step}")
+            # determine if the target point is reached
+            if cur == target:
+                return step
+
+            # add neighboring nodes to the queue, and spread the search outward
+            for to in neighborsOf(cur):
+                if not visited[to]:
+                    q.append(to)
+                    visited[to] = True
+        step += 1
+    # If we reach here, it means the target node was not found in the graph
+    return -1
 ``` 
 
 The code framework above is almost copied from [DFS/BFS Traversal of Graphs](</en/algo/data-structure-basic/graph-traverse-basic/>). It just adds a `target` parameter, so when you reach the target for the first time, you stop and return the number of steps.
@@ -200,16 +194,16 @@ So we need to use a small trick: convert the 2D array into an immutable type bef
 
 In this problem, the input board is always size 2 x 3, so we can write out this mapping by hand:
 
-```java
-// Record the adjacent indices of one-dimensional strings
-int[][] neighbor = new int[][]{
-    {1, 3},
-    {0, 4, 2},
-    {1, 5},
-    {0, 4},
-    {3, 1, 5},
-    {4, 2}
-};
+```python
+# Record the adjacent indices of a one-dimensional string
+neighbor = [
+    [1, 3],
+    [0, 4, 2],
+    [1, 5],
+    [0, 4],
+    [3, 1, 5],
+    [4, 2]
+]
 ``` 
 
 **This mapping means: in the 1D string, the neighbor indexes of index`i` in the 2D board are `neighbor[i]`**.
@@ -226,100 +220,90 @@ Looking at the image above, you can see: if an element `e` in the 2D array has i
 
 So for an `m x n` 2D array, we can write a function to generate its `neighbor` index mapping:
 
-```java
-int[][] generateNeighborMapping(int m, int n) {
-    int[][] neighbor = new int[m * n][];
-    for (int i = 0; i < m * n; i++) {
-        List<Integer> neighbors = new ArrayList<>();
+```python
+def generateNeighborMapping(m: int, n: int) -> List[List[int]]:
+    neighbor = [[] for _ in range(m * n)]
+    for i in range(m * n):
+        neighbors = []
 
-        // if it is not the first column, it has a left neighbor
-        if (i % n != 0) neighbors.add(i - 1);
+        # if not the first column, it has a left neighbor
+        if i % n != 0: neighbors.append(i - 1)
         
-        // if it is not the last column, it has a right neighbor
-        if (i % n != n - 1) neighbors.add(i + 1);
+        # if not the last column, it has a right neighbor
+        if i % n != n - 1: neighbors.append(i + 1)
         
-        // if it is not the first row, it has an upper neighbor
-        if (i - n >= 0) neighbors.add(i - n);
+        # if not the first row, it has an upper neighbor
+        if i - n >= 0: neighbors.append(i - n)
         
-        // if it is not the last row, it has a lower neighbor
-        if (i + n < m * n) neighbors.add(i + n);
+        # if not the last row, it has a lower neighbor
+        if i + n < m * n: neighbors.append(i + n)
 
-        // Java language feature, convert List type to int[] array
-        neighbor[i] = neighbors.stream().mapToInt(Integer::intValue).toArray();
-    }
-    return neighbor;
-}
+        neighbor[i] = neighbors
+    return neighbor
 ``` 
 
 With this mapping, no matter where the 0 is, we can find its neighbors by these indexes and swap them. Here is the complete code:
 
-```java
-class Solution {
-    public int slidingPuzzle(int[][] board) {
-        int m = 2, n = 3;
-        StringBuilder sb = new StringBuilder();
-        String target = "123450";
-        // convert the 2x3 array into a string as the starting point for bfs
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                sb.append(board[i][j]);
-            }
-        }
-        String start = sb.toString();
+```python
+from collections import deque
 
-        // record the adjacent indices of the 1d string
-        int[][] neighbor = new int[][]{
-                {1, 3},
-                {0, 4, 2},
-                {1, 5},
-                {0, 4},
-                {3, 1, 5},
-                {4, 2}
-        };
+class Solution:
+    def slidingPuzzle(self, board):
+        target = "123450"
+        # convert the 2x3 array to a string as the starting point of BFS
+        start = ""
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                start += str(board[i][j])
+        
+        # ***** BFS algorithm framework starts *****
+        q = deque()
+        visited = set()
+        # start BFS search from the starting point
+        q.append(start)
+        visited.add(start)
+        
+        step = 0
+        while q: 
+            # number of nodes in the current layer
+            sz = len(q)
+            for _ in range(sz):
+                cur = q.popleft()
+                # determine if the target state is reached
+                if cur == target:
+                    return step
+                # swap number 0 with its adjacent numbers
+                for neighbor_board in self.getNeighbors(cur):
+                    # prevent from going back
+                    if neighbor_board not in visited:
+                        q.append(neighbor_board)
+                        visited.add(neighbor_board)
+            step += 1
+        # ***** BFS algorithm framework ends *****
+        return -1
 
-        // ****** Start of BFS algorithm framework ******
-        Queue<String> q = new LinkedList<>();
-        HashSet<String> visited = new HashSet<>();
-        // start bfs search from the starting point
-        q.offer(start);
-        visited.add(start);
+    def getNeighbors(self, board):
+        # record the adjacent indices of the one-dimensional string
+        mapping = [
+            [1, 3],
+            [0, 4, 2],
+            [1, 5],
+            [0, 4],
+            [3, 1, 5],
+            [4, 2]
+        ] 
+        
+        idx = board.index('0')
+        neighbors = []
+        for adj in mapping[idx]:
+            new_board = self.swap(board, idx, adj)
+            neighbors.append(new_board)
+        return neighbors
 
-        int step = 0;
-        while (!q.isEmpty()) {
-            int sz = q.size();
-            for (int i = 0; i < sz; i++) {
-                String cur = q.poll();
-                // check if the target state is reached
-                if (target.equals(cur)) {
-                    return step;
-                }
-                // find the index of the number 0
-                int idx = 0;
-                for (; cur.charAt(idx) != '0'; idx++) ;
-                // swap the number 0 with adjacent numbers
-                for (int adj : neighbor[idx]) {
-                    String new_board = swap(cur.toCharArray(), adj, idx);
-                    // prevent revisiting the same state
-                    if (!visited.contains(new_board)) {
-                        q.offer(new_board);
-                        visited.add(new_board);
-                    }
-                }
-            }
-            step++;
-        }
-        // ****** End of BFS algorithm framework ******
-        return -1;
-    }
-
-    private String swap(char[] chars, int i, int j) {
-        char temp = chars[i];
-        chars[i] = chars[j];
-        chars[j] = temp;
-        return new String(chars);
-    }
-
-}
+    def swap(self, board, i, j):
+        chars = list(board)
+        chars[i], chars[j] = chars[j], chars[i]
+        return ''.join(chars)
 ``` 
 
 Algorithm Visualization
@@ -381,12 +365,10 @@ The problem is from [LeetCode 752. Open the Lock](<https://leetcode.com/problems
 
 Here is the function signature:
 
-```java
-class Solution {
-    public int openLock(String[] deadends, String target) {
-        // ...
-    }
-}
+```python
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        # ...
 ``` 
 
 The problem describes a password lock that we often see in daily life. If there are no restrictions, it's easy to count the minimum number of turns. For example, if you want to reach `"1234"`, you just turn each digit. The minimum turns will be `1 + 2 + 3 + 4 = 10`.
@@ -405,61 +387,53 @@ Can you see the recursion tree? It is an 8-way tree, and each node has 8 childre
 
 This pseudocode below describes this idea, using level-order traversal of an 8-way tree:
 
-```java
-// increment s[j] by one
-String plusOne(String s, int j) {
-    char[] ch = s.toCharArray();
-    if (ch[j] == '9')
-        ch[j] = '0';
-    else
-        ch[j] += 1;
-    return new String(ch);
-}
-// decrement s[j] by one
-String minusOne(String s, int j) {
-    char[] ch = s.toCharArray();
-    if (ch[j] == '0')
-        ch[j] = '9';
-    else
-        ch[j] -= 1;
-    return new String(ch);
-}
+```python
+from typing import List
 
-// BFS framework to find the minimum number of moves
-void BFS(String target) {
-    Queue<String> q = new LinkedList<>();
-    q.offer("0000");
+# increment s[j] by one
+def plusOne(s: str, j: int) -> str:
+    ch = list(s)
+    if ch[j] == '9':
+        ch[j] = '0'
+    else:
+        ch[j] = chr(ord(ch[j]) + 1)
+    return ''.join(ch)
 
-    int step = 0;
+# decrement s[j] by one
+def minusOne(s: str, j: int) -> str:
+    ch = list(s)
+    if ch[j] == '0':
+        ch[j] = '9'
+    else:
+        ch[j] = chr(ord(ch[j]) - 1)
+    return ''.join(ch)
 
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        // spread all nodes in the current queue to their neighbors
-        for (int i = 0; i < sz; i++) {
-            String cur = q.poll();
-            // determine if the end point is reached
-            if (cur.equals(target)) {
-                return step;
-            }
+# BFS framework to find the minimum number of moves
+def BFS(target: str) -> int:
+    q = ['0000']
+    
+    while q:
+        sz = len(q)
+        # spread all nodes in the current queue to their surroundings
+        for _ in range(sz):
+            cur = q.pop(0)
+            # determine if the end point is reached
+            if cur == target:
+                return step
+            # add the neighbors of a node to the queue
+            for neighbor in getNeighbors(cur):
+                q.append(neighbor)
+        # increment the step count here
+        step += 1
+    return -1
 
-            // a password can derive 8 neighboring passwords
-            for (String neighbor : getNeighbors(cur)) {
-                q.offer(neighbor);
-            }
-        }
-        // increase the step count here
-        step++;
-    }
-}
-// increment or decrement each digit of s by one, return 8 neighboring passwords
-List<String> getNeighbors(String s) {
-    List<String> neighbors = new ArrayList<>();
-    for (int i = 0; i < 4; i++) {
-        neighbors.add(plusOne(s, i));
-        neighbors.add(minusOne(s, i));
-    }
-    return neighbors;
-}
+# increment or decrement each digit of s by one, return 8 neighboring passwords
+def getNeighbors(s: str) -> List[str]:
+    neighbors = []
+    for i in range(4):
+        neighbors.append(plusOne(s, i))
+        neighbors.append(minusOne(s, i))
+    return neighbors
 ``` 
 
 This code can already try all possible combinations, but there are still some problems to solve.
@@ -476,77 +450,69 @@ Or even simpler, just add all `deadends` to the `visited` set at the beginning. 
 
 Here is the complete code:
 
-```java
-class Solution {
-    public int openLock(String[] deadends, String target) {
-        // record the deadends that need to be skipped
-        Set<String> deads = new HashSet<>();
-        for (String s : deadends) deads.add(s);
-        if (deads.contains("0000")) return -1;
+```python
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        # record the deadends that need to be skipped
+        deads = set(deadends)
+        if "0000" in deads:
+            return -1
 
-        // record the passwords that have been exhausted to prevent backtracking
-        Set<String> visited = new HashSet<>();
-        Queue<String> q = new LinkedList<>();
-        // start breadth-first search from the starting point
-        int step = 0;
-        q.offer("0000");
-        visited.add("0000");
+        # record the passwords that have been exhausted to prevent backtracking
+        visited = set()
+        q = collections.deque()
+        # start breadth-first search from the starting point
+        step = 0
+        q.append("0000")
+        visited.add("0000")
         
-        while (!q.isEmpty()) {
-            int sz = q.size();
-            // spread all nodes in the current queue to their surroundings
-            for (int i = 0; i < sz; i++) {
-                String cur = q.poll();
+        while q:
+            sz = len(q)
+            # spread all nodes in the current queue to their surroundings
+            for _ in range(sz):
+                cur = q.popleft()
                 
-                // determine if the end is reached
-                if (cur.equals(target))
-                    return step;
+                # determine if the end is reached
+                if cur == target:
+                    return step
                 
-                // add the valid adjacent nodes of a node to the queue
-                for (String neighbor : getNeighbors(cur)) {
-                    if (!visited.contains(neighbor) && !deads.contains(neighbor)) {
-                        q.offer(neighbor);
-                        visited.add(neighbor);
-                    }
-                }
-            }
-            // increment the step count here
-            step++;
-        }
-        // if the target password is not found after exhaustion, then it is not found
-        return -1;
-    }
+                # add the valid adjacent nodes of a node to the queue
+                for neighbor in self.getNeighbors(cur):
+                    if neighbor not in visited and neighbor not in deads:
+                        q.append(neighbor)
+                        visited.add(neighbor)
+            
+            # increment the step count here
+            step += 1
+        
+        # if the target password is not found after exhaustion, then it is not found
+        return -1
 
-    // turn s[j] up once
-    String plusOne(String s, int j) {
-        char[] ch = s.toCharArray();
-        if (ch[j] == '9')
-            ch[j] = '0';
-        else
-            ch[j] += 1;
-        return new String(ch);
-    }
+    # turn s[j] up once
+    def plusOne(self, s: str, j: int) -> str:
+        ch = list(s)
+        if ch[j] == '9':
+            ch[j] = '0'
+        else:
+            ch[j] = chr(ord(ch[j]) + 1)
+        return ''.join(ch)
 
-    // turn s[i] down once
-    String minusOne(String s, int j) {
-        char[] ch = s.toCharArray();
-        if (ch[j] == '0')
-            ch[j] = '9';
-        else
-            ch[j] -= 1;
-        return new String(ch);
-    }
+    # turn s[i] down once
+    def minusOne(self, s: str, j: int) -> str:
+        ch = list(s)
+        if ch[j] == '0':
+            ch[j] = '9'
+        else:
+            ch[j] = chr(ord(ch[j]) - 1)
+        return ''.join(ch)
 
-    // increment or decrement each digit of s by one, return 8 neighboring passwords
-    List<String> getNeighbors(String s) {
-        List<String> neighbors = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            neighbors.add(plusOne(s, i));
-            neighbors.add(minusOne(s, i));
-        }
-        return neighbors;
-    }
-}
+    # increment or decrement each digit of s by one, return 8 neighboring passwords
+    def getNeighbors(self, s: str) -> List[str]:
+        neighbors = []
+        for i in range(4):
+            neighbors.append(self.plusOne(s, i))
+            neighbors.append(self.minusOne(s, i))
+        return neighbors
 ``` 
 
 ## Bidirectional BFS Optimization
@@ -583,89 +549,74 @@ But in the [Binary Tree DFS/BFS traversal](</en/algo/data-structure-basic/binary
 
 Let's use the lock problem as an example to see how to upgrade BFS to bidirectional BFS. Here is the code:
 
-```java
-class Solution {
-    public int openLock(String[] deadends, String target) {
-        Set<String> deads = new HashSet<>();
-        for (String s : deadends) deads.add(s);
-        // base case
-        if (deads.contains("0000")) return -1;
-        if (target.equals("0000")) return 0;
+```python
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        deads = set(deadends)
+        # base case
+        if "0000" in deads: return -1
+        if target == "0000": return 0
 
-        // Use a set instead of a queue to quickly determine if an element exists
-        Set<String> q1 = new HashSet<>();
-        Set<String> q2 = new HashSet<>();
-        Set<String> visited = new HashSet<>();
+        # Use a set instead of a queue to quickly determine if an element exists
+        q1 = set()
+        q2 = set()
+        visited = set()
         
-        int step = 0;
-        q1.add("0000");
-        visited.add("0000");
-        q2.add(target);
-        visited.add(target);
+        step = 0
+        q1.add("0000")
+        visited.add("0000")
+        q2.add(target)
+        visited.add(target)
 
-        while (!q1.isEmpty() && !q2.isEmpty()) { 
-            // Increment the step count here
-            step++;
+        while q1 and q2: 
+            # Increment the step count here
+            step += 1
 
-            // The hash set cannot be modified during traversal, so
-            // use newQ1 to store the neighbor nodes
-            Set<String> newQ1 = new HashSet<>();
+            # The hash set cannot be modified during traversal, so
+            # use newQ1 to store the neighbor nodes
+            newQ1 = set()
 
-            // Get the neighbors of all nodes in q1
-            for (String cur : q1) {
-                // Add an unvisited neighboring node of a node to the set
-                for (String neighbor : getNeighbors(cur)) {
-                    // Determine if the end point is reached
-                    if (q2.contains(neighbor)) {
-                        return step;
-                    }
-                    if (!visited.contains(neighbor) && !deads.contains(neighbor)) {
-                        newQ1.add(neighbor);
-                        visited.add(neighbor);
-                    }
-                }
-            }
-            // newQ1 stores the neighbors of q1
-            q1 = newQ1;
-            // Because each BFS spreads q1, the set with fewer elements is used as q1
-            if (q1.size() > q2.size()) {
-                Set<String> temp = q1;
-                q1 = q2;
-                q2 = temp;
-            }
-        }
-        return -1;
-    }
+            # Get the neighbors of all nodes in q1
+            for cur in q1:
+                # Add an unvisited neighboring node of a node to the set
+                for neighbor in self.getNeighbors(cur):
+                    # Determine if the end point is reached
+                    if neighbor in q2:
+                        return step
+                    if neighbor not in visited and neighbor not in deads:
+                        newQ1.add(neighbor)
+                        visited.add(neighbor)
+            # newQ1 stores the neighbors of q1
+            q1 = newQ1
+            # Because each BFS spreads q1, the set with fewer elements is used as q1
+            if len(q1) > len(q2):
+                q1, q2 = q2, q1
+        return -1
 
-    // Turn s[j] up once
-    String plusOne(String s, int j) {
-        char[] ch = s.toCharArray();
-        if (ch[j] == '9')
-            ch[j] = '0';
-        else
-            ch[j] += 1;
-        return new String(ch);
-    }
+    # Turn s[j] up once
+    def plusOne(self, s: str, j: int) -> str:
+        ch = list(s)
+        if ch[j] == '9':
+            ch[j] = '0'
+        else:
+            ch[j] = str(int(ch[j]) + 1)
+        return ''.join(ch)
 
-    // Turn s[i] down once
-    String minusOne(String s, int j) {
-        char[] ch = s.toCharArray();
-        if (ch[j] == '0')
-            ch[j] = '9';
-        else
-            ch[j] -= 1;
-        return new String(ch);
-    }
+    # Turn s[i] down once
+    def minusOne(self, s: str, j: int) -> str:
+        ch = list(s)
+        if ch[j] == '0':
+            ch[j] = '9'
+        else:
+            ch[j] = str(int(ch[j]) - 1)
+        return ''.join(ch)
 
-    List<String> getNeighbors(String s) {
-        List<String> neighbors = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            neighbors.add(plusOne(s, i));
-            neighbors.add(minusOne(s, i));
-        }
-        return neighbors;
-    }
-}
+    def getNeighbors(self, s: str) -> List[str]:
+        neighbors = []
+        for i in range(4):
+            neighbors.append(self.plusOne(s, i))
+            neighbors.append(self.minusOne(s, i))
+        return neighbors
 ``` 
 
 Bidirectional BFS still follows the BFS framework, but there are a few differences:
@@ -682,4 +633,8 @@ Again, **no matter if you use normal BFS or bidirectional BFS, and no matter if 
 
 The most important thing is to remember the general BFS framework and practice using it. Later, there is a [BFS Exercise Section](</en/algo/problem-set/bfs/>). Try to use the tips from this article to solve those problems.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

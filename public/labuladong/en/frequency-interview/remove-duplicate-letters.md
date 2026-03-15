@@ -76,4 +76,8 @@ In fact, we will use the idea of a "monotonic stack," as mentioned in the previo
 
 **Let's temporarily ignore requirement three and use a "stack" to achieve requirements one and two**. The reason for using a stack will become clear later:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

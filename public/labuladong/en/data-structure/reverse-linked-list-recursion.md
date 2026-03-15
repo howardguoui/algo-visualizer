@@ -24,12 +24,11 @@ This article will go from easy to hard and solve these linked list problems step
 
 On LeetCode, the common structure of a singly linked list is like this:
 
-```java
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}
+```python
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 ``` 
 
 Reversing a singly linked list is a basic algorithm problem. LeetCode 206 “[Reverse Linked List](<https://leetcode.com/problems/reverse-linked-list/>)” is exactly this problem:
@@ -80,33 +79,27 @@ The standard way to solve this problem is the iterative solution. We operate sev
 
 Here is the code. With the comments and the visual panel, it should be easy to understand:
 
-```java
-class Solution {
-    // Reverse the linked list starting from head
-    public ListNode reverseList(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        // Due to the structure of a singly linked list, at least three
-        // pointers are needed to complete the iterative reversal
-        // cur is the current node being traversed, pre is the
-        // predecessor node of cur, nxt is the successor node of cur
-        ListNode pre, cur, nxt;
-        pre = null; cur = head; nxt = head.next;
-        while (cur != null) {
-            // Reverse each node
-            cur.next = pre;
-            // Update pointer positions
-            pre = cur;
-            cur = nxt;
-            if (nxt != null) {
-                nxt = nxt.next;
-            }
-        }
-        // Return the head node after reversal
-        return pre;
-    }
-}
+```python
+class Solution:
+    # Reverse the linked list starting from head
+    def reverseList(self, head: ListNode) -> ListNode:
+        if head is None or head.next is None:
+            return head
+        # Due to the structure of a singly linked list, at least three
+        # pointers are needed to complete the iterative reversal
+        # cur is the current node being traversed, pre is the
+        # predecessor node of cur, nxt is the successor node of cur
+        pre, cur, nxt = None, head, head.next
+        while cur is not None:
+            # Reverse each node
+            cur.next = pre
+            # Update pointer positions
+            pre = cur
+            cur = nxt
+            if nxt is not None:
+                nxt = nxt.next
+        # Return the head node after reversal
+        return pre
 ``` 
 
 You can open the visual panel below, and click the line `cur.next = pre` many times. Then you can clearly see the reversing process of the singly linked list:
@@ -145,20 +138,17 @@ There will be special chapters and exercises about this idea later, so we won’
 
 Let's look at the code for recursively reversing a singly linked list:
 
-```java
-class Solution {
-    // Definition: Input the head node of a singly linked
-    // list, reverse the list, and return the new head node
-    public ListNode reverseList(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        ListNode last = reverseList(head.next); 
-        head.next.next = head; 
-        head.next = null; 
-        return last;
-    }
-}
+```python
+class Solution:
+    # Definition: Input a head node of a singly linked
+    # list, reverse the list, and return the new head node
+    def reverseList(self, head):
+        if head is None or head.next is None:
+            return head
+        last = self.reverseList(head.next) 
+        head.next.next = head 
+        head.next = None
+        return last
 ``` 
 
 This algorithm often shows the beauty and cleverness of recursion. Next, let's explain this code in detail. We will also provide a visual panel so you can explore the recursion yourself.
@@ -242,13 +232,17 @@ So, recursion is good for practicing thinking, but for efficiency, iteration is 
 
 Now let’s implement a function like this:
 
-```java
-// Reverse the first n nodes of the linked list (n <= length of the list)
-ListNode reverseN(ListNode head, int n)
+```python
+# Reverse the first n nodes of the linked list (n <= length of the list)
+def reverseN(head: ListNode, n: int):
 ``` 
 
 For example, for the linked list below, if you run `reverseN(head, 3)`:
 
 ![diagram](https://labuladong.online/images/algo/reverse-linked-list/6-en.jpg)
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

@@ -123,32 +123,28 @@
 
 本站和所有配套插件都支持代码图片注释，对于较为复杂的代码块中会包含小灯泡图标，鼠标移至小灯泡图标上就会弹出图片辅助理解：
 
-```java
-class Solution {
-    public ListNode detectCycle(ListNode head) {
-        ListNode fast, slow;
-        fast = slow = head;
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if (fast == slow) break; 
-        }
-        // 上面的代码类似 hasCycle 函数
-        if (fast == null || fast.next == null) {
-            // fast 遇到空指针说明没有环
-            return null;
-        }
-
-        // 重新指向头结点
-        slow = head; 
-        // 快慢指针同步前进，相交点就是环起点
-        while (slow != fast) {
-            fast = fast.next;
-            slow = slow.next;
-        }
-        return slow;
-    }
-}
+```python
+class Solution:
+    def detectCycle(self, head: ListNode):
+        fast, slow = head, head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+        
+        # 上面的代码类似 hasCycle 函数
+        if not fast or not fast.next:
+            # fast 遇到空指针说明没有环
+            return None
+        
+        # 重新指向头结点
+        slow = head 
+        # 快慢指针同步前进，相交点就是环起点
+        while slow != fast:
+            fast = fast.next
+            slow = slow.next
+        return slow
 ``` 
 
 ### 其他实用功能
@@ -168,3 +164,7 @@ class Solution {
 刷题插件并不是必须安装的，但我会建议安装 Chrome 浏览器插件，因为你在阅读本站时，可能会经常跳转到 LeetCode/力扣 页面上刷题，Chrome 插件能够给你提供一些帮助。vscode/Jetbrain 插件可以根据自己的刷题需求选择安装。
 
 各个刷题插件的安装使用方法详见 [Chrome 插件](</zh/algo/intro/chrome/>)、[vscode 插件](</zh/algo/intro/vscode/>)、[Jetbrain 插件](</zh/algo/intro/jetbrains/>)。
+
+## 评论
+
+请登录后查看/发表评论

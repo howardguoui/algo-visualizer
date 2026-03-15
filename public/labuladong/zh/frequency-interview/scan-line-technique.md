@@ -24,9 +24,9 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-// 返回需要申请的会议室数量
-int minMeetingRooms(int[][] meetings);
+```python
+# 返回需要申请的会议室数量
+def minMeetingRooms(meetings: List[List[int]]) -> int:
 ``` 
 
 比如给你输入 `meetings = [[0,30],[5,10],[15,20]]`，算法应该返回 2，因为后两个会议和第一个会议时间是冲突的，至少申请两个会议室才能让所有会议顺利进行。
@@ -82,3 +82,7 @@ int minMeetingRooms(int[][] meetings);
 **第七个场景** ，就是本文想讲的场景，给你若干会议，让你最小化申请会议室的数量。
 
 好了，举例了这么多，来看看今天的这个问题如何解决。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

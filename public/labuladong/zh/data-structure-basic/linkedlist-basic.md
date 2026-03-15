@@ -9,28 +9,21 @@
 
 刷过力扣的读者肯定对单链表非常熟悉，力扣上的单链表节点定义如下：
 
-```java
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}
+```python
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 ``` 
 
 这仅仅是一个最简单的**单链表节点** ，方便力扣出算法题来考你。在实际的编程语言中，我们使用的链表节点会稍微复杂一点，类似这样：
 
-```java
-class Node<E> {
-    E val;
-    Node<E> next;
-    Node<E> prev;
-
-    Node(Node<E> prev, E element, Node<E> next) {
-        this.val = element;
-        this.next = next;
-        this.prev = prev;
-    }
-}
+```python
+class Node:
+    def __init__(self, prev, element, next):
+        self.val = element
+        self.next = next
+        self.prev = prev
 ``` 
 
 主要区别有两个：
@@ -61,26 +54,24 @@ class Node<E> {
 
 我先写一个工具函数，用于创建一条单链表，方便后面的讲解：
 
-```java
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}
+```python
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 
-// 输入一个数组，转换为一条单链表
-ListNode createLinkedList(int[] arr) {
-    if (arr == null || arr.length == 0) {
-        return null;
-    }
-    ListNode head = new ListNode(arr[0]);
-    ListNode cur = head;
-    for (int i = 1; i < arr.length; i++) {
-        cur.next = new ListNode(arr[i]);
-        cur = cur.next;
-    }
-    return head;
-}
+# 输入一个数组，转换为一条单链表
+def createLinkedList(arr: 'List[int]') -> 'ListNode':
+    if arr is None or len(arr) == 0:
+        return None
+
+    head = ListNode(arr[0])
+    cur = head
+    for i in range(1, len(arr)):
+        cur.next = ListNode(arr[i])
+        cur = cur.next
+
+    return head
 ``` 
 
 ### 查/改
@@ -89,14 +80,15 @@ ListNode createLinkedList(int[] arr) {
 
 比方说，我想访问单链表的每一个节点，并打印其值，可以这样写：
 
-```java
-// 创建一条单链表
-ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条单链表
+head = createLinkedList([1, 2, 3, 4, 5])
 
-// 遍历单链表
-for (ListNode p = head; p != null; p = p.next) {
-    System.out.println(p.val);
-}
+# 遍历单链表
+p = head
+while p is not None:
+    print(p.val)
+    p = p.next
 ``` 
 
 类似的，如果是要通过索引访问或修改链表中的某个节点，也只能用 for 循环从头结点开始往后找，直到找到索引对应的节点，然后进行访问或修改。
@@ -109,16 +101,16 @@ for (ListNode p = head; p != null; p = p.next) {
 
 我们会持有单链表的头结点，所以只需要将插入的节点接到头结点之前，并将新插入的节点作为头结点即可。
 
-```java
-// 创建一条单链表
-ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条单链表
+head = createLinkedList([1, 2, 3, 4, 5])
 
-// 在单链表头部插入一个新节点 0
-ListNode newNode = new ListNode(0);
-newNode.next = head;
-head = newNode;
+# 在单链表头部插入一个新节点 0
+newNode = ListNode(0)
+newNode.next = head
+head = newNode
 
-// 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
+# 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
 ``` 
 
 这个操作的时间复杂度是 O(1)O(1)O(1)。
@@ -127,21 +119,20 @@ head = newNode;
 
 直接看代码吧，很简单：
 
-```java
-// 创建一条单链表
-ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条单链表
+head = createLinkedList([1, 2, 3, 4, 5])
 
-// 在单链表尾部插入一个新节点 6
-ListNode p = head;
-// 先走到链表的最后一个节点
-while (p.next != null) {
-    p = p.next;
-}
-// 现在 p 就是链表的最后一个节点
-// 在 p 后面插入新节点
-p.next = new ListNode(6);
+# 在单链表尾部插入一个新节点 6
+p = head
+# 先走到链表的最后一个节点
+while p.next is not None:
+    p = p.next
+# 现在 p 就是链表的最后一个节点
+# 在 p 后面插入新节点
+p.next = ListNode(6)
 
-// 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
+# 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
 ``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到链表尾部。当然，如果我们持有对链表尾节点的引用，那么在尾部插入新节点的操作就会变得非常简单，不用每次从头去遍历了。这个优化会在后面具体实现双链表时介绍。
@@ -152,25 +143,24 @@ p.next = new ListNode(6);
 
 这个操作稍微有点复杂，我们还是要先找到要插入位置的前驱节点，然后操作前驱节点把新节点插入进去：
 
-```java
-// 创建一条单链表
-ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条单链表
+head = createLinkedList([1, 2, 3, 4, 5])
 
-// 在第 3 个节点后面插入一个新节点 66
-// 先要找到前驱节点，即第 3 个节点
-ListNode p = head;
-for (int i = 0; i < 2; i++) {
-    p = p.next;
-}
-// 此时 p 指向第 3 个节点
-// 组装新节点的后驱指针
-ListNode newNode = new ListNode(66);
-newNode.next = p.next;
+# 在第 3 个节点后面插入一个新节点 66
+# 先要找到前驱节点，即第 3 个节点
+p = head
+for _ in range(2):
+    p = p.next
+# 此时 p 指向第 3 个节点
+# 组装新节点的后驱指针
+new_node = ListNode(66)
+new_node.next = p.next
 
-// 插入新节点
-p.next = newNode;
+# 插入新节点
+p.next = new_node
 
-// 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
+# 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
 ``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到插入位置的前驱节点。
@@ -183,21 +173,20 @@ p.next = newNode;
 
 删除一个节点，首先要找到要被删除节点的前驱节点，然后把这个前驱节点的 `next` 指针指向被删除节点的下一个节点。这样就能把被删除节点从链表中摘除了。
 
-```java
-// 创建一条单链表
-ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条单链表
+head = createLinkedList([1, 2, 3, 4, 5])
 
-// 删除第 4 个节点，要操作前驱节点
-ListNode p = head;
-for (int i = 0; i < 2; i++) {
-    p = p.next;
-}
+# 删除第 4 个节点，要操作前驱节点
+p = head
+for i in range(2):
+    p = p.next
 
-// 此时 p 指向第 3 个节点，即要删除节点的前驱节点
-// 把第 4 个节点从链表中摘除
-p.next = p.next.next;
+# 此时 p 指向第 3 个节点，即要删除节点的前驱节点
+# 把第 4 个节点从链表中摘除
+p.next = p.next.next
 
-// 现在链表变成了 1 -> 2 -> 3 -> 5
+# 现在链表变成了 1 -> 2 -> 3 -> 5
 ``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到被删除节点的前驱节点。
@@ -208,22 +197,21 @@ p.next = p.next.next;
 
 这个操作比较简单，找到倒数第二个节点，然后把它的 `next` 指针置为 null 就行了：
 
-```java
-// 创建一条单链表
-ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条单链表
+head = createLinkedList([1, 2, 3, 4, 5])
 
-// 删除尾节点
-ListNode p = head;
-// 找到倒数第二个节点
-while (p.next.next != null) {
-    p = p.next;
-}
+# 删除尾节点
+p = head
+# 找到倒数第二个节点
+while p.next.next is not None:
+    p = p.next
 
-// 此时 p 指向倒数第二个节点
-// 把尾节点从链表中摘除
-p.next = null;
+# 此时 p 指向倒数第二个节点
+# 把尾节点从链表中摘除
+p.next = None
 
-// 现在链表变成了 1 -> 2 -> 3 -> 4
+# 现在链表变成了 1 -> 2 -> 3 -> 4
 ``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到倒数第二个节点。
@@ -234,14 +222,14 @@ p.next = null;
 
 这个操作比较简单，直接把 `head` 移动到下一个节点就行了，直接看代码吧：
 
-```java
-// 创建一条单链表
-ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条单链表
+head = createLinkedList([1, 2, 3, 4, 5])
 
-// 删除头结点
-head = head.next;
+# 删除头结点
+head = head.next
 
-// 现在链表变成了 2 -> 3 -> 4 -> 5
+# 现在链表变成了 2 -> 3 -> 4 -> 5
 ``` 
 
 这个操作的时间复杂度是 O(1)O(1)O(1)。
@@ -278,28 +266,28 @@ head = head.next;
 
 我先写一个工具函数，用于创建一条双链表，方便后面的讲解：
 
-```java
-class DoublyListNode {
-    int val;
-    DoublyListNode next, prev;
-    DoublyListNode(int x) { val = x; }
-}
-
-DoublyListNode createDoublyLinkedList(int[] arr) {
-    if (arr == null || arr.length == 0) {
-        return null;
-    }
-    DoublyListNode head = new DoublyListNode(arr[0]);
-    DoublyListNode cur = head;
-    // for 循环迭代创建双链表
-    for (int i = 1; i < arr.length; i++) {
-        DoublyListNode newNode = new DoublyListNode(arr[i]);
-        cur.next = newNode;
-        newNode.prev = cur;
-        cur = cur.next;
-    }
-    return head;
-}
+```python
+class DoublyListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
+        self.prev = None
+        
+def createDoublyLinkedList(arr: List[int]) -> Optional[DoublyListNode]:
+    if not arr:
+        return None
+    
+    head = DoublyListNode(arr[0])
+    cur = head
+    
+    # for 循环迭代创建双链表
+    for val in arr[1:]:
+        new_node = DoublyListNode(val)
+        cur.next = new_node
+        new_node.prev = cur
+        cur = cur.next
+    
+    return head
 ``` 
 
 ### 查/改
@@ -308,21 +296,23 @@ DoublyListNode createDoublyLinkedList(int[] arr) {
 
 对于双链表的遍历和查找，我们可以从头节点或尾节点开始，根据需要向前或向后遍历：
 
-```java
-// 创建一条双链表
-DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
-DoublyListNode tail = null;
+```python
+# 创建一条双链表
+head = createDoublyLinkedList([1, 2, 3, 4, 5])
+tail = None
 
-// 从头节点向后遍历双链表
-for (DoublyListNode p = head; p != null; p = p.next) {
-    System.out.println(p.val);
-    tail = p;
-}
+# 从头节点向后遍历双链表
+p = head
+while p:
+    print(p.val)
+    tail = p
+    p = p.next
 
-// 从尾节点向前遍历双链表
-for (DoublyListNode p = tail; p != null; p = p.prev) {
-    System.out.println(p.val);
-}
+# 从尾节点向前遍历双链表
+p = tail
+while p:
+    print(p.val)
+    p = p.prev
 ``` 
 
 这个操作的最坏时间复杂度是 O(n)O(n)O(n)。访问或修改节点时，可以根据索引是靠近头部还是尾部，选择合适的方向遍历，这样可以一定程度上提高效率。
@@ -333,16 +323,16 @@ for (DoublyListNode p = tail; p != null; p = p.prev) {
 
 在双链表头部插入元素，需要调整新节点和原头节点的指针：
 
-```java
-// 创建一条双链表
-DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条双链表
+head = create_doubly_linked_list([1, 2, 3, 4, 5])
 
-// 在双链表头部插入新节点 0
-DoublyListNode newHead = new DoublyListNode(0);
-newHead.next = head;
-head.prev = newHead;
-head = newHead;
-// 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
+# 在双链表头部插入新节点 0
+new_head = DoublyListNode(0)
+new_head.next = head
+head.prev = new_head
+head = new_head
+# 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
 ``` 
 
 这个操作的时间复杂度是 O(1)O(1)O(1)。
@@ -353,24 +343,23 @@ head = newHead;
 
 在双链表尾部插入元素时，如果我们持有尾节点的引用，这个操作会非常简单：
 
-```java
-// 创建一条双链表
-DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条双链表
+head = createDoublyLinkedList([1, 2, 3, 4, 5])
 
-DoublyListNode tail = head;
-// 先走到链表的最后一个节点
-while (tail.next != null) {
-    tail = tail.next;
-}
+tail = head
+# 先走到链表的最后一个节点
+while tail.next is not None:
+    tail = tail.next
 
-// 在双链表尾部插入新节点 6
-DoublyListNode newNode = new DoublyListNode(6);
-tail.next = newNode;
-newNode.prev = tail;
-// 更新尾节点引用
-tail = newNode;
+# 在双链表尾部插入新节点 6
+newNode = DoublyListNode(6)
+tail.next = newNode
+newNode.prev = tail
+# 更新尾节点引用
+tail = newNode
 
-// 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
+# 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
 ``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到尾节点。如果持有尾节点引用，则是 O(1)O(1)O(1)。
@@ -383,27 +372,26 @@ tail = newNode;
 
 比如下面的例子，把元素 66 插入到索引 3（第 4 个节点）的位置：
 
-```java
-// 创建一条双链表
-DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条双链表
+head = createDoublyLinkedList([1, 2, 3, 4, 5])
 
-// 想要插入到索引 3（第 4 个节点）
-// 需要操作索引 2（第 3 个节点）的指针
-DoublyListNode p = head;
-for (int i = 0; i < 2; i++) {
-    p = p.next;
-}
+# 想要插入到索引 3（第 4 个节点）
+# 需要操作索引 2（第 3 个节点）的指针
+p = head
+for _ in range(2):
+    p = p.next
 
-// 组装新节点
-DoublyListNode newNode = new DoublyListNode(66);
-newNode.next = p.next;
-newNode.prev = p;
+# 组装新节点
+newNode = DoublyListNode(66)
+newNode.next = p.next
+newNode.prev = p
 
-// 插入新节点
-p.next.prev = newNode;
-p.next = newNode;
+# 插入新节点
+p.next.prev = newNode
+p.next = newNode
 
-// 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
+# 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
 ``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到插入位置。
@@ -416,29 +404,28 @@ p.next = newNode;
 
 在双链表中删除节点时，需要调整前驱节点和后继节点的指针来摘除目标节点：
 
-```java
-// 创建一条双链表
-DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条双链表
+head = createDoublyLinkedList([1, 2, 3, 4, 5])
 
-// 删除第 4 个节点
-// 先找到第 3 个节点
-DoublyListNode p = head;
-for (int i = 0; i < 2; i++) {
-    p = p.next;
-}
+# 删除第 4 个节点
+# 先找到第 3 个节点
+p = head
+for i in range(2):
+    p = p.next
 
-// 现在 p 指向第 3 个节点，我们它后面那个节点摘除出去
-DoublyListNode toDelete = p.next;
+# 现在 p 指向第 3 个节点，我们将它后面的那个节点摘除出去
+toDelete = p.next
 
-// 把 toDelete 从链表中摘除
-p.next = toDelete.next;
-toDelete.next.prev = p;
+# 把 toDelete 从链表中摘除
+p.next = toDelete.next
+toDelete.next.prev = p
 
-// 把 toDelete 的前后指针都置为 null 是个好习惯（可选）
-toDelete.next = null;
-toDelete.prev = null;
+# 把 toDelete 的前后指针都置为 null 是个好习惯（可选）
+toDelete.next = None
+toDelete.prev = None
 
-// 现在链表变成了 1 -> 2 -> 3 -> 5
+# 现在链表变成了 1 -> 2 -> 3 -> 5
 ``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到被删除节点的位置。如果已知被删除节点的引用，则删除操作本身是 O(1)O(1)O(1)。
@@ -449,19 +436,19 @@ toDelete.prev = null;
 
 在双链表头部删除元素需要调整头节点的指针：
 
-```java
-// 创建一条双链表
-DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条双链表
+head = createDoublyLinkedList([1, 2, 3, 4, 5])
 
-// 删除头结点
-DoublyListNode toDelete = head;
-head = head.next;
-head.prev = null;
+# 删除头结点
+toDelete = head
+head = head.next
+head.prev = None
 
-// 清理已删除节点的指针
-toDelete.next = null;
+# 清理已删除节点的指针
+toDelete.next = None
 
-// 现在链表变成了 2 -> 3 -> 4 -> 5
+# 现在链表变成了 2 -> 3 -> 4 -> 5
 ``` 
 
 这个操作的时间复杂度是 O(1)O(1)O(1)。
@@ -474,25 +461,24 @@ toDelete.next = null;
 
 但在双链表中，由于每个节点都存储了前驱节点的指针，所以我们可以直接操作尾节点，把它自己从链表中摘除：
 
-```java
-// 创建一条双链表
-DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+```python
+# 创建一条双链表
+head = createDoublyLinkedList([1, 2, 3, 4, 5])
 
-// 删除尾节点
-DoublyListNode p = head;
-// 找到尾结点
-while (p.next != null) {
-    p = p.next;
-}
+# 删除尾节点
+p = head
+# 找到尾结点
+while p.next is not None:
+    p = p.next
 
-// 现在 p 指向尾节点
-// 把尾节点从链表中摘除
-p.prev.next = null;
+# 现在 p 指向尾节点
+# 把尾节点从链表中摘除
+p.prev.next = None
 
-// 把被删结点的指针都断开是个好习惯（可选）
-p.prev = null;
+# 把被删结点的指针都断开是个好习惯（可选）
+p.prev = None
 
-// 现在链表变成了 1 -> 2 -> 3 -> 4
+# 现在链表变成了 1 -> 2 -> 3 -> 4
 ``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到尾节点。如果持有尾节点引用，则是 O(1)O(1)O(1)。
@@ -502,3 +488,7 @@ p.prev = null;
 ## 接下来
 
 在下一篇文章中，我们分别用单链表和双链表实现一个拥有增删查改等基本操作的 `MyLinkedList`，并且会使用「虚拟头结点」技巧简化代码逻辑，避免处理头尾指针为空情况的边界情况。
+
+## 评论
+
+请登录后查看/发表评论

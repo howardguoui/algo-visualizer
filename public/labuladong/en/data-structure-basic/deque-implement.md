@@ -18,26 +18,31 @@ Before reading this article, you should first study:
 
 If you have understood the previous content, there is not much new to discuss about the deque. A double-ended queue (deque) is just a queue that allows more operations compared to a standard queue (FIFO):
 
-```java
-class MyDeque<E> {
-    // insert element at the head, time complexity O(1)
-    void addFirst(E e);
+```python
+class MyDeque:
+    # insert an element at the front, time complexity O(1)
+    def add_first(self, e):
+        pass
 
-    // insert element at the tail, time complexity O(1)
-    void addLast(E e);
+    # insert an element at the back, time complexity O(1)
+    def add_last(self, e):
+        pass
 
-    // remove element from the head, time complexity O(1)
-    E removeFirst();
+    # remove an element from the front, time complexity O(1)
+    def remove_first(self):
+        pass
 
-    // remove element from the tail, time complexity O(1)
-    E removeLast();
+    # remove an element from the back, time complexity O(1)
+    def remove_last(self):
+        pass
 
-    // peek at the head element, time complexity O(1)
-    E peekFirst();
+    # peek at the front element, time complexity O(1)
+    def peek_first(self):
+        pass
 
-    // peek at the tail element, time complexity O(1)
-    E peekLast();
-}
+    # peek at the back element, time complexity O(1)
+    def peek_last(self):
+        pass
 ``` 
 
 A [standard queue](</en/algo/data-structure-basic/queue-stack-basic/>) only allows inserting elements at the tail and removing elements from the head. In contrast, a deque allows inserting and removing elements from both the head and the tail.
@@ -50,95 +55,86 @@ In algorithm problems, deques are not used very often. They are a bit more commo
 
 This is simple. Just reuse the [`MyLinkedList`](</en/algo/data-structure-basic/linkedlist-implement/>) class we implemented earlier, or use the doubly linked list structure provided by your programming language's standard library. A doubly linked list naturally supports O(1)O(1)O(1) time complexity for adding and removing elements at the head and tail:
 
-```java
-import java.util.LinkedList;
+```python
+class MyListDeque:
+    def __init__(self):
+        # use the `MyLinkedList` class we implemented before
+        self.list = MyLinkedList()
 
-public class MyListDeque<E> {
-    private LinkedList<E> list = new LinkedList<>();
+    # insert element at the front, time complexity O(1)
+    def add_first(self, e):
+        self.list.add_first(e)
 
-    // insert element at the head of the deque, time complexity O(1)
-    void addFirst(E e) {
-        list.addFirst(e);
-    }
+    # insert element at the back, time complexity O(1)
+    def add_last(self, e):
+        self.list.add_last(e)
 
-    // insert element at the tail of the deque, time complexity O(1)
-    void addLast(E e) {
-        list.addLast(e);
-    }
+    # remove element from the front, time complexity O(1)
+    def remove_first(self):
+        return self.list.remove_first()
 
-    // remove element from the head of the deque, time complexity O(1)
-    E removeFirst() {
-        return list.removeFirst();
-    }
+    # remove element from the back, time complexity O(1)
+    def remove_last(self):
+        return self.list.remove_last()
 
-    // remove element from the tail of the deque, time complexity O(1)
-    E removeLast() {
-        return list.removeLast();
-    }
+    # peek at the front element, time complexity O(1)
+    def peek_first(self):
+        return self.list.get_first()
 
-    // peek at the head element of the deque, time complexity O(1)
-    E peekFirst() {
-        return list.getFirst();
-    }
+    # peek at the back element, time complexity O(1)
+    def peek_last(self):
+        return self.list.get_last()
 
-    // peek at the tail element of the deque, time complexity O(1)
-    E peekLast() {
-        return list.getLast();
-    }
+# usage example
+my_deque = MyListDeque()
 
-    public static void main(String[] args) {
-        MyListDeque<Integer> deque = new MyListDeque<>();
-        deque.addFirst(1);
-        deque.addFirst(2);
-        deque.addLast(3);
-        deque.addLast(4);
+my_deque.add_first(1)
+my_deque.add_first(2)
+my_deque.add_last(3)
+my_deque.add_last(4)
 
-        System.out.println(deque.removeFirst()); // 2
-        System.out.println(deque.removeLast()); // 4
-        System.out.println(deque.peekFirst()); // 1
-        System.out.println(deque.peekLast()); // 3
-    }
-}
+print(my_deque.remove_first())  # 2
+print(my_deque.remove_last())  # 4
+print(my_deque.peek_first())  # 1
+print(my_deque.peek_last())  # 3
 ``` 
 
 ## Implementing a Deque with an Array
 
 This is also straightforward. Just reuse the methods we wrote for `CycleArray` in [Circular Array Techniques](</en/algo/data-structure-basic/cycle-array/>). Both adding and removing elements at the head and tail of a circular array are O(1)O(1)O(1) operations:
 
-```java
-class MyArrayDeque<E> {
-    private CycleArray<E> arr = new CycleArray<>();
+```python
+class MyArrayDeque:
+    def __init__(self):
+        self.arr = CycleArray()
 
-    // insert element from the front of the deque, time complexity O(1)
-    void addFirst(E e) {
-        arr.addFirst(e);
-    }
+    # insert element from the front, time complexity O(1)
+    def add_first(self, e):
+        self.arr.add_first(e)
 
-    // insert element from the end of the deque, time complexity O(1)
-    void addLast(E e) {
-        arr.addLast(e);
-    }
+    # insert element from the back, time complexity O(1)
+    def add_last(self, e):
+        self.arr.add_last(e)
 
-    // remove element from the front of the deque, time complexity O(1)
-    E removeFirst() {
-        return arr.removeFirst();
-    }
+    # remove element from the front, time complexity O(1)
+    def remove_first(self):
+        return self.arr.remove_first()
 
-    // remove element from the end of the deque, time complexity O(1)
-    E removeLast() {
-        return arr.removeLast();
-    }
+    # remove element from the back, time complexity O(1)
+    def remove_last(self):
+        return self.arr.remove_last()
 
-    // peek at the front element of the deque, time complexity O(1)
-    E peekFirst() {
-        return arr.getFirst();
-    }
+    # peek at the front element, time complexity O(1)
+    def peek_first(self):
+        return self.arr.get_first()
 
-    // peek at the end element of the deque, time complexity O(1)
-    E peekLast() {
-        return arr.getLast();
-    }
-}
+    # peek at the back element, time complexity O(1)
+    def peek_last(self):
+        return self.arr.get_last()
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

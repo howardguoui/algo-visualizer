@@ -48,4 +48,8 @@ In [Selection Sort](</en/algo/data-structure-basic/select-sort/>), we attempt to
 
 We propose an optimization attempt using a `suffixMin` array, i.e., precomputing a `suffixMin` array such that `suffixMin[i] = min(nums[i..])`, allowing the minimum value of `nums[i..]` to be queried in O(1)O(1)O(1) time:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

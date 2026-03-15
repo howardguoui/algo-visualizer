@@ -46,22 +46,21 @@ LeetCode| 力扣| 难度
 
 那么最简单的堆排序算法思路就是直接利用优先级队列，把所有元素塞到优先级队列里面，然后再取出来，不就完成排序了吗？
 
-```java
-// 直接利用优先级队列对数组从小到大排序
-void sort(int[] nums) {
-    // 创建一个从小到大排序元素的小顶堆
-    SimpleMinPQ pq = new SimpleMinPQ(nums.length);
-    // 先把所有元素插入到优先级队列中
-    for (int num : nums) {
-        // push 操作会自动构建二叉堆，时间复杂度为 O(logN)
-        pq.push(num);
-    }
-    // 再把所有元素取出来，就是从小到大排序的结果
-    for (int i = 0; i < nums.length; i++) {
-        // pop 操作从堆顶弹出二叉堆堆中最小的元素，时间复杂度为 O(logN)
-        nums[i] = pq.pop();
-    }
-}
+```python
+# 直接利用优先级队列对数组从小到大排序
+def sort(nums):
+    # 创建一个从小到大排序元素的小顶堆
+    pq = SimpleMinPQ(len(nums))
+    
+    # 先把所有元素插入到优先级队列中
+    for num in nums:
+        # push 操作会自动构建二叉堆，时间复杂度为 O(logN)
+        pq.push(num)
+    
+    # 再把所有元素取出来，就是从小到大排序的结果
+    for i in range(len(nums)):
+        # pop 操作从堆顶弹出二叉堆堆中最小的元素，时间复杂度为 O(logN)
+        nums[i] = pq.pop()
 ``` 
 
 因为优先级队列的 `push, pop` 方法的复杂度都是 O(log⁡N)O(\log N)O(logN)，所以整个排序的时间复杂度是 O(Nlog⁡N)O(N \log N)O(NlogN)，其中 `N` 是输入数组的长度。
@@ -81,3 +80,7 @@ void sort(int[] nums) {
 在具体讲解堆排序代码实现之前，我先把二叉堆的 `swim, sink` 方法和配套的工具函数写出来，因为后文我会带你逐步优化堆排序的代码，就不重复实现这些函数了。
 
 这些函数就是从 [二叉堆实现优先级队列](</zh/algo/data-structure-basic/binary-heap-implement/>) 中的优先级队列实现里抠出来的，把数组作为函数参数传入，其他的逻辑完全一样：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -81,8 +81,8 @@ This problem is an advanced version of the one in [Cycle Detection](</en/algo/da
 
 The function signature is:
 
-```java
-int[] findOrder(int numCourses, int[][] prerequisites);
+```python
+def findOrder(numCourses: int, prerequisites: List[List[int]]) -> List[int]:
 ``` 
 
 Let me first explain the term Topological Sorting. The definitions you find online tend to be very mathematical, so let me just use this diagram from Baidu Baike to give you an intuitive feel:
@@ -99,14 +99,12 @@ But what does this problem have to do with topological sorting?
 
 First, let's check whether the input course dependencies contain a cycle. If there's a cycle, topological sorting is impossible, so we can reuse the logic from [Cycle Detection](</en/algo/data-structure/cycle-detection/>):
 
-```java
-public int[] findOrder(int numCourses, int[][] prerequisites) {
-    if (!canFinish(numCourses, prerequisites)) {
-        // not possible to finish all courses
-        return new int[]{};
-    }
-    // ...
-}
+```python
+def findOrder(numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+    if not canFinish(numCourses, prerequisites):
+        # It's not possible to complete all courses
+        return []
+    # ...
 ``` 
 
 Now here's the key question: how do you actually perform topological sorting? Do you need some fancy technique?
@@ -123,61 +121,51 @@ If you reverse this and define directed edges as "depends on," then all edges in
 
 Let's look at the solution code directly. It builds on the cycle detection code by adding logic to record the postorder traversal result:
 
-```java
-class Solution {
-    // record the postorder traversal result
-    List<Integer> postorder = new ArrayList<>();
-    // record if a cycle exists
-    boolean hasCycle = false;
-    boolean[] visited, onPath;
+```python
+class Solution:
 
-    // main function
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-        visited = new boolean[numCourses];
-        onPath = new boolean[numCourses];
-        // traverse the graph
-        for (int i = 0; i < numCourses; i++) {
-            traverse(graph, i);
-        }
-        // cannot perform topological sort if there is a cycle
-        if (hasCycle) {
-            return new int[]{};
-        }
-        // reverse postorder traversal result is the topological sort result
-        Collections.reverse(postorder);
-        int[] res = new int[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            res[i] = postorder.get(i);
-        }
-        return res;
-    }
+    def __init__(self):
+        # record postorder traversal result
+        self.postorder = []
+        # record if there is a cycle
+        self.hasCycle = False
+        self.visited = []
+        self.onPath = []
 
-    // graph traversal function
-    void traverse(List<Integer>[] graph, int s) {
-        if (onPath[s]) {
-            // found a cycle
-            hasCycle = true;
-        }
-        if (visited[s] || hasCycle) {
-            return;
-        }
-        // pre-order traversal position
-        onPath[s] = true;
-        visited[s] = true;
-        for (int t : graph[s]) {
-            traverse(graph, t);
-        }
-        // post-order traversal position
-        postorder.add(s);
-        onPath[s] = false;
-    }
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        graph = self.buildGraph(numCourses, prerequisites)
+        self.visited = [False] * numCourses
+        self.onPath = [False] * numCourses
+        # traverse the graph
+        for i in range(numCourses):
+            self.traverse(graph, i)
+        # cannot perform topological sort if there's a cycle
+        if self.hasCycle:
+            return []
+        # reverse postorder traversal result is the topological sort result
+        self.postorder.reverse()
+        return self.postorder
 
-    // build graph function
-    List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-        // code as seen earlier
-    }
-}
+    # graph traversal function
+    def traverse(self, graph: List[List[int]], s: int):
+        if self.onPath[s]:
+            # found a cycle
+            self.hasCycle = True
+        if self.visited[s] or self.hasCycle:
+            return
+        # pre-order traversal position
+        self.onPath[s] = True
+        self.visited[s] = True
+        for t in graph[s]:
+            self.traverse(graph, t)
+        # post-order traversal position
+        self.postorder.append(s)
+        self.onPath[s] = False
+
+    # build graph function
+    def buildGraph(self, numCourses: int, prerequisites: List[List[int]]) -> List[List[int]]:
+        # code as described above
+        pass
 ``` 
 
 Nodes with `visited` set to true are shown in green, and nodes with `onPath` set to true are shown in orange.
@@ -192,14 +180,13 @@ The code may look long, but the logic should be clear. As long as the graph has 
 
 Instead of a mathematical proof, let me explain with an intuitive example using binary trees. Here's the binary tree traversal framework we've discussed many times:
 
-```java
-void traverse(TreeNode root) {
-    // pre-order traversal position
+```python
+def traverse(root: TreeNode):
+    # code position for pre-order traversal
     traverse(root.left)
-    // in-order traversal position
+    # code position for in-order traversal
     traverse(root.right)
-    // post-order traversal position
-}
+    # code position for post-order traversal
 ``` 
 
 When does postorder traversal execute? Only after both the left and right subtrees have been fully traversed. In other words, the child nodes are added to the result list before the root node.
@@ -234,61 +221,54 @@ Clearly, this order is a valid topological sort result.
 
 So we just need to slightly modify the BFS cycle detection algorithm to record the node traversal order, and we get the topological sort result:
 
-```java
-class Solution {
+```python
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # build the graph, same as in the cycle detection algorithm
+        graph = self.buildGraph(numCourses, prerequisites)
+        # calculate in-degrees, same as in the cycle detection algorithm
+        indegree = [0] * numCourses
+        for edge in prerequisites:
+            from_arc, to = edge[1], edge[0]
+            indegree[to] += 1
 
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        // Build the graph, same as in cycle detection algorithm
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-        // Calculate in-degrees, same as in cycle detection algorithm
-        int[] indegree = new int[numCourses];
-        for (int[] edge : prerequisites) {
-            int from = edge[1], to = edge[0];
-            indegree[to]++;
-        }
+        # initialize the queue with nodes of in-degree 0,
+        # same as in the cycle detection algorithm
+        q = collections.deque()
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                q.append(i)
+                
+        # record the topological sorting result
+        res = [0] * numCourses
+        # record the order of traversed nodes (index)
+        count = 0
+        # start executing the BFS algorithm
+        while q:
+            cur = q.popleft()
+            # the order of nodes popped is the topological sorting result
+            res[count] = cur
+            count += 1
+            for next_arc in graph[cur]:
+                indegree[next_arc] -= 1
+                if indegree[next_arc] == 0:
+                    q.append(next_arc)
 
-        // Initialize the queue with nodes having in-degree of
-        // 0, same as in cycle detection algorithm
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < numCourses; i++) {
-            if (indegree[i] == 0) {
-                q.offer(i); 
-            }
-        }
+        if count != numCourses:
+            # a cycle exists, topological sorting is not possible
+            return []
+          
+        return res
 
-        // Record the topological sort result
-        int[] res = new int[numCourses];
-        // Record the order of traversed nodes (index)
-        int count = 0;
-        // Start executing BFS algorithm
-        while (!q.isEmpty()) {
-            int cur = q.poll();
-            // The order of nodes being dequeued is the topological sort result
-            res[count] = cur;
-            count++;
-            for (int next : graph[cur]) { 
-                indegree[next]--;
-                if (indegree[next] == 0) {
-                    q.offer(next);
-                }
-            }
-        }
-
-        if (count != numCourses) {
-            // A cycle exists, topological sort is not possible
-            return new int[]{};
-        }
-        
-        return res;
-    }
-
-    // Function to build the graph
-    List<Integer>[] buildGraph(int n, int[][] edges) {
-        // See above
-    }
-}
+    def buildGraph(self, n: int, edges: List[List[int]]) -> List[List[int]]:
+        # see previous text
+        pass
 ``` 
 
 In principle, [graph traversal](</en/algo/data-structure-basic/graph-basic/>) requires a `visited` array to prevent revisiting nodes. Here, the BFS algorithm effectively uses the `indegree` array to serve the same purpose as a `visited` array — only nodes with an in-degree of 0 can enter the queue, which prevents infinite loops.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

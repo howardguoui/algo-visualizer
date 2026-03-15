@@ -35,4 +35,8 @@ But to write a brute-force solution, you still need the **state transition equat
 
 About the “view” of brute-force, the earlier article [Ball-Box Model: Two Views of Brute-force in Backtracking](</en/algo/practice-in-action/two-views-of-backtrack/>) showed that different views in backtracking lead to different solutions. This kind of view switching also exists in DP problems. The permutation example there is very helpful. Let’s briefly review it here.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

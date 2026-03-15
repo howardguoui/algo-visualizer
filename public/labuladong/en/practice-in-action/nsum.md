@@ -36,25 +36,22 @@ Suppose you are given an array `nums` and a target value `target`. **Please retu
 
 We can first sort `nums`, then use the [two pointer technique](</en/algo/essential-technique/array-two-pointers-summary/>) we learned before. Just use two pointers, one from each end, and move towards each other:
 
-```java
-int[] twoSum(int[] nums, int target) {
-    // first sort the array
-    Arrays.sort(nums);
-    // left and right pointers
-    int lo = 0, hi = nums.length - 1;
-    while (lo < hi) {
-        int sum = nums[lo] + nums[hi];
-        // move the left and right pointers based on the comparison of sum and target
-        if (sum < target) {
-            lo++;
-        } else if (sum > target) {
-            hi--;
-        } else if (sum == target) {
-            return new int[]{nums[lo], nums[hi]};
-        }
-    }
-    return new int[]{};
-}
+```python
+def twoSum(nums, target):
+    # first sort the array
+    nums.sort()
+    # left and right pointers
+    lo, hi = 0, len(nums) - 1
+    while lo < hi:
+        sum_nums = nums[lo] + nums[hi]
+        # move the left and right pointers based on the comparison of sum and target
+        if sum_nums < target:
+            lo += 1
+        elif sum_nums > target:
+            hi -= 1
+        elif sum_nums == target:
+            return [nums[lo], nums[hi]]
+    return []
 ``` 
 
 This solves the problem. LeetCode Problem 1 ["Two Sum"](<https://leetcode.com/problems/two-sum/>) and Problem 167 ["Two Sum II - Input Array Is Sorted"](<https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/>) can be solved in a similar way with some changes, so I won’t write them here.
@@ -65,8 +62,8 @@ But let’s make the problem a bit more general and harder:
 
 Function signature is as follows:
 
-```java
-List<List<Integer>> twoSumTarget(int[] nums, int target);
+```python
+def twoSumTarget(nums: List[int], target: int) -> List[List[int]]:
 ``` 
 
 For example, if the input is `nums = [1,3,1,2,2,3], target = 4`, the output should be: `[[1,3],[2,2]]` (Note: I want the elements, not the indices).
@@ -75,4 +72,8 @@ For this new version, the key difficulty is that there may be many pairs that su
 
 First, the basic idea is still sorting and two pointers:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

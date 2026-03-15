@@ -67,8 +67,8 @@ The problem is from [LeetCode 48. Rotate Image](<https://leetcode.com/problems/r
 
 The problem is easy to understand: rotate a 2D matrix 90 degrees clockwise. The hard part is: **you must modify it in-place**. The function signature is:
 
-```java
-void rotate(int[][] matrix)
+```python
+def rotate(matrix: List[List[int]]) -> None:
 ``` 
 
 How do we rotate a 2D matrix in-place? If you think a bit, it feels complicated. You may think you need to rotate it “layer by layer”:
@@ -125,4 +125,8 @@ Why did I talk about these two problems?
 
 **The point is: our “natural” idea is not always the best for a computer; and the computer’s clean idea is not always natural for us.** That may be the fun part of algorithms.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

@@ -20,44 +20,39 @@
 
 注意我这里是直接用标准库的链表容器，如果你用之前我们实现的 `MyLinkedList`，也是一样的。
 
-```java
-import java.util.LinkedList;
+```python
+from collections import deque
 
-// 用链表作为底层数据结构实现栈
-public class MyLinkedStack<E> {
-    private final LinkedList<E> list = new LinkedList<>();
+# 用链表作为底层数据结构实现栈
+# Python 的 deque 就是双链表
+class MyLinkedStack:
+    def __init__(self):
+        self.list = deque()
 
-    // 向栈顶加入元素，时间复杂度 O(1)
-    public void push(E e) {
-        list.addLast(e);
-    }
+    # 向栈顶加入元素，时间复杂度 O(1)
+    def push(self, e):
+        self.list.append(e)
 
-    // 从栈顶弹出元素，时间复杂度 O(1)
-    public E pop() {
-        return list.removeLast();
-    }
+    # 从栈顶弹出元素，时间复杂度 O(1)
+    def pop(self):
+        return self.list.pop()
 
-    // 查看栈顶元素，时间复杂度 O(1)
-    public E peek() {
-        return list.getLast();
-    }
+    # 查看栈顶元素，时间复杂度 O(1)
+    def peek(self):
+        return self.list[-1]
 
-    // 返回栈中的元素个数，时间复杂度 O(1)
-    public int size() {
-        return list.size();
-    }
+    # 返回栈中的元素个数，时间复杂度 O(1)
+    def size(self):
+        return len(self.list)
 
-    public static void main(String[] args) {
-        MyLinkedStack<Integer> stack = new MyLinkedStack<>();
-        stack.push(1);
-        stack.push(2);
-        stack.push(3);
-
-        System.out.println(stack.peek()); // 3
-        System.out.println(stack.pop()); // 3
-        System.out.println(stack.peek()); // 2
-    }
-}
+if __name__ == "__main__":
+    stack = MyLinkedStack()
+    stack.push(1)
+    stack.push(2)
+    stack.push(3)
+    print(stack.pop())
+    print(stack.peek())
+    print(stack.size())
 ``` 
 
 提示
@@ -70,45 +65,41 @@ public class MyLinkedStack<E> {
 
 同理，用链表实现队列也是一样的，也直接调用双链表的 API 就可以了：
 
-```java
-import java.util.LinkedList;
+```python
+# deque 是 Python 的双链表
+from collections import deque
 
-// 用链表作为底层数据结构实现队列
-public class MyLinkedQueue<E> {
-    private final LinkedList<E> list = new LinkedList<>();
+# 用链表作为底层数据结构实现队列
+# Python 的 deque 就是双链表
+class MyLinkedQueue:
+    def __init__(self):
+        self.list = deque()
 
-    // 向队尾插入元素，时间复杂度 O(1)
-    public void push(E e) {
-        list.addLast(e);
-    }
+    # 向队尾插入元素，时间复杂度 O(1)
+    def push(self, e):
+        self.list.append(e)
 
-    // 从队头删除元素，时间复杂度 O(1)
-    public E pop() {
-        return list.removeFirst();
-    }
+    # 从队头删除元素，时间复杂度 O(1)
+    def pop(self):
+        return self.list.popleft()
 
-    // 查看队头元素，时间复杂度 O(1)
-    public E peek() {
-        return list.getFirst();
-    }
+    # 查看队头元素，时间复杂度 O(1)
+    def peek(self):
+        return self.list[0]
 
-    // 返回队列中的元素个数，时间复杂度 O(1)
-    public int size() {
-        return list.size();
-    }
+    # 返回队列中的元素个数，时间复杂度 O(1)
+    def size(self):
+        return len(self.list)
 
-    public static void main(String[] args) {
-        MyLinkedQueue<Integer> queue = new MyLinkedQueue<>();
-        queue.push(1);
-        queue.push(2);
-        queue.push(3);
-
-        System.out.println(queue.peek()); // 1
-        System.out.println(queue.pop()); // 1
-        System.out.println(queue.pop()); // 2
-        System.out.println(queue.peek()); // 3
-    }
-}
+if __name__ == "__main__":
+    queue = MyLinkedQueue()
+    queue.push(1)
+    queue.push(2)
+    queue.push(3)
+    print(queue.peek()) # 1
+    print(queue.pop()) # 1
+    print(queue.pop()) # 2
+    print(queue.peek()) # 3
 ``` 
 
 提示
@@ -116,3 +107,7 @@ public class MyLinkedQueue<E> {
 上面这段代码相当于是把双链表的尾部作为队尾，把双链表的头部作为队头，在双链表的头尾增删元素的复杂度都是 O(1)，符合队列 API 的要求。
 
 当然，你也可以反过来，把双链表的头部作为队尾，双链表的尾部作为队头。类似栈的实现，只要改一改 list 的调用方法就行了。
+
+## 评论
+
+请登录后查看/发表评论

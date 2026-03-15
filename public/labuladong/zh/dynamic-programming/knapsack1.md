@@ -116,28 +116,23 @@ return dp[N][W]
 
 我用 Java 写的代码，把上面的思路完全翻译了一遍，并且处理了 `w - wt[i-1]` 可能小于 0 导致数组索引越界的问题：
 
-```java
-int knapsack(int W, int[] wt, int[] val) {
-    int N = wt.length;
-    // base case 已初始化
-    int[][] dp = new int[N + 1][W + 1];
-    for (int i = 1; i <= N; i++) {
-        for (int w = 1; w <= W; w++) {
-            if (w - wt[i - 1] < 0) {
-                // 这种情况下只能选择不装入背包
-                dp[i][w] = dp[i - 1][w];
-            } else {
-                // 装入或者不装入背包，择优
-                dp[i][w] = Math.max(
+```python
+def knapsack(W: int, wt: List[int], val: List[int]) -> int:
+    N = len(wt)
+    # base case 已初始化
+    dp = [[0] * (W + 1) for _ in range(N + 1)]
+    for i in range(1, N + 1):
+        for w in range(1, W + 1):
+            if w - wt[i-1] < 0:
+                # 这种情况下只能选择不装入背包
+                dp[i][w] = dp[i - 1][w]
+            else:
+                # 装入或者不装入背包，择优
+                dp[i][w] = max(
                     dp[i - 1][w - wt[i-1]] + val[i-1], 
                     dp[i - 1][w]
-                );
-            }
-        }
-    }
-    
-    return dp[N][W];
-}
+                )
+    return dp[N][W]
 ``` 
 
 算法可视化
@@ -174,3 +169,7 @@ return dp[N % 2][W];
 当然，更常见的空间压缩方式是进一步压缩成一维数组，不过这需要注意遍历顺序，有兴趣的读者可以点击链接学习。
 
 至此，背包问题就解决了，相比而言，我觉得这是比较简单的动态规划问题，因为状态转移的推导比较自然，基本上你明确了 `dp` 数组的定义，就可以理所当然地确定状态转移了。
+
+## 评论
+
+请登录后查看/发表评论

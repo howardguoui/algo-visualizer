@@ -71,25 +71,20 @@ There are many ways to solve this problem. The best way uses the two-pointer tec
 
 We can create a `count` array of size 3. `count[0]`, `count[1]`, and `count[2]` store how many 0s, 1s, and 2s are in the array. Then we fill the original array in order according to the `count` array.
 
-```java
-class Solution {
-    public void sortColors(int[] nums) {
-        // count the number of 0, 1, 2
-        int[] count = new int[3];
-        for (int element : nums) {
-            count[element]++;
-        }
+```python
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        # count the number of 0, 1, 2
+        count = [0] * 3
+        for element in nums:
+            count[element] += 1
 
-        // fill the original array according to the count array
-        int index = 0;
-        for (int element = 0; element < 3; element++) {
-            for (int i = 0; i < count[element]; i++) {
-                nums[index] = element;
-                index++;
-            }
-        }
-    }
-}
+        # fill the original array according to the count array
+        index = 0
+        for element in range(3):
+            for _ in range(count[element]):
+                nums[index] = element
+                index += 1
 ``` 
 
 This is a simple counting sort. But this problem is easy because it only has three types of numbers: 0, 1, and 2. Next, let’s see a more general counting sort algorithm.
@@ -108,4 +103,8 @@ Let’s start with the problems. Counting sort needs to use the values in the ar
 
 Let’s think about these questions step by step and try to solve them.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

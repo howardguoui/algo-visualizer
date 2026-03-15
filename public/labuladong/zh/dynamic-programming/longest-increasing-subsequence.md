@@ -67,9 +67,9 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 300. 最长递增子序列](<https://leetcode.cn/problems/longest-increasing-subsequence/>)。
 
-```java
-// 函数签名
-int lengthOfLIS(int[] nums);
+```python
+# 函数签名
+def lengthOfLIS(nums: List[int]) -> int:
 ``` 
 
 比如说输入 `nums=[10,9,2,5,3,7,101,18]`，其中最长的递增子序列是 `[2,3,7,101]`，所以算法的输出应该是 4。
@@ -159,28 +159,21 @@ for (int i = 0; i < nums.length; i++) {
 
 结合我们刚才说的 base case，下面我们看一下完整代码：
 
-```java
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        // dp[i] 表示以 nums[i] 这个数结尾的最长递增子序列的长度
-        int[] dp = new int[nums.length]; 
-        // base case：dp 数组全都初始化为 1
-        Arrays.fill(dp, 1);
-
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = 0; j < i; j++) {
-                if (nums[i] > nums[j])
-                    dp[i] = Math.max(dp[i], dp[j] + 1);
-            }
-        }
-
-        int res = 0;
-        for (int i = 0; i < dp.length; i++) {
-            res = Math.max(res, dp[i]);
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        # 定义：dp[i] 表示以 nums[i] 这个数结尾的最长递增子序列的长度
+        dp = [1]*len(nums)
+        # base case：dp 数组全都初始化为 1
+        for i in range(len(nums)):
+            for j in range(i):
+                if nums[i] > nums[j]: 
+                    dp[i] = max(dp[i], dp[j] + 1) 
+        
+        res = 0
+        for i in range(len(dp)):
+            res = max(res, dp[i])
+        return res
 ``` 
 
 算法可视化
@@ -229,39 +222,34 @@ Tip
 
 前文 [二分查找算法详解](</zh/algo/essential-technique/binary-search-framework/>) 详细介绍了二分查找的细节及变体，这里就完美应用上了，如果没读过强烈建议阅读。
 
-```java
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        int[] top = new int[nums.length];
-        // 牌堆数初始化为 0
-        int piles = 0;
-        for (int i = 0; i < nums.length; i++) {
-            // 要处理的扑克牌
-            int poker = nums[i];
+```python
+class Solution:
+    def lengthOfLIS(self, nums):
+        top = [0] * len(nums)
+        # 牌堆数初始化为 0
+        piles = 0
+        for i in range(len(nums)):
+            # 要处理的扑克牌
+            poker = nums[i]
 
-            // ***** 搜索左侧边界的二分查找 *****
-            int left = 0, right = piles;
-            while (left < right) {
-                int mid = (left + right) / 2;
-                if (top[mid] > poker) {
-                    right = mid;
-                } else if (top[mid] < poker) {
-                    left = mid + 1;
-                } else {
-                    right = mid;
-                }
-            }
-            // *********************************
-            
-            // 没找到合适的牌堆，新建一堆
-            if (left == piles) piles++;
-            // 把这张牌放到牌堆顶
-            top[left] = poker;
-        }
-        // 牌堆数就是 LIS 长度
-        return piles;
-    }
-}
+            # 搜索左侧边界的二分查找
+            left, right = 0, piles
+            while left < right:
+                mid = (left + right) // 2
+                if top[mid] > poker:
+                    right = mid
+                elif top[mid] < poker:
+                    left = mid + 1
+                else:
+                    right = mid
+
+            # 没找到合适的牌堆，新建一堆
+            if left == piles:
+                piles += 1
+            # 把这张牌放到牌堆顶
+            top[left] = poker
+        # 牌堆数就是 LIS 长度
+        return piles
 ``` 
 
 算法可视化
@@ -335,50 +323,39 @@ class Solution {
 
 下面看解法代码：
 
-```java
-class Solution {
-    public int maxEnvelopes(int[][] envelopes) {
-        int n = envelopes.length;
-        // 按宽度升序排列，如果宽度一样，则按高度降序排列
-        Arrays.sort(envelopes, new Comparator<int[]>() 
-        {
-            public int compare(int[] a, int[] b) {
-                return a[0] == b[0] ? 
-                    b[1] - a[1] : a[0] - b[0];
-            }
-        });
-        // 对高度数组寻找 LIS
-        int[] height = new int[n];
-        for (int i = 0; i < n; i++)
-            height[i] = envelopes[i][1];
+```python
+class Solution:
+    def maxEnvelopes(self, envelopes: List[List[int]]) -> int:
+        n = len(envelopes)
+        # 按宽度升序排列，如果宽度一样，则按高度降序排列
+        envelopes.sort(key=lambda x: (x[0], -x[1]))
+        
+        # 对高度数组寻找 LIS
+        height = [envelopes[i][1] for i in range(n)]
 
-        return lengthOfLIS(height);
-    }
+        return self.lengthOfLIS(height)
 
-    // 返回 nums 中 LIS 的长度
-    public int lengthOfLIS(int[] nums) {
-        int piles = 0, n = nums.length;
-        int[] top = new int[n];
-        for (int i = 0; i < n; i++) {
-            // 要处理的扑克牌
-            int poker = nums[i];
-            int left = 0, right = piles;
-            // 二分查找插入位置
-            while (left < right) {
-                int mid = (left + right) / 2;
-                if (top[mid] >= poker)
-                    right = mid;
-                else
-                    left = mid + 1;
-            }
-            if (left == piles) piles++;
-            // 把这张牌放到牌堆顶
-            top[left] = poker;
-        }
-        // 牌堆数就是 LIS 长度
-        return piles;
-    }
-}
+    # 返回 nums 中 LIS 的长度
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        piles = 0
+        n = len(nums)
+        top = [0] * n
+        for i in range(n):
+            # 要处理的扑克牌
+            poker = nums[i]
+            left, right = 0, piles
+            # 二分查找插入位置
+            while left < right:
+                mid = (left + right) // 2
+                if top[mid] >= poker:
+                    right = mid
+                else:
+                    left = mid + 1
+            if left == piles: piles += 1
+            # 把这张牌放到牌堆顶
+            top[left] = poker
+        # 牌堆数就是 LIS 长度
+        return piles
 ``` 
 
 算法可视化
@@ -386,3 +363,7 @@ class Solution {
 为了复用之前的函数，我将代码分为了两个函数，你也可以合并代码，节省下 `height` 数组的空间。
 
 由于增加了测试用例，这里必须使用二分搜索版的 `lengthOfLIS` 函数才能通过所有测试用例。这样的话算法的时间复杂度为 O(NlogN)O(NlogN)O(NlogN)，因为排序和计算 LIS 各需要 O(NlogN)O(NlogN)O(NlogN) 的时间，加到一起还是 O(NlogN)O(NlogN)O(NlogN)；空间复杂度为 O(N)O(N)O(N)，因为计算 LIS 的函数中需要一个 `top` 数组。
+
+## 评论
+
+请登录后查看/发表评论

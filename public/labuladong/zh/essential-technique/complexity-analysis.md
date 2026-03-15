@@ -175,3 +175,7 @@ int dp(int[] coins, int amount) {
 ## 非递归算法分析
 
 非递归算法的空间复杂度一般很容易计算，你看它有没有申请数组之类的存储空间就行了，所以我主要说下时间复杂度的分析。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -295,35 +295,31 @@ return dp[n][0];
 
 这样 base case 在循环外一次性初始化，循环体内不需要任何条件判断，代码更加简洁清晰。注意一下状态转移方程，新状态只和相邻的一个状态有关，所以可以用前文 [动态规划的降维打击：空间压缩技巧](</zh/algo/dynamic-programming/space-optimization/>)，不需要用整个 `dp` 数组，只需要一个变量储存相邻的那个状态就足够了，这样可以把空间复杂度降到 O(1):
 
-```java
-// 原始版本
-int maxProfit_k_1(int[] prices) {
-    int n = prices.length;
-    // dp[0] 表示 base case，dp[i] 表示第 i-1 天
-    int[][] dp = new int[n + 1][2];
-    dp[0][0] = 0;
-    dp[0][1] = Integer.MIN_VALUE;
+```python
+# 原始版本
+def maxProfit_k_1(prices: list[int]) -> int:
+    n = len(prices)
+    # dp[0] 表示 base case，dp[i] 表示第 i-1 天
+    dp = [[0] * 2 for _ in range(n + 1)]
+    dp[0][0] = 0
+    dp[0][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i-1]);
-        dp[i][1] = Math.max(dp[i-1][1], -prices[i-1]);
-    }
-    return dp[n][0];
-}
+    for i in range(1, n + 1):
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i-1])
+        dp[i][1] = max(dp[i-1][1], -prices[i-1])
+    return dp[n][0]
 
-// 空间复杂度优化版本
-int maxProfit_k_1(int[] prices) {
-    int n = prices.length;
-    // base case: dp[-1][0] = 0, dp[-1][1] = -infinity
-    int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
-    for (int i = 0; i < n; i++) {
-        // dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
-        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
-        // dp[i][1] = max(dp[i-1][1], -prices[i])
-        dp_i_1 = Math.max(dp_i_1, -prices[i]);
-    }
-    return dp_i_0;
-}
+# 空间复杂度优化版本
+def maxProfit_k_1(prices: list[int]) -> int:
+    n = len(prices)
+    # base case: dp[-1][0] = 0, dp[-1][1] = -infinity
+    dp_i_0, dp_i_1 = 0, float("-inf")
+    for i in range(n):
+        # dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i])
+        dp_i_0 = max(dp_i_0, dp_i_1 + prices[i])
+        # dp[i][1] = max(dp[i-1][1], -prices[i])
+        dp_i_1 = max(dp_i_1, -prices[i])
+    return dp_i_0
 ``` 
 
 算法可视化
@@ -392,32 +388,28 @@ dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i])
 
 直接翻译成代码：
 
-```java
-// 原始版本
-int maxProfit_k_inf(int[] prices) {
-    int n = prices.length;
-    int[][] dp = new int[n + 1][2];
-    dp[0][0] = 0;
-    dp[0][1] = Integer.MIN_VALUE;
+```python
+# 原始版本
+def maxProfit_k_inf(prices: list[int]) -> int:
+    n = len(prices)
+    dp = [[0] * 2 for _ in range(n + 1)]
+    dp[0][0] = 0
+    dp[0][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i-1]);
-        dp[i][1] = Math.max(dp[i-1][1], dp[i-1][0] - prices[i-1]);
-    }
-    return dp[n][0];
-}
+    for i in range(1, n + 1):
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i-1])
+        dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i-1])
+    return dp[n][0]
 
-// 空间复杂度优化版本
-int maxProfit_k_inf(int[] prices) {
-    int n = prices.length;
-    int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
-    for (int i = 0; i < n; i++) {
-        int temp = dp_i_0;
-        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
-        dp_i_1 = Math.max(dp_i_1, temp - prices[i]);
-    }
-    return dp_i_0;
-}
+# 空间复杂度优化版本
+def maxProfit_k_inf(prices: list[int]) -> int:
+    n = len(prices)
+    dp_i_0, dp_i_1 = 0, float("-inf")
+    for i in range(n):
+        temp = dp_i_0
+        dp_i_0 = max(dp_i_0, dp_i_1 + prices[i])
+        dp_i_1 = max(dp_i_1, temp - prices[i])
+    return dp_i_0
 ``` 
 
 算法可视化
@@ -468,39 +460,35 @@ dp[i][1] = max(dp[i-1][1], dp[i-2][0] - prices[i])
 
 由于状态转移需要 `dp[i-2][0]`，我们需要偏移 2 个位置，让 `dp[0]` 和 `dp[1]` 都表示 base case，`dp[i]` 表示第 `i - 2` 天的状态：
 
-```java
-// 原始版本
-int maxProfit_with_cool(int[] prices) {
-    int n = prices.length;
-    // dp[0], dp[1] 表示 base case，dp[i] 表示第 i-2 天
-    int[][] dp = new int[n + 2][2];
-    dp[0][0] = 0;
-    dp[0][1] = Integer.MIN_VALUE;
-    dp[1][0] = 0;
-    dp[1][1] = Integer.MIN_VALUE;
+```python
+# 原始版本
+def maxProfit_with_cool(prices: list[int]) -> int:
+    n = len(prices)
+    # dp[0], dp[1] 表示 base case，dp[i] 表示第 i-2 天
+    dp = [[0] * 2 for _ in range(n + 2)]
+    dp[0][0] = 0
+    dp[0][1] = float("-inf")
+    dp[1][0] = 0
+    dp[1][1] = float("-inf")
 
-    for (int i = 2; i <= n + 1; i++) {
-        // prices[i-2] 是第 i-2 天的股价
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i-2]);
-        dp[i][1] = Math.max(dp[i-1][1], dp[i-2][0] - prices[i-2]);
-    }
-    return dp[n + 1][0];
-}
+    for i in range(2, n + 2):
+        # prices[i-2] 是第 i-2 天的股价
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i-2])
+        dp[i][1] = max(dp[i-1][1], dp[i-2][0] - prices[i-2])
+    return dp[n + 1][0]
 
-// 空间复杂度优化版本
-int maxProfit_with_cool(int[] prices) {
-    int n = prices.length;
-    int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
-    // 代表 dp[i-2][0]
-    int dp_pre_0 = 0;
-    for (int i = 0; i < n; i++) {
-        int temp = dp_i_0;
-        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
-        dp_i_1 = Math.max(dp_i_1, dp_pre_0 - prices[i]);
-        dp_pre_0 = temp;
-    }
-    return dp_i_0;
-}
+# 空间复杂度优化版本
+def maxProfit_with_cool(prices: list[int]) -> int:
+    n = len(prices)
+    dp_i_0, dp_i_1 = 0, float("-inf")
+    # 代表 dp[i-2][0]
+    dp_pre_0 = 0
+    for i in range(n):
+        temp = dp_i_0
+        dp_i_0 = max(dp_i_0, dp_i_1 + prices[i])
+        dp_i_1 = max(dp_i_1, dp_pre_0 - prices[i])
+        dp_pre_0 = temp
+    return dp_i_0
 ``` 
 
 算法可视化
@@ -562,32 +550,28 @@ Note
 
 直接翻译成代码，注意状态转移方程改变后 base case 也要做出对应改变：
 
-```java
-// 原始版本
-int maxProfit_with_fee(int[] prices, int fee) {
-    int n = prices.length;
-    int[][] dp = new int[n + 1][2];
-    dp[0][0] = 0;
-    dp[0][1] = Integer.MIN_VALUE;
+```python
+# 原始版本
+def maxProfit_with_fee(prices: list[int], fee: int) -> int:
+    n = len(prices)
+    dp = [[0] * 2 for _ in range(n + 1)]
+    dp[0][0] = 0
+    dp[0][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i-1]);
-        dp[i][1] = Math.max(dp[i-1][1], dp[i-1][0] - prices[i-1] - fee);
-    }
-    return dp[n][0];
-}
+    for i in range(1, n + 1):
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i-1])
+        dp[i][1] = max(dp[i-1][1], dp[i-1][0] - prices[i-1] - fee)
+    return dp[n][0]
 
-// 空间复杂度优化版本
-int maxProfit_with_fee(int[] prices, int fee) {
-    int n = prices.length;
-    int dp_i_0 = 0, dp_i_1 = Integer.MIN_VALUE;
-    for (int i = 0; i < n; i++) {
-        int temp = dp_i_0;
-        dp_i_0 = Math.max(dp_i_0, dp_i_1 + prices[i]);
-        dp_i_1 = Math.max(dp_i_1, temp - prices[i] - fee);
-    }
-    return dp_i_0;
-}
+# 空间复杂度优化版本
+def maxProfit_with_fee(prices: list[int], fee: int) -> int:
+    n = len(prices)
+    dp_i_0, dp_i_1 = 0, float("-inf")
+    for i in range(n):
+        temp = dp_i_0
+        dp_i_0 = max(dp_i_0, dp_i_1 + prices[i])
+        dp_i_1 = max(dp_i_1, temp - prices[i] - fee)
+    return dp_i_0
 ``` 
 
 算法可视化
@@ -691,40 +675,34 @@ return dp[n - 1][0];
 
 但当 `k = 2` 时，由于没有消掉 `k` 的影响，所以必须要对 `k` 进行穷举：
 
-```java
-// 原始版本
-int maxProfit_k_2(int[] prices) {
-    int max_k = 2, n = prices.length;
-    int[][][] dp = new int[n + 1][max_k + 1][2];
-    // base case
-    for (int k = 0; k <= max_k; k++) {
-        dp[0][k][0] = 0;
-        dp[0][k][1] = Integer.MIN_VALUE;
-    }
+```python
+# 原始版本
+def maxProfit_k_2(prices: list[int]) -> int:
+    max_k, n = 2, len(prices)
+    dp = [[[0] * 2 for _ in range(max_k + 1)] for _ in range(n + 1)]
+    # base case
+    for k in range(max_k + 1):
+        dp[0][k][0] = 0
+        dp[0][k][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        for (int k = max_k; k >= 1; k--) {
-            dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i-1]);
-            dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i-1]);
-        }
-    }
-    // 穷举了 n × max_k × 2 个状态，正确
-    return dp[n][max_k][0];
-}
+    for i in range(1, n + 1):
+        for k in range(max_k, 0, -1):
+            dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i-1])
+            dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i-1])
+    # 穷举了 n × max_k × 2 个状态，正确
+    return dp[n][max_k][0]
 
-// 空间复杂度优化版本
-int maxProfit_k_2(int[] prices) {
-    // base case
-    int dp_i10 = 0, dp_i11 = Integer.MIN_VALUE;
-    int dp_i20 = 0, dp_i21 = Integer.MIN_VALUE;
-    for (int price : prices) {
-        dp_i20 = Math.max(dp_i20, dp_i21 + price);
-        dp_i21 = Math.max(dp_i21, dp_i10 - price);
-        dp_i10 = Math.max(dp_i10, dp_i11 + price);
-        dp_i11 = Math.max(dp_i11, -price);
-    }
-    return dp_i20;
-}
+# 空间复杂度优化版本
+def maxProfit_k_2(prices: list[int]) -> int:
+    # base case
+    dp_i10, dp_i11 = 0, float("-inf")
+    dp_i20, dp_i21 = 0, float("-inf")
+    for price in prices:
+        dp_i20 = max(dp_i20, dp_i21 + price)
+        dp_i21 = max(dp_i21, dp_i10 - price)
+        dp_i10 = max(dp_i10, dp_i11 + price)
+        dp_i11 = max(dp_i11, -price)
+    return dp_i20
 ``` 
 
 算法可视化
@@ -788,32 +766,26 @@ Note
 
 所以我们可以直接把之前的代码重用：
 
-```java
-int maxProfit_k_any(int max_k, int[] prices) {
-    int n = prices.length;
-    if (n <= 0) {
-        return 0;
-    }
-    if (max_k > n / 2) {
-        // 复用 maxProfit_k_inf 函数
-        return maxProfit_k_inf(prices);
-    }
+```python
+def maxProfit_k_any(max_k: int, prices: list[int]) -> int:
+    n = len(prices)
+    if n <= 0:
+        return 0
+    if max_k > n // 2:
+        # 复用 maxProfit_k_inf 函数
+        return maxProfit_k_inf(prices)
 
-    int[][][] dp = new int[n + 1][max_k + 1][2];
-    // base case
-    for (int k = 0; k <= max_k; k++) {
-        dp[0][k][0] = 0;
-        dp[0][k][1] = Integer.MIN_VALUE;
-    }
+    dp = [[[0] * 2 for _ in range(max_k + 1)] for _ in range(n + 1)]
+    # base case
+    for k in range(max_k + 1):
+        dp[0][k][0] = 0
+        dp[0][k][1] = float("-inf")
 
-    for (int i = 1; i <= n; i++) {
-        for (int k = max_k; k >= 1; k--) {
-            dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i-1]);
-            dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i-1]);
-        }
-    }
-    return dp[n][max_k][0];
-}
+    for i in range(1, n + 1):
+        for k in range(max_k, 0, -1):
+            dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i-1])
+            dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i-1])
+    return dp[n][max_k][0]
 ``` 
 
 算法可视化
@@ -838,58 +810,48 @@ int maxProfit_all_in_one(int max_k, int[] prices, int cooldown, int fee);
 
 由于状态转移需要 `dp[i-cooldown-1]`，我们需要偏移 `cooldown + 1` 个位置：
 
-```java
-// 同时考虑交易次数的限制、冷冻期和手续费
-int maxProfit_all_in_one(int max_k, int[] prices, int cooldown, int fee) {
-    int n = prices.length;
-    if (n <= 0) {
-        return 0;
-    }
-    if (max_k > n / 2) {
-        // 交易次数 k 没有限制的情况
-        return maxProfit_k_inf(prices, cooldown, fee);
-    }
+```python
+# 同时考虑交易次数的限制、冷冻期和手续费
+def maxProfit_all_in_one(max_k: int, prices: list[int], cooldown: int, fee: int) -> int:
+    n = len(prices)
+    if n <= 0:
+        return 0
+    if max_k > n // 2:
+        # 交易次数 k 没有限制的情况
+        return maxProfit_k_inf(prices, cooldown, fee)
 
-    // 偏移量为 cooldown + 1，确保能访问到 dp[i - cooldown - 1]
-    int offset = cooldown + 1;
-    int[][][] dp = new int[n + offset][max_k + 1][2];
-    // base case：前 offset 行都是 base case
-    for (int i = 0; i < offset; i++) {
-        for (int k = 0; k <= max_k; k++) {
-            dp[i][k][0] = 0;
-            dp[i][k][1] = Integer.MIN_VALUE;
-        }
-    }
+    # 偏移量为 cooldown + 1，确保能访问到 dp[i - cooldown - 1]
+    offset = cooldown + 1
+    dp = [[[0] * 2 for _ in range(max_k + 1)] for _ in range(n + offset)]
+    # base case：前 offset 行都是 base case
+    for i in range(offset):
+        for k in range(max_k + 1):
+            dp[i][k][0] = 0
+            dp[i][k][1] = float("-inf")
 
-    for (int i = offset; i < n + offset; i++) {
-        for (int k = max_k; k >= 1; k--) {
-            // prices[i - offset] 是第 i-offset 天的股价
-            dp[i][k][0] = Math.max(dp[i-1][k][0], dp[i-1][k][1] + prices[i - offset]);
-            // 同时考虑 cooldown 和 fee
-            dp[i][k][1] = Math.max(dp[i-1][k][1], dp[i - cooldown - 1][k-1][0] - prices[i - offset] - fee);
-        }
-    }
-    return dp[n + offset - 1][max_k][0];
-}
+    for i in range(offset, n + offset):
+        for k in range(max_k, 0, -1):
+            # prices[i - offset] 是第 i-offset 天的股价
+            dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i - offset])
+            # 同时考虑 cooldown 和 fee
+            dp[i][k][1] = max(dp[i-1][k][1], dp[i - cooldown - 1][k-1][0] - prices[i - offset] - fee)
+    return dp[n + offset - 1][max_k][0]
 
-// k 无限制，包含手续费和冷冻期
-int maxProfit_k_inf(int[] prices, int cooldown, int fee) {
-    int n = prices.length;
-    int offset = cooldown + 1;
-    int[][] dp = new int[n + offset][2];
-    // base case：前 offset 行都是 base case
-    for (int i = 0; i < offset; i++) {
-        dp[i][0] = 0;
-        dp[i][1] = Integer.MIN_VALUE;
-    }
+# k 无限制，包含手续费和冷冻期
+def maxProfit_k_inf(prices: list[int], cooldown: int, fee: int) -> int:
+    n = len(prices)
+    offset = cooldown + 1
+    dp = [[0] * 2 for _ in range(n + offset)]
+    # base case：前 offset 行都是 base case
+    for i in range(offset):
+        dp[i][0] = 0
+        dp[i][1] = float("-inf")
 
-    for (int i = offset; i < n + offset; i++) {
-        dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1] + prices[i - offset]);
-        // 同时考虑 cooldown 和 fee
-        dp[i][1] = Math.max(dp[i-1][1], dp[i - cooldown - 1][0] - prices[i - offset] - fee);
-    }
-    return dp[n + offset - 1][0];
-}
+    for i in range(offset, n + offset):
+        dp[i][0] = max(dp[i-1][0], dp[i-1][1] + prices[i - offset])
+        # 同时考虑 cooldown 和 fee
+        dp[i][1] = max(dp[i-1][1], dp[i - cooldown - 1][0] - prices[i - offset] - fee)
+    return dp[n + offset - 1][0]
 ``` 
 
 你可以用这个 `maxProfit_all_in_one` 函数去完成之前讲的 6 道题目，因为我们无法对 `dp` 数组进行优化，所以执行效率上不是最优的，但正确性上肯定是没有问题的。
@@ -899,3 +861,7 @@ int maxProfit_k_inf(int[] prices, int cooldown, int fee) {
 关键就在于列举出所有可能的「状态」，然后想想怎么穷举更新这些「状态」。一般用一个多维 `dp` 数组储存这些状态，从 base case 开始向后推进，推进到最后的状态，就是我们想要的答案。想想这个过程，你是不是有点理解「动态规划」这个名词的意义了呢？
 
 具体到股票买卖问题，我们发现了三个状态，使用了一个三维数组，无非还是穷举 + 更新，不过我们可以说的高大上一点，这叫「三维 DP」，听起来是不是很厉害？
+
+## 评论
+
+请登录后查看/发表评论

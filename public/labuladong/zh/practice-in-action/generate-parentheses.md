@@ -52,8 +52,12 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-List<String> generateParenthesis(int n);
+```python
+def generateParenthesis(n: int) -> List[str]:
 ``` 
 
 有关括号问题，你只要记住以下性质，思路就很容易想出来：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

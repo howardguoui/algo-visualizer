@@ -67,16 +67,16 @@ medianFinder.findMedian(); // return 2.0
 
 题目来源：[力扣 295. 数据流的中位数](<https://leetcode.cn/problems/find-median-from-data-stream/>)。
 
-```java
-// 题目让你设计这样一个类
-class MedianFinder {
-
-    // 添加一个数字
-    public void addNum(int num) {}
-
-    // 计算当前添加的所有数字的中位数
-    public double findMedian() {}
-}
+```python
+# 题目让你设计这样一个类
+class MedianFinder:
+    # 添加一个数字
+    def addNum(self, num: int) -> None:
+        pass
+    
+    # 计算当前添加的所有数字的中位数
+    def findMedian(self) -> float:
+        pass
 ``` 
 
 **其实，所有关于「流」的算法都比较难** ，比如我在前文 [谈谈游戏中的随机算法](</zh/algo/frequency-interview/random-algorithm/>) 写过如何从数据流中等概率随机抽取一个元素，如果说你没有接触过这个问题的话，还是很难想到解法的。
@@ -110,3 +110,7 @@ Info
 好像也不太行，因为优先级队列是一种受限的数据结构，只能从堆顶添加/删除元素，我们的 `addNum` 方法可以从堆顶插入元素，但是 `findMedian` 函数需要从数据中间取，这个功能优先级队列是没办法提供的。
 
 可以看到，求个中位数还是挺难的，我们使尽浑身解数都没有一个高效地思路，下面直接来看解法吧，比较巧妙。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

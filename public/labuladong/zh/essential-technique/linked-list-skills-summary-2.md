@@ -88,45 +88,41 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 21. 合并两个有序链表](<https://leetcode.cn/problems/merge-two-sorted-lists/>)。
 
-```java
-// 函数签名如下
-ListNode mergeTwoLists(ListNode l1, ListNode l2);
+```python
+# 函数签名如下
+def mergeTwoLists(l1: ListNode, l2: ListNode) -> ListNode:
 ``` 
 
 这题比较简单，我们直接看解法：
 
-```java
-class Solution {
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        // 虚拟头结点
-        ListNode dummy = new ListNode(-1), p = dummy;
-        ListNode p1 = l1, p2 = l2;
-
-        while (p1 != null && p2 != null) { 
-            // 比较 p1 和 p2 两个指针
-            // 将值较小的的节点接到 p 指针
-            if (p1.val > p2.val) {
-                p.next = p2;
-                p2 = p2.next;
-            } else {
-                p.next = p1;
-                p1 = p1.next;
-            }
-            // p 指针不断前进
-            p = p.next;
-        }
-
-        if (p1 != null) {
-            p.next = p1;
-        }
-
-        if (p2 != null) {
-            p.next = p2;
-        }
-
-        return dummy.next;
-    }
-}
+```python
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        # 虚拟头结点
+        dummy = ListNode(-1)
+        p = dummy
+        p1 = l1
+        p2 = l2
+        
+        while p1 is not None and p2 is not None: 
+            # 比较 p1 和 p2 两个指针
+            # 将值较小的的节点接到 p 指针
+            if p1.val > p2.val:
+                p.next = p2
+                p2 = p2.next
+            else:
+                p.next = p1
+                p1 = p1.next
+            # p 指针不断前进
+            p = p.next
+        
+        if p1 is not None:
+            p.next = p1
+        
+        if p2 is not None:
+            p.next = p2
+        
+        return dummy.next
 ``` 
 
 我们的 while 循环每次比较 `p1` 和 `p2` 的大小，把较小的节点接到结果链表上，看如下 GIF：
@@ -185,37 +181,35 @@ class Solution {
 
 整体逻辑和合并有序链表非常相似，细节直接看代码吧，注意虚拟头结点的运用：
 
-```java
-class Solution {
-    public ListNode partition(ListNode head, int x) {
-        // 存放小于 x 的链表的虚拟头结点
-        ListNode dummy1 = new ListNode(-1);
-        // 存放大于等于 x 的链表的虚拟头结点
-        ListNode dummy2 = new ListNode(-1);
-        // p1, p2 指针负责生成结果链表
-        ListNode p1 = dummy1, p2 = dummy2;
-        // p 负责遍历原链表，类似合并两个有序链表的逻辑
-        // 这里是将一个链表分解成两个链表
-        ListNode p = head;
-        while (p != null) {
-            if (p.val >= x) {
-                p2.next = p;
-                p2 = p2.next;
-            } else {
-                p1.next = p;
-                p1 = p1.next;
-            }
-            // 断开原链表中的每个节点的 next 指针
-            ListNode temp = p.next;
-            p.next = null;
-            p = temp;
-        }
-        // 链接两个链表
-        p1.next = dummy2.next;
+```python
+class Solution:
+    def partition(self, head: ListNode, x: int) -> ListNode:
+        # 存放小于 x 的链表的虚拟头结点
+        dummy1 = ListNode(-1)
+        # 存放大于等于 x 的链表的虚拟头结点
+        dummy2 = ListNode(-1)
+        # p1, p2 指针负责生成结果链表
+        p1, p2 = dummy1, dummy2
+        # p 负责遍历原链表，类似合并两个有序链表的逻辑
+        # 这里是将一个链表分解成两个链表
+        p = head
+        while p:
+            if p.val >= x:
+                p2.next = p
+                p2 = p2.next
+            else:
+                p1.next = p
+                p1 = p1.next
+            # 不能直接让 p 指针前进，
+            # p = p.next
+            # 断开原链表中的每个节点的 next 指针
+            temp = p.next
+            p.next = None
+            p = temp
+        # 连接两个链表
+        p1.next = dummy2.next
 
-        return dummy1.next;
-    }
-}
+        return dummy1.next
 ``` 
 
 我知道有很多读者会对这段代码有疑问：
@@ -289,44 +283,51 @@ p = temp;
 
 题目来源：[力扣 23. 合并 K 个升序链表](<https://leetcode.cn/problems/merge-k-sorted-lists/>)。
 
-```java
-// 函数签名如下
-ListNode mergeKLists(ListNode[] lists);
+```python
+# 函数签名如下
+def mergeKLists(lists: List[ListNode]) -> ListNode:
 ``` 
 
 合并 `k` 个有序链表的逻辑类似合并两个有序链表，难点在于，如何快速得到 `k` 个节点中的最小节点，接到结果链表上？
 
 这里我们就要用到优先级队列这种数据结构，把链表节点放入一个最小堆，就可以每次获得 `k` 个节点中的最小节点。关于优先级队列可以参考 [优先级队列（二叉堆）原理及实现](</zh/algo/data-structure-basic/binary-heap-implement/>)，本文不展开。
 
-```java
-class Solution {
-    public ListNode mergeKLists(ListNode[] lists) {
-        if (lists.length == 0) return null;
-        // 虚拟头结点
-        ListNode dummy = new ListNode(-1);
-        ListNode p = dummy;
-        // 优先级队列，最小堆
-        PriorityQueue<ListNode> pq = new PriorityQueue<>(
-            lists.length, (a, b)->(a.val - b.val));
-        // 将 k 个链表的头结点加入最小堆
-        for (ListNode head : lists) {
-            if (head != null)
-                pq.add(head);
-        }
+```python
+import heapq
 
-        while (!pq.isEmpty()) {
-            // 获取最小节点，接到结果链表中
-            ListNode node = pq.poll();
-            p.next = node;
-            if (node.next != null) {
-                pq.add(node.next);
-            }
-            // p 指针不断前进
-            p = p.next;
-        }
-        return dummy.next;
-    }
-}
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+    # 重载比较运算符，方便将 ListNode 加入最小堆
+    def __lt__(self, other):
+        return self.val < other.val
+
+class Solution:
+    def mergeKLists(self, lists):
+        if not lists:
+            return None
+        # 虚拟头结点
+        dummy = ListNode(-1)
+        p = dummy
+        # 优先级队列，最小堆
+        pq = []
+        # 将 k 个链表的头结点加入最小堆
+        for i, head in enumerate(lists):
+            if head is not None:
+                heapq.heappush(pq, (head.val, i, head))
+
+        while pq:
+            # 获取最小节点，接到结果链表中
+            val, i, node = heapq.heappop(pq)
+            p.next = node
+            if node.next is not None:
+                heapq.heappush(pq, (node.next.val, i, node.next))
+            # p 指针不断前进
+            p = p.next
+            
+        return dummy.next
 ``` 
 
 你可以点开下面的可视化面板，点击 `while (pq.size() > 0)` 这一行代码，即可看到有序链表合并的过程：
@@ -373,23 +374,20 @@ class Solution {
 
 上述逻辑的代码如下：
 
-```java
-// 返回链表的倒数第 k 个节点
-ListNode findFromEnd(ListNode head, int k) {
-    ListNode p1 = head;
-    // p1 先走 k 步
-    for (int i = 0; i < k; i++) {
-        p1 = p1.next;
-    }
-    ListNode p2 = head;
-    // p1 和 p2 同时走 n - k 步
-    while (p1 != null) {
-        p2 = p2.next;
-        p1 = p1.next;
-    }
-    // p2 现在指向第 n - k + 1 个节点，即倒数第 k 个节点
-    return p2;
-}
+```python
+# 返回链表的倒数第 k 个节点
+def findFromEnd(head: ListNode, k: int) -> ListNode:
+    p1 = head
+    # p1 先走 k 步
+    for i in range(k):
+        p1 = p1.next
+    p2 = head
+    # p1 和 p2 同时走 n - k 步
+    while p1 != None:
+        p2 = p2.next
+        p1 = p1.next
+    # p2 现在指向第 n - k + 1 个节点，即倒数第 k 个节点
+    return p2
 ``` 
 
 你可以点开下面的可视化面板，代码将计算倒数第二个节点。多次点击 `i++` 即可看到快指针 `p1` 先前进了 2 步，然后多次点击 `while (p1 !== null)` 这一行代码，即可看到 `p1` 和 `p2` 同时前进，最终 `p2` 停在了倒数第 `k` 个节点上：
@@ -440,23 +438,22 @@ ListNode findFromEnd(ListNode head, int k) {
 
 我们直接看解法代码：
 
-```java
-class Solution {
-    public ListNode removeNthFromEnd(ListNode head, int n) {
-        // 虚拟头结点
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
-        // 删除倒数第 n 个，要先找倒数第 n + 1 个节点
-        ListNode x = findFromEnd(dummy, n + 1);
-        // 删掉倒数第 n 个节点
-        x.next = x.next.next;
-        return dummy.next;
-    }
+```python
+# 主函数
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        # 虚拟头结点
+        dummy = ListNode(-1)
+        dummy.next = head
+        # 删除倒数第 n 个，要先找倒数第 n + 1 个节点
+        x = self.findFromEnd(dummy, n + 1)
+        # 删掉倒数第 n 个节点
+        x.next = x.next.next
+        return dummy.next
         
-    private ListNode findFromEnd(ListNode head, int k) {
-        // 代码见上文
-    }
-}
+    def findFromEnd(self, head: ListNode, k: int) -> ListNode:
+        # 代码见上文
+        pass
 ``` 
 
 你可以打开可视化面板，点击 `let p2 = head;` 这一行代码一次，可以看到 `p1` 先前进了 `k` 步，然后多次点击 `while (p1 !== null)` 这一行代码，可以看到 `p1` 和 `p2` 同时前进，最终 `p2` 停在了倒数第 `k` 个节点上：
@@ -481,21 +478,19 @@ class Solution {
 
 上述思路的代码实现如下：
 
-```java
-class Solution {
-    public ListNode middleNode(ListNode head) {
-        // 快慢指针初始化指向 head
-        ListNode slow = head, fast = head;
-        // 快指针走到末尾时停止
-        while (fast != null && fast.next != null) {
-            // 慢指针走一步，快指针走两步
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        // 慢指针指向中点
-        return slow;
-    }
-}
+```python
+class Solution:
+    # 快慢指针初始化指向 head
+    def middleNode(self, head: ListNode) -> ListNode:
+        slow = head
+        fast = head
+        # 快指针走到末尾时停止
+        while fast is not None and fast.next is not None:
+            # 慢指针走一步，快指针走两步
+            slow = slow.next
+            fast = fast.next.next
+        # 慢指针指向中点
+        return slow
 ``` 
 
 你可以点开可视化面板，点击 `while (fast !== null && fast.next !== null)` 这一行代码，可以看到快慢指针的运动过程：
@@ -516,25 +511,22 @@ class Solution {
 
 只需要把寻找链表中点的代码稍加修改就行了：
 
-```java
-public class Solution {
-    public boolean hasCycle(ListNode head) {
-        // 快慢指针初始化指向 head
-        ListNode slow = head, fast = head;
-        // 快指针走到末尾时停止
-        while (fast != null && fast.next != null) {
-            // 慢指针走一步，快指针走两步
-            slow = slow.next;
-            fast = fast.next.next;
-            // 快慢指针相遇，说明含有环
-            if (slow == fast) {
-                return true;
-            }
-        }
-        // 不包含环
-        return false;
-    }
-}
+```python
+class Solution:
+    # 快慢指针初始化指向 head
+    def hasCycle(self, head: ListNode) -> bool:
+        slow = head
+        fast = head
+        # 快指针走到末尾时停止
+        while fast is not None and fast.next is not None:
+            # 慢指针走一步，快指针走两步
+            slow = slow.next
+            fast = fast.next.next
+            # 快慢指针相遇，说明含有环
+            if slow == fast:
+                return True
+        # 不包含环
+        return False
 ``` 
 
 你可以打开下面的可视化面板，多次点击 `fast = fast.next.next;` 这一行代码，即可看到快慢指针运动的过程，最终相遇：
@@ -549,32 +541,28 @@ public class Solution {
 
 这里先直接看一下寻找环起点的解法代码：
 
-```java
-class Solution {
-    public ListNode detectCycle(ListNode head) {
-        ListNode fast, slow;
-        fast = slow = head;
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if (fast == slow) break; 
-        }
-        // 上面的代码类似 hasCycle 函数
-        if (fast == null || fast.next == null) {
-            // fast 遇到空指针说明没有环
-            return null;
-        }
-
-        // 重新指向头结点
-        slow = head; 
-        // 快慢指针同步前进，相交点就是环起点
-        while (slow != fast) {
-            fast = fast.next;
-            slow = slow.next;
-        }
-        return slow;
-    }
-}
+```python
+class Solution:
+    def detectCycle(self, head: ListNode):
+        fast, slow = head, head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+        
+        # 上面的代码类似 hasCycle 函数
+        if not fast or not fast.next:
+            # fast 遇到空指针说明没有环
+            return None
+        
+        # 重新指向头结点
+        slow = head 
+        # 快慢指针同步前进，相交点就是环起点
+        while slow != fast:
+            fast = fast.next
+            slow = slow.next
+        return slow
 ``` 
 
 你可以打开下面的可视化面板，多次点击 `fast = fast.next.next;` 这一行代码，即可看到快慢指针追逐相遇的过程；然后多次点击 `while (slow != fast)` 这一行代码，可以看到快慢指针同步前进，最终相遇在环的起点：
@@ -603,8 +591,8 @@ class Solution {
 
 这个问题有意思，也是力扣第 160 题「[相交链表](<https://leetcode.cn/problems/intersection-of-two-linked-lists/>)」函数签名如下：
 
-```java
-ListNode getIntersectionNode(ListNode headA, ListNode headB);
+```python
+def getIntersectionNode(headA: ListNode, headB: ListNode) -> ListNode:
 ``` 
 
 给你输入两个链表的头结点 `headA` 和 `headB`，这两个链表可能存在相交。
@@ -641,22 +629,17 @@ ListNode getIntersectionNode(ListNode headA, ListNode headB);
 
 按照这个思路，可以写出如下代码：
 
-```java
-public class Solution {
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        // p1 指向 A 链表头结点，p2 指向 B 链表头结点
-        ListNode p1 = headA, p2 = headB;
-        while (p1 != p2) {
-            // p1 走一步，如果走到 A 链表末尾，转到 B 链表
-            if (p1 == null) p1 = headB;
-            else            p1 = p1.next;
-            // p2 走一步，如果走到 B 链表末尾，转到 A 链表
-            if (p2 == null) p2 = headA;
-            else            p2 = p2.next;
-        }
-        return p1;
-    }
-}
+```python
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        # p1 指向 A 链表头结点，p2 指向 B 链表头结点
+        p1, p2 = headA, headB
+        while p1 != p2:
+            # p1 走一步，如果走到 A 链表末尾，转到 B 链表
+            p1 = headB if p1 is None else p1.next
+            # p2 走一步，如果走到 B 链表末尾，转到 A 链表
+            p2 = headA if p2 is None else p2.next
+        return p1
 ``` 
 
 你可以打开下面的可视化面板，多次点击 `while (p1 !== p2)` 这一行代码，即可看到两个指针在交点相遇的过程：
@@ -679,38 +662,36 @@ public class Solution {
 
 另外，还有读者提到，既然「寻找两条链表的交点」的核心在于让 `p1` 和 `p2` 两个指针能够同时到达相交节点 `c1`，那么可以通过预先计算两条链表的长度来做到这一点，具体代码如下：
 
-```java
-class Solution {
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        int lenA = 0, lenB = 0;
-        // 计算两条链表的长度
-        for (ListNode p1 = headA; p1 != null; p1 = p1.next) {
-            lenA++;
-        }
-        for (ListNode p2 = headB; p2 != null; p2 = p2.next) {
-            lenB++;
-        }
-        // 让 p1 和 p2 到达尾部的距离相同
-        ListNode p1 = headA, p2 = headB;
-        if (lenA > lenB) {
-            for (int i = 0; i < lenA - lenB; i++) {
-                p1 = p1.next;
-            }
-        } else {
-            for (int i = 0; i < lenB - lenA; i++) {
-                p2 = p2.next;
-            }
-        }
-        // 看两个指针是否会相同，p1 == p2 时有两种情况：
-        // 1、要么是两条链表不相交，他俩同时走到尾部空指针
-        // 2、要么是两条链表相交，他俩走到两条链表的相交点
-        while (p1 != p2) {
-            p1 = p1.next;
-            p2 = p2.next;
-        }
-        return p1;
-    }
-}
+```python
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        lenA, lenB = 0, 0
+        # 计算两条链表的长度
+        p1, p2 = headA, headB
+        while p1:
+            lenA += 1
+            p1 = p1.next
+        while p2:
+            lenB += 1
+            p2 = p2.next
+        
+        # 让 p1 和 p2 到达尾部的距离相同
+        p1, p2 = headA, headB
+        if lenA > lenB:
+            for _ in range(lenA - lenB):
+                p1 = p1.next
+        else:
+            for _ in range(lenB - lenA):
+                p2 = p2.next
+        
+        # 看两个指针是否会相同，p1 == p2 时有两种情况：
+        # 1、要么是两条链表不相交，他俩同时走到尾部空指针
+        # 2、要么是两条链表相交，他俩走到两条链表的相交点
+        while p1 != p2:
+            p1 = p1.next
+            p2 = p2.next
+        
+        return p1
 ``` 
 
 虽然代码多一些，但是时间复杂度是还是 O(N)O(N)O(N)，而且会更容易理解一些。
@@ -718,3 +699,7 @@ class Solution {
 总之，我的解法代码并不一定就是最优或者最正确的，鼓励大家在评论区多多提出自己的疑问和思考，我也很高兴和大家探讨更多的解题思路~
 
 到这里，链表相关的双指针技巧就全部讲完了，这些技巧的更多扩展延伸见 [更多链表双指针经典习题](</zh/algo/problem-set/linkedlist-two-pointers/>)。
+
+## 评论
+
+请登录后查看/发表评论

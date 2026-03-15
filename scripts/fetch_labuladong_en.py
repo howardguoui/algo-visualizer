@@ -263,8 +263,9 @@ def fetch_html(url: str) -> str | None:
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
-    dry_run = "--dry-run" in sys.argv
-    force   = "--force"   in sys.argv
+    dry_run = "--dry-run"    in sys.argv
+    force   = "--force"      in sys.argv
+    use_pw  = "--playwright" in sys.argv
 
     if dry_run:
         print(f"\nDRY RUN — {len(EN_SEED)} English URLs\n")
@@ -278,46 +279,64 @@ def main():
     saved = skipped = errors = 0
 
     print(f"\n{'='*58}")
-    print(f"  labuladong English archiver  (v2 — improved extraction)")
+    print(f"  labuladong English archiver  (v3 — preferred lang selection)")
     print(f"  Output : {OUTPUT_ROOT}")
     print(f"  Seeds  : {len(queue)}   force={force}")
+    if use_pw:
+        from _playwright_fetch import PREFER_LANGS
+        print(f"  Mode   : Playwright — prefers {' > '.join(PREFER_LANGS)}")
+    else:
+        print(f"  Mode   : urllib (SSR default, usually Java)")
+        print(f"  Tip    : add --playwright to get Python/JavaScript code")
     print(f"{'='*58}\n")
 
-    idx = 0
-    while queue:
-        path = queue.pop(0)
-        if path in visited:
-            continue
-        visited.add(path)
-        idx += 1
+    pw_session = None
+    if use_pw:
+        from _playwright_fetch import PlaywrightSession
+        pw_session = PlaywrightSession(HEADERS).__enter__()
 
-        url      = BASE_URL + path
-        out_path = en_path_to_file(path)
+    try:
+        idx = 0
+        while queue:
+            path = queue.pop(0)
+            if path in visited:
+                continue
+            visited.add(path)
+            idx += 1
 
-        print(f"[{idx:>3}] {path}")
+            url      = BASE_URL + path
+            out_path = en_path_to_file(path)
 
-        if out_path.exists() and not force:
-            print(f"       -> already exists, skipping")
-            skipped += 1
-            continue
+            print(f"[{idx:>3}] {path}")
 
-        html = fetch_html(url)
-        if html is None:
-            errors += 1
-            time.sleep(DELAY)
-            continue
+            if out_path.exists() and not force:
+                print(f"       -> already exists, skipping")
+                skipped += 1
+                continue
 
-        try:
-            md = extract_article(html, path, archive_label="labuladong.online")
-            out_path.parent.mkdir(parents=True, exist_ok=True)
-            out_path.write_text(md, encoding="utf-8")
-            print(f"       -> saved {out_path.name} ({len(md)//1024}KB)")
-            saved += 1
-        except Exception as e:
-            print(f"       -> ERROR: {e}")
-            errors += 1
+            html = pw_session.fetch(url) if use_pw else fetch_html(url)
+            if html is None:
+                errors += 1
+                if not use_pw:
+                    time.sleep(DELAY)
+                continue
 
-        time.sleep(DELAY)
+            try:
+                md = extract_article(html, path, archive_label="labuladong.online")
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                out_path.write_text(md, encoding="utf-8")
+                print(f"       -> saved {out_path.name} ({len(md)//1024}KB)")
+                saved += 1
+            except Exception as e:
+                print(f"       -> ERROR: {e}")
+                errors += 1
+
+            if not use_pw:
+                time.sleep(DELAY)
+
+    finally:
+        if pw_session:
+            pw_session.__exit__(None, None, None)
 
     print(f"\n{'='*58}")
     print(f"  Done!  Saved:{saved}  Skipped:{skipped}  Errors:{errors}")

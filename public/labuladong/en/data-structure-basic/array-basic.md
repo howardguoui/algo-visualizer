@@ -27,16 +27,19 @@ Static arrays are low-level and rarely used in everyday software development or 
 
 Here’s how to define a static array:
 
-```java
-// define a static array of size 10
-int[] arr = new int[10];
+```python
+# Seriously, Python does not have a way to define static arrays
+# We can use lists to simulate static arrays for now
 
-// assign values using indices
-arr[0] = 1;
-arr[1] = 2;
+# define a static array of size 10
+arr = [0] * 10
 
-// retrieve values using indices
-int a = arr[0];
+# assign values using index
+arr[0] = 1
+arr[1] = 2
+
+# retrieve values using index
+a = arr[0]
 ``` 
 
 That's it. There is not much more you can do with it.
@@ -91,21 +94,20 @@ For example, I have an array of size 10 with 4 elements. If I want to add a new 
 
 It's simple. Just set the value at the next available index. Here is how the code usually looks:
 
-```java
-// An array of size 10 already contains 4 elements
-int[] arr = new int[10];
-for (int i = 0; i < 4; i++) {
-    arr[i] = i;
-}
+```python
+# An array of size 10 already has 4 elements
+arr = [0] * 10
+for i in range(4):
+    arr[i] = i
 
-// Now want to append an element 4 at the end of the array
-arr[4] = 4;
+# Now we want to append an element 4 to the end of the array
+arr[4] = 4
 
-// Then append an element 5 at the end of the array
-arr[5] = 5;
+# Then append an element 5 to the end of the array
+arr[5] = 5
 
-// And so on
-// ...
+# And so on
+# ...
 ``` 
 
 **Since we are just setting a value at a specific index, appending an element to the end of the array takes O(1)O(1)O(1) time.**
@@ -116,23 +118,21 @@ Suppose I have an array `arr` of size 10, and the first 4 spots have values. If 
 
 Now, we need to "move data", making space for the new element. The steps are as follows:
 
-```java
-// An array of size 10 already has 4 elements
-int[] arr = new int[10];
-for (int i = 0; i < 4; i++) {
-    arr[i] = i;
-}
+```python
+# An array of size 10 has already been filled with 4 elements
+arr = [0] * 10
+for i in range(4):
+    arr[i] = i
 
-// Insert element 666 at the index 2
-// Need to move the elements from the index 2 and onwards one step back
-// Note that we should traverse the array backwards to avoid
-// overwriting existing elements, refer to the visual panel below if unclear
-for (int i = 4; i > 2; i--) {
-    arr[i] = arr[i - 1];
-}
+# Insert element 666 at the index 2
+# Need to move the elements from the index 2 and onwards one step back
+# Note that we should traverse the array in reverse order to avoid
+# overwriting, see the visualization panel below if you don't understand
+for i in range(4, 2, -1):
+    arr[i] = arr[i - 1]
 
-// Now the 3rd position is open, and we can insert the new element
-arr[2] = 666;
+# Now the 3rd position is empty, we can insert the new element
+arr[2] = 666
 ``` 
 
 Algorithm Visualization
@@ -153,26 +153,23 @@ For example, I create a new, larger array `int arr[20]`. I copy over the old 10 
 
 The code logic is something like this:
 
-```java
-// the array of size 10 is already full
-int[] arr = new int[10];
-for (int i = 0; i < 10; i++) {
-    arr[i] = i;
-}
+```python
+# The array of size 10 is already full
+arr = [i for i in range(10)]
 
-// now want to append an element 10 at the end of the array
-// need to expand the array first
-int[] newArr = new int[20];
-// copy the original 10 elements
-for (int i = 0; i < 10; i++) {
-    newArr[i] = arr[i];
-}
+# Now want to append an element 10 to the end of the array
+# Need to expand the array first
+newArr = [0] * 20
 
-// the old array's memory space will be handled by the garbage collector
-// ...
+# Copy the original 10 elements over
+for i in range(10):
+    newArr[i] = arr[i]
 
-// append the new element in the new larger array
-newArr[10] = 10;
+# Free the memory space of the old array
+# ...
+
+# Append the new element in the new large array
+newArr[10] = 10
 ``` 
 
 **So, expanding an array means creating a new bigger array and copying all the values, which takes O(N)O(N)O(N) time.**
@@ -189,15 +186,14 @@ This is easy. Just set the last element to a special value to show it is deleted
 
 Here’s how the code looks:
 
-```java
-// An array of size 10 already contains 5 elements
-int[] arr = new int[10];
-for (int i = 0; i < 5; i++) {
-    arr[i] = i;
-}
+```python
+# An array of size 10 already contains 5 elements
+arr = [0] * 10
+for i in range(5):
+    arr[i] = i
 
-// Delete the last element, temporarily use -1 to represent the deleted element
-arr[4] = -1;
+# Remove the last element, temporarily use -1 to represent the deleted element
+arr[4] = -1
 ``` 
 
 Case 2: Delete an element in the middle of the array
@@ -208,23 +204,21 @@ Again, we need to "move data". Move all elements after the deleted one forward b
 
 Here is the code logic:
 
-```java
-// An array of size 10 already contains 5 elements
-int[] arr = new int[10];
-for (int i = 0; i < 5; i++) {
-    arr[i] = i;
-}
+```python
+# An array of size 10 has already been filled with 5 elements
+arr = [0] * 10
+for i in range(5):
+    arr[i] = i
 
-// delete arr[1]
-// need to move all elements after arr[1] one position forward
-// note that you should traverse the array forward to avoid
-// overwriting, refer to the visualization panel below if you don't understand
-for (int i = 1; i < 4; i++) {
-    arr[i] = arr[i + 1];
-}
+# Delete arr[1]
+# Need to move all elements after arr[1] one position forward
+# Note that we should traverse the existing elements in the array forward to
+# avoid overwriting, see the visualization panel below if you don't understand
+for i in range(1, 4):
+    arr[i] = arr[i + 1]
 
-// set the last element to -1 to indicate deletion
-arr[4] = -1;
+# Set the last element to -1 to indicate deletion
+arr[4] = -1
 ``` 
 
 Algorithm Visualization
@@ -235,10 +229,10 @@ Algorithm Visualization
 
 To sum up, the time complexity for the main operations of static arrays is:
 
-  * Add:
+  * Add: 
     * Add an element at the end: O(1)O(1)O(1)
     * Insert an element in the middle (not at the end): O(N)O(N)O(N)
-  * Delete:
+  * Delete: 
     * Remove the last element: O(1)O(1)O(1)
     * Remove an element from the middle (not the end): O(N)O(N)O(N)
   * Access: Get the value at a given index, time complexity is O(1)O(1)O(1)
@@ -262,41 +256,44 @@ First, do not think that dynamic arrays can solve the problem of slow insert and
 
 Here are some ways to use dynamic arrays in different programming languages:
 
-```java
-// create a dynamic array
-// no need to explicitly specify array size, it will
-// automatically resize based on the number of elements stored
-ArrayList<Integer> arr = new ArrayList<>();
+```python
+# create a dynamic array
+# no need to explicitly specify the array size, it will
+# automatically expand and shrink based on the actual number of stored elements
+arr = []
 
-for (int i = 0; i < 10; i++) {
-    // append elements at the end, time complexity O(1)
-    arr.add(i);
-}
+for i in range(10):
+    # append elements to the end, time complexity O(1)
+    arr.append(i)
 
-// insert elements in the middle, time complexity O(N)
-// insert element 666 at index 2
-arr.add(2, 666);
+# insert elements in the middle, time complexity O(N)
+# insert element 666 at index 2
+arr.insert(2, 666)
 
-// insert elements at the beginning, time complexity O(N)
-arr.add(0, -1);
+# insert elements at the beginning, time complexity O(N)
+arr.insert(0, -1)
 
-// remove the last element, time complexity O(1)
-arr.remove(arr.size() - 1);
+# delete the last element, time complexity O(1)
+arr.pop()
 
-// remove elements in the middle, time complexity O(N)
-// remove element at index 2
-arr.remove(2);
+# delete elements in the middle, time complexity O(N)
+# delete the element at index 2
+arr.pop(2)
 
-// query element by index, time complexity O(1)
-int a = arr.get(0);
+# query elements by index, time complexity O(1)
+a = arr[0]
 
-// modify element by index, time complexity O(1)
-arr.set(0, 100);
+# modify elements by index, time complexity O(1)
+arr[0] = 100
 
-// find index by element value, time complexity O(N)
-int index = arr.indexOf(666);
+# find index by element value, time complexity O(N)
+index = arr.index(666)
 ``` 
 
 In the following chapters, I will teach you step by step how to implement a dynamic array, so you can understand its internal workings better.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

@@ -59,12 +59,16 @@ The problem is from [LeetCode 931. Minimum Falling Path Sum](<https://leetcode.c
 
 Here's the function signature:
 
-```java
-int minFallingPathSum(int[][] matrix);
+```python
+def minFallingPathSum(matrix: List[List[int]]) -> int
 ``` 
 
 This problem isn't particularly hard, so **I'm using it to demonstrate how to determine base case return values, memo initial values, and return values for out-of-bounds indices**.
 
 That said, let me walk through the solution following the [standard dynamic programming approach](</en/algo/essential-technique/dynamic-programming-framework/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

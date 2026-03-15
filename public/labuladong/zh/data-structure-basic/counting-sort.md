@@ -73,25 +73,20 @@ LeetCode| 力扣| 难度
 
 我们可以创建一个大小为 3 的 `count` 数组，`count[0], count[1], count[2]` 分别表示数组中 0、1、2 出现的次数。然后我们按照 `count` 数组的统计结果，依次填充原数组即可。
 
-```java
-class Solution {
-    public void sortColors(int[] nums) {
-        // 统计 0, 1, 2 出现的次数
-        int[] count = new int[3];
-        for (int element : nums) {
-            count[element]++;
-        }
+```python
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        # 统计 0, 1, 2 出现的次数
+        count = [0] * 3
+        for element in nums:
+            count[element] += 1
 
-        // 按照 count 数组的统计结果，依次填充原数组
-        int index = 0;
-        for (int element = 0; element < 3; element++) {
-            for (int i = 0; i < count[element]; i++) {
-                nums[index] = element;
-                index++;
-            }
-        }
-    }
-}
+        # 按照 count 数组的统计结果，依次填充原数组
+        index = 0
+        for element in range(3):
+            for _ in range(count[element]):
+                nums[index] = element
+                index += 1
 ``` 
 
 这就是一个简单的计数排序算法，不过这个题目给的场景比较简单，只有 `0, 1, 2` 三种元素，下面我们给出一个更通用的计数排序算法。
@@ -109,3 +104,7 @@ class Solution {
 3、因为计数排序需要将元素的值作为 `count` 数组的索引，那么如果数组中的最大元素的值很大时，会不会导致 `count` 数组太大，空间复杂度过高？
 
 下面我们来一步一步思考这些问题，尝试给出解法。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

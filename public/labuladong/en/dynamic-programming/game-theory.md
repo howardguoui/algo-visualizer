@@ -75,8 +75,8 @@ The problem is from [LeetCode 486. Predict the Winner](<https://leetcode.com/pro
 
 The function signature is as follows:
 
-```java
-boolean predictTheWinner(int[] nums);
+```python
+def predictTheWinner(nums: List[int]) -> bool:
 ``` 
 
 If you have a `stoneGame` function that calculates the score difference between the first and second players, the solution to this problem is straightforward:
@@ -206,54 +206,47 @@ for (int i = n - 2; i >= 0; i--) {
 
 How to implement the `fir` and `sec` tuples? You can use Python's built-in tuple type, or use C++'s `pair` container, or employ a three-dimensional array `dp[n][n][2]`, where the last dimension acts as a tuple. Alternatively, we can write a custom `Pair` class:
 
-```java
-class Pair {
-    int fir, sec;
-    Pair(int fir, int sec) {
-        this.fir = fir;
-        this.sec = sec;
-    }
-}
+```python
+class Pair:
+    def __init__(self, fir: int, sec: int):
+        self.fir = fir
+        self.sec = sec
 ``` 
 
 Then, directly translate our state transition equation into code, remembering to iterate the array in reverse:
 
-```java
-// Return the score difference between the first and second player at the end of the game
-int stoneGame(int[] piles) {
-    int n = piles.length;
-    // Initialize the dp array
-    Pair[][] dp = new Pair[n][n];
-    for (int i = 0; i < n; i++) 
-        for (int j = i; j < n; j++)
-            dp[i][j] = new Pair(0, 0);
-    // Fill in the base case
-    for (int i = 0; i < n; i++) {
-        dp[i][i].fir = piles[i];
-        dp[i][i].sec = 0;
-    }
+```python
+# Return the difference in scores between the first and second players at the end of the game
+def stoneGame(piles: List[int]) -> int:
+    n = len(piles)
+    # Initialize the dp array
+    dp = [[Pair(0, 0) for _ in range(n)] for _ in range(n)]
+    for i in range(n): 
+        for j in range(i, n):
+            dp[i][j] = Pair(0, 0)
+    # Fill in the base case
+    for i in range(n):
+        dp[i][i].fir = piles[i]
+        dp[i][i].sec = 0
 
-    // Traverse the array in reverse order
-    for (int i = n - 2; i >= 0; i--) {
-        for (int j = i + 1; j < n; j++) {
-            // The first player chooses the score from the leftmost or rightmost
-            int left = piles[i] + dp[i+1][j].sec;
-            int right = piles[j] + dp[i][j-1].sec;
-            // Apply the state transition equation
-            // The first player will definitely choose the larger result, and
-            // the second player's choice will change accordingly
-            if (left > right) {
-                dp[i][j].fir = left;
-                dp[i][j].sec = dp[i+1][j].fir;
-            } else {
-                dp[i][j].fir = right;
-                dp[i][j].sec = dp[i][j-1].fir;
-            }
-        }
-    }
-    Pair res = dp[0][n-1];
-    return res.fir - res.sec;
-}
+    # Traverse the array in reverse
+    for i in range(n - 2, -1, -1):
+        for j in range(i + 1, n):
+            # The first player chooses the score from the leftmost or rightmost
+            left = piles[i] + dp[i+1][j].sec
+            right = piles[j] + dp[i][j-1].sec
+            # Apply the state transition equation
+            # The first player will definitely choose the larger result, and
+            # the second player's choice will change accordingly
+            if left > right:
+                dp[i][j].fir = left
+                dp[i][j].sec = dp[i+1][j].fir
+            else:
+                dp[i][j].fir = right
+                dp[i][j].sec = dp[i][j-1].fir
+
+    res = dp[0][n-1]
+    return res.fir - res.sec
 ``` 
 
 Dynamic programming solutions can be quite confusing without the guidance of state transition equations. However, with the detailed explanation provided earlier, readers should clearly understand the essence of this code segment.
@@ -268,4 +261,8 @@ The reason for such design is that after the first player makes a choice, they b
 
 Readers at this point should understand the algorithmic approach to solving game problems. When learning algorithms, focus on the template framework rather than seemingly sophisticated ideas, and don't expect to write an optimal solution immediately. Don't hesitate to use more space, avoid premature optimization, and don't fear multidimensional arrays. The `dp` array is for storing information to avoid redundant calculations. Use it freely until you are satisfied.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

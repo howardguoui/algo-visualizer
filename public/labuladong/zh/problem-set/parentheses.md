@@ -17,10 +17,16 @@
 
   * [队列/栈的原理](</zh/algo/data-structure-basic/queue-stack-basic/>)
 
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)
+
 此页内容
 
-  * 20\. 有效的括号
-  * 921\. 使括号有效的最小添加
-  * 1541\. 平衡括号串的最少插入
-
 AI 助教
+
+### AI 助教上线
+
+点击右下角的按钮就能唤出网站配套的「AI 助教」答疑解惑，能大幅提升学习效率，效果非常好！ 还没用过的话可以试一试~
+
+[了解详情](</zh/algo/intro/ai-assistant/>)

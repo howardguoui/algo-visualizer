@@ -43,15 +43,13 @@ Let’s look at a few examples for a more intuitive understanding.
 
 **Example 1: Time Complexity O(n)O(n)O(n), Space Complexity O(1)O(1)O(1)**
 
-```java
-// input an integer array, return the sum of all elements
-int getSum(int[] nums) {
-    int sum = 0;
-    for (int i = 0; i < nums.length; i++) {
-        sum += nums[i];
-    }
-    return sum;
-}
+```python
+# input an integer array, return the sum of all elements
+def getSum(nums: List[int]) -> int:
+    sum = 0
+    for i in range(len(nums)):
+        sum += nums[i]
+    return sum
 ``` 
 
 The algorithm uses a for loop to go through the `nums` array, so the time complexity is O(n)O(n)O(n), where `n` is the length of `nums`.
@@ -60,18 +58,15 @@ We only use a variable `sum`. The `nums` array is given as input by the problem,
 
 **Example 2: Time Complexity O(n)O(n)O(n), Space Complexity O(1)O(1)O(1)**
 
-```java
-// Calculate the sum when n is a multiple of 10, otherwise return -1
-int sum(int n) {
-    if (n % 10 != 0) {
-        return -1;
-    }
-    int sum = 0;
-    for (int i = 0; i <= n; i++) {
-        sum += i;
-    }
-    return sum;
-}
+```python
+# Calculate the sum when n is a multiple of 10, otherwise return -1
+def sum(n: int) -> int:
+    if n % 10 != 0:
+        return -1
+    sum = 0
+    for i in range(n + 1):
+        sum += i
+    return sum
 ``` 
 
 Actually, the for loop only runs if `n` is a multiple of 10, so the time complexity is O(n)O(n)O(n). In other cases, the algorithm returns directly, so the time complexity is O(1)O(1)O(1).
@@ -80,18 +75,14 @@ But when we analyze algorithm complexity, we only care about the worst case. So 
 
 **Example 3: Time Complexity O(n2)O(n^2)O(n2), Space Complexity O(1)O(1)O(1)**
 
-```java
-// Does the array contain two numbers whose sum is target?
-boolean hasTargetSum(int[] nums, int target) {
-    for (int i = 0; i < nums.length; i++) {
-        for (int j = i + 1; j < nums.length; j++) {
-            if (nums[i] + nums[j] == target) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
+```python
+# Does the array contain two numbers whose sum is target?
+def hasTargetSum(nums: List[int], target: int) -> bool:
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[i] + nums[j] == target:
+                return True
+    return False
 ``` 
 
 The algorithm has two nested for loops, so the time complexity is O(n2)O(n^2)O(n2), where nnn is the length of `nums`.
@@ -106,10 +97,9 @@ Each for loop has O(n)O(n)O(n) time complexity in the worst case, so putting the
 
 **Example 4: Time Complexity O(n)O(n)O(n), Space Complexity O(n)O(n)O(n)**
 
-```java
-void exampleFn(int n) {
-    int[] nums = new int[n];
-}
+```python
+def exampleFn(n: int):
+    nums = [0] * n
 ``` 
 
 This function creates an array of size `n`, so the space complexity is O(n)O(n)O(n).
@@ -120,16 +110,14 @@ Time complexity is not only about visible for loops. Every line of code could ha
 
 **Example 5: Time Complexity O(n)O(n)O(n), Space Complexity O(n)O(n)O(n)**
 
-```java
-// input an integer array, return a new array where each element is
-// the square of the corresponding element in the original array
-int[] squareArray(int[] nums) {
-    int[] res = new int[nums.length];
-    for (int i = 0; i < nums.length; i++) {
-        res[i] = nums[i] * nums[i];
-    }
-    return res;
-}
+```python
+# input an integer array, return a new array where each element is
+# the square of the corresponding element in the original array
+def squareArray(nums: List[int]) -> List[int]:
+    res = [0] * len(nums)
+    for i in range(len(nums)):
+        res[i] = nums[i] * nums[i]
+    return res
 ``` 
 
 Setting up the array `res` takes O(n)O(n)O(n) time, and there is a for loop with time complexity O(n)O(n)O(n). So the total time complexity is O(n)O(n)O(n), where `n` is the length of `nums`.
@@ -138,4 +126,8 @@ We create a new array `res`, which has the same length as `nums`, so the space c
 
 If you understand the basic complexity analysis above, that is good enough for now. Let's keep learning.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

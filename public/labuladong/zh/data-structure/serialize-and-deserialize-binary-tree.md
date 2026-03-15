@@ -79,15 +79,16 @@ JSON 的运用非常广泛，比如我们经常将编程语言中的结构体序
 
 力扣第 297 题「[二叉树的序列化与反序列化](<https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/>)」就是给你输入一棵二叉树的根节点 `root`，要求你实现如下一个类：
 
-```java
-public class Codec {
+```python
+class Codec:
+    
+    # 把一棵二叉树序列化成字符串
+    def serialize(self, root: TreeNode) -> str:
+        pass
 
-    // 把一棵二叉树序列化成字符串
-    public String serialize(TreeNode root) {}
-
-    // 把字符串反序列化成二叉树
-    public TreeNode deserialize(String data) {}
-}
+    # 把字符串反序列化成二叉树
+    def deserialize(self, data: str) -> TreeNode:
+        pass
 ``` 
 
 我们可以用 `serialize` 方法将二叉树序列化成字符串，用 `deserialize` 方法将序列化的字符串反序列化成二叉树，至于以什么格式序列化和反序列化，这个完全由你决定。
@@ -108,23 +109,21 @@ public class Codec {
 
 前文 [二叉树的遍历基础](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>) 说过了二叉树的几种遍历方式，在前序位置收集节点，即可获得前序遍历结果：
 
-```java
-LinkedList<Integer> res;
+```python
+res = []
 
-void traverse(TreeNode root) {
-    if (root == null) {
-        // 暂且用数字 -1 代表空指针 null
-        res.addLast(-1);
-        return;
-    }
+def traverse(root):
+    if root is None:
+        # 暂且用数字 -1 代表空指针 null
+        res.append(-1)
+        return
 
-    // ****** 前序位置 ********
-    res.addLast(root.val);
-    // ***********************
+    # ****** 前序位置 ******
+    res.append(root.val)
+    # **********************
 
-    traverse(root.left);
-    traverse(root.right);
-}
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 调用 `traverse` 函数之后，你是否可以立即想出这个 `res` 列表中元素的顺序是怎样的？比如如下二叉树（`#` 代表空指针 null），可以直观看出前序遍历做的事情：
@@ -135,72 +134,67 @@ void traverse(TreeNode root) {
 
 那么，将二叉树打平到一个字符串中也是完全一样的：
 
-```java
-// 代表分隔符的字符
-String SEP = ",";
+```python
+# 代表分隔符的字符
+SEP = ","
+# 代表 null 空指针的字符
+NULL = "#"
 
-// 代表 null 空指针的字符
-String NULL = "#";
+# 用于拼接字符串
+sb = []
 
-// 用于拼接字符串
-StringBuilder sb = new StringBuilder();
+# 将二叉树打平为字符串
+def traverse(root, sb):
+    if root == None:
+        sb.append(NULL).append(SEP)
+        return
 
-// 将二叉树打平为字符串
-void traverse(TreeNode root, StringBuilder sb) {
-    if (root == null) {
-        sb.append(NULL).append(SEP);
-        return;
-    }
+    # ***** 前序位置 *****
+    sb.append(str(root.val)).append(SEP)
+    # *******************
 
-    // ***** 前序位置 *****
-    sb.append(root.val).append(SEP);
-    // *********************
-
-    traverse(root.left, sb);
-    traverse(root.right, sb);
-}
+    traverse(root.left, sb)
+    traverse(root.right, sb)
 ``` 
 
 这段代码依然是收集前序遍历结果，用 `,` 作为分隔符，用 `#` 表示空指针 null，调用完 `traverse` 函数后，`sb` 中的字符串应该是 `1,2,#,4,#,#,3,#,#,`。
 
 至此，我们已经可以写出序列化函数 `serialize` 的代码了：
 
-```java
-class Codec {
-    String SEP = ",";
-    String NULL = "#";
+```python
+class Codec:
+    SEP = ","
+    NULL = "#"
 
-    // 主函数，将二叉树序列化为字符串
-    public String serialize(TreeNode root) {
-        StringBuilder sb = new StringBuilder();
-        _serialize(root, sb);
-        return sb.toString();
-    }
+    # 主函数，将二叉树序列化为字符串
+    def serialize(self, root):
+        sb = []
+        self._serialize(root, sb)
+        return "".join(sb)
 
-    // 辅助函数，将二叉树存入 StringBuilder
-    void _serialize(TreeNode root, StringBuilder sb) {
-        if (root == null) {
-            sb.append(NULL).append(SEP);
-            return;
-        }
+    # 辅助函数，将二叉树存入 StringBuilder
+    def _serialize(self, root, sb):
+        if root is None:
+            sb.append(self.NULL)
+            sb.append(self.SEP)
+            return
 
-        // ****** 前序位置 ********
-        sb.append(root.val).append(SEP); 
-        // ***********************
+        # ****** 前序位置 ********
+        sb.append(str(root.val))
+        sb.append(self.SEP)
+        # ***********************
 
-        _serialize(root.left, sb);
-        _serialize(root.right, sb);
-    }
-}
+        self._serialize(root.left, sb)
+        self._serialize(root.right, sb)
 ``` 
 
 现在，思考一下如何写 `deserialize` 函数，将字符串反过来构造二叉树。
 
 首先我们可以把字符串转化成列表：
 
-```java
-String data = "1,2,#,4,#,#,3,#,#,";
-String[] nodes = data.split(",");
+```python
+data = "1,2,#,4,#,#,3,#,#,"
+nodes = data.split(",")
 ``` 
 
 这样，`nodes` 列表就是二叉树的前序遍历结果，问题转化为：如何通过二叉树的前序遍历结果还原一棵二叉树？
@@ -214,3 +208,7 @@ Tip
 ![diagram](https://labuladong.online/images/algo/binary-tree-serialization/1.jpeg)
 
 那么，反序列化过程也是一样，**先确定根节点`root`，然后遵循前序遍历的规则，递归生成左右子树即可**：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

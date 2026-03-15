@@ -48,6 +48,10 @@ OIDC 是构建在 OAuth 2.0 之上的**认证协议层** ，它在 OAuth 2.0 的
 
 接下来是 OIDC 授权码流程的时序图：
 
-加载图表...
+Google授权服务器ExampleNote服务器用户浏览器Google授权服务器ExampleNote服务器用户浏览器1\. 点击"用 Google 登录"2\. 生成随机 nonce保存到用户 Session3\. 重定向到 Google 授权页面 URL 中包含 nonce 和 scope=openid,drive.readonly4\. 访问授权页面5\. 显示登录页面6\. 输入 Google 账号密码7\. 重定向回 ExampleNote(带上授权码 code)8\. 浏览器访问回调地址(URL 中包含 code)9\. 用 code + client_secret换取 ID Token 和 Access Token10\. 返回 ID Token 和 Access Token11\. 验证 ID Token 签名和 nonce12\. 用户登录成功
 
 具体到流程上，主要的区别在 [OAuth 2.0 授权流程](</zh/algo/computer-science/oauth2-explained/>) 中重定向到 Google 授权页面时，URL 中的参数不同。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -70,9 +70,9 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 207. 课程表](<https://leetcode.cn/problems/course-schedule/>)。
 
-```java
-// 函数签名如下
-boolean canFinish(int numCourses, int[][] prerequisites);
+```python
+# 函数签名如下
+def canFinish(numCourses: int, prerequisites: List[List[int]]) -> bool:
 ``` 
 
 题目应该不难理解，什么时候无法修完所有课程？当存在循环依赖的时候。
@@ -93,21 +93,18 @@ boolean canFinish(int numCourses, int[][] prerequisites);
 
 前文 [图结构的存储](</zh/algo/data-structure-basic/graph-basic/>) 写过图的两种存储形式，邻接矩阵和邻接表。这里我就用邻接表形式存储图吧，写一个建图函数：
 
-```java
-List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-    // 图中共有 numCourses 个节点
-    List<Integer>[] graph = new LinkedList[numCourses];
-    for (int i = 0; i < numCourses; i++) {
-        graph[i] = new LinkedList<>();
-    }
-    for (int[] edge : prerequisites) {
-        int from = edge[1], to = edge[0];
-        // 添加一条从 from 指向 to 的有向边
-        // 边的方向是「被依赖」关系，即修完课程 from 才能修课程 to
-        graph[from].add(to);
-    }
-    return graph;
-}
+```python
+from typing import List
+
+def buildGraph(numCourses: int, prerequisites: List[List[int]]) -> List[List[int]]:
+    # 图中共有 numCourses 个节点
+    graph = [[] for _ in range(numCourses)]
+    for edge in prerequisites:
+        from_, to_ = edge[1], edge[0]
+        # 添加一条从 from 指向 to 的有向边
+        # 边的方向是「被依赖」关系，即修完课程 from 才能修课程 to
+        graph[from_].append(to_)
+    return graph
 ``` 
 
 图建出来了，怎么判断图中有没有环呢？
@@ -120,52 +117,46 @@ List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
 
 基于这个思路，先看第一版代码（会超时）：
 
-```java
-class Solution {
-    // 记录递归堆栈中的节点
-    boolean[] onPath;
-    // 记录图中是否有环
-    boolean hasCycle = false;
+```python
+class Solution:
+    def __init__(self):
+        # 记录递归堆栈中的节点
+        self.onPath = []
+        # 记录图中是否有环
+        self.hasCycle = False
 
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = self.buildGraph(numCourses, prerequisites)
         
-        onPath = new boolean[numCourses];
+        self.onPath = [False] * numCourses
         
-        for (int i = 0; i < numCourses; i++) {
-            // 遍历图中的所有节点
-            traverse(graph, i);
-        }
-        // 只要没有循环依赖可以完成所有课程
-        return !hasCycle;
-    }
+        for i in range(numCourses):
+            # 遍历图中的所有节点
+            self.traverse(graph, i)
+        # 只要没有循环依赖可以完成所有课程
+        return not self.hasCycle
 
-    // 图遍历函数，遍历所有路径
-    void traverse(List<Integer>[] graph, int s) {
-        if (hasCycle) {
-            // 如果已经找到了环，也不用再遍历了
-            return;
-        }
+    # 图遍历函数，遍历所有路径
+    def traverse(self, graph: List[List[int]], s: int):
+        if self.hasCycle:
+            # 如果已经找到了环，也不用再遍历了
+            return
 
-        if (onPath[s]) {
-            // s 已经在递归路径上，说明成环了
-            hasCycle = true; 
-            return;
-        }
+        if self.onPath[s]:
+            # s 已经在递归路径上，说明成环了
+            self.hasCycle = True
+            return
         
-        // 前序代码位置
-        onPath[s] = true;
-        for (int t : graph[s]) {
-            traverse(graph, t);
-        }
-        // 后序代码位置
-        onPath[s] = false;
-    }
-
-    List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-        // 代码见前文
-    }
-}
+        # 前序代码位置
+        self.onPath[s] = True
+        for t in graph[s]:
+            self.traverse(graph, t)
+        # 后序代码位置
+        self.onPath[s] = False
+    
+    def buildGraph(self, numCourses: int, prerequisites: List[List[int]]) -> List[List[int]]:
+        # 代码见前文
+        pass
 ``` 
 
 注意图中并不是所有节点都相连，所以要用一个 for 循环将所有节点都作为起点调用一次 DFS 搜索算法。
@@ -184,61 +175,54 @@ class Solution {
 
 优化后的代码如下：
 
-```java
-class Solution {
-    // 记录一次递归堆栈中的节点
-    boolean[] onPath;
-    // 记录节点是否被遍历过
-    boolean[] visited;
-    // 记录图中是否有环
-    boolean hasCycle = false;
+```python
+class Solution:
+    def __init__(self):
+        # 记录一次递归堆栈中的节点
+        self.onPath = []
+        # 记录节点是否被遍历过
+        self.visited = []
+        # 记录图中是否有环
+        self.hasCycle = False
 
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = self.buildGraph(numCourses, prerequisites)
         
-        onPath = new boolean[numCourses];
-        visited = new boolean[numCourses];
+        self.onPath = [False] * numCourses
+        self.visited = [False] * numCourses
         
-        for (int i = 0; i < numCourses; i++) {
-            // 遍历图中的所有节点
-            traverse(graph, i);
-        }
-        // 只要没有循环依赖可以完成所有课程
-        return !hasCycle;
-    }
+        for i in range(numCourses):
+            # 遍历图中的所有节点
+            self.traverse(graph, i)
+        # 只要没有循环依赖可以完成所有课程
+        return not self.hasCycle
 
-    // 图遍历函数，遍历所有路径
-    void traverse(List<Integer>[] graph, int s) {
-        if (hasCycle) {
-            // 如果已经找到了环，也不用再遍历了
-            return;
-        }
+    # 图遍历函数，遍历所有路径
+    def traverse(self, graph: List[List[int]], s: int):
+        if self.hasCycle:
+            # 如果已经找到了环，也不用再遍历了
+            return
 
-        if (onPath[s]) {
-            // s 已经在递归路径上，说明成环了
-            hasCycle = true; 
-            return;
-        }
+        if self.onPath[s]:
+            # s 已经在递归路径上，说明成环了
+            self.hasCycle = True
+            return
         
-        if (visited[s]) {
-            // 不用再重复遍历已遍历过的节点
-            return;
-        }
+        if self.visited[s]:
+            # 不用再重复遍历已遍历过的节点
+            return
 
-        // 前序代码位置
-        visited[s] = true;
-        onPath[s] = true;
-        for (int t : graph[s]) {
-            traverse(graph, t);
-        }
-        // 后序代码位置
-        onPath[s] = false;
-    }
-
-    List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-        // 代码见前文
-    }
-}
+        # 前序代码位置
+        self.visited[s] = True
+        self.onPath[s] = True
+        for t in graph[s]:
+            self.traverse(graph, t)
+        # 后序代码位置
+        self.onPath[s] = False
+    
+    def buildGraph(self, numCourses: int, prerequisites: List[List[int]]) -> List[List[int]]:
+        # 代码见前文
+        pass
 ``` 
 
 `visited` 为 true 的节点为绿色，`onPath` 为 true 的节点为橙色。
@@ -273,54 +257,47 @@ class Solution {
 
 直接看 BFS 算法的解法代码：
 
-```java
-class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        // 建图，有向边代表「被依赖」关系
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-        // 构建入度数组
-        int[] indegree = new int[numCourses];
-        for (int[] edge : prerequisites) {
-            int from = edge[1], to = edge[0];
-            // 节点 to 的入度加一
-            indegree[to]++;
-        }
+```python
+class Solution:
 
-        // 根据入度初始化队列中的节点
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < numCourses; i++) {
-            if (indegree[i] == 0) {
-                // 节点 i 没有入度，即没有依赖的节点
-                // 可以作为拓扑排序的起点，加入队列
-                q.offer(i); 
-            }
-        }
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # 建图，有向边代表「被依赖」关系
+        graph = self.buildGraph(numCourses, prerequisites)
+        # 构建入度数组
+        indegree = [0] * numCourses
+        for edge in prerequisites:
+            from_, to = edge[1], edge[0]
+            # 节点 to 的入度加一
+            indegree[to] += 1
 
-        // 记录遍历的节点个数
-        int count = 0;
-        // 开始执行 BFS 循环
-        while (!q.isEmpty()) {
-            // 弹出节点 cur，并将它指向的节点的入度减一
-            int cur = q.poll();
-            count++;
-            for (int next : graph[cur]) { 
-                indegree[next]--;
-                if (indegree[next] == 0) {
-                    // 如果入度变为 0，说明 next 依赖的节点都已被遍历
-                    q.offer(next);
-                }
-            }
-        }
+        # 根据入度初始化队列中的节点
+        q = collections.deque()
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                # 节点 i 没有入度，即没有依赖的节点
+                # 可以作为拓扑排序的起点，加入队列
+                q.append(i) 
 
-        // 如果所有节点都被遍历过，说明不成环
-        return count == numCourses;
-    }
+        # 记录遍历的节点个数
+        count = 0
+        # 开始执行 BFS 循环
+        while q:
+            # 弹出节点 cur，并将它指向的节点的入度减一
+            cur = q.popleft()
+            count += 1
+            for next_ in graph[cur]: 
+                indegree[next_] -= 1
+                if indegree[next_] == 0:
+                    # 如果入度变为 0，说明 next 依赖的节点都已被遍历
+                    q.append(next_)
 
-    // 建图函数
-    List<Integer>[] buildGraph(int n, int[][] edges) {
-        // 见前文
-    }
-}
+        # 如果所有节点都被遍历过，说明不成环
+        return count == numCourses
+
+    # 建图函数
+    def buildGraph(self, n, edges):
+        # 见前文
+        pass
 ``` 
 
 我先总结下这段 BFS 算法的思路：
@@ -378,3 +355,7 @@ class Solution {
 最后留一个思考题：
 
 对于 BFS 的环检测算法，如果问你形成环的节点具体是哪些，你应该如何实现呢？
+
+## 评论
+
+请登录后查看/发表评论

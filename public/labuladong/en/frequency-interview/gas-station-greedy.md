@@ -90,4 +90,8 @@ In our previous article [Dynamic Programming Explained](</en/algo/essential-tech
 
 Below, we introduce two clever methods to solve this problem: the mathematical graph method and the greedy method.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

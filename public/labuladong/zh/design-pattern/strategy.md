@@ -46,83 +46,65 @@ class ReportExporter {
 
 用策略模式来重构。首先把「格式化」这个会变化的行为抽象成一个接口：
 
-```java
-// 策略接口：定义导出格式的通用行为
-interface ExportStrategy {
-    String export(String title, String content);
-}
+```python
+from abc import ABC, abstractmethod
+
+# 策略接口：定义导出格式的通用行为
+class ExportStrategy(ABC):
+    @abstractmethod
+    def export(self, title: str, content: str) -> str:
+        pass
 ``` 
 
 然后每种格式各写一个策略类：
 
-```java
-// Markdown 格式策略
-class MarkdownExporter implements ExportStrategy {
-    @Override
-    public String export(String title, String content) {
-        return "# " + title + "\n\n" + content;
-    }
-}
+```python
+# Markdown 格式策略
+class MarkdownExporter(ExportStrategy):
+    def export(self, title: str, content: str) -> str:
+        return f"# {title}\n\n{content}"
 
-// HTML 格式策略
-class HtmlExporter implements ExportStrategy {
-    @Override
-    public String export(String title, String content) {
-        return "<h1>" + title + "</h1>\n<p>" + content + "</p>";
-    }
-}
+# HTML 格式策略
+class HtmlExporter(ExportStrategy):
+    def export(self, title: str, content: str) -> str:
+        return f"<h1>{title}</h1>\n<p>{content}</p>"
 
-// 纯文本格式策略
-class PlainTextExporter implements ExportStrategy {
-    @Override
-    public String export(String title, String content) {
-        return title.toUpperCase() + "\n"
-                + "=".repeat(title.length()) + "\n"
-                + content;
-    }
-}
+# 纯文本格式策略
+class PlainTextExporter(ExportStrategy):
+    def export(self, title: str, content: str) -> str:
+        return title.upper() + "\n" + "=" * len(title) + "\n" + content
 ``` 
 
 最后修改 `ReportExporter`，让它不再关心具体的格式化逻辑，只需要持有一个策略对象并调用它：
 
-```java
-class ReportExporter {
-    private ExportStrategy strategy;
+```python
+class ReportExporter:
+    def __init__(self, strategy: ExportStrategy):
+        self._strategy = strategy
 
-    public ReportExporter(ExportStrategy strategy) {
-        this.strategy = strategy;
-    }
+    # 运行时可以切换策略
+    def set_strategy(self, strategy: ExportStrategy):
+        self._strategy = strategy
 
-    // 运行时可以切换策略
-    public void setStrategy(ExportStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public String export(String title, String content) {
-        return strategy.export(title, content);
-    }
-}
+    def export(self, title: str, content: str) -> str:
+        return self._strategy.export(title, content)
 ``` 
 
 客户端使用起来很简洁：
 
-```java
-public class Main {
-    public static void main(String[] args) {
-        ReportExporter exporter = new ReportExporter(new MarkdownExporter());
+```python
+if __name__ == "__main__":
+    exporter = ReportExporter(MarkdownExporter())
+    print(exporter.export("Monthly Report", "Sales grew by 20% this month"))
+    # # Monthly Report
+    #
+    # Sales grew by 20% this month
 
-        System.out.println(exporter.export("Monthly Report", "Sales grew by 20% this month"));
-        // # Monthly Report
-        //
-        // Sales grew by 20% this month
-
-        // 需要 HTML 格式？换个策略就行
-        exporter.setStrategy(new HtmlExporter());
-        System.out.println(exporter.export("Monthly Report", "Sales grew by 20% this month"));
-        // <h1>Monthly Report</h1>
-        // <p>Sales grew by 20% this month</p>
-    }
-}
+    # 需要 HTML 格式？换个策略就行
+    exporter.set_strategy(HtmlExporter())
+    print(exporter.export("Monthly Report", "Sales grew by 20% this month"))
+    # <h1>Monthly Report</h1>
+    # <p>Sales grew by 20% this month</p>
 ``` 
 
 if-else 消失了。如果以后要加 LaTeX 格式，只需要新建一个 `LatexExporter` 实现 `ExportStrategy` 接口，完全不用动已有代码。每个策略类只负责自己的格式化逻辑，职责清晰，互不干扰。
@@ -143,95 +125,77 @@ if-else 消失了。如果以后要加 LaTeX 格式，只需要新建一个 `Lat
 
 定义策略接口和三种具体策略：
 
-```java
-// 战斗策略接口
-interface BattleStrategy {
-    String decideAction(int myHp, int enemyHp);
-}
+```python
+from abc import ABC, abstractmethod
 
-// 激进型：不管不顾，全力输出
-class AggressiveStrategy implements BattleStrategy {
-    @Override
-    public String decideAction(int myHp, int enemyHp) {
-        return "Full attack! Deal 30 damage";
-    }
-}
+# 战斗策略接口
+class BattleStrategy(ABC):
+    @abstractmethod
+    def decide_action(self, my_hp: int, enemy_hp: int) -> str:
+        pass
 
-// 防御型：以防御为主
-class DefensiveStrategy implements BattleStrategy {
-    @Override
-    public String decideAction(int myHp, int enemyHp) {
-        return "Raise shield, reduce 50% incoming damage";
-    }
-}
+# 激进型：不管不顾，全力输出
+class AggressiveStrategy(BattleStrategy):
+    def decide_action(self, my_hp: int, enemy_hp: int) -> str:
+        return "Full attack! Deal 30 damage"
 
-// 狡猾型：看情况行事
-class CunningStrategy implements BattleStrategy {
-    @Override
-    public String decideAction(int myHp, int enemyHp) {
-        if (enemyHp < 30) {
-            return "Enemy is weak, go for the kill! Deal 40 damage";
-        }
-        return "Probe cautiously, deal 10 damage";
-    }
-}
+# 防御型：以防御为主
+class DefensiveStrategy(BattleStrategy):
+    def decide_action(self, my_hp: int, enemy_hp: int) -> str:
+        return "Raise shield, reduce 50% incoming damage"
+
+# 狡猾型：看情况行事
+class CunningStrategy(BattleStrategy):
+    def decide_action(self, my_hp: int, enemy_hp: int) -> str:
+        if enemy_hp < 30:
+            return "Enemy is weak, go for the kill! Deal 40 damage"
+        return "Probe cautiously, deal 10 damage"
 ``` 
 
 然后定义游戏角色（上下文），它持有一个策略引用：
 
-```java
-class GameCharacter {
-    private String name;
-    private int hp;
-    private BattleStrategy strategy;
+```python
+class GameCharacter:
+    def __init__(self, name: str, hp: int, strategy: BattleStrategy):
+        self.name = name
+        self.hp = hp
+        self._strategy = strategy
 
-    public GameCharacter(String name, int hp, BattleStrategy strategy) {
-        this.name = name;
-        this.hp = hp;
-        this.strategy = strategy;
-    }
+    def set_strategy(self, strategy: BattleStrategy):
+        self._strategy = strategy
 
-    public void setStrategy(BattleStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public void takeTurn(int enemyHp) {
-        String action = strategy.decideAction(hp, enemyHp);
-        System.out.println(name + ": " + action);
-    }
-}
+    def take_turn(self, enemy_hp: int):
+        action = self._strategy.decide_action(self.hp, enemy_hp)
+        print(f"{self.name}: {action}")
 ``` 
 
 看客户端如何使用：
 
-```java
-public class Main {
-    public static void main(String[] args) {
-        // 游戏设计师给不同 NPC 分配不同的行为策略
-        GameCharacter warrior = new GameCharacter("Warrior", 100, new AggressiveStrategy());
-        GameCharacter guardian = new GameCharacter("Guardian", 120, new DefensiveStrategy());
-        GameCharacter assassin = new GameCharacter("Assassin", 80, new CunningStrategy());
+```python
+if __name__ == "__main__":
+    # 游戏设计师给不同 NPC 分配不同的行为策略
+    warrior = GameCharacter("Warrior", 100, AggressiveStrategy())
+    guardian = GameCharacter("Guardian", 120, DefensiveStrategy())
+    assassin = GameCharacter("Assassin", 80, CunningStrategy())
 
-        // 各自按照自己的策略行动
-        warrior.takeTurn(80);
-        // Warrior: Full attack! Deal 30 damage
+    # 各自按照自己的策略行动
+    warrior.take_turn(80)
+    # Warrior: Full attack! Deal 30 damage
 
-        guardian.takeTurn(80);
-        // Guardian: Raise shield, reduce 50% incoming damage
+    guardian.take_turn(80)
+    # Guardian: Raise shield, reduce 50% incoming damage
 
-        assassin.takeTurn(100);
-        // Assassin: Probe cautiously, deal 10 damage
+    assassin.take_turn(100)
+    # Assassin: Probe cautiously, deal 10 damage
 
-        assassin.takeTurn(25);
-        // Assassin: Enemy is weak, go for the kill! Deal 40 damage
+    assassin.take_turn(25)
+    # Assassin: Enemy is weak, go for the kill! Deal 40 damage
 
-        // 玩家对守卫使用了「激怒」技能，迫使守卫切换为激进模式
-        System.out.println("\nPlayer used 'Enrage' on Guardian!");
-        guardian.setStrategy(new AggressiveStrategy());
-        guardian.takeTurn(80);
-        // Guardian: Full attack! Deal 30 damage
-    }
-}
+    # 玩家对守卫使用了「激怒」技能，迫使守卫切换为激进模式
+    print("\nPlayer used 'Enrage' on Guardian!")
+    guardian.set_strategy(AggressiveStrategy())
+    guardian.take_turn(80)
+    # Guardian: Full attack! Deal 30 damage
 ``` 
 
 这个例子的关键在于最后几行：玩家使用「激怒」技能后，守卫的行为从防御型切换为了激进型。`GameCharacter` 完全不关心当前用的是什么策略，只管调用 `strategy.decideAction()` 就行。
@@ -276,3 +240,7 @@ public class Main {
   2. **客户端需要了解策略** ：客户端必须知道有哪些策略可选，才能做出正确的选择。
 
 总的来说，当你发现代码中出现了大量条件分支来选择不同的算法或行为时，策略模式是一个非常好的重构方向。它把「做什么」和「怎么做」分离开来，让系统更灵活、更易扩展。
+
+## 评论
+
+请登录后查看/发表评论

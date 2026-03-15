@@ -51,25 +51,32 @@ Since any positive integer greater than one can be decomposed into a product of 
 
 With this idea, you can implement the `isUgly` function:
 
-```java
-class Solution {
-    public boolean isUgly(int n) {
-        if (n <= 0) return false;
-        // If n is an ugly number, its prime factors should only be 2, 3, 5
-        while (n % 2 == 0) n /= 2;
-        while (n % 3 == 0) n /= 3;
-        while (n % 5 == 0) n /= 5;
-        return n == 1;
-    }
-}
+```python
+class Solution:
+    def isUgly(self, n: int) -> bool:
+        if n <= 0:
+            return False
+        # if n is an ugly number, the factors should only be 2, 3, 5
+        while n % 2 == 0:
+            n //= 2
+        while n % 3 == 0:
+            n //= 3
+        while n % 5 == 0:
+            n //= 5
+        # if it can be successfully factored, it is an ugly number
+        return n == 1
 ``` 
 
 ## Ugly Number II
 
 Now let's increase the difficulty and look at LeetCode problem 264 "[Ugly Number II](<https://leetcode.cn/problems/ugly-number-ii/>)". This time, the problem doesn't ask you to determine whether a number is ugly, but instead gives you an input `n` and asks you to calculate what the `n`-th ugly number is. The function signature is:
 
-```java
-int nthUglyNumber(int n)
+```python
+def nthUglyNumber(n: int) -> int:
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

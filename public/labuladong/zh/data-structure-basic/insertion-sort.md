@@ -33,37 +33,27 @@ LeetCode| 力扣| 难度
 
 回顾一下，冒泡排序的关键点在于对下面这段代码的优化：
 
-```java
-// 对选择排序进行第一波优化，获得了稳定性
-void sort(int[] nums) {
-    int n = nums.length;
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // 在未排序部分中找到最小值 nums[minIndex]
-        int minIndex = sortedIndex;
-        for (int i = sortedIndex + 1; i < n; i++) {
-            if (nums[i] < nums[minIndex]) {
-                minIndex = i;
-            }
-        }
+```python
+# 对选择排序进行第一波优化，获得了稳定性
+def sort(nums):
+    n = len(nums)
+    sortedIndex = 0
+    while sortedIndex < n:
+        # 在未排序部分中找到最小值 nums[minIndex]
+        minIndex = sortedIndex
+        for i in range(sortedIndex + 1, n):
+            if nums[i] < nums[minIndex]:
+                minIndex = i
 
-        // 交换最小值和 sortedIndex 处的元素
-        // int tmp = nums[sortedIndex];
-        // nums[sortedIndex] = nums[minIndex];
-        // nums[minIndex] = tmp;
+        # 优化：将 nums[minIndex] 插入到 nums[sortedIndex] 的位置
+        # 将 nums[sortedIndex..minIndex] 的元素整体向后移动一位
+        minVal = nums[minIndex]
+        # 数组搬移数据的操作
+        for i in range(minIndex, sortedIndex, -1):
+            nums[i] = nums[i - 1]
+        nums[sortedIndex] = minVal
 
-        // 优化：将 nums[minIndex] 插入到 nums[sortedIndex] 的位置
-        // 将 nums[sortedIndex..minIndex] 的元素整体向后移动一位
-        int minVal = nums[minIndex];
-        // 数组搬移数据的操作
-        for (int i = minIndex; i > sortedIndex; i--) {
-            nums[i] = nums[i - 1];
-        }
-        nums[sortedIndex] = minVal;
-
-        sortedIndex++;
-    }
-}
+        sortedIndex += 1
 ``` 
 
 算法可视化
@@ -84,28 +74,24 @@ void sort(int[] nums) {
 
 但是仔细想想，用二分搜索好像是多此一举的。因为就算我用二分搜索找到了 `nums[sortedIndex]` 应该插入的位置，我还是需要搬移元素进行插入，那还不如一边遍历一遍交换元素的方法简单高效呢：
 
-```java
-// 对选择排序进一步优化，向左侧有序数组中插入元素
-// 这个算法有另一个名字，叫做插入排序
-void sort(int[] nums) {
-    int n = nums.length;
-    // 维护 [0, sortedIndex) 是有序数组
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // 将 nums[sortedIndex] 插入到有序数组 [0, sortedIndex) 中
-        for (int i = sortedIndex; i > 0; i--) {
-            if (nums[i] < nums[i - 1]) {
-                // swap(nums[i], nums[i - 1])
-                int tmp = nums[i];
-                nums[i] = nums[i - 1];
-                nums[i - 1] = tmp;
-            } else {
-                break;
-            }
-        }
-        sortedIndex++;
-    }
-}
+```python
+# 对选择排序进一步优化，向左侧有序数组中插入元素
+# 这个算法有另一个名字，叫做插入排序
+def sort(nums):
+    n = len(nums)
+    # 维护 [0, sorted_index) 是有序数组
+    sorted_index = 0
+    while sorted_index < n:
+        # 将 nums[sorted_index] 插入到有序数组 [0, sorted_index) 中
+        for i in range(sorted_index, 0, -1):
+            if nums[i] < nums[i - 1]:
+                # swap(nums[i], nums[i - 1])
+                tmp = nums[i]
+                nums[i] = nums[i - 1]
+                nums[i - 1] = tmp
+            else:
+                break
+        sorted_index += 1
 ``` 
 
 算法可视化
@@ -133,3 +119,7 @@ void sort(int[] nums) {
 所以冒泡排序的操作数大约是 n2/2n^2/2n2/2，而插入排序的操作数会小于 n2/2n^2/2n2/2。
 
 你可以把插入排序的代码拿去力扣第 912 题「[排序数组](<https://leetcode.cn/problems/sort-an-array/>)」提交，它最终依然会超时，但可以说明算法代码的逻辑是正确的。之后的文章我们继续探讨如何对排序算法进行优化。
+
+## 评论
+
+请登录后查看/发表评论

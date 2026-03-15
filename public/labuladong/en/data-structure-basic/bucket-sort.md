@@ -29,4 +29,8 @@ Bucket sort may not be a very common algorithm, but I personally think its idea 
 
 If you have learned all previous algorithms in order, you can feel how all these algorithms are connected. Many computer scientists have worked on the "sorting" problem, showing many clever solutions. As learners, why not appreciate these beautiful ideas?
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

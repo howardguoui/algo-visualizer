@@ -48,37 +48,33 @@ A hash table is similar. You can use a `key` to find the corresponding `value` i
 
 How does this work? It is very simple. The bottom layer of a hash table is just an array (let’s call it `table`). It first passes the `key` into a hash function (let’s call it `hash`) to convert it into an index of the array. Then the insert, delete, search, and update operations are almost the same as operations on an array:
 
-```java
-// Pseudocode logic for a hash table
-class MyHashMap {
+```python
+# Hash table pseudocode logic
+class MyHashMap:
 
-    private Object[] table;
+    def __init__(self):
+        self.table = [None] * 1000
 
-    // Insert/Update, complexity O(1)
-    public void put(K key, V value) {
-        int index = hash(key);
-        table[index] = value;
-    }
+    # add/update, complexity O(1)
+    def put(self, key, value):
+        index = self.hash(key)
+        self.table[index] = value
 
-    // Retrieve, complexity O(1)
-    public V get(K key) {
-        int index = hash(key);
-        return table[index];
-    }
+    # get, complexity O(1)
+    def get(self, key):
+        index = self.hash(key)
+        return self.table[index]
 
-    // Delete, complexity O(1)
-    public void remove(K key) {
-        int index = hash(key);
-        table[index] = null;
-    }
+    # remove, complexity O(1)
+    def remove(self, key):
+        index = self.hash(key)
+        self.table[index] = None
 
-    // Hash function, converting key into a valid index in the table
-    // The time complexity must be O(1) to ensure that
-    // the above methods all have complexity O(1)
-    private int hash(K key) {
-        // ...
-    }
-}
+    # hash function, convert key into a valid index in the table
+    # time complexity must be O(1) to ensure the above methods have O(1) complexity
+    def hash(self, key):
+        # ...
+        pass
 ``` 
 
 In a real implementation, there are many details: how to design the hash function, how to handle hash collisions, and so on. But once you understand the core idea above, you are already halfway there. The rest is just coding, which is not that hard.
@@ -404,4 +400,8 @@ Only then can you write correct and efficient code.
 
 Next, I will show you step by step how to implement simple hash tables using separate chaining and linear probing to deepen your understanding of hash tables.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

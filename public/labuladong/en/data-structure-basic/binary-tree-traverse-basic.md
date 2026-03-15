@@ -30,6 +30,29 @@ The order of recursive traversal in a binary tree is fixed, but there are three 
 
 The order of level-order traversal is also fixed, but there are three different ways to write it, suitable for different situations.
 
+Preorder position
+
+Inorder position
+
+Postorder position
+
+Recursive Traversal (DFS)  
+Three special positions, code runs at different times
+
+First way is the simplest  
+Cannot record depth
+
+Second way is most common  
+Can record depth
+
+Third way is the most flexible  
+Good for complex problems
+
+Level-order Traversal (BFS)  
+Three different ways, for different scenarios
+
+Binary Tree Traversal
+
 After learning [basic concepts of binary trees and special types of binary trees](</en/algo/data-structure-basic/binary-tree-basic/>), this article will show you how to traverse and visit nodes in a binary tree.
 
 There are two main traversal algorithms for binary trees: recursive traversal and level-order traversal. Each has a code template. The recursive template can be used for later DFS and backtracking algorithms. The level-order template can be used for BFS algorithms. That's why I often say binary tree structures are very important.
@@ -40,21 +63,20 @@ Preorder, inorder, and postorder traversals are all recursive traversals. The di
 
 Here is the code template for recursive traversal of a binary tree:
 
-```java
-// basic binary tree node
-class TreeNode {
-    int val;
-    TreeNode left, right;
-}
+```python
+# basic binary tree node
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-// recursive traversal framework for binary tree
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    traverse(root.left);
-    traverse(root.right);
-}
+# recursive traversal framework for binary tree
+def traverse(root: TreeNode):
+    if root is None:
+        return
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 Why can this short and simple code traverse a binary tree? In what order does it visit the nodes?
@@ -73,16 +95,14 @@ From the code, you can see that `root.left` is called first, then `root.right`. 
 
 Now, let's try a small change. If we modify the `traverse` function to call `root.right` first, then `root.left`, what will happen?
 
-```java
-// modify the standard binary tree traversal framework
-void traverseFlip(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    // traverse the right subtree first, then traverse the left subtree
-    traverseFlip(root.right);
-    traverseFlip(root.left);
-}
+```python
+# modify the standard binary tree traversal framework
+def traverseFlip(root: TreeNode) -> None:
+    if root is None:
+        return
+    # traverse the right subtree first, then traverse the left subtree
+    traverseFlip(root.right)
+    traverseFlip(root.left)
 ``` 
 
 Think about the order in which this function visits the tree nodes. Then, open the visualization below and click the line `if (root === null)` several times. Watch how the `root` pointer moves. Is it what you expected?
@@ -97,21 +117,20 @@ This example shows:
 
 Normally, we don't traverse a binary tree like `traverseFlip`. By default, we use the left-first, right-second order. So when we talk about the code template for tree traversal, we mean left first, right second:
 
-```java
-// basic binary tree node
-class TreeNode {
-    int val;
-    TreeNode left, right;
-}
+```python
+# basic binary tree node
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-// recursive traversal framework for binary tree
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    traverse(root.left);
-    traverse(root.right);
-}
+# recursive traversal framework for binary tree
+def traverse(root: TreeNode):
+    if root is None:
+        return
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 As long as this left-first, right-second order doesn't change, the order in which `traverse` visits the nodes is fixed, no matter how many extra lines you add.
@@ -134,18 +153,16 @@ For example, when you just enter a node, you do not know anything about its chil
 
 Preorder, inorder, and postorder traversal are really about where you put your code in the binary tree traversal framework:
 
-```java
-// Binary tree traversal framework
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    // pre-order position
-    traverse(root.left);
-    // in-order position
-    traverse(root.right);
-    // post-order position
-}
+```python
+# Binary tree traversal framework
+def traverse(root):
+    if root is None:
+        return
+    # Pre-order position
+    traverse(root.left)
+    # In-order position
+    traverse(root.right)
+    # Post-order position
 ``` 
 
 **Code at the preorder position runs when you enter the node. Code at the inorder position runs after the left subtree is done but before the right subtree starts. Code at the postorder position runs after both left and right subtrees are done:**
@@ -200,27 +217,24 @@ To do level-order traversal, we need a queue. Based on different needs, there ar
 
 This is the simplest version:
 
-```java
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    while (!q.isEmpty()) {
-        TreeNode cur = q.poll();
-        // visit the cur node
-        System.out.println(cur.val);
+```python
+from collections import deque
 
-        // add the left and right children of cur to the queue
-        if (cur.left != null) {
-            q.offer(cur.left);
-        }
-        if (cur.right != null) {
-            q.offer(cur.right);
-        }
-    }
-}
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    q.append(root)
+    while q:
+        cur = q.popleft()
+        # visit cur node
+        print(cur.val)
+
+        # add cur's left and right children to the queue
+        if cur.left is not None:
+            q.append(cur.left)
+        if cur.right is not None:
+            q.append(cur.right)
 ``` 
 
 Open this visual panel, click the line `while (q.length > 0)`, and watch how the variable `cur` moves on the tree. You will see that the traversal visits nodes level by level, from left to right:
@@ -242,34 +256,30 @@ So this version is simple but not used very often. The next version is more comm
 
 If we slightly change the first version, we get this:
 
-```java
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    // record the current level being traversed (root node is considered as level 1)
-    int depth = 1;
+```python
+from collections import deque
 
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        for (int i = 0; i < sz; i++) {
-            TreeNode cur = q.poll();
-            // visit the cur node and know its level
-            System.out.println("depth = " + depth + ", val = " + cur.val);
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    q.append(root)
+    # record the current depth being traversed (root node is considered as level 1)
+    depth = 1
 
-            // add the left and right children of cur to the queue
-            if (cur.left != null) {
-                q.offer(cur.left);
-            }
-            if (cur.right != null) {
-                q.offer(cur.right);
-            }
-        }
-        depth++;
-    }
-}
+    while q:
+        sz = len(q)
+        for i in range(sz):
+            cur = q.popleft()
+            # visit cur node and know its depth
+            print(f"depth = {depth}, val = {cur.val}")
+
+            # add cur's left and right children to the queue
+            if cur.left is not None:
+                q.append(cur.left)
+            if cur.right is not None:
+                q.append(cur.right)
+        depth += 1
 ``` 
 
 Notice the inner for loop:
@@ -320,39 +330,29 @@ In this case, nodes on the same level may have different path sums. Keeping only
 
 Version 3 solves this. Based on version 1, we add a `State` class so each node keeps its own path sum:
 
-```java
-class State {
-    TreeNode node;
-    int depth;
+```python
+class State:
+    def __init__(self, node, depth):
+        self.node = node
+        self.depth = depth
 
-    State(TreeNode node, int depth) {
-        this.node = node;
-        this.depth = depth;
-    }
-}
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    # the path weight sum of the root node is 1
+    q.append(State(root, 1))
 
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<State> q = new LinkedList<>();
-    // the path weight sum of the root node is 1
-    q.offer(new State(root, 1));
+    while q:
+        cur = q.popleft()
+        # visit the cur node, and know its path weight sum
+        print(f"depth = {cur.depth}, val = {cur.node.val}")
 
-    while (!q.isEmpty()) {
-        State cur = q.poll();
-        // visit the cur node, while knowing its path weight sum
-        System.out.println("depth = " + cur.depth + ", val = " + cur.node.val);
-
-        // add the left and right child nodes of cur to the queue
-        if (cur.node.left != null) {
-            q.offer(new State(cur.node.left, cur.depth + 1));
-        }
-        if (cur.node.right != null) {
-            q.offer(new State(cur.node.right, cur.depth + 1));
-        }
-    }
-}
+        # add the left and right child nodes of cur to the queue
+        if cur.node.left is not None:
+            q.append(State(cur.node.left, cur.depth + 1))
+        if cur.node.right is not None:
+            q.append(State(cur.node.right, cur.depth + 1))
 ``` 
 
 Open this visual panel, click the line `console.log`, and you will see the traversal is still level by level, from left to right, and it also prints the level of each node:
@@ -373,4 +373,8 @@ Another example: you may see recursive code that visits the tree level by level.
 
 In short, do not be fooled by the surface form. Binary tree traversal is just these two types. Once you really understand them, with the help of later tutorials and exercises, all brute-force search algorithms will become easy for you.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

@@ -63,8 +63,8 @@ Before talking about these problems, I want to show you a simple backtracking pr
 
 Let’s try a simple problem. Please write a function:
 
-```java
-List<String> generateBinaryNumber(int n);
+```python
+def generateBinaryNumber(n: int) -> List[str]:
 ``` 
 
 The function takes a positive integer `n` and returns all binary numbers (made of 0 and 1) of length `n`. You can return the answers in any order.
@@ -92,4 +92,8 @@ N-Queens asks you to brute-force every position in an N x N 2D array. Each cell 
 
 So, if you understand how to brute-force this simple problem, the other problems are similar, just with more rules.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

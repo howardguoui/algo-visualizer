@@ -27,7 +27,7 @@
 
 二叉树的主要难点在于做算法题，它本身其实没啥难的，就是这样一种树形结构嘛：
 
-loading...
+12435768
 
 上面就是一棵普通的二叉树，几个术语你要了解一下：
 
@@ -47,7 +47,7 @@ loading...
 
 直接看图比较直观，满二叉树就是每一层节点都是满的，整棵树像一个正三角形：
 
-loading...
+124895101136121371415
 
 **满二叉树有个优势，就是它的节点个数很好算** 。假设深度为 `h`，那么总节点数就是 `2^h - 1`，等比数列求和嘛，我们应该都学过的。
 
@@ -55,7 +55,7 @@ loading...
 
 完全二叉树是指，二叉树的每一层的节点都紧凑靠左排列，且除了最后一层，其他每层都必须是满的：
 
-loading...
+124895101136127
 
 不难发现，满二叉树其实是一种特殊的完全二叉树。
 
@@ -95,13 +95,13 @@ loading...
 
 比方说，下面这棵树就是一棵 BST：
 
-loading...
+7415910
 
 节点 `7` 的左子树所有节点的值都小于 `7`，右子树所有节点的值都大于 `7`；节点 `4` 的左子树所有节点的值都小于 `4`，右子树所有节点的值都大于 `4`，以此类推。
 
 相反的，下面这棵树就不是 BST：
 
-loading...
+7418910
 
 如果你只注意每个节点的左右子节点，似乎看不出问题。你应该看整棵子树，注意看节点 `7` 的左子树中有个节点 `8`，比 `7` 大，这就不符合 BST 的定义了。
 
@@ -121,17 +121,17 @@ loading...
 
 比如下面这棵二叉树，根节点 `1` 的左子树高度是 2，右子树高度是 3；节点 `2` 的左子树高度是 1，右子树高度是 0；节点 `3` 的左子树高度是 2，右子树高度是 1，以此类推，每个节点的左右子树高度差都不超过 1，所以这是一棵高度平衡的二叉树：
 
-loading...
+1243576
 
 下面这棵树就不是高度平衡的二叉树，因为节点 `2` 的左子树高度是 2，右子树高度是 0，高度差超过 1，不符合条件：
 
-loading...
+12483576
 
 **假设高度平衡二叉树中共有 NNN 个节点，那么高度平衡二叉树的高度是 O(log⁡N)O(\log N)O(logN)**。这是非常重要的性质，本站后面的章节会讲解几种基于二叉树的数据结构，如果能保证树的高度为 O(log⁡N)O(\log N)O(logN)，那么这些数据结构的增删查改效率就会很高。
 
 反之，如果树很不平衡，比如这种极端情况：
 
-loading...
+12345
 
 那么这棵树其实就等同于单链表，在树中进行增删查改的效率就会大幅降低。
 
@@ -153,28 +153,27 @@ loading...
 
 力扣/LeetCode 上给你输入的二叉树一般都是用这种方式构建的，二叉树节点类 `TreeNode` 一般长这样：
 
-```java
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { this.val = x; }
-}
+```python
+class TreeNode:
+    def __init__(self, x: int):
+        self.val = x
+        self.left = None
+        self.right = None
 
-// 你可以这样构建一棵二叉树：
-TreeNode root = new TreeNode(1);
-root.left = new TreeNode(2);
-root.right = new TreeNode(3);
-root.left.left = new TreeNode(4);
-root.right.left = new TreeNode(5);
-root.right.right = new TreeNode(6);
+# 你可以这样构建一棵二叉树：
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.right.left = TreeNode(5)
+root.right.right = TreeNode(6)
 
-// 构建出来的二叉树是这样的：
-//     1
-//    / \
-//   2   3
-//  /   / \
-// 4   5   6
+# 构建出来的二叉树是这样的：
+#     1
+#    / \
+#   2   3
+#  /   / \
+# 4   5   6
 ``` 
 
 既然说上面是比较常见的实现方式，那言下之意就是还有其他实现方式，对吧？
@@ -187,19 +186,24 @@ root.right.right = new TreeNode(6);
 
 比方说这棵二叉树：
 
-loading...
+124356
 
 我可以用一个哈希表，其中的键是父节点 id，值是子节点 id 的列表（每个节点的 id 是唯一的），那么一个键值对就是一个多叉树节点了，这棵多叉树就可以表示成这样：
 
-```java
-// 1 -> [2, 3]
-// 2 -> [4]
-// 3 -> [5, 6]
+```python
+# 1 -> [2, 3]
+# 2 -> [4]
+# 3 -> [5, 6]
 
-HashMap<Integer, List<Integer>> tree = new HashMap<>();
-tree.put(1, Arrays.asList(2, 3));
-tree.put(2, Collections.singletonList(4));
-tree.put(3, Arrays.asList(5, 6));
+tree = {
+    1: [2, 3],
+    2: [4],
+    3: [5, 6]
+}
 ``` 
 
 这样就可以模拟和操作二叉树/多叉树结构，后文讲到图论的时候你就会知道，它有一个新的名字叫做 [邻接表](</zh/algo/data-structure-basic/graph-basic/>)。
+
+## 评论
+
+请登录后查看/发表评论

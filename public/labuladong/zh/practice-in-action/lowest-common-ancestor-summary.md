@@ -44,3 +44,7 @@ LeetCode| 力扣| 难度
 首先，找到这两条分支的最近公共祖先 `LCA`，然后从 `master` 节点开始，重演 `LCA` 到 `dev` 几个 `commit` 的修改，如果这些修改和 `LCA` 到 `master` 的 `commit` 有冲突，就会提示你手动解决冲突，最后的结果就是把 `dev` 的分支完全接到 `master` 上面。
 
 那么，Git 是如何找到两条不同分支的最近公共祖先的呢？这就是一个经典的算法问题了，下面我来由浅入深讲一讲。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

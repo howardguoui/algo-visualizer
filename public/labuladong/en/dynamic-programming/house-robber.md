@@ -36,12 +36,16 @@ There is a row of houses. Each house has some cash, given as a non-negative inte
 
 Write an algorithm to calculate the maximum amount of cash you can steal without triggering the alarm. The function signature is:
 
-```java
-int rob(int[] nums);
+```python
+def rob(nums: List[int]) -> int:
 ``` 
 
 For example, if the input is `nums = [2,1,7,9,3,1]`, the algorithm should return 12. The thief can steal from `nums[0]`, `nums[3]`, and `nums[5]`, getting 2 + 9 + 1 = 12, which is the best choice.
 
 The problem is easy to understand, and it is clearly a dynamic programming problem. As summarized in [Dynamic Programming Details](</en/algo/essential-technique/dynamic-programming-framework/>), **to solve a dynamic programming problem, you just need to find the "state" and the "choices".**
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

@@ -19,32 +19,31 @@ LeetCode| 力扣| 难度
 
 比如力扣第 204 题「[计数质数](<https://leetcode.cn/problems/count-primes/>)」，让你写这样一个函数：
 
-```java
-// 返回区间 [2, n) 中有几个素数 
-int countPrimes(int n)
+```python
+# 返回区间 [2, n) 中有几个素数 
+def countPrimes(n: int) -> int: 
 
-// 比如 countPrimes(10) 返回 4
-// 因为 2,3,5,7 是素数
+# 比如 countPrimes(10) 返回 4
+# 因为 2,3,5,7 是素数
 ``` 
 
 你会如何写这个函数？我想大家应该会这样写：
 
-```java
-int countPrimes(int n) {
-    int count = 0;
-    for (int i = 2; i < n; i++)
-        if (isPrime(i)) count++;
-    return count;
-}
+```python
+def countPrimes(n: int) -> int:
+    count = 0
+    for i in range(2, n):
+        if isPrime(i):
+            count += 1
+    return count
 
-// 判断整数 n 是否是素数
-boolean isPrime(int n) {
-    for (int i = 2; i < n; i++)
-        if (n % i == 0)
-            // 有其他整除因子
-            return false;
-    return true;
-}
+# 判断整数 n 是否是素数
+def isPrime(n: int) -> bool:
+    for i in range(2, n):
+        if n % i == 0:
+            # 有其他整除因子
+            return False
+    return True
 ``` 
 
 这样写的话时间复杂度 O(n^2)，问题很大。**首先你用`isPrime` 函数来辅助的思路就不够高效；而且就算你要用 `isPrime` 函数，这样写算法也是存在计算冗余的**。
@@ -94,30 +93,23 @@ Wikipedia 的这个 GIF 很形象：
 
 看到这里，你是否有点明白这个排除法的逻辑了呢？先看我们的第一版代码：
 
-```java
-class Solution {
-    public int countPrimes(int n) {
-        boolean[] isPrime = new boolean[n];
-        // 将数组都初始化为 true
-        Arrays.fill(isPrime, true);
+```python
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        # 将数组都初始化为 true
+        isPrime = [True] * n
+        for i in range(2, n):
+            if isPrime[i]:
+                # i 的倍数不可能是素数了
+                for j in range(2 * i, n, i):
+                    isPrime[j] = False
 
-        for (int i = 2; i < n; i++) {
-            if (isPrime[i]) {
-                // i 的倍数不可能是素数了
-                for (int j = 2 * i; j < n; j += i) {
-                    isPrime[j] = false;
-                }
-            }
-        }
-        
-        int count = 0;
-        for (int i = 2; i < n; i++) {
-            if (isPrime[i]) count++;
-        }
-        
-        return count;
-    }
-}
+        count = 0
+        for i in range(2, n):
+            if isPrime[i]: 
+                count += 1
+
+        return count
 ``` 
 
 如果上面这段代码你能够理解，那么你已经掌握了整体思路，但是还有两个细微的地方可以优化。
@@ -150,23 +142,21 @@ for (int j = i * i; j < n; j += i)
 
 这样，素数计数的算法就高效实现了，看下完整的最终代码：
 
-```java
-class Solution {
-    public int countPrimes(int n) {
-        boolean[] isPrime = new boolean[n];
-        Arrays.fill(isPrime, true);
-        for (int i = 2; i * i < n; i++)
-            if (isPrime[i])
-                for (int j = i * i; j < n; j += i)
-                    isPrime[j] = false;
+```python
+class Solution:
+    def countPrimes(self, n: int) -> int:
+        isPrime = [True] * n
+        for i in range(2, int(n ** 0.5) + 1):
+            if isPrime[i]:
+                for j in range(i * i, n, i):
+                    isPrime[j] = False
 
-        int count = 0;
-        for (int i = 2; i < n; i++)
-            if (isPrime[i]) count++;
+        count = 0
+        for i in range(2, n):
+            if isPrime[i]: 
+                count += 1
 
-        return count;
-    }
-}
+        return count
 ``` 
 
 算法可视化
@@ -181,3 +171,7 @@ class Solution {
 括号中是素数的倒数。其最终结果是 O(N∗loglogN)O(N * loglogN)O(N∗loglogN)，有兴趣的读者可以查一下该算法的时间复杂度证明。
 
 以上就是素数算法相关的全部内容。怎么样，是不是看似简单的问题却有不少细节可以打磨呀？
+
+## 评论
+
+请登录后查看/发表评论

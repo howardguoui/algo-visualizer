@@ -62,15 +62,16 @@ numArray.sumRange(0, 5); // return -3 ((-2) + 0 + 3 + (-5) + 2 + (-1))
 
 题目来源：[力扣 303. 区域和检索 - 数组不可变](<https://leetcode.cn/problems/range-sum-query-immutable/>)。
 
-```java
-// 题目要求你实现这样一个类
-class NumArray {
-
-    public NumArray(int[] nums) {}
+```python
+# 题目要求你实现这样一个类
+class NumArray:
     
-    // 查询闭区间 [left, right] 的累加和
-    public int sumRange(int left, int right) {}
-}
+    def __init__(self, nums: List[int]):
+        pass
+        
+    # 查询闭区间 [left, right] 的累加和
+    def sumRange(self, left: int, right: int) -> int:
+        pass
 ``` 
 
 `sumRange` 函数需要计算并返回一个索引区间之内的元素和，没学过前缀和的人可能写出如下代码：
@@ -97,26 +98,20 @@ class NumArray {
 
 正确的解法是使用前缀和技巧进行优化，使得 `sumRange` 函数的时间复杂度为 O(1)O(1)O(1)：
 
-```java
-class NumArray {
-    // 前缀和数组
-    private int[] preSum;
+```python
+class NumArray:
+    # 前缀和数组
+    def __init__(self, nums: List[int]):
+        # 输入一个数组，构造前缀和
+        # preSum[0] = 0，便于计算累加和
+        self.preSum = [0] * (len(nums) + 1)
+        # 计算 nums 的累加和
+        for i in range(1, len(self.preSum)):
+            self.preSum[i] = self.preSum[i - 1] + nums[i - 1]
 
-    // 输入一个数组，构造前缀和
-    public NumArray(int[] nums) {
-        // preSum[0] = 0，便于计算累加和
-        preSum = new int[nums.length + 1];
-        // 计算 nums 的累加和
-        for (int i = 1; i < preSum.length; i++) {
-            preSum[i] = preSum[i - 1] + nums[i - 1];
-        }
-    }
-
-    // 查询闭区间 [left, right] 的累加和
-    public int sumRange(int left, int right) {
-        return preSum[right + 1] - preSum[left];
-    }
-}
+    # 查询闭区间 [left, right] 的累加和
+    def sumRange(self, left: int, right: int) -> int:
+        return self.preSum[right + 1] - self.preSum[left]
 ``` 
 
 核心思路是我们 new 一个新的数组 `preSum` 出来，`preSum[i]` 记录 `nums[0..i-1]` 的累加和，看图 10=3+5+210 = 3 + 5 + 210=3+5+2：
@@ -213,30 +208,27 @@ numMatrix.sumRegion(1, 2, 2, 4); // return 12 (蓝色矩形框的元素总和)
 
 那么做这道题更好的思路和一维数组中的前缀和是非常类似的，我们可以维护一个二维 `preSum` 数组，专门记录以原点为顶点的矩阵的元素之和，就可以用几次加减运算算出任何一个子矩阵的元素和：
 
-```java
-class NumMatrix {
-    // preSum[i][j] 记录矩阵 [0, 0, i-1, j-1] 的元素和
-    private int[][] preSum;
+```python
+class NumMatrix:
+    # preSum[i][j] 记录矩阵 [0, 0, i-1, j-1] 的元素和
+    def __init__(self, matrix: List[List[int]]):
+        m = len(matrix)
+        n = len(matrix[0])
+        if m == 0 or n == 0:
+            return
+        # 构造前缀和矩阵
+        self.preSum = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                # 计算每个矩阵 [0, 0, i, j] 的元素和
+                self.preSum[i][j] = (self.preSum[i - 1][j] + self.preSum[i][j - 1] +
+                                     matrix[i - 1][j - 1] - self.preSum[i - 1][j - 1])
 
-    public NumMatrix(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        if (m == 0 || n == 0) return;
-        // 构造前缀和矩阵
-        preSum = new int[m + 1][n + 1];
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                // 计算每个矩阵 [0, 0, i, j] 的元素和
-                preSum[i][j] = preSum[i-1][j] + preSum[i][j-1] + matrix[i - 1][j - 1] - preSum[i-1][j-1];
-            }
-        }
-    }
-
-    // 计算子矩阵 [x1, y1, x2, y2] 的元素和
-    public int sumRegion(int x1, int y1, int x2, int y2) {
-        // 目标矩阵之和由四个相邻矩阵运算获得
-        return preSum[x2+1][y2+1] - preSum[x1][y2+1] - preSum[x2+1][y1] + preSum[x1][y1];
-    }
-}
+    # 计算子矩阵 [x1, y1, x2, y2] 的元素和
+    def sumRegion(self, x1: int, y1: int, x2: int, y2: int) -> int:
+        # 目标矩阵之和由四个相邻矩阵运算获得
+        return (self.preSum[x2 + 1][y2 + 1] - self.preSum[x1][y2 + 1] -
+                self.preSum[x2 + 1][y1] + self.preSum[x1][y1])
 ``` 
 
 这样，`sumRegion` 函数的时间复杂度也用前缀和技巧优化到了 O(1)O(1)O(1)，这是典型的「空间换时间」思路。
@@ -266,3 +258,7 @@ class NumMatrix {
 但有些场景是没有逆运算的，比方说求最大值的场景，你知道 max(x,8)=8max(x, 8) = 8max(x,8)=8，此时你无法推导出 xxx 的值。
 
 想要同时解决这两个问题，就需要更高级的数据结构，最通用的解决方案是 [线段树](</zh/algo/data-structure-basic/segment-tree-basic/>)，我们会在数据结构设计章节具体讲解。
+
+## 评论
+
+请登录后查看/发表评论

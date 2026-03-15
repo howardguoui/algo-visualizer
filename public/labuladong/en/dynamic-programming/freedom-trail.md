@@ -79,8 +79,8 @@ The problem provides you with an input string `ring` representing the characters
 
 The function signature is as follows:
 
-```java
-int findRotateSteps(String ring, String key);
+```python
+def findRotateSteps(ring: str, key: str) -> int:
 ``` 
 
 For example, given the input `ring = "godding", key = "gd"`, the corresponding disk is shown below (uppercase is for clarity, the actual input strings are lowercase letters):
@@ -105,8 +105,8 @@ More specifically, the "state" is represented by two variables `i` and `j`. We c
 
 Thus, we can write a `dp` function:
 
-```java
-int dp(String ring, int i, String key, int j);
+```python
+def dp(ring: str, i: int, key: str, j: int) -> int:
 ``` 
 
 The `dp` function is defined as follows:
@@ -115,12 +115,12 @@ The `dp` function is defined as follows:
 
 According to this definition, the problem is essentially asking to calculate the value of `dp(ring, 0, key, 0)`, and we can write the base case of the `dp` function:
 
-```java
-int dp(String ring, int i, String key, int j) {
-    // base case, input is complete
-    if (j == key.length()) return 0;
-    // ...
-}
+```python
+def dp(ring: str, i: int, key: str, j: int) -> int:
+    # base case, input completed
+    if j == len(key):
+        return 0
+    # ...
 ``` 
 
 Next, consider how to make choices based on the state and how to transition between states.
@@ -167,62 +167,62 @@ So, how should it be determined? Essentially, it's brute-force search. Recursive
 
 That's about it. Let's look at the final code:
 
-```java
-class Solution {
-    // character -> index list
-    private Map<Character, List<Integer>> charToIndex = new HashMap<>();
-    // memoization
-    private int[][] memo;
+```python
+class Solution:
+    # character -> index list
+    def __init__(self):
+        self.charToIndex = {}
+        # memoization
+        self.memo = []
 
-    // main function
-    public int findRotateSteps(String ring, String key) {
-        int m = ring.length();
-        int n = key.length();
-        // initialize all memoization entries to 0
-        memo = new int[m][n];
-        // record the mapping of characters to indices on the ring
-        for (int i = 0; i < ring.length(); i++) {
-            char c = ring.charAt(i);
-            if (!charToIndex.containsKey(c)) {
-                charToIndex.put(c, new ArrayList<>());
-            }
-            charToIndex.get(c).add(i);
-        }
-        // the initial pointer of the ring points at the 12 o'clock direction,
-        // start inputting the key from the first character
-        return dp(ring, 0, key, 0);
-    }
+    # main function
+    def findRotateSteps(self, ring: str, key: str) -> int:
+        m = len(ring)
+        n = len(key)
+        # initialize all memoization entries to 0
+        self.memo = [[0] * n for _ in range(m)]
+        # record the mapping of characters to indices on the ring
+        for i, c in enumerate(ring):
+            if c not in self.charToIndex:
+                self.charToIndex[c] = []
+            self.charToIndex[c].append(i)
+        # the initial pointer of the ring points at the 12 o'clock direction,
+        # start inputting the key from the first character
+        return self.dp(ring, 0, key, 0)
 
-    // calculate the minimum number of operations when the
-    // pointer is at ring[i] and inputting key[j..]
-    private int dp(String ring, int i, String key, int j) {
-        // base case: finished inputting
-        if (j == key.length()) return 0;
-        // check the memoization to avoid overlapping subproblems
-        if (memo[i][j] != 0) return memo[i][j];
+    # calculate the minimum number of operations when the
+    # pointer is at ring[i] and inputting key[j..]
+    def dp(self, ring: str, i: int, key: str, j: int) -> int:
+        # base case: finished inputting
+        if j == len(key):
+            return 0
+        # check the memoization to avoid overlapping subproblems
+        if self.memo[i][j] != 0:
+            return self.memo[i][j]
 
-        int n = ring.length();
-        // make choices
-        int res = Integer.MAX_VALUE;
-        // there might be multiple characters key[j] on the ring
-        for (int k : charToIndex.get(key.charAt(j))) {
-            // number of times to move the pointer
-            int delta = Math.abs(k - i);
-            // choose clockwise or counterclockwise
-            delta = Math.min(delta, n - delta);
-            // move the pointer to ring[k] and continue inputting key[j+1..]
-            int subProblem = dp(ring, k, key, j + 1);
-            // choose the overall minimum number of operations
-            // add one because pressing the button is also an operation
-            res = Math.min(res, 1 + delta + subProblem);
-        }
-        // store the result in the memoization table
-        memo[i][j] = res;
-        return res;
-    }
-}
+        n = len(ring)
+        # make choices
+        res = float('inf')
+        # there might be multiple characters key[j] on the ring
+        for k in self.charToIndex[key[j]]:
+            # number of times to move the pointer
+            delta = abs(k - i)
+            # choose clockwise or counterclockwise
+            delta = min(delta, n - delta)
+            # move the pointer to ring[k] and continue inputting key[j+1..]
+            subProblem = self.dp(ring, k, key, j + 1)
+            # choose the overall minimum number of operations
+            # add one because pressing the button is also an operation
+            res = min(res, 1 + delta + subProblem)
+        # store the result in the memoization table
+        self.memo[i][j] = res
+        return res
 ``` 
 
 Algorithm Visualization
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

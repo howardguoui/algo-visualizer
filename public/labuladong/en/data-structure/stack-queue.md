@@ -34,21 +34,24 @@ Today, let's see how to use a stack to build a queue, and how to use a queue to 
 
 LeetCode Problem 232 "[Implement Queue using Stacks](<https://leetcode.com/problems/implement-queue-using-stacks/>)" asks us to implement the following API:
 
-```java
-class MyQueue {
-    
-    // add element to the end of the queue
-    public void push(int x);
-    
-    // remove the element at the front of the queue and return it
-    public int pop();
-    
-    // return the front element
-    public int peek();
-    
-    // check if the queue is empty
-    public boolean empty();
-}
+```python
+class MyQueue:
+
+    # add element to the back of the queue
+    def push(self, x: int) -> None:
+        pass
+
+    # remove and return the front element of the queue
+    def pop(self) -> int:
+        pass
+
+    # return the front element of the queue
+    def peek(self) -> int:
+        pass
+
+    # check if the queue is empty
+    def empty(self) -> bool:
+        pass
 ``` 
 
 We can use two stacks, `s1` and `s2`, to build a queue. (The diagram below shows how the stacks are arranged for better understanding.)
@@ -67,42 +70,33 @@ When `s2` has elements, you can just use `pop` on `s2` to remove the oldest elem
 
 Here is the complete code:
 
-```java
-class MyQueue {
-    private Stack<Integer> s1, s2;
+```python
+class MyQueue:
+    def __init__(self):
+        self.s1 = []
+        self.s2 = []
 
-    public MyQueue() {
-        s1 = new Stack<>();
-        s2 = new Stack<>();
-    }
+    # Push element x to the back of the queue.
+    def push(self, x: int) -> None:
+        self.s1.append(x)
 
-    
-    // Push element x to the back of the queue.
-    public void push(int x) {
-        s1.push(x);
-    }
+    # Removes the element from in front of queue and returns that element.
+    def pop(self) -> int:
+        # call peek first to ensure s2 is not empty
+        self.peek()
+        return self.s2.pop()
 
-    // Removes the element from in front of queue and returns that element.
-    public int pop() {
-        // call peek first to ensure s2 is not empty
-        peek();
-        return s2.pop();
-    }
+    # Get the front element.
+    def peek(self) -> int:
+        if not self.s2:
+            # push elements from s1 to s2
+            while self.s1:
+                self.s2.append(self.s1.pop())
+        return self.s2[-1]
 
-    // Get the front element.
-    public int peek() {
-        if (s2.isEmpty())
-            // push elements from s1 to s2
-            while (!s1.isEmpty())
-                s2.push(s1.pop());
-        return s2.peek();
-    }
-
-    // Returns whether the queue is empty.
-    public boolean empty() {
-        return s1.isEmpty() && s2.isEmpty();
-    }
-}
+    # Returns whether the queue is empty.
+    def empty(self) -> bool:
+        return not self.s1 and not self.s2
 ``` 
 
 With this method, we use two stacks to make a queue. The key idea is to let the two stacks work together.
@@ -123,46 +117,49 @@ If using two stacks to make a queue is clever, then using a queue to make a stac
 
 LeetCode Problem 225 “[Implement Stack using Queues](<https://leetcode.com/problems/implement-stack-using-queues/>)” asks us to build these APIs:
 
-```java
-class MyStack {
+```python
+class MyStack:
+
+    # push element onto stack
+    def push(self, x: int) -> None:
+        pass
     
-    // add element to the top of the stack
-    public void push(int x);
+    # remove the top element and return it
+    def pop(self) -> int:
+        pass
     
-    // remove the top element of the stack and return it
-    public int pop();
+    # return the top element
+    def top(self) -> int:
+        pass
     
-    // return the top element of the stack
-    public int top();
-    
-    // check if the stack is empty
-    public boolean empty();
-}
+    # check if the stack is empty
+    def empty(self) -> bool:
+        pass
 ``` 
 
 Let's start with the `push` API. Just add the element to the queue and record the last element of the queue. The last element is like the top of the stack. If you want to use `top` to see the top element, you can return it directly:
 
-```java
-class MyStack {
-    Queue<Integer> q = new LinkedList<>();
-    int top_elem = 0;
-
-    // add element to the top of the stack
-    public void push(int x) {
-        // x is the tail of the queue, which is the top of the stack
-        q.offer(x);
-        top_elem = x;
-    }
+```python
+class MyStack:
+    def __init__(self):
+        # use a queue q to implement a stack
+        self.q = []
+        # top element of the stack
+        self.top_elem = 0
     
-    // return the top element of the stack
-    public int top() {
-        return top_elem;
-    }
+    # add an element to the top of the stack
+    def push(self, x: int) -> None:
+        # x is the rear of the queue, which is the top of the stack
+        self.q.append(x)
+        self.top_elem = x
+    
+    # return the top element of the stack
+    def top(self) -> int:
+        return self.top_elem
 
-    public boolean empty() {
-        return q.isEmpty();
-    }
-}
+    # check if the stack is empty
+    def empty(self) -> bool:
+        return len(self.q) == 0
 ``` 
 
 Our base data structure is a queue, which is first in, first out. Each time you `pop`, you can only take from the front. But a stack is last in, first out, which means the `pop` API needs to take from the end:
@@ -173,86 +170,76 @@ The solution is simple. Take all the elements from the front of the queue and ad
 
 ![diagram](https://labuladong.online/images/algo/stack-queue/6-en.jpg)
 
-```java
-class MyStack {
-    // To save space, the code above is omitted...
+```python
+class MyStack:
+    # To save space, the code provided above is omitted...
 
-    // Delete the top element of the stack and return it
-    public int pop() {
-        int size = q.size();
-        while (size > 1) {
-            q.offer(q.poll());
-            size--;
-        }
-        // The previous last element of the queue is now at the front
-        return q.poll();
-    }
-}
+    # Remove the top element of the stack and return it
+    def pop(self):
+        size = len(self.q)
+        while size > 1:
+            self.q.append(self.q.pop(0))
+            size -= 1
+        # The previous last element of the queue is now at the front
+        return self.q.pop(0)
 ``` 
 
 There is one small problem. The last element of the queue is moved to the front and removed, but the `top_elem` variable is not updated. We need to make a small change:
 
-```java
-class MyStack {
-    // To save space, the code given above is omitted...
+```python
+class MyStack:
+    # To save space, the code given above is omitted...
 
-    // remove the top element and return it
-    public int pop() {
-        int size = q.size();
-        // leave the last 2 elements
-        while (size > 2) {
-            q.offer(q.poll());
-            size--;
-        }
-        // record the new last element
-        top_elem = q.peek();
-        q.offer(q.poll());
-        // remove the previous last element
-        return q.poll();
-    }
-}
+    # Remove the top element of the stack and return it
+    def pop(self):
+        size = len(self.q)
+        # Keep the last 2 elements of the queue
+        while size > 2:
+            self.q.append(self.q.pop(0))
+            size -= 1
+        # Record the new last element of the queue
+        self.top_elem = self.q[0]
+        self.q.append(self.q.pop(0))
+        # Remove the previous last element of the queue
+        return self.q.pop(0)
 ``` 
 
 Now it works. Here is the complete code:
 
-```java
-class MyStack {
-    Queue<Integer> q = new LinkedList<>();
-    int top_elem = 0;
+```python
+from collections import deque
 
-    // Push element x onto stack
-    public void push(int x) {
-        // x is the tail of the queue, which is the top of the stack
-        q.offer(x);
-        top_elem = x;
-    }
+class MyStack:
+    def __init__(self):
+        self.q = deque()
+        self.top_elem = 0
 
-    // Removes the element on top of the stack and returns that element
-    public int top() {
-        return top_elem;
-    }
+    # Push element x onto stack
+    def push(self, x: int) -> None:
+        # x is the tail of the queue, which is the top of the stack
+        self.q.append(x)
+        self.top_elem = x
 
-    
-    // Removes the element on top of the stack
-    public int pop() {
-        int size = q.size();
-        // leave the last 2 elements in the queue
-        while (size > 2) {
-            q.offer(q.poll());
-            size--;
-        }
-        // record the new tail element
-        top_elem = q.peek();
-        q.offer(q.poll());
-        // remove the previous tail element
-        return q.poll();
-    }
+    # Removes the element on top of the stack and returns that element
+    def top(self) -> int:
+        return self.top_elem
 
-    // Returns whether the stack is empty
-    public boolean empty() {
-        return q.isEmpty();
-    }
-}
+    # Removes the element on top of the stack
+    def pop(self) -> int:
+        size = len(self.q)
+        # leave the last 2 elements in the queue
+        while size > 2:
+            self.q.append(self.q.popleft())
+            size -= 1
+        # record the new tail element
+        self.top_elem = self.q[0]
+        self.q.append(self.q.popleft())
+        # remove the previous tail element
+        return self.q.popleft()
+
+    # Returns whether the stack is empty
+    def empty(self) -> bool:
+        return not self.q
 ``` 
 
 It is clear that when you use a queue to make a stack, the `pop` operation takes O(N) time, and the other operations are O(1).
@@ -263,4 +250,8 @@ In my opinion, using a queue to make a stack is not very interesting, but using 
 
 After moving elements from stack `s1` to `s2`, the elements in `s2` become first in, first out, just like a queue. This is a bit like “two negatives make a positive” and is not easy to think of at first.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

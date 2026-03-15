@@ -70,9 +70,9 @@ To take course 1 you should have finished course 0, and to take course 0 you sho
 
 The problem is from [LeetCode 207. Course Schedule](<https://leetcode.com/problems/course-schedule/>).
 
-```java
-// The function signature is as follows
-boolean canFinish(int numCourses, int[][] prerequisites);
+```python
+# The function signature is as follows
+def canFinish(numCourses: int, prerequisites: List[List[int]]) -> bool:
 ``` 
 
 The problem should be straightforward to understand. When is it impossible to finish all courses? When there's a circular dependency.
@@ -93,22 +93,19 @@ Alright, to solve this problem, we first need to convert the input into a direct
 
 In a previous article on [Graph Storage](</en/algo/data-structure-basic/graph-basic/>), I covered two ways to store graphs: adjacency matrix and adjacency list. Here I'll use the adjacency list representation and write a graph-building function:
 
-```java
-List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-    // There are numCourses nodes in the graph
-    List<Integer>[] graph = new LinkedList[numCourses];
-    for (int i = 0; i < numCourses; i++) {
-        graph[i] = new LinkedList<>();
-    }
-    for (int[] edge : prerequisites) {
-        int from = edge[1], to = edge[0];
-        // Add a directed edge from 'from' to 'to'
-        // The direction of the edge represents a dependency, i.e.,
-        // course 'to' can only be taken after course 'from'
-        graph[from].add(to);
-    }
-    return graph;
-}
+```python
+from typing import List
+
+def buildGraph(numCourses: int, prerequisites: List[List[int]]) -> List[List[int]]:
+    # there are numCourses nodes in the graph
+    graph = [[] for _ in range(numCourses)]
+    for edge in prerequisites:
+        from_, to_ = edge[1], edge[0]
+        # add a directed edge from from_ to to_
+        # the direction of the edge represents a "dependency",
+        # meaning you must complete course from_ before course to_
+        graph[from_].append(to_)
+    return graph
 ``` 
 
 Now that we've built the graph, how do we check if it contains a cycle?
@@ -121,52 +118,46 @@ I'll start by directly applying the DFS code template for traversing all paths, 
 
 Based on this idea, here's the first version of the code (which will TLE):
 
-```java
-class Solution {
-    // record the nodes in the recursion stack
-    boolean[] onPath;
-    // record whether there is a cycle in the graph
-    boolean hasCycle = false;
+```python
+class Solution:
+    def __init__(self):
+        # record nodes in the recursion stack
+        self.onPath = []
+        # record if there is a cycle in the graph
+        self.hasCycle = False
 
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = self.buildGraph(numCourses, prerequisites)
         
-        onPath = new boolean[numCourses];
+        self.onPath = [False] * numCourses
         
-        for (int i = 0; i < numCourses; i++) {
-            // traverse all the nodes in the graph
-            traverse(graph, i);
-        }
-        // as long as there are no cyclic dependencies, all courses can be finished
-        return !hasCycle;
-    }
+        for i in range(numCourses):
+            # traverse all nodes in the graph
+            self.traverse(graph, i)
+        # as long as there is no cyclic dependency, all courses can be finished
+        return not self.hasCycle
 
-    // graph traversal function, traverse all paths
-    void traverse(List<Integer>[] graph, int s) {
-        if (hasCycle) {
-            // if a cycle has been found, no need to continue traversing
-            return;
-        }
+    # graph traversal function, traverse all paths
+    def traverse(self, graph: List[List[int]], s: int):
+        if self.hasCycle:
+            # if a cycle has been found, no need to traverse further
+            return
 
-        if (onPath[s]) {
-            // s is already on the recursion path, indicating a cycle
-            hasCycle = true; 
-            return;
-        }
+        if self.onPath[s]:
+            # s is already in the recursion path, indicating a cycle
+            self.hasCycle = True
+            return
         
-        // pre-order code position
-        onPath[s] = true;
-        for (int t : graph[s]) {
-            traverse(graph, t);
-        }
-        // post-order code position
-        onPath[s] = false;
-    }
-
-    List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-        // code as seen previously
-    }
-}
+        # pre-order code position
+        self.onPath[s] = True
+        for t in graph[s]:
+            self.traverse(graph, t)
+        # post-order code position
+        self.onPath[s] = False
+    
+    def buildGraph(self, numCourses: int, prerequisites: List[List[int]]) -> List[List[int]]:
+        # code see above
+        pass
 ``` 
 
 Note that not all nodes in the graph are connected, so we need a for loop to start a DFS search from every node.
@@ -185,61 +176,54 @@ The fix is straightforward: if we find that a node has already been traversed be
 
 Here's the optimized code:
 
-```java
-class Solution {
-    // record nodes in the recursion stack
-    boolean[] onPath;
-    // record whether a node has been visited
-    boolean[] visited;
-    // record whether there is a cycle in the graph
-    boolean hasCycle = false;
+```python
+class Solution:
+    def __init__(self):
+        # record nodes in one recursion stack
+        self.onPath = []
+        # record whether a node has been visited
+        self.visited = []
+        # record whether there's a cycle in the graph
+        self.hasCycle = False
 
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        graph = self.buildGraph(numCourses, prerequisites)
         
-        onPath = new boolean[numCourses];
-        visited = new boolean[numCourses];
+        self.onPath = [False] * numCourses
+        self.visited = [False] * numCourses
         
-        for (int i = 0; i < numCourses; i++) {
-            // traverse all nodes in the graph
-            traverse(graph, i);
-        }
-        // as long as there are no cyclic dependencies, all courses can be finished
-        return !hasCycle;
-    }
+        for i in range(numCourses):
+            # traverse all nodes in the graph
+            self.traverse(graph, i)
+        # can finish all courses as long as there's no cyclic dependency
+        return not self.hasCycle
 
-    // graph traversal function, traverse all paths
-    void traverse(List<Integer>[] graph, int s) {
-        if (hasCycle) {
-            // if a cycle has been found, no need to traverse further
-            return;
-        }
+    # graph traversal function, traverse all paths
+    def traverse(self, graph: List[List[int]], s: int):
+        if self.hasCycle:
+            # if a cycle has been found, no need to traverse further
+            return
 
-        if (onPath[s]) {
-            // s is already in the recursion path, indicating a cycle
-            hasCycle = true; 
-            return;
-        }
+        if self.onPath[s]:
+            # s is already in the recursion path, indicating a cycle
+            self.hasCycle = True
+            return
         
-        if (visited[s]) {
-            // no need to traverse already visited nodes
-            return;
-        }
+        if self.visited[s]:
+            # no need to traverse already visited nodes again
+            return
 
-        // pre-order code position
-        visited[s] = true;
-        onPath[s] = true;
-        for (int t : graph[s]) {
-            traverse(graph, t);
-        }
-        // post-order code position
-        onPath[s] = false;
-    }
-
-    List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-        // code as seen previously
-    }
-}
+        # pre-order code position
+        self.visited[s] = True
+        self.onPath[s] = True
+        for t in graph[s]:
+            self.traverse(graph, t)
+        # post-order code position
+        self.onPath[s] = False
+    
+    def buildGraph(self, numCourses: int, prerequisites: List[List[int]]) -> List[List[int]]:
+        # code as seen previously
+        pass
 ``` 
 
 Nodes where `visited` is true are shown in green, and nodes where `onPath` is true are shown in orange.
@@ -274,55 +258,49 @@ Above, we covered how DFS uses the `onPath` array to detect cycles. Now let's se
 
 Here's the BFS solution code:
 
-```java
-class Solution {
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        // build the graph, directed edges represent "dependency" relationship
-        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-        // construct the indegree array
-        int[] indegree = new int[numCourses];
-        for (int[] edge : prerequisites) {
-            int from = edge[1], to = edge[0];
-            // increase the indegree of node 'to'
-            indegree[to]++;
-        }
+```python
+class Solution:
 
-        // initialize the queue with nodes having zero indegree
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < numCourses; i++) {
-            if (indegree[i] == 0) {
-                // node 'i' has no indegree, i.e., no dependencies
-                // can be used as a starting point for topological sort, add to queue
-                q.offer(i); 
-            }
-        }
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # Build the graph, directed edges represent "dependency" relationships
+        graph = self.buildGraph(numCourses, prerequisites)
+        # Construct the indegree array
+        indegree = [0] * numCourses
+        for edge in prerequisites:
+            from_, to = edge[1], edge[0]
+            # Increase the indegree of node 'to' by one
+            indegree[to] += 1
 
-        // record the number of nodes traversed
-        int count = 0;
-        // start the BFS loop
-        while (!q.isEmpty()) {
-            // dequeue node 'cur' and decrease the indegree of its adjacent nodes
-            int cur = q.poll();
-            count++;
-            for (int next : graph[cur]) { 
-                indegree[next]--;
-                if (indegree[next] == 0) {
-                    // if the indegree becomes zero, it means all
-                    // dependencies of 'next' have been visited
-                    q.offer(next);
-                }
-            }
-        }
+        # Initialize the queue with nodes based on their indegree
+        q = collections.deque()
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                # Node i has no indegree, meaning it has no dependencies
+                # It can be used as a starting point for
+                # topological sorting, add it to the queue
+                q.append(i) 
 
-        // if all nodes have been traversed, it means there is no cycle
-        return count == numCourses;
-    }
+        # Record the number of nodes traversed
+        count = 0
+        # Start the BFS loop
+        while q:
+            # Pop node cur and decrease the indegree of its adjacent nodes by one
+            cur = q.popleft()
+            count += 1
+            for next_ in graph[cur]: 
+                indegree[next_] -= 1
+                if indegree[next_] == 0:
+                    # If the indegree becomes 0, it indicates all nodes that
+                    # next depends on have been traversed
+                    q.append(next_)
 
-    // function to build the graph
-    List<Integer>[] buildGraph(int n, int[][] edges) {
-        // see above
-    }
-}
+        # If all nodes have been traversed, it indicates there is no cycle
+        return count == numCourses
+
+    # Build graph function
+    def buildGraph(self, n, edges):
+        # See previous text
+        pass
 ``` 
 
 Let me summarize the logic of this BFS algorithm:
@@ -381,4 +359,8 @@ One last exercise to think about:
 
 For the BFS cycle detection algorithm, if you're asked to identify exactly which nodes form the cycle, how would you implement that?
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

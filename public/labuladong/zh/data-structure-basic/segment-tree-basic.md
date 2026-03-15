@@ -47,3 +47,7 @@
 在 [选择排序](</zh/algo/data-structure-basic/select-sort/>) 中，我们会尝试解决一个需求，就是计算 `nums` 数组中从索引 `i` 开始到末尾的最小值。
 
 我们将提出一种使用 `suffixMin` 数组的优化尝试，即提前预计算一个 `suffixMin` 数组，使得 `suffixMin[i] = min(nums[i..])`，这样就可以在 O(1)O(1)O(1) 时间内查询 `nums[i..]` 的最小值：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

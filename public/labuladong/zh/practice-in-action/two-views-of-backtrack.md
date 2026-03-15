@@ -87,3 +87,7 @@ LeetCode| 力扣| 难度
 ![diagram](https://labuladong.online/images/algo/set-split/math1.png)
 
 至于如何解递归式，涉及数学的内容比较多，这里就不做深入探讨了，有兴趣的读者可以自行学习组合数学相关知识。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

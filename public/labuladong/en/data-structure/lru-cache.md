@@ -52,42 +52,44 @@ First, it should accept a `capacity` parameter as the maximum cache capacity, th
 
 Note that the `get` and `put` methods must have a time complexity of O(1)O(1)O(1). Let's look at a specific example to see how the LRU algorithm works:
 
-```java
-// the cache capacity is 2
-LRUCache cache = new LRUCache(2);
-// you can understand the cache as a queue
-// assume the left side is the head of the queue and the right side is the tail
-// the most recently used is at the head of the
-// queue, and the least recently used is at the tail
-// parentheses represent the key-value pair (key, val)
+```python
+# the cache capacity is 2
+cache = LRUCache(2)
 
-cache.put(1, 1);
-// cache = [(1, 1)]
+# you can understand cache as a queue
+# assume the left is the head of the queue and the right is the tail
+# the most recently used is at the head of the
+# queue, and the least recently used is at the tail
+# parentheses represent key-value pairs (key, val)
 
-cache.put(2, 2);
-// cache = [(2, 2), (1, 1)]
+cache.put(1, 1)
+# cache = [(1, 1)]
 
-// return 1
-cache.get(1);
-// cache = [(1, 1), (2, 2)]
-// explanation: because key 1 was recently accessed, it is moved to the head of the queue
-// return the value corresponding to key 1, which is 1
+cache.put(2, 2)
+# cache = [(2, 2), (1, 1)]
 
-cache.put(3, 3);
-// cache = [(3, 3), (1, 1)]
-// explanation: the cache is full, need to delete content to make space
-// prefer to delete the least recently used data, which is the data at the tail
-// then insert the new data at the head of the queue
+# return 1
+cache.get(1)
+# explanation: because key 1 was recently accessed, it is moved to the head of the queue
+# return the value corresponding to key 1
+# cache = [(1, 1), (2, 2)]
 
-// return -1 (not found)
-cache.get(2);
-// cache = [(3, 3), (1, 1)]
-// explanation: there is no data with key 2 in the cache
+cache.put(3, 3)
+# cache = [(3, 3), (1, 1)]
+# explanation: the cache is full, need to delete content to make space
+# priority is given to deleting the least recently
+# used data, which is the data at the tail of the queue
+# then insert the new data at the head of the queue
 
-cache.put(1, 4);    
-// cache = [(1, 4), (3, 3)]
-// explanation: key 1 already exists, overwrite the original value 1 with 4
-// don't forget to also move the key-value pair to the head of the queue
+# return -1 (not found)
+cache.get(2)
+# explanation: there is no data with key 2 in the cache
+# cache = [(3, 3), (1, 1)]
+
+cache.put(1, 4)
+# cache = [(1, 4), (3, 3)]
+# explanation: key 1 already exists, overwrite the original value 1 with 4
+# don't forget to also move the key-value pair to the head of the queue
 ``` 
 
 ## II. LRU Algorithm Design
@@ -124,65 +126,53 @@ Many programming languages have built-in linked hashmaps or library functions wi
 
 First, let's define the node class for our [doubly linked list](</en/algo/data-structure-basic/linkedlist-basic/>). For simplicity, both `key` and `val` are int types:
 
-```java
-class Node {
-    public int key, val;
-    public Node next, prev;
-    public Node(int k, int v) {
-        this.key = k;
-        this.val = v;
-    }
-}
+```python
+class Node:
+    def __init__(self, k: int, v: int):
+        self.key = k
+        self.val = v
+        self.next = None
+        self.prev = None
 ``` 
 
 Next, we'll use our `Node` type to build a doubly linked list with the essential APIs that our LRU algorithm needs:
 
-```java
-class DoubleList {  
-    // virtual head and tail nodes
-    private Node head, tail;  
-    // number of elements in the linked list
-    private int size;
+```python
+class DoubleList:
+    # virtual head and tail nodes
+    def __init__(self):
+        self.head = Node(0, 0)
+        self.tail = Node(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.size = 0
     
-    public DoubleList() {
-        // initialize the data of the doubly linked list
-        head = new Node(0, 0);
-        tail = new Node(0, 0);
-        head.next = tail;
-        tail.prev = head;
-        size = 0;
-    }
-
-    // add node x to the end of the list, time O(1)
-    public void addLast(Node x) {
-        x.prev = tail.prev;
-        x.next = tail;
-        tail.prev.next = x;
-        tail.prev = x;
-        size++;
-    }
-
-    // remove node x from the list (x is guaranteed to exist)
-    // since it's a doubly linked list and the target Node is given, time O(1)
-    public void remove(Node x) {
-        x.prev.next = x.next;
-        x.next.prev = x.prev;
-        size--;
-    }
+    # add node x to the end of the list, time complexity O(1)
+    def addLast(self, x: Node):
+        x.prev = self.tail.prev
+        x.next = self.tail
+        self.tail.prev.next = x
+        self.tail.prev = x
+        self.size += 1
     
-    // remove the first node from the list and return it, time O(1)
-    public Node removeFirst() {
-        if (head.next == tail)
-            return null;
-        Node first = head.next;
-        remove(first);
-        return first;
-    }
-
-    // return the length of the list, time O(1)
-    public int size() { return size; }
-
-}
+    # remove node x from the list (x is guaranteed to exist)
+    # since it's a doubly linked list and the target Node is given, time complexity O(1)
+    def remove(self, x: Node):
+        x.prev.next = x.next
+        x.next.prev = x.prev
+        self.size -= 1
+    
+    # remove the first node of the list and return it, time complexity O(1)
+    def removeFirst(self) -> Node:
+        if self.head.next == self.tail:
+            return None
+        first = self.head.next
+        self.remove(first)
+        return first
+    
+    # return the size of the list, time complexity O(1)
+    def size(self) -> int:
+        return self.size
 ``` 
 
 If you're not comfortable with linked list operations, check out [Hands-On Guide to Implementing a Doubly Linked List](</en/algo/data-structure-basic/linkedlist-basic/>).
@@ -195,21 +185,15 @@ Note that our doubly linked list API only inserts at the tail. This means data n
 
 With the doubly linked list in place, all we need to do is combine it with a hash map in our LRU algorithm. Let's start with the code skeleton:
 
-```java
-class LRUCache {
-    // key -> Node(key, val)
-    private HashMap<Integer, Node> map;
-    // Node(k1, v1) <-> Node(k2, v2)...
-    private DoubleList cache;
-    // maximum capacity
-    private int cap;
-    
-    public LRUCache(int capacity) {
-        this.cap = capacity;
-        map = new HashMap<>();
-        cache = new DoubleList();
-    }
-}
+```python
+class LRUCache:
+    def __init__(self, capacity: int):
+        # key -> Node(key, val)
+        self.map = {}
+        # Node(k1, v1) <-> Node(k2, v2)...
+        self.cache = DoubleList()
+        # maximum capacity
+        self.cap = capacity
 ``` 
 
 Don't rush into implementing the `get` and `put` methods just yet. Since we're maintaining both a doubly linked list `cache` and a hash map `map` simultaneously, it's easy to miss an operation—for example, when deleting a `key`, you might remove the corresponding `Node` from `cache` but forget to also remove the `key` from `map`.
@@ -218,46 +202,41 @@ Don't rush into implementing the `get` and `put` methods just yet. Since we're m
 
 The idea is to keep the main `get` and `put` methods from directly manipulating the details of `map` and `cache`. Let's implement a few helper functions first:
 
-```java
-class LRUCache {
-    // To save space, the previous code part is omitted...
+```python
+class LRUCache:
+    # For the sake of brevity, the previous part of the code is omitted...
 
-    // promote a key to the most recently used
-    private void makeRecently(int key) {
-        Node x = map.get(key);
-        // first remove this node from the linked list
-        cache.remove(x);
-        // reinsert it at the end of the queue
-        cache.addLast(x);
-    }
+    # Promote a certain key to recently used
+    def makeRecently(self, key: int):
+        x = self.map[key]
+        # First, remove this node from the linked list
+        self.cache.remove(x)
+        # Reinsert it at the end of the queue
+        self.cache.addLast(x)
 
-    // add the most recently used element
-    private void addRecently(int key, int val) {
-        Node x = new Node(key, val);
-        // the tail of the linked list is the most recently used element
-        cache.addLast(x);
-        // don't forget to add the key mapping in the map
-        map.put(key, x);
-    }
+    # Add the most recently used element
+    def addRecently(self, key: int, val: int):
+        x = Node(key, val)
+        # The tail of the linked list is the most recently used element
+        self.cache.addLast(x)
+        # Don't forget to add the key mapping in the map
+        self.map[key] = x
 
-    // delete a certain key
-    private void deleteKey(int key) {
-        Node x = map.get(key);
-        // remove from the linked list
-        cache.remove(x);
-        // delete from the map
-        map.remove(key);
-    }
+    # Delete a certain key
+    def deleteKey(self, key: int):
+        x = self.map[key]
+        # Remove it from the linked list
+        self.cache.remove(x)
+        # Delete it from the map
+        self.map.pop(key)
 
-    // remove the least recently used element
-    private void removeLeastRecently() {
-        // the first element in the linked list is the least recently used
-        Node deletedNode = cache.removeFirst();
-        // also, don't forget to remove its key from the map
-        int deletedKey = deletedNode.key;
-        map.remove(deletedKey);
-    }
-}
+    # Remove the least recently used element
+    def removeLeastRecently(self):
+        # The first element at the head of the linked list is the least recently used
+        deletedNode = self.cache.removeFirst()
+        # Also, don't forget to delete its key from the map
+        deletedKey = deletedNode.key
+        self.map.pop(deletedKey)
 ``` 
 
 This also answers the earlier question: "Why store both key and val in the linked list node instead of just val?" Look at the `removeLeastRecently` function—we need to get `deletedKey` from `deletedNode`.
@@ -266,19 +245,17 @@ Here's the thing: when the cache is full, we don't just delete the last `Node`�
 
 These helper methods are simple wrappers that let us avoid directly touching the `cache` linked list and `map` hash table. Now let's implement the `get` method for the LRU algorithm:
 
-```java
-class LRUCache {
-    // To save space, the previous code is omitted...
+```python
+class LRUCache:
+    # To save space, the previous code part is omitted...
 
-    public int get(int key) {
-        if (!map.containsKey(key)) {
-            return -1;
-        }
-        // promote the data to the most recently used
-        makeRecently(key);
-        return map.get(key).val;
-    }
-}
+    def get(self, key: int) -> int:
+        if key not in self.map:
+            return -1
+        
+        # promote this data to most recently used
+        self.makeRecently(key)
+        return self.map[key].val
 ``` 
 
 The `put` method is a bit more involved. Let's draw a diagram to clarify its logic:
@@ -287,161 +264,133 @@ The `put` method is a bit more involved. Let's draw a diagram to clarify its log
 
 With that clear picture, we can easily write the code for `put`:
 
-```java
-class LRUCache {
-    // To save space, the previous given code part is omitted...
-    
-    public void put(int key, int val) {
-        if (map.containsKey(key)) {
-            // delete the old data
-            deleteKey(key);
-            // the newly inserted data is the most recently used data
-            addRecently(key, val);
-            return;
-        }
+```python
+class LRUCache:
+    # To save space, the previous code part is omitted...
+
+    def put(self, key: int, val: int) -> None:
+        if key in self.map:
+            # delete the old data
+            self.deleteKey(key)
+            # the newly inserted data is the most recently used data
+            self.addRecently(key, val)
+            return
         
-        if (cap == cache.size()) {
-            // remove the least recently used element
-            removeLeastRecently();
-        }
-        // add as the most recently used element
-        addRecently(key, val);
-    }
-}
+        if self.cap == self.cache.size():
+            # delete the least recently used element
+            self.removeLeastRecently()
+        # add as the most recently used element
+        self.addRecently(key, val)
 ``` 
 
 At this point, you should have a solid grasp of both the theory and implementation of the LRU algorithm. Here's the complete implementation:
 
-```java
-// doubly linked list node
-class Node {
-    public int key, val;
-    public Node next, prev;
-    public Node(int k, int v) {
-        this.key = k;
-        this.val = v;
-    }
-}
+```python
+class Node:
+    def __init__(self, k, v):
+        self.key = k
+        self.val = v
+        self.next = None
+        self.prev = None
 
-// doubly linked list
-class DoubleList {  
-    // virtual head and tail nodes
-    private Node head, tail;  
-    // number of elements in the linked list
-    private int size;
+class DoubleList:
+    def __init__(self):
+        # head and tail dummy nodes
+        self.head = Node(0, 0)
+        self.tail = Node(0, 0)
+        # number of elements in the list
+        self._size = 0
+
+        # initialize the doubly linked list
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    # add node x to the end of the list, time complexity O(1)
+    def addLast(self, x):
+        x.prev = self.tail.prev
+        x.next = self.tail
+        self.tail.prev.next = x
+        self.tail.prev = x
+        self._size += 1
+
+    # remove node x from the list (x must exist)
+    # since it's a doubly linked list and x is the target node, time complexity O(1)
+    def remove(self, x):
+        x.prev.next = x.next
+        x.next.prev = x.prev
+        self._size -= 1
+
+    # remove the first node in the list and return it, time complexity O(1)
+    def removeFirst(self):
+        if self.head.next == self.tail:
+            return None
+        first = self.head.next
+        self.remove(first)
+        return first
+
+    # return the length of the list, time complexity O(1)
+    def size(self):
+        return self._size
     
-    public DoubleList() {
-        // initialize the data of the doubly linked list
-        head = new Node(0, 0);
-        tail = new Node(0, 0);
-        head.next = tail;
-        tail.prev = head;
-        size = 0;
-    }
 
-    // add node x to the end of the list, time O(1)
-    public void addLast(Node x) {
-        x.prev = tail.prev;
-        x.next = tail;
-        tail.prev.next = x;
-        tail.prev = x;
-        size++;
-    }
+class LRUCache:
+    def __init__(self, capacity: int):
+        # key -> Node(key, val)
+        self.map = {}
+        # Node(k1, v1) <-> Node(k2, v2)...
+        self.cache = DoubleList()
+        # maximum capacity
+        self.cap = capacity
 
-    // remove node x from the list (x is guaranteed to exist)
-    // since it's a doubly linked list and the target Node is given, time O(1)
-    public void remove(Node x) {
-        x.prev.next = x.next;
-        x.next.prev = x.prev;
-        size--;
-    }
-    
-    // remove the first node from the list and return it, time O(1)
-    public Node removeFirst() {
-        if (head.next == tail)
-            return null;
-        Node first = head.next;
-        remove(first);
-        return first;
-    }
-
-    // return the length of the list, time O(1)
-    public int size() { return size; }
-
-}
-
-class LRUCache {
-    // key -> Node(key, val)
-    private HashMap<Integer, Node> map;
-    // Node(k1, v1) <-> Node(k2, v2)...
-    private DoubleList cache;
-    // maximum capacity
-    private int cap;
-    
-    public LRUCache(int capacity) {
-        this.cap = capacity;
-        map = new HashMap<>();
-        cache = new DoubleList();
-    }
-    
-    public int get(int key) {
-        if (!map.containsKey(key)) {
-            return -1;
-        }
-        // promote this data to the most recently used
-        makeRecently(key);
-        return map.get(key).val;
-    }
-    
-    public void put(int key, int val) {
-        if (map.containsKey(key)) {
-            // remove the old data
-            deleteKey(key);
-            // the newly inserted data is the most recently used
-            addRecently(key, val);
-            return;
-        }
+    def get(self, key: int) -> int:
+        if key not in self.map:
+            return -1
         
-        if (cap == cache.size()) {
-            // remove the least recently used element
-            removeLeastRecently();
-        }
-        // add as the most recently used element
-        addRecently(key, val);
-    }
-    
-    private void makeRecently(int key) {
-        Node x = map.get(key);
-        // first remove this node from the list
-        cache.remove(x);
-        // reinsert it at the end of the list
-        cache.addLast(x);
-    }
+        # promote this data to the most recently used
+        self.makeRecently(key)
+        return self.map[key].val
 
-    private void addRecently(int key, int val) {
-        Node x = new Node(key, val);
-        // the end of the list is the most recently used element
-        cache.addLast(x);
-        // don't forget to add the key mapping in the map
-        map.put(key, x);
-    }
+    def put(self, key: int, val: int) -> None:
+        if key in self.map:
+            # delete old data
+            self.deleteKey(key)
+            # insert the new data as the most recently used
+            self.addRecently(key, val)
+            return
+        
+        if self.cap == self.cache.size():
+            # remove the least recently used element
+            self.removeLeastRecently()
+        # add as the most recently used element
+        self.addRecently(key, val)
 
-    private void deleteKey(int key) {
-        Node x = map.get(key);
-        // remove from the list
-        cache.remove(x);
-        // remove from the map
-        map.remove(key);
-    }
+    def makeRecently(self, key: int):
+        x = self.map[key]
+        # first remove this node from the list
+        self.cache.remove(x)
+        # reinsert it at the end of the list
+        self.cache.addLast(x)
 
-    private void removeLeastRecently() {
-        // the first element at the head of the list is the least recently used
-        Node deletedNode = cache.removeFirst();
-        // also don't forget to remove its key from the map
-        int deletedKey = deletedNode.key;
-        map.remove(deletedKey);
-    }
-}
+    def addRecently(self, key: int, val: int):
+        x = Node(key, val)
+        # the end of the list is the most recently used element
+        self.cache.addLast(x)
+        # don't forget to add the key mapping in the map
+        self.map[key] = x
+
+    def deleteKey(self, key: int):
+        x = self.map[key]
+        # remove from the list
+        self.cache.remove(x)
+        # remove from the map
+        self.map.pop(key)
+
+    def removeLeastRecently(self):
+        # the first element at the head of the list is the least recently used
+        deletedNode = self.cache.removeFirst()
+        # also don't forget to remove its key from the map
+        deletedKey = deletedNode.key
+        self.map.pop(deletedKey)
 ``` 
 
 You can also use Java's built-in `LinkedHashMap` or the `MyLinkedHashMap` from [Hands-On Guide to Implementing a Linked HashMap](</en/algo/data-structure-basic/hashtable-with-linked-list/>) to implement LRU. The logic is exactly the same:
@@ -492,4 +441,8 @@ class LRUCache {
 
 And there you have it—nothing mysterious about the LRU algorithm anymore. For more data structure design problems, check out [Classic Data Structure Design Exercises](</en/algo/problem-set/ds-design/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

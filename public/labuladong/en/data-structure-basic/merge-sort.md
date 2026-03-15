@@ -34,4 +34,8 @@ Let’s compare it with quick sort. Then you can clearly see the difference betw
 
 In quick sort, we first put one element in the correct position (sorted), then use recursion to sort the elements on the left and right of this element. In the end, the whole array becomes sorted. The code framework is like this:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

@@ -73,8 +73,8 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-int calculateMinimumHP(int[][] grid);
+```python
+def calculateMinimumHP(grid: List[List[int]]) -> int:
 ``` 
 
 上篇文章 [最小路径和](</zh/algo/dynamic-programming/minimum-path-sum/>) 写过类似的问题，问你从左上角到右下角的最小路径和是多少。
@@ -97,8 +97,8 @@ int calculateMinimumHP(int[][] grid);
 
 这类求最值的问题，肯定要借助动态规划技巧，要合理设计 `dp` 数组/函数的定义。类比前文 [最小路径和问题](</zh/algo/dynamic-programming/minimum-path-sum/>)，`dp` 函数签名肯定长这样：
 
-```java
-int dp(int[][] grid, int i, int j);
+```python
+def dp(grid: List[List[int]], i: int, j: int) -> int:
 ``` 
 
 但是这道题对 `dp` 函数的定义比较有意思，按照常理，这个 `dp` 函数的定义应该是：
@@ -107,22 +107,19 @@ int dp(int[][] grid, int i, int j);
 
 这样定义的话，base case 就是 `i, j` 都等于 0 的时候，我们可以这样写代码：
 
-```java
-int calculateMinimumHP(int[][] grid) {
-    int m = grid.length;
-    int n = grid[0].length;
-    // 我们想计算左上角到右下角所需的最小生命值
-    return dp(grid, m - 1, n - 1);
-}
+```python
+def calculateMinimumHP(grid: List[List[int]]) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    # 我们想计算左上角到右下角所需的最小生命值
+    return dp(grid, m - 1, n - 1)
 
-int dp(int[][] grid, int i, int j) {
-    // base case
-    if (i == 0 && j == 0) {
-        // 保证骑士落地不死就行了
-        return grid[i][j] > 0 ? 1 : -grid[i][j] + 1;
-    }
+def dp(grid: List[List[int]], i: int, j: int) -> int:
+    # base case
+    if i == 0 and j == 0:
+        # 保证骑士落地不死就行了
+        return 1 if grid[i][j] > 0 else -grid[i][j] + 1
     ...
-}
 ``` 
 
 为了简洁，之后 `dp(grid, i, j)` 就简写为 `dp(i, j)`，大家理解就好。
@@ -159,8 +156,8 @@ int dp(int[][] grid, int i, int j) {
 
 正确的做法需要反向思考，依然是如下的 `dp` 函数：
 
-```java
-int dp(int[][] grid, int i, int j);
+```python
+def dp(grid: List[List[int]], i: int, j: int) -> int:
 ``` 
 
 但是我们要修改 `dp` 函数的定义：
@@ -169,21 +166,18 @@ int dp(int[][] grid, int i, int j);
 
 那么可以这样写代码：
 
-```java
-int calculateMinimumHP(int[][] grid) {
-    // 我们想计算左上角到右下角所需的最小生命值
-    return dp(grid, 0, 0);
-}
+```python
+def calculateMinimumHP(grid: List[List[int]]) -> int:
+    # 我们想计算左上角到右下角所需的最小生命值
+    return dp(grid, 0, 0)
 
-int dp(int[][] grid, int i, int j) {
-    int m = grid.length;
-    int n = grid[0].length;
-    // base case
-    if (i == m - 1 && j == n - 1) {
-        return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
-    }
+def dp(grid: List[List[int]], i: int, j: int) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    # base case
+    if i == m - 1 and j == n - 1:
+        return 1 if grid[i][j] >= 0 else -grid[i][j] + 1
     ...
-}
 ``` 
 
 根据新的 `dp` 函数定义和 base case，我们想求 `dp(0, 0)`，那就应该试图通过 `dp(i, j+1)` 和 `dp(i+1, j)` 推导出 `dp(i, j)`，这样才能不断逼近 base case，正确进行状态转移。
@@ -213,50 +207,41 @@ dp(i, j) = res <= 0 ? 1 : res;
 
 根据这个核心逻辑，加一个备忘录消除重叠子问题，就可以直接写出最终的代码了：
 
-```java
-class Solution {
+```python
+class Solution:
 
-    public int calculateMinimumHP(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        // 备忘录中都初始化为 -1
-        memo = new int[m][n];
-        for (int[] row : memo) {
-            Arrays.fill(row, -1);
-        }
+    def calculateMinimumHP(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        # 备忘录中都初始化为 -1
+        self.memo = [[-1] * n for _ in range(m)]
 
-        return dp(grid, 0, 0);
-    }
+        return self.dp(grid, 0, 0)
 
-    // 备忘录，消除重叠子问题
-    int[][] memo;
+    # 备忘录，消除重叠子问题
+    memo = []
 
-    // 定义：从 (i, j) 到达右下角，需要的初始血量至少是多少
-    int dp(int[][] grid, int i, int j) {
-        int m = grid.length;
-        int n = grid[0].length;
-        // base case
-        if (i == m - 1 && j == n - 1) {
-            return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
-        }
-        if (i == m || j == n) {
-            return Integer.MAX_VALUE;
-        }
-        // 避免重复计算
-        if (memo[i][j] != -1) {
-            return memo[i][j];
-        }
-        // 状态转移逻辑
-        int res = Math.min(
-                dp(grid, i, j + 1),
-                dp(grid, i + 1, j)
-        ) - grid[i][j];
-        // 骑士的生命值至少为 1
-        memo[i][j] = res <= 0 ? 1 : res;
+    # 定义：从 (i, j) 到达右下角，需要的初始血量至少是多少
+    def dp(self, grid: List[List[int]], i: int, j: int) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        # base case
+        if i == m - 1 and j == n - 1:
+            return 1 if grid[i][j] >= 0 else -grid[i][j] + 1
+        if i == m or j == n:
+            return float('inf')
+        # 避免重复计算
+        if self.memo[i][j] != -1:
+            return self.memo[i][j]
+        # 状态转移逻辑
+        res = min(
+            self.dp(grid, i, j + 1),
+            self.dp(grid, i + 1, j)
+        ) - grid[i][j]
+        # 骑士的生命值至少为 1
+        self.memo[i][j] = 1 if res <= 0 else res
 
-        return memo[i][j];
-    }
-}
+        return self.memo[i][j]
 ``` 
 
 算法可视化
@@ -277,43 +262,41 @@ dp[i][j] = Math.min(dp[i + 1][j], dp[i][j + 1]) - grid[i][j];
 
 `dp[i][j]` 的状态转移需要依赖下方 `dp[i+1][j]` 和右侧 `dp[i][j+1]`，所以我们还需要计算出最后一行 `dp[n-1][..]` 和最后一列 `dp[..][m-1]` 的值，然后才能自下而上，自右向左进行状态转移：
 
-```java
-class Solution {
+```python
+from typing import List
 
-    public int calculateMinimumHP(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        final int INF = Integer.MAX_VALUE / 2;
-        // dp[i][j] 表示从 (i, j) 到右下角需要的最少初始血量
-        int[][] dp = new int[m][n];
+class Solution:
 
-        // base case，右下角至少要 1 点血
-        dp[m - 1][n - 1] = Math.max(1, 1 - grid[m - 1][n - 1]);
+    def calculateMinimumHP(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        INF = 10**18
+        # dp[i][j] 表示从 (i, j) 到右下角需要的最少初始血量
+        dp = [[INF] * n for _ in range(m)]
 
-        // 最后一列
-        for (int i = m - 2; i >= 0; i--) {
-            int need = dp[i + 1][n - 1] - grid[i][n - 1];
-            dp[i][n - 1] = need <= 0 ? 1 : need;
-        }
-        // 最后一行
-        for (int j = n - 2; j >= 0; j--) {
-            int need = dp[m - 1][j + 1] - grid[m - 1][j];
-            dp[m - 1][j] = need <= 0 ? 1 : need;
-        }
+        # base case，右下角至少要 1 点血
+        dp[m - 1][n - 1] = max(1, 1 - grid[m - 1][n - 1])
 
-        // 其余格子，自底向上、自右向左填表
-        for (int i = m - 2; i >= 0; i--) {
-            for (int j = n - 2; j >= 0; j--) {
-                int down = dp[i + 1][j];
-                int right = dp[i][j + 1];
-                int need = Math.min(down, right) - grid[i][j];
-                dp[i][j] = need <= 0 ? 1 : need;
-            }
-        }
+        # 最后一列
+        for i in range(m - 2, -1, -1):
+            need = dp[i + 1][n - 1] - grid[i][n - 1]
+            dp[i][n - 1] = 1 if need <= 0 else need
+        # 最后一行
+        for j in range(n - 2, -1, -1):
+            need = dp[m - 1][j + 1] - grid[m - 1][j]
+            dp[m - 1][j] = 1 if need <= 0 else need
 
-        return dp[0][0];
-    }
-}
+        # 其余格子，自底向上、自右向左填表
+        for i in range(m - 2, -1, -1):
+            for j in range(n - 2, -1, -1):
+                need = min(dp[i + 1][j], dp[i][j + 1]) - grid[i][j]
+                dp[i][j] = 1 if need <= 0 else need
+
+        return dp[0][0]
 ``` 
 
 这样，这道题的动态规划解法就完成了，难点其实是定义 `dp` 函数，然后才能找到正确的状态转移方程，计算出正确的答案。
+
+## 评论
+
+请登录后查看/发表评论

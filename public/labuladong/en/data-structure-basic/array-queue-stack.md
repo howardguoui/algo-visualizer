@@ -21,31 +21,27 @@ Let's first use an array to implement a stack. This is simple. Treat the end of 
 
 Here I use the standard library's dynamic array. If you want to use the `MyArrayList` we made before, it works the same way:
 
-```java
-// use array as the underlying data structure to implement stack
-public class MyArrayStack<E> {
-    private ArrayList<E> arr = new ArrayList<>();
+```python
+# Implement stack using array as the underlying data structure
+class MyArrayStack:
+    def __init__(self):
+        self.arr = []
 
-    // add element to the top of the stack, time complexity O(1)
-    public void push(E e) {
-        arr.add(e);
-    }
+    # Add element to the top of the stack, time complexity O(1)
+    def push(self, e):
+        self.arr.append(e)
 
-    // pop element from the top of the stack, time complexity O(1)
-    public E pop() {
-        return arr.remove(arr.size() - 1);
-    }
+    # Pop element from the top of the stack, time complexity O(1)
+    def pop(self):
+        return self.arr.pop()
 
-    // peek the top element of the stack, time complexity O(1)
-    public E peek() {
-        return arr.get(arr.size() - 1);
-    }
+    # Peek at the top element of the stack, time complexity O(1)
+    def peek(self):
+        return self.arr[-1]
 
-    // return the number of elements in the stack, time complexity O(1)
-    public int size() {
-        return arr.size();
-    }
-}
+    # Return the number of elements in the stack, time complexity O(1)
+    def size(self):
+        return len(self.arr)
 ``` 
 
 Can We Use the Head of the Array as the Stack Top?
@@ -60,30 +56,26 @@ You can use the `addFirst` and `removeFirst` methods of `CycleArray` to make sta
 
 With the `CycleArray` class from [Circular Array Technique](</en/algo/data-structure-basic/cycle-array/>), using an array to build a queue is simple. Just use the `CycleArray` we wrote before, and you can get a standard queue. Of course, some programming languages also have built-in circular arrays, feel free to use them as well:
 
-```java
-public class MyArrayQueue<E> {
-    private CycleArray<E> arr;
+```python
+class MyArrayQueue:
+    def __init__(self):
+        self.arr = CycleArray()
 
-    public MyArrayQueue() {
-        arr = new CycleArray<>();
-    }
+    def push(self, t):
+        self.arr.add_last(t)
 
-    public void push(E t) {
-        arr.addLast(t);
-    }
+    def pop(self):
+        return self.arr.remove_first()
 
-    public E pop() {
-        return arr.removeFirst();
-    }
+    def peek(self):
+        return self.arr.get_first()
 
-    public E peek() {
-        return arr.getFirst();
-    }
-
-    public int size() {
-        return arr.size();
-    }
-}
+    def size(self):
+        return self.arr.size()
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

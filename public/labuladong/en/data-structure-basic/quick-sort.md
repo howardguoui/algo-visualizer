@@ -32,4 +32,8 @@ When a typical person sorts an array, they usually maintain a `sortedIndex`, ens
 
 If someone casually says, "Sorting an array is easy; just sort one element, then sort the remaining elements, and the whole array will be sorted," you might think they are a Trisolaran agent secretly residing on Earth. :)
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

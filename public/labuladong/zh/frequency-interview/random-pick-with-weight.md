@@ -101,3 +101,7 @@ solution.pickIndex(); // 返回 0，返回下标 0，返回该下标概率为 1/
 题目来源：[力扣 528. 按权重随机选择](<https://leetcode.cn/problems/random-pick-with-weight/>)。
 
 我们就来思考一下这个问题，解决按照权重随机选择元素的问题。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -177,4 +177,8 @@ $ cat file.txt | head -n 2 | sponge file.txt
 
 These are some common pitfalls of redirection and pipes. I hope they are useful to you.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

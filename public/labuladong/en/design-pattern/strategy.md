@@ -46,83 +46,65 @@ There are two problems here:
 
 Let's refactor with the Strategy Pattern. First, abstract the "formatting" behavior—the part that changes—into an interface:
 
-```java
-// Strategy interface: defines common export behavior
-interface ExportStrategy {
-    String export(String title, String content);
-}
+```python
+from abc import ABC, abstractmethod
+
+# Strategy interface: defines common export behavior
+class ExportStrategy(ABC):
+    @abstractmethod
+    def export(self, title: str, content: str) -> str:
+        pass
 ``` 
 
 Then write a strategy class for each format:
 
-```java
-// Markdown format strategy
-class MarkdownExporter implements ExportStrategy {
-    @Override
-    public String export(String title, String content) {
-        return "# " + title + "\n\n" + content;
-    }
-}
+```python
+# Markdown format strategy
+class MarkdownExporter(ExportStrategy):
+    def export(self, title: str, content: str) -> str:
+        return f"# {title}\n\n{content}"
 
-// HTML format strategy
-class HtmlExporter implements ExportStrategy {
-    @Override
-    public String export(String title, String content) {
-        return "<h1>" + title + "</h1>\n<p>" + content + "</p>";
-    }
-}
+# HTML format strategy
+class HtmlExporter(ExportStrategy):
+    def export(self, title: str, content: str) -> str:
+        return f"<h1>{title}</h1>\n<p>{content}</p>"
 
-// Plain text format strategy
-class PlainTextExporter implements ExportStrategy {
-    @Override
-    public String export(String title, String content) {
-        return title.toUpperCase() + "\n"
-                + "=".repeat(title.length()) + "\n"
-                + content;
-    }
-}
+# Plain text format strategy
+class PlainTextExporter(ExportStrategy):
+    def export(self, title: str, content: str) -> str:
+        return title.upper() + "\n" + "=" * len(title) + "\n" + content
 ``` 
 
 Finally, update `ReportExporter` so it no longer cares about the specific formatting logic. It just holds a strategy object and calls it:
 
-```java
-class ReportExporter {
-    private ExportStrategy strategy;
+```python
+class ReportExporter:
+    def __init__(self, strategy: ExportStrategy):
+        self._strategy = strategy
 
-    public ReportExporter(ExportStrategy strategy) {
-        this.strategy = strategy;
-    }
+    # Strategy can be switched at runtime
+    def set_strategy(self, strategy: ExportStrategy):
+        self._strategy = strategy
 
-    // Strategy can be switched at runtime
-    public void setStrategy(ExportStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public String export(String title, String content) {
-        return strategy.export(title, content);
-    }
-}
+    def export(self, title: str, content: str) -> str:
+        return self._strategy.export(title, content)
 ``` 
 
 The client code is clean and simple:
 
-```java
-public class Main {
-    public static void main(String[] args) {
-        ReportExporter exporter = new ReportExporter(new MarkdownExporter());
+```python
+if __name__ == "__main__":
+    exporter = ReportExporter(MarkdownExporter())
+    print(exporter.export("Monthly Report", "Sales grew by 20% this month"))
+    # # Monthly Report
+    #
+    # Sales grew by 20% this month
 
-        System.out.println(exporter.export("Monthly Report", "Sales grew by 20% this month"));
-        // # Monthly Report
-        //
-        // Sales grew by 20% this month
-
-        // Need HTML format? Just switch the strategy
-        exporter.setStrategy(new HtmlExporter());
-        System.out.println(exporter.export("Monthly Report", "Sales grew by 20% this month"));
-        // <h1>Monthly Report</h1>
-        // <p>Sales grew by 20% this month</p>
-    }
-}
+    # Need HTML format? Just switch the strategy
+    exporter.set_strategy(HtmlExporter())
+    print(exporter.export("Monthly Report", "Sales grew by 20% this month"))
+    # <h1>Monthly Report</h1>
+    # <p>Sales grew by 20% this month</p>
 ``` 
 
 The if-else is gone. If you need to add LaTeX support later, just create a new `LatexExporter` that implements the `ExportStrategy` interface—no need to touch any existing code. Each strategy class handles only its own formatting logic, with clear responsibilities and no interference between them.
@@ -143,95 +125,77 @@ Imagine you're building a turn-based combat game. NPCs have different behavior m
 
 Define the strategy interface and three concrete strategies:
 
-```java
-// Battle strategy interface
-interface BattleStrategy {
-    String decideAction(int myHp, int enemyHp);
-}
+```python
+from abc import ABC, abstractmethod
 
-// Aggressive: go all out, maximum damage
-class AggressiveStrategy implements BattleStrategy {
-    @Override
-    public String decideAction(int myHp, int enemyHp) {
-        return "Full attack! Deal 30 damage";
-    }
-}
+# Battle strategy interface
+class BattleStrategy(ABC):
+    @abstractmethod
+    def decide_action(self, my_hp: int, enemy_hp: int) -> str:
+        pass
 
-// Defensive: prioritize defense
-class DefensiveStrategy implements BattleStrategy {
-    @Override
-    public String decideAction(int myHp, int enemyHp) {
-        return "Raise shield, reduce 50% incoming damage";
-    }
-}
+# Aggressive: go all out, maximum damage
+class AggressiveStrategy(BattleStrategy):
+    def decide_action(self, my_hp: int, enemy_hp: int) -> str:
+        return "Full attack! Deal 30 damage"
 
-// Cunning: adapt to the situation
-class CunningStrategy implements BattleStrategy {
-    @Override
-    public String decideAction(int myHp, int enemyHp) {
-        if (enemyHp < 30) {
-            return "Enemy is weak, go for the kill! Deal 40 damage";
-        }
-        return "Probe cautiously, deal 10 damage";
-    }
-}
+# Defensive: prioritize defense
+class DefensiveStrategy(BattleStrategy):
+    def decide_action(self, my_hp: int, enemy_hp: int) -> str:
+        return "Raise shield, reduce 50% incoming damage"
+
+# Cunning: adapt to the situation
+class CunningStrategy(BattleStrategy):
+    def decide_action(self, my_hp: int, enemy_hp: int) -> str:
+        if enemy_hp < 30:
+            return "Enemy is weak, go for the kill! Deal 40 damage"
+        return "Probe cautiously, deal 10 damage"
 ``` 
 
 Then define the game character (the context), which holds a strategy reference:
 
-```java
-class GameCharacter {
-    private String name;
-    private int hp;
-    private BattleStrategy strategy;
+```python
+class GameCharacter:
+    def __init__(self, name: str, hp: int, strategy: BattleStrategy):
+        self.name = name
+        self.hp = hp
+        self._strategy = strategy
 
-    public GameCharacter(String name, int hp, BattleStrategy strategy) {
-        this.name = name;
-        this.hp = hp;
-        this.strategy = strategy;
-    }
+    def set_strategy(self, strategy: BattleStrategy):
+        self._strategy = strategy
 
-    public void setStrategy(BattleStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    public void takeTurn(int enemyHp) {
-        String action = strategy.decideAction(hp, enemyHp);
-        System.out.println(name + ": " + action);
-    }
-}
+    def take_turn(self, enemy_hp: int):
+        action = self._strategy.decide_action(self.hp, enemy_hp)
+        print(f"{self.name}: {action}")
 ``` 
 
 Here's how the client uses it:
 
-```java
-public class Main {
-    public static void main(String[] args) {
-        // Game designer assigns different behavior strategies to NPCs
-        GameCharacter warrior = new GameCharacter("Warrior", 100, new AggressiveStrategy());
-        GameCharacter guardian = new GameCharacter("Guardian", 120, new DefensiveStrategy());
-        GameCharacter assassin = new GameCharacter("Assassin", 80, new CunningStrategy());
+```python
+if __name__ == "__main__":
+    # Game designer assigns different behavior strategies to NPCs
+    warrior = GameCharacter("Warrior", 100, AggressiveStrategy())
+    guardian = GameCharacter("Guardian", 120, DefensiveStrategy())
+    assassin = GameCharacter("Assassin", 80, CunningStrategy())
 
-        // Each acts according to their own strategy
-        warrior.takeTurn(80);
-        // Warrior: Full attack! Deal 30 damage
+    # Each acts according to their own strategy
+    warrior.take_turn(80)
+    # Warrior: Full attack! Deal 30 damage
 
-        guardian.takeTurn(80);
-        // Guardian: Raise shield, reduce 50% incoming damage
+    guardian.take_turn(80)
+    # Guardian: Raise shield, reduce 50% incoming damage
 
-        assassin.takeTurn(100);
-        // Assassin: Probe cautiously, deal 10 damage
+    assassin.take_turn(100)
+    # Assassin: Probe cautiously, deal 10 damage
 
-        assassin.takeTurn(25);
-        // Assassin: Enemy is weak, go for the kill! Deal 40 damage
+    assassin.take_turn(25)
+    # Assassin: Enemy is weak, go for the kill! Deal 40 damage
 
-        // Player used "Enrage" skill on Guardian, forcing aggressive mode
-        System.out.println("\nPlayer used 'Enrage' on Guardian!");
-        guardian.setStrategy(new AggressiveStrategy());
-        guardian.takeTurn(80);
-        // Guardian: Full attack! Deal 30 damage
-    }
-}
+    # Player used "Enrage" skill on Guardian, forcing aggressive mode
+    print("\nPlayer used 'Enrage' on Guardian!")
+    guardian.set_strategy(AggressiveStrategy())
+    guardian.take_turn(80)
+    # Guardian: Full attack! Deal 30 damage
 ``` 
 
 The key is in the last few lines: after the player uses a "Provoke" skill, the guard's behavior switches from defensive to aggressive. `GameCharacter` doesn't care what strategy it's currently using—it just calls `strategy.decideAction()` and that's it.
@@ -277,4 +241,8 @@ Main drawbacks of the Strategy Pattern:
 
 All in all, when you spot a bunch of conditional branches in your code that select between different algorithms or behaviors, the Strategy Pattern is an excellent refactoring direction. It separates "what to do" from "how to do it," making your system more flexible and easier to extend.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

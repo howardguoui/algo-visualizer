@@ -78,4 +78,8 @@ The actual implementation of skip lists is somewhat more complex and differs fro
 
 For the specific implementation of skip lists, I will update the data structure design chapter. Stay tuned.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

@@ -38,3 +38,7 @@ Prim 算法是求解无向图中最小生成树的经典算法。
 ## Prim 算法代码
 
 仅需修改 [Dijkstra 算法模板](</zh/algo/data-structure/dijkstra/>) 中的几行代码即可得到 Prim 算法，修改部分已经高亮显示：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

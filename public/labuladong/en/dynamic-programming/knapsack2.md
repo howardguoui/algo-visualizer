@@ -32,9 +32,13 @@ Given a non-empty array `nums` containing only positive integers, write an algor
 
 The function signature of the algorithm is as follows:
 
-```java
-// input a set, return whether it can be partitioned into two subsets with equal sum
-boolean canPartition(int[] nums);
+```python
+# input a set, return whether it can be partitioned into two subsets with equal sum
+def canPartition(nums: List[int]) -> bool:
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

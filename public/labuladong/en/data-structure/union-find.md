@@ -26,15 +26,19 @@ Simply put, dynamic connectivity can be seen as connecting nodes in a graph. For
 
 Our Union-Find algorithm mainly needs to implement these two APIs:
 
-```java
-class UF {
-    // connect p and q
-    public void union(int p, int q);
-    // determine if p and q are connected
-    public boolean connected(int p, int q);
-    // return the number of connected components in the graph
-    public int count();
-}
+```python
+class UF:
+    # connect p and q
+    def union(self, p, q):
+        pass
+    
+    # determine if p and q are connected
+    def connected(self, p, q):
+        pass
+
+    # return the number of connected components in the graph
+    def count(self):
+        pass
 ``` 
 
 The "connected" relation here is an equivalence relation. It has these three properties:
@@ -57,4 +61,8 @@ Checking this kind of equivalence relation is very useful, like when a compiler 
 
 Now you should have a basic idea of what dynamic connectivity is. The key of the Union-Find algorithm is the efficiency of the `union` and `connected` functions. So, what model should we use to represent the connectivity of this graph? What data structure should we use to implement the code?
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

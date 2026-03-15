@@ -62,15 +62,16 @@ numArray.sumRange(0, 5); // return (-2) + 0 + 3 + (-5) + 2 + (-1) = -3
 
 The problem is from [LeetCode 303. Range Sum Query - Immutable](<https://leetcode.com/problems/range-sum-query-immutable/>).
 
-```java
-// The problem requires you to implement such a class
-class NumArray {
-
-    public NumArray(int[] nums) {}
+```python
+# The problem requires you to implement such a class
+class NumArray:
     
-    // Query the cumulative sum of the closed interval [left, right]
-    public int sumRange(int left, int right) {}
-}
+    def __init__(self, nums: List[int]):
+        pass
+        
+    # Query the accumulated sum of the closed interval [left, right]
+    def sumRange(self, left: int, right: int) -> int:
+        pass
 ``` 
 
 The `sumRange` function needs to return the sum of elements in a given index range. Without prefix sum, people may write code like this:
@@ -97,26 +98,20 @@ This solution runs a for loop every time `sumRange` is called. The time complexi
 
 The correct way is to use prefix sum to optimize it, so the time complexity of `sumRange` becomes O(1)O(1)O(1):
 
-```java
-class NumArray {
-    // prefix sum array
-    private int[] preSum;
+```python
+class NumArray:
+    # prefix sum array
+    def __init__(self, nums: List[int]):
+        # input an array to construct the prefix sum
+        # preSum[0] = 0, to facilitate the calculation of accumulated sums
+        self.preSum = [0] * (len(nums) + 1)
+        # calculate the accumulated sums of nums
+        for i in range(1, len(self.preSum)):
+            self.preSum[i] = self.preSum[i - 1] + nums[i - 1]
 
-    // input an array to construct the prefix sum
-    public NumArray(int[] nums) {
-        // preSum[0] = 0, to facilitate the calculation of accumulated sums
-        preSum = new int[nums.length + 1];
-        // calculate the accumulated sums of nums
-        for (int i = 1; i < preSum.length; i++) {
-            preSum[i] = preSum[i - 1] + nums[i - 1];
-        }
-    }
-
-    // query the sum of the closed interval [left, right]
-    public int sumRange(int left, int right) {
-        return preSum[right + 1] - preSum[left];
-    }
-}
+    # query the sum of the closed interval [left, right]
+    def sumRange(self, left: int, right: int) -> int:
+        return self.preSum[right + 1] - self.preSum[left]
 ``` 
 
 The key idea is to create a new array `preSum`, where `preSum[i]` stores the sum of `nums[0..i-1]`. See the picture, where 10=3+5+210 = 3 + 5 + 210=3+5+2:
@@ -215,30 +210,27 @@ These four large rectangles share a key feature: their top-left corner is always
 
 So the better idea for this problem is very similar to prefix sum in a 1D array. We can keep a 2D `preSum` array. `preSum[i][j]` records the sum of all elements in the matrix with top-left at the origin and bottom-right at `(i, j)`. Then we can use a few additions and subtractions to get the sum of any submatrix:
 
-```java
-class NumMatrix {
-    // preSum[i][j] records the sum of elements in the matrix [0, 0, i-1, j-1]
-    private int[][] preSum;
+```python
+class NumMatrix:
+    # preSum[i][j] records the sum of elements in the matrix [0, 0, i-1, j-1]
+    def __init__(self, matrix: List[List[int]]):
+        m = len(matrix)
+        n = len(matrix[0])
+        if m == 0 or n == 0:
+            return
+        # construct the prefix sum matrix
+        self.preSum = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                # calculate the sum of elements for each matrix [0, 0, i, j]
+                self.preSum[i][j] = (self.preSum[i - 1][j] + self.preSum[i][j - 1] +
+                                     matrix[i - 1][j - 1] - self.preSum[i - 1][j - 1])
 
-    public NumMatrix(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        if (m == 0 || n == 0) return;
-        // construct the prefix sum matrix
-        preSum = new int[m + 1][n + 1];
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                // calculate the sum of elements for each matrix [0, 0, i, j]
-                preSum[i][j] = preSum[i-1][j] + preSum[i][j-1] + matrix[i - 1][j - 1] - preSum[i-1][j-1];
-            }
-        }
-    }
-
-    // calculate the sum of elements in the submatrix [x1, y1, x2, y2]
-    public int sumRegion(int x1, int y1, int x2, int y2) {
-        // the sum of the target matrix is obtained by operations on four adjacent matrices
-        return preSum[x2+1][y2+1] - preSum[x1][y2+1] - preSum[x2+1][y1] + preSum[x1][y1];
-    }
-}
+    # calculate the sum of elements in the submatrix [x1, y1, x2, y2]
+    def sumRegion(self, x1: int, y1: int, x2: int, y2: int) -> int:
+        # the sum of the target matrix is obtained by operations on four adjacent matrices
+        return (self.preSum[x2 + 1][y2 + 1] - self.preSum[x1][y2 + 1] -
+                self.preSum[x2 + 1][y1] + self.preSum[x1][y1])
 ``` 
 
 In this way, the time complexity of the `sumRegion` function is optimized to O(1)O(1)O(1) with the prefix sum trick. This is a classic “space-for-time” method.
@@ -269,4 +261,8 @@ However, some scenarios do not have inverse operations. For example, in maximum 
 
 To address both issues simultaneously, more advanced data structures are required. The most general solution is the [Segment Tree](</en/algo/data-structure-basic/segment-tree-basic/>), which will be explained in detail in the data structure design chapter.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

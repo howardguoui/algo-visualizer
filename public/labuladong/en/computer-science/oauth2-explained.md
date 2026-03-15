@@ -68,7 +68,7 @@ Let's use an example. Suppose ExampleNote wants to access a user's Google Drive.
 
 Here is a sequence diagram for the OAuth 2.0 authorization process:
 
-加载图表...
+Google DriveResource ServerGoogleAuth ServerExampleNoteServerUser BrowserGoogle DriveResource ServerGoogleAuth ServerExampleNoteServerUser Browser1\. Click "Import Google Drive Files"2\. Redirect to Google Authorization Page3\. Visit Auth Page4\. Show Authorization Confirmation Page5\. User clicks "Allow"6\. Redirect Back to ExampleNote(with auth code)7\. Browser visits callback URL(URL contains code)8\. Use code + client_secretto get Access Token9\. Return Access Token10\. Use Access Tokento request user file list11\. Return file list12\. Show imported files
 
 ### Step 1: User Clicks Authorize
 
@@ -213,4 +213,8 @@ To solve this, we need to use OpenID Connect (OIDC), which is a layer of authent
   * **Key Output** : Access Token, a temporary, limited access credential.
   * **OAuth 2.0 only takes care of authorization, not authentication**. If you want secure third-party login, you need OpenID Connect (OIDC) authentication.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

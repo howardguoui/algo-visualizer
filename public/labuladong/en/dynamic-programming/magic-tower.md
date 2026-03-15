@@ -73,8 +73,8 @@ The problem is from [LeetCode 174. Dungeon Game](<https://leetcode.com/problems/
 
 The function signature is as follows:
 
-```java
-int calculateMinimumHP(int[][] grid);
+```python
+def calculateMinimumHP(grid: List[List[int]]) -> int:
 ``` 
 
 The previous article [Minimum Path Sum](</en/algo/dynamic-programming/minimum-path-sum/>) discussed a similar problem, asking for the minimum path sum from the top-left corner to the bottom-right corner.
@@ -97,8 +97,8 @@ But it's easy to see that the correct path is shown by the arrows in the image b
 
 For such optimization problems, dynamic programming techniques must be used, and the `dp` array/function definition must be designed appropriately. Referring to the previous article [Minimum Path Sum Problem](</en/algo/dynamic-programming/minimum-path-sum/>), the `dp` function signature will likely be as follows:
 
-```java
-int dp(int[][] grid, int i, int j);
+```python
+def dp(grid: List[List[int]], i: int, j: int) -> int:
 ``` 
 
 However, the definition of the `dp` function in this problem is quite interesting. Logically, the `dp` function should be defined as:
@@ -107,23 +107,20 @@ However, the definition of the `dp` function in this problem is quite interestin
 
 With this definition, the base case occurs when both `i` and `j` equal 0, and we can write the code as follows:
 
-```java
-int calculateMinimumHP(int[][] grid) {
-    int m = grid.length;
-    int n = grid[0].length;
-    // We want to calculate the minimum health required from
-    // the top-left corner to the bottom-right corner
-    return dp(grid, m - 1, n - 1);
-}
+```python
+def calculateMinimumHP(grid: List[List[int]]) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    # we want to calculate the minimum health required from
+    # the top-left corner to the bottom-right corner
+    return dp(grid, m - 1, n - 1)
 
-int dp(int[][] grid, int i, int j) {
-    // base case
-    if (i == 0 && j == 0) {
-        // Ensure the knight survives the landing
-        return grid[i][j] > 0 ? 1 : -grid[i][j] + 1;
-    }
+def dp(grid: List[List[int]], i: int, j: int) -> int:
+    # base case
+    if i == 0 and j == 0:
+        # ensure the knight survives upon landing
+        return 1 if grid[i][j] > 0 else -grid[i][j] + 1
     ...
-}
 ``` 
 
 For simplicity, we will abbreviate `dp(grid, i, j)` as `dp(i, j)` from now on, and you should understand the context.
@@ -160,8 +157,8 @@ This should be clear now. Reviewing our definition of the `dp` function, in the 
 
 The correct approach requires reverse thinking, still using the following `dp` function:
 
-```java
-int dp(int[][] grid, int i, int j);
+```python
+def dp(grid: List[List[int]], i: int, j: int) -> int:
 ``` 
 
 But we need to change the definition of the `dp` function:
@@ -170,22 +167,19 @@ But we need to change the definition of the `dp` function:
 
 We can write the code like this:
 
-```java
-int calculateMinimumHP(int[][] grid) {
-    // We want to calculate the minimum health value required
-    // from the top-left corner to the bottom-right corner
-    return dp(grid, 0, 0);
-}
+```python
+def calculateMinimumHP(grid: List[List[int]]) -> int:
+    # we want to calculate the minimum health value needed
+    # from the top-left corner to the bottom-right corner
+    return dp(grid, 0, 0)
 
-int dp(int[][] grid, int i, int j) {
-    int m = grid.length;
-    int n = grid[0].length;
-    // base case
-    if (i == m - 1 && j == n - 1) {
-        return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
-    }
+def dp(grid: List[List[int]], i: int, j: int) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    # base case
+    if i == m - 1 and j == n - 1:
+        return 1 if grid[i][j] >= 0 else -grid[i][j] + 1
     ...
-}
 ``` 
 
 Based on this new definition and the base case, we want to find `dp(0, 0)`. So we should use `dp(i, j+1)` and `dp(i+1, j)` to figure out `dp(i, j)`, step by step, to get closer to the base case and do the state transition correctly.
@@ -215,51 +209,42 @@ dp(i, j) = res <= 0 ? 1 : res;
 
 With this core logic and a memoization table to avoid overlapping subproblems, we can write the final code directly:
 
-```java
-class Solution {
+```python
+class Solution:
 
-    public int calculateMinimumHP(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        // initialize the memo array with -1
-        memo = new int[m][n];
-        for (int[] row : memo) {
-            Arrays.fill(row, -1);
-        }
+    def calculateMinimumHP(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        # initialize the memo array with -1
+        self.memo = [[-1] * n for _ in range(m)]
 
-        return dp(grid, 0, 0);
-    }
+        return self.dp(grid, 0, 0)
 
-    // memo array to eliminate overlapping subproblems
-    int[][] memo;
+    # memo array to eliminate overlapping subproblems
+    memo = []
 
-    // definition: the minimum initial health required
-    // to reach the bottom-right corner from (i, j)
-    int dp(int[][] grid, int i, int j) {
-        int m = grid.length;
-        int n = grid[0].length;
-        // base case
-        if (i == m - 1 && j == n - 1) {
-            return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
-        }
-        if (i == m || j == n) {
-            return Integer.MAX_VALUE;
-        }
-        // avoid redundant calculations
-        if (memo[i][j] != -1) {
-            return memo[i][j];
-        }
-        // state transition logic
-        int res = Math.min(
-                dp(grid, i, j + 1),
-                dp(grid, i + 1, j)
-        ) - grid[i][j];
-        // knight's health must be at least 1
-        memo[i][j] = res <= 0 ? 1 : res;
+    # definition: the minimum initial health required
+    # to reach the bottom-right corner from (i, j)
+    def dp(self, grid: List[List[int]], i: int, j: int) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        # base case
+        if i == m - 1 and j == n - 1:
+            return 1 if grid[i][j] >= 0 else -grid[i][j] + 1
+        if i == m or j == n:
+            return float('inf')
+        # avoid redundant calculations
+        if self.memo[i][j] != -1:
+            return self.memo[i][j]
+        # state transition logic
+        res = min(
+            self.dp(grid, i, j + 1),
+            self.dp(grid, i + 1, j)
+        ) - grid[i][j]
+        # knight's health must be at least 1
+        self.memo[i][j] = 1 if res <= 0 else res
 
-        return memo[i][j];
-    }
-}
+        return self.memo[i][j]
 ``` 
 
 Algorithm Visualization
@@ -280,45 +265,43 @@ dp[i][j] = Math.min(dp[i + 1][j], dp[i][j + 1]) - grid[i][j];
 
 The value of `dp[i][j]` depends on the cell below (`dp[i+1][j]`) and to the right (`dp[i][j+1]`). So we first need to fill in the last row `dp[n-1][..]` and last column `dp[..][m-1]`, and then fill the rest from bottom to top and right to left:
 
-```java
-class Solution {
+```python
+from typing import List
 
-    public int calculateMinimumHP(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        final int INF = Integer.MAX_VALUE / 2;
-        // dp[i][j] is the minimum initial health to reach bottom-right from (i, j)
-        int[][] dp = new int[m][n];
+class Solution:
 
-        // base case, bottom-right needs at least 1 health
-        dp[m - 1][n - 1] = Math.max(1, 1 - grid[m - 1][n - 1]);
+    def calculateMinimumHP(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        INF = 10**18
+        # dp[i][j] is the minimum initial health to reach bottom-right from (i, j)
+        dp = [[INF] * n for _ in range(m)]
 
-        // last column
-        for (int i = m - 2; i >= 0; i--) {
-            int need = dp[i + 1][n - 1] - grid[i][n - 1];
-            dp[i][n - 1] = need <= 0 ? 1 : need;
-        }
-        // last row
-        for (int j = n - 2; j >= 0; j--) {
-            int need = dp[m - 1][j + 1] - grid[m - 1][j];
-            dp[m - 1][j] = need <= 0 ? 1 : need;
-        }
+        # base case, bottom-right needs at least 1 health
+        dp[m - 1][n - 1] = max(1, 1 - grid[m - 1][n - 1])
 
-        // fill the rest bottom-up, right-to-left
-        for (int i = m - 2; i >= 0; i--) {
-            for (int j = n - 2; j >= 0; j--) {
-                int down = dp[i + 1][j];
-                int right = dp[i][j + 1];
-                int need = Math.min(down, right) - grid[i][j];
-                dp[i][j] = need <= 0 ? 1 : need;
-            }
-        }
+        # last column
+        for i in range(m - 2, -1, -1):
+            need = dp[i + 1][n - 1] - grid[i][n - 1]
+            dp[i][n - 1] = 1 if need <= 0 else need
+        # last row
+        for j in range(n - 2, -1, -1):
+            need = dp[m - 1][j + 1] - grid[m - 1][j]
+            dp[m - 1][j] = 1 if need <= 0 else need
 
-        return dp[0][0];
-    }
-}
+        # fill the rest bottom-up, right-to-left
+        for i in range(m - 2, -1, -1):
+            for j in range(n - 2, -1, -1):
+                need = min(dp[i + 1][j], dp[i][j + 1]) - grid[i][j]
+                dp[i][j] = 1 if need <= 0 else need
+
+        return dp[0][0]
 ``` 
 
 This completes the dynamic programming solution for this problem. The hardest part is to define the `dp` function. Once you do that, you can find the correct state transition and get the right answer.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

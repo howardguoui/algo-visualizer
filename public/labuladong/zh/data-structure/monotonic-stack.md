@@ -32,8 +32,8 @@ LeetCode| 力扣| 难度
 
 现在给你出这么一道题：输入一个数组 `nums`，请你返回一个等长的结果数组，结果数组中对应索引存储着下一个更大元素，如果没有更大的元素，就存 -1。函数签名如下：
 
-```java
-int[] calculateGreaterElement(int[] nums);
+```python
+def calculateGreaterElement(nums: List[int])
 ``` 
 
 比如说，输入一个数组 `nums = [2,1,2,4,3]`，你返回数组 `[4,2,4,-1,-1]`。因为第一个 2 后面比 2 大的数是 4; 1 后面比 1 大的数是 2；第二个 2 后面比 2 大的数是 4; 4 后面没有比 4 大的数，填 -1；3 后面没有比 3 大的数，填 -1。
@@ -46,25 +46,22 @@ int[] calculateGreaterElement(int[] nums);
 
 这个情景很好理解吧？带着这个抽象的情景，先来看下代码。
 
-```java
-int[] calculateGreaterElement(int[] nums) {
-    int n = nums.length;
-    // 存放答案的数组
-    int[] res = new int[n];
-    Stack<Integer> s = new Stack<>(); 
-    // 倒着往栈里放
-    for (int i = n - 1; i >= 0; i--) {
-        // 判定个子高矮
-        while (!s.isEmpty() && s.peek() <= nums[i]) {
-            // 矮个起开，反正也被挡着了。。。
-            s.pop();
-        }
-        // nums[i] 身后的更大元素
-        res[i] = s.isEmpty() ? -1 : s.peek();
-        s.push(nums[i]);
-    }
-    return res;
-}
+```python
+def calculateGreaterElement(nums):
+    n = len(nums)
+    # 存放答案的数组
+    res = [0]*n
+    s = []
+    # 倒着往栈里放
+    for i in range(n-1, -1, -1):
+        # 判定个子高矮
+        while s and s[-1] <= nums[i]:
+            # 矮个起开，反正也被挡着了。。。
+            s.pop()
+        # nums[i] 身后的更大元素
+        res[i] = -1 if not s else s[-1]
+        s.append(nums[i])
+    return res
 ``` 
 
 这就是单调栈解决问题的模板。for 循环要从后往前扫描元素，因为我们借助的是栈的结构，倒着入栈，其实是正着出栈。while 循环是把两个「个子高」元素之间的元素排除，因为他们的存在没有意义，前面挡着个「更高」的元素，所以他们不可能被作为后续进来的元素的下一个更大元素了。
@@ -125,50 +122,41 @@ int[] calculateGreaterElement(int[] nums) {
 
 这道题给你输入两个数组 `nums1` 和 `nums2`，让你求 `nums1` 中的元素在 `nums2` 中的下一个更大元素，函数签名如下：
 
-```java
-int[] nextGreaterElement(int[] nums1, int[] nums2);
+```python
+def nextGreaterElement(nums1: List[int], nums2: List[int]) -> List[int]:
 ``` 
 
 其实和把我们刚才的代码改一改就可以解决这道题了，因为题目说 `nums1` 是 `nums2` 的子集，那么我们先把 `nums2` 中每个元素的下一个更大元素算出来存到一个映射里，然后再让 `nums1` 中的元素去查表即可：
 
-```java
-class Solution {
-    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
-        // 记录 nums2 中每个元素的下一个更大元素
-        int[] greater = nextGreaterElement(nums2);
-        // 转化成映射：元素 x -> x 的下一个最大元素
-        HashMap<Integer, Integer> greaterMap = new HashMap<>();
-        for (int i = 0; i < nums2.length; i++) {
-            greaterMap.put(nums2[i], greater[i]);
-        }
-        // nums1 是 nums2 的子集，所以根据 greaterMap 可以得到结果
-        int[] res = new int[nums1.length];
-        for (int i = 0; i < nums1.length; i++) {
-            res[i] = greaterMap.get(nums1[i]);
-        }
-        return res;
-    }
+```python
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        # 记录 nums2 中每个元素的下一个更大元素
+        greater = self.nextGreaterElementInternal(nums2)
+        # 转化成映射：元素 x -> x 的下一个最大元素
+        greater_map = {}
+        for i in range(len(nums2)):
+            greater_map[nums2[i]] = greater[i]
+        # nums1 是 nums2 的子集，所以根据 greaterMap 可以得到结果
+        res = [greater_map[num] for num in nums1]
+        return res
 
-    // 计算 nums 中每个元素的下一个更大元素
-    int[] nextGreaterElement(int[] nums) {
-        int n = nums.length;
-        // 存放答案的数组
-        int[] res = new int[n];
-        Stack<Integer> s = new Stack<>();
-        // 倒着往栈里放
-        for (int i = n - 1; i >= 0; i--) {
-            // 判定个子高矮
-            while (!s.isEmpty() && s.peek() <= nums[i]) {
-                // 矮个起开，反正也被挡着了。。。
-                s.pop();
-            }
-            // nums[i] 身后的下一个更大元素
-            res[i] = s.isEmpty() ? -1 : s.peek();
-            s.push(nums[i]);
-        }
-        return res;
-    }
-}
+    # 计算 nums 中每个元素的下一个更大元素
+    def nextGreaterElementInternal(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        # 存放答案的数组
+        res = [-1] * n  # Initialize with -1 as specified in the problem statement
+        stack = []
+        # 倒着往栈里放
+        for i in range(n - 1, -1, -1):
+            # 判定个子高矮
+            while stack and stack[-1] <= nums[i]:
+                # 矮个起开，反正也被挡着了。。。
+                stack.pop()
+            # nums[i] 身后的下一个更大元素
+            res[i] = stack[-1] if stack else -1
+            stack.append(nums[i])
+        return res
 ``` 
 
 算法可视化
@@ -179,8 +167,8 @@ class Solution {
 
 给你一个数组 `temperatures`，这个数组存放的是近几天的天气气温，你返回一个等长的数组，计算：对于每一天，你还要至少等多少天才能等到一个更暖和的气温；如果等不到那一天，填 0。函数签名如下：
 
-```java
-int[] dailyTemperatures(int[] temperatures);
+```python
+def dailyTemperatures(temperatures: List[int]) -> List[int]:
 ``` 
 
 比如说给你输入 `temperatures = [73,74,75,71,69,76]`，你返回 `[1,1,3,2,1,0]`。因为第一天 73 华氏度，第二天 74 华氏度，比 73 大，所以对于第一天，只要等一天就能等到一个更暖和的气温，后面的同理。
@@ -189,26 +177,22 @@ int[] dailyTemperatures(int[] temperatures);
 
 相同的思路，直接调用单调栈的算法模板，稍作改动就可以，直接上代码吧：
 
-```java
-class Solution {
-    public int[] dailyTemperatures(int[] temperatures) {
-        int n = temperatures.length;
-        int[] res = new int[n];
-        // 这里放元素索引，而不是元素
-        Stack<Integer> s = new Stack<>(); 
-        // 单调栈模板
-        for (int i = n - 1; i >= 0; i--) {
-            while (!s.isEmpty() && temperatures[s.peek()] <= temperatures[i]) {
-                s.pop();
-            }
-            // 得到索引间距
-            res[i] = s.isEmpty() ? 0 : (s.peek() - i); 
-            // 将索引入栈，而不是元素
-            s.push(i); 
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def dailyTemperatures(self, temperatures):
+        n = len(temperatures)
+        res = [0]*n
+        # 这里放元素索引，而不是元素
+        s = []
+        # 单调栈模板
+        for i in range(n-1, -1, -1):
+            while s and temperatures[s[-1]] <= temperatures[i]:
+                s.pop()
+            # 得到索引间距
+            res[i] = 0 if not s else s[-1] - i
+            # 将索引入栈，而不是元素
+            s.append(i)
+        return res
 ``` 
 
 单调栈讲解完毕，下面开始另一个重点：如何处理「循环数组」。
@@ -221,14 +205,14 @@ class Solution {
 
 如果你看过基础知识章节的 [环形数组技巧](</zh/algo/data-structure-basic/cycle-array/>) 应该比较熟悉，我们一般是通过 % 运算符求模（余数），来模拟环形特效：
 
-```java
-int[] arr = {1,2,3,4,5};
-int n = arr.length, index = 0;
-while (true) {
-    // 在环形数组中转圈
-    print(arr[index % n]);
-    index++;
-}
+```python
+arr = [1,2,3,4,5]
+n = len(arr)
+index = 0
+while True:
+    # 在环形数组中转圈
+    print(arr[index % n])
+    index += 1
 ``` 
 
 这个问题肯定还是要用单调栈的解题模板，但难点在于，比如输入是 `[2,1,2,4,3]`，对于最后一个元素 3，如何找到元素 4 作为下一个更大元素。
@@ -241,24 +225,21 @@ while (true) {
 
 有了思路，最简单的实现方式当然可以把这个双倍长度的数组构造出来，然后套用算法模板。但是，**我们可以不用构造新数组，而是利用循环数组的技巧来模拟数组长度翻倍的效果** 。直接看代码吧：
 
-```java
-class Solution {
-    public int[] nextGreaterElements(int[] nums) {
-        int n = nums.length;
-        int[] res = new int[n];
-        Stack<Integer> s = new Stack<>();
-        // 数组长度加倍模拟环形数组
-        for (int i = 2 * n - 1; i >= 0; i--) {
-            // 索引 i 要求模，其他的和模板一样
-            while (!s.isEmpty() && s.peek() <= nums[i % n]) {
-                s.pop();
-            }
-            res[i % n] = s.isEmpty() ? -1 : s.peek();
-            s.push(nums[i % n]);
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def nextGreaterElements(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        res = [0] * n
+        # 用数组模拟栈
+        s = []
+        # 数组长度加倍模拟环形数组
+        for i in range(2 * n - 1, -1, -1):
+            # 索引 i 要求模，其他的和模板一样
+            while s and s[-1] <= nums[i % n]:
+                s.pop()
+            res[i % n] = -1 if not s else s[-1]
+            s.append(nums[i % n])
+        return res
 ``` 
 
 算法可视化
@@ -268,3 +249,7 @@ class Solution {
 最后提出一些问题吧，本文提供的单调栈模板是 `nextGreaterElement` 函数，可以计算每个元素的下一个更大元素，但如果题目让你计算上一个更大元素，或者计算上一个更大或相等的元素，应该如何修改对应的模板呢？而且在实际应用中，题目不会直接让你计算下一个（上一个）更大（小）的元素，你如何把问题转化成单调栈相关的问题呢？
 
 我会在 [单调栈的几种变体及习题](</zh/algo/problem-set/monotonic-stack/>) 对比单调栈的几种其他形式，并在 给出单调栈的经典例题。更多数据结构设计类题目参见 [数据结构设计经典习题](</zh/algo/problem-set/ds-design/>)。
+
+## 评论
+
+请登录后查看/发表评论

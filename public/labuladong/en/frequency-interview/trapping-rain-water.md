@@ -55,8 +55,8 @@ The problem is from [LeetCode 42. Trapping Rain Water](<https://leetcode.com/pro
 
 You are given an array representing a bar chart. The question asks how much water can be trapped by the bars after raining.
 
-```java
-int trap(int[] height);
+```python
+def trap(height: List[int]) -> int:
 ``` 
 
 Next, I will introduce three methods from simple to advanced: brute-force solution -> memoization solution -> two pointers solution. We will solve this problem in O(N) time and O(1) space.
@@ -77,4 +77,8 @@ Why can position `i` hold up to 2 units of water? It depends on the tallest bar 
 
 So, for position `i`, the amount of water trapped is:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

@@ -26,3 +26,7 @@
 图结构可以对很多复杂的问题进行抽象，产生了很多经典的图论算法，比如 [二分图算法](</zh/algo/data-structure/bipartite-graph/>)、[拓扑排序](</zh/algo/data-structure/topological-sort/>)、[最短路径算法](</zh/algo/data-structure/dijkstra/>)、[最小生成树算法](</zh/algo/data-structure/kruskal/>) 等，这些都会在后文介绍。
 
 本文主要介绍图的基本概念，以及如何用代码实现图结构。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -47,25 +47,22 @@ Note
 
 「搜索左侧边界」的二分搜索算法的具体代码实现如下：
 
-```java
-// 搜索左侧边界
-int left_bound(int[] nums, int target) {
-    if (nums.length == 0) return -1;
-    int left = 0, right = nums.length;
-    
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
-            // 当找到 target 时，收缩右侧边界
-            right = mid;
-        } else if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid;
-        }
-    }
-    return left;
-}
+```python
+def left_bound(nums: List[int], target: int) -> int:
+    # 搜索左侧边界
+    if len(nums) == 0:
+        return -1
+    left, right = 0, len(nums)
+    while left < right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            # 当找到 target 时，收缩右侧边界
+            right = mid
+        elif nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid
+    return left
 ``` 
 
 假设输入的数组 `nums = [1,2,3,3,3,5,7]`，想搜索的元素 `target = 3`，那么算法就会返回索引 2。
@@ -76,25 +73,23 @@ int left_bound(int[] nums, int target) {
 
 「搜索右侧边界」的二分搜索算法的具体代码实现如下：
 
-```java
-// 搜索右侧边界
-int right_bound(int[] nums, int target) {
-    if (nums.length == 0) return -1;
-    int left = 0, right = nums.length;
+```python
+# 搜索右侧边界
+def right_bound(nums: list[int], target: int) -> int:
+    if len(nums) == 0:
+        return -1
+    left, right = 0, len(nums)
 
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
-            // 当找到 target 时，收缩左侧边界
-            left = mid + 1;
-        } else if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid;
-        }
-    }
-    return left - 1;
-}
+    while left < right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            # 当找到 target 时，收缩左侧边界
+            left = mid + 1
+        elif nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid
+    return left - 1
 ``` 
 
 输入同上，那么算法就会返回索引 4，如果画一个图，就是这样：
@@ -102,3 +97,7 @@ int right_bound(int[] nums, int target) {
 ![diagram](https://labuladong.online/images/algo/binary-search-in-action/2.jpeg)
 
 好，上述内容都属于复习，我想读到这里的读者应该都能理解。记住上述的图像，所有能够抽象出上述图像的问题，都可以使用二分搜索解决。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

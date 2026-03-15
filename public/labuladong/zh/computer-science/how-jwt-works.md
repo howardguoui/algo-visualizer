@@ -49,7 +49,7 @@ Cookie: sessionID=abcd1234
 
 下面是 Session-Cookie 认证流程的时序图：
 
-加载图表...
+Session StoreServerBrowserSession StoreServerBrowserPOST /login (username, password)Verify credentialsCreate sessionStore session info (sessionID -> userInfo)Response with Set-Cookie: sessionID=...GET /api/data (with sessionID cookie)Look up sessionIDReturn userInfoProcess request with userInfoResponse with requested data
 
 ## JWT 认证流程
 
@@ -95,7 +95,7 @@ Authorization: Bearer <JWT Token>
 
 下面是 JWT 认证流程的时序图：
 
-加载图表...
+ServerBrowser/ClientServerBrowser/ClientPOST /login (username, password)Verify credentialsCreate JWT with user info payloadSign JWT with private keyResponse with JWTGET /api/data (Authorization: Bearer <JWT>)Verify JWT signature with public keyExtract user info from payloadProcess request with userInfoResponse with requested data
 
 ## JWT 的结构
 
@@ -205,3 +205,7 @@ kwIDAQAB
 ![diagram](https://labuladong.online/images/algo/jwt/verify.jpg)
 
 如果你修改 JWT payload 中的数据，那么验证就会失败。
+
+## 评论
+
+请登录后查看/发表评论

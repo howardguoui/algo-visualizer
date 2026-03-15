@@ -124,4 +124,8 @@ We should also note: only in Linux are threads treated as processes that share s
 
 In Linux, creating threads and processes is both very efficient. To handle the problem of copying memory when creating a new process, Linux uses a copy-on-write strategy. That is, it does not actually copy the parent’s memory at first. It copies only when a write happens. **So creating a new process or a new thread in Linux is very fast.**
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

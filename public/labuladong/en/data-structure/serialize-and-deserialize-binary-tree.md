@@ -77,15 +77,16 @@ I mention these conclusions so you can remember them. Later, you will meet relat
 
 LeetCode problem 297, "[Serialize and Deserialize Binary Tree](<https://leetcode.com/problems/serialize-and-deserialize-binary-tree/>)", gives you the root node `root` of a binary tree. You need to implement a class like this:
 
-```java
-public class Codec {
+```python
+class Codec:
+    
+    # serialize a binary tree into a string
+    def serialize(self, root: TreeNode) -> str:
+        pass
 
-    // serialize a binary tree into a string
-    public String serialize(TreeNode root) {}
-
-    // deserialize a string into a binary tree
-    public TreeNode deserialize(String data) {}
-}
+    # deserialize a string into a binary tree
+    def deserialize(self, data: str) -> TreeNode:
+        pass
 ``` 
 
 You can use the `serialize` method to turn the binary tree into a string, and use the `deserialize` method to turn the string back into a binary tree. You can choose any format you want for serialization and deserialization.
@@ -106,23 +107,21 @@ What are the ways to traverse a binary tree? There are recursive ways like preor
 
 In the previous article [Binary Tree Traversal Basics](</en/algo/data-structure-basic/binary-tree-traverse-basic/>), we talked about several ways to traverse a binary tree. If we collect nodes in preorder, we get the preorder traversal result:
 
-```java
-LinkedList<Integer> res;
+```python
+res = []
 
-void traverse(TreeNode root) {
-    if (root == null) {
-        // temporarily use the number -1 to represent the null pointer
-        res.addLast(-1);
-        return;
-    }
+def traverse(root):
+    if root is None:
+        # temporarily use the number -1 to represent the null pointer
+        res.append(-1)
+        return
 
-    // ****** pre-order position ********
-    res.addLast(root.val);
-    // ***********************
+    # ****** pre-order position ******
+    res.append(root.val)
+    # **********************
 
-    traverse(root.left);
-    traverse(root.right);
-}
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 After calling the `traverse` function, can you guess the order of elements in the `res` list? For the tree below (where `#` means null), we can see what preorder traversal does:
@@ -133,72 +132,67 @@ So, `res = [1,2,-1,4,-1,-1,3,-1,-1]`. This is the "flattened" binary tree as a l
 
 Flattening the binary tree into a string is the same idea:
 
-```java
-// character representing separator
-String SEP = ",";
+```python
+# represents the separator character
+SEP = ","
+# represents the null pointer character
+NULL = "#"
 
-// character representing null pointer
-String NULL = "#";
+# used for concatenating strings
+sb = []
 
-// for concatenating strings
-StringBuilder sb = new StringBuilder();
+# flatten the binary tree into a string
+def traverse(root, sb):
+    if root == None:
+        sb.append(NULL).append(SEP)
+        return
 
-// flatten the binary tree to a string
-void traverse(TreeNode root, StringBuilder sb) {
-    if (root == null) {
-        sb.append(NULL).append(SEP);
-        return;
-    }
+    # ***** pre-order position *****
+    sb.append(str(root.val)).append(SEP)
+    # *******************
 
-    // ***** pre-order position *****
-    sb.append(root.val).append(SEP);
-    // *********************
-
-    traverse(root.left, sb);
-    traverse(root.right, sb);
-}
+    traverse(root.left, sb)
+    traverse(root.right, sb)
 ``` 
 
 This code also collects the preorder result. It uses `,` as a separator and `#` for null pointers. After calling the `traverse` function, the string in `sb` should be `1,2,#,4,#,#,3,#,#,`.
 
 Now, we can write the code for the `serialize` function:
 
-```java
-class Codec {
-    String SEP = ",";
-    String NULL = "#";
+```python
+class Codec:
+    SEP = ","
+    NULL = "#"
 
-    // main function, serialize the binary tree to a string
-    public String serialize(TreeNode root) {
-        StringBuilder sb = new StringBuilder();
-        _serialize(root, sb);
-        return sb.toString();
-    }
+    # Main function, serialize the binary tree into a string
+    def serialize(self, root):
+        sb = []
+        self._serialize(root, sb)
+        return "".join(sb)
 
-    // helper function, store the binary tree into StringBuilder
-    void _serialize(TreeNode root, StringBuilder sb) {
-        if (root == null) {
-            sb.append(NULL).append(SEP);
-            return;
-        }
+    # Helper function, store the binary tree into StringBuilder
+    def _serialize(self, root, sb):
+        if root is None:
+            sb.append(self.NULL)
+            sb.append(self.SEP)
+            return
 
-        // ****** pre-order position ********
-        sb.append(root.val).append(SEP); 
-        // ***********************
+        # ****** Preorder position ********
+        sb.append(str(root.val))
+        sb.append(self.SEP)
+        # ***********************
 
-        _serialize(root.left, sb);
-        _serialize(root.right, sb);
-    }
-}
+        self._serialize(root.left, sb)
+        self._serialize(root.right, sb)
 ``` 
 
 Next, let's think about how to write the `deserialize` function to turn the string back into a binary tree.
 
 First, we can change the string into a list:
 
-```java
-String data = "1,2,#,4,#,#,3,#,#,";
-String[] nodes = data.split(",");
+```python
+data = "1,2,#,4,#,#,3,#,#,"
+nodes = data.split(",")
 ``` 
 
 Now, the `nodes` list is the preorder result of the binary tree. The problem becomes: how can we rebuild the binary tree from its preorder result?
@@ -213,4 +207,8 @@ From our analysis, the `nodes` list is a flattened binary tree:
 
 So, for deserialization, we first find the root node, then follow the preorder rules to recursively build the left and right subtrees:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

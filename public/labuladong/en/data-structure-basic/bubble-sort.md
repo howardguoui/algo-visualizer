@@ -81,37 +81,27 @@ As you can see, the relative order of `2, 2', 2''` and `1, 1'` remains unchanged
 
 The specific code is as follows. You only need to modify the part of the [selection sort](</en/algo/data-structure-basic/select-sort/>) code where elements are swapped:
 
-```java
-// Perform the first wave of optimization on selection sort to achieve stability
-void sort(int[] nums) {
-    int n = nums.length;
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // Find the smallest value nums[minIndex] in the unsorted part
-        int minIndex = sortedIndex;
-        for (int i = sortedIndex + 1; i < n; i++) {
-            if (nums[i] < nums[minIndex]) {
-                minIndex = i;
-            }
-        }
+```python
+# Perform the first wave of optimization on selection sort to achieve stability
+def sort(nums):
+    n = len(nums)
+    sortedIndex = 0
+    while sortedIndex < n:
+        # Find the smallest value nums[minIndex] in the unsorted part
+        minIndex = sortedIndex
+        for i in range(sortedIndex + 1, n):
+            if nums[i] < nums[minIndex]:
+                minIndex = i
 
-        // Swap the smallest value with the element at sortedIndex
-        // int tmp = nums[sortedIndex];
-        // nums[sortedIndex] = nums[minIndex];
-        // nums[minIndex] = tmp;
+        # Optimization: Insert nums[minIndex] into the position of nums[sortedIndex]
+        # Move the elements of nums[sortedIndex..minIndex] one position backward
+        minVal = nums[minIndex]
+        # Array data moving operation
+        for i in range(minIndex, sortedIndex, -1):
+            nums[i] = nums[i - 1]
+        nums[sortedIndex] = minVal
 
-        // Optimization: Insert nums[minIndex] into the position of nums[sortedIndex]
-        // Move the elements of nums[sortedIndex..minIndex] one position backward
-        int minVal = nums[minIndex];
-        // Array data moving operation
-        for (int i = minIndex; i > sortedIndex; i--) {
-            nums[i] = nums[i - 1];
-        }
-        nums[sortedIndex] = minVal;
-
-        sortedIndex++;
-    }
-}
+        sortedIndex += 1
 ``` 
 
 You can submit this algorithm to LeetCode problem 912 "[Sort an Array](<https://leetcode.com/problems/sort-an-array/>)". Although it will eventually time out and fail to pass, it can prove the correctness of this algorithm.
@@ -132,28 +122,24 @@ Can we combine these two steps? Specifically, when you're searching for the mini
 
 The answer is yes. Watch my demonstration:
 
-```java
-// perform a second wave of optimization on selection sort
-// to achieve stability while avoiding additional for loops
-// this algorithm has another name, called bubble sort
-void sort(int[] nums) {
-    int n = nums.length;
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // find the minimum value in nums[sortedIndex..]
-        // simultaneously move this minimum value step by
-        // step to the position of nums[sortedIndex]
-        for (int i = n - 1; i > sortedIndex; i--) {
-            if (nums[i] < nums[i - 1]) {
-                // swap(nums[i], nums[i - 1])
-                int tmp = nums[i];
-                nums[i] = nums[i - 1];
-                nums[i - 1] = tmp;
-            }
-        }
-        sortedIndex++;
-    }
-}
+```python
+# perform a second wave of optimization on selection sort
+# to achieve stability while avoiding additional for loops
+# this algorithm has another name, called bubble sort
+def sort_list(nums):
+    n = len(nums)
+    sorted_index = 0
+    while sorted_index < n:
+        # find the minimum value in nums[sorted_index..]
+        # simultaneously move this minimum value step by
+        # step to the position of nums[sorted_index]
+        for i in range(n - 1, sorted_index, -1):
+            if nums[i] < nums[i - 1]:
+                # swap(nums[i], nums[i - 1])
+                tmp = nums[i]
+                nums[i] = nums[i - 1]
+                nums[i - 1] = tmp
+        sorted_index += 1
 ``` 
 
 Algorithm Visualization
@@ -174,31 +160,26 @@ A problem with selection sort mentioned above is that its time complexity is com
 
 After a series of optimizations above, this problem can be solved. See the code:
 
-```java
-// further optimize by terminating the algorithm early when the array is sorted
-void sort(int[] nums) {
-    int n = nums.length;
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // add a boolean variable to record if a swap operation has been performed
-        boolean swapped = false;
-        for (int i = n - 1; i > sortedIndex; i--) {
-            if (nums[i] < nums[i - 1]) {
-                // swap(nums[i], nums[i - 1])
-                int tmp = nums[i];
-                nums[i] = nums[i - 1];
-                nums[i - 1] = tmp;
-                swapped = true;
-            }
-        }
-        // if no swap operation is performed, it indicates that the array is
-        // already sorted, and the algorithm can terminate early
-        if (!swapped) {
-            break;
-        }
-        sortedIndex++;
-    }
-}
+```python
+# further optimize by terminating the algorithm early when the array is sorted
+def sort(nums):
+    n = len(nums)
+    sorted_index = 0
+    while sorted_index < n:
+        # add a boolean variable to record if a swap operation has been performed
+        swapped = False
+        for i in range(n - 1, sorted_index, -1):
+            if nums[i] < nums[i - 1]:
+                # swap(nums[i], nums[i - 1])
+                tmp = nums[i]
+                nums[i] = nums[i - 1]
+                nums[i - 1] = tmp
+                swapped = True
+        # if no swap operation is performed, it indicates that the array
+        # is already sorted, and the algorithm can terminate early
+        if not swapped:
+            break
+        sorted_index += 1
 ``` 
 
 Algorithm Visualization
@@ -207,4 +188,8 @@ Thus, the above are a series of optimizations for selection sort, ultimately ach
 
 Next, we will continue to explore other methods to improve selection sort.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

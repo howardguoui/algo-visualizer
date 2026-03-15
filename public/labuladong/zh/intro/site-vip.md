@@ -1,6 +1,6 @@
 # 本站付费会员
 
-> Source: https://labuladong.online/zh/algo/intro/site-vip/
+> Source: https://labuladong.online/zh/algo/intro/site-vip/?int_source=article-lock/
 > Archived: labuladong.online — 算法笔记
 
 ---
@@ -77,38 +77,38 @@
 
   * [本章导读](</zh/algo/intro/data-structure-basic/>)
   * [时间空间复杂度入门](</zh/algo/intro/complexity-basic/>)
-  * 手把手带你实现动态数组
+  * 手把手带你实现动态数组 
     * [数组（顺序存储）基本原理](</zh/algo/data-structure-basic/array-basic/>)
     * [动态数组代码实现](</zh/algo/data-structure-basic/array-implement/>)
-  * 手把手带你实现单/双链表
+  * 手把手带你实现单/双链表 
     * [链表（链式存储）基本原理](</zh/algo/data-structure-basic/linkedlist-basic/>)
     * [链表代码实现](</zh/algo/data-structure-basic/linkedlist-implement/>)
     * [实现贪吃蛇](</zh/algo/game/snake/>)
-  * 数组链表的种种变换
+  * 数组链表的种种变换 
     * [环形数组技巧及实现](</zh/algo/data-structure-basic/cycle-array/>)
     * [跳表核心原理](</zh/algo/data-structure-basic/skip-list-basic/>)
     * [位图原理及实现](</zh/algo/data-structure-basic/bitmap/>)
-  * 手把手带你实现队列/栈
+  * 手把手带你实现队列/栈 
     * [队列/栈基本原理](</zh/algo/data-structure-basic/queue-stack-basic/>)
     * [用链表实现队列/栈](</zh/algo/data-structure-basic/linked-queue-stack/>)
     * [用数组实现队列/栈](</zh/algo/data-structure-basic/array-queue-stack/>)
     * [双端队列（Deque）原理及实现](</zh/algo/data-structure-basic/deque-implement/>)
-  * 哈希表的原理及实现
+  * 哈希表的原理及实现 
     * [哈希表核心原理](</zh/algo/data-structure-basic/hashmap-basic/>)
     * [用拉链法实现哈希表](</zh/algo/data-structure-basic/hashtable-chaining/>)
     * [线性探查法的两个难点](</zh/algo/data-structure-basic/linear-probing-key-point/>)
     * [线性探查法的两种代码实现](</zh/algo/data-structure-basic/linear-probing-code/>)
     * [哈希集合的原理及代码实现](</zh/algo/data-structure-basic/hash-set/>)
-  * 哈希表结构的种种变换
+  * 哈希表结构的种种变换 
     * [用链表加强哈希表（LinkedHashMap）](</zh/algo/data-structure-basic/hashtable-with-linked-list/>)
     * [用数组加强哈希表（ArrayHashMap）](</zh/algo/data-structure-basic/hashtable-with-array/>)
     * [布隆过滤器原理及实现](</zh/algo/data-structure-basic/bloom-filter/>)
-  * 二叉树结构及遍历
+  * 二叉树结构及遍历 
     * [二叉树基础及常见类型](</zh/algo/data-structure-basic/binary-tree-basic/>)
     * [二叉树的递归/层序遍历](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
     * [DFS 和 BFS 的适用场景](</zh/algo/data-structure-basic/use-case-of-dfs-bfs/>)
     * [多叉树的递归/层序遍历](</zh/algo/data-structure-basic/n-ary-tree-traverse-basic/>)
-  * 二叉树结构的种种变换
+  * 二叉树结构的种种变换 
     * [二叉搜索树的应用及可视化](</zh/algo/data-structure-basic/tree-map-basic/>)
     * [红黑树的完美平衡及可视化](</zh/algo/data-structure-basic/rbtree-basic/>)
     * [Trie/字典树/前缀树原理及可视化](</zh/algo/data-structure-basic/trie-map-basic/>)
@@ -117,7 +117,7 @@
     * [线段树核心原理及可视化](</zh/algo/data-structure-basic/segment-tree-basic/>)
     * [数据压缩和霍夫曼树](</zh/algo/data-structure-basic/huffman-tree/>)
     * [正在更新 ing](</zh/algo/intro/updating/>)
-  * 图结构基础及算法概览
+  * 图结构基础及算法概览 
     * [图论中的基本术语](</zh/algo/data-structure-basic/graph-terminology/>)
     * [图结构的通用代码实现](</zh/algo/data-structure-basic/graph-basic/>)
     * [图结构的 DFS/BFS 遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>)
@@ -126,7 +126,7 @@
     * [最小生成树算法概览](</zh/algo/data-structure-basic/graph-minimum-spanning-tree/>)
     * [Union Find 并查集原理](</zh/algo/data-structure-basic/union-find-basic/>)
     * [正在更新 ing](</zh/algo/intro/updating/>)
-  * 十大排序算法原理及可视化
+  * 十大排序算法原理及可视化 
     * [本章导读](</zh/algo/intro/sorting/>)
     * [排序算法的关键指标](</zh/algo/data-structure-basic/sort-basic/>)
     * [选择排序所面临的问题](</zh/algo/data-structure-basic/select-sort/>)
@@ -160,12 +160,12 @@
 
 #### 第一章、经典数据结构算法
 
-  * 手把手刷链表算法
+  * 手把手刷链表算法 
     * [双指针技巧秒杀七道链表题目](</zh/algo/essential-technique/linked-list-skills-summary/>)
     * [链表双指针经典习题](</zh/algo/problem-set/linkedlist-two-pointers/>)
     * [单链表的花式反转方法汇总](</zh/algo/data-structure/reverse-linked-list-recursion/>)
     * [如何判断回文链表](</zh/algo/data-structure/palindrome-linked-list/>)
-  * 手把手刷数组算法
+  * 手把手刷数组算法 
     * [双指针技巧秒杀七道数组题目](</zh/algo/essential-technique/array-two-pointers-summary/>)
     * [消消乐游戏](</zh/algo/game/match-three/>)
     * [二维数组的花式遍历技巧](</zh/algo/practice-in-action/2d-array-traversal-summary/>)
@@ -184,7 +184,7 @@
     * [二分搜索算法经典习题](</zh/algo/problem-set/binary-search/>)
     * [带权重的随机选择算法](</zh/algo/frequency-interview/random-pick-with-weight/>)
     * [田忌赛马背后的算法决策](</zh/algo/practice-in-action/advantage-shuffle/>)
-  * 经典队列/栈算法
+  * 经典队列/栈算法 
     * [队列实现栈以及栈实现队列](</zh/algo/data-structure/stack-queue/>)
     * [栈的经典习题](</zh/algo/problem-set/stack/>)
     * [括号类问题汇总](</zh/algo/problem-set/parentheses/>)
@@ -193,7 +193,7 @@
     * [单调栈的几种变体及经典习题](</zh/algo/problem-set/monotonic-stack/>)
     * [单调队列结构解决滑动窗口问题](</zh/algo/data-structure/monotonic-queue/>)
     * [单调队列的通用实现及经典习题](</zh/algo/problem-set/monotonic-queue/>)
-  * 手把手刷二叉树算法
+  * 手把手刷二叉树算法 
     * [二叉树系列算法核心纲领](</zh/algo/essential-technique/binary-tree-summary/>)
     * [二叉树心法（思路篇）](</zh/algo/data-structure/binary-tree-part1/>)
     * [二叉树心法（构造篇）](</zh/algo/data-structure/binary-tree-part2/>)
@@ -203,7 +203,7 @@
     * [二叉搜索树心法（基操篇）](</zh/algo/data-structure/bst-part2/>)
     * [二叉搜索树心法（构造篇）](</zh/algo/data-structure/bst-part3/>)
     * [二叉搜索树心法（后序篇）](</zh/algo/data-structure/bst-part4/>)
-  * 二叉树算法习题汇总
+  * 二叉树算法习题汇总 
     * [本章导读](</zh/algo/intro/binary-tree-practice/>)
     * [用「遍历」思维解题 I](</zh/algo/problem-set/binary-tree-traverse-i/>)
     * [用「遍历」思维解题 II](</zh/algo/problem-set/binary-tree-traverse-ii/>)
@@ -218,14 +218,14 @@
     * [运用层序遍历解题 II](</zh/algo/problem-set/binary-tree-level-ii/>)
     * [二叉搜索树经典例题 I](</zh/algo/problem-set/bst1/>)
     * [二叉搜索树经典例题 II](</zh/algo/problem-set/bst2/>)
-  * 二叉树的拓展延伸
+  * 二叉树的拓展延伸 
     * [拓展：最近公共祖先系列解题框架](</zh/algo/practice-in-action/lowest-common-ancestor-summary/>)
     * [拓展：如何计算完全二叉树的节点数](</zh/algo/data-structure/count-complete-tree-nodes/>)
     * [拓展：惰性展开多叉树](</zh/algo/data-structure/flatten-nested-list-iterator/>)
     * [拓展：归并排序详解及应用](</zh/algo/practice-in-action/merge-sort/>)
     * [拓展：快速排序详解及应用](</zh/algo/practice-in-action/quick-sort/>)
     * [拓展：用栈模拟递归迭代遍历二叉树](</zh/algo/data-structure/iterative-traversal-binary-tree/>)
-  * 经典数据结构设计
+  * 经典数据结构设计 
     * [算法就像搭乐高：手撸 LRU 算法](</zh/algo/data-structure/lru-cache/>)
     * [算法就像搭乐高：手撸 LFU 算法](</zh/algo/frequency-interview/lfu/>)
     * [常数时间删除/查找数组中的任意元素](</zh/algo/data-structure/random-set/>)
@@ -245,7 +245,7 @@
     * [拓展：如何实现一个计算器](</zh/algo/data-structure/implement-calculator/>)
     * [拓展：两个二叉堆实现中位数算法](</zh/algo/practice-in-action/find-median-from-data-stream/>)
     * [拓展：数组去重问题（困难版）](</zh/algo/frequency-interview/remove-duplicate-letters/>)
-  * 经典图算法
+  * 经典图算法 
     * [二分图判定算法](</zh/algo/data-structure/bipartite-graph/>)
     * [Hierholzer 算法寻找欧拉路径](</zh/algo/data-structure/eulerian-graph-hierholzer/>)
     * [欧拉路径经典习题](</zh/algo/problem-set/eulerian-path/>)
@@ -262,7 +262,7 @@
 
 #### 第二章、经典暴力搜索算法
 
-  * DFS/回溯算法
+  * DFS/回溯算法 
     * [回溯算法解题套路框架](</zh/algo/essential-technique/backtrack-framework/>)
     * [回溯算法实践：数独和 N 皇后问题](</zh/algo/practice-in-action/sudoku-nqueue/>)
     * [实现数独作弊器](</zh/algo/game/sudoku/>)
@@ -276,7 +276,7 @@
     * [回溯算法经典习题 I](</zh/algo/problem-set/backtrack-i/>)
     * [回溯算法经典习题 II](</zh/algo/problem-set/backtrack-ii/>)
     * [回溯算法经典习题 III](</zh/algo/problem-set/backtrack-iii/>)
-  * BFS 算法
+  * BFS 算法 
     * [BFS 算法解题套路框架](</zh/algo/essential-technique/bfs-framework/>)
     * [求解迷宫](</zh/algo/game/maze/>)
     * [华容道游戏](</zh/algo/game/huarong-road/>)
@@ -286,7 +286,7 @@
 
 #### 第三章、经典动态规划算法
 
-  * 动态规划基本技巧
+  * 动态规划基本技巧 
     * [动态规划解题套路框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
     * [动态规划设计：最长递增子序列](</zh/algo/dynamic-programming/longest-increasing-subsequence/>)
     * [base case 和备忘录的初始值怎么定？](</zh/algo/dynamic-programming/memo-fundamental/>)
@@ -294,17 +294,17 @@
     * [动态规划和回溯算法的思维转换](</zh/algo/dynamic-programming/word-break/>)
     * [对动态规划进行空间压缩](</zh/algo/dynamic-programming/space-optimization/>)
     * [最优子结构原理和 dp 数组遍历方向](</zh/algo/dynamic-programming/faq-summary/>)
-  * 子序列类型问题
+  * 子序列类型问题 
     * [经典动态规划：编辑距离](</zh/algo/dynamic-programming/edit-distance/>)
     * [动态规划设计：最大子数组](</zh/algo/dynamic-programming/maximum-subarray/>)
     * [经典动态规划：最长公共子序列](</zh/algo/dynamic-programming/longest-common-subsequence/>)
     * [动态规划之子序列问题解题模板](</zh/algo/dynamic-programming/subsequence-problem/>)
-  * 背包类型问题
+  * 背包类型问题 
     * [经典动态规划：0-1 背包问题](</zh/algo/dynamic-programming/knapsack1/>)
     * [经典动态规划：子集背包问题](</zh/algo/dynamic-programming/knapsack2/>)
     * [经典动态规划：完全背包问题](</zh/algo/dynamic-programming/knapsack3/>)
     * [背包问题的变体：目标和](</zh/algo/dynamic-programming/target-sum/>)
-  * 用动态规划玩游戏
+  * 用动态规划玩游戏 
     * [动态规划之最小路径和](</zh/algo/dynamic-programming/minimum-path-sum/>)
     * [动态规划帮我通关了《魔塔》](</zh/algo/dynamic-programming/magic-tower/>)
     * [动态规划帮我通关了《辐射4》](</zh/algo/dynamic-programming/freedom-trail/>)
@@ -316,12 +316,12 @@
     * [经典动态规划：博弈问题](</zh/algo/dynamic-programming/game-theory/>)
     * [一个方法团灭 LeetCode 打家劫舍问题](</zh/algo/dynamic-programming/house-robber/>)
     * [一个方法团灭 LeetCode 股票买卖问题](</zh/algo/dynamic-programming/stock-problem-summary/>)
-  * 动态规划习题集
+  * 动态规划习题集 
     * [打家劫舍问题模式](</zh/algo/problem-set/rob-house/>)
     * [背包问题经典习题](</zh/algo/problem-set/knapsack/>)
     * [动态规划经典习题 I](</zh/algo/problem-set/dynamic-programming-i/>)
     * [动态规划经典习题 II](</zh/algo/problem-set/dynamic-programming-ii/>)
-  * 贪心类型问题
+  * 贪心类型问题 
     * [贪心算法解题套路框架](</zh/algo/essential-technique/greedy/>)
     * [老司机加油算法](</zh/algo/frequency-interview/gas-station-greedy/>)
     * [贪心算法之区间调度问题](</zh/algo/frequency-interview/interval-scheduling/>)
@@ -330,7 +330,7 @@
 
 #### 第四章、其他常见算法技巧
 
-  * 数学运算技巧
+  * 数学运算技巧 
     * [一行代码就能解决的算法题](</zh/algo/frequency-interview/one-line-solutions/>)
     * [常用的位操作](</zh/algo/frequency-interview/bitwise-operation/>)
     * [必知必会数学技巧](</zh/algo/essential-technique/math-techniques-summary/>)
@@ -341,7 +341,7 @@
     * [如何同时寻找缺失和重复的元素](</zh/algo/frequency-interview/mismatch-set/>)
     * [几个反直觉的概率问题](</zh/algo/frequency-interview/probability-problem/>)
     * [数学技巧相关习题](</zh/algo/problem-set/math-tricks/>)
-  * 经典面试题
+  * 经典面试题 
     * [如何高效解决接雨水问题](</zh/algo/frequency-interview/trapping-rain-water/>)
     * [一文秒杀所有丑数系列问题](</zh/algo/frequency-interview/ugly-number-summary/>)
     * [一个方法解决三道区间问题](</zh/algo/practice-in-action/interval-problem-summary/>)
@@ -352,7 +352,7 @@
 
 #### 更多内容
 
-  * 计算机基础知识
+  * 计算机基础知识 
     * [AI 时代的前端开发入门教程](</zh/algo/computer-science/frontend-introduction/>)
     * [现代加密技术入门](</zh/algo/computer-science/encryption-intro/>)
     * [深入理解 session 和 cookie](</zh/algo/other-skills/session-and-cookie/>)
@@ -371,7 +371,7 @@
     * [Linux shell 的使用技巧](</zh/algo/other-skills/linux-shell/>)
     * [浅谈存储系统：LSM 树设计原理](</zh/algo/other-skills/lsm-tree/>)
     * [正在更新 ing](</zh/algo/intro/updating/>)
-  * 设计模式
+  * 设计模式 
     * [单例模式](</zh/algo/design-pattern/singleton/>)
     * [工厂方法模式](</zh/algo/design-pattern/factory-method/>)
     * [抽象工厂模式](</zh/algo/design-pattern/abstract-factory/>)
@@ -400,12 +400,18 @@
   * 30 天打卡挑战（可选）[](</zh/checkin/>)
   * 微信交流群（可选）
 
+支付方式:微信支付
+
 立即订阅
 
-如有支付问题，请联系 [[email protected]](</cdn-cgi/l/email-protection#8ce0edeef9e0ede8e3e2ebcceae3f4e1ede5e0a2efe3e1>)
+如有支付问题，请联系 [labuladong@foxmail.com](<mailto:labuladong@foxmail.com>)
 
 注意
 
 购买会员后，本站的所有内容会自动解锁，**但是刷题插件中的题解思路、题单不会自动解锁，需要手动操作** 。
 
 如果你需要使用配套刷题插件，请你按照 [Chrome 插件使用文档](</zh/algo/intro/chrome/>)、[vscode 插件使用文档](</zh/algo/intro/vscode/>)、[JetBrains 插件使用文档](</zh/algo/intro/jetbrains/>) 中「解锁本站的思路/题单」的操作步骤手动解锁。
+
+## 评论
+
+请登录后查看/发表评论

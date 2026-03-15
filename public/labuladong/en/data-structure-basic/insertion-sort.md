@@ -33,37 +33,27 @@ In the previous article [Problems of Selection Sort](</en/algo/data-structure-ba
 
 To recap, the key point of bubble sort is the optimization of the following code segment:
 
-```java
-// Perform the first wave of optimization on selection sort to achieve stability
-void sort(int[] nums) {
-    int n = nums.length;
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // Find the smallest value nums[minIndex] in the unsorted part
-        int minIndex = sortedIndex;
-        for (int i = sortedIndex + 1; i < n; i++) {
-            if (nums[i] < nums[minIndex]) {
-                minIndex = i;
-            }
-        }
+```python
+# Perform the first wave of optimization on selection sort to achieve stability
+def sort(nums):
+    n = len(nums)
+    sortedIndex = 0
+    while sortedIndex < n:
+        # Find the smallest value nums[minIndex] in the unsorted part
+        minIndex = sortedIndex
+        for i in range(sortedIndex + 1, n):
+            if nums[i] < nums[minIndex]:
+                minIndex = i
 
-        // Swap the smallest value with the element at sortedIndex
-        // int tmp = nums[sortedIndex];
-        // nums[sortedIndex] = nums[minIndex];
-        // nums[minIndex] = tmp;
+        # Optimization: Insert nums[minIndex] into the position of nums[sortedIndex]
+        # Move the elements of nums[sortedIndex..minIndex] one position backward
+        minVal = nums[minIndex]
+        # Array data moving operation
+        for i in range(minIndex, sortedIndex, -1):
+            nums[i] = nums[i - 1]
+        nums[sortedIndex] = minVal
 
-        // Optimization: Insert nums[minIndex] into the position of nums[sortedIndex]
-        // Move the elements of nums[sortedIndex..minIndex] one position backward
-        int minVal = nums[minIndex];
-        // Array data moving operation
-        for (int i = minIndex; i > sortedIndex; i--) {
-            nums[i] = nums[i - 1];
-        }
-        nums[sortedIndex] = minVal;
-
-        sortedIndex++;
-    }
-}
+        sortedIndex += 1
 ``` 
 
 Algorithm Visualization
@@ -84,28 +74,24 @@ In this way, the first inner loop in the above code could be optimized to logari
 
 However, thinking it over, using binary search seems redundant. Even if I find the position where `nums[sortedIndex]` should be inserted using binary search, I still need to shift elements to perform the insertion. It might be simpler and more efficient to just traverse and swap elements:
 
-```java
-// further optimize selection sort by inserting elements into the left sorted array
-// this algorithm has another name, called insertion sort
-void sort(int[] nums) {
-    int n = nums.length;
-    // maintain [0, sortedIndex) as a sorted array
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // insert nums[sortedIndex] into the sorted array [0, sortedIndex)
-        for (int i = sortedIndex; i > 0; i--) {
-            if (nums[i] < nums[i - 1]) {
-                // swap(nums[i], nums[i - 1])
-                int tmp = nums[i];
-                nums[i] = nums[i - 1];
-                nums[i - 1] = tmp;
-            } else {
-                break;
-            }
-        }
-        sortedIndex++;
-    }
-}
+```python
+# further optimize selection sort by inserting elements into the left sorted array
+# this algorithm has another name, called insertion sort
+def sort(nums):
+    n = len(nums)
+    # maintain [0, sorted_index) as a sorted array
+    sorted_index = 0
+    while sorted_index < n:
+        # insert nums[sorted_index] into the sorted array [0, sorted_index)
+        for i in range(sorted_index, 0, -1):
+            if nums[i] < nums[i - 1]:
+                # swap(nums[i], nums[i - 1])
+                tmp = nums[i]
+                nums[i] = nums[i - 1]
+                nums[i - 1] = tmp
+            else:
+                break
+        sorted_index += 1
 ``` 
 
 Algorithm Visualization
@@ -134,4 +120,8 @@ Thus, the number of operations for bubble sort is approximately n2/2n^2/2n2/2, w
 
 You can submit the insertion sort code to LeetCode Problem 912 "[Sort an Array](<https://leetcode.com/problems/sort-an-array/>)". It will still eventually time out, but it demonstrates that the logic of the algorithm is correct. In subsequent articles, we will continue to explore how to optimize sorting algorithms.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

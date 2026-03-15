@@ -30,8 +30,8 @@ The problem gives us two strings `s` and `p`. `s` is the text, and `p` is the pa
 
 The function signature is as follows:
 
-```java
-boolean isMatch(string s, string p);
+```python
+def isMatch(s: str, p: str) -> bool:
 ``` 
 
 What is the hard part of this regular expression we need to implement?
@@ -46,21 +46,19 @@ Let’s think about how `s` and `p` match. We use two pointers `i` and `j` to mo
 
 **If we ignore the "*" wildcard, when matching characters`s[i]` and `p[j]`, all we need to do is check if they match:**
 
-```java
-boolean isMatch(String s, String p) {
-    int i = 0, j = 0;
-    while (i < s.length() && j < p.length()) {
-        // the '.' wildcard is a versatile match
-        if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
-            // match, continue to match s[i+1..] and p[j+1..]
-            i++; j++;
-        } else {
-            // not a match
-            return false;
-        }
-    }
-    return i == j;
-}
+```python
+def isMatch(s: str, p: str) -> bool:
+    i, j = 0, 0
+    while i < len(s) and j < len(p):
+        # the '.' wildcard is versatile
+        if s[i] == p[j] or p[j] == '.':
+            # match, then continue to match s[i+1..] and p[j+1..]
+            i += 1
+            j += 1
+        else:
+            # not a match
+            return False
+    return i == j
 ``` 
 
 Now, if we add the "*" wildcard, things get a bit more complex, but we just need to consider each case separately.
@@ -79,24 +77,24 @@ Now, if we add the "*" wildcard, things get a bit more complex, but we just need
 
 So, we can update the code for the "*" wildcard as follows:
 
-```java
-if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
-    // match
-    if (j < p.length() - 1 && p.charAt(j + 1) == '*') {
-        // there is a * wildcard, which can match 0 or more times
-    } else {
-        // no * wildcard, match exactly once
-        i++; j++;
-    }
-} else {
-    // do not match
-    if (j < p.length() - 1 && p.charAt(j + 1) == '*') {
-        // there is a * wildcard, can only match 0 times
-    } else {
-        // no * wildcard, the match cannot proceed
-        return false;
-    }
-}
+```python
+if s[i] == p[j] or p[j] == '.':
+    # match
+    if j < len(p) - 1 and p[j + 1] == '*':
+        # there is a * wildcard, which can match 0 times or multiple times
+        pass
+    else:
+        # no * wildcard, match exactly 1 time
+        i += 1
+        j += 1
+else:
+    # not a match
+    if j < len(p) - 1 and p[j + 1] == '*':
+        # there is a * wildcard, can only match 0 times
+        pass
+    else:
+        # no * wildcard, the match cannot proceed
+        return False
 ``` 
 
 The idea is clear. But when we see the "*" wildcard, should we match 0 times or more? How many times?
@@ -111,4 +109,8 @@ Based on the "state", we can define a `dp` function:
 boolean dp(String s, int i, String p, int j);
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

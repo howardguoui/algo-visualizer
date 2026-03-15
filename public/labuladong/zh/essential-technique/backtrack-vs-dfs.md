@@ -70,3 +70,7 @@ void backtrack(...) {
 ``` 
 
 这两种写法的区别是什么？
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

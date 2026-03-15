@@ -129,96 +129,79 @@ Level-Order Traversal: Three Template Approaches
 
 First approach - the simplest:
 
-```java
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    while (!q.isEmpty()) {
-        TreeNode cur = q.poll();
-        // visit the cur node
-        System.out.println(cur.val);
+```python
+from collections import deque
 
-        // add the left and right children of cur to the queue
-        if (cur.left != null) {
-            q.offer(cur.left);
-        }
-        if (cur.right != null) {
-            q.offer(cur.right);
-        }
-    }
-}
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    q.append(root)
+    while q:
+        cur = q.popleft()
+        # visit cur node
+        print(cur.val)
+
+        # add cur's left and right children to the queue
+        if cur.left is not None:
+            q.append(cur.left)
+        if cur.right is not None:
+            q.append(cur.right)
 ``` 
 
 Second approach - uses `step` to track level information, more commonly used:
 
-```java
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    // record the current level being traversed (root node is considered as level 1)
-    int depth = 1;
+```python
+from collections import deque
 
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        for (int i = 0; i < sz; i++) {
-            TreeNode cur = q.poll();
-            // visit the cur node and know its level
-            System.out.println("depth = " + depth + ", val = " + cur.val);
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    q.append(root)
+    # record the current depth being traversed (root node is considered as level 1)
+    depth = 1
 
-            // add the left and right children of cur to the queue
-            if (cur.left != null) {
-                q.offer(cur.left);
-            }
-            if (cur.right != null) {
-                q.offer(cur.right);
-            }
-        }
-        depth++;
-    }
-}
+    while q:
+        sz = len(q)
+        for i in range(sz):
+            cur = q.popleft()
+            # visit cur node and know its depth
+            print(f"depth = {depth}, val = {cur.val}")
+
+            # add cur's left and right children to the queue
+            if cur.left is not None:
+                q.append(cur.left)
+            if cur.right is not None:
+                q.append(cur.right)
+        depth += 1
 ``` 
 
 Third approach - uses a custom `State` class to maintain node information, more complex but most flexible, seen in graph algorithms or complex BFS problems:
 
-```java
-class State {
-    TreeNode node;
-    int depth;
+```python
+class State:
+    def __init__(self, node, depth):
+        self.node = node
+        self.depth = depth
 
-    State(TreeNode node, int depth) {
-        this.node = node;
-        this.depth = depth;
-    }
-}
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    # the path weight sum of the root node is 1
+    q.append(State(root, 1))
 
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<State> q = new LinkedList<>();
-    // the path weight sum of the root node is 1
-    q.offer(new State(root, 1));
+    while q:
+        cur = q.popleft()
+        # visit the cur node, and know its path weight sum
+        print(f"depth = {cur.depth}, val = {cur.node.val}")
 
-    while (!q.isEmpty()) {
-        State cur = q.poll();
-        // visit the cur node, while knowing its path weight sum
-        System.out.println("depth = " + cur.depth + ", val = " + cur.node.val);
-
-        // add the left and right child nodes of cur to the queue
-        if (cur.node.left != null) {
-            q.offer(new State(cur.node.left, cur.depth + 1));
-        }
-        if (cur.node.right != null) {
-            q.offer(new State(cur.node.right, cur.depth + 1));
-        }
-    }
-}
+        # add the left and right child nodes of cur to the queue
+        if cur.node.left is not None:
+            q.append(State(cur.node.left, cur.depth + 1))
+        if cur.node.right is not None:
+            q.append(State(cur.node.right, cur.depth + 1))
 ``` 
 
 Key Foundation, Recommended Time: 0.5 Day
@@ -305,44 +288,41 @@ Core Framework, Suggested Time: 1 Day
 
 Sliding Window Code Template (Pseudocode)
 
-```java
-// Pseudocode framework of sliding window algorithm
-void slidingWindow(String s) {
-    // Use an appropriate data structure to record the data in the
-    // window, which can vary according to the specific scenario
-    // For example, if I want to record the frequency of
-    // elements in the window, I would use a map
-    // If I want to record the sum of elements in the window, I could just use an int
-    Object window = ...
-    
-    int left = 0, right = 0;
-    while (right < s.length()) {
-        // c is the character that will be added to the window
-        char c = s[right];
+```python
+# Pseudocode framework for sliding window algorithm
+def slidingWindow(s: str):
+    # Use an appropriate data structure to record the data in
+    # the window, which can vary depending on the scenario
+    # For example, if I want to record the frequency
+    # of elements in the window, I would use a map
+    # If I want to record the sum of elements in the window, I could just use an int
+    window = ...
+
+    left, right = 0, 0
+    while right < len(s):
+        # c is the character that will be added to the window
+        c = s[right]
         window.add(c)
-        // Expand the window
-        right++;
-        // Perform a series of updates to the data within the window
+        # Expand the window
+        right += 1
+        # Perform a series of updates on the data within the window
         ...
 
-        // *** Position of debug output ***
-        // Note that in the final solution code, do not use print
-        // Because IO operations are time-consuming and may cause timeouts
-        printf("window: [%d, %d)\n", left, right);
-        // ***********************
+        # *** position for debug output ***
+        # Note that you should not print in the final solution code
+        # because IO operations are time-consuming and may cause timeouts
+        # print(f"window: [{left}, {right})")
+        # ***********************
 
-        // Determine whether the left side of the window needs to shrink
-        while (left < right && window needs shrink) {
-            // d is the character that will be removed from the window
-            char d = s[left];
+        # Determine whether the left side of the window needs to be contracted
+        while left < right and window needs shrink:
+            # d is the character that will be removed from the window
+            d = s[left]
             window.remove(d)
-            // Shrink the window
-            left++;
-            // Perform a series of updates to the data within the window
+            # Shrink the window
+            left += 1
+            # Perform a series of updates on the data within the window
             ...
-        }
-    }
-}
 ``` 
 
 Exercise, Suggested Time: 1 Day
@@ -356,66 +336,57 @@ Core Framework, Suggested Time: 1~2 Days
 
 Three Binary Search Code Templates
 
-```java
-int binary_search(int[] nums, int target) {
-    int left = 0, right = nums.length - 1; 
-    while(left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1; 
-        } else if(nums[mid] == target) {
-            // return directly
-            return mid;
-        }
-    }
-    // return directly
-    return -1;
-}
+```python
+def binary_search(nums: List[int], target: int) -> int:
+    # set left and right indexes
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # found the target value
+            return mid
+    # target value not found
+    return -1
 
-int left_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // do not return, lock the left boundary
-            right = mid - 1;
-        }
-    }
-    // determine if target exists in nums
-    if (left < 0 || left >= nums.length) {
-        return -1;
-    }
-    // check if nums[left] is the target
-    return nums[left] == target ? left : -1;
-}
+def left_bound(nums: List[int], target: int) -> int:
+    # set left and right indexes
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # target exists, narrow the right boundary
+            right = mid - 1
+    # determine if the target exists
+    if left < 0 or left >= len(nums):
+        return -1
+    # determine if the left boundary found is the target value
+    return left if nums[left] == target else -1
 
-int right_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // do not return, lock the right boundary
-            left = mid + 1;
-        }
-    }
-    // since the while loop ends with right == left - 1
-    // and we are now looking for the right boundary
-    // it's easier to remember to use right instead of left - 1
-    if (right < 0 || right >= nums.length) {
-        return -1;
-    }
-    return nums[right] == target ? right : -1;
-}
+def right_bound(nums: List[int], target: int) -> int:
+    # set left and right indexes
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # target exists, narrow the left boundary
+            left = mid + 1
+    # determine if the target exists
+    if right < 0 or right >= len(nums):
+        return -1
+    # determine if the right boundary found is the target value
+    return right if nums[right] == target else -1
 ``` 
 
 Core Framework, Suggested Time: 1~2 Days
@@ -427,93 +398,75 @@ Prefix Sum Array Code Template
 
 1D Prefix Sum:
 
-```java
-class NumArray {
-    // prefix sum array
-    private int[] preSum;
+```python
+class NumArray:
+    # prefix sum array
+    def __init__(self, nums: List[int]):
+        # input an array to construct the prefix sum
+        # preSum[0] = 0, to facilitate the calculation of accumulated sums
+        self.preSum = [0] * (len(nums) + 1)
+        # calculate the accumulated sums of nums
+        for i in range(1, len(self.preSum)):
+            self.preSum[i] = self.preSum[i - 1] + nums[i - 1]
 
-    // input an array to construct the prefix sum
-    public NumArray(int[] nums) {
-        // preSum[0] = 0, to facilitate the calculation of accumulated sums
-        preSum = new int[nums.length + 1];
-        // calculate the accumulated sums of nums
-        for (int i = 1; i < preSum.length; i++) {
-            preSum[i] = preSum[i - 1] + nums[i - 1];
-        }
-    }
-
-    // query the sum of the closed interval [left, right]
-    public int sumRange(int left, int right) {
-        return preSum[right + 1] - preSum[left];
-    }
-}
+    # query the sum of the closed interval [left, right]
+    def sumRange(self, left: int, right: int) -> int:
+        return self.preSum[right + 1] - self.preSum[left]
 ``` 
 
 2D Prefix Sum:
 
-```java
-class NumMatrix {
-    // preSum[i][j] records the sum of elements in the matrix [0, 0, i-1, j-1]
-    private int[][] preSum;
+```python
+class NumMatrix:
+    # preSum[i][j] records the sum of elements in the matrix [0, 0, i-1, j-1]
+    def __init__(self, matrix: List[List[int]]):
+        m = len(matrix)
+        n = len(matrix[0])
+        if m == 0 or n == 0:
+            return
+        # construct the prefix sum matrix
+        self.preSum = [[0] * (n + 1) for _ in range(m + 1)]
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                # calculate the sum of elements for each matrix [0, 0, i, j]
+                self.preSum[i][j] = (self.preSum[i - 1][j] + self.preSum[i][j - 1] +
+                                     matrix[i - 1][j - 1] - self.preSum[i - 1][j - 1])
 
-    public NumMatrix(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        if (m == 0 || n == 0) return;
-        // construct the prefix sum matrix
-        preSum = new int[m + 1][n + 1];
-        for (int i = 1; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                // calculate the sum of elements for each matrix [0, 0, i, j]
-                preSum[i][j] = preSum[i-1][j] + preSum[i][j-1] + matrix[i - 1][j - 1] - preSum[i-1][j-1];
-            }
-        }
-    }
-
-    // calculate the sum of elements in the submatrix [x1, y1, x2, y2]
-    public int sumRegion(int x1, int y1, int x2, int y2) {
-        // the sum of the target matrix is obtained by operations on four adjacent matrices
-        return preSum[x2+1][y2+1] - preSum[x1][y2+1] - preSum[x2+1][y1] + preSum[x1][y1];
-    }
-}
+    # calculate the sum of elements in the submatrix [x1, y1, x2, y2]
+    def sumRegion(self, x1: int, y1: int, x2: int, y2: int) -> int:
+        # the sum of the target matrix is obtained by operations on four adjacent matrices
+        return (self.preSum[x2 + 1][y2 + 1] - self.preSum[x1][y2 + 1] -
+                self.preSum[x2 + 1][y1] + self.preSum[x1][y1])
 ``` 
 
 Difference Array Code Template
 
-```java
-// Difference Array Utility Class
-class Difference {
-    // difference array
-    private int[] diff;
-    
-    // input an initial array, range operations will be performed on this array
-    public Difference(int[] nums) {
-        diff = new int[nums.length];
-        // construct the difference array based on the initial array
-        diff[0] = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            diff[i] = nums[i] - nums[i - 1];
-        }
-    }
+```python
+# Difference Array Tool Class
+class Difference:
+    # difference array
+    def __init__(self, nums: List[int]):
+        assert len(nums) > 0
+        self.diff = [0] * len(nums)
+        # construct the difference array based on the initial array
+        self.diff[0] = nums[0]
+        for i in range(1, len(nums)):
+            self.diff[i] = nums[i] - nums[i - 1]
 
-    // increment the closed interval [i, j] by val (can be negative)
-    public void increment(int i, int j, int val) {
-        diff[i] += val;
-        if (j + 1 < diff.length) {
-            diff[j + 1] -= val;
-        }
-    }
+    # increment the closed interval [i, j] by val (can be negative)
+    def increment(self, i: int, j: int, val: int) -> None:
+        self.diff[i] += val
+        if j + 1 < len(self.diff):
+            self.diff[j + 1] -= val
 
-    // return the result array
-    public int[] result() {
-        int[] res = new int[diff.length];
-        // construct the result array based on the difference array
-        res[0] = diff[0];
-        for (int i = 1; i < diff.length; i++) {
-            res[i] = res[i - 1] + diff[i];
-        }
-        return res;
-    }
-}
+    # return the result array
+    def result(self) -> List[int]:
+        res = [0] * len(self.diff)
+        # construct the result array based on the difference array
+        res[0] = self.diff[0]
+        for i in range(1, len(self.diff)):
+            res[i] = res[i - 1] + self.diff[i]
+        return res
 ``` 
 
 ### Queues/Stacks
@@ -631,75 +584,59 @@ Implementing a calculator is a classic data structure design problem. If you're 
 
 General-Purpose Calculator Implementation
 
-```java
-class Solution {
-    public int calculate(String s) {
-        // key is the index of the left parenthesis, value is the
-        // corresponding index of the right parenthesis
-        Map<Integer, Integer> rightIndex = new HashMap<>();
-        // use stack structure to find the corresponding parentheses
-        Stack<Integer> stack = new Stack<>();
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == '(') {
-                stack.push(i);
-            } else if (s.charAt(i) == ')') {
-                rightIndex.put(stack.pop(), i);
-            }
-        }
-        return _calculate(s, 0, s.length() - 1, rightIndex);
-    }
+```python
+class Solution:
+    def calculate(self, s: str) -> int:
+        # key is the index of the left parenthesis, value is the
+        # corresponding index of the right parenthesis
+        rightIndex = {}
+        # use stack structure to find the corresponding parenthesis
+        stack = []
+        for i in range(len(s)):
+            if s[i] == '(':
+                stack.append(i)
+            elif s[i] == ')':
+                rightIndex[stack.pop()] = i
+        return self._calculate(s, 0, len(s) - 1, rightIndex)
 
-    // Definition: return the result of the expression within s[start..end]
-    private int _calculate(String s, int start, int end, Map<Integer, Integer> rightIndex) {
-        // need to convert the string to a deque for easy operation
-        Stack<Integer> stk = new Stack<>();
-        // record the number in the formula
-        int num = 0;
-        // record the sign before num, initialized to +
-        char sign = '+';
-        for (int i = start; i <= end; i++) {
-            char c = s.charAt(i);
-            if (Character.isDigit(c)) {
-                num = 10 * num + (c - '0');
-            }
-            if (c == '(') {
-                // recursively calculate the expression inside the parentheses
-                num = _calculate(s, i + 1, rightIndex.get(i) - 1, rightIndex);
-                i = rightIndex.get(i);
-            }
-            if (c == '+' || c == '-' || c == '*' || c == '/' || i == end) {
-                int pre;
-                switch (sign) {
-                    case '+':
-                        stk.push(num);
-                        break;
-                    case '-':
-                        stk.push(-num);
-                        break;
-                    // just take out the previous number and perform
-                    // the corresponding operation
-                    case '*':
-                        pre = stk.pop();
-                        stk.push(pre * num);
-                        break;
-                    case '/':
-                        pre = stk.pop();
-                        stk.push(pre / num);
-                        break;
-                }
-                // update the sign to the current sign, reset the number to zero
-                sign = c;
-                num = 0;
-            }
-        }
-        // sum all results in the stack to get the answer
-        int res = 0;
-        while (!stk.isEmpty()) {
-            res += stk.pop();
-        }
-        return res;
-    }
-}
+    # Definition: return the calculation result of the expression within s[start..end]
+    def _calculate(self, s, start, end, rightIndex):
+        # need to convert the string to a deque for easy operation
+        stk = []
+        # record the number in the formula
+        num = 0
+        # record the sign before num, initialized to +
+        sign = '+'
+        i = start 
+        while i <= end:
+            c = s[i]
+            if c.isdigit():
+                num = 10 * num + int(c)
+            if c == '(':
+                # recursively calculate the expression inside the parenthesis
+                num = self._calculate(s, i + 1, rightIndex[i] - 1, rightIndex)
+                i = rightIndex[i]
+            if c in '+-*/' or i == end:
+                if sign == '+':
+                    stk.append(num)
+                elif sign == '-':
+                    stk.append(-num)
+                elif sign == '*':
+                    pre = stk.pop()
+                    stk.append(pre * num)
+                elif sign == '/':
+                    pre = stk.pop()
+                    stk.append(int(pre / num))                   
+
+                # update the sign to the current sign, reset the number to zero
+                sign = c
+                num = 0
+            i += 1
+        # sum all results in the stack to get the answer
+        res = 0
+        while stk:
+            res += stk.pop()
+        return res
 ``` 
 
 Exercise, Suggested Time: 1 Day
@@ -729,54 +666,44 @@ Union Find Code Template
 
 Here's the most efficient implementation using path compression:
 
-```java
-class UF {
-    // the number of connected components
-    private int count;
-    // store the parent of each node
-    private int[] parent;
+```python
+class UF:
+    # the number of connected components
+    _count: int
+    # store the parent of each node
+    parent: List[int]
 
-    // n is the number of nodes in the graph
-    public UF(int n) {
-        this.count = n;
-        parent = new int[n];
-        for (int i = 0; i < n; i++) {
-            parent[i] = i;
-        }
-    }
-    
-    // connect node p and node q
-    public void union(int p, int q) {
-        int rootP = find(p);
-        int rootQ = find(q);
-        
-        if (rootP == rootQ)
-            return;
-        
-        parent[rootQ] = rootP;
-        // merge two connected components into one
-        count--;
-    }
+    # n is the number of nodes in the graph
+    def __init__(self, n: int):
+        self._count = n
+        self.parent = [i for i in range(n)]
 
-    // determine if node p and node q are connected
-    public boolean connected(int p, int q) {
-        int rootP = find(p);
-        int rootQ = find(q);
-        return rootP == rootQ;
-    }
+    # connect node p and node q
+    def union(self, p: int, q: int):
+        rootP = self.find(p)
+        rootQ = self.find(q)
 
-    public int find(int x) {
-        if (parent[x] != x) {
-            parent[x] = find(parent[x]);
-        }
-        return parent[x];
-    }
+        if rootP == rootQ:
+            return
 
-    // return the number of connected components in the graph
-    public int count() {
-        return count;
-    }
-}
+        self.parent[rootQ] = rootP
+        # merge two connected components into one
+        self._count -= 1
+
+    # determine if node p and node q are connected
+    def connected(self, p: int, q: int) -> bool:
+        rootP = self.find(p)
+        rootQ = self.find(q)
+        return rootP == rootQ
+
+    def find(self, x: int) -> int:
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    # return the number of connected components in the graph
+    def count(self) -> int:
+        return self._count
 ``` 
 
 Minimum spanning tree is another practical graph algorithm. You need to understand its definition and use cases.
@@ -804,67 +731,60 @@ Core Framework, Suggested Time: 1 Day
 
 Dijkstra's Algorithm Template (Pseudocode)
 
-```java
-class State {
-    // Current node ID
-    int node;
-    // Minimum path weight from the start node s to the current node
-    int distFromStart;
+```python
+import heapq
+from typing import List
 
-    public State(int node, int distFromStart) {
-        this.node = node;
-        this.distFromStart = distFromStart;
-    }
-}
+class State:
+    # Current node ID
+    def __init__(self, node: int, distFromStart: int):
+        self.node = node
+        # Minimum path weight from the start node s to the current node
+        self.distFromStart = distFromStart
 
-// Input the weighted graph (without negative weight edges) graph and the starting node src
-// Return the minimum path weight from the starting node src to other nodes
-int[] dijkstra(Graph graph, int src) {
-    // Record the minimum path weight from the starting node src to other nodes
-    // distTo[i] represents the minimum path weight from the starting node src to node i
-    int[] distTo = new int[graph.size()];
-    // Initialize all values to positive infinity, representing not calculated
-    Arrays.fill(distTo, Integer.MAX_VALUE);
+    # Define comparison for min-heap
+    def __lt__(self, other: "State") -> bool:
+        return self.distFromStart < other.distFromStart
 
-    // Priority queue, nodes with smaller distFromStart are in front
-    Queue<State> pq = new PriorityQueue<>((a, b) -> {
-        return a.distFromStart - b.distFromStart;
-    });
+# Input the weighted graph (without negative weight edges) graph and the starting node src
+# Return the minimum path weight from the starting node src to other nodes
+def dijkstra(graph: Graph, src: int) -> List[int]:
+    # Record the minimum path weight from the starting node src to other nodes
+    # distTo[i] represents the minimum path weight from the starting node src to node i
+    distTo: List[int] = [float('inf')] * graph.size()
 
-    // Start BFS from the starting node src
-    pq.offer(new State(src, 0));
-    distTo[src] = 0;
+    # Priority queue, nodes with smaller distFromStart are in front
+    pq: List[State] = []
 
-    while (!pq.isEmpty()) {
-        State state = pq.poll();
-        int curNode = state.node;
-        int curDistFromStart = state.distFromStart;
+    # Start BFS from the starting node src
+    heapq.heappush(pq, State(src, 0))
+    distTo[src] = 0
 
-        if (distTo[curNode] < curDistFromStart) { // [!code highlight:5]
-            // In Dijkstra's algorithm, the queue may contain duplicate nodes state
-            // So it is necessary to check when the element leaves the
-            // queue to remove the worse duplicate nodes
-            continue;
-        }
+    while pq:
+        state = heapq.heappop(pq)
+        curNode = state.node
+        curDistFromStart = state.distFromStart
 
-        for (Edge e : graph.neighbors(curNode)) {
-            int nextNode = e.to;
-            int nextDistFromStart = curDistFromStart + e.weight;
+        if distTo[curNode] < curDistFromStart: # [!code highlight:5]
+            # In Dijkstra's algorithm, the queue may contain duplicate nodes state
+            # So it is necessary to check when the element leaves the
+            # queue to remove the worse duplicate nodes
+            continue
 
-            if (distTo[nextNode] <= nextDistFromStart) {
-                continue;
-            }
+        for e in graph.neighbors(curNode):
+            nextNode = e.to
+            nextDistFromStart = curDistFromStart + e.weight
 
-            // [!code highlight:6]
-            // Add nextNode node to the priority queue
-            pq.offer(new State(nextNode, nextDistFromStart));
-            // Record the minimum path weight from the starting node to the nextNode node
-            distTo[nextNode] = nextDistFromStart;
-        }
-    }
+            if distTo[nextNode] <= nextDistFromStart:
+                continue
 
-    return distTo;
-}
+            # [!code highlight:6]
+            # Add nextNode node to the priority queue
+            heapq.heappush(pq, State(nextNode, nextDistFromStart))
+            # Record the minimum path weight from the starting node to the nextNode node
+            distTo[nextNode] = nextDistFromStart
+
+    return distTo
 ``` 
 
 ### DFS / Backtracking
@@ -1026,46 +946,48 @@ Exercises, suggested time: 1–2 days
 
 Universal nSum Function
 
-```java
-// Note: you must sort the nums array before calling this function
-// n is the sum of how many numbers you want to find, start is the index to start
-// calculation (usually fill in 0), target is the target sum you want to achieve
-List<List<Integer>> nSumTarget(int[] nums, int n, int start, long target) {
-    int sz = nums.length;
-    List<List<Integer>> res = new ArrayList<>();
-    // at least it should be 2Sum, and the array size should not be less than n
-    if (n < 2 || sz < n) return res;
-    // 2Sum is the base case
-    if (n == 2) {
-        // the operation with two pointers
-        int lo = start, hi = sz - 1;
-        while (lo < hi) {
-            int sum = nums[lo] + nums[hi];
-            int left = nums[lo], right = nums[hi];
-            if (sum < target) {
-                while (lo < hi && nums[lo] == left) lo++;
-            } else if (sum > target) {
-                while (lo < hi && nums[hi] == right) hi--;
-            } else {
-                res.add(new ArrayList<>(Arrays.asList(left, right)));
-                while (lo < hi && nums[lo] == left) lo++;
-                while (lo < hi && nums[hi] == right) hi--;
-            }
-        }
-    } else {
-        // when n > 2, recursively calculate the result of (n-1)Sum
-        for (int i = start; i < sz; i++) {
-            List<List<Integer>> sub = nSumTarget(nums, n - 1, i + 1, target - nums[i]);
-            for (List<Integer> arr : sub) {
-                // (n-1)Sum plus nums[i] is nSum
-                arr.add(nums[i]);
-                res.add(arr);
-            }
-            while (i < sz - 1 && nums[i] == nums[i + 1]) i++;
-        }
-    }
-    return res;
-}
+```python
+# Note: make sure to sort the nums array before calling this function
+# n is the sum of how many numbers you want, start is the index to start
+# calculation (usually fill 0), target is the target sum you want to make
+def nSumTarget(nums: List[int], n: int, start: int, target: int) -> List[List[int]]:
+    sz = len(nums)
+    res = []
+    # at least it should be 2Sum, and the array size should not be less than n
+    if n < 2 or sz < n:
+        return res
+    # 2Sum is the base case
+    if n == 2:
+        # the operation with two pointers
+        lo, hi = start, sz-1
+        while lo < hi:
+            sum = nums[lo] + nums[hi]
+            left, right = nums[lo], nums[hi]
+            if sum < target:
+                while lo < hi and nums[lo] == left:
+                    lo += 1
+            elif sum > target:
+                while lo < hi and nums[hi] == right:
+                    hi -= 1
+            else:
+                res.append([left, right])
+                while lo < hi and nums[lo] == left:
+                    lo += 1
+                while lo < hi and nums[hi] == right:
+                    hi -= 1
+        return res
+    else:
+        # when n > 2, recursively calculate the result of (n-1)Sum
+        for i in range(start, sz):
+            if i > start and nums[i] == nums[i - 1]:
+                # skip duplicate elements
+                continue
+            subs = nSumTarget(nums, n-1, i+1, target-nums[i])
+            for sub in subs:
+                # (n-1)Sum plus nums[i] is nSum
+                sub.append(nums[i])
+                res.append(sub)
+        return res
 ``` 
 
 ### Sorting Algorithms
@@ -1076,4 +998,8 @@ Sorting overview, suggested time: 1 day
 
 It is recommended to watch the video in [Guide to Ten Sorting Algorithms](</en/algo/intro/sorting/>) to learn the core ideas, complexity analysis, and use cases of the ten classic sorting algorithms.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

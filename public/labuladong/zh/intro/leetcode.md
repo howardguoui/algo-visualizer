@@ -17,12 +17,9 @@
 
 比如力扣第一题两数之和，就是让你实现这样一个 `twoSum` 函数：
 
-```java
-class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        
-    }
-}
+```python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
 ``` 
 
 意思就是给你输入数组 `nums` 和目标值 `target`，你需要实现算法逻辑，最后计算返回一个数组。
@@ -80,12 +77,10 @@ nums
 
 题目给你一个空的函数体，你需要实现这个 `search` 函数：
 
-```java
-class Solution {
-    public int search(int[] nums, int target) {
-        // 你的代码写在这里
-    }
-}
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        # 你的代码写在这里
 ``` 
 
 题目说给你输入一个升序排序的 `nums` 数组，让你在其中返回元素 `target` 的索引，如果找不到的话就返回 `-1`。
@@ -102,18 +97,14 @@ class Solution {
 
 这道题本意是想考察后面会讲的 [二分搜索算法](</zh/algo/essential-technique/binary-search-framework/>)，不过这里先不管那么多，我们就这样写一个很直接的解法：
 
-```java
-class Solution {
-    public int search(int[] nums, int target) {
-        // 遍历数组，找到目标元素就返回索引
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == target) {
-                return i;
-            }
-        }
-        return -1;
-    }
-}
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        # 遍历数组，找到目标元素就返回索引
+        for i in range(len(nums)):
+            if nums[i] == target:
+                return i
+        return -1
 ``` 
 
 你把这段代码复制到力扣的编辑器里，点击「运行」按钮可以执行右下方的测试用例，点击「提交」按钮可以提交你的代码，看看是否通过了所有的测试用例。
@@ -221,51 +212,48 @@ class Solution {
 
 具体举例说明吧，就比如二叉树的前序遍历这道题，题目输入一个二叉树的根节点，让你返回二叉树的前序遍历结果，你可以这样写：
 
-```java
-class Solution {
-    // 正确示例，类级别的全局变量
-    LinkedList<Integer> res = new LinkedList<>();
+```python
+# 错误示例，不要在文件级别定义全局变量
+# res = []
 
-    public List<Integer> preorderTraversal(TreeNode root) {
-        traverse(root);
-        return res;
-    }
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        # 正确示例，类级别的全局变量
+        self.res = []
+        self.traverse(root)
+        return self.res
 
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // 类内的其他函数都可以访问到 res
-        res.add(root.val);
-        traverse(root.left);
-        traverse(root.right);
-    }
-}
+    def traverse(self, root):
+        if not root:
+            return
+        # 类内的其他函数都可以访问到 res
+        self.res.append(root.val)
+        self.traverse(root.left)
+        self.traverse(root.right)
 ``` 
 
 对于 Java/C++/Python 这种给了一个 `Solution` 类的情况，你就把需要共享访问的变量定义在类里面，对于 Go/JavaScript 这种没有类的情况，你可以定义高阶函数，运用闭包的特性，让内部函数也可以访问到共享变量。
 
 或者，你可以把这个变量作为函数的参数传递，这样也是一种解决方案：
 
-```java
-class Solution {
-    public List<Integer> preorderTraversal(TreeNode root) {
-        // 正确示例，作为参数传递给其他函数
-        LinkedList<Integer> res = new LinkedList<>();
-        traverse(root, res);
-        return res;
-    }
+```python
+# 错误示例，不要在文件级别定义全局变量
+# res = []
 
-    void traverse(TreeNode root, LinkedList<Integer> res) {
-        if (root == null) {
-            return;
-        }
-        // 访问修改 res 变量
-        res.add(root.val);
-        traverse(root.left, res);
-        traverse(root.right, res);
-    }
-}
+class Solution:
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        # 正确示例，作为参数传递给其他函数
+        res = []
+        self.traverse(root, res)
+        return res
+
+    def traverse(self, root, res):
+        if not root:
+            return
+        # 访问修改 res 变量
+        res.append(root.val)
+        self.traverse(root.left, res)
+        self.traverse(root.right, res)
 ``` 
 
 Important
@@ -281,3 +269,7 @@ Important
 因为标准输出是 IO 操作，非常消耗时间。如果包含了打印语句，也许你的算法代码本身就是最优解，但提交后发现执行效率非常差，甚至因为超时而无法通过。
 
 我就说这么多吧，接下来我会带你完成力扣上一些简单的题目作为实践，纸上得来终觉浅，绝知此事要躬行！
+
+## 评论
+
+请登录后查看/发表评论

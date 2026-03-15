@@ -56,8 +56,6 @@ The question was: Can you design a route that starts from any region, crosses ea
 
 We can model this as a graph theory problem:
 
-loading...
-
 In this graph:
 
   * Each region corresponds to a node
@@ -70,4 +68,8 @@ Euler ultimately proved mathematically that the Seven Bridges problem has no sol
 
 Based on the Seven Bridges problem, let's introduce some graph theory terms:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

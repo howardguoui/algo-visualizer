@@ -79,8 +79,8 @@ src = 0, dst = 2, k = 0
 
 函数签名如下：
 
-```java
-int findCheapestPrice(int n, int[][] flights, int src, int dst, int K);
+```python
+def findCheapestPrice(n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
 ``` 
 
 **很明显，这题就是个加权有向图中求最短路径的问题** 。
@@ -88,3 +88,7 @@ int findCheapestPrice(int n, int[][] flights, int src, int dst, int K);
 说白了，就是给你一幅加权有向图，让你求 `src` 到 `dst` 权重最小的一条路径，同时要满足，**这条路径最多不能超过`K + 1` 条边**（经过 `K` 个节点相当于经过 `K + 1` 条边）。
 
 我们来分析下求最短路径相关的算法。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

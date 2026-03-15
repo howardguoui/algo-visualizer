@@ -32,8 +32,8 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-boolean canPartitionKSubsets(int[] nums, int k);
+```python
+def canPartitionKSubsets(nums: List[int], k: int) -> bool:
 ``` 
 
 思考题
@@ -49,3 +49,7 @@ boolean canPartitionKSubsets(int[] nums, int k);
 [背包问题之子集划分](</zh/algo/dynamic-programming/knapsack2/>) 的场景中，有一个背包和若干物品，每个物品有**两个选择** ，分别是「装进背包」和「不装进背包」。把原集合 `S` 划分成两个相等子集 `S_1, S_2` 的场景下，`S` 中的每个元素也有**两个选择** ，分别是「装进 `S_1`」和「不装进 `S_1`（装进 `S_2`）」，这时候的穷举思路其实和背包问题相同。
 
 但如果你想把 `S` 划分成 `k` 个相等的子集，相当于 `S` 中的每个元素有 **`k` 个选择**，这和标准背包问题的场景有本质区别，是无法套用背包问题的解题思路的。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

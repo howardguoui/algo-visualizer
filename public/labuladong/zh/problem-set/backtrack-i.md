@@ -19,17 +19,16 @@
   * [回溯算法秒杀排列/组合/子集的九种变体](</zh/algo/essential-technique/permutation-combination-subset-all-in-one/>)
   * [球盒模型：回溯算法的两种穷举视角](</zh/algo/practice-in-action/two-views-of-backtrack/>)
 
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)
+
 此页内容
 
-  * 967\. 连续差相同的数字
-  * 980\. 不同路径 III
-  * 526\. 优美的排列
-  * 491\. 非递减子序列
-  * 131\. 分割回文串
-  * 93\. 复原 IP 地址
-  * 89\. 格雷编码
-  * 17\. 电话号码的字母组合
-  * 79\. 单词搜索
-  * 473\. 火柴拼正方形
-
 AI 助教
+
+### AI 助教上线
+
+点击右下角的按钮就能唤出网站配套的「AI 助教」答疑解惑，能大幅提升学习效率，效果非常好！ 还没用过的话可以试一试~
+
+[了解详情](</zh/algo/intro/ai-assistant/>)

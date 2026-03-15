@@ -32,38 +32,50 @@
 
 这两种数据结构的基本 API 如下：
 
-```java
-// 队列的基本 API
-class MyQueue<E> {
-    // 向队尾插入元素，时间复杂度 O(1)
-    void push(E e);
+```python
+# 队列的基本 API
+class MyQueue:
 
-    // 从队头删除元素，时间复杂度 O(1)
-    E pop();
+    # 向队尾插入元素，时间复杂度 O(1)
+    def push(self, e):
+        pass
 
-    // 查看队头元素，时间复杂度 O(1)
-    E peek();
+    # 从队头删除元素，时间复杂度 O(1)
+    def pop(self):
+        pass
 
-    // 返回队列中的元素个数，时间复杂度 O(1)
-    int size();
-}
+    # 查看队头元素，时间复杂度 O(1)
+    def peek(self):
+        pass
 
-// 栈的基本 API
-class MyStack<E> {
-    // 向栈顶插入元素，时间复杂度 O(1)
-    void push(E e);
+    # 返回队列中的元素个数，时间复杂度 O(1)
+    def size(self):
+        pass
 
-    // 从栈顶删除元素，时间复杂度 O(1)
-    E pop();
-
-    // 查看栈顶元素，时间复杂度 O(1)
-    E peek();
-
-    // 返回栈中的元素个数，时间复杂度 O(1)
-    int size();
-}
+# 栈的基本 API
+class MyStack:
+    
+    # 向栈顶插入元素，时间复杂度 O(1)
+    def push(self, e):
+        pass
+    
+    # 从栈顶删除元素，时间复杂度 O(1)
+    def pop(self):
+        pass
+    
+    # 查看栈顶元素，时间复杂度 O(1)
+    def peek(self):
+        pass
+    
+    # 返回栈中的元素个数，时间复杂度 O(1)
+    def size(self):
+        pass
 ``` 
 
 不同编程语言中，队列和栈提供的方法名称可能不一样，但每个方法的效果肯定是一样的。
 
 有些语言的标准库可能没有直接提供队列和栈，你可以自己用数组或者链表模拟出队列和栈的效果。下一章我就会先带你用链表实现队列和栈。
+
+## 评论
+
+请登录后查看/发表评论

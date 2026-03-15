@@ -87,42 +87,39 @@ while (right < nums.size()) {
 
 因为本文的例题大多是子串相关的题目，字符串实际上就是数组，所以我就把输入设置成字符串了。你做题的时候根据具体题目自行变通即可：
 
-```java
-// 滑动窗口算法伪码框架
-void slidingWindow(String s) {
-    // 用合适的数据结构记录窗口中的数据，根据具体场景变通
-    // 比如说，我想记录窗口中元素出现的次数，就用 map
-    // 如果我想记录窗口中的元素和，就可以只用一个 int
-    Object window = ...
-    
-    int left = 0, right = 0;
-    while (right < s.length()) {
-        // c 是将移入窗口的字符
-        char c = s[right];
+```python
+# 滑动窗口算法伪码框架
+def slidingWindow(s: str):
+    # 用合适的数据结构记录窗口中的数据，根据具体场景变通
+    # 比如说，我想记录窗口中元素出现的次数，就用 map
+    # 如果我想记录窗口中的元素和，就可以只用一个 int
+    window = ...
+
+    left, right = 0, 0
+    while right < len(s):
+        # c 是将移入窗口的字符
+        c = s[right]
         window.add(c)
-        // 增大窗口
-        right++;
-        // 进行窗口内数据的一系列更新
+        # 增大窗口
+        right += 1
+        # 进行窗口内数据的一系列更新
         ...
 
-        // *** debug 输出的位置 ***
-        // 注意在最终的解法代码中不要 print
-        // 因为 IO 操作很耗时，可能导致超时
-        printf("window: [%d, %d)\n", left, right);
-        // ***********************
+        # *** debug 输出的位置 ***
+        # 注意在最终的解法代码中不要 print
+        # 因为 IO 操作很耗时，可能导致超时
+        # print(f"window: [{left}, {right})")
+        # ***********************
 
-        // 判断左侧窗口是否要收缩
-        while (left < right && window needs shrink) {
-            // d 是将移出窗口的字符
-            char d = s[left];
+        # 判断左侧窗口是否要收缩
+        while left < right and window needs shrink:
+            # d 是将移出窗口的字符
+            d = s[left]
             window.remove(d)
-            // 缩小窗口
-            left++;
-            // 进行窗口内数据的一系列更新
+            # 缩小窗口
+            left += 1
+            # 进行窗口内数据的一系列更新
             ...
-        }
-    }
-}
 ``` 
 
 **框架中两处`...` 表示的更新窗口数据的地方，在具体的题目中，你需要做的就是往这里面填代码逻辑**。而且，这两个 `...` 处的操作分别是扩大和缩小窗口的更新操作，等会你会发现它们操作是完全对称的。
@@ -285,54 +282,48 @@ while (right < s.length()) {
 
 下面是完整代码：
 
-```java
-class Solution {
-    public String minWindow(String s, String t) {
-        Map<Character, Integer> need = new HashMap<>();
-        Map<Character, Integer> window = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            need.put(c, need.getOrDefault(c, 0) + 1);
-        }
+```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        need, window = {}, {}
+        for c in t:
+            need[c] = need.get(c, 0) + 1
 
-        int left = 0, right = 0; 
-        int valid = 0;
-        // 记录最小覆盖子串的起始索引及长度
-        int start = 0, len = Integer.MAX_VALUE;
-        while (right < s.length()) {
-            // c 是将移入窗口的字符
-            char c = s.charAt(right);
-            // 扩大窗口
-            right++;
-            // 进行窗口内数据的一系列更新
-            if (need.containsKey(c)) {
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                if (window.get(c).equals(need.get(c)))
-                    valid++;
-            }
+        left = 0
+        right = 0
+        valid = 0
+        # 记录最小覆盖子串的起始索引及长度
+        start = 0
+        length = float('inf')
+        while right < len(s):
+            # c 是将移入窗口的字符
+            c = s[right]
+            # 扩大窗口
+            right += 1
+            # 进行窗口内数据的一系列更新
+            if c in need:
+                window[c] = window.get(c, 0) + 1
+                if window[c] == need[c]:
+                    valid += 1
 
-            // 判断左侧窗口是否要收缩
-            while (valid == need.size()) { 
-                // 在这里更新最小覆盖子串
-                if (right - left < len) {
-                    start = left;
-                    len = right - left;
-                }
-                // d 是将移出窗口的字符
-                char d = s.charAt(left);
-                // 缩小窗口
-                left++;
-                // 进行窗口内数据的一系列更新
-                if (need.containsKey(d)) {
-                    if (window.get(d).equals(need.get(d)))
-                        valid--;
-                    window.put(d, window.get(d) - 1);
-                }                    
-            } 
-        }
-        // 返回最小覆盖子串
-        return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
-    }
-}
+            # 判断左侧窗口是否要收缩
+            while valid == len(need): 
+                # 在这里更新最小覆盖子串
+                if right - left < length:
+                    start = left
+                    length = right - left
+                # d 是将移出窗口的字符
+                d = s[left]
+                # 缩小窗口
+                left += 1
+                # 进行窗口内数据的一系列更新
+                if d in need:
+                    if window[d] == need[d]:
+                        valid -= 1
+                    window[d] -= 1
+
+        # 返回最小覆盖子串
+        return "" if length == float('inf') else s[start: start + length]
 ``` 
 
 你可以点开下面的可视化面板，多次点击 `while (right < s.length)` 这一行代码，即可看到滑动窗口 `[left, right)` 的滑动过程：
@@ -391,45 +382,42 @@ class Solution {
 
 首先，先复制粘贴之前的算法框架代码，然后明确刚才提出的几个问题，即可写出这道题的答案：
 
-```java
-class Solution {
-    // 判断 s 中是否存在 t 的排列
-    public boolean checkInclusion(String t, String s) {
-        Map<Character, Integer> need = new HashMap<>();
-        Map<Character, Integer> window = new HashMap<>();
-        for (char c : t.toCharArray()) need.put(c, need.getOrDefault(c, 0) + 1);
+```python
+class Solution:
+    # 判断 s 中是否存在 t 的排列
+    def checkInclusion(self, t: str, s: str) -> bool:
+        need = {}
+        window = {}
+        for c in t:
+            need[c] = need.get(c, 0) + 1
 
-        int left = 0, right = 0;
-        int valid = 0;
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            right++;
-            // 进行窗口内数据的一系列更新
-            if (need.containsKey(c)) {
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                if (window.get(c).equals(need.get(c)))
-                    valid++;
-            }
+        left = 0
+        right = 0
+        valid = 0
+        while right < len(s):
+            c = s[right]
+            right += 1
+            # 进行窗口内数据的一系列更新
+            if c in need:
+                window[c] = window.get(c, 0) + 1
+                if window[c] == need[c]:
+                    valid += 1
 
-            // 判断左侧窗口是否要收缩
-            while (right - left >= t.length()) {
-                // 在这里判断是否找到了合法的子串
-                if (valid == need.size())
-                    return true;
-                char d = s.charAt(left);
-                left++;
-                // 进行窗口内数据的一系列更新
-                if (need.containsKey(d)) {
-                    if (window.get(d).equals(need.get(d)))
-                        valid--;
-                    window.put(d, window.get(d) - 1);
-                }
-            }
-        }
-        // 未找到符合条件的子串
-        return false;
-    }
-}
+            # 判断左侧窗口是否要收缩
+            while right - left >= len(t):
+                # 在这里判断是否找到了合法的子串
+                if valid == len(need):
+                    return True
+                d = s[left]
+                left += 1
+                # 进行窗口内数据的一系列更新
+                if d in need:
+                    if window[d] == need[d]:
+                        valid -= 1
+                    window[d] -= 1
+
+        # 未找到符合条件的子串
+        return False
 ``` 
 
 你可以点开下面的可视化面板，多次点击 `while (right < s.length)` 这一行代码，即可看到定长窗口滑动的过程：
@@ -490,49 +478,40 @@ class Solution {
 
 直接默写一下框架，明确刚才讲的三个问题，即可秒杀这道题：
 
-```java
-class Solution {
-    public List<Integer> findAnagrams(String s, String t) {
-        Map<Character, Integer> need = new HashMap<>();
-        Map<Character, Integer> window = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            need.put(c, need.getOrDefault(c, 0) + 1);
-        }
+```python
+class Solution:
+    def findAnagrams(self, s: str, t: str) -> list[int]:
+        need = {}
+        window = {}
+        for c in t:
+            need[c] = need.get(c, 0) + 1
 
-        int left = 0, right = 0;
-        int valid = 0;
-        // 记录结果
-        List<Integer> res = new ArrayList<>();
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            right++;
-            // 进行窗口内数据的一系列更新
-            if (need.containsKey(c)) {
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                if (window.get(c).equals(need.get(c))) {
-                    valid++;
-                }
-            }
-            // 判断左侧窗口是否要收缩
-            while (right - left >= t.length()) {
-                // 当窗口符合条件时，把起始索引加入 res
-                if (valid == need.size()) {
-                    res.add(left);
-                }
-                char d = s.charAt(left);
-                left++;
-                // 进行窗口内数据的一系列更新
-                if (need.containsKey(d)) {
-                    if (window.get(d).equals(need.get(d))) {
-                        valid--;
-                    }
-                    window.put(d, window.get(d) - 1);
-                }
-            }
-        }
-        return res;
-    }
-}
+        left = 0
+        right = 0
+        valid = 0
+        # 记录结果
+        res = []
+        while right < len(s):
+            c = s[right]
+            right += 1
+            # 进行窗口内数据的一系列更新
+            if c in need:
+                window[c] = window.get(c, 0) + 1
+                if window[c] == need[c]:
+                    valid += 1
+            # 判断左侧窗口是否要收缩
+            while right - left >= len(t):
+                # 当窗口符合条件时，把起始索引加入 res
+                if valid == len(need):
+                    res.append(left)
+                d = s[left]
+                left += 1
+                # 进行窗口内数据的一系列更新
+                if d in need:
+                    if window[d] == need[d]:
+                        valid -= 1
+                    window[d] -= 1
+        return res
 ``` 
 
 跟寻找字符串的排列一样，只是找到一个合法异位词（排列）之后将起始索引加入 `res` 即可。
@@ -576,32 +555,29 @@ class Solution {
 
 这个题终于有了点新意，不是一套框架就出答案，不过反而更简单了，稍微改一改框架就行了：
 
-```java
-class Solution {
-    public int lengthOfLongestSubstring(String s) {
-        Map<Character, Integer> window = new HashMap<>();
-
-        int left = 0, right = 0;
-        // 记录结果
-        int res = 0;
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            right++;
-            // 进行窗口内数据的一系列更新
-            window.put(c, window.getOrDefault(c, 0) + 1);
-            // 判断左侧窗口是否要收缩
-            while (window.get(c) > 1) {
-                char d = s.charAt(left);
-                left++;
-                // 进行窗口内数据的一系列更新
-                window.put(d, window.get(d) - 1);
-            }
-            // 在这里更新答案
-            res = Math.max(res, right - left);
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        window = {}
+        
+        left = 0
+        right = 0
+        # 记录结果
+        res = 0
+        while right < len(s):
+            c = s[right]
+            right += 1
+            # 进行窗口内数据的一系列更新
+            window[c] = window.get(c, 0) + 1
+            # 判断左侧窗口是否要收缩
+            while window[c] > 1:
+                d = s[left]
+                left += 1
+                # 进行窗口内数据的一系列更新
+                window[d] = window.get(d, 0) - 1
+            # 在这里更新答案
+            res = max(res, right - left)
+        return res
 ``` 
 
 你可以点开下面的可视化面板，多次点击 `while (right < s.length)` 这一行代码，即可看到窗口滑动更新答案的过程：
@@ -625,3 +601,7 @@ class Solution {
 3、什么时候应该更新答案？
 
 我在 [滑动窗口经典习题](</zh/algo/problem-set/sliding-window/>) 中使用这套思维模式列举了更多经典的习题，旨在强化你对算法的理解和记忆，以后就再也不怕子串、子数组问题了。
+
+## 评论
+
+请登录后查看/发表评论

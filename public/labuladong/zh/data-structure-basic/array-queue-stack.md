@@ -21,31 +21,27 @@
 
 我这里直接用标准库提供的动态数组，如果你想用之前我们实现的 `MyArrayList`，也是一样的：
 
-```java
-// 用数组作为底层数据结构实现栈
-public class MyArrayStack<E> {
-    private ArrayList<E> arr = new ArrayList<>();
+```python
+# 用数组作为底层数据结构实现栈
+class MyArrayStack:
+    def __init__(self):
+        self.arr = []
 
-    // 向栈顶加入元素，时间复杂度 O(1)
-    public void push(E e) {
-        arr.add(e);
-    }
+    # 向栈顶加入元素，时间复杂度 O(1)
+    def push(self, e):
+        self.arr.append(e)
 
-    // 从栈顶弹出元素，时间复杂度 O(1)
-    public E pop() {
-        return arr.remove(arr.size() - 1);
-    }
+    # 从栈顶弹出元素，时间复杂度 O(1)
+    def pop(self):
+        return self.arr.pop()
 
-    // 查看栈顶元素，时间复杂度 O(1)
-    public E peek() {
-        return arr.get(arr.size() - 1);
-    }
+    # 查看栈顶元素，时间复杂度 O(1)
+    def peek(self):
+        return self.arr[-1]
 
-    // 返回栈中的元素个数，时间复杂度 O(1)
-    public int size() {
-        return arr.size();
-    }
-}
+    # 返回栈中的元素个数，时间复杂度 O(1)
+    def size(self):
+        return len(self.arr)
 ``` 
 
 能否让数组的头部作为栈顶？
@@ -60,28 +56,24 @@ public class MyArrayStack<E> {
 
 有了前文 [环形数组](</zh/algo/data-structure-basic/cycle-array/>) 中实现的 `CycleArray` 类，用数组作为底层数据结构实现队列就不难了吧。直接复用我们实现的 `CycleArray`，就可以实现标准队列了。当然，一些编程语言也有内置的环形数组实现，你也可以自行搜索使用：
 
-```java
-public class MyArrayQueue<E> {
-    private CycleArray<E> arr;
+```python
+class MyArrayQueue:
+    def __init__(self):
+        self.arr = CycleArray()
 
-    public MyArrayQueue() {
-        arr = new CycleArray<>();
-    }
+    def push(self, t):
+        self.arr.add_last(t)
 
-    public void push(E t) {
-        arr.addLast(t);
-    }
+    def pop(self):
+        return self.arr.remove_first()
 
-    public E pop() {
-        return arr.removeFirst();
-    }
+    def peek(self):
+        return self.arr.get_first()
 
-    public E peek() {
-        return arr.getFirst();
-    }
+    def size(self):
+        return self.arr.size()
+``` 
 
-    public int size() {
-        return arr.size();
-    }
-}
-```
+## 评论
+
+请登录后查看/发表评论

@@ -43,3 +43,7 @@ int preimageSizeFZF(int K);
 ``` 
 
 我把这两个题放在一起，肯定是因为它们有共性，下面我们来逐一分析。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

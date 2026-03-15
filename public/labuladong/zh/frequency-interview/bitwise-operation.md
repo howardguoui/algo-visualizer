@@ -226,28 +226,26 @@ boolean f = ((x ^ y) < 0); // false
 
 一个常见的应用场景就是实现环形数组。常规的实现方式是利用求模运算，让数组索引在 `[0, arr.length - 1]` 之间循环：
 
-```java
-int[] arr = {1,2,3,4};
-int index = 0;
-while (true) {
-    // 在环形数组中转圈
-    print(arr[index % arr.length]);
-    index++;
-}
-// 输出：1,2,3,4,1,2,3,4,1,2,3,4...
+```python
+arr = [1,2,3,4]
+index = 0
+while True:
+    # 在环形数组中转圈
+    print(arr[index % len(arr)])
+    index += 1
+# 输出：1,2,3,4,1,2,3,4,1,2,3,4...
 ``` 
 
 如果数组的长度恰好是 2 的幂，我们就可以用 `&` 运算来优化求模操作：
 
-```java
-int[] arr = {1,2,3,4};
-int index = 0;
-while (true) {
-    // 在环形数组中转圈
-    print(arr[index & (arr.length - 1)]);
-    index++;
-}
-// 输出：1,2,3,4,1,2,3,4,1,2,3,4...
+```python
+arr = [1, 2, 3, 4]
+index = 0
+while True:
+    # 在环形数组中转圈
+    print(arr[index & (len(arr) - 1)], end=", ")
+    index += 1
+# 输出：1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, ...
 ``` 
 
 Important
@@ -260,15 +258,14 @@ Important
 
 答案是，如果你使用 `%` 求模的方式，那么当 `index` 小于 0 之后求模的结果也会出现负数，你需要特殊处理。但通过 `&` 与运算的方式，`index` 不会出现负数，依然可以正常工作：
 
-```java
-int[] arr = {1,2,3,4};
-int index = 0;
-while (true) {
-    // 在环形数组中转圈
-    print(arr[index & (arr.length - 1)]);
-    index--;
-}
-// 输出：1,4,3,2,1,4,3,2,1,4,3,2,1...
+```python
+arr = [1, 2, 3, 4]
+index = 0
+
+while True:
+    # 在环形数组中转圈
+    print(arr[index & (len(arr) - 1)])
+    index -= 1
 ``` 
 
 我们自己写代码一般用不到这个技巧，但在学习一些其他代码库时可能会经常看到，这里留个印象，到时候就不会懵逼了。
@@ -325,18 +322,14 @@ while (true) {
 
 就是让你返回 `n` 的二进制表示中有几个 1。因为 `n & (n - 1)` 可以消除最后一个 1，所以可以用一个循环不停地消除 1 同时计数，直到 `n` 变成 0 为止。
 
-```java
-public class Solution {
-    // you need to treat n as an unsigned value
-    public int hammingWeight(int n) {
-        int res = 0;
-        while (n != 0) {
-            n = n & (n - 1);
-            res++;
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        res = 0
+        while n != 0:
+            n = n & (n - 1)
+            res += 1
+        return res
 ``` 
 
 ### 判断 2 的指数
@@ -353,13 +346,12 @@ public class Solution {
 
 如果使用 `n & (n-1)` 的技巧就很简单了（注意运算符优先级，括号不可以省略）：
 
-```java
-class Solution {
-    public boolean isPowerOfTwo(int n) {
-        if (n <= 0) return false;
-        return (n & (n - 1)) == 0;
-    }
-}
+```python
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        if n <= 0:
+            return False
+        return (n & (n - 1)) == 0
 ``` 
 
 ## `a ^ a = 0` 的运用
@@ -409,16 +401,13 @@ class Solution {
 
 对于这道题目，我们只要把所有数字进行异或，成对儿的数字就会变成 0，落单的数字和 0 做异或还是它本身，所以最后异或的结果就是只出现一次的元素：
 
-```java
-class Solution {
-    public int singleNumber(int[] nums) {
-        int res = 0;
-        for (int n : nums) {
-            res ^= n;
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        res = 0
+        for n in nums:
+            res ^= n
+        return res
 ``` 
 
 ### 寻找缺失的元素
@@ -484,18 +473,18 @@ class Solution {
 
 题目的意思可以这样理解：现在有个等差数列 `0, 1, 2,..., n`，其中少了某一个数字，请你把它找出来。那这个数字不就是 `sum(0,1,..n) - sum(nums)` 嘛？
 
-```java
-int missingNumber(int[] nums) {
-    int n = nums.length;
-    // 虽然题目给的数据范围不大，但严谨起见，用 long 类型防止整型溢出
-    // 求和公式：(首项 + 末项) * 项数 / 2
-    long expect = (0 + n) * (n + 1) / 2;
-    long sum = 0;
-    for (int x : nums) {
-        sum += x;
-    }
-    return (int)(expect - sum);
-}
+```python
+from typing import List
+
+def missingNumber(nums: List[int]) -> int:
+    n = len(nums)
+    # 虽然题目给的数据范围不大，但严谨起见，用 long 类型防止整型溢出
+    # 求和公式：(首项 + 末项) * 项数 / 2
+    expect = (0 + n) * (n + 1) / 2
+    sum_ = 0
+    for x in nums:
+        sum_ += x
+    return int(expect - sum_)
 ``` 
 
 不过，本文的主题是位运算，我们来讲讲如何利用位运算技巧来解决这道题。
@@ -520,19 +509,17 @@ int missingNumber(int[] nums) {
 
 如何找这个落单的数字呢，**只要把所有的元素和索引做异或运算，成对儿的数字都会消为 0，只有这个落单的元素会剩下** ，也就达到了我们的目的：
 
-```java
-class Solution {
-    public int missingNumber(int[] nums) {
-        int n = nums.length;
-        int res = 0;
-        // 先和新补的索引异或一下
-        res ^= n;
-        // 和其他的元素、索引做异或
-        for (int i = 0; i < n; i++)
-            res ^= i ^ nums[i];
-        return res;
-    }
-}
+```python
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        n = len(nums)
+        res = 0
+        # 先和新补的索引异或一下
+        res ^= n
+        # 和其他的元素、索引做异或
+        for i in range(n):
+            res ^= i ^ nums[i]
+        return res
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/missing-elem/3.jpg)
@@ -540,3 +527,7 @@ class Solution {
 由于异或运算满足交换律和结合律，所以总是能把成对儿的数字消去，留下缺失的那个元素。
 
 到这里，常见的位运算差不多都讲完了。这些技巧就是会者不难难者不会，也不需要死记硬背，只要有个印象就完全够用了。
+
+## 评论
+
+请登录后查看/发表评论

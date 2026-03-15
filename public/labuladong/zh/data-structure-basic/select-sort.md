@@ -49,31 +49,25 @@ void sort(int[] nums) {
 
 这个算法有一个被大家熟知的名字，叫做「**选择排序** 」，即每次都去遍历选择最小的元素。写成代码就是这样的：
 
-```java
-void sort(int[] nums) {
-    int n = nums.length;
-    // sortedIndex 是一个分割线
-    // 索引 < sortedIndex 的元素都是已排序的
-    // 索引 >= sortedIndex 的元素都是未排序的
-    // 初始化为 0，表示整个数组都是未排序的
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // 找到未排序部分 [sortedIndex, n) 中的最小值
-        int minIndex = sortedIndex;
-        for (int i = sortedIndex + 1; i < n; i++) {
-            if (nums[i] < nums[minIndex]) {
-                minIndex = i;
-            }
-        }
-        // 交换最小值和 sortedIndex 处的元素
-        int tmp = nums[sortedIndex];
-        nums[sortedIndex] = nums[minIndex];
-        nums[minIndex] = tmp;
+```python
+def sort(nums: List[int]) -> None:
+    n = len(nums)
+    # sortedIndex 是一个分割线
+    # 索引 < sortedIndex 的元素都是已排序的
+    # 索引 >= sortedIndex 的元素都是未排序的
+    # 初始化为 0，表示整个数组都是未排序的
+    sortedIndex = 0
+    while sortedIndex < n:
+        # 找到未排序部分 [sortedIndex, n) 中的最小值
+        minIndex = sortedIndex
+        for i in range(sortedIndex + 1, n):
+            if nums[i] < nums[minIndex]:
+                minIndex = i
+        # 交换最小值和 sortedIndex 处的元素
+        nums[sortedIndex], nums[minIndex] = nums[minIndex], nums[sortedIndex]
 
-        // sortedIndex 后移一位
-        sortedIndex++;
-    }
-}
+        # sortedIndex 后移一位
+        sortedIndex += 1
 ``` 
 
 上述算法的可视化过程如下：
@@ -226,3 +220,7 @@ System.out.println(suffixMin);
 有没有什么办法可以优化这个算法，使它成为稳定排序？现在时间复杂度都到 O(n2)O(n^2)O(n2) 了，属于排序算法里面最差的那一档，好歹咱也支棱起来，把自己搞成一个稳定排序，行不行？
 
 你可以自己想一想这个问题，在后面的排序算法，我们会尝试解决这个问题。
+
+## 评论
+
+请登录后查看/发表评论

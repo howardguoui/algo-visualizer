@@ -45,53 +45,46 @@ In the earlier article [Graph Basics and Common Implementation](</en/algo/data-s
 
 Compare it with the traversal framework of an N-ary tree:
 
-```java
-// N-ary tree node
-class Node {
-    int val;
-    List<Node> children;
-}
+```python
+# N-ary tree node
+class Node:
+    def __init__(self, val=0, children=None):
+        self.val = val
+        self.children = children if children is not None else []
 
-// Traversal framework for N-ary tree
-void traverse(Node root) {
-    // base case
-    if (root == null) {
-        return;
-    }
-    // Pre-order position
-    System.out.println("visit " + root.val);
-    for (Node child : root.children) {
-        traverse(child);
-    }
-    // Post-order position
-}
+# Traversal framework for N-ary tree
+def traverse(root):
+    # base case
+    if root is None:
+        return
+    # pre-order position
+    print(f"visit {root.val}")
+    for child in root.children:
+        traverse(child)
+    # post-order position
 
-// Graph node
-class Vertex {
-    int id;
-    Vertex[] neighbors;
-}
+# Graph node
+class Vertex:
+    def __init__(self, id=0, neighbors=None):
+        self.id = id
+        self.neighbors = neighbors if neighbors is not None else []
 
-// Traversal framework for graph
-// Need a visited array to record visited nodes
-// Avoid going back to prevent infinite loops
-void traverse(Vertex s, boolean[] visited) {
-    // base case
-    if (s == null) {
-        return;
-    }
-    if (visited[s.id]) {
-        // Prevent infinite loops
-        return;
-    }
-    // Pre-order position
-    visited[s.id] = true;
-    System.out.println("visit " + s.id);
-    for (Vertex neighbor : s.neighbors) {
-        traverse(neighbor, visited);
-    }
-    // Post-order position
-}
+# Traversal framework for graph
+# Need a visited array to record visited nodes
+# Avoid going backwards and falling into infinite loop
+def traverse_graph(s: Vertex, visited: List[bool]):
+    # base case
+    if s is None:
+        return
+    if visited[s.id]:
+        # Prevent infinite loop
+        return
+    # pre-order position
+    visited[s.id] = True
+    print(f"visit {s.id}")
+    for neighbor in s.neighbors:
+        traverse_graph(neighbor, visited)
+    # post-order position
 ``` 
 
 You can see that graph traversal has one extra `visited` array. It records which nodes have been visited, so we won’t get stuck in a cycle.
@@ -110,25 +103,21 @@ With a `visited` array, when we first visit `1`, we mark it as visited. When we 
 
 With this, we can write graph traversal code based on adjacency lists / adjacency matrices. Even though their storage is different, they provide the same API. So we can directly use the `Graph` interface from [Graph Basics and Common Implementation](</en/algo/data-structure-basic/graph-basic/>):
 
-```java
-// traverse all nodes of the graph
-void traverse(Graph graph, int s, boolean[] visited) {
-    // base case
-    if (s < 0 || s >= graph.size()) {
-        return;
-    }
-    if (visited[s]) {
-        // prevent infinite loop
-        return;
-    }
-    // pre-order position
-    visited[s] = true;
-    System.out.println("visit " + s);
-    for (Edge e : graph.neighbors(s)) {
-        traverse(graph, e.to, visited);
-    }
-    // post-order position
-}
+```python
+# traverse all nodes of the graph
+def traverse(graph, s, visited):
+    # base case
+    if s < 0 or s >= len(graph):
+        return
+    if visited[s]:
+        # prevent infinite loop
+        return
+    # pre-order position
+    visited[s] = True
+    print("visit", s)
+    for e in graph.neighbors(s):
+        traverse(graph, e.to, visited)
+    # post-order position
 ``` 
 
 You can open the panel below and click the line `console.log` many times to see the DFS traversal process:
@@ -161,50 +150,43 @@ In the “traverse all nodes” code, we used a 1D `visited` array to record vis
 
 First compare it with N-ary tree traversal:
 
-```java
-// N-ary tree node
-class Node {
-    int val;
-    List<Node> children;
-}
+```python
+# N-ary tree node
+class Node:
+    def __init__(self, val=0, children=None):
+        self.val = val
+        self.children = children if children is not None else []
 
-// Traverse the branches of an N-ary tree
-void traverseBranch(Node root) {
-    // base case
-    if (root == null) {
-        return;
-    }
-    for (Node child : root.children) {
-        System.out.println("visit branch: " + root.val + " -> " + child.val);
-        traverseBranch(child);
-    }
-}
+# Traverse the branches of an N-ary tree
+def traverse_branch(root):
+    # base case
+    if root is None:
+        return
+    for child in root.children:
+        print(f"visit branch: {root.val} -> {child.val}")
+        traverse_branch(child)
 
-// Graph node
-class Vertex {
-    int id;
-    Vertex[] neighbors;
-}
+# Graph node
+class Vertex:
+    def __init__(self, id=0, neighbors=None):
+        self.id = id
+        self.neighbors = neighbors if neighbors is not None else []
 
-// Traverse the edges of a graph
-// Need a 2D visited array to record visited edges,
-// visited[u][v] indicates that edge u->v has been visited
-void traverseEdges(Vertex s, boolean[][] visited) {
-    // base case
-    if (s == null) {
-        return;
-    }
-    for (Vertex neighbor : s.neighbors) {
-      // if the edge has been visited, skip it
-      if (visited[s.id][neighbor.id]) {
-        continue;
-      }
-      // mark and visit the edge
-      visited[s.id][neighbor.id] = true;
-      System.out.println("visit edge: " + s.id + " -> " + neighbor.id);
-      traverseEdges(neighbor, visited);
-    }
-}
+# Traverse the edges of a graph
+# Need a 2D visited array to record visited edges,
+# visited[u][v] indicates that edge u->v has been visited
+def traverse_edges(s, visited):
+    # base case
+    if s is None:
+        return
+    for neighbor in s.neighbors:
+        # if the edge has been visited, skip it
+        if visited[s.id][neighbor.id]:
+            continue
+        # mark and visit the edge
+        visited[s.id][neighbor.id] = True
+        print(f"visit edge: {s.id} -> {neighbor.id}")
+        traverse_edges(neighbor, visited)
 ``` 
 
 Tip
@@ -213,24 +195,20 @@ Because an edge is made of two nodes, we need to put the preorder code inside th
 
 Next, we can implement it using the `Graph` interface from [Graph Basics and Common Implementation](</en/algo/data-structure-basic/graph-basic/>):
 
-```java
-// traverse all edges of the graph starting from vertex s
-void traverseEdges(Graph graph, int s, boolean[][] visited) {
-    // base case
-    if (s < 0 || s >= graph.size()) {
-        return;
-    }
-    for (Edge e : graph.neighbors(s)) {
-      // if the edge has been visited, skip it
-      if (visited[s][e.to]) {
-        continue;
-      }
-      // mark and visit the edge
-      visited[s][e.to] = true;
-      System.out.println("visit edge: " + s + " -> " + e.to);
-      traverseEdges(graph, e.to, visited);
-    }
-}
+```python
+# traverse all edges of the graph starting from vertex s
+def traverse_edges(graph, s, visited):
+    # base case
+    if s < 0 or s >= len(graph):
+        return
+    for e in graph.neighbors(s):
+        # if the edge has been visited, skip it
+        if visited[s][e.to]:
+            continue
+        # mark and visit the edge
+        visited[s][e.to] = True
+        print(f"visit edge: {s} -> {e.to}")
+        traverse_edges(graph, e.to, visited)
 ``` 
 
 Clearly, a 2D `visited` array is not very efficient, because we must create a 2D array. The time complexity is O(E+V2)O(E + V^2)O(E+V2) and the space complexity is O(V2)O(V^2)O(V2), where `E` is the number of edges and `V` is the number of nodes.
@@ -245,4 +223,8 @@ For trees, traversing all **paths** is almost the same as traversing all **nodes
 
 In a tree, edges only go from parent to child. So from the root `root` to any node `targetNode`, the path is unique. In other words, if you traverse all nodes once, you will also find the unique path from `root` to `targetNode`:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

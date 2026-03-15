@@ -80,15 +80,13 @@ for 状态1 in 状态1的所有取值：
 
 斐波那契数列的数学形式就是递归的，写成代码就是这样：
 
-```java
-// f(n) 计算第 n 个斐波那契数
-int fib(int n) {
-    // base case
-    if (n == 0 || n == 1){
-        return n;
-    }
-    return fib(n - 1) + fib(n - 2);
-}
+```python
+# f(n) 计算第 n 个斐波那契数
+def fib(n: int) -> int:
+    # base case
+    if n == 0 or n == 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
 ``` 
 
 信息
@@ -131,33 +129,28 @@ int fib(int n) {
 
 当然，你也可以用一个哈希表来存储，思想都是一样的。
 
-```java
-int fib(int n) {
-    // 备忘录全初始化为 -1
-    // 因为斐波那契数肯定是非负整数，所以初始化为特殊值 -1 表示未计算
+```python
+def fib(n: int) -> int:
+    # 备忘录全初始化为 -1
+    # 因为斐波那契数肯定是非负整数，所以初始化为特殊值 -1 表示未计算
 
-    // 因为数组的索引从 0 开始，所以需要 n + 1 个空间
-    // 这样才能把 `f(0) ~ f(n)` 都记录到 memo 中
-    int[] memo = new int[n + 1];
-    Arrays.fill(memo, -1);
+    # 因为数组的索引从 0 开始，所以需要 n + 1 个空间
+    # 这样才能把 `f(0) ~ f(n)` 都记录到 memo 中
+    memo = [-1] * (n + 1)
 
-    return dp(memo, n);
-}
+    return self.dp(memo, n)
 
-// 带着备忘录进行递归
-int dp(int[] memo, int n) {
-    // base case
-    if (n == 0 || n == 1) {
-        return n;
-    }
-    // 已经计算过，不用再计算了
-    if (memo[n] != -1) {
-        return memo[n];
-    }
-    // 在返回结果之前，存入备忘录
-    memo[n] = dp(memo, n - 1) + dp(memo, n - 2);
-    return memo[n];
-}
+# 带着备忘录进行递归
+def dp(memo: list, n: int) -> int:
+    # base case
+    if n == 0 or n == 1:
+        return n
+    # 已经计算过，不用再计算了
+    if memo[n] != -1:
+        return memo[n]
+    # 在返回结果之前，存入备忘录
+    memo[n] = self.dp(memo, n - 1) + self.dp(memo, n - 2)
+    return memo[n]
 ``` 
 
 现在，画出递归树，你就知道「备忘录」到底做了什么。
@@ -218,22 +211,20 @@ int dp(int[] memo, int n) {
 
 有了上一步的启发，我们不再使用递归函数，直接创建一个数组（DP table），用一个 for 循环从 base case 开始从左到右进行计算即可。
 
-```java
-int fib(int n) {
-    if (n == 0 || n == 1) {
-        return n;
-    }
-    // dp table
-    int[] dp = new int[n + 1];
-    // base case
-    dp[0] = 0; dp[1] = 1;
-    // 状态转移
-    for (int i = 2; i <= n; i++) {
-        dp[i] = dp[i - 1] + dp[i - 2];
-    }
+```python
+def fib(n: int) -> int:
+    if n == 0 or n == 1:
+        return n
+    # dp table
+    dp = [0] * (n + 1)
+    # base case
+    dp[0] = 0
+    dp[1] = 1
+    # 状态转移
+    for i in range(2, n + 1):
+        dp[i] = dp[i - 1] + dp[i - 2]
 
-    return dp[n];
-}
+    return dp[n]
 ``` 
 
 算法可视化
@@ -270,23 +261,20 @@ f(n)={0,n=01,n=1f(n−1)+f(n−2),n>1f(n) = \begin{cases} 0, & n = 0 \\\ 1, & n 
 
 所以，可以进一步优化，把空间复杂度降为 O(1)O(1)O(1)。这也就是我们最常见的计算斐波那契数的算法：
 
-```java
-int fib(int n) {
-    if (n == 0 || n == 1) {
-        // base case
-        return n;
-    }
-    // 分别代表 dp[i - 1] 和 dp[i - 2]
-    int dp_i_1 = 1, dp_i_2 = 0;
-    for (int i = 2; i <= n; i++) {
-        // dp[i] = dp[i - 1] + dp[i - 2];
-        int dp_i = dp_i_1 + dp_i_2;
-        // 滚动更新
-        dp_i_2 = dp_i_1;
-        dp_i_1 = dp_i;
-    }
-    return dp_i_1;
-}
+```python
+def fib(n: int) -> int:
+    if n == 0 or n == 1:
+        # base case
+        return n
+    # 分别代表 dp[i - 1] 和 dp[i - 2]
+    dp_i_1, dp_i_2 = 1, 0
+    for i in range(2, n + 1):
+        # dp[i] = dp[i - 1] + dp[i - 2];
+        dp_i = dp_i_1 + dp_i_2
+        # 滚动更新
+        dp_i_2 = dp_i_1
+        dp_i_1 = dp_i
+    return dp_i_1
 ``` 
 
 算法可视化
@@ -309,9 +297,9 @@ int fib(int n) {
 
 给你 `k` 种面值的硬币，面值分别为 `c1, c2 ... ck`，每种硬币的数量无限，再给一个总金额 `amount`，问你**最少** 需要几枚硬币凑出这个金额，如果不可能凑出，算法返回 -1 。算法的函数签名如下：
 
-```java
-// coins 中是可选硬币面值，amount 是目标金额
-int coinChange(int[] coins, int amount);
+```python
+# coins 中是可选硬币面值，amount 是目标金额
+def coinChange(coins: List[int], amount: int) -> int:
 ``` 
 
 比如说 `k = 3`，面值分别为 1，2，5，总金额 `amount = 11`。那么最少需要 3 枚硬币凑出，即 11 = 5 + 5 + 1。
@@ -350,51 +338,49 @@ Tip
 
 搞清楚上面这几个关键点，解法的伪码就可以写出来了：
 
-```java
-// 伪码框架
-int coinChange(int[] coins, int amount) {
-    // 题目要求的最终结果是 dp(amount)
-    return dp(coins, amount);
-}
+```python
+# 伪码框架
+def coinChange(coins: List[int], amount: int) -> int:
+    # 题目要求的最终结果是 dp(amount)
+    return dp(coins, amount)
 
-// 定义：要凑出金额 n，至少要 dp(coins, n) 个硬币
-int dp(int[] coins, int n) {
-    // 做选择，选择需要硬币最少的那个结果
-    for (int coin : coins) {
-        res = min(res, 1 + dp(coins, n - coin));
-    }
-    return res;
-}
+# 定义：要凑出金额 n，至少要 dp(coins, n) 个硬币
+def dp(coins: List[int], n: int) -> int:
+    # 做选择，选择需要硬币最少的那个结果
+    # 初始化res为正无穷
+    res = float('inf')
+    for coin in coins:
+        res = min(res, sub_problem + 1)
+    return res
 ``` 
 
 根据伪码，我们加上 base case 即可得到最终的答案。显然目标金额为 0 时，所需硬币数量为 0；当目标金额小于 0 时，无解，返回 -1：
 
-```java
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        // 题目要求的最终结果是 dp(amount)
-        return dp(coins, amount);
-    }
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        # 题目要求的最终结果是 dp(amount)
+        return self.dp(coins, amount)
 
-    // 定义：要凑出目标金额 amount，至少要 dp(coins, amount) 个硬币
-    int dp(int[] coins, int amount) {
-        // base case
-        if (amount == 0) return 0;
-        if (amount < 0) return -1;
+    # 定义：要凑出目标金额 amount，至少要 dp(coins, amount) 个硬币
+    def dp(self, coins, amount):
+        # base case
+        if amount == 0: 
+            return 0
+        if amount < 0: 
+            return -1
 
-        int res = Integer.MAX_VALUE;
-        for (int coin : coins) {
-            // 计算子问题的结果
-            int subProblem = dp(coins, amount - coin);
-            // 子问题无解则跳过
-            if (subProblem == -1) continue;
-            // 在子问题中选择最优解，然后加一
-            res = Math.min(res, subProblem + 1);
-        }
+        res = float('inf')
+        for coin in coins:
+            # 计算子问题的结果
+            subProblem = self.dp(coins, amount - coin)
+            # 子问题无解则跳过
+            if subProblem == -1: 
+                continue
+            # 在子问题中选择最优解，然后加一
+            res = min(res, subProblem + 1)
 
-        return res == Integer.MAX_VALUE ? -1 : res;
-    }
-}
+        return res if res != float('inf') else -1
 ``` 
 
 Info
@@ -425,39 +411,34 @@ dp(n)={0,n=0−1,n<0min⁡{dp(n−coin)+1∣coin∈coins},n>0dp(n) = \begin{case
 
 类似之前斐波那契数列的例子，只需要稍加修改，就可以通过备忘录消除子问题：
 
-```java
-class Solution {
-    int[] memo;
+```python
+class Solution:
+    def __init__(self):
+        self.memo = []
+    
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        self.memo = [-666] * (amount + 1)
+        # 备忘录初始化为一个不会被取到的特殊值，代表还未被计算
+        return self.dp(coins, amount)
+    
+    def dp(self, coins, amount):
+        if amount == 0: return 0
+        if amount < 0: return -1
+        # 查备忘录，防止重复计算
+        if self.memo[amount] != -666:
+            return self.memo[amount]
 
-    public int coinChange(int[] coins, int amount) {
-        memo = new int[amount + 1];
-        // 备忘录初始化为一个不会被取到的特殊值，代表还未被计算
-        Arrays.fill(memo, -666);
-
-        return dp(coins, amount);
-    }
-
-    int dp(int[] coins, int amount) {
-        if (amount == 0) return 0;
-        if (amount < 0) return -1;
-        // 查备忘录，防止重复计算
-        if (memo[amount] != -666)
-            return memo[amount];
-
-        int res = Integer.MAX_VALUE;
-        for (int coin : coins) {
-            // 计算子问题的结果
-            int subProblem = dp(coins, amount - coin); 
-            // 子问题无解则跳过
-            if (subProblem == -1) continue;
-            // 在子问题中选择最优解，然后加一
-            res = Math.min(res, subProblem + 1);
-        }
-        // 把计算结果存入备忘录
-        memo[amount] = (res == Integer.MAX_VALUE) ? -1 : res;
-        return memo[amount];
-    }
-}
+        res = float('inf')
+        for coin in coins:
+            # 计算子问题的结果
+            subProblem = self.dp(coins, amount - coin) 
+            # 子问题无解则跳过
+            if subProblem == -1: continue
+            # 在子问题中选择最优解，然后加一
+            res = min(res, subProblem + 1)
+        # 把计算结果存入备忘录
+        self.memo[amount] = res if res != float('inf') else -1
+        return self.memo[amount]
 ``` 
 
 算法可视化
@@ -472,29 +453,23 @@ class Solution {
 
 根据我们文章开头给出的动态规划代码框架可以写出如下解法：
 
-```java
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount + 1];
-        // 数组大小为 amount + 1，初始值也为 amount + 1
-        Arrays.fill(dp, amount + 1);
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        # 数组大小为 amount + 1，初始值也为 amount + 1
+        dp = [amount + 1] * (amount + 1)
 
-        // base case
-        dp[0] = 0;
-        // 外层 for 循环在遍历所有状态的所有取值
-        for (int i = 0; i < dp.length; i++) {
-            // 内层 for 循环在求所有选择的最小值
-            for (int coin : coins) {
-                // 子问题无解，跳过
-                if (i - coin < 0) {
-                    continue;
-                }
-                dp[i] = Math.min(dp[i], 1 + dp[i - coin]); 
-            }
-        }
-        return (dp[amount] == amount + 1) ? -1 : dp[amount];
-    }
-}
+        dp[0] = 0
+        # base case
+        # 外层 for 循环在遍历所有状态的所有取值
+        for i in range(len(dp)):
+            # 内层 for 循环在求所有选择的最小值
+            for coin in coins:
+                # 子问题无解，跳过
+                if i - coin < 0:
+                    continue
+                dp[i] = min(dp[i], 1 + dp[i - coin]) 
+        return -1 if dp[amount] == amount + 1 else dp[amount]
 ``` 
 
 Info
@@ -518,3 +493,7 @@ Info
 备忘录、DP table 就是在追求「如何聪明地穷举」。用空间换时间的思路，是降低时间复杂度的不二法门，除此之外，试问，还能玩出啥花活？
 
 之后我们会有一章专门讲解动态规划问题，如果有任何问题都可以随时回来重读本文，希望读者在阅读每个题目和解法时，多往「状态」和「选择」上靠，才能对这套框架产生自己的理解，运用自如。
+
+## 评论
+
+请登录后查看/发表评论

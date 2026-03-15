@@ -42,4 +42,8 @@ You don’t need to worry about other nodes, as the recursive function will perf
 
 This article uses a few simple examples to help you practice these key principles, and to understand the differences and connections between the "traversal" and "problem decomposition" approaches.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

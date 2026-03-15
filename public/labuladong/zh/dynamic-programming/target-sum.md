@@ -70,8 +70,8 @@ LeetCode| 力扣| 难度
 
 函数的签名如下：
 
-```java
-int findTargetSumWays(int[] nums, int target);
+```python
+def findTargetSumWays(nums: List[int], target: int) -> int:
 ``` 
 
 ## 一、回溯思路
@@ -95,3 +95,7 @@ def backtrack(路径, 选择列表):
 关键就是搞清楚什么是「选择」，而对于这道题，「选择」不是明摆着的吗？**对于每个数字`nums[i]`，我们可以选择给一个正号 `+` 或者一个负号 `-`**，然后利用回溯模板穷举出来所有可能的结果，数一数到底有几种组合能够凑出 `target` 不就行了嘛？
 
 伪码思路如下：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

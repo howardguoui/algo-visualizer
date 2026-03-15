@@ -65,8 +65,8 @@ LeetCode| 力扣| 难度
 
 也就是说，输入的 `rectangles` 数组实际上就是很多小矩形，题目要求我们输出一个布尔值，判断这些小矩形能否构成一个「完美矩形」。函数签名如下：
 
-```java
-boolean isRectangleCover(int[][] rectangles)
+```python
+def isRectangleCover(rectangles: List[List[int]]) -> bool
 ``` 
 
 **所谓「完美矩形」，就是说`rectangles` 中的小矩形拼成图形必须是一个大矩形，且大矩形中不能有重叠和空缺**。
@@ -87,24 +87,17 @@ boolean isRectangleCover(int[][] rectangles)
 
 注意我们用小写字母表示小矩形的坐标，大写字母表示最终形成的完美矩形的坐标，可以这样写代码：
 
-```java
-// 左下角顶点，初始化为正无穷，以便记录最小值
-double X1 = Double.POSITIVE_INFINITY, Y1 = Double.POSITIVE_INFINITY;
+```python
+# 左下角顶点，初始化为正无穷，以便记录最小值
+X1, Y1 = inf, inf
+# 右上角顶点，初始化为负无穷，以便记录最大值
+X2, Y2 = -inf, -inf
 
-// 右上角顶点，初始化为负无穷，以便记录最大值
-double X2 = Double.NEGATIVE_INFINITY, Y2 = Double.NEGATIVE_INFINITY;
-
-for(int[] rectangle : rectangles){
-    int x1 = rectangle[0], y1 = rectangle[1], x2 = rectangle[2], y2 = rectangle[3];
-
-    // 取小矩形左下角顶点的最小值
-    X1 = Math.min(X1, x1);
-    Y1 = Math.min(Y1, y1);
-
-    // 取小矩形右上角顶点的最大值
-    X2 = Math.max(X2, x2);
-    Y2 = Math.max(Y2, y2);
-}
+for x1, y1, x2, y2 in rectangles:
+    # 取小矩形左下角顶点的最小值
+    X1, Y1 = min(X1, x1), min(Y1, y1)
+    # 取小矩形右上角顶点的最大值
+    X2, Y2 = max(X2, x2), max(Y2, y2)
 ``` 
 
 这样就能求出完美矩形的左下角顶点坐标 `(X1, Y1)` 和右上角顶点的坐标 `(X2, Y2)` 了。
@@ -113,32 +106,29 @@ for(int[] rectangle : rectangles){
 
 代码可以进一步：
 
-```java
-boolean isRectangleCover(int[][] rectangles) {
-    int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;
-    int X2 = Integer.MIN_VALUE, Y2 = Integer.MIN_VALUE;
-    // 记录所有小矩形的面积之和
-    int actualArea = 0;
-    for (int[] rect : rectangles) {
-        int x1 = rect[0], y1 = rect[1], x2 = rect[2], y2 = rect[3];
-        // 计算完美矩形的理论坐标
-        X1 = Math.min(X1, x1);
-        Y1 = Math.min(Y1, y1);
-        X2 = Math.max(X2, x2);
-        Y2 = Math.max(Y2, y2);
-        // 累加所有小矩形的面积
-        actualArea += (x2 - x1) * (y2 - y1);
-    }
+```python
+def isRectangleCover(rectangles):
+    X1, Y1 = float('inf'), float('inf')
+    X2, Y2 = float('-inf'), float('-inf')
+    # 记录所有小矩形的面积之和
+    actualArea = 0
+    for rect in rectangles:
+        x1, y1, x2, y2 = rect
+        # 计算完美矩形的理论坐标
+        X1 = min(X1, x1)
+        Y1 = min(Y1, y1)
+        X2 = max(X2, x2)
+        Y2 = max(Y2, y2)
+        # 累加所有小矩形的面积
+        actualArea += (x2 - x1) * (y2 - y1)
 
-    // 计算完美矩形的理论面积
-    int expectedArea = (X2 - X1) * (Y2 - Y1);
-    // 面积应该相同
-    if (actualArea != expectedArea) {
-        return false;
-    }
+    # 计算完美矩形的理论面积
+    expectedArea = (X2 - X1) * (Y2 - Y1)
+    # 面积应该相同
+    if actualArea != expectedArea:
+        return False
 
-    return true;
-}
+    return True
 ``` 
 
 这样，「面积」这个维度就完成了，思路其实不难，无非就是假设最终形成的图形是个完美矩形，然后比较面积是否相等，如果不相等的话说明最终形成的图形一定存在空缺或者重叠部分，不是完美矩形。
@@ -175,55 +165,50 @@ Note
 
 注意，2 和 4 都是偶数，1 和 3 都是奇数，我们想计算最终形成的图形中有几个顶点，也就是要筛选出那些出现了奇数次的顶点，可以这样写代码：
 
-```java
-boolean isRectangleCover(int[][] rectangles) {
-    int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;
-    int X2 = Integer.MIN_VALUE, Y2 = Integer.MIN_VALUE;
+```python
+def isRectangleCover(rectangles):
+    X1, Y1, X2, Y2 = float('inf'), float('inf'), float('-inf'), float('-inf')
 
-    int actualArea = 0;
-    // 哈希集合，记录最终图形的顶点
-    Set<String> points = new HashSet<>();
-    for (int[] rect : rectangles) {
-        int x1 = rect[0], y1 = rect[1], x2 = rect[2], y2 = rect[3];
-        X1 = Math.min(X1, x1);
-        Y1 = Math.min(Y1, y1);
-        X2 = Math.max(X2, x2);
-        Y2 = Math.max(Y2, y2);
+    actualArea = 0
+    # 哈希集合，记录最终图形的顶点
+    points = set()
+    for rect in rectangles:
+        x1, y1, x2, y2 = rect
+        X1 = min(X1, x1)
+        Y1 = min(Y1, y1)
+        X2 = max(X2, x2)
+        Y2 = max(Y2, y2)
 
-        actualArea += (x2 - x1) * (y2 - y1);
-        // 先算出小矩形每个点的坐标，用字符串表示，方便存入哈希集合
-        String p1 = x1 + "," + y1;
-        String p2 = x1 + "," + y2;
-        String p3 = x2 + "," + y1;
-        String p4 = x2 + "," + y2;
-        // 对于每个点，如果存在集合中，删除它；
-        // 如果不存在集合中，添加它；
-        // 在集合中剩下的点都是出现奇数次的点
-        for (String p : new String[]{p1, p2, p3, p4}) {
-            if (points.contains(p)) {
-                points.remove(p);
-            } else {
-                points.add(p);
-            }
-        }
-    }
+        actualArea += (x2 - x1) * (y2 - y1)
+        # 先算出小矩形每个点的坐标，用字符串表示，方便存入哈希集合
+        p1 = str(x1) + "," + str(y1)
+        p2 = str(x1) + "," + str(y2)
+        p3 = str(x2) + "," + str(y1)
+        p4 = str(x2) + "," + str(y2)
 
-    int expectedArea = (X2 - X1) * (Y2 - Y1);
-    if (actualArea != expectedArea) {
-        return false;
-    }
+        pointArr = [p1, p2, p3, p4]
+        # 对于每个点，如果存在集合中，删除它；
+        for p in pointArr:
+            if p in points:
+                points.remove(p)
+            else:
+                points.add(p)
+        # 如果不存在集合中，添加它；
+        # 在集合中剩下的点都是出现奇数次的点
+        
+    expectedArea = (X2 - X1) * (Y2 - Y1)
+    if actualArea != expectedArea:
+        return False
 
-    // 检查顶点个数
-    if (points.size() != 4 || 
-        !points.contains(X1 + "," + Y1) || 
-        !points.contains(X1 + "," + Y2) || 
-        !points.contains(X2 + "," + Y1) || 
-        !points.contains(X2 + "," + Y2)) {
-        return false;
-    }
+    # 检查顶点个数
+    if len(points) != 4 or \
+        str(X1) + "," + str(Y1) not in points or \
+        str(X1) + "," + str(Y2) not in points or \
+        str(X2) + "," + str(Y1) not in points or \
+        str(X2) + "," + str(Y2) not in points:
+        return False
 
-    return true;
-}
+    return True
 ``` 
 
 这段代码中，我们用一个 `points` 集合记录 `rectangles` 中小矩形组成的最终图形的顶点坐标，关键逻辑在于如何向 `points` 中添加坐标：
@@ -242,51 +227,45 @@ boolean isRectangleCover(int[][] rectangles) {
 
 所以不仅要保证 `len(points) == 4`，而且要保证 `points` 中最终剩下的点坐标就是完美矩形的四个理论坐标，直接看代码吧：
 
-```java
-class Solution {
-    public boolean isRectangleCover(int[][] rectangles) {
-        int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;
-        int X2 = Integer.MIN_VALUE, Y2 = Integer.MIN_VALUE;
+```python
+class Solution:
+    def isRectangleCover(self, rectangles: List[List[int]]) -> bool:
+        X1, Y1 = float('inf'), float('inf')
+        X2, Y2 = float('-inf'), float('-inf')
         
-        Set<String> points = new HashSet<>();
-        int actualArea = 0;
-        for (int[] rect : rectangles) {
-            int x1 = rect[0], y1 = rect[1], x2 = rect[2], y2 = rect[3];
-            // 计算完美矩形的理论顶点坐标
-            X1 = Math.min(X1, x1);
-            Y1 = Math.min(Y1, y1);
-            X2 = Math.max(X2, x2);
-            Y2 = Math.max(Y2, y2);
-            // 累加小矩形的面积
-            actualArea += (x2 - x1) * (y2 - y1);
-            // 记录最终形成的图形中的顶点
-            String p1 = x1 + "," + y1;
-            String p2 = x1 + "," + y2;
-            String p3 = x2 + "," + y1;
-            String p4 = x2 + "," + y2;
-            for (String p : new String[]{p1, p2, p3, p4}) {
-                if (points.contains(p)) points.remove(p);
-                else                    points.add(p);
-            }
-        }
-        // 判断面积是否相同
-        int expectedArea = (X2 - X1) * (Y2 - Y1);
-        if (actualArea != expectedArea) {
-            return false;
-        }
-        // 判断最终留下的顶点个数是否为 4
-        if (points.size() != 4) {
-            return false;
-        }
-        // 判断留下的 4 个顶点是否是完美矩形的顶点
-        if (!points.contains(X1 + "," + Y1)) return false;
-        if (!points.contains(X1 + "," + Y2)) return false;
-        if (!points.contains(X2 + "," + Y1)) return false;
-        if (!points.contains(X2 + "," + Y2)) return false;
-        // 面积和顶点都对应，说明矩形符合题意
-        return true;
-    }
-}
+        points = set()
+        actualArea = 0
+        for rect in rectangles:
+            x1, y1, x2, y2 = rect
+            # 计算完美矩形的理论顶点坐标
+            X1 = min(X1, x1)
+            Y1 = min(Y1, y1)
+            X2 = max(X2, x2)
+            Y2 = max(Y2, y2)
+            # 累加小矩形的面积
+            actualArea += (x2 - x1) * (y2 - y1)
+            # 记录最终形成的图形中的顶点
+            p1 = f"{x1},{y1}"
+            p2 = f"{x1},{y2}"
+            p3 = f"{x2},{y1}"
+            p4 = f"{x2},{y2}"
+            for p in [p1, p2, p3, p4]:
+                if p in points:
+                    points.remove(p)
+                else:
+                    points.add(p)
+        # 判断面积是否相同
+        expectedArea = (X2 - X1) * (Y2 - Y1)
+        if actualArea != expectedArea:
+            return False
+        # 判断最终留下的顶点个数是否为 4
+        if len(points) != 4:
+            return False
+        # 判断留下的 4 个顶点是否是完美矩形的顶点
+        if not (f"{X1},{Y1}" in points and f"{X1},{Y2}" in points and f"{X2},{Y1}" in points and f"{X2},{Y2}" in points):
+            return False
+        # 面积和顶点都对应，说明矩形符合题意
+        return True
 ``` 
 
 算法可视化
@@ -296,3 +275,7 @@ class Solution {
 1、判断面积，通过完美矩形的理论坐标计算出一个理论面积，然后和 `rectangles` 中小矩形的实际面积和做对比。
 
 2、判断顶点，`points` 集合中应该只剩下 4 个顶点且剩下的顶点必须都是完美矩形的理论顶点。
+
+## 评论
+
+请登录后查看/发表评论

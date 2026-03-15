@@ -31,21 +31,21 @@ A forest is a collection of multiple multi-way trees. A single multi-way tree is
 
 A node in a binary tree looks like this. Each node has two children:
 
-```java
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-}
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 ``` 
 
 A node in a multi-way tree looks like this. Each node can have any number of children:
 
-```java
-class Node {
-    int val;
-    List<Node> children;
-}
+```python
+class Node:
+    def __init__(self, val: int):
+        self.val = val
+        self.children = []
 ``` 
 
 That's the only difference.
@@ -70,4 +70,8 @@ Now, let's talk about traversal of a multi-way tree. Just like a binary tree, th
 
 Let's compare the frameworks for traversing binary trees and multi-way trees:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

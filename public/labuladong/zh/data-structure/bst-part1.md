@@ -38,14 +38,18 @@ LeetCode| 力扣| 难度
 
 也就是说，如果输入一棵 BST，以下代码可以将 BST 中每个节点的值升序打印出来：
 
-```java
-void traverse(TreeNode root) {
-    if (root == null) return;
-    traverse(root.left);
-    // 中序遍历代码位置
-    print(root.val);
-    traverse(root.right);
-}
+```python
+def traverse(root):
+    if not root:
+        return
+    traverse(root.left)
+    # 中序遍历代码位置
+    print(root.val)
+    traverse(root.right)
 ``` 
 
 那么根据这个性质，我们来做两道算法题。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

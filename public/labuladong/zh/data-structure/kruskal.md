@@ -37,3 +37,7 @@ Kruskal 算法是求解无向图中最小生成树的经典算法。
 Kruskal 算法其实很容易理解和记忆，其关键是要熟悉并查集算法，如果不熟悉，建议先看下前文 [Union-Find 并查集算法](</zh/algo/data-structure/union-find/>)。
 
 在讲 Kruskal 算法之前，先回顾一下 Union-Find 并查集算法。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

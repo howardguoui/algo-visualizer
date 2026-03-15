@@ -43,22 +43,19 @@ LeetCode| 力扣| 难度
 
 无论哪种写法，二分搜索的代码都符合以下框架：
 
-```java
-int binarySearch(int[] nums, int target) {
-    int left = 0, right = ...;
+```python
+def binarySearch(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
 
-    while(...) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
+    while ...:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
             ...
-        } else if (nums[mid] < target) {
+        elif nums[mid] < target:
             left = ...
-        } else if (nums[mid] > target) {
+        elif nums[mid] > target:
             right = ...
-        }
-    }
-    return ...;
-}
+    return ...
 ``` 
 
 其中 `...` 标记的部分，就是可能出现细节问题的地方，当你见到一个二分查找的代码时，首先注意这几个地方，后面用实例分析这些地方能有什么样的变化。
@@ -88,29 +85,25 @@ int binarySearch(int[] nums, int target) {
 
 这个场景是最简单的，搜索一个数，如果存在返回其索引，否则返回 -1。
 
-```java
-class Solution {
-    // 标准的二分搜索框架，搜索目标元素的索引，若不存在则返回 -1
-    public int search(int[] nums, int target) {
-        int left = 0;
-        // 注意
-        int right = nums.length - 1;
+```python
+class Solution:
+    # 标准的二分搜索框架，搜索目标元素的索引，若不存在则返回 -1
+    def search(self, nums: List[int], target: int) -> int:
+        left = 0
+        # 注意
+        right = len(nums) - 1
 
-        while(left <= right) {
-            int mid = left + (right - left) / 2;
-            if(nums[mid] == target) {
-                return mid;   
-            } else if (nums[mid] < target) {
-                // 注意
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                // 注意
-                right = mid - 1;
-            }
-        }
-        return -1;
-    }
-}
+        while left <= right:
+            mid = left + (right - left) // 2
+            if nums[mid] == target:
+                return mid
+            elif nums[mid] < target:
+                # 注意
+                left = mid + 1
+            elif nums[mid] > target:
+                # 注意
+                right = mid - 1
+        return -1
 ``` 
 
 算法可视化
@@ -147,25 +140,22 @@ class Solution {
 
 先直接看寻找左侧边界的二分搜索代码：
 
-```java
-int left_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    // 搜索区间为 [left, right]
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            // 搜索区间变为 [mid+1, right]
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            // 搜索区间变为 [left, mid-1]
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // 收缩右侧边界
-            right = mid - 1;
-        }
-    }
-    return left;
-}
+```python
+def left_bound(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    # 搜索区间为 [left, right]
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            # 搜索区间变为 [mid+1, right]
+            left = mid + 1
+        elif nums[mid] > target:
+            # 搜索区间变为 [left, mid-1]
+            right = mid - 1
+        elif nums[mid] == target:
+            # 收缩右侧边界
+            right = mid - 1
+    return left
 ``` 
 
 算法可视化
@@ -208,23 +198,20 @@ return left;
 
 先直接看寻找右侧边界的二分搜索代码：
 
-```java
-int right_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // 这里改成收缩左侧边界即可
-            left = mid + 1;
-        }
-    }
-    // 最后改成返回 right
-    return right;
-}
+```python
+def right_bound(nums: List[int], target: int) -> int:
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # 这里改成收缩左侧边界即可
+            left = mid + 1
+    # 最后改成返回 right
+    return right
 ``` 
 
 算法可视化
@@ -267,65 +254,57 @@ return right;
 
 三种场景使用统一的两端都闭搜索区间 `[left, right]`，只有 `nums[mid] == target` 时的处理不同：
 
-```java
-int binary_search(int[] nums, int target) {
-    int left = 0, right = nums.length - 1; 
-    while(left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1; 
-        } else if(nums[mid] == target) {
-            // 直接返回
-            return mid;
-        }
-    }
-    // 直接返回
-    return -1;
-}
+```python
+def binary_search(nums: List[int], target: int) -> int:
+    # 设置左右下标
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # 找到目标值
+            return mid
+    # 没有找到目标值
+    return -1
 
-int left_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // 别返回，锁定左侧边界
-            right = mid - 1;
-        }
-    }
-    // 判断 target 是否存在于 nums 中
-    if (left < 0 || left >= nums.length) {
-        return -1;
-    }
-    // 判断一下 nums[left] 是不是 target
-    return nums[left] == target ? left : -1;
-}
+def left_bound(nums: List[int], target: int) -> int:
+    # 设置左右下标
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # 存在目标值，缩小右边界
+            right = mid - 1
+    # 判断是否存在目标值
+    if left < 0 or left >= len(nums):
+        return -1
+    # 判断找到的左边界是否是目标值
+    return left if nums[left] == target else -1
 
-int right_bound(int[] nums, int target) {
-    int left = 0, right = nums.length - 1;
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid - 1;
-        } else if (nums[mid] == target) {
-            // 别返回，锁定右侧边界
-            left = mid + 1;
-        }
-    }
-    // 由于 while 的结束条件是 right == left - 1，且现在在求右边界
-    // 所以用 right 替代 left - 1 更好记
-    if (right < 0 || right >= nums.length) {
-        return -1;
-    }
-    return nums[right] == target ? right : -1;
-}
+def right_bound(nums: List[int], target: int) -> int:
+    # 设置左右下标
+    left, right = 0, len(nums) - 1
+    while left <= right:
+        mid = left + (right - left) // 2
+        if nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid - 1
+        elif nums[mid] == target:
+            # 存在目标值，缩小左边界
+            left = mid + 1
+    # 判断是否存在目标值
+    if right < 0 or right >= len(nums):
+        return -1
+    # 判断找到的右边界是否是目标值
+    return right if nums[right] == target else -1
 ``` 
 
 通过本文，你学会了：
@@ -343,3 +322,7 @@ int right_bound(int[] nums, int target) {
 不过你可能在网上看到另一种写法：左闭右开的搜索区间 `[left, right)`，使用 `while (left < right)` 和 `right = mid`。这种写法也很常见，如果你想深入理解这种写法的逻辑，可以阅读 [二分搜索的左闭右开写法](</zh/algo/essential-technique/binary-search-left-open/>)。
 
 实际题目中不会直接让你写二分代码，我会在 [二分查找的运用](</zh/algo/frequency-interview/binary-search-in-action/>) 和 [二分查找的更多习题](</zh/algo/problem-set/binary-search/>) 中进一步讲解如何把二分思维运用到更多算法题中。
+
+## 评论
+
+请登录后查看/发表评论

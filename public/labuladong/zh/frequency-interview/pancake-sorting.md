@@ -76,9 +76,9 @@ LeetCode| 力扣| 难度
 
 为什么说这个问题有递归性质呢？比如说我们需要实现这样一个函数：
 
-```java
-// cakes 是一堆烧饼，函数会将前 n 个烧饼排序
-void sort(int[] cakes, int n);
+```python
+# cakes 是一堆烧饼，函数会将前 n 个烧饼排序
+def sort(cakes: List[int], n: int):
 ``` 
 
 如果我们找到了前 `n` 个烧饼中最大的那个，然后设法将这个饼子翻转到最底下：
@@ -115,49 +115,42 @@ base case：`n == 1` 时，排序 1 个饼时不需要翻转。
 
 只要把上述的思路用代码实现即可，唯一需要注意的是，数组索引从 0 开始，而我们要返回的结果是从 1 开始算的。
 
-```java
-class Solution {
-    // 记录反转操作序列
-    LinkedList<Integer> res = new LinkedList<>();
+```python
+from typing import List
 
-    public List<Integer> pancakeSort(int[] cakes) {
-        sort(cakes, cakes.length);
-        return res;
-    }
+class Solution:
+    def pancakeSort(self, cakes: List[int]) -> List[int]:
+        # 记录反转操作序列
+        self.res = []
+        self.sort(cakes, len(cakes))
+        return self.res
+    
+    def sort(self, cakes: List[int], n: int) -> None:
+        # base case
+        if n == 1:
+            return
+        # 寻找最大饼的索引
+        max_cake = 0
+        max_cake_index = 0
+        for i in range(n):
+            if cakes[i] > max_cake:
+                max_cake_index = i
+                max_cake = cakes[i]
+        # 第一次翻转，将最大饼翻到最上面
+        self.reverse(cakes, 0, max_cake_index)
+        self.res.append(max_cake_index + 1)
+        # 第二次翻转，将最大饼翻到最下面
+        self.reverse(cakes, 0, n - 1)
+        self.res.append(n)
 
-    void sort(int[] cakes, int n) {
-        // base case
-        if (n == 1) return;
-
-        // 寻找最大饼的索引
-        int maxCake = 0;
-        int maxCakeIndex = 0;
-        for (int i = 0; i < n; i++)
-            if (cakes[i] > maxCake) {
-                maxCakeIndex = i;
-                maxCake = cakes[i];
-            }
-
-        // 第一次翻转，将最大饼翻到最上面
-        reverse(cakes, 0, maxCakeIndex);
-        res.add(maxCakeIndex + 1);
-        // 第二次翻转，将最大饼翻到最下面
-        reverse(cakes, 0, n - 1);
-        res.add(n); 
-        // 递归调用
-        sort(cakes, n - 1); 
-    }
-
-    void reverse(int[] arr, int i, int j) {
-        while (i < j) {
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-            i++;
-            j--;
-        }
-    }
-}
+        # 递归调用
+        self.sort(cakes, n - 1)
+        
+    def reverse(self, arr: List[int], i: int, j: int) -> None:
+        while i < j:
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+            j -= 1
 ``` 
 
 算法可视化
@@ -178,3 +171,7 @@ class Solution {
 ``` 
 
 如果要求你的算法计算排序烧饼的**最短** 操作序列，你该如何计算呢？或者说，解决这种求最优解法的问题，核心思路什么，一定需要使用什么算法技巧呢？不妨分享一下你的思考。
+
+## 评论
+
+请登录后查看/发表评论

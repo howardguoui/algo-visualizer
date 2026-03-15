@@ -32,7 +32,11 @@ LeetCode| 力扣| 难度
 
 现在回归正题，如何求一棵完全二叉树的节点个数呢？
 
-```java
-// 输入一棵完全二叉树，返回节点总数
-int countNodes(TreeNode root);
-```
+```python
+# 输入一棵完全二叉树，返回节点总数
+def countNodes(root: TreeNode) -> int:
+``` 
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

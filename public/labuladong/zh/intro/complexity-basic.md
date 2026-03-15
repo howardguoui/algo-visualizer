@@ -43,15 +43,13 @@
 
 **示例一，时间复杂度 O(n)O(n)O(n)，空间复杂度 O(1)O(1)O(1)**：
 
-```java
-// 输入一个整数数组，返回所有元素的和
-int getSum(int[] nums) {
-    int sum = 0;
-    for (int i = 0; i < nums.length; i++) {
-        sum += nums[i];
-    }
-    return sum;
-}
+```python
+# 输入一个整数数组，返回所有元素的和
+def getSum(nums: List[int]) -> int:
+    sum = 0
+    for i in range(len(nums)):
+        sum += nums[i]
+    return sum
 ``` 
 
 算法包含一个 for 循环遍历 `nums` 数组，所以时间复杂度是 O(n)O(n)O(n)，其中 `n` 代表 `nums` 数组的长度。
@@ -60,18 +58,15 @@ int getSum(int[] nums) {
 
 **示例二，时间复杂度 O(n)O(n)O(n)，空间复杂度 O(1)O(1)O(1)**：
 
-```java
-// 当 n 是 10 的倍数时，计算累加和，否则返回 -1
-int sum(int n) {
-    if (n % 10 != 0) {
-        return -1;
-    }
-    int sum = 0;
-    for (int i = 0; i <= n; i++) {
-        sum += i;
-    }
-    return sum;
-}
+```python
+# 当 n 是 10 的倍数时，计算累加和，否则返回 -1
+def sum(n: int) -> int:
+    if n % 10 != 0:
+        return -1
+    sum = 0
+    for i in range(n + 1):
+        sum += i
+    return sum
 ``` 
 
 其实只有当 `n` 是 10 的倍数时，算法才会执行 for 循环，时间复杂度是 O(n)O(n)O(n)。其他情况下算法会直接返回，时间复杂度是 O(1)O(1)O(1)。
@@ -80,18 +75,14 @@ int sum(int n) {
 
 **示例三，时间复杂度 O(n2)O(n^2)O(n2)，空间复杂度 O(1)O(1)O(1)**：
 
-```java
-// 数组是否存在两个数，它们的和为 target？
-boolean hasTargetSum(int[] nums, int target) {
-    for (int i = 0; i < nums.length; i++) {
-        for (int j = i + 1; j < nums.length; j++) {
-            if (nums[i] + nums[j] == target) {
-                return true;
-            }
-        }
-    }
-    return false;
-}
+```python
+# 数组是否存在两个数，它们的和为 target？
+def hasTargetSum(nums: List[int], target: int) -> bool:
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[i] + nums[j] == target:
+                return True
+    return False
 ``` 
 
 算法嵌套了两层 for 循环，所以时间复杂度是 O(n2)O(n^2)O(n2)，其中 nnn 代表 `nums` 数组的长度。
@@ -106,10 +97,9 @@ boolean hasTargetSum(int[] nums, int target) {
 
 **示例四，时间复杂度 O(n)O(n)O(n)，空间复杂度 O(n)O(n)O(n)**：
 
-```java
-void exampleFn(int n) {
-    int[] nums = new int[n];
-}
+```python
+def exampleFn(n: int):
+    nums = [0] * n
 ``` 
 
 这个函数中创建了一个大小为 `n` 的数组，所以空间复杂度是 O(n)O(n)O(n)。
@@ -120,15 +110,13 @@ void exampleFn(int n) {
 
 **示例五，时间复杂度 O(n)O(n)O(n)，空间复杂度 O(n)O(n)O(n)**：
 
-```java
-// 输入一个整数数组，返回一个新的数组，新数组的每个元素是原数组对应元素的平方
-int[] squareArray(int[] nums) {
-    int[] res = new int[nums.length];
-    for (int i = 0; i < nums.length; i++) {
-        res[i] = nums[i] * nums[i];
-    }
-    return res;
-}
+```python
+# 输入一个整数数组，返回一个新的数组，新数组的每个元素是原数组对应元素的平方
+def squareArray(nums: List[int]) -> List[int]:
+    res = [0] * len(nums)
+    for i in range(len(nums)):
+        res[i] = nums[i] * nums[i]
+    return res
 ``` 
 
 算法初始化 `res` 数组需要 O(n)O(n)O(n) 的时间复杂度，包含一个 for 循环，时间复杂度也是 O(n)O(n)O(n)，总的时间复杂度是还是 O(n)O(n)O(n) 其中 `n` 代表 `nums` 数组的长度。
@@ -136,3 +124,7 @@ int[] squareArray(int[] nums) {
 我们声明了一个新的数组 `res`，这个数组的长度和 `nums` 数组一样，所以空间复杂度是 O(n)O(n)O(n)。
 
 好了，初学者明白上面这些基本的时间、空间复杂度分析暂时就够用了，继续往下学习吧。
+
+## 评论
+
+请登录后查看/发表评论

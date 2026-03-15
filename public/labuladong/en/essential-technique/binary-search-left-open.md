@@ -80,25 +80,22 @@ int binary_search(int[] nums, int target) {
 
 Here is the left-closed, right-open version for searching the left boundary:
 
-```java
-// search for the left boundary
-int left_bound(int[] nums, int target) {
-    if (nums.length == 0) return -1;
-    int left = 0, right = nums.length;
-    
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
-            // when target is found, shrink the right boundary
-            right = mid;
-        } else if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid;
-        }
-    }
-    return left;
-}
+```python
+def left_bound(nums: List[int], target: int) -> int:
+    # search for the left boundary
+    if len(nums) == 0:
+        return -1
+    left, right = 0, len(nums)
+    while left < right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            # when target is found, shrink the right boundary
+            right = mid
+        elif nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid
+    return left
 ``` 
 
 The `while` condition and the updates of `left` and `right` are the same as above, so we will not repeat them. We only explain the differences.
@@ -141,25 +138,23 @@ return left;
 
 Here is the left-closed, right-open version for the right boundary:
 
-```java
-// search for the right boundary
-int right_bound(int[] nums, int target) {
-    if (nums.length == 0) return -1;
-    int left = 0, right = nums.length;
+```python
+# Search for the right boundary
+def right_bound(nums: list[int], target: int) -> int:
+    if len(nums) == 0:
+        return -1
+    left, right = 0, len(nums)
 
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
-            // when target is found, shrink the left boundary
-            left = mid + 1;
-        } else if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid;
-        }
-    }
-    return left - 1;
-}
+    while left < right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            # When target is found, shrink the left boundary
+            left = mid + 1
+        elif nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid
+    return left - 1
 ``` 
 
 ### Why does this code find the right boundary?
@@ -217,4 +212,8 @@ Personally I prefer the [left-closed, right-closed style](</en/algo/essential-te
 
 For more practice and use cases of binary search, see [Binary Search In Real World](</en/algo/frequency-interview/binary-search-in-action/>) and [More Binary Search Exercises](</en/algo/problem-set/binary-search/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

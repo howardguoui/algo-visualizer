@@ -41,8 +41,8 @@ If `nums1[i] > nums2[i]`, then `nums1` has an “advantage” at index `i`. Maxi
 
 The function signature is:
 
-```java
-int[] advantageCount(int[] nums1, int[] nums2);
+```python
+def advantageCount(nums1: List[int], nums2: List[int]) -> List[int]:
 ``` 
 
 Example input:
@@ -56,4 +56,8 @@ Your algorithm should return `[24,32,8,12]`, because in this order, `nums1` has 
 
 **This is like Tian Ji horse racing:`nums1` is Tian Ji’s horses, `nums2` is the King of Qi’s horses. Each number is a horse’s power. You are Sun Bin. Show your real skills.**
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

@@ -203,7 +203,7 @@ public class BusinessHandler implements Handler {
         // Simulate business logic
         if ("/api/user".equals(request.getPath())) {
             response.setStatusCode(200);
-            response.setBody("{ \"name\": \"Alice\", \"email\": \"[email protected]\" }");
+            response.setBody("{ \"name\": \"Alice\", \"email\": \"alice@example.com\" }");
         } else {
             response.setStatusCode(404);
             response.setBody("Not Found");
@@ -324,7 +324,7 @@ Business logic finished.
 <<< Exiting AuthenticationMiddleware...
 Response sent with status: 200. Request took 1ms.
 <<< Exiting LoggingMiddleware...
-Final Response: Response [statusCode=200, body='{ "name": "Alice", "email": "[email protected]" }']
+Final Response: Response [statusCode=200, body='{ "name": "Alice", "email": "alice@example.com" }']
 
 >>> Entering LoggingMiddleware...
 Request received: /api/user
@@ -363,4 +363,8 @@ The main downside is, if you have many kinds of features to add, you might end u
 
 In short, if you want to add features to a class without subclassing it, the decorator pattern is a great choice.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

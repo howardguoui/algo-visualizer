@@ -27,4 +27,8 @@ Graphs can abstract many complex problems and have led to many classic graph alg
 
 This article mainly introduces the basic concepts of graphs and how to implement graph structures in code.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

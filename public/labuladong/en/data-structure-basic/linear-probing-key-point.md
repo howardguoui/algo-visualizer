@@ -29,56 +29,56 @@ Assume our hash table only supports `key` and `value` types as `int`, with a fix
 
 The general logic of linear probing is as follows:
 
-```java
-// The basic logic of linear probing, pseudocode implementation
+```python
+# Basic logic of linear probing, pseudo-code implementation
 
-class MyLinearProbingHashMap {
-    // Each element in the array stores a key-value pair
-    private KVNode[] table = new KVNode[10];
+class KVNode:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
 
-    private int hash(int key) {
-        return key % table.length;
-    }
+class MyLinearProbingHashMap:
+    # Each element in the array stores a key-value pair
+    def __init__(self):
+        self.table = [None] * 10
+    
+    def hash(self, key):
+        return key % len(self.table)
 
-    public void put(int key, int value) {
-        int index = hash(key);
-        KVNode node = table[index];
-        if (node == null) {
-            table[index] = new KVNode(key, value);
-        } else {
-            // Logic of linear probing
-            // Probe backwards until the key is found or an empty slot is found
-            while (index < table.length && table[index] != null && table[index].key != key) {
-                index++;
-            }
-            table[index] = new KVNode(key, value);
-        }
-    }
-
-    public int get(int key) {
-        int index = hash(key);
-        // Probe backwards until the key is found or an empty slot is found
-        while (index < table.length && table[index] != null && table[index].key != key) {
-            index++;
-        }
-        if (table[index] == null) {
-            return -1;
-        }
-        return table[index].value;
-    }
-
-    public void remove(int key) {
-        int index = hash(key);
-        // Probe backwards until the key is found or an empty slot is found
-        while (index < table.length && table[index] != null && table[index].key != key) {
-            index++;
-        }
-        // Remove table[index]
-        // ...
-    }
-}
+    def put(self, key, value):
+        index = self.hash(key)
+        node = self.table[index]
+        if node is None:
+            self.table[index] = KVNode(key, value)
+        else:
+            # Logic of linear probing
+            # Probe backwards until key is found or an empty slot is found
+            while index < len(self.table) and self.table[index] is not None and self.table[index].key != key:
+                index += 1
+            self.table[index] = KVNode(key, value)
+    
+    def get(self, key):
+        index = self.hash(key)
+        # Probe backwards until key is found or an empty slot is found
+        while index < len(self.table) and self.table[index] is not None and self.table[index].key != key:
+            index += 1
+        if self.table[index] is None:
+            return -1
+        return self.table[index].value
+    
+    def remove(self, key):
+        index = self.hash(key)
+        # Probe backwards until key is found or an empty slot is found
+        while index < len(self.table) and self.table[index] is not None and self.table[index].key != key:
+            index += 1
+        # Delete table[index]
+        # ...
 ``` 
 
 Based on this hypothetical scenario, let's examine the two challenges of linear probing.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

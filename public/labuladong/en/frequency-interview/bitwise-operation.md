@@ -229,28 +229,26 @@ The bit operation `&` is much faster than `%`, so this trick is very useful wher
 
 A common use is in a circular array. The normal way is to use `%` so that the index loops in `[0, arr.length - 1]`:
 
-```java
-int[] arr = {1,2,3,4};
-int index = 0;
-while (true) {
-    // looping in a circular array
-    print(arr[index % arr.length]);
-    index++;
-}
-// output: 1,2,3,4,1,2,3,4,1,2,3,4...
+```python
+arr = [1,2,3,4]
+index = 0
+while True:
+    # Loop through the circular array
+    print(arr[index % len(arr)])
+    index += 1
+# Output: 1,2,3,4,1,2,3,4,1,2,3,4...
 ``` 
 
 If the array length is a power of 2, we can use `&` to speed up the modulus:
 
-```java
-int[] arr = {1,2,3,4};
-int index = 0;
-while (true) {
-    // loop in the circular array
-    print(arr[index & (arr.length - 1)]);
-    index++;
-}
-// output: 1,2,3,4,1,2,3,4,1,2,3,4...
+```python
+arr = [1, 2, 3, 4]
+index = 0
+while True:
+    # Loop in a circular array
+    print(arr[index & (len(arr) - 1)], end=", ")
+    index += 1
+# Output: 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, ...
 ``` 
 
 Important
@@ -263,15 +261,14 @@ Now another question: we keep doing `index++`, and this gives us a circular effe
 
 If you use `%` for modulus, once `index` becomes negative, the result of `%` can also be negative, and you must handle this case specially. But with `&`, `index` will not become negative and everything still works:
 
-```java
-int[] arr = {1,2,3,4};
-int index = 0;
-while (true) {
-    // looping in a circular array
-    print(arr[index & (arr.length - 1)]);
-    index--;
-}
-// output: 1,4,3,2,1,4,3,2,1,4,3,2,1...
+```python
+arr = [1, 2, 3, 4]
+index = 0
+
+while True:
+    # Looping in a circular array
+    print(arr[index & (len(arr) - 1)])
+    index -= 1
 ``` 
 
 You may not use this trick often in your own code, but you will see it a lot when reading other code bases. Just keep it in mind so you are not confused when you see it.
@@ -292,7 +289,7 @@ This is LeetCode 191: “[Number of 1 Bits](<https://leetcode.com/problems/numbe
 
 **191\. Number of 1 Bits** |[LeetCode](<https://leetcode.com/problems/number-of-1-bits/>)
 
-Write a function that takes the binary representation of a positive integer and returns the number of set bits it has (also known as the [Hamming weight](<https://en.wikipedia.org/wiki/Hamming_weight>)).
+Write a function that takes the binary representation of a positive integer and returns the number of set bits it has (also known as the [Hamming weight](<http://en.wikipedia.org/wiki/Hamming_weight>)).
 
 **Example 1:**
 
@@ -334,18 +331,14 @@ The problem is from [LeetCode 191. Number of 1 Bits](<https://leetcode.com/probl
 
 You need to return how many 1s are in the binary form of `n`. Since `n & (n - 1)` can remove the last 1, we can keep doing this in a loop and count, until `n` becomes 0.
 
-```java
-public class Solution {
-    // you need to treat n as an unsigned value
-    public int hammingWeight(int n) {
-        int res = 0;
-        while (n != 0) {
-            n = n & (n - 1);
-            res++;
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        res = 0
+        while n != 0:
+            n = n & (n - 1)
+            res += 1
+        return res
 ``` 
 
 ### Check If a Number Is a Power of 2
@@ -362,13 +355,12 @@ If a number is a power of 2, its binary form has exactly one 1:
 
 Using the trick `n & (n - 1)` makes it easy (note operator precedence, you cannot remove the parentheses):
 
-```java
-class Solution {
-    public boolean isPowerOfTwo(int n) {
-        if (n <= 0) return false;
-        return (n & (n - 1)) == 0;
-    }
-}
+```python
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        if n <= 0:
+            return False
+        return (n & (n - 1)) == 0
 ``` 
 
 ## The Usage of `a ^ a = 0`
@@ -419,16 +411,13 @@ The problem is from [LeetCode 136. Single Number](<https://leetcode.com/problems
 
 For this problem, we just XOR all numbers together. Pairs of equal numbers will become 0. The single number XOR 0 is still itself, so the final XOR result is the element that appears only once:
 
-```java
-class Solution {
-    public int singleNumber(int[] nums) {
-        int res = 0;
-        for (int n : nums) {
-            res ^= n;
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        res = 0
+        for n in nums:
+            res ^= n
+        return res
 ``` 
 
 ### Find the Missing Number
@@ -488,19 +477,19 @@ We can understand the problem like this: we have an arithmetic sequence `0, 1, 2
 
 `sum(0, 1, ..., n) - sum(nums)`.
 
-```java
-int missingNumber(int[] nums) {
-    int n = nums.length;
-    // Although the data range given by the problem is not large, we should
-    // use long type to prevent integer overflow for the sake of rigor
-    // Sum formula: (first term + last term) * number of terms / 2
-    long expect = (0 + n) * (n + 1) / 2;
-    long sum = 0;
-    for (int x : nums) {
-        sum += x;
-    }
-    return (int)(expect - sum);
-}
+```python
+from typing import List
+
+def missingNumber(nums: List[int]) -> int:
+    n = len(nums)
+    # Although the data range given by the problem is not large,
+    # it's rigorous to use long type to prevent integer overflow
+    # Sum formula: (first term + last term) * number of terms / 2
+    expect = (0 + n) * (n + 1) / 2
+    sum_ = 0
+    for x in nums:
+        sum_ += x
+    return int(expect - sum_)
 ``` 
 
 But the main topic of this article is bit operations. So we will see how to use bit tricks to solve this problem.
@@ -528,19 +517,17 @@ After doing this, except for the missing number, every index and element form a 
 
 How do we find this lonely number? **Just XOR all the indices and all the elements together. All paired numbers will cancel out to 0, and only the lonely one will remain.** That is our answer:
 
-```java
-class Solution {
-    public int missingNumber(int[] nums) {
-        int n = nums.length;
-        int res = 0;
-        // first XOR with the new added index
-        res ^= n;
-        // XOR with other elements and indices
-        for (int i = 0; i < n; i++)
-            res ^= i ^ nums[i];
-        return res;
-    }
-}
+```python
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        n = len(nums)
+        res = 0
+        # first XOR with the new added index
+        res ^= n
+        # XOR with other elements and indices
+        for i in range(n):
+            res ^= i ^ nums[i]
+        return res
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/missing-elem/3-en.jpg)
@@ -549,4 +536,8 @@ Because XOR is commutative and associative, we can always cancel all pairs and k
 
 Up to here, we have covered most common bit operations. These tricks are easy once you get them, and you do not need to memorize them. Just keep a rough idea in mind, and that is enough.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

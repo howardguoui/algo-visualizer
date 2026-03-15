@@ -28,8 +28,8 @@
 
 通用性较差的意思是说，模板只是针对「用迭代的方式返回二叉树前/中/后序的遍历结果」这个问题，函数签名类似这样，返回一个 `TreeNode` 列表：
 
-```java
-List<TreeNode> traverse(TreeNode root);
+```python
+def traverse(root: TreeNode) -> List[TreeNode]:
 ``` 
 
 如果给一些稍微复杂的二叉树问题，比如 [最近公共祖先](</zh/algo/practice-in-action/lowest-common-ancestor-summary/>)，[二叉搜索子树的最大键值和](</zh/algo/data-structure/bst-part4/>)，想把这些递归解法改成迭代，就无能为力了。
@@ -38,33 +38,28 @@ List<TreeNode> traverse(TreeNode root);
 
 换句话说，类似二叉树的递归框架：
 
-```java
-void traverse(TreeNode root) {
-    if (root == null) return;
-    // 前序遍历代码位置
-    traverse(root.left);
-    // 中序遍历代码位置
-    traverse(root.right);
-    // 后序遍历代码位置
-}
+```python
+def traverse(root):
+    if not root:
+        return
+    # 前序遍历代码位置
+    traverse(root.left)
+    # 中序遍历代码位置
+    traverse(root.right)
+    # 后序遍历代码位置
 ``` 
 
 迭代框架也应该有前中后序代码的位置：
 
-```java
-void traverse(TreeNode root) {
-    while (...) {
-        if (...) {
-          // 前序遍历代码位置
-        }
-        if (...) {
-          // 中序遍历代码位置
-        }
-        if (...) {
-          // 后序遍历代码位置
-        }
-    }
-}
+```python
+def traverse(root: TreeNode):
+    while (...):
+        if (...):
+          # 前序遍历代码位置
+        if (...):
+          # 中序遍历代码位置
+        if (...):
+          # 后序遍历代码位置
 ``` 
 
 我如果想把递归改成迭代，直接把递归解法中前中后序对应位置的代码复制粘贴到迭代框架里，就可以直接运行，得到正确的结果。
@@ -86,3 +81,7 @@ void traverse(TreeNode root) {
 ![diagram](https://labuladong.online/images/algo/binary-tree-summary/2.jpeg)
 
 如果从递归代码上来看，上述结论是很容易理解的：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

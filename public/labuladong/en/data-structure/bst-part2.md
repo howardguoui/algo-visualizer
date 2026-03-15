@@ -31,15 +31,14 @@ The basic operations of BST mainly rely on the "left smaller, right bigger" prop
 
 For BST problems, you will often see code logic like this:
 
-```java
-void BST(TreeNode root, int target) {
-    if (root.val == target)
-        // found the target, do something
-    if (root.val < target) 
-        BST(root.right, target);
-    if (root.val > target)
-        BST(root.left, target);
-}
+```python
+def BST(root: TreeNode, target: int) -> None:
+    if root.val == target:
+        # target found, do something
+    if root.val < target:
+        BST(root.right, target)
+    if root.val > target:
+        BST(root.left, target)
 ``` 
 
 This code framework is similar to the usual binary tree traversal, just using the BST "left smaller, right bigger" feature. Next, let's see how the basic operations on BST are implemented.
@@ -86,48 +85,48 @@ The problem is from [LeetCode 98. Validate Binary Search Tree](<https://leetcode
 
 Be careful, there is a trap here. According to the BST property, every node should be compared with its left and right children to check if it is valid. It seems you might write code like this:
 
-```java
-boolean isValidBST(TreeNode root) {
-    if (root == null) return true;
-    // the left side of the root should be smaller
-    if (root.left != null && root.left.val >= root.val)
-        return false;
-    // the right side of the root should be larger
-    if (root.right != null && root.right.val <= root.val)
-        return false;
+```python
+def isValidBST(root: TreeNode) -> bool:
+    if root is None:
+        return True
+    # the left of root should be smaller
+    if root.left is not None and root.left.val >= root.val:
+        return False
+    # the right of root should be larger
+    if root.right is not None and root.right.val <= root.val:
+        return False
 
-    return isValidBST(root.left)
-        && isValidBST(root.right);
-}
+    return isValidBST(root.left) and isValidBST(root.right)
 ``` 
 
 But this algorithm is wrong. For BST, every node must be less than **all** nodes in its right subtree. The following tree is not a valid BST because there is a node `8` in the left subtree of node `7`, but our code would say it is valid:
 
-loading...
+7418910
 
 **The reason for the mistake is that, for each node`root`, the code only checks its left and right child nodes. But, by the definition of BST, the whole left subtree of `root` must be less than `root.val`, and the whole right subtree must be greater than `root.val`.**
 
 The problem is, for a node `root`, it can only directly check its children. How do we pass this constraint down to all nodes of the left and right subtree? Here is the correct code:
 
-```java
-class Solution {
-    public boolean isValidBST(TreeNode root) {
-        return isValidBST(root, null, null);
-    }
+```python
+class Solution:
+    def isValidBST(self, root: TreeNode) -> bool:
+        return self._isValidBST(root, None, None)
 
-    // nodes in the subtree rooted at root must satisfy max.val > root.val > min.val
-    boolean isValidBST(TreeNode root, TreeNode min, TreeNode max) {
-        // base case
-        if (root == null) return true;
-        // if root.val does not satisfy the constraints of max and min, it is not a valid BST
-        if (min != null && root.val <= min.val) return false;
-        if (max != null && root.val >= max.val) return false;
-        // the maximum value in the left subtree is root.val, and the
-        // minimum value in the right subtree is root.val
-        return isValidBST(root.left, min, root)
-                && isValidBST(root.right, root, max);
-    }
-}
+    # Definition: This function returns whether all nodes in the
+    # subtree rooted at `root` satisfy max.val > root.val > min.val
+    def _isValidBST(self, root: TreeNode, min: TreeNode, max: TreeNode) -> bool:
+        # base case
+        if root is None:
+            return True
+        # If root.val does not comply with the constraints
+        # of max and min, it is not a valid BST
+        if min is not None and root.val <= min.val:
+            return False
+        if max is not None and root.val >= max.val:
+            return False
+        # According to the definition, the maximum value of the left subtree is
+        # root.val, and the minimum value of the right subtree is root.val
+        return self._isValidBST(root.left, min, root) and self._isValidBST(root.right, root, max)
 ``` 
 
 Algorithm Visualization
@@ -138,45 +137,43 @@ We use a helper function and add extra parameters to pass down these constraints
 
 LeetCode problem 700, "[Search in a Binary Search Tree](<https://leetcode.com/problems/search-in-a-binary-search-tree/>)," asks you to find a node with value `target` in a BST. The function signature is as follows:
 
-```java
-TreeNode searchBST(TreeNode root, int target);
+```python
+def searchBST(root: TreeNode, target: int) -> TreeNode:
 ``` 
 
 If you are searching in a normal binary tree, you can write the code like this:
 
-```java
-TreeNode searchBST(TreeNode root, int target) {
-    if (root == null) return null;
-    if (root.val == target) return root;
-    // if the current node is not found, recursively search the left and right subtrees
-    TreeNode left = searchBST(root.left, target);
-    TreeNode right = searchBST(root.right, target);
+```python
+def searchBST(root, target):
+    if not root:
+        return None
+    if root.val == target:
+        return root
+    # if the current node is not found, recursively search the left and right subtrees
+    left = searchBST(root.left, target)
+    right = searchBST(root.right, target)
 
-    return left != null ? left : right;
-}
+    return left if left else right
 ``` 
 
 This code is correct, but it checks all nodes, which is brute-force and works for any binary tree. But how can we use the special property of BST, where the left side is smaller and the right side is larger?
 
 It is simple. You do not need to search both sides. You can use a binary search idea: compare `target` with `root.val`. This way, you can ignore one side. Let's change the code using this idea:
 
-```java
-// define: search for the node with value target in the BST rooted at root, return the node
-TreeNode searchBST(TreeNode root, int target) {
-    if (root == null) {
-        return null;
-    }
-    // search in the left subtree
-    if (root.val > target) {
-        return searchBST(root.left, target);
-    }
-    // search in the right subtree
-    if (root.val < target) {
-        return searchBST(root.right, target);
-    }
-    // the current node is the target value
-    return root;
-}
+```python
+# define: search for the node with value target in the BST rooted at root, return the node
+def searchBST(root: TreeNode, target: int) -> TreeNode:
+    # if the binary tree is empty, return directly
+    if not root:
+        return None
+    # search in the left subtree
+    if root.val > target:
+        return searchBST(root.left, target)
+    # search in the right subtree
+    if root.val < target:
+        return searchBST(root.right, target)
+    # the current node is the target value
+    return root
 ``` 
 
 Algorithm Visualization
@@ -235,20 +232,22 @@ The problem is from [LeetCode 701. Insert into a Binary Search Tree](<https://le
 
 Let's look at the solution code. You can use the comments and visual panel to help you understand:
 
-```java
-class Solution {
-    public TreeNode insertIntoBST(TreeNode root, int val) {
-        // find the empty spot to insert the new node
-        if (root == null) return new TreeNode(val);
-        // if (root.val == val)
-        // generally, in a bst, we don't insert an element that already exists
-        if (root.val < val)
-            root.right = insertIntoBST(root.right, val);
-        if (root.val > val)
-            root.left = insertIntoBST(root.left, val);
-        return root;
-    }
-}
+```python
+# define: insert val into the BST rooted at root, return the root of the modified BST
+class Solution:
+    def insertIntoBST(self, root: TreeNode, val: int) -> TreeNode:
+        if not root:
+            # find an empty spot to insert the new node
+            return TreeNode(val)
+        # go to the right subtree to find the insertion position
+        if root.val < val:
+            root.right = self.insertIntoBST(root.right, val)
+        # go to the left subtree to find the insertion position
+        if root.val > val:
+            root.left = self.insertIntoBST(root.left, val)
+        # return root, the upper level of recursion will
+        # receive the return value as a child node
+        return root
 ``` 
 
 Algorithm Visualization
@@ -307,19 +306,17 @@ The problem is from [LeetCode 450. Delete Node in a BST](<https://leetcode.com/p
 
 This problem is a bit tricky. Like insertion, you need to "find" first, then "change." Let's write the basic structure first:
 
-```java
-TreeNode deleteNode(TreeNode root, int key) {
-    if (root.val == key) {
-        // found it, proceed to delete
-    } else if (root.val > key) {
-        // go to the left subtree
-        root.left = deleteNode(root.left, key);
-    } else if (root.val < key) {
-        // go to the right subtree
-        root.right = deleteNode(root.right, key);
-    }
-    return root;
-}
+```python
+def deleteNode(root: TreeNode, key: int) -> TreeNode:
+    if root.val == key:
+        # Found it, proceed with deletion
+    elif root.val > key:
+        # Search in the left subtree
+        root.left = deleteNode(root.left, key)
+    elif root.val < key:
+        # Search in the right subtree
+        root.right = deleteNode(root.right, key)
+    return root
 ``` 
 
 After finding the target node, let's say it is node `A`, how do we delete it? This is the main challenge, because you can't break the properties of the BST. There are three possible cases, shown with pictures.
@@ -360,37 +357,39 @@ if (root.left != null && root.right != null) {
 
 After explaining all three cases, fill them into the framework and simplify the code:
 
-```java
-class Solution {
-    public TreeNode deleteNode(TreeNode root, int key) {
-        if (root == null) return null;
-        if (root.val == key) {
-            // these two if statements correctly handle cases 1 and 2
-            if (root.left == null) return root.right;
-            if (root.right == null) return root.left;
-            // handle case 3
-            // get the smallest node in the right subtree
-            TreeNode minNode = getMin(root.right);
-            // delete the smallest node in the right subtree
-            root.right = deleteNode(root.right, minNode.val);
-            // replace the root node with the smallest node from the right subtree
-            minNode.left = root.left;
-            minNode.right = root.right;
-            root = minNode;
-        } else if (root.val > key) {
-            root.left = deleteNode(root.left, key);
-        } else if (root.val < key) {
-            root.right = deleteNode(root.right, key);
-        }
-        return root;
-    }
+```python
+class Solution:
+    # define: delete the node with value key in the BST
+    # rooted at root, return the root after deletion
+    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+        if root == None:
+            return None
+        if root.val == key:
+            # These two if statements correctly handle cases 1 and 2
+            if root.left == None:
+                return root.right
+            if root.right == None:
+                return root.left
+            # handle case 3
+            # get the smallest node in the right subtree
+            minNode = self.getMin(root.right)
+            # delete the smallest node in the right subtree
+            root.right = self.deleteNode(root.right, minNode.val)
+            # replace the root node with the smallest node in the right subtree
+            minNode.left = root.left
+            minNode.right = root.right
+            root = minNode
+        elif root.val > key:
+            root.left = self.deleteNode(root.left, key)
+        elif root.val < key:
+            root.right = self.deleteNode(root.right, key)
+        return root
 
-    TreeNode getMin(TreeNode node) {
-        // the leftmost node in a BST is the smallest
-        while (node.left != null) node = node.left;
-        return node;
-    }
-}
+    def getMin(self, node: TreeNode) -> TreeNode:
+        # The leftmost node in a BST is the smallest
+        while node.left != None:
+            node = node.left
+        return node
 ``` 
 
 Algorithm Visualization
@@ -431,4 +430,8 @@ Let's summarize a few key points from this article:
 
 That's all for this article. For more classic binary tree problems and recursion practice, see the [Recursion Practice for Binary Search Trees](</en/algo/problem-set/bst1/>) in the binary tree chapter.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

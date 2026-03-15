@@ -49,31 +49,25 @@ First, go through the array to find the smallest value and swap it with the firs
 
 This algorithm is commonly known as "**Selection Sort** ," where you repeatedly traverse to select the smallest element. Here is how it looks in code:
 
-```java
-void sort(int[] nums) {
-    int n = nums.length;
-    // sortedIndex is a delimiter
-    // elements with index < sortedIndex are sorted
-    // elements with index >= sortedIndex are unsorted
-    // initialized to 0, indicating the whole array is unsorted
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // find the minimum in the unsorted part [sortedIndex, n)
-        int minIndex = sortedIndex;
-        for (int i = sortedIndex + 1; i < n; i++) {
-            if (nums[i] < nums[minIndex]) {
-                minIndex = i;
-            }
-        }
-        // swap the minimum value with the element at sortedIndex
-        int tmp = nums[sortedIndex];
-        nums[sortedIndex] = nums[minIndex];
-        nums[minIndex] = tmp;
+```python
+def sort(nums: List[int]) -> None:
+    n = len(nums)
+    # sortedIndex is a boundary
+    # elements with index < sortedIndex are sorted
+    # elements with index >= sortedIndex are unsorted
+    # initialized to 0, meaning the whole array is unsorted
+    sortedIndex = 0
+    while sortedIndex < n:
+        # find the minimum in the unsorted part [sortedIndex, n)
+        minIndex = sortedIndex
+        for i in range(sortedIndex + 1, n):
+            if nums[i] < nums[minIndex]:
+                minIndex = i
+        # swap the minimum value with the element at sortedIndex
+        nums[sortedIndex], nums[minIndex] = nums[minIndex], nums[sortedIndex]
 
-        // move sortedIndex one position forward
-        sortedIndex++;
-    }
-}
+        # increment sortedIndex by one
+        sortedIndex += 1
 ``` 
 
 The visualization process of the above algorithm is as follows:
@@ -227,4 +221,8 @@ Is there a way to optimize this algorithm to make it stable? The time complexity
 
 You can think about this problem yourself. In the following sorting algorithms, we will attempt to solve this issue.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

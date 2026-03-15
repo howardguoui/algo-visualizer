@@ -85,3 +85,7 @@ class AssignSegmentTree {
 `rangeAdd` 和 `rangeUpdate` 的实现逻辑非常类似，理论上可以同时实现到一个类上，但是两个逻辑混在一起代码会更复杂，徒增理解成本，而且实际的算法题中，一般只会用到区间累加或区间赋值中的一种，不会同时用到，所以本文还是把它们拆到两个类分别实现，方便大家理解其原理。
 
 本文的最后会给出一个万能线段树模板 `AllInOneSegmentTree`，同时包含上述所有 API 和线段树的所有优化，笔试时可以直接拿来使用。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

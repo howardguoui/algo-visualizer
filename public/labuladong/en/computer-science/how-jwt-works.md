@@ -49,7 +49,7 @@ Also, this method is **not self-contained** , because the request header only co
 
 Here is a sequence diagram of the Session-Cookie authentication process:
 
-加载图表...
+Session StoreServerBrowserSession StoreServerBrowserPOST /login (username, password)Verify credentialsCreate sessionStore session info (sessionID -> userInfo)Response with Set-Cookie: sessionID=...GET /api/data (with sessionID cookie)Look up sessionIDReturn userInfoProcess request with userInfoResponse with requested data
 
 ## JWT Authentication Process
 
@@ -95,7 +95,7 @@ When the server receives the JWT token, it can directly get the user's authentic
 
 Here is a flowchart showing the JWT authentication process:
 
-加载图表...
+ServerBrowser/ClientServerBrowser/ClientPOST /login (username, password)Verify credentialsCreate JWT with user info payloadSign JWT with private keyResponse with JWTGET /api/data (Authorization: Bearer <JWT>)Verify JWT signature with public keyExtract user info from payloadProcess request with userInfoResponse with requested data
 
 ## Structure of JWT
 
@@ -206,4 +206,8 @@ You will see `Valid JWT` and `Signature Verified`, which means this JWT token is
 
 If you change any data in the JWT payload, the verification will fail.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

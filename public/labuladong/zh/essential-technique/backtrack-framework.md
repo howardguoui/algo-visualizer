@@ -96,14 +96,12 @@ def backtrack(路径, 选择列表):
 
 再进一步，如何遍历一棵树？这个应该不难吧。回忆一下之前 [学习数据结构的框架思维](</zh/algo/essential-technique/algorithm-summary/>) 写过，各种搜索问题其实都是树的遍历问题，而多叉树的遍历框架就是这样：
 
-```java
-void traverse(TreeNode root) {
-    for (TreeNode child : root.childern) {
-        // 前序位置需要的操作
-        traverse(child);
-        // 后序位置需要的操作
-    }
-}
+```python
+def traverse(root: TreeNode):
+    for child in root.children:
+        # 前序位置需要的操作
+        traverse(child)
+        # 后序位置需要的操作
 ``` 
 
 Info
@@ -139,49 +137,43 @@ for 选择 in 选择列表:
 
 下面，直接看全排列代码：
 
-```java
-class Solution {
+```python
+class Solution:
+    def __init__(self):
+        self.res = []
 
-    List<List<Integer>> res = new LinkedList<>();
-
-    // 主函数，输入一组不重复的数字，返回它们的全排列
-    List<List<Integer>> permute(int[] nums) {
-        // 记录「路径」
-        LinkedList<Integer> track = new LinkedList<>();
-        // 「路径」中的元素会被标记为 true，避免重复使用
-        boolean[] used = new boolean[nums.length];
+    # 主函数，输入一组不重复的数字，返回它们的全排列
+    def permute(self, nums):
+        # 记录「路径」
+        track = []
+        # 「路径」中的元素会被标记为 true，避免重复使用
+        used = [False] * len(nums)
         
-        backtrack(nums, track, used);
-        return res;
-    }
+        self.backtrack(nums, track, used)
+        return self.res
 
-    // 路径：记录在 track 中
-    // 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
-    // 结束条件：nums 中的元素全都在 track 中出现
-    void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
-        // 触发结束条件
-        if (track.size() == nums.length) {
-            res.add(new LinkedList(track));
-            return;
-        }
+    # 路径：记录在 track 中
+    # 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
+    # 结束条件：nums 中的元素全都在 track 中出现
+    def backtrack(self, nums, track, used):
+        # 触发结束条件
+        if len(track) == len(nums):
+            self.res.append(track.copy())
+            return
 
-        for (int i = 0; i < nums.length; i++) {
-            // 排除不合法的选择
-            if (used[i]) { 
-                // nums[i] 已经在 track 中，跳过
-                continue;
-            }
-            // 做选择
-            track.add(nums[i]);
-            used[i] = true;
-            // 进入下一层决策树
-            backtrack(nums, track, used);
-            // 取消选择
-            track.removeLast();
-            used[i] = false;
-        }
-    }
-}
+        for i in range(len(nums)):
+            # 排除不合法的选择
+            if used[i]: 
+                # nums[i] 已经在 track 中，跳过
+                continue
+            # 做选择
+            track.append(nums[i])
+            used[i] = True
+            # 进入下一层决策树
+            self.backtrack(nums, track, used)
+            # 取消选择
+            track.pop()
+            used[i] = False
 ``` 
 
 算法可视化
@@ -213,3 +205,7 @@ def backtrack(...):
 其实想想看，回溯算法和动态规划是不是有点像呢？我们在动态规划系列文章中多次强调，动态规划的三个需要明确的点就是「状态」「选择」和「base case」，是不是就对应着走过的「路径」，当前的「选择列表」和「结束条件」？
 
 动态规划和回溯算法底层都把问题抽象成了树的结构，但这两种算法在思路上是完全不同的。在 [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>) 你将看到动态规划和回溯算法更深层次的区别和联系。
+
+## 评论
+
+请登录后查看/发表评论

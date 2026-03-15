@@ -79,8 +79,8 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-int findRotateSteps(String ring, String key);
+```python
+def findRotateSteps(ring: str, key: str) -> int:
 ``` 
 
 比如题目举的例子，输入 `ring = "godding", key = "gd"`，对应的圆盘如下（大写只是为了清晰，实际上输入的字符串都是小写字母）：
@@ -105,8 +105,8 @@ int findRotateSteps(String ring, String key);
 
 这样我们可以写这样一个 `dp` 函数：
 
-```java
-int dp(String ring, int i, String key, int j);
+```python
+def dp(ring: str, i: int, key: str, j: int) -> int:
 ``` 
 
 这个 `dp` 函数的定义如下：
@@ -115,12 +115,12 @@ int dp(String ring, int i, String key, int j);
 
 根据这个定义，题目其实就是想计算 `dp(ring, 0, key, 0)` 的值，而且我们可以把 `dp` 函数的 base case 写出来：
 
-```java
-int dp(String ring, int i, String key, int j) {
-    // base case，完成输入
-    if (j == key.length()) return 0;
-    // ...
-}
+```python
+def dp(ring: str, i: int, key: str, j: int) -> int:
+    # base case，完成输入
+    if j == len(key):
+        return 0
+    # ...
 ``` 
 
 接下来，思考一下如何根据状态做选择，如何进行状态转移？
@@ -167,59 +167,59 @@ int dp(String ring, int i, String key, int j) {
 
 讲到这就差不多了，直接看最终代码吧：
 
-```java
-class Solution {
-    // 字符 -> 索引列表
-    private Map<Character, List<Integer>> charToIndex = new HashMap<>();
-    // 备忘录
-    private int[][] memo;
+```python
+class Solution:
+    # 字符 -> 索引列表
+    def __init__(self):
+        self.charToIndex = {}
+        # 备忘录
+        self.memo = []
 
-    // 主函数
-    public int findRotateSteps(String ring, String key) {
-        int m = ring.length();
-        int n = key.length();
-        // 备忘录全部初始化为 0
-        memo = new int[m][n];
-        // 记录圆环上字符到索引的映射
-        for (int i = 0; i < ring.length(); i++) {
-            char c = ring.charAt(i);
-            if (!charToIndex.containsKey(c)) {
-                charToIndex.put(c, new ArrayList<>());
-            }
-            charToIndex.get(c).add(i);
-        }
-        // 圆盘指针最初指向 12 点钟方向，
-        // 从第一个字符开始输入 key
-        return dp(ring, 0, key, 0);
-    }
+    # 主函数
+    def findRotateSteps(self, ring: str, key: str) -> int:
+        m = len(ring)
+        n = len(key)
+        # 备忘录全部初始化为 0
+        self.memo = [[0] * n for _ in range(m)]
+        # 记录圆环上字符到索引的映射
+        for i, c in enumerate(ring):
+            if c not in self.charToIndex:
+                self.charToIndex[c] = []
+            self.charToIndex[c].append(i)
+        # 圆盘指针最初指向 12 点钟方向，
+        # 从第一个字符开始输入 key
+        return self.dp(ring, 0, key, 0)
 
-    // 计算圆盘指针在 ring[i]，输入 key[j..] 的最少操作数
-    private int dp(String ring, int i, String key, int j) {
-        // base case 完成输入
-        if (j == key.length()) return 0;
-        // 查找备忘录，避免重叠子问题
-        if (memo[i][j] != 0) return memo[i][j];
+    # 计算圆盘指针在 ring[i]，输入 key[j..] 的最少操作数
+    def dp(self, ring: str, i: int, key: str, j: int) -> int:
+        # base case 完成输入
+        if j == len(key):
+            return 0
+        # 查找备忘录，避免重叠子问题
+        if self.memo[i][j] != 0:
+            return self.memo[i][j]
 
-        int n = ring.length();
-        // 做选择
-        int res = Integer.MAX_VALUE;
-        // ring 上可能有多个字符 key[j]
-        for (int k : charToIndex.get(key.charAt(j))) {
-            // 拨动指针的次数
-            int delta = Math.abs(k - i);
-            // 选择顺时针还是逆时针
-            delta = Math.min(delta, n - delta);
-            // 将指针拨到 ring[k]，继续输入 key[j+1..]
-            int subProblem = dp(ring, k, key, j + 1);
-            // 选择「整体」操作次数最少的
-            // 加一是因为按动按钮也是一次操作
-            res = Math.min(res, 1 + delta + subProblem);
-        }
-        // 将结果存入备忘录
-        memo[i][j] = res;
-        return res;
-    }
-}
+        n = len(ring)
+        # 做选择
+        res = float('inf')
+        # ring 上可能有多个字符 key[j]
+        for k in self.charToIndex[key[j]]:
+            # 拨动指针的次数
+            delta = abs(k - i)
+            # 选择顺时针还是逆时针
+            delta = min(delta, n - delta)
+            # 将指针拨到 ring[k]，继续输入 key[j+1..]
+            subProblem = self.dp(ring, k, key, j + 1)
+            # 选择「整体」操作次数最少的
+            # 加一是因为按动按钮也是一次操作
+            res = min(res, 1 + delta + subProblem)
+        # 将结果存入备忘录
+        self.memo[i][j] = res
+        return res
 ``` 
 
 算法可视化
+
+## 评论
+
+请登录后查看/发表评论

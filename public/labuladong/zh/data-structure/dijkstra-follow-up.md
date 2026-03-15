@@ -29,3 +29,7 @@
 这个场景下依然可以使用 Dijkstra 算法，但是需要修改 `distTo` 数组，且需要给 `State` 类增加额外的字段。
 
 下面直接给出代码实现，给 `dijkstra` 函数增加一个 `k` 参数，其他不同的地方用高亮标记了：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

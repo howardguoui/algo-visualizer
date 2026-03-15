@@ -47,8 +47,8 @@ Given an array `nums` and a positive integer `k`, there is a window of size `k` 
 
 The function signature is as follows:
 
-```java
-int[] maxSlidingWindow(int[] nums, int k);
+```python
+def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
 ``` 
 
 For example, here is a sample problem provided by LeetCode:
@@ -73,54 +73,57 @@ Next, we will use a monotonic queue structure to calculate the maximum value in 
 
 Before introducing the API of the "monotonic queue" data structure, let's compare the standard API of a [regular queue](</en/algo/data-structure-basic/queue-stack-basic/>) with the API implemented by the monotonic queue:
 
-```java
-// API for a regular queue
-class Queue {
-    // enqueue operation, add element n to the end of the queue
-    void push(int n);
-    // dequeue operation, remove the front element of the queue
-    void pop();
-}
+```python
+# API for a regular queue
+class Queue:
+    # enqueue operation, add element n to the end of the queue
+    def push(self, n: int):
+        pass
+    
+    # dequeue operation, remove the front element of the queue
+    def pop(self):
+        pass
 
-// API for a monotonic queue
-class MonotonicQueue {
-    // add element n to the end of the queue
-    void push(int n);
-    // return the maximum value currently in the queue
-    int max();
-    // if the front element is n, remove it
-    void pop(int n);
-}
+# API for a monotonic queue
+class MonotonicQueue:
+    # add element n to the end of the queue
+    def push(self, n: int):
+        pass
+
+    # return the maximum value in the current queue
+    def max(self) -> int:
+        pass
+
+    # if the front element is n, remove it
+    def pop(self, n: int):
+        pass
 ``` 
 
 Of course, the implementation of these APIs for a monotonic queue is different from a regular Queue, but for now, let's assume these operations have a time complexity of O(1) and first set up the solution framework for this "sliding window" problem:
 
-```java
-int[] maxSlidingWindow(int[] nums, int k) {
-    MonotonicQueue window = new MonotonicQueue();
-    List<Integer> res = new ArrayList<>();
-    
-    for (int i = 0; i < nums.length; i++) {
-        if (i < k - 1) {
-            // first fill the window with the first k - 1 elements
-            window.push(nums[i]);
-        } else {
-            // the window starts sliding forward
-            // move in the new element
-            window.push(nums[i]);
-            // record the maximum element in the current window to the result
-            res.add(window.max());
-            // remove the last element
-            window.pop(nums[i - k + 1]);
-        }
-    }
-    // convert the List to an int[] array as the return value
-    int[] arr = new int[res.size()];
-    for (int i = 0; i < res.size(); i++) {
-        arr[i] = res.get(i);
-    }
-    return arr;
-}
+```python
+from collections import deque
+from typing import List
+
+def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
+    window = MonotonicQueue()
+    res = []
+
+    for i in range(len(nums)):
+        if i < k - 1:
+            # first fill the window with the first k - 1 elements
+            window.append(nums[i])
+        else:
+            # the window starts to slide forward
+            # insert the new element
+            window.append(nums[i])
+            # add the maximum element of the current window to the result
+            res.append(max(window))
+            # remove the last element
+            window.popleft()
+
+    # convert the List type to an int[] array as the return value
+    return res
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/monotonic-queue/1.png)
@@ -133,21 +136,22 @@ By observing the sliding window process, we can see that implementing a "monoton
 
 The core idea of the "monotonic queue" is similar to the "monotonic stack." The `push` method still adds elements at the queue's tail, but it removes elements in front that are smaller than itself:
 
-```java
-class MonotonicQueue {
-    // doubly linked list, supports quick insertion and deletion at both head and tail
-    // maintain elements in a monotonically increasing order from tail to head
-    private LinkedList<Integer> maxq = new LinkedList<>();
+```python
+from collections import deque
 
-    // add an element n at the tail, maintaining the monotonic property of maxq
-    public void push(int n) {
-        // remove all elements smaller than itself from the front
-        while (!maxq.isEmpty() && maxq.getLast() < n) {
-            maxq.pollLast();
-        }
-        maxq.addLast(n);
-    }
-}
+class MonotonicQueue:
+    
+    def __init__(self):
+        # use a deque to support adding and removing elements from both ends
+        # maintain the elements in increasing order from tail to head
+        self.maxq = deque()
+    
+    # add an element n to the tail, maintaining the monotonic property of maxq
+    def push(self, n: int) -> None:
+        # remove all elements before it that are smaller than itself
+        while len(self.maxq) > 0 and self.maxq[-1] < n:
+            self.maxq.pop()
+        self.maxq.append(n)
 ``` 
 
 Imagine that the size of a number represents a person's weight. A heavier weight will flatten the lighter ones in front of it until it encounters a weight of greater magnitude.
@@ -156,21 +160,17 @@ Imagine that the size of a number represents a person's weight. A heavier weight
 
 If each element is processed in this manner when added, the elements in the monotonic queue will maintain a **monotonically decreasing** order. This makes our `max` method straightforward to implement: simply return the front element of the queue. The `pop` method also operates on the front of the queue. If the front element is the element `n` to be removed, then delete it:
 
-```java
-class MonotonicQueue {
-    // to save space, the previous code section is omitted...
+```python
+class MonotonicQueue:
+    # To save space, the previous code part is omitted...
 
-    public int max() {
-        // the element at the front of the queue is definitely the largest
-        return maxq.getFirst();
-    }
+    def max(self) -> int:
+        # The element at the head of the queue is definitely the largest
+        return self.maxq[0]
 
-    public void pop(int n) {
-        if (n == maxq.getFirst()) {
-            maxq.pollFirst();
-        }
-    }
-}
+    def pop(self, n: int) -> None:
+        if n == self.maxq[0]:
+            self.maxq.popleft()
 ``` 
 
 The reason the `pop` method checks if `n == maxq.getFirst()` is that the front element `n` we want to remove might have been "flattened" during the `push` process and may no longer exist. In this case, we don't need to remove it:
@@ -179,57 +179,42 @@ The reason the `pop` method checks if `n == maxq.getFirst()` is that the front e
 
 With this, the design of the monotonic queue is complete. Let's look at the full solution code:
 
-```java
-class Solution {
-    // implementation of the monotonic queue
-    class MonotonicQueue {
-        LinkedList<Integer> q = new LinkedList<>();
-        public void push(int n) {
-            // remove all elements smaller than n
-            while (!q.isEmpty() && q.getLast() < n) { 
-                q.pollLast();
-            }
-            // then add n to the end
-            q.addLast(n);
-        }
+```python
+class MonotonicQueue:
+    def __init__(self):
+        self.maxq = []
+    
+    def push(self, n):
+        # remove all elements less than n
+        while self.maxq and self.maxq[-1] < n: 
+            self.maxq.pop()
+        # then add n to the end
+        self.maxq.append(n)
+    
+    def max(self):
+        return self.maxq[0]
+    
+    def pop(self, n):
+        if n == self.maxq[0]:
+            self.maxq.pop(0)
 
-        public int max() {
-            return q.getFirst();
-        }
-
-        public void pop(int n) {
-            if (n == q.getFirst()) {
-                q.pollFirst();
-            }
-        }
-    }
-
-    // implementation of the solution function
-    public int[] maxSlidingWindow(int[] nums, int k) {
-        MonotonicQueue window = new MonotonicQueue();
-        List<Integer> res = new ArrayList<>();
-
-        for (int i = 0; i < nums.length; i++) {
-            if (i < k - 1) {
-                // first fill the window with the first k - 1 elements
-                window.push(nums[i]);
-            } else { 
-                // slide the window forward and add the new number
-                window.push(nums[i]);
-                // record the maximum value of the current window
-                res.add(window.max());
-                // remove the old number
-                window.pop(nums[i - k + 1]);
-            }
-        }
-        // need to convert to int[] array before returning
-        int[] arr = new int[res.size()];
-        for (int i = 0; i < res.size(); i++) {
-            arr[i] = res.get(i);
-        }
-        return arr;
-    }
-}
+class Solution(object):
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        window = MonotonicQueue()
+        res = []
+        
+        for i in range(len(nums)):
+            if i < k - 1:
+                # first fill the window with the first k - 1 elements
+                window.push(nums[i])
+            else: 
+                # slide the window forward, add new number
+                window.push(nums[i])
+                # record the maximum value of the current window
+                res.append(window.max())
+                # remove the old number
+                window.pop(nums[i - k + 1])
+        return res
 ``` 
 
 Do not overlook some detailed issues. When implementing `MonotonicQueue`, we used Java's `LinkedList` because the linked list structure supports fast insertion and deletion of elements at both the head and tail. Meanwhile, the `res` in the solution code uses the `ArrayList` structure, as elements will be accessed by index later, making the array structure more suitable. Pay attention to these details when implementing in other languages.
@@ -256,28 +241,36 @@ Finally, I pose a few questions for you to consider:
 
 In other words, can you implement a general-purpose monotonic queue:
 
-```java
-// General implementation of a monotonic queue, which
-// can efficiently maintain maximum and minimum values
-class MonotonicQueue<E extends Comparable<E>> {
-
-    // Standard queue API to add an element to the back of the queue
-    public void push(E elem);
-
-    // Standard queue API to pop an element from the front of the queue, following FIFO order
-    public E pop();
-
-    // Standard queue API to return the number of elements in the queue
-    public int size();
-
-    // Monotonic queue specific API to compute the maximum value in the queue in O(1) time
-    public E max();
-
-    // Monotonic queue specific API to compute the minimum value in the queue in O(1) time
-    public E min();
-}
+```python
+# General implementation of a monotonic queue, can
+# efficiently maintain maximum and minimum values
+class MonotonicQueue:
+    def push(self, elem: 'Comparable') -> None:
+        pass
+    
+    # Standard queue API, pop elements from the front in FIFO order
+    def pop(self) -> 'Comparable':
+        pass
+    
+    # Standard queue API, return the number of elements in the queue
+    def size(self) -> int:
+        pass
+    
+    # Monotonic queue specific API, calculate the
+    # maximum value of elements in the queue in O(1) time
+    def max(self) -> 'Comparable':
+        pass
+    
+    # Monotonic queue specific API, calculate the
+    # minimum value of elements in the queue in O(1) time
+    def min(self) -> 'Comparable':
+        pass
 ``` 
 
 I will provide a general implementation of the monotonic queue and classic exercises in [General Implementation and Applications of Monotonic Queue](</en/algo/problem-set/monotonic-queue/>). For more data structure design problems, see [Classic Exercises on Data Structure Design](</en/algo/problem-set/ds-design/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

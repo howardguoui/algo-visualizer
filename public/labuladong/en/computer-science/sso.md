@@ -23,7 +23,7 @@ Suppose you work at a company and use many different systems every day:
   * Document system: `docs.company.com`
   * HR system: `hr.company.com`
 
-You can log in to all these systems with the same company account (for example, an email account with your employee ID like `[[email protected]](</cdn-cgi/l/email-protection>)`). But since each system uses a different subdomain, you have to log in repeatedly for each system.
+You can log in to all these systems with the same company account (for example, an email account with your employee ID like `tom@internal.company.com`). But since each system uses a different subdomain, you have to log in repeatedly for each system.
 
 We talked about [Session and Cookie](</en/algo/other-skills/session-and-cookie/>) before. When you log in to `git.company.com`, the server sets a Session Cookie like this:
 
@@ -105,7 +105,7 @@ Now, let’s look at the full SSO process.
 
 ### First Time Accessing App A
 
-加载图表...
+Authentication Server(op.company.com)App A(mail.company.com)User BrowserAuthentication Server(op.company.com)App A(mail.company.com)User BrowserNo Session CookieNo Session Cookie Show login pageSet Session Cookie1\. Visit enterprise email2\. Not logged in, redirect to authentication server3\. Go to authentication server4\. Enter username and password5\. Check credentials6\. Give identity credential, redirect back to App A7\. Visit App A with credential8\. Verify credential: "Is this real?"9\. Return user info10\. Allow access to email
 
 Now, you are logged in to App A. The authentication server `op.company.com` has set a Session Cookie in your browser to record your login state.
 
@@ -113,10 +113,14 @@ Now, you are logged in to App A. The authentication server `op.company.com` has 
 
 Now you want to use App B (for example, the CRM system):
 
-加载图表...
+Authentication Server(op.company.com)App B(crm.company.com)User BrowserAuthentication Server(op.company.com)App B(crm.company.com)User BrowserNo Session CookieCheck Session CookieUser already logged in!1\. Visit CRM system2\. Not logged in, redirect to authentication server3\. Go to authentication server4\. Directly give new identity credentialRedirect back to App B (no password needed)5\. Visit App B with credential6\. Verify credential7\. Return user info8\. Allow access to CRM system
 
 Notice steps 3 and 4: **The authentication server knows from the Session Cookie that the user is already logged in, so no need to enter password again.**
 
 From the user's view, when visiting App B, there is just a quick jump, and you are logged in automatically. The experience is very smooth.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

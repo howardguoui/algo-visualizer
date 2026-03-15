@@ -40,3 +40,7 @@ LeetCode| 力扣| 难度
 但如果你脑海中浮现出的是一棵二叉树，甚至浮现出二叉树后序遍历的场景，那格局就高了，大概率掌握了我经常强调的 [框架思维](</zh/algo/essential-technique/algorithm-summary/>)，用这种抽象能力学习算法就省劲多了。
 
 那么，归并排序明明就是一个数组算法，和二叉树有什么关系？接下来我就具体讲讲。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

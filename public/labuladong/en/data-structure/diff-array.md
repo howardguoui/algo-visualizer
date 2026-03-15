@@ -24,26 +24,18 @@ Before reading this article, you should first learn:
 
 The [Prefix Sum Technique](</en/algo/data-structure/prefix-sum/>) is mainly used when the original array does not change, and you need to quickly find the sum of any interval. The key code is below:
 
-```java
-class PrefixSum {
-    // prefix sum array
-    private int[] preSum;
-
-    // input an array to construct the prefix sum
-    public PrefixSum(int[] nums) {
-        // preSum[0] = 0, convenient for calculating cumulative sum
-        preSum = new int[nums.length + 1];
-        // calculate the cumulative sum of nums
-        for (int i = 1; i < preSum.length; i++) {
-            preSum[i] = preSum[i - 1] + nums[i - 1];
-        }
-    }
+```python
+class PrefixSum:
+    # Prefix sum array
+    def __init__(self, nums: List[int]):
+        self.prefix = [0] * (len(nums) + 1)
+        # Calculate the cumulative sum of nums
+        for i in range(1, len(self.prefix)):
+            self.prefix[i] = self.prefix[i - 1] + nums[i - 1]
     
-    // query the cumulative sum of the closed interval [left, right]
-    public int sumRange(int left, int right) {
-        return preSum[right + 1] - preSum[left];
-    }
-}
+    # Query the cumulative sum of the closed interval [i, j]
+    def query(self, i: int, j: int) -> int:
+        return self.prefix[j + 1] - self.prefix[i]
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/difference/1.jpeg)
@@ -65,26 +57,24 @@ The usual way is simple. If you want to add `val` to all elements from `nums[i]`
 
 Here is where the difference array helps. Just like the prefix sum uses a `preSum` array, we can build a `diff` array for `nums`. **`diff[i]` is the difference between `nums[i]` and `nums[i-1]`**:
 
-```java
-int[] diff = new int[nums.length];
-// construct the difference array
-diff[0] = nums[0];
-for (int i = 1; i < nums.length; i++) {
-    diff[i] = nums[i] - nums[i - 1];
-}
+```python
+diff = [0] * len(nums)
+# Construct the difference array
+diff[0] = nums[0]
+for i in range(1, len(nums)):
+    diff[i] = nums[i] - nums[i - 1]
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/difference/2.jpeg)
 
 Using this `diff` array, you can get back the original `nums` array. The code is like this:
 
-```java
-int[] res = new int[diff.length];
-// construct the result array based on the difference array
-res[0] = diff[0];
-for (int i = 1; i < diff.length; i++) {
-    res[i] = res[i - 1] + diff[i];
-}
+```python
+res = [0] * len(diff)
+# construct the result array based on the difference array
+res[0] = diff[0]
+for i in range(1, len(diff)):
+    res[i] = res[i - 1] + diff[i]
 ``` 
 
 **With the difference array`diff`, you can quickly increase or decrease a range of elements.** If you want to add 3 to all elements from `nums[i]` to `nums[j]`, just do `diff[i] += 3` and `diff[j+1] -= 3`:
@@ -97,52 +87,42 @@ You only need O(1) time to change the `diff` array, which is like updating an en
 
 Now, let's make the difference array into a class with `increment` and `result` methods:
 
-```java
-// Difference Array Utility Class
-class Difference {
-    // difference array
-    private int[] diff;
-    
-    // input an initial array, range operations will be performed on this array
-    public Difference(int[] nums) {
-        diff = new int[nums.length];
-        // construct the difference array based on the initial array
-        diff[0] = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            diff[i] = nums[i] - nums[i - 1];
-        }
-    }
+```python
+# Difference Array Tool Class
+class Difference:
+    # difference array
+    def __init__(self, nums: List[int]):
+        assert len(nums) > 0
+        self.diff = [0] * len(nums)
+        # construct the difference array based on the initial array
+        self.diff[0] = nums[0]
+        for i in range(1, len(nums)):
+            self.diff[i] = nums[i] - nums[i - 1]
 
-    // increment the closed interval [i, j] by val (can be negative)
-    public void increment(int i, int j, int val) {
-        diff[i] += val;
-        if (j + 1 < diff.length) {
-            diff[j + 1] -= val;
-        }
-    }
+    # increment the closed interval [i, j] by val (can be negative)
+    def increment(self, i: int, j: int, val: int) -> None:
+        self.diff[i] += val
+        if j + 1 < len(self.diff):
+            self.diff[j + 1] -= val
 
-    // return the result array
-    public int[] result() {
-        int[] res = new int[diff.length];
-        // construct the result array based on the difference array
-        res[0] = diff[0];
-        for (int i = 1; i < diff.length; i++) {
-            res[i] = res[i - 1] + diff[i];
-        }
-        return res;
-    }
-}
+    # return the result array
+    def result(self) -> List[int]:
+        res = [0] * len(self.diff)
+        # construct the result array based on the difference array
+        res[0] = self.diff[0]
+        for i in range(1, len(self.diff)):
+            res[i] = res[i - 1] + self.diff[i]
+        return res
 ``` 
 
 Notice the `if` statement in the `increment` method:
 
-```java
-void increment(int i, int j, int val) {
-    diff[i] += val;
-    if (j + 1 < diff.length) {
-        diff[j + 1] -= val;
-    }
-}
+```python
+def increment(i: int, j: int, val: int) -> None:
+    diff[i] += val
+    
+    if j + 1 < len(diff):
+        diff[j + 1] -= val
 ``` 
 
 When `j+1 >= diff.length`, it means you are changing all elements from `nums[i]` to the end, so you don't need to subtract `val` from `diff` anymore.
@@ -157,55 +137,43 @@ LeetCode problem 370 "[Range Addition](<https://leetcode.com/problems/range-addi
 
 Just copy over the `Difference` class we implemented and you're done:
 
-```java
-class Solution {
-    public int[] getModifiedArray(int length, int[][] updates) {
-        // nums initialized to all 0s
-        int[] nums = new int[length];
-        // construct difference method
-        Difference df = new Difference(nums);
-        for (int[] update : updates) {
-            int i = update[0];
-            int j = update[1];
-            int val = update[2];
-            df.increment(i, j, val);
-        }
-        return df.result();
-    }
+```python
+class Solution:
+    def getModifiedArray(self, length: int, updates: List[List[int]]) -> List[int]:
+        # nums initialized to all 0s
+        nums = [0] * length
+        # construct difference method
+        df = self.Difference(nums)
+        for update in updates:
+            i = update[0]
+            j = update[1]
+            val = update[2]
+            df.increment(i, j, val)
+        return df.result()
 
-    class Difference {
-        // difference array
-        private int[] diff;
+    class Difference:
+        # difference array
+        def __init__(self, nums: List[int]):
+            assert len(nums) > 0
+            self.diff = [0] * len(nums)
+            # construct difference array
+            self.diff[0] = nums[0]
+            for i in range(1, len(nums)):
+                self.diff[i] = nums[i] - nums[i - 1]
 
-        public Difference(int[] nums) {
-            diff = new int[nums.length];
-            // construct difference array
-            diff[0] = nums[0];
-            for (int i = 1; i < nums.length; i++) {
-                diff[i] = nums[i] - nums[i - 1];
-            }
-        }
+        # increment closed interval [i, j] by val (can be negative)
+        def increment(self, i: int, j: int, val: int):
+            self.diff[i] += val
+            if j + 1 < len(self.diff):
+                self.diff[j + 1] -= val
 
-        // increment closed interval [i, j] by val (can be negative)
-        public void increment(int i, int j, int val) {
-            diff[i] += val;
-            if (j + 1 < diff.length) {
-                diff[j + 1] -= val;
-            }
-        }
-
-        public int[] result() {
-            int[] res = new int[diff.length];
-            // construct result array based on difference array
-            res[0] = diff[0];
-            for (int i = 1; i < diff.length; i++) {
-                res[i] = res[i - 1] + diff[i];
-            }
-            return res;
-        }
-    }
-
-}
+        def result(self) -> List[int]:
+            res = [0] * len(self.diff)
+            # construct result array based on difference array
+            res[0] = self.diff[0]
+            for i in range(1, len(self.diff)):
+                res[i] = res[i - 1] + self.diff[i]
+            return res
 ``` 
 
 Of course, in real problems you'll need to recognize and abstract the pattern—they won't be this obvious about using difference arrays. Let's look at LeetCode problem 1109 "[Corporate Flight Bookings](<https://leetcode.com/problems/corporate-flight-bookings/>)":
@@ -257,8 +225,8 @@ The problem is from [LeetCode 1109. Corporate Flight Bookings](<https://leetcode
 
 The function signature is:
 
-```java
-int[] corpFlightBookings(int[][] bookings, int n)
+```python
+def corpFlightBookings(bookings: List[List[int]], n: int) -> List[int]:
 ``` 
 
 This problem wraps things in confusing language, but it's really just a difference array problem. Let me translate it for you:
@@ -271,59 +239,47 @@ Since the problem counts `n` starting from 1, but array indices start from 0, th
 
 Now it's clear—this is a standard difference array problem! We can directly reuse the class we wrote:
 
-```java
-class Solution {
-    public int[] corpFlightBookings(int[][] bookings, int n) {
-        // initialize nums as all 0
-        int[] nums = new int[n];
-        // construct the difference array
-        Difference df = new Difference(nums);
+```python
+class Solution:
+    def corpFlightBookings(self, bookings, n):
+        # initialize nums as all 0
+        nums = [0] * n
+        # construct the difference array
+        df = self.Difference(nums)
 
-        for (int[] booking : bookings) {
-            // note that converting to array index needs to subtract one
-            int i = booking[0] - 1;
-            int j = booking[1] - 1;
-            int val = booking[2];
-            // increment the range nums[i..j] by val
-            df.increment(i, j, val);
-        }
-        // return the final result array
-        return df.result();
-    }
+        for booking in bookings:
+            # note that converting to array index needs to subtract one
+            i = booking[0] - 1
+            j = booking[1] - 1
+            val = booking[2]
+            # increment the range nums[i..j] by val
+            df.increment(i, j, val)
+        # return the final result array
+        return df.result()
 
-    class Difference {
-        // difference array
-        private int[] diff;
+    class Difference:
+        # difference array
+        def __init__(self, nums):
+            assert len(nums) > 0
+            self.diff = [0] * len(nums)
+            # construct the difference array
+            self.diff[0] = nums[0]
+            for i in range(1, len(nums)):
+                self.diff[i] = nums[i] - nums[i - 1]
 
-        public Difference(int[] nums) {
-            diff = new int[nums.length];
-            // construct the difference array
-            diff[0] = nums[0];
-            for (int i = 1; i < nums.length; i++) {
-                diff[i] = nums[i] - nums[i - 1];
-            }
-        }
+        # increment the closed interval [i, j] by val (can be negative)
+        def increment(self, i, j, val):
+            self.diff[i] += val
+            if j + 1 < len(self.diff):
+                self.diff[j + 1] -= val
 
-        // increment the closed interval [i, j] by val (can be negative)
-        public void increment(int i, int j, int val) {
-            diff[i] += val;
-            if (j + 1 < diff.length) {
-                diff[j + 1] -= val;
-            }
-        }
-
-        public int[] result() {
-            int[] res = new int[diff.length];
-            // construct the result array based on the difference array
-            res[0] = diff[0];
-            for (int i = 1; i < diff.length; i++) {
-                res[i] = res[i - 1] + diff[i];
-            }
-            return res;
-        }
-    }
-
-}
+        def result(self):
+            res = [0] * len(self.diff)
+            # construct the result array based on the difference array
+            res[0] = self.diff[0]
+            for i in range(1, len(self.diff)):
+                res[i] = res[i - 1] + self.diff[i]
+            return res
 ``` 
 
 Problem solved.
@@ -364,8 +320,8 @@ The problem is from [LeetCode 1094. Car Pooling](<https://leetcode.com/problems/
 
 The function signature is:
 
-```java
-boolean carPooling(int[][] trips, int capacity);
+```python
+def carPooling(trips: List[List[int]], capacity: int) -> bool:
 ``` 
 
 For example, given:
@@ -386,73 +342,54 @@ But what should the length of the difference array (number of stops) be? The pro
 
 Stop numbers range from 0 to at most 1000, meaning there are at most 1001 stops. So we can set our difference array length to 1001, which covers all possible stop numbers:
 
-```java
-class Solution {
-    public boolean carPooling(int[][] trips, int capacity) {
-        // at most there are 1000 stops
-        int[] nums = new int[1001];
-        // construct the difference array method
-        Difference df = new Difference(nums);
+```python
+class Solution:
+    def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+        # at most there are 1000 stops
+        nums = [0] * 1001
+        # construct the difference array method
+        df = self.Difference(nums)
 
-        for (int[] trip : trips) {
-            // number of passengers
-            int val = trip[0];
-            // passengers get on at stop trip[1]
-            int i = trip[1];
-            // passengers get off at stop trip[2],
-            // meaning the interval passengers are on the car is [trip[1], trip[2] - 1]
-            int j = trip[2] - 1;
-            // perform interval operation
-            df.increment(i, j, val);
-        }
+        for trip in trips:
+            # number of passengers
+            val = trip[0]
+            # passengers get on at stop trip[1]
+            i = trip[1]
+            # passengers get off at stop trip[2],
+            # meaning the interval passengers are on the car is [trip[1], trip[2] - 1]
+            j = trip[2] - 1
+            # perform interval operation
+            df.increment(i, j, val)
 
-        int[] res = df.result();
+        res = df.result()
 
-        // the car should never exceed its capacity
-        for (int i = 0; i < res.length; i++) {
-            if (capacity < res[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
+        # the car should never exceed its capacity
+        for i in range(len(res)):
+            if capacity < res[i]:
+                return False
+        return True
 
-    // difference array utility class
-    class Difference {
-        // difference array
-        private int[] diff;
+    # difference array utility class
+    class Difference:
+        # difference array
+        def __init__(self, nums: List[int]):
+            # input an initial array, interval operations will be performed on this array
+            # construct the difference array based on the initial array
+            self.diff = [nums[0]] + [nums[i] - nums[i - 1] for i in range(1, len(nums))]
 
-        // input an initial array, interval operations will be performed on this array
-        public Difference(int[] nums) {
-            diff = new int[nums.length];
-            // construct the difference array based on the initial array
-            diff[0] = nums[0];
-            for (int i = 1; i < nums.length; i++) {
-                diff[i] = nums[i] - nums[i - 1];
-            }
-        }
+        # increment the closed interval [i, j] by val (can be negative)
+        def increment(self, i: int, j: int, val: int) -> None:
+            self.diff[i] += val
+            if j + 1 < len(self.diff):
+                self.diff[j + 1] -= val
 
-        // increment the closed interval [i, j] by val (can be negative)
-        public void increment(int i, int j, int val) {
-            diff[i] += val;
-            if (j + 1 < diff.length) {
-                diff[j + 1] -= val;
-            }
-        }
-
-        // return the result array
-        public int[] result() {
-            int[] res = new int[diff.length];
-            // construct the result array based on the difference array
-            res[0] = diff[0];
-            for (int i = 1; i < diff.length; i++) {
-                res[i] = res[i - 1] + diff[i];
-            }
-            return res;
-        }
-    }
-
-}
+        # return the result array
+        def result(self) -> List[int]:
+            res = [self.diff[0]]
+            # construct the result array based on the difference array
+            for i in range(1, len(self.diff)):
+                res.append(res[i - 1] + self.diff[i])
+            return res
 ``` 
 
 And that solves this problem too.
@@ -467,4 +404,8 @@ Second question: prefix sums enable fast range queries, while difference arrays 
 
 These are common questions when dealing with range problems. The ultimate answer is the [Segment Tree](</en/algo/data-structure-basic/segment-tree-basic/>) data structure, which can perform both range updates and range queries on intervals of any length in O(log⁡N)O(\log N)O(logN) time.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

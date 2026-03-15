@@ -23,15 +23,14 @@
 
 但是，我们可以在「逻辑上」把数组变成环形的，比如下面这段代码：
 
-```java
-// 长度为 5 的数组
-int[] arr = new int[]{1, 2, 3, 4, 5};
-int i = 0;
-// 模拟环形数组，这个循环永远不会结束
-while (i < arr.length) {
-    System.out.println(arr[i]);
-    i = (i + 1) % arr.length;
-}
+```python
+# 长度为 5 的数组
+arr = [1, 2, 3, 4, 5]
+i = 0
+# 模拟环形数组，这个循环永远不会结束
+while i < len(arr):
+    print(arr[i])
+    i = (i + 1) % len(arr)
 ``` 
 
 **这段代码的关键在于求模运算`%`，也就是求余数**。当 `i` 到达数组末尾元素时，`i + 1` 和 `arr.length` 取余数又会变成 0，即会回到数组头部，这样就在逻辑上形成了一个环形数组，永远遍历不完。
@@ -92,129 +91,96 @@ while (i < arr.length) {
 
 最后，请看代码实现：
 
-```java
-public class CycleArray<T> {
-    private T[] arr;
-    private int start;
-    private int end;
-    private int count;
-    private int size;
+```python
+class CycleArray:
+    def __init__(self, size=1):
+        self.size = size
+        # 因为 Python 支持直接创建泛型数组，所以不需要类型转换
+        self.arr = [None] * size
+        # start 指向第一个有效元素的索引，闭区间
+        self.start = 0
+        # 切记 end 是一个开区间，
+        # 即 end 指向最后一个有效元素的下一个位置索引
+        self.end = 0
+        self.count = 0
 
-    public CycleArray() {
-        this(1);
-    }
+    # 自动扩缩容辅助函数
+    def resize(self, newSize):
+        # 创建新的数组
+        new_arr = [None] * newSize
+        # 将旧数组的元素复制到新数组中
+        for i in range(self.count):
+            new_arr[i] = self.arr[(self.start + i) % self.size]
+        self.arr = new_arr
+        # 重置 start 和 end 指针
+        self.start = 0
+        self.end = self.count
+        self.size = newSize
 
-    @SuppressWarnings("unchecked")
-    public CycleArray(int size) {
-        this.size = size;
-        // 因为 Java 不支持直接创建泛型数组，所以这里使用了类型转换
-        this.arr = (T[]) new Object[size];
-        // start 指向第一个有效元素的索引，闭区间
-        this.start = 0;
-        // 切记 end 是一个开区间，
-        // 即 end 指向最后一个有效元素的下一个位置索引
-        this.end = 0;
-        this.count = 0;
-    }
+    # 在数组头部添加元素，时间复杂度 O(1)
+    def add_first(self, val):
+        # 当数组满时，扩容为原来的两倍
+        if self.is_full():
+            self.resize(self.size * 2)
+        # 因为 start 是闭区间，所以先左移，再赋值
+        self.start = (self.start - 1 + self.size) % self.size
+        self.arr[self.start] = val
+        self.count += 1
 
-    // 自动扩缩容辅助函数
-    @SuppressWarnings("unchecked")
-    private void resize(int newSize) {
-        // 创建新的数组
-        T[] newArr = (T[]) new Object[newSize];
-        // 将旧数组的元素复制到新数组中
-        for (int i = 0; i < count; i++) {
-            newArr[i] = arr[(start + i) % size];
-        }
-        arr = newArr;
-        // 重置 start 和 end 指针
-        start = 0;
-        end = count;
-        size = newSize;
-    }
+    # 删除数组头部元素，时间复杂度 O(1)
+    def remove_first(self):
+        if self.is_empty():
+            raise Exception("Array is empty")
+        # 因为 start 是闭区间，所以先赋值，再右移
+        self.arr[self.start] = None
+        self.start = (self.start + 1) % self.size
+        self.count -= 1
+        # 如果数组元素数量减少到原大小的四分之一，则减小数组大小为一半
+        if self.count > 0 and self.count == self.size // 4:
+            self.resize(self.size // 2)
 
-    // 在数组头部添加元素，时间复杂度 O(1)
-    public void addFirst(T val) {
-        // 当数组满时，扩容为原来的两倍
-        if (isFull()) {
-            resize(size * 2);
-        }
-        // 因为 start 是闭区间，所以先左移，再赋值
-        start = (start - 1 + size) % size;
-        arr[start] = val;
-        count++;
-    }
+    # 在数组尾部添加元素，时间复杂度 O(1)
+    def add_last(self, val):
+        if self.is_full():
+            self.resize(self.size * 2)
+        # 因为 end 是开区间，所以是先赋值，再右移
+        self.arr[self.end] = val
+        self.end = (self.end + 1) % self.size
+        self.count += 1
 
-    // 删除数组头部元素，时间复杂度 O(1)
-    public void removeFirst() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Array is empty");
-        }
-        // 因为 start 是闭区间，所以先赋值，再右移
-        arr[start] = null;
-        start = (start + 1) % size;
-        count--;
-        // 如果数组元素数量减少到原大小的四分之一，则减小数组大小为一半
-        if (count > 0 && count == size / 4) {
-            resize(size / 2);
-        }
-    }
+    # 删除数组尾部元素，时间复杂度 O(1)
+    def remove_last(self):
+        if self.is_empty():
+            raise Exception("Array is empty")
+        # 因为 end 是开区间，所以先左移，再赋值
+        self.end = (self.end - 1 + self.size) % self.size
+        self.arr[self.end] = None
+        self.count -= 1
+        # 缩容
+        if self.count > 0 and self.count == self.size // 4:
+            self.resize(self.size // 2)
 
-    // 在数组尾部添加元素，时间复杂度 O(1)
-    public void addLast(T val) {
-        if (isFull()) {
-            resize(size * 2);
-        }
-        // 因为 end 是开区间，所以是先赋值，再右移
-        arr[end] = val;
-        end = (end + 1) % size;
-        count++;
-    }
+    # 获取数组头部元素，时间复杂度 O(1)
+    def get_first(self):
+        if self.is_empty():
+            raise Exception("Array is empty")
+        return self.arr[self.start]
 
-    // 删除数组尾部元素，时间复杂度 O(1)
-    public void removeLast() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Array is empty");
-        }
-        // 因为 end 是开区间，所以先左移，再赋值
-        end = (end - 1 + size) % size;
-        arr[end] = null;
-        count--;
-        // 缩容
-        if (count > 0 && count == size / 4) {
-            resize(size / 2);
-        }
-    }
+    # 获取数组尾部元素，时间复杂度 O(1)
+    def get_last(self):
+        if self.is_empty():
+            raise Exception("Array is empty")
+        # end 是开区间，指向的是下一个元素的位置，所以要减 1
+        return self.arr[(self.end - 1 + self.size) % self.size]
 
-    // 获取数组头部元素，时间复杂度 O(1)
-    public T getFirst() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Array is empty");
-        }
-        return arr[start];
-    }
+    def is_full(self):
+        return self.count == self.size
 
-    // 获取数组尾部元素，时间复杂度 O(1)
-    public T getLast() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Array is empty");
-        }
-        // end 是开区间，指向的是下一个元素的位置，所以要减 1
-        return arr[(end - 1 + size) % size];
-    }
+    def size(self):
+        return self.count
 
-    public boolean isFull() {
-        return count == size;
-    }
-    
-    public int size() {
-        return count;
-    }
-
-    public boolean isEmpty() {
-        return count == 0;
-    }
-}
+    def is_empty(self):
+        return self.count == 0
 ``` 
 
 ## 思考题
@@ -236,3 +202,7 @@ public class CycleArray<T> {
 环形数组也可以在指定索引插入元素，当然也要做数据搬移，和普通数组一样，复杂度是 O(N)O(N)O(N)。
 
 你可以思考一下是不是这样。如果是这样，为什么编程语言的标准库中提供的动态数组容器底层并没有用环形数组技巧。
+
+## 评论
+
+请登录后查看/发表评论

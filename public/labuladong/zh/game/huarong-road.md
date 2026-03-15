@@ -39,3 +39,7 @@ gameHandler.move(5, 'down')
 然后把这个操作序列复制到游戏面板的 `solveHuarongRoad` 函数中，也可以完成游戏，检验算法是否正确。
 
 ## 讲解
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

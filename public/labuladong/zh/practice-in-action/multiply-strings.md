@@ -75,36 +75,30 @@ LeetCode| 力扣| 难度
 
 明白了这一点，就可以用代码模仿出这个计算过程了：
 
-```java
-class Solution {
-    public String multiply(String num1, String num2) {
-        int m = num1.length(), n = num2.length();
-        // 结果最多为 m + n 位数
-        int[] res = new int[m + n];
-        // 从个位数开始逐位相乘
-        for (int i = m - 1; i >= 0; i--) {
-            for (int j = n - 1; j >= 0; j--) {
-                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
-                // 乘积在 res 对应的索引位置
-                int p1 = i + j, p2 = i + j + 1;
-                // 叠加到 res 上
-                int sum = mul + res[p2];
-                res[p2] = sum % 10;
-                res[p1] += sum / 10;
-            }
-        }
-        // 结果前缀可能存的 0（未使用的位）
-        int i = 0;
-        while (i < res.length && res[i] == 0)
-            i++;
-        // 将计算结果转化成字符串
-        StringBuilder str = new StringBuilder();
-        for (; i < res.length; i++)
-            str.append(res[i]);
+```python
+class Solution:
+    def multiply(self, num1, num2):
+        m, n = len(num1), len(num2)
+        # 结果最多为 m + n 位数
+        res = [0] * (m + n)
+        # 从个位数开始逐位相乘
+        for i in reversed(range(m)):
+            for j in reversed(range(n)):
+                mul = (ord(num1[i]) - ord('0')) * (ord(num2[j]) - ord('0'))
+                # 乘积在 res 对应的索引位置
+                p1, p2 = i + j, i + j + 1
+                # 叠加到 res 上
+                summ = mul + res[p2]
+                res[p2] = summ % 10
+                res[p1] += summ // 10
+        # 结果前缀可能存的 0（未使用的位）
+        i = 0
+        while i < len(res) and res[i] == 0:
+            i += 1
+        # 将计算结果转化成字符串
+        str_res = ''.join(str(x) for x in res[i:])
         
-        return str.length() == 0 ? "0" : str.toString();
-    }
-}
+        return "0" if not str_res else str_res
 ``` 
 
 至此，字符串乘法算法就完成了。
@@ -114,3 +108,7 @@ class Solution {
 俗话教育我们，不要陷入思维定式，不要程序化，要发散思维，要创新。但我觉得程序化并不是坏事，可以大幅提高效率，减小失误率。算法不就是一套程序化的思维吗，只有程序化才能让计算机帮助我们解决复杂问题呀！
 
 也许算法就是一种**寻找思维定式的思维** 吧，希望本文对你有帮助。
+
+## 评论
+
+请登录后查看/发表评论

@@ -65,9 +65,9 @@ exection -> execution (insert 'u')
 
 The problem is from [LeetCode 72. Edit Distance](<https://leetcode.com/problems/edit-distance/>).
 
-```java
-// The function signature is as follows
-int minDistance(String s1, String s2)
+```python
+# The function signature is as follows
+def minDistance(s1: str, s2: str) -> int:
 ``` 
 
 For readers who have not encountered dynamic programming problems before, this question can be quite challenging. Does it feel like you don't know where to begin?
@@ -133,47 +133,43 @@ else:
 
 With this framework, the problem is essentially solved. Readers might ask, how exactly should we choose among the "three options"? It's simple: try all of them, and choose the one that results in the minimum edit distance. Here, recursion is necessary. Let's first look at the brute-force solution code:
 
-```java
-class Solution {
-    public int minDistance(String s1, String s2) {
-        int m = s1.length(), n = s2.length();
-        // i, j are initialized to point to the last index
-        return dp(s1, m - 1, s2, n - 1);
-    }
+```python
+class Solution:
+    def minDistance(self, s1: str, s2: str) -> int:
+        m = len(s1)
+        n = len(s2)
+        # initialize i and j to point to the last index
+        return self.dp(s1, m - 1, s2, n - 1)
 
-    // definition: return the minimum edit distance between s1[0..i] and s2[0..j]
-    int dp(String s1, int i, String s2, int j) {
-        // base case
-        if (i == -1) return j + 1;
-        if (j == -1) return i + 1;
+    # definition: return the minimum edit distance between s1[0..i] and s2[0..j]
+    def dp(self, s1: str, i: int, s2: str, j: int) -> int:
+        # base case
+        if i == -1:
+            return j + 1
+        if j == -1:
+            return i + 1
 
-        if (s1.charAt(i) == s2.charAt(j)) {
-            // do nothing
-            return dp(s1, i - 1, s2, j - 1);
-        }
+        if s1[i] == s2[j]:
+            # do nothing
+            return self.dp(s1, i - 1, s2, j - 1)
+
         return min(
-            // insert
-            dp(s1, i, s2, j - 1) + 1,
-            // delete
-            dp(s1, i - 1, s2, j) + 1,
-            // replace
-            dp(s1, i - 1, s2, j - 1) + 1
-        );
-    }
-
-    int min(int a, int b, int c) {
-        return Math.min(a, Math.min(b, c));
-    }
-}
+            # insert
+            self.dp(s1, i, s2, j - 1) + 1,
+            # delete
+            self.dp(s1, i - 1, s2, j) + 1,
+            # replace
+            self.dp(s1, i - 1, s2, j - 1) + 1
+        )
 ``` 
 
 Now, let's explain this recursive code in detail. The base case should be self-explanatory, so let's focus on the recursive part.
 
 It's often said that recursive code is highly interpretable, and there is a reason for that. As long as you understand the function's definition, you can clearly understand the algorithm's logic. Here, the `dp` function is defined as follows:
 
-```java
-// Definition: return the minimum edit distance between s1[0..i] and s2[0..j]
-int dp(String s1, int i, String s2, int j)
+```python
+# Definition: Return the minimum edit distance between s1[0..i] and s2[0..j]
+def dp(s1: str, i: int, s2: str, j: int):
 ``` 
 
 **Remember this definition** , then let's look at this code:
@@ -247,46 +243,39 @@ For overlapping subproblems, as covered in detail in [Dynamic Programming Explai
 
 Since we already have the brute-force recursive solution, adding memoization is straightforward. Just modify the original code slightly:
 
-```java
-class Solution {
-    // memoization
-    int[][] memo;
-        
-    public int minDistance(String s1, String s2) {
-        int m = s1.length(), n = s2.length();
-        // initialize the memoization with a special value,
-        // indicating it has not been calculated
-        memo = new int[m][n];
-        for (int[] row : memo) {
-            Arrays.fill(row, -1);
-        }
-        return dp(s1, m - 1, s2, n - 1);
-    }
+```python
+class Solution:
+    def __init__(self):
+        self.memo = []
 
-    int dp(String s1, int i, String s2, int j) {
-        if (i == -1) return j + 1;
-        if (j == -1) return i + 1;
-        // check the memoization to avoid overlapping subproblems
-        if (memo[i][j] != -1) {
-            return memo[i][j];
-        }
-        // state transition, store the result in memoization
-        if (s1.charAt(i) == s2.charAt(j)) {
-            memo[i][j] = dp(s1, i - 1, s2, j - 1);
-        } else {
-            memo[i][j] =  min(
-                dp(s1, i, s2, j - 1) + 1,
-                dp(s1, i - 1, s2, j) + 1,
-                dp(s1, i - 1, s2, j - 1) + 1
-            );
-        }
-        return memo[i][j];
-    }
+    def minDistance(self, s1: str, s2: str) -> int:
+        m, n = len(s1), len(s2)
+        # Initialize the memoization table with a special value,
+        # indicating that it has not been calculated yet
+        self.memo = [[-1] * n for _ in range(m)]
+        return self.dp(s1, m - 1, s2, n - 1)
 
-    int min(int a, int b, int c) {
-        return Math.min(a, Math.min(b, c));
-    }
-}
+    def dp(self, s1: str, i: int, s2: str, j: int) -> int:
+        if i == -1:
+            return j + 1
+        if j == -1:
+            return i + 1
+
+        # Check the memoization table to avoid overlapping subproblems
+        if self.memo[i][j] != -1:
+            return self.memo[i][j]
+
+        # State transition, store the result in the memoization table
+        if s1[i] == s2[j]:
+            self.memo[i][j] = self.dp(s1, i - 1, s2, j - 1)
+        else:
+            self.memo[i][j] = min(
+                self.dp(s1, i, s2, j - 1) + 1,
+                self.dp(s1, i - 1, s2, j) + 1,
+                self.dp(s1, i - 1, s2, j - 1) + 1
+            )
+
+        return self.memo[i][j]
 ``` 
 
 ### DP Table Solution
@@ -311,35 +300,29 @@ The base case for the `dp` function is when `i, j` equals -1, but array indices 
 
 Since the `dp` array has the same meaning as the recursive `dp` function, you can directly apply the same logic to write the code. **The only difference is that the recursive solution works top-down (starting from the original problem and breaking it down to the base case), while the DP table works bottom-up (starting from the base case and building up to the original problem)** :
 
-```java
-class Solution {
-    public int minDistance(String s1, String s2) {
-        int m = s1.length(), n = s2.length();
-        int[][] dp = new int[m + 1][n + 1];
-        // base case
-        for (int i = 1; i <= m; i++)
-            dp[i][0] = i;
-        for (int j = 1; j <= n; j++)
-            dp[0][j] = j;
-        // bottom-up calculation
-        for (int i = 1; i <= m; i++)
-            for (int j = 1; j <= n; j++)
-                if (s1.charAt(i - 1) == s2.charAt(j - 1))
-                    dp[i][j] = dp[i - 1][j - 1];
-                else
+```python
+class Solution:
+    def minDistance(self, s1: str, s2: str) -> int:
+        m, n = len(s1), len(s2)
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        # base case
+        for i in range(1, m + 1):
+            dp[i][0] = i
+        for j in range(1, n + 1):
+            dp[0][j] = j
+        # bottom-up calculation
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if s1[i - 1] == s2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+                else:
                     dp[i][j] = min(
                         dp[i - 1][j] + 1, 
                         dp[i][j - 1] + 1, 
                         dp[i - 1][j - 1] + 1
-                    );
-        // stores the minimum edit distance between s1 and s2
-        return dp[m][n];
-    }
-
-    int min(int a, int b, int c) {
-        return Math.min(a, Math.min(b, c));
-    }
-}
+                    )
+        # stores the minimum edit distance between s1 and s2
+        return dp[m][n]
 ``` 
 
 Algorithm Visualization
@@ -356,18 +339,16 @@ You might also ask, **this only finds the minimum edit distance, but what are th
 
 This is actually quite simple. With slight modifications to the code, additional information can be added to the dp array:
 
-```java
-// int[][] dp;
-Node[][] dp;
+```python
+class Node:
+    val: int
+    choice: int
+    # 0 represents doing nothing
+    # 1 represents insertion
+    # 2 represents deletion
+    # 3 represents replacement
 
-class Node {
-    int val;
-    int choice;
-    // 0 represents doing nothing
-    // 1 represents insertion
-    // 2 represents deletion
-    // 3 represents replacement
-}
+dp: List[List[Node]] = []
 ``` 
 
 The `val` attribute represents the previous value of the dp array, and the `choice` attribute represents the operation. When making the optimal choice, record the operation at the same time, and then backtrack from the result to get the specific operations.
@@ -382,106 +363,92 @@ By repeating this process, you can step back to the starting point `dp[0][0]`, f
 
 At everyone's request, I have written this approach as well, and you can try running it yourself:
 
-```java
-int minDistance(String s1, String s2) {
-    int m = s1.length(), n = s2.length();
-    Node[][] dp = new Node[m + 1][n + 1];
-    // base case
-    for (int i = 0; i <= m; i++) {
-        // transforming s1 to s2 only requires deleting a character
-        dp[i][0] = new Node(i, 2);
-    }
-    for (int j = 1; j <= n; j++) {
-        // transforming s1 to s2 only requires inserting a character
-        dp[0][j] = new Node(j, 1);
-    }
-    // state transition equation
-    for (int i = 1; i <= m; i++) {
-        for (int j = 1; j <= n; j++) {
-            if (s1.charAt(i-1) == s2.charAt(j-1)){
-                // if the two characters are the same, nothing needs to be done
-                Node node = dp[i - 1][j - 1];
-                dp[i][j] = new Node(node.val, 0);
-            } else {
-                // otherwise, record the operation with the minimum cost
-                dp[i][j] = minNode(
+```python
+def minDistance(self, s1: str, s2: str) -> int:
+    m, n = len(s1), len(s2)
+    dp = [[Node() for _ in range(n + 1)] for _ in range(m + 1)]
+    # base case
+    for i in range(m + 1):
+        # converting s1 to s2 requires only deleting one character
+        dp[i][0] = Node(i, 2)
+    for j in range(1, n + 1):
+        # converting s1 to s2 requires only inserting one character
+        dp[0][j] = Node(j, 1)
+    # state transition equation
+    for i in range(1, m + 1):
+        for j in range(1, n + 1):
+            if s1[i-1] == s2[j-1]:
+                # if the two characters are the same, nothing needs to be done
+                node = dp[i - 1][j - 1]
+                dp[i][j] = Node(node.val, 0)
+            else:
+                # otherwise, record the operation with the minimum cost
+                dp[i][j] = self.minNode(
                     dp[i - 1][j],
                     dp[i][j - 1],
                     dp[i-1][j-1]
-                );
-                // and increment the edit distance by one
-                dp[i][j].val++;
-            }
-        }
-    }
-    // deduce the specific operation process based on the dp table and print it
-    printResult(dp, s1, s2);
-    return dp[m][n].val;
-}
+                )
+                # and increment the edit distance by one
+                dp[i][j].val += 1
+    # deduce the specific operation process based on the dp table and print it
+    self.printResult(dp, s1, s2)
+    return dp[m][n].val
 
-// calculate the operation with the minimum cost among delete, insert, replace
-Node minNode(Node a, Node b, Node c) {
-    Node res = new Node(a.val, 2);
+# calculate the operation with the minimum cost among delete, insert, replace
+def minNode(self, a: Node, b: Node, c: Node) -> Node:
+    res = Node(a.val, 2)
     
-    if (res.val > b.val) {
-        res.val = b.val;
-        res.choice = 1;
-    }
-    if (res.val > c.val) {
-        res.val = c.val;
-        res.choice = 3;
-    }
-    return res;
-}
+    if res.val > b.val:
+        res.val = b.val
+        res.choice = 1
+    if res.val > c.val:
+        res.val = c.val
+        res.choice = 3
+    return res
 
-// deduce the result and print the specific operations
-void printResult(Node[][] dp, String s1, String s2) {
-    int rows = dp.length;
-    int cols = dp[0].length;
-    int i = rows - 1, j = cols - 1;
-    System.out.println("Change s1=" + s1 + " to s2=" + s2 + ":\n");
-    while (i != 0 && j != 0) {
-        char c1 = s1.charAt(i - 1);
-        char c2 = s2.charAt(j - 1);
-        int choice = dp[i][j].choice;
-        System.out.print("s1[" + (i - 1) + "]:");
-        switch (choice) {
-            case 0:
-                // skip, then both pointers move forward
-                System.out.println("skip '" + c1 + "'");
-                i--; j--;
-                break;
-            case 1:
-                // insert s2[j] into s1[i], then the s2 pointer moves forward
-                System.out.println("insert '" + c2 + "'");
-                j--;
-                break;
-            case 2:
-                // delete s1[i], then the s1 pointer moves forward
-                System.out.println("delete '" + c1 + "'");
-                i--;
-                break;
-            case 3:
-                // replace s1[i] with s2[j], then both pointers move forward
-                System.out.println(
-                    "replace '" + c1 + "'" + " with '" + c2 + "'");
-                i--; j--;
-                break;
-        }
-    }
-    // if s1 is not finished, the remaining characters need to be deleted
-    while (i > 0) {
-        System.out.print("s1[" + (i - 1) + "]:");
-        System.out.println("delete '" + s1.charAt(i - 1) + "'");
-        i--;
-    }
-    // if s2 is not finished, the remaining characters need to be inserted into s1
-    while (j > 0) {
-        System.out.print("s1[0]:");
-        System.out.println("insert '" + s2.charAt(j - 1) + "'");
-        j--;
-    }
-}
+# deduce the result and print the specific operations
+def printResult(self, dp, s1, s2):
+    rows = len(dp)
+    cols = len(dp[0])
+    i, j = rows - 1, cols - 1
+    print(f"Change s1={s1} to s2={s2}:\n")
+    while i != 0 and j != 0:
+        c1 = s1[i - 1]
+        c2 = s2[j - 1]
+        choice = dp[i][j].choice
+        print(f"s1[{i - 1}]:", end='')
+        if choice == 0:
+            # skip, then both pointers move forward
+            print(f"skip '{c1}'")
+            i -= 1
+            j -= 1
+        elif choice == 1:
+            # insert s2[j] into s1[i], then the s2 pointer moves forward
+            print(f"insert '{c2}'")
+            j -= 1
+        elif choice == 2:
+            # delete s1[i], then the s1 pointer moves forward
+            print(f"delete '{c1}'")
+            i -= 1
+        elif choice == 3:
+            # replace s1[i] with s2[j], then both pointers move forward
+            print(f"replace '{c1}' with '{c2}'")
+            i -= 1
+            j -= 1
+    # if s1 is not finished, the remaining characters need to be deleted
+    while i > 0:
+        print(f"s1[{i - 1}]:", end='')
+        print(f"delete '{s1[i - 1]}'")
+        i -= 1
+    # if s2 is not finished, the remaining characters need to be inserted into s1
+    while j > 0:
+        print(f"s1[0]:", end='')
+        print(f"insert '{s2[j - 1]}'")
+        j -= 1
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

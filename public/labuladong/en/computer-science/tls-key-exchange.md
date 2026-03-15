@@ -173,7 +173,7 @@ This is the “math magic” of the DH algorithm.
 
 **Public parameters** : p=23p=23p=23, g=5g=5g=5 (known by Eve)
 
-加载图表...
+BobEve (listening)AliceBobEve (listening)AliceGenerate private key a=6Generate private key b=15Calculate public keyA = 5^6 mod 23 = 8Calculate public keyB = 5^15 mod 23 = 19Listens to A=8Listens to B=19Calculate shared keys = 19^6 mod 23 = 2Calculate shared keys = 8^15 mod 23 = 2Cannot calculate s!Shared key s=2Shared key s=2Send A=8Send B=19
 
 #### Eve's Problem
 
@@ -248,4 +248,8 @@ The key idea is the same: easy to compute forward, very hard to reverse. Ellipti
 
 The complete modern HTTPS process: Verify server certificate (to prevent man-in-the-middle attacks) → Use ECDHE to agree on a temporary session key (forward secrecy) → Use session key for encrypted communication (good security and performance).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

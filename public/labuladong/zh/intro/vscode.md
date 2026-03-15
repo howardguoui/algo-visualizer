@@ -117,7 +117,7 @@ curl 'https://leetcode.cn/problemset/' \
 
 点击这个选项会弹出一个输入框，复制下面的 cookie 字段粘贴进输入框：
 
-...
+请登录获取 token
 
 最后回车确定，稍等几秒钟之后应该会有弹窗显示网站会员数据拉取成功：
 
@@ -323,3 +323,7 @@ ${question.content}
 可以在 GitHub 创建 Issue 反馈问题：
 
 <https://github.com/labuladong/fucking-algorithm/issues/>[](<https://github.com/labuladong/fucking-algorithm/issues/>)
+
+## 评论
+
+请登录后查看/发表评论

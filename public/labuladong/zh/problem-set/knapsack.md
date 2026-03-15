@@ -28,3 +28,7 @@ int[][] dp = new int[N + 1][W + 1];
 ``` 
 
 下面列举几道和背包问题相关的题目，帮助大家加深理解。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

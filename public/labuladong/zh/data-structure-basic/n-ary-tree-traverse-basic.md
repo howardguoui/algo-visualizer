@@ -31,21 +31,21 @@ LeetCode| 力扣| 难度
 
 二叉树的节点长这样，每个节点有两个子节点：
 
-```java
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-}
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 ``` 
 
 多叉树的节点长这样，每个节点有任意个子节点：
 
-```java
-class Node {
-    int val;
-    List<Node> children;
-}
+```python
+class Node:
+    def __init__(self, val: int):
+        self.val = val
+        self.children = []
 ``` 
 
 就这点区别，其他没了。
@@ -69,3 +69,7 @@ List<Node> forest;
 ## 递归遍历（DFS）
 
 对比二叉树的遍历框架看多叉树的遍历框架吧：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

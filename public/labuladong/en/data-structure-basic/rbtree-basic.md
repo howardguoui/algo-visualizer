@@ -29,4 +29,8 @@ The efficiency of operations on a binary search tree depends on its height. A mo
 
 The following visualization panel is an example: if you insert several ordered key-value pairs, you will notice that each new key is added to the far right, causing this binary search tree to degrade into a linked list:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

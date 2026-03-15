@@ -29,31 +29,23 @@ There are several ways to implement the Singleton Pattern, and I'll cover them o
 
 Eager initialization creates the singleton instance when the class is first loaded. It's the simplest way to implement the Singleton Pattern:
 
-```java
-public class DatabaseManager {
-    // Create a globally unique instance when the class is loaded
-    // JVM initializes static variables when the class is loaded, ensuring thread safety
-    private static final DatabaseManager INSTANCE = new DatabaseManager();
-    private Connection connection;
+```python
+class DatabaseManager:
+    def __init__(self):
+        # Initialize database connection
+        self.connection = getConnection("mysql://...", "user", "password")
+        print("Connection established.")
     
-    // Private constructor, external code cannot create an instance
-    private DatabaseManager() {
-        // Initialize database connection
-        this.connection = getConnection("mysql://...", "user", "password");
-        System.out.println("Connection established.");
-    }
-    
-    // Provide a public static global access point
-    // External code can get the unique instance through this method
-    public static DatabaseManager getInstance() {
-        return INSTANCE;
-    }
-    
-    // Business methods
-    public ResultSet execute(String sql) throws SQLException {
-        ...
-    }
-}
+    # Business methods
+    def execute(self, sql: str) -> str:
+        # ...
+
+# Create a globally unique instance when the module is loaded
+# Python module-level variables are initialized when
+# the module is first imported, naturally thread-safe
+database_manager = DatabaseManager()
+
+# Just import database_manager when using
 ``` 
 
 ### 2\. Lazy Initialization (Double-Checked Locking)
@@ -62,37 +54,38 @@ Compared to eager initialization, lazy initialization delays instance creation u
 
 The upside of lazy loading is that if the singleton is never used, the instance is never created—saving memory and speeding up startup. The downside is that you need extra code to ensure thread safety during lazy initialization.
 
-```java
-public class DatabaseManager {
-    // Use volatile to ensure visibility
-    private static volatile DatabaseManager instance;
-    private Connection connection;
-    
-    private DatabaseManager() {
-        // Initialize database connection
-        this.connection = getConnection("mysql://...", "user", "password");
-        System.out.println("Connection established.");
-    }
-    
-    public static DatabaseManager getInstance() {
-        // First check, return if instance is already created
-        if (instance == null) {
-            synchronized (DatabaseManager.class) {
-                // Second check, only the first thread enters the
-                // synchronized block will create the instance
-                if (instance == null) {
-                    instance = new DatabaseManager();
-                }
-            }
-        }
-        return instance;
-    }
-    
-    // Business methods
-    public ResultSet execute(String sql) throws SQLException {
-        ...
-    }
-}
+```python
+import threading
+
+# Python decorator implementation of lazy loading singleton
+def lazy_singleton(cls):
+    _instance = None
+    _lock = threading.Lock()
+
+    def get_instance(*args, **kwargs):
+        nonlocal _instance
+        if _instance is None:
+            with _lock:
+                if _instance is None:
+                    _instance = cls(*args, **kwargs)
+        return _instance
+
+    return get_instance
+
+@lazy_singleton
+class DatabaseManager:
+    def __init__(self):
+        self.connection = getConnection("mysql://...", "user", "password")
+        print("Connection established.")
+
+    # Business methods
+    def execute(self, sql: str):
+        # ...
+
+# --- Usage Example ---
+# db1 = DatabaseManager()
+# db2 = DatabaseManager()
+# print(f"Are instances the same? {db1 is db2}") # Output: True
 ``` 
 
 About Thread Safety
@@ -174,4 +167,8 @@ The Singleton Pattern is powerful and widely used, but be careful not to overuse
 
 It introduces global state, increases coupling in your code, and makes unit testing harder. So before reaching for a singleton, make sure the object truly needs to be globally shared.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

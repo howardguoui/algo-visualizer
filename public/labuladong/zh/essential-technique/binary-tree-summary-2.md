@@ -58,20 +58,18 @@ LeetCode| 力扣| 难度
 
 快速排序的代码框架如下：
 
-```java
-void sort(int[] nums, int lo, int hi) {
-    if (lo >= hi) {
-        return;
-    }
-    // ****** 前序位置 ******
-    // 对 nums[lo..hi] 进行切分，将 nums[p] 排好序
-    // 使得 nums[lo..p-1] <= nums[p] < nums[p+1..hi]
-    int p = partition(nums, lo, hi);
+```python
+def sort(nums: List[int], lo: int, hi: int):
+    if lo >= hi:
+        return
+    # ****** 前序位置 ******
+    # 对 nums[lo..hi] 进行切分，将 nums[p] 排好序
+    # 使得 nums[lo..p-1] <= nums[p] < nums[p+1..hi]
+    p = partition(nums, lo, hi)
 
-    // 去左右子数组进行切分
-    sort(nums, lo, p - 1);
-    sort(nums, p + 1, hi);
-}
+    # 去左右子数组进行切分
+    sort(nums, lo, p - 1)
+    sort(nums, p + 1, hi)
 ``` 
 
 先构造分界点，然后去左右子数组构造分界点，你看这不就是一个二叉树的前序遍历吗？
@@ -80,23 +78,21 @@ void sort(int[] nums, int lo, int hi) {
 
 归并排序的代码框架如下：
 
-```java
-// 定义：排序 nums[lo..hi]
-void sort(int[] nums, int lo, int hi) {
-    if (lo == hi) {
-        return;
-    }
-    int mid = (lo + hi) / 2;
-    // 利用定义，排序 nums[lo..mid]
-    sort(nums, lo, mid);
-    // 利用定义，排序 nums[mid+1..hi]
-    sort(nums, mid + 1, hi);
+```python
+# 定义：排序 nums[lo..hi]
+def sort(nums: List[int], lo: int, hi: int) -> None:
+    if lo == hi:
+        return
+    mid = (lo + hi) // 2
+    # 利用定义，排序 nums[lo..mid]
+    sort(nums, lo, mid)
+    # 利用定义，排序 nums[mid+1..hi]
+    sort(nums, mid + 1, hi)
 
-    // ****** 后序位置 ******
-    // 此时两部分子数组已经被排好序
-    // 合并两个有序数组，使 nums[lo..hi] 有序
-    merge(nums, lo, mid, hi);
-}
+    # ****** 后序位置 ******
+    # 此时两部分子数组已经被排好序
+    # 合并两个有序数组，使 nums[lo..hi] 有序
+    merge(nums, lo, mid, hi)
 ``` 
 
 先对左右子数组排序，然后合并（类似合并有序链表的逻辑），你看这是不是二叉树的后序遍历框架？另外，这不就是传说中的分治算法嘛，不过如此呀。
@@ -121,58 +117,49 @@ void sort(int[] nums, int lo, int hi) {
 
 首先，回顾一下 [二叉树的 DFS/BFS 遍历](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>) 中说到的二叉树递归遍历框架：
 
-```java
-// 二叉树的遍历框架
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    // 前序位置
-    traverse(root.left);
-    // 中序位置
-    traverse(root.right);
-    // 后序位置
-}
+```python
+# 二叉树的遍历框架
+def traverse(root):
+    if root is None:
+        return
+    # 前序位置
+    traverse(root.left)
+    # 中序位置
+    traverse(root.right)
+    # 后序位置
 ``` 
 
 先不管所谓前中后序，单看 `traverse` 函数，你说它在做什么事情？
 
 其实它就是一个能够遍历二叉树所有节点的一个函数，和你遍历数组或者链表本质上没有区别：
 
-```java
-// 迭代遍历数组
-void traverse(int[] arr) {
-    for (int i = 0; i < arr.length; i++) {
+```python
+# 迭代遍历数组
+def traverse(arr: List[int]) -> None:
+    for i in range(len(arr)):
+        pass
 
-    }
-}
+# 递归遍历数组
+def traverse_recursive(arr: List[int], i: int) -> None:
+    if i == len(arr):
+        return
+    # 前序位置
+    traverse_recursive(arr, i + 1)
+    # 后序位置
 
-// 递归遍历数组
-void traverse(int[] arr, int i) {
-    if (i == arr.length) {
-        return;
-    }
-    // 前序位置
-    traverse(arr, i + 1);
-    // 后序位置
-}
+# 迭代遍历单链表
+def traverse_linked_list(head: ListNode) -> None:
+    p = head
+    while p:
+        p = p.next
 
-// 迭代遍历单链表
-void traverse(ListNode head) {
-    for (ListNode p = head; p != null; p = p.next) {
-
-    }
-}
-
-// 递归遍历单链表
-void traverse(ListNode head) {
-    if (head == null) {
-        return;
-    }
-    // 前序位置
-    traverse(head.next);
-    // 后序位置
-}
+# 递归遍历单链表
+def traverse_linked_list_recursive(head: ListNode) -> None:
+    if not head:
+        return
+    # 前序位置
+    traverse_linked_list_recursive(head.next)
+    # 后序位置
 ``` 
 
 单链表和数组的遍历可以是迭代的，也可以是递归的，**二叉树这种结构无非就是二叉链表** ，它没办法简单改写成 for 循环的迭代形式，所以我们遍历二叉树一般都使用递归形式。
@@ -187,16 +174,14 @@ void traverse(ListNode head) {
 
 实现方式当然有很多，但如果你对递归的理解足够透彻，可以利用后序位置来操作：
 
-```java
-// 递归遍历单链表，倒序打印链表元素
-void traverse(ListNode head) {
-    if (head == null) {
-        return;
-    }
-    traverse(head.next);
-    // 后序位置
-    print(head.val);
-}
+```python
+# 递归遍历单链表，倒序打印链表元素
+def traverse(head):
+    if head is None:
+        return
+    traverse(head.next)
+    # 后序位置
+    print(head.val)
 ``` 
 
 结合上面那张图，你应该知道为什么这段代码能够倒序打印单链表了吧，本质上是利用递归的堆栈帮你实现了倒序遍历的效果。
@@ -253,40 +238,35 @@ Tip
 
 解法代码如下：
 
-```java
-// 遍历的思路
-class Solution {
+```python
+# 遍历的思路
+class Solution:
 
-    // 记录遍历到的节点的深度
-    int depth = 0;
+    def __init__(self):
+        # 记录遍历到的节点的深度
+        self.depth = 0
+        # 记录最大深度
+        self.res = 0
 
-    // 记录最大深度
-    int res = 0;
+    def maxDepth(self, root: TreeNode) -> int:
+        self.traverse(root)
+        return self.res
 
-    public int maxDepth(TreeNode root) {
-        traverse(root);
-        return res;
-    }
+    # 遍历二叉树
+    def traverse(self, root: TreeNode):
+        if root is None:
+            return
 
-    // 遍历二叉树
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
+        # 前序遍历位置（进入节点）增加深度
+        self.depth += 1
+        # 遍历到叶子节点时记录最大深度
+        if root.left is None and root.right is None:
+            self.res = max(self.res, self.depth)
+        self.traverse(root.left)
+        self.traverse(root.right)
 
-        // 前序遍历位置（进入节点）增加深度
-        depth++;
-        // 遍历到叶子节点时记录最大深度
-        if (root.left == null && root.right == null) {
-            res = Math.max(res, depth);
-        }
-        traverse(root.left);
-        traverse(root.right);
-
-        // 后序遍历位置（离开节点）减少深度
-        depth--;
-    }
-}
+        # 后序遍历位置（离开节点）减少深度
+        self.depth -= 1
 ``` 
 
 遍历思路的可视化
@@ -301,24 +281,21 @@ class Solution {
 
 解法代码如下：
 
-```java
-// 分解问题的思路
-class Solution {
-    // 定义：输入一个节点，返回以该节点为根的二叉树的最大深度
-    public int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        // 利用定义，计算左右子树的最大深度
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
+```python
+# 分解问题的思路
+class Solution:
+    # 定义：输入一个节点，返回以该节点为根的二叉树的最大深度
+    def maxDepth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        # 利用定义，计算左右子树的最大深度
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
 
-        // 根据左右子树的最大深度推出原二叉树的最大深度
-        // 整棵树的最大深度等于左右子树的最大深度取最大值，
-        // 然后再加上根节点自己
-        return 1 + Math.max(leftMax, rightMax);
-    }
-}
+        # 根据左右子树的最大深度推出原二叉树的最大深度
+        # 整棵树的最大深度等于左右子树的最大深度取最大值，
+        # 然后再加上根节点自己
+        return 1 + max(leftMax, rightMax)
 ``` 
 
 分解问题思路的可视化
@@ -331,28 +308,24 @@ class Solution {
 
 我们熟悉的解法就是用「遍历」的思路，我想应该没什么好说的：
 
-```java
-// 用遍历的思路计算前序遍历结果
-class Solution {
-    // 存放前序遍历结果
-    List<Integer> res = new LinkedList<>();
+```python
+# 用遍历的思路计算前序遍历结果
+class Solution:
+    def __init__(self):
+        self.res = []
+    
+    def preorderTraversal(self, root: TreeNode) -> List[int]:
+        self.traverse(root)
+        return self.res
 
-    public List<Integer> preorderTraversal(TreeNode root) {
-        traverse(root);
-        return res;
-    }
-
-    // 二叉树遍历函数
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // 前序位置
-        res.add(root.val);
-        traverse(root.left);
-        traverse(root.right);
-    }
-}
+    # 二叉树遍历函数
+    def traverse(self, root: TreeNode):
+        if root is None:
+            return
+        # 前序位置
+        self.res.append(root.val)
+        self.traverse(root.left)
+        self.traverse(root.right)
 ``` 
 
 但你是否能够用「分解问题」的思路，来计算前序遍历的结果？
@@ -367,23 +340,20 @@ class Solution {
 
 所以，你可以这样实现前序遍历算法：
 
-```java
-class Solution {
-    // 定义：输入一棵二叉树的根节点，返回这棵树的前序遍历结果
-    List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> res = new LinkedList<>();
-        if (root == null) {
-            return res;
-        }
-        // 前序遍历的结果，root.val 在第一个
-        res.add(root.val);
-        // 利用函数定义，后面接着左子树的前序遍历结果
-        res.addAll(preorderTraversal(root.left));
-        // 利用函数定义，最后接着右子树的前序遍历结果
-        res.addAll(preorderTraversal(root.right)); 
-        return res;
-    }
-}
+```python
+class Solution:
+    # 定义：输入一棵二叉树的根节点，返回这棵树的前序遍历结果
+    def preorderTraversal(self, root):
+        res = []
+        if root == None:
+            return res
+        # 前序遍历的结果，root.val 在第一个
+        res.append(root.val)
+        # 利用函数定义，后面接着左子树的前序遍历结果
+        res.extend(self.preorderTraversal(root.left))
+        # 利用函数定义，最后接着右子树的前序遍历结果
+        res.extend(self.preorderTraversal(root.right)) 
+        return res
 ``` 
 
 中序和后序遍历也是类似的，只要把 `add(root.val)` 放到中序和后序对应的位置就行了。
@@ -492,43 +462,39 @@ int count(TreeNode root) {
 
 最大深度的算法我们刚才实现过了，上述思路就可以写出以下代码：
 
-```java
-class Solution {
-    // 记录最大直径的长度
-    int maxDiameter = 0;
+```python
+class Solution:
 
-    public int diameterOfBinaryTree(TreeNode root) {
-        // 对每个节点计算直径，求最大直径
-        traverse(root);
-        return maxDiameter;
-    }
+    def __init__(self):
+        # 记录最大直径的长度
+        self.maxDiameter = 0
 
-    // 遍历二叉树
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // 对每个节点计算直径
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
-        int myDiameter = leftMax + rightMax;
-        // 更新全局最大直径
-        maxDiameter = Math.max(maxDiameter, myDiameter);
+    def diameterOfBinaryTree(self, root):
+        # 对每个节点计算直径，求最大直径
+        self.traverse(root)
+        return self.maxDiameter
+
+    # 遍历二叉树
+    def traverse(self, root):
+        if root is None:
+            return
+        # 对每个节点计算直径
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
+        myDiameter = leftMax + rightMax
+        # 更新全局最大直径
+        self.maxDiameter = max(self.maxDiameter, myDiameter)
         
-        traverse(root.left);
-        traverse(root.right);
-    }
+        self.traverse(root.left)
+        self.traverse(root.right)
 
-    // 计算二叉树的最大深度
-    int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
-        return 1 + Math.max(leftMax, rightMax);
-    }
-}
+    # 计算二叉树的最大深度
+    def maxDepth(self, root):
+        if root is None:
+            return 0
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
+        return 1 + max(leftMax, rightMax)
 ``` 
 
 这个解法是正确的，但是运行时间很长，原因也很明显，`traverse` 遍历每个节点的时候还会调用递归函数 `maxDepth`，而 `maxDepth` 是要遍历子树的所有节点的，所以最坏时间复杂度是 O(N^2)。
@@ -539,29 +505,26 @@ class Solution {
 
 所以，稍微改一下代码逻辑即可得到更好的解法：
 
-```java
-class Solution {
-    // 记录最大直径的长度
-    int maxDiameter = 0;
+```python
+class Solution:
+    def __init__(self):
+        # 记录最大直径的长度
+        self.maxDiameter = 0
 
-    public int diameterOfBinaryTree(TreeNode root) {
-        maxDepth(root);
-        return maxDiameter;
-    }
+    def diameterOfBinaryTree(self, root):
+        self.maxDepth(root)
+        return self.maxDiameter
 
-    int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
-        // 后序位置，顺便计算最大直径
-        int myDiameter = leftMax + rightMax;
-        maxDiameter = Math.max(maxDiameter, myDiameter);
+    def maxDepth(self, root):
+        if root is None:
+            return 0
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
+        # 后序位置，顺便计算最大直径
+        myDiameter = leftMax + rightMax
+        self.maxDiameter = max(self.maxDiameter, myDiameter)
 
-        return 1 + Math.max(leftMax, rightMax);
-    }
-}
+        return 1 + max(leftMax, rightMax)
 ``` 
 
 算法可视化
@@ -606,34 +569,30 @@ Info
 
 **第一个例子** ，给你一棵二叉树，请你用分解问题的思路写一个 `count` 函数，计算这棵二叉树共有多少个节点。代码很简单，上文都写过了：
 
-```java
-// 定义：输入一棵二叉树，返回这棵二叉树的节点总数
-int count(TreeNode root) {
-    if (root == null) {
-        return 0;
-    }
-    // 当前节点关心的是两个子树的节点总数分别是多少
-    // 因为用子问题的结果可以推导出原问题的结果
-    int leftCount = count(root.left);
-    int rightCount = count(root.right);
-    // 后序位置，左右子树节点数加上自己就是整棵树的节点数
-    return leftCount + rightCount + 1;
-}
+```python
+# 定义：输入一棵二叉树，返回这棵二叉树的节点总数
+def count(root):
+    if root is None:
+        return 0
+    # 当前节点关心的是两个子树的节点总数分别是多少
+    # 因为用子问题的结果可以推导出原问题的结果
+    leftCount = count(root.left)
+    rightCount = count(root.right)
+    # 后序位置，左右子树节点数加上自己就是整棵树的节点数
+    return leftCount + rightCount + 1
 ``` 
 
 **你看，这就是动态规划分解问题的思路，它的着眼点永远是结构相同的整个子问题，类比到二叉树上就是「子树」** 。
 
 你再看看具体的动态规划问题，比如 [动态规划框架套路详解](</zh/algo/essential-technique/dynamic-programming-framework/>) 中举的斐波那契的例子，我们的关注点在一棵棵子树的返回值上：
 
-```java
-// f(n) 计算第 n 个斐波那契数
-int fib(int n) {
-    // base case
-    if (n == 0 || n == 1){
-        return n;
-    }
-    return fib(n - 1) + fib(n - 2);
-}
+```python
+# f(n) 计算第 n 个斐波那契数
+def fib(n: int) -> int:
+    # base case
+    if n == 0 or n == 1:
+        return n
+    return fib(n - 1) + fib(n - 2)
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/dynamic-programming/2.jpg)
@@ -724,14 +683,14 @@ void backtrack(int[] nums) {
 
 **第三个例子** ，我给你一棵二叉树，请你写一个 `traverse` 函数，把这棵二叉树上的每个节点的值都加一。很简单吧，代码如下：
 
-```java
-void traverse(TreeNode root) {
-    if (root == null) return;
-    // 遍历过的每个节点的值加一
-    root.val++;
-    traverse(root.left);
-    traverse(root.right);
-}
+```python
+def traverse(root):
+    if root is None:
+        return
+    # 遍历过的每个节点的值加一
+    root.val += 1
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 **你看，这就是 DFS 算法遍历的思路，它的着眼点永远是在单一的节点上，类比到二叉树上就是处理每个「节点」** 。
@@ -763,30 +722,28 @@ void dfs(int[][] grid, int i, int j) {
 
 有了这些铺垫，你就很容易理解为什么回溯算法和 DFS 算法代码中「做选择」和「撤销选择」的位置不同了，看下面两段代码：
 
-```java
-// DFS 算法把「做选择」「撤销选择」的逻辑放在 for 循环外面
-void dfs(Node root) {
-    if (root == null) return;
-    // 做选择
-    print("enter node %s", root);
-    for (Node child : root.children) {
-        dfs(child);
-    }
-    // 撤销选择
-    print("leave node %s", root);
-}
+```python
+# DFS 算法把「做选择」「撤销选择」的逻辑放在 for 循环外面
+def dfs(root):
+    if root is None:
+        return
+    # 做选择
+    print("enter node %s" % root)
+    for child in root.children:
+        dfs(child)
+    # 撤销选择
+    print("leave node %s" % root)
 
-// 回溯算法把「做选择」「撤销选择」的逻辑放在 for 循环里面
-void backtrack(Node root) {
-    if (root == null) return;
-    for (Node child : root.children) {
-        // 做选择
-        print("I'm on the branch from %s to %s", root, child);
-        backtrack(child);
-        // 撤销选择
-        print("I'll leave the branch from %s to %s", child, root);
-    }
-}
+# 回溯算法把「做选择」「撤销选择」的逻辑放在 for 循环里面
+def backtrack(root):
+    if root is None:
+        return
+    for child in root.children:
+        # 做选择
+        print("I'm on the branch from %s to %s" % (root, child))
+        backtrack(child)
+        # 撤销选择
+        print("I'll leave the branch from %s to %s" % (child, root))
 ``` 
 
 看到了吧，你回溯算法必须把「做选择」和「撤销选择」的逻辑放在 for 循环里面，否则怎么拿到「树枝」的两个端点？
@@ -795,32 +752,28 @@ void backtrack(Node root) {
 
 二叉树题型主要是用来培养递归思维的，而层序遍历属于迭代遍历，也比较简单，这里就过一下代码框架吧：
 
-```java
-// 输入一棵二叉树的根节点，层序遍历这棵二叉树
-void levelTraverse(TreeNode root) {
-    if (root == null) return;
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
+```python
+# 输入一棵二叉树的根节点，层序遍历这棵二叉树
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return
+        q = collections.deque()
+        q.append(root)
+        depth = 0
+        # 从上到下遍历二叉树的每一层
+        while q:
+            sz = len(q)
+            # 从左到右遍历每一层的每个节点
+            for i in range(sz):
+                cur = q.popleft()
 
-    int depth = 1;
-    // 从上到下遍历二叉树的每一层
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        // 从左到右遍历每一层的每个节点
-        for (int i = 0; i < sz; i++) {
-            TreeNode cur = q.poll();
-
-            // 将下一层节点放入队列
-            if (cur.left != null) {
-                q.offer(cur.left);
-            }
-            if (cur.right != null) {
-                q.offer(cur.right);
-            }
-        }
-        depth++;
-    }
-}
+                # 将下一层节点放入队列
+                if cur.left:
+                    q.append(cur.left)
+                if cur.right:
+                    q.append(cur.right)
+            depth += 1
 ``` 
 
 这里面 while 循环和 for 循环分管从上到下和从左到右的遍历：
@@ -843,34 +796,29 @@ void levelTraverse(TreeNode root) {
 
 如果你对二叉树足够熟悉，可以想到很多方式通过递归函数得到层序遍历结果，比如下面这种写法：
 
-```java
-class Solution {
-    List<List<Integer>> res = new ArrayList<>();
+```python
+class Solution:
+    def __init__(self):
+        self.res = []
 
-    public List<List<Integer>> levelTraverse(TreeNode root) {
-        if (root == null) {
-            return res;
-        }
-        // root 视为第 0 层
-        traverse(root, 0);
-        return res;
-    }
+    def levelTraverse(self, root):
+        if root is None:
+            return self.res
+        # root 视为第 0 层
+        self.traverse(root, 0)
+        return self.res
 
-    void traverse(TreeNode root, int depth) {
-        if (root == null) {
-            return;
-        }
-        // 前序位置，看看是否已经存储 depth 层的节点了
-        if (res.size() <= depth) {
-            // 第一次进入 depth 层
-            res.add(new LinkedList<>());
-        }
-        // 前序位置，在 depth 层添加 root 节点的值
-        res.get(depth).add(root.val);
-        traverse(root.left, depth + 1);
-        traverse(root.right, depth + 1);
-    }
-}
+    def traverse(self, root, depth):
+        if root is None:
+            return
+        # 前序位置，看看是否已经存储 depth 层的节点了
+        if len(self.res) <= depth:
+            # 第一次进入 depth 层
+            self.res.append([])
+        # 前序位置，在 depth 层添加 root 节点的值
+        self.res[depth].append(root.val)
+        self.traverse(root.left, depth + 1)
+        self.traverse(root.right, depth + 1)
 ``` 
 
 这种思路从结果上说确实可以得到层序遍历结果，但其本质还是二叉树的前序遍历，或者说 DFS 的思路，而不是层序遍历，或者说 BFS 的思路。因为这个解法是依赖前序遍历自顶向下、自左向右的顺序特点得到了正确的结果。
@@ -879,47 +827,42 @@ class Solution {
 
 还有优秀读者评论了这样一种递归进行层序遍历的思路：
 
-```java
-class Solution {
+```python
+class Solution:
+    def __init__(self):
+        self.res = []
 
-    List<List<Integer>> res = new LinkedList<>();
+    def levelTraverse(self, root):
+        if not root:
+            return self.res
+        nodes = [root]
+        self.traverse(nodes)
+        return self.res
 
-    public List<List<Integer>> levelTraverse(TreeNode root) {
-        if (root == null) {
-            return res;
-        }
-        List<TreeNode> nodes = new LinkedList<>();
-        nodes.add(root);
-        traverse(nodes);
-        return res;
-    }
-
-    void traverse(List<TreeNode> curLevelNodes) {
-        // base case
-        if (curLevelNodes.isEmpty()) {
-            return;
-        }
-        // 前序位置，计算当前层的值和下一层的节点列表
-        List<Integer> nodeValues = new LinkedList<>();
-        List<TreeNode> nextLevelNodes = new LinkedList<>();
-        for (TreeNode node : curLevelNodes) {
-            nodeValues.add(node.val);
-            if (node.left != null) {
-                nextLevelNodes.add(node.left);
-            }
-            if (node.right != null) {
-                nextLevelNodes.add(node.right);
-            }
-        }
-        // 前序位置添加结果，可以得到自顶向下的层序遍历
-        res.add(nodeValues);
-        traverse(nextLevelNodes);
-        // 后序位置添加结果，可以得到自底向上的层序遍历结果
-        // res.add(nodeValues);
-    }
-}
+    def traverse(self, curLevelNodes):
+        # base case
+        if not curLevelNodes:
+            return
+        # 前序位置，计算当前层的值和下一层的节点列表
+        nodeValues = []
+        nextLevelNodes = []
+        for node in curLevelNodes:
+            nodeValues.append(node.val)
+            if node.left:
+                nextLevelNodes.append(node.left)
+            if node.right:
+                nextLevelNodes.append(node.right)
+        # 前序位置添加结果，可以得到自顶向下的层序遍历
+        self.res.append(nodeValues)
+        self.traverse(nextLevelNodes)
+        # 后序位置添加结果，可以得到自底向上的层序遍历结果
+        # res.append(nodeValues)
 ``` 
 
 这个 `traverse` 函数很像递归遍历单链表的函数，其实就是把二叉树的每一层抽象理解成单链表的一个节点进行遍历。
 
 相较上一个递归解法，这个递归解法是自顶向下的「层序遍历」，更接近 BFS 的奥义，可以作为 BFS 算法的递归实现扩展一下思维。
+
+## 评论
+
+请登录后查看/发表评论

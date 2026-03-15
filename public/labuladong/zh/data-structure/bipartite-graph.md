@@ -72,25 +72,21 @@ LeetCode| 力扣| 难度
 
 首先，基于 [图结构的遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>) 写出图的 DFS 遍历框架：
 
-```java
-// 遍历图的所有节点
-void traverse(Graph graph, int s, boolean[] visited) {
-    // base case
-    if (s < 0 || s >= graph.size()) {
-        return;
-    }
-    if (visited[s]) {
-        // 防止死循环
-        return;
-    }
-    // 前序位置
-    visited[s] = true;
-    System.out.println("visit " + s);
-    for (Edge e : graph.neighbors(s)) {
-        traverse(graph, e.to, visited);
-    }
-    // 后序位置
-}
+```python
+# 遍历图的所有节点
+def traverse(graph, s, visited):
+    # base case
+    if s < 0 or s >= len(graph):
+        return
+    if visited[s]:
+        # 防止死循环
+        return
+    # 前序位置
+    visited[s] = True
+    print("visit", s)
+    for e in graph.neighbors(s):
+        traverse(graph, e.to, visited)
+    # 后序位置
 ``` 
 
 因为图中可能存在环，所以用 `visited` 数组防止走回头路。
@@ -99,19 +95,17 @@ void traverse(Graph graph, int s, boolean[] visited) {
 
 其实，如果你愿意，也可以把 if 判断放到其它地方，比如图遍历框架可以稍微改改：
 
-```java
-// 图遍历框架
-boolean[] visited;
-void traverse(Graph graph, int v) {
-    // 前序遍历位置，标记节点 v 已访问
-    visited[v] = true;
-    for (int neighbor : graph.neighbors(v)) {
-        if (!visited[neighbor]) {
-            // 只遍历没标记过的相邻节点
-            traverse(graph, neighbor);
-        }
-    }
-}
+```python
+# 图遍历框架
+visited = []
+
+def traverse(graph: Graph, v: int):
+    # 前序遍历位置，标记节点 v 已访问
+    visited[v] = True
+    for neighbor in graph.neighbors(v):
+        if not visited[neighbor]:
+            # 只遍历没标记过的相邻节点
+            traverse(graph, neighbor)
 ``` 
 
 这种写法把对 `visited` 的判断放到递归调用之前，和之前的写法唯一的不同就是，你需要保证调用 `traverse(v)` 的时候，`visited[v] == false`。
@@ -122,23 +116,21 @@ void traverse(Graph graph, int v) {
 
 所以，判定二分图的代码逻辑可以这样写：
 
-```java
-// 图遍历框架
-void traverse(Graph graph, boolean[] visited, int v) {
-    visited[v] = true;
-    // 遍历节点 v 的所有相邻节点 neighbor
-    for (int neighbor : graph.neighbors(v)) {
-        if (!visited[neighbor]) {
-            // 相邻节点 neighbor 没有被访问过
-            // 那么应该给节点 neighbor 涂上和节点 v 不同的颜色
-            traverse(graph, visited, neighbor);
-        } else {
-            // 相邻节点 neighbor 已经被访问过
-            // 那么应该比较节点 neighbor 和节点 v 的颜色
-            // 若相同，则此图不是二分图
-        }
-    }
-}
+```python
+# 图遍历框架
+def traverse(graph, visited, v):
+    visited[v] = True
+    # 遍历节点 v 的所有相邻节点 neighbor
+    for neighbor in graph.neighbors(v):
+        if not visited[neighbor]:
+            # 相邻节点 neighbor 没有被访问过
+            # 那么应该给节点 neighbor 涂上和节点 v 不同的颜色
+            traverse(graph, visited, neighbor)
+        else:
+            # 相邻节点 neighbor 已经被访问过
+            # 那么应该比较节点 neighbor 和节点 v 的颜色
+            # 若相同，则此图不是二分图
+            pass
 ``` 
 
 如果你能看懂上面这段代码，就能写出二分图判定的具体代码了，接下来看两道具体的算法题来实操一下。
@@ -149,8 +141,8 @@ void traverse(Graph graph, boolean[] visited, int v) {
 
 函数签名如下：
 
-```java
-boolean isBipartite(int[][] graph);
+```python
+def isBipartite(graph: List[List[int]]) -> bool:
 ``` 
 
 比如题目给的例子，输入的邻接表 `graph = [[1,2,3],[0,2],[0,1,3],[0,2]]`，也就是这样一幅图：
@@ -167,57 +159,49 @@ boolean isBipartite(int[][] graph);
 
 结合之前的代码框架，我们可以额外使用一个 `color` 数组来记录每个节点的颜色，从而写出解法代码：
 
-```java
-class Solution {
+```python
+class Solution:
+    # 记录图是否符合二分图性质
+    # 记录图中节点的颜色，false 和 true 代表两种不同颜色
+    # 记录图中节点是否被访问过
+    def __init__(self):
+        self.ok = True
+        self.color = None
+        self.visited = None
 
-    // 记录图是否符合二分图性质
-    private boolean ok = true;
-    // 记录图中节点的颜色，false 和 true 代表两种不同颜色
-    private boolean[] color;
-    // 记录图中节点是否被访问过
-    private boolean[] visited;
+    # 主函数，输入邻接表，判断是否是二分图
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        n = len(graph)
+        self.color = [False] * n
+        self.visited = [False] * n
+        # 因为图不一定是联通的，可能存在多个子图
+        # 所以要把每个节点都作为起点进行一次遍历
+        # 如果发现任何一个子图不是二分图，整幅图都不算二分图
+        for v in range(n):
+            if not self.visited[v]:
+                self.traverse(graph, v)
+        return self.ok
 
-    // 主函数，输入邻接表，判断是否是二分图
-    public boolean isBipartite(int[][] graph) {
-        int n = graph.length;
-        color = new boolean[n];
-        visited = new boolean[n];
-        // 因为图不一定是联通的，可能存在多个子图
-        // 所以要把每个节点都作为起点进行一次遍历
-        // 如果发现任何一个子图不是二分图，整幅图都不算二分图
-        for (int v = 0; v < n; v++) {
-            if (!visited[v]) {
-                traverse(graph, v);
-            }
-        }
-        return ok;
-    }
+    # DFS 遍历框架
+    def traverse(self, graph: List[List[int]], v: int) -> None:
+        # 如果已经确定不是二分图了，就不用浪费时间再递归遍历了
+        if not self.ok:
+            return
 
-    // DFS 遍历框架
-    private void traverse(int[][] graph, int v) {
-        // 如果已经确定不是二分图了，就不用浪费时间再递归遍历了
-        if (!ok) return;
-
-        visited[v] = true;
-        for (int w : graph[v]) {
-            if (!visited[w]) {
-                // 相邻节点 w 没有被访问过
-                // 那么应该给节点 w 涂上和节点 v 不同的颜色
-                color[w] = !color[v];
-                // 继续遍历 w
-                traverse(graph, w);
-            } else {
-                // 相邻节点 w 已经被访问过
-                // 根据 v 和 w 的颜色判断是否是二分图
-                if (color[w] == color[v]) {
-                    // 若相同，则此图不是二分图
-                    ok = false;
-                }
-            }
-        }
-    }
-
-}
+        self.visited[v] = True
+        for w in graph[v]:
+            if not self.visited[w]:
+                # 相邻节点 w 没有被访问过
+                # 那么应该给节点 w 涂上和节点 v 不同的颜色
+                self.color[w] = not self.color[v]
+                # 继续遍历 w
+                self.traverse(graph, w)
+            else:
+                # 相邻节点 w 已经被访问过
+                # 根据 v 和 w 的颜色判断是否是二分图
+                if self.color[w] == self.color[v]:
+                    # 若相同，则此图不是二分图
+                    self.ok = False
 ``` 
 
 你可以多次点击 `visited[v] = true;` 这行代码，查看节点的染色过程。
@@ -226,60 +210,53 @@ class Solution {
 
 接下来看一下 BFS 算法的逻辑：
 
-```java
-class Solution {
-    // 记录图是否符合二分图性质
-    private boolean ok = true;
-    // 记录图中节点的颜色，false 和 true 代表两种不同颜色
-    private boolean[] color;
-    // 记录图中节点是否被访问过
-    private boolean[] visited;
+```python
+from collections import deque
 
-    public boolean isBipartite(int[][] graph) {
-        int n = graph.length;
-        color =  new boolean[n];
-        visited =  new boolean[n];
-        
-        for (int v = 0; v < n; v++) {
-            if (!visited[v]) {
-                // 改为使用 BFS 函数
-                bfs(graph, v);
-            }
-        }
-        
-        return ok;
-    }
+class Solution:
+    def __init__(self):
+        # 记录图是否符合二分图性质
+        self.ok = True
+        # 记录图中节点的颜色，False 和 True 代表两种不同颜色
+        self.color = []
+        # 记录图中节点是否被访问过
+        self.visited = []
 
-    // 从 start 节点开始进行 BFS 遍历
-    private void bfs(int[][] graph, int start) {
-        Queue<Integer> q = new LinkedList<>();
-        visited[start] = true;
-        q.offer(start);
-        
-        while (!q.isEmpty() && ok) {
-            int v = q.poll();
-            // 从节点 v 向所有相邻节点扩散
-            for (int w : graph[v]) {
-                if (!visited[w]) {
-                    // 相邻节点 w 没有被访问过
-                    // 那么应该给节点 w 涂上和节点 v 不同的颜色
-                    color[w] = !color[v];
-                    // 标记 w 节点，并放入队列
-                    visited[w] = true;
-                    q.offer(w);
-                } else {
-                    // 相邻节点 w 已经被访问过
-                    // 根据 v 和 w 的颜色判断是否是二分图
-                    if (color[w] == color[v]) {
-                        // 若相同，则此图不是二分图
-                        ok = false;
-                        return;
-                    }
-                }
-            }
-        }
-    }
-}
+    def isBipartite(self, graph):
+        n = len(graph)
+        self.color = [False]*n
+        self.visited = [False]*n
+
+        for v in range(n):
+            if not self.visited[v]:
+                # 改为使用 BFS 函数
+                self.bfs(graph, v)
+
+        return self.ok
+
+    # 从 start 节点开始进行 BFS 遍历
+    def bfs(self, graph, start):
+        q = deque([start])
+        self.visited[start] = True
+
+        while q and self.ok:
+            v = q.popleft()
+            # 从节点 v 向所有相邻节点扩散
+            for w in graph[v]:
+                if not self.visited[w]:
+                    # 相邻节点 w 没有被访问过
+                    # 那么应该给节点 w 涂上和节点 v 不同的颜色
+                    self.color[w] = not self.color[v]
+                    # 标记 w 节点，并放入队列
+                    self.visited[w] = True
+                    q.append(w)
+                else:
+                    # 相邻节点 w 已经被访问过
+                    # 根据 v 和 w 的颜色判断是否是二分图
+                    if self.color[w] == self.color[v]:
+                        # 若相同，则此图不是二分图
+                        self.ok = False
+                        return
 ``` 
 
 核心逻辑和刚才实现的 `traverse` 函数（DFS 算法）完全一样，也是根据相邻节点 `v` 和 `w` 的颜色来进行判断的。关于 BFS 算法框架的探讨，详见前文 [BFS 算法框架](</zh/algo/essential-technique/bfs-framework/>) 和 [Dijkstra 算法模板](</zh/algo/data-structure/dijkstra/>)，这里就不展开了。
@@ -325,9 +302,9 @@ class Solution {
 
 题目来源：[力扣 886. 可能的二分法](<https://leetcode.cn/problems/possible-bipartition/>)。
 
-```java
-// 函数签名如下
-boolean possibleBipartition(int n, int[][] dislikes);
+```python
+# 函数签名如下
+def possibleBipartition(n: int, dislikes: List[List[int]]):
 ``` 
 
 **其实这题考察的就是二分图的判定** ：
@@ -340,66 +317,57 @@ boolean possibleBipartition(int n, int[][] dislikes);
 
 所以解法就出来了，我们把 `dislikes` 构造成一幅图，然后执行二分图的判定算法即可：
 
-```java
-class Solution {
+```python
+class Solution:
+    def __init__(self):
+        self.ok = True
+        self.color = None
+        self.visited = None
 
-    private boolean ok = true;
-    private boolean[] color;
-    private boolean[] visited;
+    def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
+        # 图节点编号从 1 开始
+        self.color = [False] * (n + 1)
+        self.visited = [False] * (n + 1)
+        # 转化成邻接表表示图结构
+        graph = self.buildGraph(n, dislikes)
 
-    public boolean possibleBipartition(int n, int[][] dislikes) {
-        // 图节点编号从 1 开始
-        color = new boolean[n + 1];
-        visited = new boolean[n + 1];
-        // 转化成邻接表表示图结构
-        List<Integer>[] graph = buildGraph(n, dislikes);
+        for v in range(1, n + 1):
+            if not self.visited[v]:
+                self.traverse(graph, v)
+        return self.ok
 
-        for (int v = 1; v <= n; v++) {
-            if (!visited[v]) {
-                traverse(graph, v);
-            }
-        }
-        return ok;
-    }
+    # 建图函数
+    def buildGraph(self, n: int, dislikes: List[List[int]]) -> List[List[int]]:
+        # 图节点编号为 1...n
+        graph = [[] for _ in range(n + 1)]
+        for edge in dislikes:
+            v = edge[1]
+            w = edge[0]
+            # 「无向图」相当于「双向图」
+            # v -> w
+            graph[v].append(w)
+            # w -> v
+            graph[w].append(v)
+        return graph
 
-    // 建图函数
-    private List<Integer>[] buildGraph(int n, int[][] dislikes) {
-        // 图节点编号为 1...n
-        List<Integer>[] graph = new LinkedList[n + 1];
-        for (int i = 1; i <= n; i++) {
-            graph[i] = new LinkedList<>();
-        }
-        for (int[] edge : dislikes) {
-            int v = edge[1];
-            int w = edge[0];
-            // 「无向图」相当于「双向图」
-            // v -> w
-            graph[v].add(w);
-            // w -> v
-            graph[w].add(v);
-        }
-        return graph;
-    }
-
-    // 和之前判定二分图的 traverse 函数完全相同
-    private void traverse(List<Integer>[] graph, int v) {
-        if (!ok) return;
-        visited[v] = true;
-        for (int w : graph[v]) {
-            if (!visited[w]) {
-                color[w] = !color[v];
-                traverse(graph, w);
-            } else {
-                if (color[w] == color[v]) {
-                    ok = false;
-                }
-            }
-        }
-    }
-
-}
+    # 和之前判定二分图的 traverse 函数完全相同
+    def traverse(self, graph: List[List[int]], v: int):
+        if not self.ok:
+            return
+        self.visited[v] = True
+        for w in graph[v]:
+            if not self.visited[w]:
+                self.color[w] = not self.color[v]
+                self.traverse(graph, w)
+            else:
+                if self.color[w] == self.color[v]:
+                    self.ok = False
 ``` 
 
 算法可视化
 
 至此，这道题也使用 DFS 算法解决了，如果你想用 BFS 算法，和之前写的解法是类似的，在扩散的时候，尝试对相邻元素颜色就行了，你可以自己尝试实现。
+
+## 评论
+
+请登录后查看/发表评论

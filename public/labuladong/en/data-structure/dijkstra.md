@@ -49,43 +49,34 @@ Let's start with the code, since Dijkstra's algorithm only requires a few modifi
 
 For comparison, here's the standard graph BFS traversal algorithm:
 
-```java
-// BFS traversal of a graph, starting from node s and recording the number
-// of steps (the number of edges from the start node s to the current node)
-// Each node maintains its own State class to record the number of steps from s
-class State {
-    // Current node ID
-    int node;
-    // Number of steps from the start node s to the current node
-    int step;
+```python
+# BFS traversal of a graph structure, starting BFS from node s and recording the
+# number of steps (the number of edges from the start node s to the current node)
+# Each node maintains its own State class, recording the number of steps from s
+class State:
+    def __init__(self, node, step):
+        # Current node ID
+        self.node = node
+        # Number of steps from the start node s to the current node
+        self.step = step
 
-    public State(int node, int step) {
-        this.node = node;
-        this.step = step;
-    }
-}
+def bfs(graph, s):
+    visited = [False] * len(graph)
+    from collections import deque
 
-void bfs(Graph graph, int s) {
-    boolean[] visited = new boolean[graph.size()];
-    Queue<State> q = new LinkedList<>();
+    q = deque([State(s, 0)])
+    visited[s] = True
 
-    q.offer(new State(s, 0));
-    visited[s] = true;
-
-    while (!q.isEmpty()) {
-        State state = q.poll();
-        int cur = state.node;
-        int step = state.step;
-        System.out.println("visit " + cur + " with step " + step);
-        for (Edge e : graph.neighbors(cur)) {
-            if (visited[e.to]) { // [!code highlight:5]
-                continue;
-            }
-            q.offer(new State(e.to, step + 1));
-            visited[e.to] = true;
-        }
-    }
-}
+    while q:
+        state = q.popleft()
+        cur = state.node
+        step = state.step
+        print(f"visit {cur} with step {step}")
+        for e in graph.neighbors(cur):
+            if visited[e.to]:  # [!code highlight:4]
+                continue
+            q.append(State(e.to, step + 1))
+            visited[e.to] = True
 ``` 
 
 In this algorithm, we use `State.step` to record the minimum number of steps (edges) from the source to the current node, and a `visited` array to track visited nodes, ensuring each node is visited only once (enqueued and dequeued once) to prevent infinite loops.
@@ -94,4 +85,8 @@ In weighted graphs, the shortest path problem asks for the minimum total edge we
 
 Here's Dijkstra's algorithm code, with the differences highlighted:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

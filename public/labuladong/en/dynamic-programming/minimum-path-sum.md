@@ -55,8 +55,8 @@ The problem is from [LeetCode 64. Minimum Path Sum](<https://leetcode.com/proble
 
 The function signature is as follows:
 
-```java
-int minPathSum(int[][] grid);
+```python
+def minPathSum(grid: List[List[int]]) -> int
 ``` 
 
 This problem is not very hard, but you may meet harder variations. So let's talk about the general idea for this kind of problem.
@@ -83,8 +83,8 @@ If you understand this, you can see this is the state transition formula. So thi
 
 For example, we define a `dp` function like this:
 
-```java
-int dp(int[][] grid, int i, int j);
+```python
+def dp(grid: List[List[int]], i: int, j: int) -> int:
 ``` 
 
 The `dp` function is defined as:
@@ -93,38 +93,35 @@ The `dp` function is defined as:
 
 Based on this, we can get the minimum path sum by calling this `dp` function:
 
-```java
-int minPathSum(int[][] grid) {
-    int m = grid.length;
-    int n = grid[0].length;
-    // calculate the minimum path sum from the top-left corner to the bottom-right corner
-    return dp(grid, m - 1, n - 1);
-}
+```python
+def minPathSum(grid: List[List[int]]) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    # calculate the minimum path sum from the top-left corner to the bottom-right corner
+    return dp(grid, m - 1, n - 1)
 ``` 
 
 From what we just discussed, it's easy to see that the value of `dp(grid, i, j)` depends on the values returned by `dp(grid, i - 1, j)` and `dp(grid, i, j - 1)`.
 
 Now let's write the code directly:
 
-```java
-int dp(int[][] grid, int i, int j) {
-    // base case
-    if (i == 0 && j == 0) {
-        return grid[0][0];
-    }
-    // if the index is out of bounds, return a very large value,
-    // ensuring it won't be selected when taking the min
-    if (i < 0 || j < 0) {
-        return Integer.MAX_VALUE;
-    }
+```python
+def dp(grid: List[List[int]], i: int, j: int) -> int:
+    # base case
+    if i == 0 and j == 0:
+        return grid[0][0]
 
-    // the minimum path sum of the left and above plus grid[i][j]
-    // is the minimum path sum to reach (i, j)
-    return Math.min(
+    # if the index is out of bounds, return a very large value,
+    # ensuring it won't be chosen when taking the minimum
+    if i < 0 or j < 0:
+        return float('inf')
+
+    # the minimum path sum from the left and above plus grid[i][j]
+    # is the minimum path sum to reach (i, j)
+    return min(
             dp(grid, i - 1, j), 
             dp(grid, i, j - 1)
-        ) + grid[i][j];
-}
+        ) + grid[i][j]
 ``` 
 
 The logic of the code above is complete. Next, let's analyze if this recursive algorithm has overlapping subproblems. Do we need to use memoization to improve efficiency?
@@ -144,42 +141,35 @@ It could be `dp(i, j) -> #1 -> #2` or `dp(i, j) -> #2 -> #1`. There is more than
 
 So, we can use memoization to optimize:
 
-```java
-class Solution {
-    int[][] memo;
+```python
+class Solution:
+    def __init__(self):
+        self.memo = None
 
-    public int minPathSum(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        // construct memo, initialize all values to -1
-        memo = new int[m][n];
-        for (int[] row : memo)
-            Arrays.fill(row, -1);
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        # construct memo, initialize all values to -1
+        self.memo = [[-1 for _ in range(n)] for _ in range(m)]
 
-        return dp(grid, m - 1, n - 1);
-    }
+        return self.dp(grid, m - 1, n - 1)
 
-    int dp(int[][] grid, int i, int j) {
-        // base case
-        if (i == 0 && j == 0) {
-            return grid[0][0];
-        }
-        if (i < 0 || j < 0) {
-            return Integer.MAX_VALUE;
-        }
-        // avoid redundant calculations
-        if (memo[i][j] != -1) {
-            return memo[i][j];
-        }
-        // record the calculation result in memo
-        memo[i][j] = Math.min(
-                dp(grid, i - 1, j),
-                dp(grid, i, j - 1)
-        ) + grid[i][j];
+    def dp(self, grid: List[List[int]], i: int, j: int) -> int:
+        # base case
+        if i == 0 and j == 0:
+            return grid[0][0]
+        if i < 0 or j < 0:
+            return float('inf')
+        # avoid redundant calculations
+        if self.memo[i][j] != -1:
+            return self.memo[i][j]
+        # record the calculation result in memo
+        self.memo[i][j] = min(
+            self.dp(grid, i - 1, j),
+            self.dp(grid, i, j - 1)
+        ) + grid[i][j]
 
-        return memo[i][j];
-    }
-}
+        return self.memo[i][j]
 ``` 
 
 Algorithm Visualization
@@ -194,36 +184,32 @@ First, similar to the `dp` function above, we need a 2D `dp` array, defined as:
 
 The state transition rule does not change. `dp[i][j]` still depends on `dp[i-1][j]` and `dp[i][j-1]`. Let's look at the code:
 
-```java
-class Solution {
-    public int minPathSum(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        int[][] dp = new int[m][n];
+```python
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        dp = [[0] * n for _ in range(m)]
 
-        // **** base case ****
-        dp[0][0] = grid[0][0];
+        # **** base case ****
+        dp[0][0] = grid[0][0]
 
-        for (int i = 1; i < m; i++)
-            dp[i][0] = dp[i - 1][0] + grid[i][0];
+        for i in range(1, m):
+            dp[i][0] = dp[i - 1][0] + grid[i][0]
         
-        for (int j = 1; j < n; j++)
-            dp[0][j] = dp[0][j - 1] + grid[0][j];        
-        // *******************
+        for j in range(1, n):
+            dp[0][j] = dp[0][j - 1] + grid[0][j]        
+        # *******************
         
-        // state transition
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                dp[i][j] = Math.min(
+        # state transition
+        for i in range(1, m):
+            for j in range(1, n):
+                dp[i][j] = min(
                     dp[i - 1][j],
                     dp[i][j - 1]
-                ) + grid[i][j];
-            }
-        }
+                ) + grid[i][j]
 
-        return dp[m - 1][n - 1];
-    }
-}
+        return dp[m - 1][n - 1]
 ``` 
 
 **The base case of this solution looks a bit different from the recursive solution, but actually it's the same.**
@@ -265,4 +251,8 @@ In the previous article, [Dynamic Programming: Space Optimization](</en/algo/dyn
 
 That's the end of this article. In the next one, we will solve a more advanced and interesting problem. Stay tuned!
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

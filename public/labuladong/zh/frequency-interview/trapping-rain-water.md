@@ -55,8 +55,8 @@ LeetCode| 力扣| 难度
 
 就是用一个数组表示一个条形图，问你这个条形图最多能接多少水。
 
-```java
-int trap(int[] height);
+```python
+def trap(height: List[int]) -> int:
 ``` 
 
 下面就来由浅入深介绍暴力解法 -> 备忘录解法 -> 双指针解法，在 O(N) 时间 O(1) 空间内解决这个问题。
@@ -76,3 +76,7 @@ int trap(int[] height);
 为什么位置 `i` 最多能盛 2 格水呢？因为，位置 `i` 能达到的水柱高度和其左边的最高柱子、右边的最高柱子有关，我们分别称这两个柱子高度为 `l_max` 和 `r_max`；**位置`i` 最大的水柱高度就是 `min(l_max, r_max)`**。
 
 也就是说，对于位置 `i`，能够装的水为：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -74,8 +74,8 @@ The problem is from [LeetCode 518. Coin Change II](<https://leetcode.com/problem
 
 The function signature we need to implement is:
 
-```java
-int change(int amount, int[] coins);
+```python
+def change(amount: int, coins: List[int]) -> int:
 ``` 
 
 We can reframe this problem in knapsack terms:
@@ -86,4 +86,8 @@ The key difference between this problem and the two knapsack problems we covered
 
 Let's continue our analysis using the knapsack problem framework.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

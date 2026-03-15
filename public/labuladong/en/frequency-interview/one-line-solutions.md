@@ -41,14 +41,12 @@ How do I create a situation with 5 to 7 stones? By making the opponent face 8 st
 
 This cycle continues, and we realize that stepping on a multiple of 4 is a trap. Once trapped in multiples of 4, you can never escape and will always lose. Thus, the solution to this problem is very simple:
 
-```java
-class Solution {
-    public boolean canWinNim(int n) {
-        // If you start on a multiple of 4, just admit defeat
-        // Otherwise, you can control the opponent to a multiple of 4 and be guaranteed to win
-        return n % 4 != 0;
-    }
-}
+```python
+class Solution:
+    def canWinNim(self, n: int) -> bool:
+        # If you start on a multiple of 4, just admit defeat
+        # Otherwise, you can control the opponent to a multiple of 4 and be guaranteed to win
+        return n % 4 != 0
 ``` 
 
 ## II. Stone Game
@@ -77,12 +75,10 @@ This highlights why both players being clever is crucial, as the algorithm seeks
 
 This problem involves a two-player game and can be approached with dynamic programming, which may seem complex. However, a deeper understanding of the rules reveals: as long as you are clever enough, you are guaranteed to win because you go first.
 
-```java
-class Solution {
-    public boolean stoneGame(int[] piles) {
-        return true;
-    }
-}
+```python
+class Solution:
+    def stoneGame(self, piles: List[int]) -> bool:
+        return True
 ``` 
 
 The reason for this is that the problem has two important conditions: first, the total number of stone piles is even, and the total number of stones is odd. These two conditions, which seem to increase the fairness of the game, actually make it a game of exploiting others. Let's explain with `piles=[2, 1, 9, 5]`, assuming these four piles are indexed from left to right as 1, 2, 3, and 4.
@@ -113,12 +109,10 @@ Given a positive integer `n` representing the number of bulbs, how many bulbs ar
 
 We could use a boolean array to represent the switch states of the bulbs, simulate the operations, and count the results. However, this method lacks elegance; the best solution is as follows:
 
-```java
-class Solution {
-    public int bulbSwitch(int n) {
-        return (int)Math.sqrt(n);
-    }
-}
+```python
+class Solution:
+    def bulbSwitch(self, n: int) -> int:
+        return int(n**0.5)
 ``` 
 
 What? How is this problem related to square roots? Actually, the solution is quite clever. If no one tells you the solution, it might be hard to figure out.
@@ -139,4 +133,8 @@ Assume there are 16 lights. We take the square root of 16, which is 4. This mean
 
 Even if the square root of some `n` is a decimal, converting it to an integer acts as an upper bound. All integers below this bound, when squared, will be the indices of the lights that are on at the end. So, directly converting the square root to an integer gives us the answer to this problem.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

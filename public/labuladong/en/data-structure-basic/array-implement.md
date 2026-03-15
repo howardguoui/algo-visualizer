@@ -87,198 +87,154 @@ You can use LeetCode problem 707 “[Design Linked List](<https://leetcode.com/p
 
 ## Dynamic Array Implementation
 
-```java
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+```python
+class MyArrayList:
+    # Default initial capacity
+    INIT_CAP = 1
 
-public class MyArrayList<E> {
-    // The underlying array that actually stores data
-    private E[] data;
-    // Tracks the current number of elements
-    private int size;
-    // Default initial capacity
-    private static final int INIT_CAP = 1;
-
-    public MyArrayList() {
-        this(INIT_CAP);
-    }
-
-    public MyArrayList(int initCapacity) {
-        data = (E[]) new Object[initCapacity];
-        size = 0;
-    }
-
-    // Add
-    public void addLast(E e) {
-        int cap = data.length;
-        // Check if the array capacity is sufficient
-        if (size == cap) {
-            resize(2 * cap);
-        }
-        // Insert the element at the end
-        data[size] = e;
-        size++;
-    }
-
-    public void add(int index, E e) {
-        // Check for index out of bounds
-        checkPositionIndex(index);
-
-        int cap = data.length;
-        // Check if the array capacity is sufficient
-        if (size == cap) {
-            resize(2 * cap);
-        }
-
-        // Shift data from data[index..] to data[index+1..]
-        // Make space for the new element
-        for (int i = size - 1; i >= index; i--) {
-            data[i + 1] = data[i];
-        }
-
-        // Insert the new element
-        data[index] = e;
-
-        size++;
-    }
-
-    public void addFirst(E e) {
-        add(0, e);
-    }
-
-    // Remove
-    public E removeLast() {
-        if (size == 0) {
-            throw new NoSuchElementException();
-        }
-        int cap = data.length;
-        // Can shrink to save space
-        if (size == cap / 4) {
-            resize(cap / 2);
-        }
-
-        E deletedVal = data[size - 1];
-        // Remove the last element
-        // Must set the last element to null to avoid memory leaks
-        data[size - 1] = null;
-        size--;
-
-        return deletedVal;
-    }
-
-    public E remove(int index) {
-        // Check for index out of bounds
-        checkElementIndex(index);
-
-        int cap = data.length;
-        // Can shrink to save space
-        if (size == cap / 4) {
-            resize(cap / 2);
-        }
-
-        E deletedVal = data[index];
-
-        // Shift data from data[index+1..] to data[index..]
-        for (int i = index + 1; i < size; i++) {
-            data[i - 1] = data[i];
-        }
-
-        data[size - 1] = null;
-        size--;
-
-        return deletedVal;
-    }
-
-    public E removeFirst() {
-        return remove(0);
-    }
-
-    // Get
-    public E get(int index) {
-        // Check for index out of bounds
-        checkElementIndex(index);
-
-        return data[index];
-    }
-
-    // Set
-    public E set(int index, E element) {
-        // Check for index out of bounds
-        checkElementIndex(index);
-        // Modify the data
-        E oldVal = data[index];
-        data[index] = element;
-        return oldVal;
-    }
-
-    // Utility methods
-    public int size() {
-        return size;
-    }
-
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    // Resize the array to newCap
-    private void resize(int newCap) {
-        E[] temp = (E[]) new Object[newCap];
-
-        for (int i = 0; i < size; i++) {
-            temp[i] = data[i];
-        }
-
-        data = temp;
-    }
-
-    private boolean isElementIndex(int index) {
-        return index >= 0 && index < size;
-    }
-
-    private boolean isPositionIndex(int index) {
-        return index >= 0 && index <= size;
-    }
-
+    def __init__(self, init_capacity=None):
+        self.data = [None]
+        self.size = 0
     
-    // Check if the index position can hold an element
-    private void checkElementIndex(int index) {
-        if (!isElementIndex(index))
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-    }
+    # Add
+    def add_last(self, e):
+        cap = len(self.data)
+        # Check if data array has enough capacity
+        if self.size == cap:
+            self._resize(2 * cap)
+        # Insert element at the end
+        self.data[self.size] = e
+        self.size += 1
 
-    
-    // Check if the index position can add an element
-    private void checkPositionIndex(int index) {
-        if (!isPositionIndex(index))
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-    }
+    def add(self, index, e):
+        # Check for index out of bounds
+        self._check_position_index(index)
 
-    private void display() {
-        System.out.println("size = " + size + " cap = " + data.length);
-        System.out.println(Arrays.toString(data));
-    }
+        cap = len(self.data)
+        # Check if data array has enough capacity
+        if self.size == cap:
+            self._resize(2 * cap)
 
-    public static void main(String[] args) {
-        // Set initial capacity to 3
-        MyArrayList<Integer> arr = new MyArrayList<>(3);
+        # Shift data data[index..] -> data[index+1..]
+        # Make room for the new element
+        for i in range(self.size-1, index-1, -1):
+            self.data[i+1] = self.data[i]
+        
+        # Insert new element
+        self.data[index] = e
 
-        // Add 5 elements
-        for (int i = 1; i <= 5; i++) {
-            arr.addLast(i);
-        }
+        self.size += 1
 
-        arr.remove(3);
-        arr.add(1, 9);
-        arr.addFirst(100);
-        int val = arr.removeLast();
+    def add_first(self, e):
+        self.add(0, e)
 
-        for (int i = 0; i < arr.size(); i++) {
-            System.out.println(arr.get(i));
-        }
-    }
+    # Remove
+    def remove_last(self):
+        if self.size == 0:
+            raise Exception("NoSuchElementException")
+        cap = len(self.data)
+        # Can shrink to save space
+        if self.size == cap // 4:
+            self._resize(cap // 2)
 
-}
+        deleted_val = self.data[self.size - 1]
+        # Remove the last element
+        self.data[self.size - 1] = None
+        self.size -= 1
+
+        return deleted_val
+
+    def remove(self, index):
+        # Check for index out of bounds
+        self._check_element_index(index)
+
+        cap = len(self.data)
+        # Can shrink to save space
+        if self.size == cap // 4:
+            self._resize(cap // 2)
+
+        deleted_val = self.data[index]
+
+        # Shift data data[index+1..] -> data[index..]
+        for i in range(index + 1, self.size):
+            self.data[i - 1] = self.data[i]
+
+        self.data[self.size - 1] = None
+        self.size -= 1
+
+        return deleted_val
+
+    def remove_first(self):
+        return self.remove(0)
+
+    # Retrieve
+    def get(self, index):
+        # Check for index out of bounds
+        self._check_element_index(index)
+
+        return self.data[index]
+
+    # Update
+    def set(self, index, element):
+        # Check for index out of bounds
+        self._check_element_index(index)
+        # Modify data
+        old_val = self.data[index]
+        self.data[index] = element
+        return old_val
+
+    # Utility methods
+    def get_size(self):
+        return self.size
+
+    def is_empty(self):
+        return self.size == 0
+
+    # Resize data capacity to newCap
+    def _resize(self, new_cap):
+        temp = [None] * new_cap
+        for i in range(self.size):
+            temp[i] = self.data[i]
+        self.data = temp
+
+    def _is_element_index(self, index):
+        return 0 <= index < self.size
+
+    def _is_position_index(self, index):
+        return 0 <= index <= self.size
+
+    def _check_element_index(self, index):
+        if not self._is_element_index(index):
+            raise IndexError(f"Index: {index}, Size: {self.size}")
+
+    def _check_position_index(self, index):
+        if not self._is_position_index(index):
+            raise IndexError(f"Index: {index}, Size: {self.size}")
+
+    def display(self):
+        print(f"size = {self.size}, cap = {len(self.data)}")
+        print(self.data)
+
+# Usage example
+if __name__ == "__main__":
+    arr = MyArrayList(init_capacity=3)
+
+    # Add 5 elements
+    for i in range(1, 6):
+        arr.add_last(i)
+
+    arr.remove(3)
+    arr.add(1, 9)
+    arr.add_first(100)
+    val = arr.remove_last()
+
+    # 100 1 9 2 3
+    for i in range(arr.get_size()):
+        print(arr.get(i))
 ``` 
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

@@ -27,7 +27,7 @@ The later data structure chapters have many explanations and exercises about bin
 
 The main difficulty of binary trees is in solving algorithm problems. The tree itself is not hard. It is just a tree structure like this:
 
-loading...
+12435768
 
 This is a normal binary tree. You should know a few terms:
 
@@ -47,7 +47,7 @@ Some binary trees are a bit special and have their own names. You should know th
 
 A perfect binary tree means every level is full. The whole tree looks like a triangle:
 
-loading...
+124895101136121371415
 
 **A nice thing about a perfect binary tree is that its node count is easy to compute.**  
 If the depth is `h`, then the total number of nodes is `2^h - 1`. This is just a geometric series sum.
@@ -56,7 +56,7 @@ If the depth is `h`, then the total number of nodes is `2^h - 1`. This is just a
 
 A complete binary tree means: on every level, nodes are packed to the left. And except for the last level, every level must be full:
 
-loading...
+124895101136127
 
 It’s easy to see that a perfect binary tree is a special kind of complete binary tree.
 
@@ -82,13 +82,13 @@ I made “every node in the subtree” bold because beginners often make this mi
 
 For example, the tree below is a BST:
 
-loading...
+7415910
 
 All nodes in the left subtree of node `7` are smaller than `7`, and all nodes in the right subtree are larger than `7`. For node `4`, it is the same, and so on.
 
 In contrast, the tree below is NOT a BST:
 
-loading...
+7418910
 
 If you only look at the left and right child of each node, it may look fine. But you should look at the whole subtree. In the left subtree of node `7`, there is a node `8`, which is larger than `7`. This breaks the BST rule.
 
@@ -108,17 +108,17 @@ Note: it is for every node, not only for the root.
 
 For example, in the tree below: for root `1`, left height is 2 and right height is 3. For node `2`, left height is 1 and right height is 0. For node `3`, left height is 2 and right height is 1, and so on. Every node satisfies the rule, so this is a height-balanced binary tree:
 
-loading...
+1243576
 
 The tree below is NOT height-balanced. For node `2`, the left height is 2 and the right height is 0. The difference is larger than 1:
 
-loading...
+12483576
 
 **If a height-balanced binary tree has NNN nodes, then its height is O(log⁡N)O(\log N)O(logN).** This is very important. Later chapters will introduce several tree-based data structures. If we can keep the tree height at O(log⁡N)O(\log N)O(logN), then insert, delete, search, and update will all be fast.
 
 On the other hand, if the tree is very unbalanced, like this extreme case:
 
-loading...
+12345
 
 Then this tree is basically the same as a singly linked list, and operations become much slower.
 
@@ -140,28 +140,27 @@ The most common way is like a linked structure. Each node has pointers to its le
 
 On LeetCode, input binary trees are usually built in this way. The binary tree node class `TreeNode` often looks like this:
 
-```java
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode(int x) { this.val = x; }
-}
+```python
+class TreeNode:
+    def __init__(self, x: int):
+        self.val = x
+        self.left = None
+        self.right = None
 
-// You can construct a binary tree like this:
-TreeNode root = new TreeNode(1);
-root.left = new TreeNode(2);
-root.right = new TreeNode(3);
-root.left.left = new TreeNode(4);
-root.right.left = new TreeNode(5);
-root.right.right = new TreeNode(6);
+# You can build a binary tree like this:
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.right.left = TreeNode(5)
+root.right.right = TreeNode(6)
 
-// The constructed binary tree looks like this:
-//     1
-//    / \
-//   2   3
-//  /   / \
-// 4   5   6
+# The constructed binary tree looks like this:
+#     1
+#    / \
+#   2   3
+#  /   / \
+# 4   5   6
 ``` 
 
 Since this is “common”, it means there are other ways too.
@@ -174,21 +173,26 @@ Also, in many algorithm problems, we may **abstract** a real problem into a bina
 
 For example, this binary tree:
 
-loading...
+124356
 
 We can use a hash table: the key is the parent node id, and the value is a list of child node ids (each node id is unique). Then each key-value pair is one node in a multi-way tree. This multi-way tree can be written like this:
 
-```java
-// 1 -> [2, 3]
-// 2 -> [4]
-// 3 -> [5, 6]
+```python
+# 1 -> [2, 3]
+# 2 -> [4]
+# 3 -> [5, 6]
 
-HashMap<Integer, List<Integer>> tree = new HashMap<>();
-tree.put(1, Arrays.asList(2, 3));
-tree.put(2, Collections.singletonList(4));
-tree.put(3, Arrays.asList(5, 6));
+tree = {
+    1: [2, 3],
+    2: [4],
+    3: [5, 6]
+}
 ``` 
 
 This lets us simulate and operate on a binary tree / multi-way tree. Later, when we talk about graph theory, you will learn it has a new name: the [Adjacency List](</en/algo/data-structure-basic/graph-basic/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

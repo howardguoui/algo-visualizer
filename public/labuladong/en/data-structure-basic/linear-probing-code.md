@@ -27,4 +27,8 @@ In the simplified implementation, the specific simplifications are as follows:
 
 These simplifications help us focus on the core logic of adding, deleting, updating, and searching, and you can use the [visualization panel](</en/algo/intro/visualize/>) to assist in understanding the process.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

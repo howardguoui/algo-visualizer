@@ -75,9 +75,9 @@ How do we solve this problem? Like in the article [Recursively Reverse Part of a
 
 Why does this problem have the property of recursion? For example, we can make a function like this:
 
-```java
-// cakes is a pile of pancakes, the function will sort the first n pancakes
-void sort(int[] cakes, int n);
+```python
+# cakes is a pile of pancakes, the function will sort the first n pancakes
+def sort(cakes: List[int], n: int):
 ``` 
 
 If we find the largest pancake among the first `n` pancakes, and flip it to the bottom:
@@ -114,49 +114,42 @@ With these two steps, you can write the solution. The problem also asks us to re
 
 Just write the above idea in code. Note: array index starts from 0, but the answer should use 1-based indices.
 
-```java
-class Solution {
-    // record the sequence of flip operations
-    LinkedList<Integer> res = new LinkedList<>();
+```python
+from typing import List
 
-    public List<Integer> pancakeSort(int[] cakes) {
-        sort(cakes, cakes.length);
-        return res;
-    }
+class Solution:
+    def pancakeSort(self, cakes: List[int]) -> List[int]:
+        # record the sequence of reversal operations
+        self.res = []
+        self.sort(cakes, len(cakes))
+        return self.res
+    
+    def sort(self, cakes: List[int], n: int) -> None:
+        # base case
+        if n == 1:
+            return
+        # find the index of the largest cake
+        max_cake = 0
+        max_cake_index = 0
+        for i in range(n):
+            if cakes[i] > max_cake:
+                max_cake_index = i
+                max_cake = cakes[i]
+        # first reversal, flip the largest cake to the top
+        self.reverse(cakes, 0, max_cake_index)
+        self.res.append(max_cake_index + 1)
+        # second reversal, flip the largest cake to the bottom
+        self.reverse(cakes, 0, n - 1)
+        self.res.append(n)
 
-    void sort(int[] cakes, int n) {
-        // base case
-        if (n == 1) return;
-
-        // find the index of the largest pancake
-        int maxCake = 0;
-        int maxCakeIndex = 0;
-        for (int i = 0; i < n; i++)
-            if (cakes[i] > maxCake) {
-                maxCakeIndex = i;
-                maxCake = cakes[i];
-            }
-
-        // first flip, move the largest pancake to the top
-        reverse(cakes, 0, maxCakeIndex);
-        res.add(maxCakeIndex + 1);
-        // second flip, move the largest pancake to the bottom
-        reverse(cakes, 0, n - 1);
-        res.add(n); 
-        // recursive call
-        sort(cakes, n - 1); 
-    }
-
-    void reverse(int[] arr, int i, int j) {
-        while (i < j) {
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-            i++;
-            j--;
-        }
-    }
-}
+        # recursive call
+        self.sort(cakes, n - 1)
+        
+    def reverse(self, arr: List[int], i: int, j: int) -> None:
+        while i < j:
+            arr[i], arr[j] = arr[j], arr[i]
+            i += 1
+            j -= 1
 ``` 
 
 Algorithm Visualization
@@ -178,4 +171,8 @@ Flip top 4:   [1,2,3,4]
 
 If you are asked to find the **shortest** flip sequence to sort the pancakes, how would you solve it? What is the core idea to find the optimal solution? What algorithm should you use? Feel free to share your thoughts.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

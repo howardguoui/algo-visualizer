@@ -20,44 +20,39 @@ Some of you may already know how to use a linked list as the base data structure
 
 Here I use the standard library's linked list container. If you use the `MyLinkedList` we wrote before, the logic is the same.
 
-```java
-import java.util.LinkedList;
+```python
+from collections import deque
 
-// Implement a stack using linked list as the underlying data structure
-public class MyLinkedStack<E> {
-    private final LinkedList<E> list = new LinkedList<>();
+# Implement stack using linked list as underlying data structure
+# Python's deque is a double-ended linked list
+class MyLinkedStack:
+    def __init__(self):
+        self.list = deque()
 
-    // Add an element to the top of the stack, time complexity O(1)
-    public void push(E e) {
-        list.addLast(e);
-    }
+    # Add element to the top of the stack, time complexity O(1)
+    def push(self, e):
+        self.list.append(e)
 
-    // Pop an element from the top of the stack, time complexity O(1)
-    public E pop() {
-        return list.removeLast();
-    }
+    # Pop element from the top of the stack, time complexity O(1)
+    def pop(self):
+        return self.list.pop()
 
-    // Look at the top element of the stack, time complexity O(1)
-    public E peek() {
-        return list.getLast();
-    }
+    # Peek at the top element of the stack, time complexity O(1)
+    def peek(self):
+        return self.list[-1]
 
-    // Return the number of elements in the stack, time complexity O(1)
-    public int size() {
-        return list.size();
-    }
+    # Return the number of elements in the stack, time complexity O(1)
+    def size(self):
+        return len(self.list)
 
-    public static void main(String[] args) {
-        MyLinkedStack<Integer> stack = new MyLinkedStack<>();
-        stack.push(1);
-        stack.push(2);
-        stack.push(3);
-
-        System.out.println(stack.peek()); // 3
-        System.out.println(stack.pop()); // 3
-        System.out.println(stack.peek()); // 2
-    }
-}
+if __name__ == "__main__":
+    stack = MyLinkedStack()
+    stack.push(1)
+    stack.push(2)
+    stack.push(3)
+    print(stack.pop())
+    print(stack.peek())
+    print(stack.size())
 ``` 
 
 Note
@@ -70,45 +65,41 @@ Of course, you can also use the head of the doubly linked list as the top of the
 
 Similarly, you can use a linked list to implement a queue — just use the API of the doubly linked list:
 
-```java
-import java.util.LinkedList;
+```python
+# deque is a doubly linked list in Python
+from collections import deque
 
-// use LinkedList as the underlying data structure to implement the queue
-public class MyLinkedQueue<E> {
-    private final LinkedList<E> list = new LinkedList<>();
+# use a linked list as the underlying data structure to implement the queue
+# Python's deque is a doubly linked list
+class MyLinkedQueue:
+    def __init__(self):
+        self.list = deque()
 
-    // insert element to the end of the queue, time complexity O(1)
-    public void push(E e) {
-        list.addLast(e);
-    }
+    # insert an element at the end of the queue, time complexity O(1)
+    def push(self, e):
+        self.list.append(e)
 
-    // remove element from the front of the queue, time complexity O(1)
-    public E pop() {
-        return list.removeFirst();
-    }
+    # remove an element from the head of the queue, time complexity O(1)
+    def pop(self):
+        return self.list.popleft()
 
-    // view the front element of the queue, time complexity O(1)
-    public E peek() {
-        return list.getFirst();
-    }
+    # view the element at the head of the queue, time complexity O(1)
+    def peek(self):
+        return self.list[0]
 
-    // return the number of elements in the queue, time complexity O(1)
-    public int size() {
-        return list.size();
-    }
+    # return the number of elements in the queue, time complexity O(1)
+    def size(self):
+        return len(self.list)
 
-    public static void main(String[] args) {
-        MyLinkedQueue<Integer> queue = new MyLinkedQueue<>();
-        queue.push(1);
-        queue.push(2);
-        queue.push(3);
-
-        System.out.println(queue.peek()); // 1
-        System.out.println(queue.pop()); // 1
-        System.out.println(queue.pop()); // 2
-        System.out.println(queue.peek()); // 3
-    }
-}
+if __name__ == "__main__":
+    queue = MyLinkedQueue()
+    queue.push(1)
+    queue.push(2)
+    queue.push(3)
+    print(queue.peek()) # 1
+    print(queue.pop()) # 1
+    print(queue.pop()) # 2
+    print(queue.peek()) # 3
 ``` 
 
 Note
@@ -117,4 +108,8 @@ The code above uses the tail of the doubly linked list as the queue tail, and th
 
 You can also do the opposite: use the head as the queue tail and the tail as the queue head. Just like with the stack implementation, you only need to change how you call the list methods.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

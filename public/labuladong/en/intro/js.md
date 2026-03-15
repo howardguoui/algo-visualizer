@@ -355,4 +355,8 @@ console.log(pq.front());
 
 In algorithm problems, you'll also encounter special data structures like linked lists and trees. These aren't built into JavaScript, but my algorithm visualization panel has implementations for all of them. Check out my [Introduction to the Algorithm Visualization Panel](</en/algo/intro/visualize/>) for details on how to use them.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

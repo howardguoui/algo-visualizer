@@ -30,6 +30,29 @@ LeetCode| 力扣| 难度
 
 层序遍历二叉树节点的顺序也是固定的，但是有三种不同的写法，对应不同的场景。
 
+前序位置
+
+中序位置
+
+后序位置
+
+递归遍历（DFS）  
+三个特殊位置，代码执行时机不同
+
+写法一最简单  
+但无法记录深度
+
+写法二最常用  
+可记录深度
+
+写法三最灵活  
+常用于复杂场景
+
+层序遍历（BFS）  
+三种不同写法，适用不同场景
+
+二叉树的遍历
+
 视频讲解
 
 ![Video Cover](https://labuladong.online/images/algo/vod/tree-traverse.jpg)
@@ -44,21 +67,20 @@ LeetCode| 力扣| 难度
 
 递归遍历二叉树的代码模板如下：
 
-```java
-// 基本的二叉树节点
-class TreeNode {
-    int val;
-    TreeNode left, right;
-}
+```python
+# 基本的二叉树节点
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-// 二叉树的递归遍历框架
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    traverse(root.left);
-    traverse(root.right);
-}
+# 二叉树的递归遍历框架
+def traverse(root: TreeNode):
+    if root is None:
+        return
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 请问，这段短小精干的代码为什么能遍历二叉树？又是以什么顺序遍历二叉树的？
@@ -77,16 +99,14 @@ void traverse(TreeNode root) {
 
 那么我们简单拓展一下，如果修改前面的 `traverse` 函数，先递归遍历 `root.right`，再递归遍历 `root.left`，会是什么效果？
 
-```java
-// 修改标准的二叉树遍历框架
-void traverseFlip(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    // 反过来，先递归遍历右子树，再递归遍历左子树
-    traverseFlip(root.right);
-    traverseFlip(root.left);
-}
+```python
+# 修改标准的二叉树遍历框架
+def traverseFlip(root: TreeNode) -> None:
+    if root is None:
+        return
+    # 反过来，先递归遍历右子树，再递归遍历左子树
+    traverseFlip(root.right)
+    traverseFlip(root.left)
 ``` 
 
 你可以先脑补一下这个函数遍历二叉树节点的顺序，然后再点开下面的可视化面板，多次点击 `if (root === null)` 这一行代码，观察 `root` 指针在树上移动的顺序，看看和你的设想是否一致：
@@ -101,21 +121,20 @@ void traverseFlip(TreeNode root) {
 
 我们说二叉树遍历时，一般不会像 `traverseFlip` 这样遍历二叉树，默认还是按照先左后右的顺序，所以当我们说二叉树遍历的代码模板时，指的是先左后右的遍历顺序：
 
-```java
-// 基本的二叉树节点
-class TreeNode {
-    int val;
-    TreeNode left, right;
-}
+```python
+# 基本的二叉树节点
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
-// 二叉树的递归遍历框架
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    traverse(root.left);
-    traverse(root.right);
-}
+# 二叉树的递归遍历框架
+def traverse(root: TreeNode):
+    if root is None:
+        return
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 只要这个先左后右的调用顺序不变，那么 `traverse` 函数访问节点的顺序就是固定的，你插入一万行代码进去，也不会变。
@@ -138,18 +157,16 @@ void traverse(TreeNode root) {
 
 所谓的前中后序遍历，其实就是在二叉树遍历框架的不同位置写代码：
 
-```java
-// 二叉树的遍历框架
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    // 前序位置
-    traverse(root.left);
-    // 中序位置
-    traverse(root.right);
-    // 后序位置
-}
+```python
+# 二叉树的遍历框架
+def traverse(root):
+    if root is None:
+        return
+    # 前序位置
+    traverse(root.left)
+    # 中序位置
+    traverse(root.right)
+    # 后序位置
 ``` 
 
 **前序位置的代码会在进入节点时立即执行；中序位置的代码会在左子树遍历完成后，遍历右子树之前执行；后序位置的代码会在左右子树遍历完成后执行** ：
@@ -204,27 +221,24 @@ BST 的中序遍历结果是有序的
 
 这是最简单的写法，代码如下：
 
-```java
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    while (!q.isEmpty()) {
-        TreeNode cur = q.poll();
-        // 访问 cur 节点
-        System.out.println(cur.val);
+```python
+from collections import deque
 
-        // 把 cur 的左右子节点加入队列
-        if (cur.left != null) {
-            q.offer(cur.left);
-        }
-        if (cur.right != null) {
-            q.offer(cur.right);
-        }
-    }
-}
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    q.append(root)
+    while q:
+        cur = q.popleft()
+        # 访问 cur 节点
+        print(cur.val)
+
+        # 把 cur 的左右子节点加入队列
+        if cur.left is not None:
+            q.append(cur.left)
+        if cur.right is not None:
+            q.append(cur.right)
 ``` 
 
 你可以打开这个可视化面板，点击其中的 `while (q.length > 0)` 这一行代码，观察 `cur` 变量在树上游走的顺序，就可以看到层序遍历是一层一层，从左到右的遍历二叉树节点：
@@ -243,34 +257,30 @@ void levelOrderTraverse(TreeNode root) {
 
 对上面的解法稍加改造，就得出了下面这种写法：
 
-```java
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
-    // 记录当前遍历到的层数（根节点视为第 1 层）
-    int depth = 1;
+```python
+from collections import deque
 
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        for (int i = 0; i < sz; i++) {
-            TreeNode cur = q.poll();
-            // 访问 cur 节点，同时知道它所在的层数
-            System.out.println("depth = " + depth + ", val = " + cur.val);
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    q.append(root)
+    # 记录当前遍历到的层数（根节点视为第 1 层）
+    depth = 1
 
-            // 把 cur 的左右子节点加入队列
-            if (cur.left != null) {
-                q.offer(cur.left);
-            }
-            if (cur.right != null) {
-                q.offer(cur.right);
-            }
-        }
-        depth++;
-    }
-}
+    while q:
+        sz = len(q)
+        for i in range(sz):
+            cur = q.popleft()
+            # 访问 cur 节点，同时知道它所在的层数
+            print(f"depth = {depth}, val = {cur.val}")
+
+            # 把 cur 的左右子节点加入队列
+            if cur.left is not None:
+                q.append(cur.left)
+            if cur.right is not None:
+                q.append(cur.right)
+        depth += 1
 ``` 
 
 注意代码中的内层 for 循环：
@@ -315,39 +325,29 @@ while (sz-- > 0) {
 
 写法三就是为了解决这个问题，在写法一的基础上添加一个 `State` 类，让每个节点自己负责维护自己的路径权重和，代码如下：
 
-```java
-class State {
-    TreeNode node;
-    int depth;
+```python
+class State:
+    def __init__(self, node, depth):
+        self.node = node
+        self.depth = depth
 
-    State(TreeNode node, int depth) {
-        this.node = node;
-        this.depth = depth;
-    }
-}
+def levelOrderTraverse(root):
+    if root is None:
+        return
+    q = deque()
+    # 根节点的路径权重和是 1
+    q.append(State(root, 1))
 
-void levelOrderTraverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    Queue<State> q = new LinkedList<>();
-    // 根节点的路径权重和是 1
-    q.offer(new State(root, 1));
+    while q:
+        cur = q.popleft()
+        # 访问 cur 节点，同时知道它的路径权重和
+        print(f"depth = {cur.depth}, val = {cur.node.val}")
 
-    while (!q.isEmpty()) {
-        State cur = q.poll();
-        // 访问 cur 节点，同时知道它的路径权重和
-        System.out.println("depth = " + cur.depth + ", val = " + cur.node.val);
-
-        // 把 cur 的左右子节点加入队列
-        if (cur.node.left != null) {
-            q.offer(new State(cur.node.left, cur.depth + 1));
-        }
-        if (cur.node.right != null) {
-            q.offer(new State(cur.node.right, cur.depth + 1));
-        }
-    }
-}
+        # 把 cur 的左右子节点加入队列
+        if cur.node.left is not None:
+            q.append(State(cur.node.left, cur.depth + 1))
+        if cur.node.right is not None:
+            q.append(State(cur.node.right, cur.depth + 1))
 ``` 
 
 你可以打开这个可视化面板，点击其中的 `console.log` 这一行代码，就可以看到还是一层一层，从左到右的遍历二叉树节点，还会输出节点所在的层数：
@@ -367,3 +367,7 @@ void levelOrderTraverse(TreeNode root) {
 再比如，你还可能看到递归地一层层遍历二叉树的代码。但这本质还是层序遍历，只不过他把层序遍历代码中的 for 循环用递归的形式展现了。
 
 总之，不要被表象迷惑，二叉树的遍历方式就上面两种，结合后面的教程和习题，你把这两种遍历方式玩明白，一切暴力穷举算法都小菜一碟。
+
+## 评论
+
+请登录后查看/发表评论

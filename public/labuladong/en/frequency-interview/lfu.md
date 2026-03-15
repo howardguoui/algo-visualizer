@@ -38,15 +38,19 @@ In this article, we will break down the LFU algorithm, using a top-down, step-by
 
 You are asked to write a class that takes a `capacity` parameter and implements `get` and `put` methods:
 
-```java
-class LFUCache {
-    // construct a cache with capacity
-    public LFUCache(int capacity) {}
-    // query key in the cache
-    public int get(int key) {}
-    // store key and val in the cache
-    public void put(int key, int val) {}
-}
+```python
+class LFUCache:
+    def __init__(self, capacity: int):
+        # construct a cache with capacity
+        pass
+
+    def get(self, key: int) -> int:
+        # query key in the cache
+        pass
+
+    def put(self, key: int, val: int) -> None:
+        # store key and val in the cache
+        pass
 ``` 
 
 The `get(key)` method looks up key `key` in the cache. If `key` exists, return its `val`; otherwise, return -1.
@@ -55,24 +59,24 @@ The `put(key, value)` method inserts or updates the cache. If `key` already exis
 
 When the cache reaches the capacity `capacity`, and you need to insert a new key-value pair, you must first delete the pair with the lowest frequency (we use `freq` below). If there are multiple pairs with the lowest `freq`, delete the oldest one.
 
-```java
-// construct an LFU cache with a capacity of 2
-LFUCache cache = new LFUCache(2);
+```python
+# Construct an LFU cache with a capacity of 2
+cache = LFUCache(2)
 
-// insert two pairs (key, val), with corresponding freq being 1
-cache.put(1, 10);
-cache.put(2, 20);
+# Insert two pairs (key, val), both with a frequency of 1
+cache.put(1, 10)
+cache.put(2, 20)
 
-// query the value corresponding to key 1
-// return 10, and the freq of key 1 becomes 2
-cache.get(1);
+# Query the value corresponding to key 1
+# Return 10, and the frequency of key 1 becomes 2
+cache.get(1)
 
-// cache is full, evict the key 2 with the smallest freq
-// insert the key-value pair (3, 30), with corresponding freq being 1
-cache.put(3, 30);   
+# Capacity is full, evict the key with the smallest frequency, which is 2
+# Insert the key-value pair (3, 30), with a frequency of 1
+cache.put(3, 30)   
 
-// key 2 has been evicted, return -1
-cache.get(2);
+# Key 2 has already been evicted, return -1
+cache.get(2)
 ``` 
 
 ## 2\. Idea Analysis
@@ -89,16 +93,20 @@ We hope to support all of these in O(1) time. We can use basic data structures t
 
   1. Use a `HashMap` to store the mapping from `key` to `val`, so we can quickly do `get(key)`.
 
-```java
-HashMap<Integer, Integer> keyToVal;
+```python
+keyToVal = {}
 ``` 
 
   2. Use another `HashMap` to store the mapping from `key` to `freq`, so we can quickly update the frequency of each `key`.
 
-```java
-HashMap<Integer, Integer> keyToFreq;
+```python
+keyToFreq = {}
 ``` 
 
   3. This requirement is the core of the LFU algorithm, so we will discuss it separately:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

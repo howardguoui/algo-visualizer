@@ -65,8 +65,8 @@ The problem is from [LeetCode 391. Perfect Rectangle](<https://leetcode.com/prob
 
 In other words, the `rectangles` array contains many small rectangles. The problem asks us to return a boolean value to check if these small rectangles can form a "perfect rectangle." The function signature is as follows:
 
-```java
-boolean isRectangleCover(int[][] rectangles)
+```python
+def isRectangleCover(rectangles: List[List[int]]) -> bool
 ``` 
 
 **A "perfect rectangle" means that all the small rectangles together form one big rectangle, with no overlaps and no gaps.**
@@ -87,24 +87,17 @@ This is simple. The bottom-left corner `(X1, Y1)` is the minimum of all small re
 
 Here, we use lowercase letters for the small rectangles' coordinates, and uppercase for the perfect rectangle's coordinates. You can write code like this:
 
-```java
-// The bottom-left vertex, initialized to positive infinity to record the minimum value
-double X1 = Double.POSITIVE_INFINITY, Y1 = Double.POSITIVE_INFINITY;
+```python
+# The bottom-left vertex, initialized to positive infinity to record the minimum value
+X1, Y1 = inf, inf
+# The top-right vertex, initialized to negative infinity to record the maximum value
+X2, Y2 = -inf, -inf
 
-// The top-right vertex, initialized to negative infinity to record the maximum value
-double X2 = Double.NEGATIVE_INFINITY, Y2 = Double.NEGATIVE_INFINITY;
-
-for(int[] rectangle : rectangles){
-    int x1 = rectangle[0], y1 = rectangle[1], x2 = rectangle[2], y2 = rectangle[3];
-
-    // Take the minimum value of the bottom-left vertex of the small rectangle
-    X1 = Math.min(X1, x1);
-    Y1 = Math.min(Y1, y1);
-
-    // Take the maximum value of the top-right vertex of the small rectangle
-    X2 = Math.max(X2, x2);
-    Y2 = Math.max(Y2, y2);
-}
+for x1, y1, x2, y2 in rectangles:
+    # Take the minimum value of the bottom-left vertex of the small rectangle
+    X1, Y1 = min(X1, x1), min(Y1, y1)
+    # Take the maximum value of the top-right vertex of the small rectangle
+    X2, Y2 = max(X2, x2), max(Y2, y2)
 ``` 
 
 Now you have the bottom-left corner `(X1, Y1)` and the top-right corner `(X2, Y2)` of the perfect rectangle.
@@ -113,32 +106,29 @@ Now you have the bottom-left corner `(X1, Y1)` and the top-right corner `(X2, Y2
 
 Here is the next step in code:
 
-```java
-boolean isRectangleCover(int[][] rectangles) {
-    int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;
-    int X2 = Integer.MIN_VALUE, Y2 = Integer.MIN_VALUE;
-    // record the sum of the areas of all small rectangles
-    int actualArea = 0;
-    for (int[] rect : rectangles) {
-        int x1 = rect[0], y1 = rect[1], x2 = rect[2], y2 = rect[3];
-        // calculate the theoretical coordinates of the perfect rectangle
-        X1 = Math.min(X1, x1);
-        Y1 = Math.min(Y1, y1);
-        X2 = Math.max(X2, x2);
-        Y2 = Math.max(Y2, y2);
-        // accumulate the area of all small rectangles
-        actualArea += (x2 - x1) * (y2 - y1);
-    }
+```python
+def isRectangleCover(rectangles):
+    X1, Y1 = float('inf'), float('inf')
+    X2, Y2 = float('-inf'), float('-inf')
+    # record the sum of the areas of all small rectangles
+    actualArea = 0
+    for rect in rectangles:
+        x1, y1, x2, y2 = rect
+        # calculate the theoretical coordinates of the perfect rectangle
+        X1 = min(X1, x1)
+        Y1 = min(Y1, y1)
+        X2 = max(X2, x2)
+        Y2 = max(Y2, y2)
+        # accumulate the area of all small rectangles
+        actualArea += (x2 - x1) * (y2 - y1)
 
-    // calculate the theoretical area of the perfect rectangle
-    int expectedArea = (X2 - X1) * (Y2 - Y1);
-    // the areas should be the same
-    if (actualArea != expectedArea) {
-        return false;
-    }
+    # calculate the theoretical area of the perfect rectangle
+    expectedArea = (X2 - X1) * (Y2 - Y1)
+    # the areas should be the same
+    if actualArea != expectedArea:
+        return False
 
-    return true;
-}
+    return True
 ``` 
 
 This covers the "area" part. The idea is simple: if the sum of the small rectangles' areas is not equal to the area of the perfect rectangle, then there must be overlaps or gaps, so it is not a perfect rectangle.
@@ -175,56 +165,51 @@ In the picture, when is the red dot a vertex, and when is it not? Clearly, in ca
 
 Notice that 2 and 4 are even numbers, while 1 and 3 are odd numbers. We want to count how many vertices appear an odd number of times in the final shape. We can write code like this:
 
-```java
-boolean isRectangleCover(int[][] rectangles) {
-    int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;
-    int X2 = Integer.MIN_VALUE, Y2 = Integer.MIN_VALUE;
+```python
+def isRectangleCover(rectangles):
+    X1, Y1, X2, Y2 = float('inf'), float('inf'), float('-inf'), float('-inf')
 
-    int actualArea = 0;
-    // Hash set to record the vertices of the final figure
-    Set<String> points = new HashSet<>();
-    for (int[] rect : rectangles) {
-        int x1 = rect[0], y1 = rect[1], x2 = rect[2], y2 = rect[3];
-        X1 = Math.min(X1, x1);
-        Y1 = Math.min(Y1, y1);
-        X2 = Math.max(X2, x2);
-        Y2 = Math.max(Y2, y2);
+    actualArea = 0
+    # Hash set to record the vertices of the final shape
+    points = set()
+    for rect in rectangles:
+        x1, y1, x2, y2 = rect
+        X1 = min(X1, x1)
+        Y1 = min(Y1, y1)
+        X2 = max(X2, x2)
+        Y2 = max(Y2, y2)
 
-        actualArea += (x2 - x1) * (y2 - y1);
-        // First calculate the coordinates of each point of the small rectangle,
-        // represented by a string, for easy storage in the hash set
-        String p1 = x1 + "," + y1;
-        String p2 = x1 + "," + y2;
-        String p3 = x2 + "," + y1;
-        String p4 = x2 + "," + y2;
-        // For each point, if it exists in the set, remove it;
-        // if it does not exist in the set, add it;
-        // The remaining points in the set are those that appear an odd number of times
-        for (String p : new String[]{p1, p2, p3, p4}) {
-            if (points.contains(p)) {
-                points.remove(p);
-            } else {
-                points.add(p);
-            }
-        }
-    }
+        actualArea += (x2 - x1) * (y2 - y1)
+        # First calculate the coordinates of each point of the small
+        # rectangle, represented by a string for easy storage in the hash set
+        p1 = str(x1) + "," + str(y1)
+        p2 = str(x1) + "," + str(y2)
+        p3 = str(x2) + "," + str(y1)
+        p4 = str(x2) + "," + str(y2)
 
-    int expectedArea = (X2 - X1) * (Y2 - Y1);
-    if (actualArea != expectedArea) {
-        return false;
-    }
+        pointArr = [p1, p2, p3, p4]
+        # For each point, if it exists in the set, remove it;
+        for p in pointArr:
+            if p in points:
+                points.remove(p)
+            else:
+                points.add(p)
+        # If it does not exist in the set, add it;
+        # The remaining points in the set are those that appear an odd number of times
+        
+    expectedArea = (X2 - X1) * (Y2 - Y1)
+    if actualArea != expectedArea:
+        return False
 
-    // Check the number of vertices
-    if (points.size() != 4 || 
-        !points.contains(X1 + "," + Y1) || 
-        !points.contains(X1 + "," + Y2) || 
-        !points.contains(X2 + "," + Y1) || 
-        !points.contains(X2 + "," + Y2)) {
-        return false;
-    }
+    # Check the number of vertices
+    if len(points) != 4 or \
+        str(X1) + "," + str(Y1) not in points or \
+        str(X1) + "," + str(Y2) not in points or \
+        str(X2) + "," + str(Y1) not in points or \
+        str(X2) + "," + str(Y2) not in points:
+        return False
 
-    return true;
-}
+    return True
 ``` 
 
 In this code, we use a `points` set to record the coordinates of all the vertices of the final shape made by the small rectangles in `rectangles`. The key logic is how we add coordinates to the `points` set:
@@ -243,51 +228,45 @@ Here, two rectangles overlap. According to our logic, their vertices are removed
 
 So, not only do we need to check `len(points) == 4`, but we also need to make sure that the coordinates of the remaining points in `points` match the four theoretical vertices of a perfect rectangle. Here is the code:
 
-```java
-class Solution {
-    public boolean isRectangleCover(int[][] rectangles) {
-        int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;
-        int X2 = Integer.MIN_VALUE, Y2 = Integer.MIN_VALUE;
+```python
+class Solution:
+    def isRectangleCover(self, rectangles: List[List[int]]) -> bool:
+        X1, Y1 = float('inf'), float('inf')
+        X2, Y2 = float('-inf'), float('-inf')
         
-        Set<String> points = new HashSet<>();
-        int actualArea = 0;
-        for (int[] rect : rectangles) {
-            int x1 = rect[0], y1 = rect[1], x2 = rect[2], y2 = rect[3];
-            // calculate the theoretical vertex coordinates of the perfect rectangle
-            X1 = Math.min(X1, x1);
-            Y1 = Math.min(Y1, y1);
-            X2 = Math.max(X2, x2);
-            Y2 = Math.max(Y2, y2);
-            // accumulate the area of the small rectangle
-            actualArea += (x2 - x1) * (y2 - y1);
-            // the final vertices of the formed shape
-            String p1 = x1 + "," + y1;
-            String p2 = x1 + "," + y2;
-            String p3 = x2 + "," + y1;
-            String p4 = x2 + "," + y2;
-            for (String p : new String[]{p1, p2, p3, p4}) {
-                if (points.contains(p)) points.remove(p);
-                else                    points.add(p);
-            }
-        }
-        // check if the area is the same
-        int expectedArea = (X2 - X1) * (Y2 - Y1);
-        if (actualArea != expectedArea) {
-            return false;
-        }
-        // check if the number of vertices is 4
-        if (points.size() != 4) {
-            return false;
-        }
-        // check if the 4 vertices left belong to the perfect rectangle
-        if (!points.contains(X1 + "," + Y1)) return false;
-        if (!points.contains(X1 + "," + Y2)) return false;
-        if (!points.contains(X2 + "," + Y1)) return false;
-        if (!points.contains(X2 + "," + Y2)) return false;
-        // if the area and vertices match, the rectangle meets the requirements
-        return true;
-    }
-}
+        points = set()
+        actualArea = 0
+        for rect in rectangles:
+            x1, y1, x2, y2 = rect
+            # calculate the theoretical vertex coordinates of the perfect rectangle
+            X1 = min(X1, x1)
+            Y1 = min(Y1, y1)
+            X2 = max(X2, x2)
+            Y2 = max(Y2, y2)
+            # accumulate the area of the small rectangle
+            actualArea += (x2 - x1) * (y2 - y1)
+            # the final vertices of the formed shape
+            p1 = f"{x1},{y1}"
+            p2 = f"{x1},{y2}"
+            p3 = f"{x2},{y1}"
+            p4 = f"{x2},{y2}"
+            for p in [p1, p2, p3, p4]:
+                if p in points:
+                    points.remove(p)
+                else:
+                    points.add(p)
+        # check if the area is the same
+        expectedArea = (X2 - X1) * (Y2 - Y1)
+        if actualArea != expectedArea:
+            return False
+        # check if the number of vertices is 4
+        if len(points) != 4:
+            return False
+        # check if the 4 vertices left belong to the perfect rectangle
+        if not (f"{X1},{Y1}" in points and f"{X1},{Y2}" in points and f"{X2},{Y1}" in points and f"{X2},{Y2}" in points):
+            return False
+        # if the area and vertices match, the rectangle meets the requirements
+        return True
 ``` 
 
 Algorithm Visualization
@@ -298,4 +277,8 @@ This is the final solution. It checks two things:
 
   2. Vertices: The `points` set should have only 4 points left, and these points must be exactly the four theoretical corners of the perfect rectangle.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

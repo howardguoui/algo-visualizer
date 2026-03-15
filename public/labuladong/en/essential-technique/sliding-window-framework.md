@@ -83,44 +83,41 @@ What really confuses people are the details. For example, how to add new element
 
 Since most examples in this article are substring problems, and a string is just an array, the input will be a string. When you solve problems, adapt as needed:
 
-```java
-// Pseudocode framework of sliding window algorithm
-void slidingWindow(String s) {
-    // Use an appropriate data structure to record the data in the
-    // window, which can vary according to the specific scenario
-    // For example, if I want to record the frequency of
-    // elements in the window, I would use a map
-    // If I want to record the sum of elements in the window, I could just use an int
-    Object window = ...
-    
-    int left = 0, right = 0;
-    while (right < s.length()) {
-        // c is the character that will be added to the window
-        char c = s[right];
+```python
+# Pseudocode framework for sliding window algorithm
+def slidingWindow(s: str):
+    # Use an appropriate data structure to record the data in
+    # the window, which can vary depending on the scenario
+    # For example, if I want to record the frequency
+    # of elements in the window, I would use a map
+    # If I want to record the sum of elements in the window, I could just use an int
+    window = ...
+
+    left, right = 0, 0
+    while right < len(s):
+        # c is the character that will be added to the window
+        c = s[right]
         window.add(c)
-        // Expand the window
-        right++;
-        // Perform a series of updates to the data within the window
+        # Expand the window
+        right += 1
+        # Perform a series of updates on the data within the window
         ...
 
-        // *** Position of debug output ***
-        // Note that in the final solution code, do not use print
-        // Because IO operations are time-consuming and may cause timeouts
-        printf("window: [%d, %d)\n", left, right);
-        // ***********************
+        # *** position for debug output ***
+        # Note that you should not print in the final solution code
+        # because IO operations are time-consuming and may cause timeouts
+        # print(f"window: [{left}, {right})")
+        # ***********************
 
-        // Determine whether the left side of the window needs to shrink
-        while (left < right && window needs shrink) {
-            // d is the character that will be removed from the window
-            char d = s[left];
+        # Determine whether the left side of the window needs to be contracted
+        while left < right and window needs shrink:
+            # d is the character that will be removed from the window
+            d = s[left]
             window.remove(d)
-            // Shrink the window
-            left++;
-            // Perform a series of updates to the data within the window
+            # Shrink the window
+            left += 1
+            # Perform a series of updates on the data within the window
             ...
-        }
-    }
-}
 ``` 
 
 **There are two places in the template marked with`...`. These are where you update the data for the window. In a real problem, just fill in your logic here. These two places are for expanding and shrinking the window, and you will see that their logic is almost the same, just opposite.**
@@ -280,54 +277,48 @@ If a character enters the window, increase its count in `window`. If a character
 
 Here is the complete code:
 
-```java
-class Solution {
-    public String minWindow(String s, String t) {
-        Map<Character, Integer> need = new HashMap<>();
-        Map<Character, Integer> window = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            need.put(c, need.getOrDefault(c, 0) + 1);
-        }
+```python
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        need, window = {}, {}
+        for c in t:
+            need[c] = need.get(c, 0) + 1
 
-        int left = 0, right = 0; 
-        int valid = 0;
-        // record the start index and length of the minimum coverage substring
-        int start = 0, len = Integer.MAX_VALUE;
-        while (right < s.length()) {
-            // c is the character that will be added to the window
-            char c = s.charAt(right);
-            // expand the window
-            right++;
-            // perform a series of updates to the data inside the window
-            if (need.containsKey(c)) {
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                if (window.get(c).equals(need.get(c)))
-                    valid++;
-            }
+        left = 0
+        right = 0
+        valid = 0
+        # record the start index and length of the minimum covering substring
+        start = 0
+        length = float('inf')
+        while right < len(s):
+            # c is the character that will be added to the window
+            c = s[right]
+            # expand the window
+            right += 1
+            # perform a series of updates to the data within the window
+            if c in need:
+                window[c] = window.get(c, 0) + 1
+                if window[c] == need[c]:
+                    valid += 1
 
-            // determine whether the left side of the window needs to be contracted
-            while (valid == need.size()) { 
-                // update the minimum coverage substring here
-                if (right - left < len) {
-                    start = left;
-                    len = right - left;
-                }
-                // d is the character that will be removed from the window
-                char d = s.charAt(left);
-                // shrink the window
-                left++;
-                // perform a series of updates to the data inside the window
-                if (need.containsKey(d)) {
-                    if (window.get(d).equals(need.get(d)))
-                        valid--;
-                    window.put(d, window.get(d) - 1);
-                }                    
-            } 
-        }
-        // return the minimum coverage substring
-        return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
-    }
-}
+            # determine whether the left side of the window needs to be contracted
+            while valid == len(need): 
+                # update the minimum covering substring here
+                if right - left < length:
+                    start = left
+                    length = right - left
+                # d is the character that will be removed from the window
+                d = s[left]
+                # shrink the window
+                left += 1
+                # perform a series of updates to the data within the window
+                if d in need:
+                    if window[d] == need[d]:
+                        valid -= 1
+                    window[d] -= 1
+
+        # return the minimum covering substring
+        return "" if length == float('inf') else s[start: start + length]
 ``` 
 
 You can open the panel below and click the line `while (right < s.length)` several times to see how the sliding window `[left, right)` moves:
@@ -386,45 +377,42 @@ This is a typical sliding window problem. Basically, you are given a string `S` 
 
 First, copy and paste the sliding window template code. Then, just make a few changes to answer the questions mentioned earlier, and you can solve this problem:
 
-```java
-class Solution {
-    // determine if there is a permutation of t in s
-    public boolean checkInclusion(String t, String s) {
-        Map<Character, Integer> need = new HashMap<>();
-        Map<Character, Integer> window = new HashMap<>();
-        for (char c : t.toCharArray()) need.put(c, need.getOrDefault(c, 0) + 1);
+```python
+class Solution:
+    # determine if there is a permutation of t in s
+    def checkInclusion(self, t: str, s: str) -> bool:
+        need = {}
+        window = {}
+        for c in t:
+            need[c] = need.get(c, 0) + 1
 
-        int left = 0, right = 0;
-        int valid = 0;
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            right++;
-            // update the data inside the window
-            if (need.containsKey(c)) {
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                if (window.get(c).equals(need.get(c)))
-                    valid++;
-            }
+        left = 0
+        right = 0
+        valid = 0
+        while right < len(s):
+            c = s[right]
+            right += 1
+            # update the data inside the window
+            if c in need:
+                window[c] = window.get(c, 0) + 1
+                if window[c] == need[c]:
+                    valid += 1
 
-            // check if the left side of the window needs to shrink
-            while (right - left >= t.length()) {
-                // check here if a valid substring is found
-                if (valid == need.size())
-                    return true;
-                char d = s.charAt(left);
-                left++;
-                // update the data inside the window
-                if (need.containsKey(d)) {
-                    if (window.get(d).equals(need.get(d)))
-                        valid--;
-                    window.put(d, window.get(d) - 1);
-                }
-            }
-        }
-        // no valid substring found
-        return false;
-    }
-}
+            # check if the left side of the window needs to shrink
+            while right - left >= len(t):
+                # check here if a valid substring is found
+                if valid == len(need):
+                    return True
+                d = s[left]
+                left += 1
+                # update the data inside the window
+                if d in need:
+                    if window[d] == need[d]:
+                        valid -= 1
+                    window[d] -= 1
+
+        # no valid substring found
+        return False
 ``` 
 
 You can open the visual panel below and click the line `while (right < s.length)` multiple times to see how the fixed-length window slides:
@@ -485,49 +473,40 @@ An anagram is just a permutation. The problem gives it a fancy name, but it is t
 
 Just copy the sliding window framework, answer the three key questions, and you can solve this problem:
 
-```java
-class Solution {
-    public List<Integer> findAnagrams(String s, String t) {
-        Map<Character, Integer> need = new HashMap<>();
-        Map<Character, Integer> window = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            need.put(c, need.getOrDefault(c, 0) + 1);
-        }
+```python
+class Solution:
+    def findAnagrams(self, s: str, t: str) -> list[int]:
+        need = {}
+        window = {}
+        for c in t:
+            need[c] = need.get(c, 0) + 1
 
-        int left = 0, right = 0;
-        int valid = 0;
-        // record the result
-        List<Integer> res = new ArrayList<>();
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            right++;
-            // update various data within the window
-            if (need.containsKey(c)) {
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                if (window.get(c).equals(need.get(c))) {
-                    valid++;
-                }
-            }
-            // check if the left side of the window needs to shrink
-            while (right - left >= t.length()) {
-                // when the window meets the condition, add the starting index to res
-                if (valid == need.size()) {
-                    res.add(left);
-                }
-                char d = s.charAt(left);
-                left++;
-                // update various data within the window
-                if (need.containsKey(d)) {
-                    if (window.get(d).equals(need.get(d))) {
-                        valid--;
-                    }
-                    window.put(d, window.get(d) - 1);
-                }
-            }
-        }
-        return res;
-    }
-}
+        left = 0
+        right = 0
+        valid = 0
+        # record the result
+        res = []
+        while right < len(s):
+            c = s[right]
+            right += 1
+            # update various data within the window
+            if c in need:
+                window[c] = window.get(c, 0) + 1
+                if window[c] == need[c]:
+                    valid += 1
+            # check if the left side of the window needs to shrink
+            while right - left >= len(t):
+                # when the window meets the condition, add the starting index to res
+                if valid == len(need):
+                    res.append(left)
+                d = s[left]
+                left += 1
+                # update various data within the window
+                if d in need:
+                    if window[d] == need[d]:
+                        valid -= 1
+                    window[d] -= 1
+        return res
 ``` 
 
 This is almost the same as the previous problem. When you find a valid anagram (permutation), just save the starting index in `res`.
@@ -578,32 +557,29 @@ The problem is from [LeetCode 3. Longest Substring Without Repeating Characters]
 
 This problem is a bit different. You cannot use the same template directly, but it is actually simpler. Just make a small change:
 
-```java
-class Solution {
-    public int lengthOfLongestSubstring(String s) {
-        Map<Character, Integer> window = new HashMap<>();
-
-        int left = 0, right = 0;
-        // record the result
-        int res = 0;
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            right++;
-            // perform a series of updates within the window
-            window.put(c, window.getOrDefault(c, 0) + 1);
-            // determine whether the left side of the window needs to shrink
-            while (window.get(c) > 1) {
-                char d = s.charAt(left);
-                left++;
-                // perform a series of updates within the window
-                window.put(d, window.get(d) - 1);
-            }
-            // update the result here
-            res = Math.max(res, right - left);
-        }
-        return res;
-    }
-}
+```python
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        window = {}
+        
+        left = 0
+        right = 0
+        # record the result
+        res = 0
+        while right < len(s):
+            c = s[right]
+            right += 1
+            # perform a series of updates within the window
+            window[c] = window.get(c, 0) + 1
+            # determine whether the left side of the window needs to shrink
+            while window[c] > 1:
+                d = s[left]
+                left += 1
+                # perform a series of updates within the window
+                window[d] = window.get(d, 0) - 1
+            # update the result here
+            res = max(res, right - left)
+        return res
 ``` 
 
 You can open the visual panel below and click the line `while (right < s.length)` multiple times to see how the window updates the answer:
@@ -628,4 +604,8 @@ That is all for the sliding window algorithm template. I hope you can understand
 
 In [Sliding Window Exercise Collection](</en/algo/problem-set/sliding-window/>), I list more classic problems using this way of thinking, to help you understand and remember the algorithm. After that, you will not be afraid of substring or subarray problems.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

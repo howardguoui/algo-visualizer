@@ -19,39 +19,36 @@
 
 参考解法如下：
 
-```java
-// 游戏面板仅支持提交 JavaScript 代码
-// 其他语言代码的作用是帮助大家理解算法逻辑
+```python
+# 游戏面板仅支持提交 JavaScript 代码
+# 其他语言代码的作用是帮助大家理解算法逻辑
 
-class Solution {
-    public void applyGravity(int[][] board) {
-        if (board == null || board.length == 0) {
-            return;
-        }
+class Solution:
+    def applyGravity(self, board: List[List[int]]) -> None:
+        if not board or not board[0]:
+            return
         
-        int rows = board.length;
-        int cols = board[0].length;
+        rows = len(board)
+        cols = len(board[0])
         
-        // 遍历每一列
-        for (int col = 0; col < cols; col++) {
-            // 初始化快慢指针
-            int slow = rows - 1;
-            int fast = rows - 1;
+        # 遍历每一列
+        for col in range(cols):
+            # 初始化快慢指针
+            slow = rows - 1
+            fast = rows - 1
             
-            while (fast >= 0) {
-                if (board[fast][col] != 0) {
-                    // 将非 0 元素移动到慢指针位置
-                    board[slow][col] = board[fast][col];
-                    slow--;
-                }
-                fast--;
-            }
+            while fast >= 0:
+                if board[fast][col] != 0:
+                    # 将非 0 元素移动到慢指针位置
+                    board[slow][col] = board[fast][col]
+                    slow -= 1
+                fast -= 1
             
-            // 将剩余的顶部位置填充为 0
-            for (int i = 0; i <= slow; i++) {
-                board[i][col] = 0;
-            }
-        }
-    }
-}
-```
+            # 将剩余的顶部位置填充为 0
+            for i in range(slow + 1):
+                board[i][col] = 0
+``` 
+
+## 评论
+
+请登录后查看/发表评论

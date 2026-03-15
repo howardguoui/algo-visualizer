@@ -38,15 +38,19 @@ LRU 算法的核心数据结构是使用哈希链表 `LinkedHashMap`，首先借
 
 要求你写一个类，接受一个 `capacity` 参数，实现 `get` 和 `put` 方法：
 
-```java
-class LFUCache {
-    // 构造容量为 capacity 的缓存
-    public LFUCache(int capacity) {}
-    // 在缓存中查询 key
-    public int get(int key) {}
-    // 将 key 和 val 存入缓存
-    public void put(int key, int val) {}
-}
+```python
+class LFUCache:
+    def __init__(self, capacity: int):
+        # 构造容量为 capacity 的缓存
+        pass
+
+    def get(self, key: int) -> int:
+        # 在缓存中查询 key
+        pass
+
+    def put(self, key: int, val: int) -> None:
+        # 将 key 和 val 存入缓存
+        pass
 ``` 
 
 `get(key)` 方法会去缓存中查询键 `key`，如果 `key` 存在，则返回 `key` 对应的 `val`，否则返回 -1。
@@ -55,24 +59,24 @@ class LFUCache {
 
 当缓存达到容量 `capacity` 时，则应该在插入新的键值对之前，删除使用频次（后文用 `freq` 表示）最低的键值对。如果 `freq` 最低的键值对有多个，则删除其中最旧的那个。
 
-```java
-// 构造一个容量为 2 的 LFU 缓存
-LFUCache cache = new LFUCache(2);
+```python
+# 构造一个容量为 2 的 LFU 缓存
+cache = LFUCache(2)
 
-// 插入两对 (key, val)，对应的 freq 为 1
-cache.put(1, 10);
-cache.put(2, 20);
+# 插入两对 (key, val)，对应的 freq 为 1
+cache.put(1, 10)
+cache.put(2, 20)
 
-// 查询 key 为 1 对应的 val
-// 返回 10，同时键 1 对应的 freq 变为 2
-cache.get(1);
+# 查询 key 为 1 对应的 val
+# 返回 10，同时键 1 对应的 freq 变为 2
+cache.get(1)
 
-// 容量已满，淘汰 freq 最小的键 2
-// 插入键值对 (3, 30)，对应的 freq 为 1
-cache.put(3, 30);   
+# 容量已满，淘汰 freq 最小的键 2
+# 插入键值对 (3, 30)，对应的 freq 为 1
+cache.put(3, 30)   
 
-// 键 2 已经被淘汰删除，返回 -1
-cache.get(2);
+# 键 2 已经被淘汰删除，返回 -1
+cache.get(2)
 ``` 
 
 ## 二、思路分析
@@ -89,14 +93,18 @@ cache.get(2);
 
 1、使用一个 `HashMap` 存储 `key` 到 `val` 的映射，就可以快速计算 `get(key)`。
 
-```java
-HashMap<Integer, Integer> keyToVal;
+```python
+keyToVal = {}
 ``` 
 
 2、使用一个 `HashMap` 存储 `key` 到 `freq` 的映射，就可以快速操作 `key` 对应的 `freq`。
 
-```java
-HashMap<Integer, Integer> keyToFreq;
+```python
+keyToFreq = {}
 ``` 
 
 3、这个需求应该是 LFU 算法的核心，所以我们分开说：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

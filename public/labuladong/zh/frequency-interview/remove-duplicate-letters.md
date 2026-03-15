@@ -73,3 +73,7 @@ s = "cbacdcbc"
 其实这里会借鉴前文 [单调栈解题框架](</zh/algo/data-structure/monotonic-stack/>) 中讲到的「单调栈」的思路，没看过也无妨，等会你就明白了。
 
 **我们先暂时忽略要求三，用「栈」来实现一下要求一和要求二** ，至于为什么用栈来实现，后面你就知道了：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

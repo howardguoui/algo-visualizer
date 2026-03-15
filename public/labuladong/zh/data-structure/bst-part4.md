@@ -33,13 +33,14 @@ LeetCode| 力扣| 难度
 
 我们再看看后序遍历的代码框架：
 
-```java
-void traverse(TreeNode root) {
-    traverse(root.left);
-    traverse(root.right);
-    // 后序代码的位置
-    // 在这里处理当前节点
-}
+```python
+def traverse(root):
+    if not root:
+        return
+    traverse(root.left)
+    traverse(root.right)
+    # 后序代码的位置
+    # 在这里处理当前节点
 ``` 
 
 看这个代码框架，你说什么情况下需要在后序位置写代码呢？
@@ -48,6 +49,10 @@ void traverse(TreeNode root) {
 
 下面就讲一个经典的算法问题，可以直观地体会到后序位置的妙用。这是力扣第 1373 题「[二叉搜索子树的最大键值和](<https://leetcode.cn/problems/maximum-sum-bst-in-binary-tree/>)」，函数签名如下：
 
-```java
-int maxSumBST(TreeNode root);
-```
+```python
+def maxSumBST(root: TreeNode)
+``` 
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

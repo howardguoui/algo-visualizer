@@ -24,12 +24,11 @@ LeetCode| 力扣| 难度
 
 在 力扣/LeetCode 中，单链表的通用结构是这样的：
 
-```java
-class ListNode {
-    int val;
-    ListNode next;
-    ListNode(int x) { val = x; }
-}
+```python
+class ListNode:
+    def __init__(self, x):
+        self.val = x
+        self.next = None
 ``` 
 
 单链表反转是一个比较基础的算法题，力扣第 206 题「[反转链表](<https://leetcode.cn/problems/reverse-linked-list/>)」就是这个问题：
@@ -80,31 +79,25 @@ class ListNode {
 
 这里直接给出代码，结合注释和可视化面板应该不难理解：
 
-```java
-class Solution {
-    // 反转以 head 为起点的单链表
-    public ListNode reverseList(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        // 由于单链表的结构，至少要用三个指针才能完成迭代反转
-        // cur 是当前遍历的节点，pre 是 cur 的前驱结点，nxt 是 cur 的后继结点
-        ListNode pre, cur, nxt;
-        pre = null; cur = head; nxt = head.next;
-        while (cur != null) {
-            // 逐个结点反转
-            cur.next = pre;
-            // 更新指针位置
-            pre = cur;
-            cur = nxt;
-            if (nxt != null) {
-                nxt = nxt.next;
-            }
-        }
-        // 返回反转后的头结点
-        return pre;
-    }
-}
+```python
+class Solution:
+    # 反转以 head 为起点的单链表
+    def reverseList(self, head: ListNode) -> ListNode:
+        if head is None or head.next is None:
+            return head
+        # 由于单链表的结构，至少要用三个指针才能完成迭代反转
+        # cur 是当前遍历的节点，pre 是 cur 的前驱结点，nxt 是 cur 的后继结点
+        pre, cur, nxt = None, head, head.next
+        while cur is not None:
+            # 逐个结点反转
+            cur.next = pre
+            # 更新指针位置
+            pre = cur
+            cur = nxt
+            if nxt is not None:
+                nxt = nxt.next
+        # 返回反转后的头结点
+        return pre
 ``` 
 
 你可以点开下面的可视化面板，多次点击 `cur.next = pre` 这一行代码，即可直观地看到单链表的反转过程：
@@ -143,19 +136,16 @@ reverseList(1->2->3->4) = reverseList(2->3->4) -> 1
 
 先来看看递归反转单链表的代码实现：
 
-```java
-class Solution {
-    // 定义：输入一个单链表头结点，将该链表反转，返回新的头结点
-    public ListNode reverseList(ListNode head) {
-        if (head == null || head.next == null) {
-            return head;
-        }
-        ListNode last = reverseList(head.next); 
-        head.next.next = head; 
-        head.next = null; 
-        return last;
-    }
-}
+```python
+class Solution:
+    # 定义：输入一个单链表头结点，将该链表反转，返回新的头结点
+    def reverseList(self, head):
+        if head is None or head.next is None:
+            return head
+        last = self.reverseList(head.next) 
+        head.next.next = head 
+        head.next = None
+        return last
 ``` 
 
 这个算法常常拿来显示递归的巧妙和优美，我们下面来详细解释一下这段代码，最后在给出可视化面板，你可以自己动手探究一下递归过程。
@@ -239,11 +229,15 @@ head.next = null;
 
 这次我们实现一个这样的函数：
 
-```java
-// 将链表的前 n 个节点反转（n <= 链表长度）
-ListNode reverseN(ListNode head, int n)
+```python
+# 将链表的前 n 个节点反转（n <= 链表长度）
+def reverseN(head: ListNode, n: int):
 ``` 
 
 比如说对于下图链表，执行 `reverseN(head, 3)`：
 
 ![diagram](https://labuladong.online/images/algo/reverse-linked-list/6.jpg)
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

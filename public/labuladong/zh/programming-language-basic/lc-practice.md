@@ -64,19 +64,14 @@
 
 最简单的办法就是穷举嘛，用嵌套 for 循环，外层循环固定第一个数，内层循环找另一个数，看看它们的和是否等于目标值。
 
-```java
-class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        for (int i = 0; i < nums.length; i++) {
-            for (int j = i + 1; j < nums.length; j++) {
-                if (nums[i] + nums[j] == target) {
-                    return new int[] {i, j};
-                }
-            }
-        }
-        return new int[0];
-    }
-}
+```python
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                if nums[i] + nums[j] == target:
+                    return [i, j]
+        return []
 ``` 
 
 这就是 for 循环和 if 条件的简单运用，需要注意我们遍历 `j` 的时候，是从 `i+1` 开始的，不能从 `i` 开始，因为不能重复使用同一个元素；也没必要从 0 开始，因为 `i` 前面的元素和 `nums[i]` 的组合在之前的循环中已经被穷举过了。
@@ -119,21 +114,17 @@ class Solution {
 
 我们可以把数组中的元素逐个放入哈希集合中，如果发现某个元素已经存在，就直接返回 `true`。
 
-```java
-class Solution {
-    public boolean containsDuplicate(int[] nums) {
-        HashSet<Integer> set = new HashSet<>();
-        for (int num : nums) {
-            // 如果元素已经存在，直接返回 true
-            if (set.contains(num)) {
-                return true;
-            }
-            // 将元素放入哈希集合
-            set.add(num);
-        }
-        return false;
-    }
-}
+```python
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        count = set()
+        for num in nums:
+            # 如果元素已经存在，直接返回 True
+            if num in count:
+                return True
+            # 将元素放入哈希集合
+            count.add(num)
+        return False
 ``` 
 
 ## 136\. 只出现一次的数字
@@ -175,24 +166,19 @@ class Solution {
 
 这道题让你找出数组中只出现一次的数字，对于元素计数相关的问题，我们一般要用键值对来存储元素和其出现次数的对应关系，也就是要用到哈希表这种数据结构。
 
-```java
-class Solution {
-    public int singleNumber(int[] nums) {
-        Map<Integer, Integer> count = new HashMap<>();
-        // 遍历数组，统计每个数字出现的次数
-        for (int num : nums) {
-            count.put(num, count.getOrDefault(num, 0) + 1);
-        }
+```python
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        count = {}
+        # 遍历数组，统计每个数字出现的次数
+        for num in nums:
+            count[num] = count.get(num, 0) + 1
 
-        // 找到只出现一次的数字
-        for (int num : nums) {
-            if (count.get(num) == 1) {
-                return num;
-            }
-        }
-        return -1;
-    }
-}
+        # 找到只出现一次的数字
+        for num in nums:
+            if count[num] == 1:
+                return num
+        return -1
 ``` 
 
 ## 20\. 有效的括号
@@ -237,34 +223,29 @@ class Solution {
 
 这是一道经典的括号问题，这类问题一般都可以用栈来解决，思路是：**遇到左括号则把左括号入栈，遇到右括号则把栈顶的左括号拿出来，看是否和右括号匹配** 。
 
-```java
-class Solution {
-    public boolean isValid(String str) {
-        Stack<Character> left = new Stack<>();
-        for (char c : str.toCharArray()) {
-            if (c == '(' || c == '{' || c == '[') {
-                // 字符 c 是左括号，入栈
-                left.push(c);
-            } else {
-                // 字符 c 是右括号
-                if (!left.isEmpty() && leftOf(c) == left.peek()) {
-                    left.pop();
-                } else {
-                    // 和最近的左括号不匹配
-                    return false;
-                }
-            }
-        }
-        // 是否所有的左括号都被匹配了
-        return left.isEmpty();
-    }
+```python
+class Solution:
+    def isValid(self, s: str) -> bool:
+        # 用列表模拟栈
+        left = []
+        for c in s:
+            if c in '({[':
+                # 字符 c 是左括号，入栈
+                left.append(c)
+            else:
+                # 字符 c 是右括号
+                if left and self.leftOf(c) == left[-1]:
+                    left.pop()
+                else:
+                    # 和最近的左括号不匹配
+                    return False
+        # 是否所有的左括号都被匹配了
+        return not left
 
-    char leftOf(char c) {
-        if (c == '}') return '{';
-        if (c == ')') return '(';
-        return '[';
-    }
-}
+    def leftOf(self, c: str) -> str:
+        if c == '}': return '{'
+        if c == ')': return '('
+        return '['
 ``` 
 
 ## 2073\. 买票需要的时间
@@ -312,38 +293,31 @@ class Solution {
 
 这是一个实际场景的算法题，比较有意思。我们如果直接用队列来模拟整个过程，肯定可以解决这个问题。直接看代码吧：
 
-```java
-class Solution {
-    public int timeRequiredToBuy(int[] tickets, int k) {
-        // 用队列模拟整个过程
-        // 初始化队列，存储每个人的编号 id
-        Queue<Integer> queue = new LinkedList<>();
-        for (int i = 0; i < tickets.length; i++) {
-            queue.offer(i);
-        }
+```python
+class Solution:
+    def timeRequiredToBuy(self, tickets: List[int], k: int) -> int:
+        # 用队列模拟整个过程
+        queue = collections.deque()
+        for i in range(len(tickets)):
+            queue.append(i)
 
-        int time = 0;
-        while (!queue.isEmpty()) {
-            // 队头的人买票
-            int front = queue.poll();
-            time++;
-            tickets[front]--;
+        time = 0
+        while queue:
+            # 队头的人买票
+            front = queue.popleft()
+            time += 1
+            tickets[front] -= 1
             
-            if (front == k && tickets[front] == 0) {
-                // 如果是 k 号买完票了，返回总时间
-                return time;
-            }
+            if front == k and tickets[front] == 0:
+                # 如果是 k 号买完票了，返回总时间
+                return time
 
-            if (tickets[front] == 0) {
-                continue;
-            }
+            if tickets[front] == 0:
+                continue
 
-            // 如果还要继续买票，重新排到队尾
-            queue.offer(front);
-        }
-        return time;
-    }
-}
+            # 如果还要继续买票，重新排到队尾
+            queue.append(front)
+        return time
 ``` 
 
 ## 总结 & 展望
@@ -361,3 +335,7 @@ class Solution {
 2、结合算法模板，大量地刷题，让你熟练掌握各种算法的解题思路并运用自如。上面的这些算法难度相对简单，后面的题目会逐渐增加难度，但是不用怕，算法本质都是穷举，只要你掌握了几种常见的穷举思维，我们见招拆招，总能找到解题的突破口。
 
 最后，祝你早日能够独自遨游题海！
+
+## 评论
+
+请登录后查看/发表评论

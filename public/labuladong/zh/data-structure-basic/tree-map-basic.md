@@ -36,7 +36,7 @@
 
 比方说下面这棵树就是一棵 BST：
 
-loading...
+7415910
 
 **这个左小右大的特性，可以让我们在 BST 中快速找到某个节点，或者找到某个范围内的所有节点，这是 BST 的优势所在** 。
 
@@ -60,29 +60,23 @@ loading...
 
 力扣经典的 `TreeNode` 结构长这样：
 
-```java
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-}
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 ``` 
 
 我们只要改一改这个经典的 `TreeNode` 结构，就可以用来实现 `TreeMap` 了：
 
-```java
-// 大写 K 为键的类型，大写 V 为值的类型
-class TreeNode<K, V> {
-    K key;
-    V value;
-
-    TreeNode<K, V> left;
-    TreeNode<K, V> right;
-    TreeNode(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-}
+```python
+class TreeNode:
+    def __init__(self, key: K, value: V):
+        self.key = key
+        self.value = value
+        self.left = None
+        self.right = None
 ``` 
 
 我们将实现的 `TreeMap` 结构有如下 API：
@@ -136,3 +130,7 @@ class MyTreeMap<K, V> {
 除了标准的增删查改方法 `get, put, remove, containsKey` 之外，`TreeMap` 还提供了很多额外方法，主要和 key 的大小相关。怎么样，是不是感觉很强大？
 
 哈希表很实用，但是它确实没办法很好地处理键之间的大小关系。前文 [用链表加强哈希表](</zh/algo/data-structure-basic/hashtable-with-linked-list/>) 中实现的 `LinkedHashMap` 也只是做到按「**插入顺序** 」排列哈希表中的键，依然做不到按「**大小顺序** 」排列。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

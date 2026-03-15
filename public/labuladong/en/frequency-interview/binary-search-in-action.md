@@ -47,25 +47,22 @@ Note that I'm using the left-closed, right-open notation for binary search. If y
 
 The specific code implementation for the "search left boundary" binary search algorithm is as follows:
 
-```java
-// search for the left boundary
-int left_bound(int[] nums, int target) {
-    if (nums.length == 0) return -1;
-    int left = 0, right = nums.length;
-    
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
-            // when target is found, shrink the right boundary
-            right = mid;
-        } else if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid;
-        }
-    }
-    return left;
-}
+```python
+def left_bound(nums: List[int], target: int) -> int:
+    # search for the left boundary
+    if len(nums) == 0:
+        return -1
+    left, right = 0, len(nums)
+    while left < right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            # when target is found, shrink the right boundary
+            right = mid
+        elif nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid
+    return left
 ``` 
 
 Suppose the input array is `nums = [1,2,3,3,3,5,7]` and you want to search for `target = 3`. The algorithm will return index 2.
@@ -76,25 +73,23 @@ If we draw a diagram, it looks like this:
 
 The specific code implementation for the "search right boundary" binary search algorithm is as follows:
 
-```java
-// search for the right boundary
-int right_bound(int[] nums, int target) {
-    if (nums.length == 0) return -1;
-    int left = 0, right = nums.length;
+```python
+# Search for the right boundary
+def right_bound(nums: list[int], target: int) -> int:
+    if len(nums) == 0:
+        return -1
+    left, right = 0, len(nums)
 
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
-            // when target is found, shrink the left boundary
-            left = mid + 1;
-        } else if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid;
-        }
-    }
-    return left - 1;
-}
+    while left < right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            # When target is found, shrink the left boundary
+            left = mid + 1
+        elif nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid
+    return left - 1
 ``` 
 
 With the same input, the algorithm will return index 4. If we draw a diagram, it looks like this:
@@ -103,4 +98,8 @@ With the same input, the algorithm will return index 4. If we draw a diagram, it
 
 Good, the above content is all review. I expect readers at this point should understand it all. Remember the diagrams above—any problem that can be abstracted into these diagrams can be solved using binary search.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

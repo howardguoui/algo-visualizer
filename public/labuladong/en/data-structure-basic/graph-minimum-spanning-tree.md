@@ -32,15 +32,9 @@ In other words, a spanning tree has these features:
 
 A graph can have many different spanning trees. For example, here is a weighted graph:
 
-loading...
-
 Here are some spanning trees. The edges in the spanning tree are marked in red:
 
-loading...
-
 Here is another spanning tree:
-
-loading...
 
 ## What is a Minimum Spanning Tree
 
@@ -84,4 +78,8 @@ Not only are the generation processes different, but the maps created have diffe
 
 I suggest watching how BFS/DFS algorithms solve the map. Pay attention to the differences in maps made by each generation method. After we explain how minimum spanning tree algorithms work, we will talk more about random maze generation in detail.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

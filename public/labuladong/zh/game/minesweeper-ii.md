@@ -22,3 +22,7 @@
 扫雷游戏地图展开算法
 
 ## 讲解
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

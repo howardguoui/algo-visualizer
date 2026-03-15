@@ -94,9 +94,9 @@ Note
 
 题目来源：[力扣 654. 最大二叉树](<https://leetcode.cn/problems/maximum-binary-tree/>)。
 
-```java
-// 函数签名如下
-TreeNode constructMaximumBinaryTree(int[] nums);
+```python
+# 函数签名如下
+def constructMaximumBinaryTree(nums: List[int]) -> TreeNode:
 ``` 
 
 每个二叉树节点都可以认为是一棵子树的根节点，对于根节点，首先要做的当然是把想办法把自己先构造出来，然后想办法构造自己的左右子树。
@@ -105,74 +105,62 @@ TreeNode constructMaximumBinaryTree(int[] nums);
 
 按照题目给出的例子，输入的数组为 `[3,2,1,6,0,5]`，对于整棵树的根节点来说，其实在做这件事：
 
-```java
-TreeNode constructMaximumBinaryTree([3,2,1,6,0,5]) {
-    // 找到数组中的最大值
-    TreeNode root = new TreeNode(6);
-    // 递归调用构造左右子树
-    root.left = constructMaximumBinaryTree([3,2,1]);
-    root.right = constructMaximumBinaryTree([0,5]);
-    return root;
-}
+```python
+def constructMaximumBinaryTree([3,2,1,6,0,5]) -> TreeNode:
+    # 找到数组中的最大值
+    root = TreeNode(6)
+    # 递归调用构造左右子树
+    root.left = constructMaximumBinaryTree([3,2,1])
+    root.right = constructMaximumBinaryTree([0,5])
+    return root
 
-// 当前 nums 中的最大值就是根节点，然后根据索引递归调用左右数组构造左右子树即可
-// 再详细一点，就是如下伪码
-TreeNode constructMaximumBinaryTree(int[] nums) {
-    if (nums is empty) return null;
-    // 找到数组中的最大值
-    int maxVal = Integer.MIN_VALUE;
-    int index = 0;
-    for (int i = 0; i < nums.length; i++) {
-        if (nums[i] > maxVal) {
-            maxVal = nums[i];
-            index = i;
-        }
-    }
+# 当前 nums 中的最大值就是根节点，然后根据索引递归调用左右数组构造左右子树即可
+# 再详细一点，就是如下伪码
+def constructMaximumBinaryTree(nums: List[int]) -> TreeNode:
+    if not nums: 
+        return None
 
-    TreeNode root = new TreeNode(maxVal);
-    // 递归调用构造左右子树
-    root.left = constructMaximumBinaryTree(nums[0..index-1]);
-    root.right = constructMaximumBinaryTree(nums[index+1..nums.length-1]);
-    return root;
-}
+    # 找到数组中的最大值
+    maxVal = max(nums)
+    index = nums.index(maxVal)
+
+    root = TreeNode(maxVal)
+    # 递归调用构造左右子树
+    root.left = constructMaximumBinaryTree(nums[:index])
+    root.right = constructMaximumBinaryTree(nums[index+1:])
+    return root
 ``` 
 
 **当前`nums` 中的最大值就是根节点，然后根据索引递归调用左右数组构造左右子树即可**。
 
 明确了思路，我们可以重新写一个辅助函数 `build`，来控制 `nums` 的索引：
 
-```java
-class Solution {
+```python
+class Solution:
+    def constructMaximumBinaryTree(self, nums: List[int]) -> TreeNode:
+        return self.build(nums, 0, len(nums) - 1)
 
-    public TreeNode constructMaximumBinaryTree(int[] nums) {
-        return build(nums, 0, nums.length - 1);
-    }
+    # 定义：将 nums[lo..hi] 构造成符合条件的树，返回根节点
+    def build(self, nums: List[int], lo: int, hi: int) -> TreeNode:
+        # base case
+        if lo > hi:
+            return None
 
-    // 定义：将 nums[lo..hi] 构造成符合条件的树，返回根节点
-    TreeNode build(int[] nums, int lo, int hi) {
-        // base case
-        if (lo > hi) {
-            return null;
-        }
+        # 找到数组中的最大值和对应的索引
+        index = -1
+        maxVal = float('-inf')
+        for i in range(lo, hi + 1):
+            if maxVal < nums[i]:
+                index = i
+                maxVal = nums[i]
 
-        // 找到数组中的最大值和对应的索引
-        int index = -1, maxVal = Integer.MIN_VALUE;
-        for (int i = lo; i <= hi; i++) {
-            if (maxVal < nums[i]) {
-                index = i;
-                maxVal = nums[i];
-            }
-        }
-
-        // 先构造出根节点
-        TreeNode root = new TreeNode(maxVal);
-        // 递归调用构造左右子树
-        root.left = build(nums, lo, index - 1);
-        root.right = build(nums, index + 1, hi);
+        # 先构造出根节点
+        root = TreeNode(maxVal)
+        # 递归调用构造左右子树
+        root.left = self.build(nums, lo, index - 1)
+        root.right = self.build(nums, index + 1, hi)
         
-        return root;
-    }
-}
+        return root
 ``` 
 
 算法可视化
@@ -215,9 +203,9 @@ class Solution {
 
 题目来源：[力扣 105. 从前序与中序遍历序列构造二叉树](<https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/>)。
 
-```java
-// 函数签名如下
-TreeNode buildTree(int[] preorder, int[] inorder);
+```python
+# 函数签名如下
+def buildTree(preorder: List[int], inorder: List[int]):
 ``` 
 
 废话不多说，直接来想思路，首先思考，根节点应该做什么。
@@ -226,20 +214,22 @@ TreeNode buildTree(int[] preorder, int[] inorder);
 
 我们先来回顾一下，前序遍历和中序遍历的结果有什么特点？
 
-```java
-void traverse(TreeNode root) {
-    // 前序遍历
-    preorder.add(root.val);
-    traverse(root.left);
-    traverse(root.right);
-}
+```python
+def traverse(root):
+    if not root:
+        return
+    # 前序遍历
+    preorder.append(root.val)
+    traverse(root.left)
+    traverse(root.right)
 
-void traverse(TreeNode root) {
-    traverse(root.left);
-    // 中序遍历
-    inorder.add(root.val);
-    traverse(root.right);
-}
+def traverse(root):
+    if not root:
+        return
+    traverse(root.left)
+    # 中序遍历
+    inorder.append(root.val)
+    traverse(root.right)
 ``` 
 
 前文 [二叉树就那几个框架](</zh/algo/data-structure/flatten-nested-list-iterator/>) 写过，这样的遍历顺序差异，导致了 `preorder` 和 `inorder` 数组中的元素分布有如下特点：
@@ -252,39 +242,35 @@ void traverse(TreeNode root) {
 
 换句话说，对于以下代码中的 `?` 部分应该填入什么：
 
-```java
-TreeNode buildTree(int[] preorder, int[] inorder) {
-    // 根据函数定义，用 preorder 和 inorder 构造二叉树
-    return build(preorder, 0, preorder.length - 1,
-                inorder, 0, inorder.length - 1);
-}
+```python
+def buildTree(preorder, inorder):
+    # 根据函数定义，用 preorder 和 inorder 构造二叉树
+    return build(preorder, 0, len(preorder) - 1,
+                inorder, 0, len(inorder) - 1)
 
-// build 函数的定义：
-// 若前序遍历数组为 preorder[preStart..preEnd]，
-// 中序遍历数组为 inorder[inStart..inEnd]，
-// 构造二叉树，返回该二叉树的根节点
-TreeNode build(int[] preorder, int preStart, int preEnd, 
-            int[] inorder, int inStart, int inEnd) {
-    // root 节点对应的值就是前序遍历数组的第一个元素
-    int rootVal = preorder[preStart];
-    // rootVal 在中序遍历数组中的索引
-    int index = 0;
-    for (int i = inStart; i <= inEnd; i++) {
-        if (inorder[i] == rootVal) {
-            index = i;
-            break;
-        }
-    }
+# build 函数的定义：
+# 若前序遍历数组为 preorder[preStart..preEnd]，
+# 中序遍历数组为 inorder[inStart..inEnd]，
+# 构造二叉树，返回该二叉树的根节点
+def build(preorder, preStart, preEnd, 
+            inorder, inStart, inEnd):
+    # root 节点对应的值就是前序遍历数组的第一个元素
+    rootVal = preorder[preStart]
+    # rootVal 在中序遍历数组中的索引
+    index = 0
+    for i in range(inStart, inEnd + 1):
+        if inorder[i] == rootVal:
+            index = i
+            break
 
-    TreeNode root = new TreeNode(rootVal);
-    // 递归构造左右子树
+    root = TreeNode(rootVal)
+    # 递归构造左右子树
     root.left = build(preorder, ?, ?,
-                    inorder, ?, ?);
+                    inorder, ?, ?)
 
     root.right = build(preorder, ?, ?,
-                    inorder, ?, ?);
-    return root;
-}
+                    inorder, ?, ?)
+    return root
 ``` 
 
 对于代码中的 `rootVal` 和 `index` 变量，就是下图这种情况：
@@ -295,25 +281,25 @@ TreeNode build(int[] preorder, int preStart, int preEnd,
 
 因为题目说二叉树节点的值不存在重复，所以可以使用一个 HashMap 存储元素到索引的映射，这样就可以直接通过 HashMap 查到 `rootVal` 对应的 `index`：
 
-```java
-// 存储 inorder 中值到索引的映射
-HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+# 存储 inorder 中值到索引的映射
+val_to_index = {}
 
-public TreeNode buildTree(int[] preorder, int[] inorder) {
-    for (int i = 0; i < inorder.length; i++) {
-        valToIndex.put(inorder[i], i);
-    }
-    return build(preorder, 0, preorder.length - 1,
-                 inorder, 0, inorder.length - 1);
-}
+def build_tree(preorder, inorder):
 
-TreeNode build(int[] preorder, int preStart, int preEnd, 
-               int[] inorder, int inStart, int inEnd) {
-    int rootVal = preorder[preStart];
-    // 避免 for 循环寻找 rootVal
-    int index = valToIndex.get(rootVal);
-    // ...
-}
+    for i in range(len(inorder)):
+        val_to_index[inorder[i]] = i
+
+    return build(preorder, 0, len(preorder) - 1,
+                 inorder, 0, len(inorder) - 1)
+
+def build(preorder, pre_start, pre_end, 
+          inorder, in_start, in_end):
+  
+    root_val = preorder[pre_start]
+    # 避免 for 循环寻找 rootVal
+    index = val_to_index[root_val]
+    # ...
 ``` 
 
 现在我们来看图做填空题，下面这几个问号处应该填什么：
@@ -358,46 +344,44 @@ root.right = build(preorder, preStart + leftSize + 1, preEnd,
 
 至此，整个算法思路就完成了，我们再补一补 base case 即可写出解法代码：
 
-```java
-class Solution {
-    // 存储 inorder 中值到索引的映射
-    HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+class Solution:
+    # 存储 inorder 中值到索引的映射
+    valToIndex = dict()
 
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        for (int i = 0; i < inorder.length; i++) {
-            valToIndex.put(inorder[i], i);
-        }
-        return build(preorder, 0, preorder.length - 1,
-                    inorder, 0, inorder.length - 1);
-    }
+    def buildTree(self, preorder, inorder):
+        for i in range(len(inorder)):
+            self.valToIndex[inorder[i]] = i
+        return self.build(preorder, 0, len(preorder) - 1,
+                          inorder, 0, len(inorder) - 1)
 
-    // 定义：前序遍历数组为 preorder[preStart..preEnd]
-    // 中序遍历数组为 inorder[inStart..inEnd]
-    // 构造这个二叉树并返回该二叉树的根节点
-    TreeNode build(int[] preorder, int preStart, int preEnd,
-                   int[] inorder, int inStart, int inEnd) {
-        if (preStart > preEnd) {
-            return null;
-        }
+    # build 函数的定义：
+    # 若前序遍历数组为 preorder[preStart..preEnd]，
+    # 中序遍历数组为 inorder[inStart..inEnd]，
+    # 构造二叉树，返回该二叉树的根节点
+    def build(self, preorder, preStart, preEnd,
+               inorder, inStart, inEnd):
+        if preStart > preEnd:
+            return None
 
-        // root 节点对应的值就是前序遍历数组的第一个元素
-        int rootVal = preorder[preStart];
-        // rootVal 在中序遍历数组中的索引
-        int index = valToIndex.get(rootVal);
+        # root 节点对应的值就是前序遍历数组的第一个元素
+        rootVal = preorder[preStart]
+        # rootVal 在中序遍历数组中的索引
+        index = self.valToIndex[rootVal]
 
-        int leftSize = index - inStart;
+        leftSize = index - inStart
 
-        // 先构造出当前根节点
-        TreeNode root = new TreeNode(rootVal); 
-        // 递归构造左右子树
-        root.left = build(preorder, preStart + 1, preStart + leftSize,
-                inorder, inStart, index - 1);
+        # 先构造出当前根节点
+        root = TreeNode(rootVal) 
 
-        root.right = build(preorder, preStart + leftSize + 1, preEnd,
-                inorder, index + 1, inEnd);
-        return root;
-    }
-}
+        # 递归构造左右子树
+        root.left = self.build(preorder, preStart + 1, preStart + leftSize,
+                               inorder, inStart, index - 1)
+
+        root.right = self.build(preorder, preStart + leftSize + 1, preEnd,
+                                inorder, index + 1, inEnd)
+
+        return root
 ``` 
 
 我们的主函数只要调用 `buildTree` 函数即可，你看着函数这么多参数，解法这么多代码，似乎比我们上面讲的那道题难很多，让人望而生畏，实际上呢，这些参数无非就是控制数组起止位置的，画个图就能解决了。
@@ -438,27 +422,27 @@ class Solution {
 
 题目来源：[力扣 106. 从中序与后序遍历序列构造二叉树](<https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/>)。
 
-```java
-// 函数签名如下
-TreeNode buildTree(int[] inorder, int[] postorder);
+```python
+# 函数签名如下
+def buildTree(inorder: List[int], postorder: List[int]) -> TreeNode:
 ``` 
 
 类似的，看下后序和中序遍历的特点：
 
-```java
-void traverse(TreeNode root) {
-    traverse(root.left);
-    traverse(root.right);
-    // 后序遍历
-    postorder.add(root.val);
-}
+```python
+def traverse(root):
+    if root:
+        traverse(root.left)
+        traverse(root.right)
+        # 后序遍历
+        postorder.append(root.val)
 
-void traverse(TreeNode root) {
-    traverse(root.left);
-    // 中序遍历
-    inorder.add(root.val);
-    traverse(root.right);
-}
+def traverse(root):
+    if root:
+        traverse(root.left)
+        # 中序遍历
+        inorder.append(root.val)
+        traverse(root.right)
 ``` 
 
 这样的遍历顺序差异，导致了 `postorder` 和 `inorder` 数组中的元素分布有如下特点：
@@ -469,40 +453,35 @@ void traverse(TreeNode root) {
 
 整体的算法框架和上一题非常类似，我们依然写一个辅助函数 `build`：
 
-```java
-class Solution {
-    // 存储 inorder 中值到索引的映射
-    HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        # 存储 inorder 中值到索引的映射
+        valToIndex = {val: idx for idx, val in enumerate(inorder)}
 
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
-        for (int i = 0; i < inorder.length; i++) {
-            valToIndex.put(inorder[i], i);
-        }
-        return build(inorder, 0, inorder.length - 1,
-                    postorder, 0, postorder.length - 1);
-    }
+        # build 函数的定义：
+        # 后序遍历数组为 postorder[postStart..postEnd]，
+        # 中序遍历数组为 inorder[inStart..inEnd]，
+        # 构造二叉树，返回该二叉树的根节点
+        def build(in_left, in_right, post_left, post_right):
+            if in_left > in_right: return
+            
+            # root 节点对应的值就是后序遍历数组的最后一个元素
+            root_val = postorder[post_right]
+            # rootVal 在中序遍历数组中的索引
+            index = valToIndex[root_val]
 
-    // build 函数的定义：
-    // 后序遍历数组为 postorder[postStart..postEnd]，
-    // 中序遍历数组为 inorder[inStart..inEnd]，
-    // 构造二叉树，返回该二叉树的根节点 
-    TreeNode build(int[] inorder, int inStart, int inEnd,
-                int[] postorder, int postStart, int postEnd) {
-        // root 节点对应的值就是后序遍历数组的最后一个元素
-        int rootVal = postorder[postEnd];
-        // rootVal 在中序遍历数组中的索引
-        int index = valToIndex.get(rootVal);
+            root = TreeNode(root_val)
+            # 递归构造左右子树
+            size_left_subtree = index - in_left
+            root.left = build(inorder, ?, ?,
+                               postorder, ?, ?)
+            root.right = build(inorder, ?, ?,
+                                postorder, ?, ?)
+            
+            return root
 
-        TreeNode root = new TreeNode(rootVal);
-        // 递归构造左右子树
-        root.left = build(inorder, ?, ?,
-                        postorder, ?, ?);
-
-        root.right = build(inorder, ?, ?,
-                        postorder, ?, ?);
-        return root;
-    }
-}
+        return build(0, len(inorder) - 1, 0, len(postorder) - 1)
 ``` 
 
 现在 `postoder` 和 `inorder` 对应的状态如下：
@@ -523,44 +502,39 @@ root.right = build(inorder, index + 1, inEnd,
 
 综上，可以写出完整的解法代码：
 
-```java
-class Solution {
-    // 存储 inorder 中值到索引的映射
-    HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+class Solution:
+    # 存储 inorder 中值到索引的映射
+    val_to_index = {}
 
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
-        for (int i = 0; i < inorder.length; i++) {
-            valToIndex.put(inorder[i], i);
-        }
-        return build(inorder, 0, inorder.length - 1,
-                    postorder, 0, postorder.length - 1);
-    }
+    def buildTree(self, inorder, postorder):
+        for i in range(len(inorder)):
+            self.val_to_index[inorder[i]] = i
+        return self.build(inorder, 0, len(inorder) - 1,
+                          postorder, 0, len(postorder) - 1)
 
-    // 定义：中序遍历数组为 inorder[inStart..inEnd]，
-    // 后序遍历数组为 postorder[postStart..postEnd]，
-    // build 函数构造这个二叉树并返回该二叉树的根节点
-    TreeNode build(int[] inorder, int inStart, int inEnd,
-                int[] postorder, int postStart, int postEnd) {
+    # 定义：中序遍历数组为 inorder[inStart..inEnd]，
+    # 后序遍历数组为 postorder[postStart..postEnd]，
+    # build 函数构造这个二叉树并返回该二叉树的根节点
+    def build(self, inorder, in_start, in_end,
+              postorder, post_start, post_end):
 
-        if (inStart > inEnd) {
-            return null;
-        }
-        // root 节点对应的值就是后序遍历数组的最后一个元素
-        int rootVal = postorder[postEnd];
-        // rootVal 在中序遍历数组中的索引
-        int index = valToIndex.get(rootVal);
-        // 左子树的节点个数
-        int leftSize = index - inStart;
-        TreeNode root = new TreeNode(rootVal); 
-        // 递归构造左右子树
-        root.left = build(inorder, inStart, index - 1,
-                         postorder, postStart, postStart + leftSize - 1);
+        if in_start > in_end:
+            return None
+        # root 节点对应的值就是后序遍历数组的最后一个元素
+        root_val = postorder[post_end]
+        # rootVal 在中序遍历数组中的索引
+        index = self.val_to_index[root_val]
+        # 左子树的节点个数
+        left_size = index - in_start
+        root = TreeNode(root_val) 
+        # 递归构造左右子树
+        root.left = self.build(inorder, in_start, index - 1,
+                               postorder, post_start, post_start + left_size - 1)
         
-        root.right = build(inorder, index + 1, inEnd,
-                          postorder, postStart + leftSize, postEnd - 1);
-        return root;
-    }
-}
+        root.right = self.build(inorder, index + 1, in_end,
+                                postorder, post_start + left_size, post_end - 1)
+        return root
 ``` 
 
 算法可视化
@@ -573,8 +547,10 @@ class Solution {
 
 函数签名如下：
 
-```java
-TreeNode constructFromPrePost(int[] preorder, int[] postorder);
+```python
+from typing import List
+
+def constructFromPrePost(preorder: List[int], postorder: List[int]) -> TreeNode:
 ``` 
 
 这道题和前两道题有一个本质的区别：
@@ -611,53 +587,47 @@ preorder = [1,2,3], postorder = [3,2,1]
 
 详情见代码。
 
-```java
-class Solution {
-    // 存储 postorder 中值到索引的映射
-    HashMap<Integer, Integer> valToIndex = new HashMap<>();
+```python
+class Solution:
+    # 存储 postorder 中值到索引的映射
+    valToIndex = dict()
 
-    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
-        for (int i = 0; i < postorder.length; i++) {
-            valToIndex.put(postorder[i], i);
-        }
-        return build(preorder, 0, preorder.length - 1,
-                    postorder, 0, postorder.length - 1);
-    }
+    def constructFromPrePost(self, preorder, postorder):
+        for i in range(len(postorder)):
+            self.valToIndex[postorder[i]] = i
+        return self.build(preorder, 0, len(preorder) - 1,
+                          postorder, 0, len(postorder) - 1)
 
-    // 定义：根据 preorder[preStart..preEnd] 和 postorder[postStart..postEnd]
-    // 构建二叉树，并返回根节点。
-    TreeNode build(int[] preorder, int preStart, int preEnd,
-                   int[] postorder, int postStart, int postEnd) {
-        if (preStart > preEnd) {
-            return null;
-        }
-        if (preStart == preEnd) {
-            return new TreeNode(preorder[preStart]);
-        }
+    # 定义：根据 preorder[preStart..preEnd] 和 postorder[postStart..postEnd]
+    # 构建二叉树，并返回根节点。
+    def build(self, preorder, preStart, preEnd,
+              postorder, postStart, postEnd):
+        if preStart > preEnd:
+            return None
+        if preStart == preEnd:
+            return TreeNode(preorder[preStart])
 
-        // root 节点对应的值就是前序遍历数组的第一个元素
-        int rootVal = preorder[preStart];
-        // root.left 的值是前序遍历第二个元素
-        // 通过前序和后序遍历构造二叉树的关键在于通过左子树的根节点
-        // 确定 preorder 和 postorder 中左右子树的元素区间
-        int leftRootVal = preorder[preStart + 1];
-        // leftRootVal 在后序遍历数组中的索引
-        int index = valToIndex.get(leftRootVal);
-        // 左子树的元素个数
-        int leftSize = index - postStart + 1;
+        # root 节点对应的值就是前序遍历数组的第一个元素
+        rootVal = preorder[preStart]
+        # root.left 的值是前序遍历第二个元素
+        # 通过前序和后序遍历构造二叉树的关键在于通过左子树的根节点
+        # 确定 preorder 和 postorder 中左右子树的元素区间
+        leftRootVal = preorder[preStart + 1]
+        # leftRootVal 在后序遍历数组中的索引
+        index = self.valToIndex[leftRootVal]
+        # 左子树的元素个数
+        leftSize = index - postStart + 1
+     
+        # 先构造出当前根节点
+        root = TreeNode(rootVal) 
+        # 递归构造左右子树
+        # 根据左子树的根节点索引和元素个数推导左右子树的索引边界
+        root.left = self.build(preorder, preStart + 1, preStart + leftSize,
+                               postorder, postStart, index)
+        root.right = self.build(preorder, preStart + leftSize + 1, preEnd,
+                                postorder, index + 1, postEnd - 1)
 
-        // 先构造出当前根节点
-        TreeNode root = new TreeNode(rootVal); 
-        // 递归构造左右子树
-        // 根据左子树的根节点索引和元素个数推导左右子树的索引边界
-        root.left = build(preorder, preStart + 1, preStart + leftSize,
-                postorder, postStart, index);
-        root.right = build(preorder, preStart + leftSize + 1, preEnd,
-                postorder, index + 1, postEnd - 1);
-
-        return root;
-    }
-}
+        return root
 ``` 
 
 算法可视化
@@ -677,3 +647,7 @@ int leftRootVal = preorder[preStart + 1];
 最后呼应下前文，**二叉树的构造问题一般都是使用「分解问题」的思路：构造整棵树 = 根节点 + 构造左子树 + 构造右子树** 。先找出根节点，然后根据根节点的值找到左右子树的元素，进而递归构建出左右子树。
 
 现在你是否明白其中的玄妙了呢？
+
+## 评论
+
+请登录后查看/发表评论

@@ -75,8 +75,8 @@ int stoneGame(int[] nums);
 
 函数签名如下：
 
-```java
-boolean predictTheWinner(int[] nums);
+```python
+def predictTheWinner(nums: List[int]) -> bool:
 ``` 
 
 那么如果有了一个计算先手和后手分差的 `stoneGame` 函数，这道题的解法就直接出来了：
@@ -202,53 +202,46 @@ for (int i = n - 2; i >= 0; i--) {
 
 如何实现这个 fir 和 sec 元组呢，你可以用 python，自带元组类型；或者使用 C++ 的 pair 容器；或者用一个三维数组 `dp[n][n][2]`，最后一个维度就相当于元组；或者我们自己写一个 Pair 类：
 
-```java
-class Pair {
-    int fir, sec;
-    Pair(int fir, int sec) {
-        this.fir = fir;
-        this.sec = sec;
-    }
-}
+```python
+class Pair:
+    def __init__(self, fir: int, sec: int):
+        self.fir = fir
+        self.sec = sec
 ``` 
 
 然后直接把我们的状态转移方程翻译成代码即可，注意我们要倒着遍历数组：
 
-```java
-// 返回游戏最后先手和后手的得分之差
-int stoneGame(int[] piles) {
-    int n = piles.length;
-    // 初始化 dp 数组
-    Pair[][] dp = new Pair[n][n];
-    for (int i = 0; i < n; i++) 
-        for (int j = i; j < n; j++)
-            dp[i][j] = new Pair(0, 0);
-    // 填入 base case
-    for (int i = 0; i < n; i++) {
-        dp[i][i].fir = piles[i];
-        dp[i][i].sec = 0;
-    }
+```python
+# 返回游戏最后先手和后手的得分之差
+def stoneGame(piles: List[int]) -> int:
+    n = len(piles)
+    # 初始化 dp 数组
+    dp = [[Pair(0, 0) for _ in range(n)] for _ in range(n)]
+    for i in range(n): 
+        for j in range(i, n):
+            dp[i][j] = Pair(0, 0)
+    # 填入 base case
+    for i in range(n):
+        dp[i][i].fir = piles[i]
+        dp[i][i].sec = 0
 
-    // 倒着遍历数组
-    for (int i = n - 2; i >= 0; i--) {
-        for (int j = i + 1; j < n; j++) {
-            // 先手选择最左边或最右边的分数
-            int left = piles[i] + dp[i+1][j].sec;
-            int right = piles[j] + dp[i][j-1].sec;
-            // 套用状态转移方程
-            // 先手肯定会选择更大的结果，后手的选择随之改变
-            if (left > right) {
-                dp[i][j].fir = left;
-                dp[i][j].sec = dp[i+1][j].fir;
-            } else {
-                dp[i][j].fir = right;
-                dp[i][j].sec = dp[i][j-1].fir;
-            }
-        }
-    }
-    Pair res = dp[0][n-1];
-    return res.fir - res.sec;
-}
+    # 倒着遍历数组
+    for i in range(n - 2, -1, -1):
+        for j in range(i + 1, n):
+            # 先手选择最左边或最右边的分数
+            left = piles[i] + dp[i+1][j].sec
+            right = piles[j] + dp[i][j-1].sec
+            # 套用状态转移方程
+            # 先手肯定会选择更大的结果，后手的选择随之改变
+            if left > right:
+                dp[i][j].fir = left
+                dp[i][j].sec = dp[i+1][j].fir
+            else:
+                dp[i][j].fir = right
+                dp[i][j].sec = dp[i][j-1].fir
+
+    res = dp[0][n-1]
+    return res.fir - res.sec
 ``` 
 
 动态规划解法，如果没有状态转移方程指导，绝对是一头雾水，但是根据前面的详细解释，读者应该可以清晰理解这一大段代码的含义。
@@ -262,3 +255,7 @@ int stoneGame(int[] piles) {
 之所以这样设计，是因为先手在做出选择之后，就成了后手，后手在对方做完选择后，就变成了先手。**这种角色转换使得我们可以重用之前的结果，典型的动态规划标志** 。
 
 读到这里的朋友应该能理解算法解决博弈问题的套路了。学习算法，一定要注重算法的模板框架，而不是一些看起来牛逼的思路，也不要奢求上来就写一个最优的解法。不要舍不得多用空间，不要过早尝试优化，不要惧怕多维数组。`dp` 数组就是存储信息避免重复计算的，随便用，直到咱满意为止。
+
+## 评论
+
+请登录后查看/发表评论

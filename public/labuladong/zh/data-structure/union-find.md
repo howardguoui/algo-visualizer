@@ -26,15 +26,19 @@
 
 现在我们的 Union-Find 算法主要需要实现这两个 API：
 
-```java
-class UF {
-    // 将 p 和 q 连接
-    public void union(int p, int q);
-    // 判断 p 和 q 是否连通
-    public boolean connected(int p, int q);
-    // 返回图中有多少个连通分量
-    public int count();
-}
+```python
+class UF:
+    # 将 p 和 q 连接
+    def union(self, p, q):
+        pass
+    
+    # 判断 p 和 q 是否连通
+    def connected(self, p, q):
+        pass
+
+    # 返回图中有多少个连通分量
+    def count(self):
+        pass
 ``` 
 
 这里所说的「连通」是一种等价关系，也就是说具有如下三个性质：
@@ -56,3 +60,7 @@ class UF {
 判断这种「等价关系」非常实用，比如说编译器判断同一个变量的不同引用，比如社交网络中的朋友圈计算等等。
 
 这样，你应该大概明白什么是动态连通性了，Union-Find 算法的关键就在于 `union` 和 `connected` 函数的效率。那么用什么模型来表示这幅图的连通状态呢？用什么数据结构来实现代码呢？
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

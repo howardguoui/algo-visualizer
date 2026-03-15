@@ -30,12 +30,16 @@ Now back to the main topic. This article solves a classic greedy algorithm probl
 
 You are given many closed intervals of the form `[start, end]`. Please design an algorithm to **find the maximum number of intervals that are mutually non-overlapping**.
 
-```java
-int intervalSchedule(int[][] intvs);
+```python
+def intervalSchedule(intvs: List[List[int]]) -> int:
 ``` 
 
 For example, `intvs = [[1,3], [2,4], [3,6]]`. Among these intervals, the maximum number of non-overlapping intervals is 2, that is `[[1,3], [3,6]]`. Your algorithm should return 2. Note that intervals that only touch at the boundary are not considered overlapping.
 
 This problem has many real-world uses. For example, you have several events today. Each event can be represented as an interval `[start, end]` for its start time and end time. **What is the maximum number of events you can attend today?** Clearly, you cannot attend two events at the same time. So this problem is to find the largest subset of these time intervals that do not overlap.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

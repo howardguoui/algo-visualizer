@@ -74,8 +74,8 @@ LeetCode| 力扣| 难度
 
 我们要完成的函数的签名如下：
 
-```java
-int change(int amount, int[] coins);
+```python
+def change(amount: int, coins: List[int]) -> int:
 ``` 
 
 我们可以把这个问题转化为背包问题的描述形式：
@@ -85,3 +85,7 @@ int change(int amount, int[] coins);
 这个问题和我们前面讲过的两个背包问题，有一个最大的区别就是，每个物品的数量是无限的，这也就是传说中的「**完全背包问题** 」，没啥高大上的，无非就是状态转移方程有一点变化而已。
 
 下面就以背包问题的描述形式，继续按照流程来分析。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

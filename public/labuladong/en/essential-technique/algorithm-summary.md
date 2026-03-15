@@ -20,6 +20,56 @@ The summary in this article is the core outline of all content on this site. It 
 
 There is no heavy code in this article. It is mostly my experience. It will help you avoid wrong paths and understand algorithms better.
 
+dynamic array
+
+string
+
+hash table
+
+...
+
+Array  
+(stored in order)
+
+singly / doubly linked list
+
+many kinds of trees
+
+...
+
+Linked list  
+(stored by links)
+
+Data structures  
+(the core is insert / delete / search / update)
+
+backtracking
+
+dynamic programming
+
+DFS/BFS
+
+...
+
+How to brute-force  
+(no missing cases)
+
+binary search
+
+sliding window
+
+greedy
+
+...
+
+How to brute-force smartly  
+(no repeated work)
+
+Algorithm problems  
+(the core is brute-force)
+
+Learning mindset
+
 ## One summary for all data structures and algorithms
 
 All data structures are transformations of **arrays** (stored in order) and **linked lists** (stored by links).
@@ -68,65 +118,60 @@ Linear is like for/while loops. Non-linear is like recursion. More specifically,
 
 Array traversal framework, a typical linear loop:
 
-```java
-void traverse(int[] arr) {
-    for (int i = 0; i < arr.length; i++) {
-        // iterate through arr[i]
-    }
-}
+```python
+def traverse(arr: List[int]):
+    for i in range(len(arr)):
+        # iterate over arr[i]
 ``` 
 
 Linked list traversal framework, has both loop and recursion:
 
-```java
-// basic singly linked list node
-class ListNode {
-    int val;
-    ListNode next;
-}
+```python
+# basic single linked list node
+class ListNode:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
 
-void traverse(ListNode head) {
-    for (ListNode p = head; p != null; p = p.next) {
-        // iteratively access p.val
-    }
-}
+def traverse(head: ListNode) -> None:
+    p = head
+    while p is not None:
+        # iteratively access p.val
+        p = p.next
 
-void traverse(ListNode head) {
-    // recursively access head.val
-    traverse(head.next);
-}
+def traverse(head: ListNode) -> None:
+    # recursively access head.val
+    traverse(head.next)
 ``` 
 
 Binary tree traversal framework, a typical non-linear recursive traversal:
 
-```java
-// basic binary tree node
-class TreeNode {
-    int val;
-    TreeNode left, right;
-}
-
-void traverse(TreeNode root) {
-    traverse(root.left);
-    traverse(root.right);
-}
+```python
+# basic binary tree node
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+        
+def traverse(root: TreeNode):
+    traverse(root.left)
+    traverse(root.right)
 ``` 
 
 The recursive traversal of a binary tree and the recursive traversal of a linked list look similar, right? And the structure of a binary tree and a singly linked list also looks similar, right? If we add more branches, can you traverse an N-ary tree?
 
 The binary tree framework can be extended to an N-ary tree traversal framework:
 
-```java
-// basic N-ary tree node
-class TreeNode {
-    int val;
-    TreeNode[] children;
-}
+```python
+# basic N-ary tree node
+class TreeNode:
+    val: int
+    children: List[TreeNode]
 
-void traverse(TreeNode root) {
-    for (TreeNode child : root.children)
-        traverse(child);
-}
+def traverse(root: TreeNode) -> None:
+    for child in root.children:
+        traverse(child)
 ``` 
 
 Traversal of an `N`-ary tree can be extended to graph traversal, because a graph is like many `N`-ary trees combined. You may say a graph can have cycles. That is easy: use a boolean array `visited` to mark nodes. See [graph traversal](</en/algo/data-structure-basic/graph-traverse-basic/>) for details.
@@ -277,35 +322,29 @@ In the binary tree section, I'll walk through 150 binary tree problems using con
 
 Take the problem of computing the maximum depth of a binary tree. If you need to implement the `maxDepth` function, this code works perfectly:
 
-```java
-class Solution {
-
-    // record the maximum depth
-    int res = 0;
-    // record the depth of the current node being traversed
-    int depth = 0;
-
-    // main function
-    int maxDepth(TreeNode root) {
-        traverse(root);
-        return res;
-    }
-
-    // binary tree traversal framework
-    void traverse(TreeNode root) {
-        if (root == null) {
-            // reach a leaf node
-            res = Math.max(res, depth);
-            return;
-        }
-        // pre-order traversal position
-        depth++;
-        traverse(root.left);
-        traverse(root.right);
-        // post-order traversal position
-        depth--;
-    }
-}
+```python
+class Solution:
+    def __init__(self):
+        # record the maximum depth
+        self.res = 0
+        # record the depth of the current traversal node
+        self.depth = 0
+        
+    def maxDepth(self, root: TreeNode) -> int:
+        self.traverse(root)
+        return self.res
+        
+    def traverse(self, root: TreeNode) -> None:
+        if not root:
+            # reached a leaf node
+            self.res = max(self.res, self.depth)
+            return
+        # pre-order traversal position
+        self.depth += 1
+        self.traverse(root.left)
+        self.traverse(root.right)
+        # post-order traversal position
+        self.depth -= 1
 ``` 
 
 The logic here is to use the `traverse` function to visit all nodes in the tree, maintain a `depth` variable, and update the maximum depth at leaf nodes.
@@ -314,52 +353,42 @@ Does this code look familiar? Can you map it to the backtracking algorithm templ
 
 Check out the permutation problem code in [Backtracking Framework](</en/algo/essential-technique/backtrack-framework/>). The `backtrack` function is just the `traverse` function—same thing, different name. The overall logic is very similar:
 
-```java
-class Solution {
-    // record all permutations
-    List<List<Integer>> res = new LinkedList<>();
-    // record the current permutation being enumerated
-    LinkedList<Integer> track = new LinkedList<>();
+```python
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        # record all permutations
+        res = []
+        # record the current permutation being enumerated
+        track = []
 
-    // elements in track will be marked as true to avoid reuse
-    boolean[] used;
+        # elements in track will be marked as true to avoid reuse
+        used = [False] * len(nums)
 
-    // main function, input a set of unique numbers, return all their permutations
-    List<List<Integer>> permute(int[] nums) {
-        used = new boolean[nums.length];
-        
-        backtrack(nums);
-        return res;
-    }
+        # main function, input a set of unique numbers, return all their permutations
+        def backtrack(nums):
+            # reach a leaf node, elements in track form a permutation
+            if len(track) == len(nums):
+                res.append(track[:])
+                return
 
-    // the core framework of the backtracking algorithm, traverse the
-    // backtracking tree, collect all permutations at leaf nodes
-    void backtrack(int[] nums) {
-        // reached a leaf node, elements in track form a permutation
-        if (track.size() == nums.length) {
-            res.add(new LinkedList(track));
-            return;
-        }
-        
-        for (int i = 0; i < nums.length; i++) {
-            // exclude invalid choices
-            if (used[i]) {
-                // nums[i] is already in track, skip
-                continue;
-            }
-            // make a choice
-            track.add(nums[i]);
-            used[i] = true;
+            for i in range(len(nums)):
+                # exclude invalid choices
+                if used[i]:
+                    # nums[i] is already in track, skip
+                    continue
+                # make a choice
+                track.append(nums[i])
+                used[i] = True
 
-            // enter the next level of the recursion tree
-            backtrack(nums);
-            
-            // undo the choice
-            track.removeLast();
-            used[i] = false;
-        }
-    }
-}
+                # enter the next level of the recursion tree
+                backtrack(nums)
+
+                # undo the choice
+                track.pop()
+                used[i] = False
+
+        backtrack(nums)
+        return res
 ``` 
 
 This code might look long, but isn't it just traversing an n-ary tree? Backtracking is essentially n-ary tree traversal. If you can abstract a problem into a tree structure, you can definitely solve it with backtracking.
@@ -370,52 +399,50 @@ This code might look long, but isn't it just traversing an n-ary tree? Backtrack
 
 For the same maximum depth problem, you can also write a solution like this:
 
-```java
-// definition: input the root node, return the maximum depth of this binary tree
-int maxDepth(TreeNode root) {
-	if (root == null) {
-		return 0;
-	}
-	// recursively calculate the maximum depth of left and right subtrees
-	int leftMax = maxDepth(root.left);
-	int rightMax = maxDepth(root.right);
-	// the maximum depth of the whole tree is the maximum depth of the left and right subtrees plus one
-	int res = Math.max(leftMax, rightMax) + 1;
+```python
+# Definition: input the root node, return the maximum depth of this binary tree
+def maxDepth(root: TreeNode) -> int:
+    if root is None:
+        return 0
+    # Recursively calculate the maximum depth of the left and right subtrees
+    leftMax = maxDepth(root.left)
+    rightMax = maxDepth(root.right)
+    # The maximum depth of the entire tree is the maximum
+    # depth of the left and right subtrees plus one
+    res = max(leftMax, rightMax) + 1
 
-	return res;
-}
+    return res
 ``` 
 
 Does this code look familiar? Does it remind you of dynamic programming solutions?
 
 Check out the brute-force solution to the coin change problem in [Dynamic Programming Framework](</en/algo/essential-technique/dynamic-programming-framework/>):
 
-```java
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        // the final result required by the problem is dp(amount)
-        return dp(coins, amount);
-    }
+```python
+class Solution:
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        # the final result required by the problem is dp(amount)
+        return self.dp(coins, amount)
 
-    // definition: to make up the `amount`, at least dp(coins, amount) coins are needed
-    int dp(int[] coins, int amount) {
-        // base case
-        if (amount == 0) return 0;
-        if (amount < 0) return -1;
+    # definition: to make up the `amount`, at least dp(coins, amount) coins are needed
+    def dp(self, coins, amount):
+        # base case
+        if amount == 0: 
+            return 0
+        if amount < 0: 
+            return -1
 
-        int res = Integer.MAX_VALUE;
-        for (int coin : coins) {
-            // calculate the result of the subproblem
-            int subProblem = dp(coins, amount - coin);
-            // skip if the subproblem has no solution
-            if (subProblem == -1) continue;
-            // choose the optimal solution from the subproblem, then add one
-            res = Math.min(res, subProblem + 1);
-        }
+        res = float('inf')
+        for coin in coins:
+            # calculate the result of the subproblem
+            subProblem = self.dp(coins, amount - coin)
+            # skip if the subproblem has no solution
+            if subProblem == -1: 
+                continue
+            # choose the optimal solution in the subproblem, then add one
+            res = min(res, subProblem + 1)
 
-        return res == Integer.MAX_VALUE ? -1 : res;
-    }
-}
+        return res if res != float('inf') else -1
 ``` 
 
 Add a `memo` to this brute-force solution and you get top-down dynamic programming. Compare it to the binary tree maximum depth solution—see the similarity?
@@ -426,25 +453,25 @@ Add a `memo` to this brute-force solution and you get top-down dynamic programmi
 
 I'm sure everyone would scoff at this question and write this code without hesitation:
 
-```java
-List<Integer> res = new LinkedList<>();
+```python
+class Solution:
+    def __init__(self):
+        # create a list as the result container
+        self.res = []
 
-// return the preorder traversal result
-List<Integer> preorder(TreeNode root) {
-    traverse(root);
-    return res;
-}
+    # return the preorder traversal result
+    def preorder(self, root: TreeNode) -> List[int]:
+        self.traverse(root)
+        return self.res
 
-// binary tree traversal function
-void traverse(TreeNode root) {
-    if (root == null) {
-        return;
-    }
-    // preorder traversal position
-    res.add(root.val);
-    traverse(root.left);
-    traverse(root.right);
-}
+    # binary tree traversal function
+    def traverse(self, root: TreeNode) -> None:
+        if not root:
+            return
+        # position for preorder traversal
+        self.res.append(root.val)
+        self.traverse(root.left)
+        self.traverse(root.right)
 ``` 
 
 But given the two different thinking modes we discussed, can you also solve tree traversal using the problem decomposition approach?
@@ -457,22 +484,22 @@ Let's observe the characteristics of preorder traversal results:
 
 Getting it? You can totally rewrite the preorder traversal code using the problem decomposition approach:
 
-```java
-// Definition: input the root node of a binary tree,
-// return the preorder traversal result of this tree
-List<Integer> preorder(TreeNode root) {
-    List<Integer> res = new LinkedList<>();
-    if (root == null) {
-        return res;
-    }
-    // The result of preorder traversal, root.val is first
-    res.add(root.val);
-    // Followed by the preorder traversal result of the left subtree
-    res.addAll(preorder(root.left));
-    // Finally followed by the preorder traversal result of the right subtree
-    res.addAll(preorder(root.right));
-    return res;
-}
+```python
+from typing import List
+
+# Definition: Given the root node of a binary tree,
+# return the preorder traversal result of this tree
+def preorder(root: TreeNode) -> List[int]:
+    res = []
+    if not root:
+        return res
+    # In the result of preorder traversal, root.val is the first
+    res.append(root.val)
+    # Then append the preorder traversal result of the left subtree
+    res.extend(preorder(root.left))
+    # Finally, append the preorder traversal result of the right subtree
+    res.extend(preorder(root.right))
+    return res
 ``` 
 
 There you go—that's binary tree preorder traversal written with the problem decomposition mindset. Inorder and postorder traversals follow the same pattern.
@@ -481,32 +508,28 @@ There you go—that's binary tree preorder traversal written with the problem de
 
 Besides dynamic programming, backtracking (DFS), and divide-and-conquer, another common algorithm is BFS. [BFS Framework](</en/algo/essential-technique/bfs-framework/>) is adapted from this binary tree level order traversal code:
 
-```java
-// Input the root node of a binary tree, perform level-order traversal on the binary tree
-void levelTraverse(TreeNode root) {
-    if (root == null) return;
-    Queue<TreeNode> q = new LinkedList<>();
-    q.offer(root);
+```python
+# input the root of a binary tree, perform level order traversal of this binary tree
+class Solution:
+    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root:
+            return
+        q = collections.deque()
+        q.append(root)
+        depth = 0
+        # traverse each level of the binary tree from top to bottom
+        while q:
+            sz = len(q)
+            # traverse each node of each level from left to right
+            for i in range(sz):
+                cur = q.popleft()
 
-    int depth = 1;
-    // Traverse each level of the binary tree from top to bottom
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        // Traverse each node of the level from left to right
-        for (int i = 0; i < sz; i++) {
-            TreeNode cur = q.poll();
-
-            // put the nodes of the next level into the queue
-            if (cur.left != null) {
-                q.offer(cur.left);
-            }
-            if (cur.right != null) {
-                q.offer(cur.right);
-            }
-        }
-        depth++;
-    }
-}
+                # put the nodes of the next level into the queue
+                if cur.left:
+                    q.append(cur.left)
+                if cur.right:
+                    q.append(cur.right)
+            depth += 1
 ``` 
 
 **Going further, graph algorithms are also extensions of binary tree algorithms.**
@@ -527,4 +550,8 @@ Give a man a fish and you feed him for a day; teach a man to fish and you feed h
 
 I hope you'll develop systematic thinking here and enjoy mastering algorithms, instead of being mastered by them.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

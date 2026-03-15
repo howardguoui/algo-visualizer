@@ -55,8 +55,8 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-int minPathSum(int[][] grid);
+```python
+def minPathSum(grid: List[List[int]]) -> int
 ``` 
 
 其实这道题难度不算大，但你可能会遇到一些难度比较大的变体，所以统一讲一讲这种问题的通用思路。
@@ -83,8 +83,8 @@ int minPathSum(int[][] grid);
 
 比如我们定义如下一个 `dp` 函数：
 
-```java
-int dp(int[][] grid, int i, int j);
+```python
+def dp(grid: List[List[int]], i: int, j: int) -> int:
 ``` 
 
 这个 `dp` 函数的定义如下：
@@ -93,38 +93,35 @@ int dp(int[][] grid, int i, int j);
 
 根据这个定义，我们想求的最小路径和就可以通过调用这个 `dp` 函数计算出来：
 
-```java
-int minPathSum(int[][] grid) {
-    int m = grid.length;
-    int n = grid[0].length;
-    // 计算从左上角走到右下角的最小路径和
-    return dp(grid, m - 1, n - 1);
-}
+```python
+def minPathSum(grid: List[List[int]]) -> int:
+    m = len(grid)
+    n = len(grid[0])
+    # 计算从左上角走到右下角的最小路径和
+    return dp(grid, m - 1, n - 1)
 ``` 
 
 再根据刚才的分析，很容易发现，`dp(grid, i, j)` 的值取决于 `dp(grid, i - 1, j)` 和 `dp(grid, i, j - 1)` 返回的值。
 
 我们可以直接写代码了：
 
-```java
-int dp(int[][] grid, int i, int j) {
-    // base case
-    if (i == 0 && j == 0) {
-        return grid[0][0];
-    }
-    // 如果索引出界，返回一个很大的值，
-    // 保证在取 min 的时候不会被取到
-    if (i < 0 || j < 0) {
-        return Integer.MAX_VALUE;
-    }
+```python
+def dp(grid: List[List[int]], i: int, j: int) -> int:
+    # base case
+    if i == 0 and j == 0:
+        return grid[0][0]
 
-    // 左边和上面的最小路径和加上 grid[i][j]
-    // 就是到达 (i, j) 的最小路径和
-    return Math.min(
+    # 如果索引出界，返回一个很大的值，
+    # 保证在取 min 的时候不会被取到
+    if i < 0 or j < 0:
+        return float('inf')
+
+    # 左边和上面的最小路径和加上 grid[i][j]
+    # 就是到达 (i, j) 的最小路径和
+    return min(
             dp(grid, i - 1, j), 
             dp(grid, i, j - 1)
-        ) + grid[i][j];
-}
+        ) + grid[i][j]
 ``` 
 
 上述代码逻辑已经完整了，接下来就分析一下，这个递归算法是否存在重叠子问题？是否需要用备忘录优化一下执行效率？
@@ -144,42 +141,35 @@ int dp(int i, int j) {
 
 那么我们可以使用备忘录技巧进行优化：
 
-```java
-class Solution {
-    int[][] memo;
+```python
+class Solution:
+    def __init__(self):
+        self.memo = None
 
-    public int minPathSum(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        // 构造备忘录，初始值全部设为 -1
-        memo = new int[m][n];
-        for (int[] row : memo)
-            Arrays.fill(row, -1);
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        # 构造备忘录，初始值全部设为 -1
+        self.memo = [[-1 for _ in range(n)] for _ in range(m)]
 
-        return dp(grid, m - 1, n - 1);
-    }
+        return self.dp(grid, m - 1, n - 1)
 
-    int dp(int[][] grid, int i, int j) {
-        // base case
-        if (i == 0 && j == 0) {
-            return grid[0][0];
-        }
-        if (i < 0 || j < 0) {
-            return Integer.MAX_VALUE;
-        }
-        // 避免重复计算
-        if (memo[i][j] != -1) {
-            return memo[i][j];
-        }
-        // 将计算结果记入备忘录
-        memo[i][j] = Math.min(
-                dp(grid, i - 1, j),
-                dp(grid, i, j - 1)
-        ) + grid[i][j];
+    def dp(self, grid: List[List[int]], i: int, j: int) -> int:
+        # base case
+        if i == 0 and j == 0:
+            return grid[0][0]
+        if i < 0 or j < 0:
+            return float('inf')
+        # 避免重复计算
+        if self.memo[i][j] != -1:
+            return self.memo[i][j]
+        # 将计算结果记入备忘录
+        self.memo[i][j] = min(
+            self.dp(grid, i - 1, j),
+            self.dp(grid, i, j - 1)
+        ) + grid[i][j]
 
-        return memo[i][j];
-    }
-}
+        return self.memo[i][j]
 ``` 
 
 算法可视化
@@ -194,36 +184,32 @@ class Solution {
 
 状态转移方程当然不会变的，`dp[i][j]` 依然取决于 `dp[i-1][j]` 和 `dp[i][j-1]`，直接看代码吧：
 
-```java
-class Solution {
-    public int minPathSum(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        int[][] dp = new int[m][n];
+```python
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m = len(grid)
+        n = len(grid[0])
+        dp = [[0] * n for _ in range(m)]
 
-        // **** base case ****
-        dp[0][0] = grid[0][0];
+        # **** base case ****
+        dp[0][0] = grid[0][0]
 
-        for (int i = 1; i < m; i++)
-            dp[i][0] = dp[i - 1][0] + grid[i][0];
+        for i in range(1, m):
+            dp[i][0] = dp[i - 1][0] + grid[i][0]
         
-        for (int j = 1; j < n; j++)
-            dp[0][j] = dp[0][j - 1] + grid[0][j];        
-        // *******************
+        for j in range(1, n):
+            dp[0][j] = dp[0][j - 1] + grid[0][j]        
+        # *******************
         
-        // 状态转移
-        for (int i = 1; i < m; i++) {
-            for (int j = 1; j < n; j++) {
-                dp[i][j] = Math.min(
+        # 状态转移
+        for i in range(1, m):
+            for j in range(1, n):
+                dp[i][j] = min(
                     dp[i - 1][j],
                     dp[i][j - 1]
-                ) + grid[i][j];
-            }
-        }
+                ) + grid[i][j]
 
-        return dp[m - 1][n - 1];
-    }
-}
+        return dp[m - 1][n - 1]
 ``` 
 
 **这个解法的 base case 看起来和递归解法略有不同，但实际上是一样的** 。
@@ -264,3 +250,7 @@ for (int j = 1; j < n; j++)
 前文 [动态规划的降维打击：空间压缩](</zh/algo/dynamic-programming/space-optimization/>) 说过降低 `dp` 数组的技巧，这里也是适用的，不过略微复杂些，本文由于篇幅所限就不写了，有兴趣的读者可以自己尝试一下。
 
 本文到此结束，下篇文章写一道进阶题目，更加巧妙和有趣，敬请期待~
+
+## 评论
+
+请登录后查看/发表评论

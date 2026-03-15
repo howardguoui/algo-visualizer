@@ -69,8 +69,12 @@ TLS 握手我们在[前文](</zh/algo/computer-science/tls-key-exchange/>)已经
 
 **标准 TLS（单向认证）** ：
 
-加载图表...
+服务器客户端服务器客户端验证服务器证书握手完成，开始加密通信ClientHello（支持的加密套件）ServerHello + 服务器证书 + ServerHelloDoneClientKeyExchange（用 ECDHE 协商密钥）
 
 **mTLS（双向认证）** ：
 
-加载图表...
+服务器客户端服务器客户端验证服务器证书验证客户端证书双向验证完成，开始加密通信ClientHello（支持的加密套件）ServerHello + 服务器证书CertificateRequest（请求客户端证书）ServerHelloDone客户端证书CertificateVerify（证明拥有私钥）ClientKeyExchange
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

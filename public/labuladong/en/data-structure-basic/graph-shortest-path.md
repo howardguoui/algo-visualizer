@@ -22,6 +22,43 @@ The SPFA algorithm (queue-based Bellman-Ford algorithm) is also an extension of 
 
 The Floyd algorithm is an application of [Dynamic Programming](</en/algo/essential-technique/dynamic-programming-framework/>). It can solve all-pairs (multi-source) shortest path problems.
 
+Extended from BFS
+
+Cannot handle negative weights
+
+Dijkstra Algorithm
+
+Extended from BFS
+
+Can handle negative weights
+
+Queue-based Bellman-Ford Algorithm  
+(SPFA Algorithm)
+
+Can handle negative weights
+
+Basic Bellman-Ford Algorithm
+
+Single-source Shortest Path
+
+Extended from Dijkstra
+
+Cannot handle negative weights
+
+A* Algorithm
+
+Point-to-Point Shortest Path
+
+Dynamic programming
+
+Can handle negative weights
+
+Floyd Algorithm
+
+All-pairs Shortest Path
+
+Shortest Path Problems
+
 Beginners do not need to think graph algorithms are hard. They are just extensions of simple algorithm ideas. Once you understand basic tree level-order traversal, you can come up with these algorithms yourself.
 
 Since this is a basic knowledge chapter, I will not provide full code for each algorithm here. The detailed code will be shown in later chapters.
@@ -102,4 +139,8 @@ Among common shortest path algorithms, Dijkstra's and A* cannot handle graphs wi
 
 Now let's dive into the core principles behind these algorithms.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

@@ -88,4 +88,8 @@ As you can see, the two perspectives yield two different recursive formulas, but
 
 The process of solving these recursive formulas involves more mathematical content, which we will not delve into here. Interested readers are encouraged to study combinatorial mathematics on their own.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

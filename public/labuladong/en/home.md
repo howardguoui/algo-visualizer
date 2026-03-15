@@ -107,33 +107,29 @@ All code in every language has been personally verified and debugged by me to en
 
 Both the site and all companion plugins support code image annotations. More complex code blocks include lightbulb icons—hover over them to see explanatory images:
 
-```java
-class Solution {
-    public ListNode detectCycle(ListNode head) {
-        ListNode fast, slow;
-        fast = slow = head;
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if (fast == slow) break; 
-        }
-        // the above code is similar to the hasCycle function
-        if (fast == null || fast.next == null) {
-            // fast encountering a null pointer means there is no cycle
-            return null;
-        }
-
-        // reassign to the head node
-        slow = head; 
-        // move fast and slow pointers at the same pace, the
-        // intersection point is the cycle's entry point
-        while (slow != fast) {
-            fast = fast.next;
-            slow = slow.next;
-        }
-        return slow;
-    }
-}
+```python
+class Solution:
+    def detectCycle(self, head: ListNode):
+        fast, slow = head, head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+        
+        # the above code is similar to the hasCycle function
+        if not fast or not fast.next:
+            # if fast encounters a null pointer, it means there is no cycle
+            return None
+        
+        # reset the pointer to the head node
+        slow = head 
+        # both fast and slow pointers move forward in sync, the
+        # intersection point is the start of the cycle
+        while slow != fast:
+            fast = fast.next
+            slow = slow.next
+        return slow
 ``` 
 
 ### Other Useful Features
@@ -154,4 +150,8 @@ The plugins aren't required, but I'd recommend installing the Chrome extension a
 
 For installation and usage instructions, see [Chrome Extension](</en/algo/intro/chrome/>), [VS Code Plugin](</en/algo/intro/vscode/>), and [JetBrains Plugin](</en/algo/intro/jetbrains/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

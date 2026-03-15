@@ -28,4 +28,8 @@ Algorithm Visualization
 
 Next, I will use the visualization panel to demonstrate the principles of a binary heap. Finally, I will show the implementation of a binary heap using a priority queue as an example.
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

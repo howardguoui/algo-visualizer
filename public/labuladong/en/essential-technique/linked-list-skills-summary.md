@@ -87,45 +87,41 @@ Output: [0]
 
 The problem is from [LeetCode 21. Merge Two Sorted Lists](<https://leetcode.com/problems/merge-two-sorted-lists/>).
 
-```java
-// The function signature is as follows
-ListNode mergeTwoLists(ListNode l1, ListNode l2);
+```python
+# The function signature is as follows
+def mergeTwoLists(l1: ListNode, l2: ListNode) -> ListNode:
 ``` 
 
 This problem is simple. Let's look at the solution:
 
-```java
-class Solution {
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        // dummy head node
-        ListNode dummy = new ListNode(-1), p = dummy;
-        ListNode p1 = l1, p2 = l2;
-
-        while (p1 != null && p2 != null) { 
-            // compare two pointers p1 and p2
-            // attach the node with the smaller value to the p pointer
-            if (p1.val > p2.val) {
-                p.next = p2;
-                p2 = p2.next;
-            } else {
-                p.next = p1;
-                p1 = p1.next;
-            }
-            // the p pointer moves forward continuously
-            p = p.next;
-        }
-
-        if (p1 != null) {
-            p.next = p1;
-        }
-
-        if (p2 != null) {
-            p.next = p2;
-        }
-
-        return dummy.next;
-    }
-}
+```python
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        # dummy head node
+        dummy = ListNode(-1)
+        p = dummy
+        p1 = l1
+        p2 = l2
+        
+        while p1 is not None and p2 is not None: 
+            # compare the two pointers p1 and p2
+            # attach the node with the smaller value to the p pointer
+            if p1.val > p2.val:
+                p.next = p2
+                p2 = p2.next
+            else:
+                p.next = p1
+                p1 = p1.next
+            # the p pointer keeps moving forward
+            p = p.next
+        
+        if p1 is not None:
+            p.next = p1
+        
+        if p2 is not None:
+            p.next = p2
+        
+        return dummy.next
 ``` 
 
 Our while loop compares `p1` and `p2` each time. The smaller node is added to the result list. See the following GIF:
@@ -184,38 +180,36 @@ When merging two sorted linked lists, you combine them into one. Here, you need 
 
 The overall logic is very similar to merging sorted lists. For the details, let's look at the code. Pay attention to how we use dummy head nodes:
 
-```java
-class Solution {
-    public ListNode partition(ListNode head, int x) {
-        // dummy head for the list storing nodes less than x
-        ListNode dummy1 = new ListNode(-1);
-        // dummy head for the list storing nodes greater than or equal to x
-        ListNode dummy2 = new ListNode(-1);
-        // p1, p2 pointers are responsible for generating the result list
-        ListNode p1 = dummy1, p2 = dummy2;
-        // p is responsible for traversing the original list,
-        // similar to the logic of merging two sorted lists
-        // here, we decompose one list into two lists
-        ListNode p = head;
-        while (p != null) {
-            if (p.val >= x) {
-                p2.next = p;
-                p2 = p2.next;
-            } else {
-                p1.next = p;
-                p1 = p1.next;
-            }
-            // break the next pointer of each node in the original list
-            ListNode temp = p.next;
-            p.next = null;
-            p = temp;
-        }
-        // link the two lists
-        p1.next = dummy2.next;
+```python
+class Solution:
+    def partition(self, head: ListNode, x: int) -> ListNode:
+        # virtual head node for the list containing elements less than x
+        dummy1 = ListNode(-1)
+        # virtual head node for the list containing elements greater than or equal to x
+        dummy2 = ListNode(-1)
+        # p1, p2 pointers are responsible for creating the resulting list
+        p1, p2 = dummy1, dummy2
+        # p is responsible for traversing the original list,
+        # similar to the logic of merging two sorted lists
+        # here we decompose one list into two lists
+        p = head
+        while p:
+            if p.val >= x:
+                p2.next = p
+                p2 = p2.next
+            else:
+                p1.next = p
+                p1 = p1.next
+            # cannot directly move the p pointer forward,
+            # p = p.next
+            # break the next pointer of each node in the original list
+            temp = p.next
+            p.next = None
+            p = temp
+        # connect the two lists
+        p1.next = dummy2.next
 
-        return dummy1.next;
-    }
-}
+        return dummy1.next
 ``` 
 
 I know many readers may have questions about this part of the code:
@@ -289,44 +283,51 @@ Output: []
 
 The problem is from [LeetCode 23. Merge k Sorted Lists](<https://leetcode.com/problems/merge-k-sorted-lists/>).
 
-```java
-// The function signature is as follows
-ListNode mergeKLists(ListNode[] lists);
+```python
+# The function signature is as follows
+def mergeKLists(lists: List[ListNode]) -> ListNode:
 ``` 
 
 Merging `k` sorted linked lists is similar to merging two sorted lists. The main challenge is: how to quickly get the smallest node among the `k` nodes and add it to the result list?
 
 Here, we use a priority queue. Put the nodes into a min-heap, and you can always get the smallest node among the `k` nodes. If you want to know more about priority queues, see [Priority Queue (Binary Heap) Principle and Implementation](</en/algo/data-structure-basic/binary-heap-implement/>). This article will not go into details.
 
-```java
-class Solution {
-    public ListNode mergeKLists(ListNode[] lists) {
-        if (lists.length == 0) return null;
-        // dummy head node
-        ListNode dummy = new ListNode(-1);
-        ListNode p = dummy;
-        // priority queue, min-heap
-        PriorityQueue<ListNode> pq = new PriorityQueue<>(
-            lists.length, (a, b)->(a.val - b.val));
-        // add the head nodes of the k linked lists into the min-heap
-        for (ListNode head : lists) {
-            if (head != null)
-                pq.add(head);
-        }
+```python
+import heapq
 
-        while (!pq.isEmpty()) {
-            // get the smallest node and attach it to the result list
-            ListNode node = pq.poll();
-            p.next = node;
-            if (node.next != null) {
-                pq.add(node.next);
-            }
-            // move the p pointer forward
-            p = p.next;
-        }
-        return dummy.next;
-    }
-}
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+    # Override comparison operators to facilitate adding ListNode to the min-heap
+    def __lt__(self, other):
+        return self.val < other.val
+
+class Solution:
+    def mergeKLists(self, lists):
+        if not lists:
+            return None
+        # Dummy head node
+        dummy = ListNode(-1)
+        p = dummy
+        # Priority queue, min-heap
+        pq = []
+        # Add the head nodes of k linked lists to the min-heap
+        for i, head in enumerate(lists):
+            if head is not None:
+                heapq.heappush(pq, (head.val, i, head))
+
+        while pq:
+            # Get the smallest node and attach it to the result linked list
+            val, i, node = heapq.heappop(pq)
+            p.next = node
+            if node.next is not None:
+                heapq.heappush(pq, (node.next.val, i, node.next))
+            # Move the p pointer forward continuously
+            p = p.next
+            
+        return dummy.next
 ``` 
 
 You can open the visual panel below and click the line `while (pq.size() > 0)` several times to see the process of merging sorted lists:
@@ -373,23 +374,20 @@ This way, we traverse the list only once, and get the `k`th node from the end as
 
 Here is the code for this logic:
 
-```java
-// return the k-th node from the end of the linked list
-ListNode findFromEnd(ListNode head, int k) {
-    ListNode p1 = head;
-    // p1 moves k steps first
-    for (int i = 0; i < k; i++) {
-        p1 = p1.next;
-    }
-    ListNode p2 = head;
-    // p1 and p2 move n - k steps together
-    while (p1 != null) {
-        p2 = p2.next;
-        p1 = p1.next;
-    }
-    // p2 is now pointing to the (n - k + 1)-th node, which is the k-th node from the end
-    return p2;
-}
+```python
+# return the k-th node from the end of the linked list
+def findFromEnd(head: ListNode, k: int) -> ListNode:
+    p1 = head
+    # p1 goes k steps first
+    for i in range(k):
+        p1 = p1.next
+    p2 = head
+    # p1 and p2 go n - k steps together
+    while p1 != None:
+        p2 = p2.next
+        p1 = p1.next
+    # p2 now points to the (n - k + 1)-th node, which is the k-th node from the end
+    return p2
 ``` 
 
 You can open the visualization panel below. The code will find the second node from the end. Click `i++` several times to see the fast pointer `p1` move 2 steps first. Then click the line `while (p1 !== null)` many times. You will see `p1` and `p2` move together, and finally `p2` stops at the `k`th node from the end:
@@ -440,23 +438,22 @@ The problem is from [LeetCode 19. Remove Nth Node From End of List](<https://lee
 
 Here is the solution code:
 
-```java
-class Solution {
-    public ListNode removeNthFromEnd(ListNode head, int n) {
-        // virtual head node
-        ListNode dummy = new ListNode(-1);
-        dummy.next = head;
-        // to remove the nth node from the end, first find the (n + 1)th node from the end
-        ListNode x = findFromEnd(dummy, n + 1);
-        // remove the nth node from the end
-        x.next = x.next.next;
-        return dummy.next;
-    }
+```python
+# main function
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        # dummy head node
+        dummy = ListNode(-1)
+        dummy.next = head
+        # to remove the nth from end, first find the (n + 1)th node from end
+        x = self.findFromEnd(dummy, n + 1)
+        # remove the nth node from end
+        x.next = x.next.next
+        return dummy.next
         
-    private ListNode findFromEnd(ListNode head, int k) {
-        // see the previous code
-    }
-}
+    def findFromEnd(self, head: ListNode, k: int) -> ListNode:
+        # refer to the code above
+        pass
 ``` 
 
 You can open the visualization panel. Click the line `let p2 = head;` once. You will see `p1` move `k` steps first. Then click the line `while (p1 !== null)` many times. You will see `p1` and `p2` move together, and finally `p2` stops at the `k`th node from the end:
@@ -481,21 +478,19 @@ We use two pointers, `slow` and `fast`, both starting at the head of the list.
 
 Here is the code for this idea:
 
-```java
-class Solution {
-    public ListNode middleNode(ListNode head) {
-        // initialize slow and fast pointers to head
-        ListNode slow = head, fast = head;
-        // stop when the fast pointer reaches the end
-        while (fast != null && fast.next != null) {
-            // slow pointer moves one step, fast pointer moves two steps
-            slow = slow.next;
-            fast = fast.next.next;
-        }
-        // slow pointer points to the middle node
-        return slow;
-    }
-}
+```python
+class Solution:
+    # initialize slow and fast pointers to head
+    def middleNode(self, head: ListNode) -> ListNode:
+        slow = head
+        fast = head
+        # stop when the fast pointer reaches the end
+        while fast is not None and fast.next is not None:
+            # slow pointer moves one step, fast pointer moves two steps
+            slow = slow.next
+            fast = fast.next.next
+        # slow pointer points to the middle node
+        return slow
 ``` 
 
 You can open the visual panel and click on the line `while (fast !== null && fast.next !== null)` to see how the fast and slow pointers move:
@@ -516,25 +511,22 @@ If `fast` can reach the end of the list, then there is no cycle. If `fast` meets
 
 You just need to change the code for finding the middle node a little:
 
-```java
-public class Solution {
-    public boolean hasCycle(ListNode head) {
-        // initialize slow and fast pointers to head
-        ListNode slow = head, fast = head;
-        // stop when the fast pointer reaches the end
-        while (fast != null && fast.next != null) {
-            // slow pointer moves one step, fast pointer moves two steps
-            slow = slow.next;
-            fast = fast.next.next;
-            // if slow and fast pointers meet, it indicates a cycle
-            if (slow == fast) {
-                return true;
-            }
-        }
-        // no cycle present
-        return false;
-    }
-}
+```python
+class Solution:
+    # initialize slow and fast pointers to head
+    def hasCycle(self, head: ListNode) -> bool:
+        slow = head
+        fast = head
+        # stop when the fast pointer reaches the end
+        while fast is not None and fast.next is not None:
+            # slow pointer moves one step, fast pointer moves two steps
+            slow = slow.next
+            fast = fast.next.next
+            # if slow and fast pointers meet, it indicates a cycle
+            if slow == fast:
+                return True
+        # no cycle present
+        return False
 ``` 
 
 You can open the visual panel below and click the line `fast = fast.next.next;` many times to see the movement of the pointers and how they finally meet:
@@ -549,33 +541,29 @@ For example, the start of the cycle is node 2 in the picture below:
 
 Here is the code to find the start of the cycle:
 
-```java
-class Solution {
-    public ListNode detectCycle(ListNode head) {
-        ListNode fast, slow;
-        fast = slow = head;
-        while (fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
-            if (fast == slow) break; 
-        }
-        // the above code is similar to the hasCycle function
-        if (fast == null || fast.next == null) {
-            // fast encountering a null pointer means there is no cycle
-            return null;
-        }
-
-        // reassign to the head node
-        slow = head; 
-        // move fast and slow pointers at the same pace, the
-        // intersection point is the cycle's entry point
-        while (slow != fast) {
-            fast = fast.next;
-            slow = slow.next;
-        }
-        return slow;
-    }
-}
+```python
+class Solution:
+    def detectCycle(self, head: ListNode):
+        fast, slow = head, head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            if fast == slow:
+                break
+        
+        # the above code is similar to the hasCycle function
+        if not fast or not fast.next:
+            # if fast encounters a null pointer, it means there is no cycle
+            return None
+        
+        # reset the pointer to the head node
+        slow = head 
+        # both fast and slow pointers move forward in sync, the
+        # intersection point is the start of the cycle
+        while slow != fast:
+            fast = fast.next
+            slow = slow.next
+        return slow
 ``` 
 
 You can open the visual panel below and click the line `fast = fast.next.next;` many times to see how the fast and slow pointers chase and meet. Then click the line `while (slow != fast)` many times to see both pointers move at the same speed and finally meet at the start of the cycle:
@@ -604,8 +592,8 @@ So, just set one of the pointers to `head`, and move both pointers at the same s
 
 This is an interesting problem. It is also LeetCode 160: [Intersection of Two Linked Lists](<https://leetcode.com/problems/intersection-of-two-linked-lists/>). The function signature is as follows:
 
-```java
-ListNode getIntersectionNode(ListNode headA, ListNode headB);
+```python
+def getIntersectionNode(headA: ListNode, headB: ListNode) -> ListNode:
 ``` 
 
 You are given the heads of two linked lists, `headA` and `headB`. These two lists may intersect.
@@ -642,22 +630,17 @@ Yes, this logic works. If there is no intersection, the `c1` node is null, and t
 
 With this idea, we can write the code as follows:
 
-```java
-public class Solution {
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        // p1 points to the head of list A, p2 points to the head of list B
-        ListNode p1 = headA, p2 = headB;
-        while (p1 != p2) {
-            // p1 takes one step forward, if it reaches the end of list A, switch to list B
-            if (p1 == null) p1 = headB;
-            else            p1 = p1.next;
-            // p2 takes one step forward, if it reaches the end of list B, switch to list A
-            if (p2 == null) p2 = headA;
-            else            p2 = p2.next;
-        }
-        return p1;
-    }
-}
+```python
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        # p1 points to the head of list A, p2 points to the head of list B
+        p1, p2 = headA, headB
+        while p1 != p2:
+            # p1 takes one step forward, if it reaches the end of list A, switch to list B
+            p1 = headB if p1 is None else p1.next
+            # p2 takes one step forward, if it reaches the end of list B, switch to list A
+            p2 = headA if p2 is None else p2.next
+        return p1
 ``` 
 
 Open the visualization panel below, and click on the line `while (p1 !== p2)` several times. You can see how the two pointers meet at the intersection.
@@ -680,40 +663,36 @@ To be honest, I did not think of this approach. It is a clever trick! But keep i
 
 Also, some readers said that since the core is to make `p1` and `p2` reach the intersection node `c1` at the same time, you can do this by first calculating the lengths of both lists. Here is the code:
 
-```java
-class Solution {
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        int lenA = 0, lenB = 0;
-        // calculate the lengths of the two linked lists
-        for (ListNode p1 = headA; p1 != null; p1 = p1.next) {
-            lenA++;
-        }
-        for (ListNode p2 = headB; p2 != null; p2 = p2.next) {
-            lenB++;
-        }
-        // make p1 and p2 the same distance from the end
-        ListNode p1 = headA, p2 = headB;
-        if (lenA > lenB) {
-            for (int i = 0; i < lenA - lenB; i++) {
-                p1 = p1.next;
-            }
-        } else {
-            for (int i = 0; i < lenB - lenA; i++) {
-                p2 = p2.next;
-            }
-        }
-        // check if the two pointers become the same, when p1 == p2, there are two scenarios:
-        // 1. either the two linked lists do not intersect,
-        // they both move to the end null pointer
-        // 2. or the two linked lists intersect, they reach the
-        // intersection point of the two linked lists
-        while (p1 != p2) {
-            p1 = p1.next;
-            p2 = p2.next;
-        }
-        return p1;
-    }
-}
+```python
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        lenA, lenB = 0, 0
+        # calculate the length of both linked lists
+        p1, p2 = headA, headB
+        while p1:
+            lenA += 1
+            p1 = p1.next
+        while p2:
+            lenB += 1
+            p2 = p2.next
+        
+        # make p1 and p2 reach the same distance from the end
+        p1, p2 = headA, headB
+        if lenA > lenB:
+            for _ in range(lenA - lenB):
+                p1 = p1.next
+        else:
+            for _ in range(lenB - lenA):
+                p2 = p2.next
+        
+        # check if the two pointers are the same, there are two cases when p1 == p2:
+        # 1. either the two linked lists do not intersect and both reach the end null pointer
+        # 2. or the two linked lists intersect and they reach the intersection point
+        while p1 != p2:
+            p1 = p1.next
+            p2 = p2.next
+        
+        return p1
 ``` 
 
 Though this code is a bit longer, the time complexity is still O(N)O(N)O(N), and it may be easier to understand.
@@ -722,4 +701,8 @@ In short, my solution may not be the best or the only correct one. I encourage e
 
 Now, you have learned all the two-pointer tricks for linked lists. For more practice, see [More Classic Linked List Two-Pointer Problems](</en/algo/problem-set/linkedlist-two-pointers/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

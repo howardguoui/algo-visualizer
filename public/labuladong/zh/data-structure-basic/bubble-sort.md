@@ -81,37 +81,27 @@ sortedIndex  minIndex
 
 具体代码如下，只需要把 [选择排序](</zh/algo/data-structure-basic/select-sort/>) 代码中交换元素的部分换一下即可：
 
-```java
-// 对选择排序进行第一波优化，获得了稳定性
-void sort(int[] nums) {
-    int n = nums.length;
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // 在未排序部分中找到最小值 nums[minIndex]
-        int minIndex = sortedIndex;
-        for (int i = sortedIndex + 1; i < n; i++) {
-            if (nums[i] < nums[minIndex]) {
-                minIndex = i;
-            }
-        }
+```python
+# 对选择排序进行第一波优化，获得了稳定性
+def sort(nums):
+    n = len(nums)
+    sortedIndex = 0
+    while sortedIndex < n:
+        # 在未排序部分中找到最小值 nums[minIndex]
+        minIndex = sortedIndex
+        for i in range(sortedIndex + 1, n):
+            if nums[i] < nums[minIndex]:
+                minIndex = i
 
-        // 交换最小值和 sortedIndex 处的元素
-        // int tmp = nums[sortedIndex];
-        // nums[sortedIndex] = nums[minIndex];
-        // nums[minIndex] = tmp;
+        # 优化：将 nums[minIndex] 插入到 nums[sortedIndex] 的位置
+        # 将 nums[sortedIndex..minIndex] 的元素整体向后移动一位
+        minVal = nums[minIndex]
+        # 数组搬移数据的操作
+        for i in range(minIndex, sortedIndex, -1):
+            nums[i] = nums[i - 1]
+        nums[sortedIndex] = minVal
 
-        // 优化：将 nums[minIndex] 插入到 nums[sortedIndex] 的位置
-        // 将 nums[sortedIndex..minIndex] 的元素整体向后移动一位
-        int minVal = nums[minIndex];
-        // 数组搬移数据的操作
-        for (int i = minIndex; i > sortedIndex; i--) {
-            nums[i] = nums[i - 1];
-        }
-        nums[sortedIndex] = minVal;
-
-        sortedIndex++;
-    }
-}
+        sortedIndex += 1
 ``` 
 
 你可以拿着这个算法去力扣第 912 题「[排序数组](<https://leetcode.cn/problems/sort-an-array/>)」提交一下，虽然最后会超时无法通过，但是可以证明这个算法的正确性是没有问题的。
@@ -132,26 +122,22 @@ void sort(int[] nums) {
 
 答案是可以的，看我操作：
 
-```java
-// 对选择排序进行第二波优化，获得稳定性的同时避免额外的 for 循环
-// 这个算法有另一个名字，叫做冒泡排序
-void sort(int[] nums) {
-    int n = nums.length;
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // 寻找 nums[sortedIndex..] 中的最小值
-        // 同时将这个最小值逐步移动到 nums[sortedIndex] 的位置
-        for (int i = n - 1; i > sortedIndex; i--) {
-            if (nums[i] < nums[i - 1]) {
-                // swap(nums[i], nums[i - 1])
-                int tmp = nums[i];
-                nums[i] = nums[i - 1];
-                nums[i - 1] = tmp;
-            }
-        }
-        sortedIndex++;
-    }
-}
+```python
+# 对选择排序进行第二波优化，获得稳定性的同时避免额外的 for 循环
+# 这个算法有另一个名字，叫做冒泡排序
+def sort_list(nums):
+    n = len(nums)
+    sorted_index = 0
+    while sorted_index < n:
+        # 寻找 nums[sorted_index..] 中的最小值
+        # 同时将这个最小值逐步移动到 nums[sorted_index] 的位置
+        for i in range(n - 1, sorted_index, -1):
+            if nums[i] < nums[i - 1]:
+                # swap(nums[i], nums[i - 1])
+                tmp = nums[i]
+                nums[i] = nums[i - 1]
+                nums[i - 1] = tmp
+        sorted_index += 1
 ``` 
 
 算法可视化
@@ -172,30 +158,25 @@ void sort(int[] nums) {
 
 在上面的一些列优化之后，就可以解决这个问题了，具体看代码：
 
-```java
-// 进一步优化，数组有序时提前终止算法
-void sort(int[] nums) {
-    int n = nums.length;
-    int sortedIndex = 0;
-    while (sortedIndex < n) {
-        // 加一个布尔变量，记录是否进行过交换操作
-        boolean swapped = false;
-        for (int i = n - 1; i > sortedIndex; i--) {
-            if (nums[i] < nums[i - 1]) {
-                // swap(nums[i], nums[i - 1])
-                int tmp = nums[i];
-                nums[i] = nums[i - 1];
-                nums[i - 1] = tmp;
-                swapped = true;
-            }
-        }
-        // 如果一次交换操作都没有进行，说明数组已经有序，可以提前终止算法
-        if (!swapped) {
-            break;
-        }
-        sortedIndex++;
-    }
-}
+```python
+# 进一步优化，数组有序时提前终止算法
+def sort(nums):
+    n = len(nums)
+    sorted_index = 0
+    while sorted_index < n:
+        # 加一个布尔变量，记录是否进行过交换操作
+        swapped = False
+        for i in range(n - 1, sorted_index, -1):
+            if nums[i] < nums[i - 1]:
+                # swap(nums[i], nums[i - 1])
+                tmp = nums[i]
+                nums[i] = nums[i - 1]
+                nums[i - 1] = tmp
+                swapped = True
+        # 如果一次交换操作都没有进行，说明数组已经有序，可以提前终止算法
+        if not swapped:
+            break
+        sorted_index += 1
 ``` 
 
 算法可视化
@@ -203,3 +184,7 @@ void sort(int[] nums) {
 好了，以上就是针对选择排序的一系列优化，最终使它拥有了排序稳定性，并支持在数组有序时提前终止算法。唯一的遗憾是，时间复杂度依然是 O(n2)O(n^2)O(n2)，并没有降低。
 
 下面我们继续探讨，看看还有什么方法能够改进选择排序。
+
+## 评论
+
+请登录后查看/发表评论

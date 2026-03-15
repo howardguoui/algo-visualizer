@@ -104,3 +104,7 @@ LSM 树的 `set` 写入过程并不复杂：写入 `log` 和 `memtable`，最后
 如果存在，由于 `SSTable` 中的键也是有序的，可以再次运用 [二分查找算法](</zh/algo/essential-technique/binary-search-framework/>) 找到键对应的值。
 
 这样，借助 LSM 树的层级结构和 `SSTable` 的有序性，就能利用二分搜索提升查找效率，避免线性查找键值对。
+
+## 评论
+
+请登录后查看/发表评论

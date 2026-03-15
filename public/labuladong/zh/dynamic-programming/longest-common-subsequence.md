@@ -33,8 +33,8 @@ LeetCode| 力扣| 难度
 
 给你输入两个字符串 `s1` 和 `s2`，请你找出他们俩的最长公共子序列，返回这个子序列的长度。函数签名如下：
 
-```java
-int longestCommonSubsequence(String s1, String s2);
+```python
+def longestCommonSubsequence(s1: str, s2: str) -> int:
 ``` 
 
 比如说输入 `s1 = "zabcde", s2 = "acez"`，它俩的最长公共子序列是 `lcs = "ace"`，长度为 3，所以算法返回 3。
@@ -44,3 +44,7 @@ int longestCommonSubsequence(String s1, String s2);
 显然，这种思路的复杂度非常高，你要穷举出所有子序列，这个复杂度就是指数级的，肯定不实际。
 
 正确的思路是不要考虑整个字符串，而是细化到 `s1` 和 `s2` 的每个字符。前文 [子序列解题模板](</zh/algo/dynamic-programming/subsequence-problem/>) 中总结的一个规律：
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

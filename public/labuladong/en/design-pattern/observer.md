@@ -32,155 +32,135 @@ An online auction system is a natural fit for the Observer Pattern: every time t
 
 First, let's define the observer interface and the publisher interface:
 
-```java
-// Observer interface: Bidder
-interface Bidder {
-    // itemName: auction item name, currentPrice: current
-    // highest price, leadingBidder: current leading bidder
-    void update(String itemName, int currentPrice, String leadingBidder);
-}
+```python
+from abc import ABC, abstractmethod
 
-// Subject interface: Auction
-interface Auction {
-    void register(Bidder bidder);
-    void unregister(Bidder bidder);
-    void notifyBidders();
-}
+# Observer interface: Bidder
+class Bidder(ABC):
+    @abstractmethod
+    def update(self, item_name: str, current_price: int, leading_bidder: str):
+        # item_name: auction item name, current_price: current
+        # highest price, leading_bidder: current leading bidder
+        pass
+
+# Subject interface: Auction
+class Auction(ABC):
+    @abstractmethod
+    def register(self, bidder: Bidder):
+        pass
+
+    @abstractmethod
+    def unregister(self, bidder: Bidder):
+        pass
+
+    @abstractmethod
+    def notify_bidders(self):
+        pass
 ``` 
 
 Next, implement the concrete auction (concrete subject). It manages the list of bidders and notifies everyone whenever the bid changes:
 
-```java
-class LiveAuction implements Auction {
-    private List<Bidder> bidders = new ArrayList<>();
-    // auction item name
-    private String itemName;
-    // current highest price
-    private int currentPrice;
-    // current leading bidder
-    private String leadingBidder;
+```python
+class LiveAuction(Auction):
+    def __init__(self, item_name: str, starting_price: int):
+        self._bidders: list[Bidder] = []
+        # auction item name
+        self._item_name = item_name
+        # current highest price
+        self._current_price = starting_price
+        # current leading bidder
+        self._leading_bidder = "None"
 
-    public LiveAuction(String itemName, int startingPrice) {
-        this.itemName = itemName;
-        this.currentPrice = startingPrice;
-        this.leadingBidder = "None";
-    }
+    def register(self, bidder: Bidder):
+        self._bidders.append(bidder)
 
-    @Override
-    public void register(Bidder bidder) {
-        bidders.add(bidder);
-    }
+    def unregister(self, bidder: Bidder):
+        self._bidders.remove(bidder)
 
-    @Override
-    public void unregister(Bidder bidder) {
-        bidders.remove(bidder);
-    }
+    def notify_bidders(self):
+        for bidder in self._bidders:
+            bidder.update(self._item_name, self._current_price, self._leading_bidder)
 
-    @Override
-    public void notifyBidders() {
-        for (Bidder bidder : bidders) {
-            bidder.update(itemName, currentPrice, leadingBidder);
-        }
-    }
-
-    // someone places a bid
-    public void placeBid(String bidderName, int price) {
-        if (price > currentPrice) {
-            this.currentPrice = price;
-            this.leadingBidder = bidderName;
-            System.out.println(bidderName + " bids " + price);
-            // notify all bidders
-            notifyBidders();
-        } else {
-            System.out.println(bidderName + " bids " + price + ", below current price, invalid");
-        }
-    }
-}
+    # someone places a bid
+    def place_bid(self, bidder_name: str, price: int):
+        if price > self._current_price:
+            self._current_price = price
+            self._leading_bidder = bidder_name
+            print(f"{bidder_name} bids {price}")
+            # notify all bidders
+            self.notify_bidders()
+        else:
+            print(f"{bidder_name} bids {price}, below current price, invalid")
 ``` 
 
 Now let's implement two concrete observers. `OnlineBidder` is an online bidder that displays the latest bid in the console:
 
-```java
-class OnlineBidder implements Bidder {
-    private String name;
+```python
+class OnlineBidder(Bidder):
+    def __init__(self, name: str):
+        self._name = name
 
-    public OnlineBidder(String name) {
-        this.name = name;
-    }
+    def update(self, item_name: str, current_price: int, leading_bidder: str):
+        print(f"  [{self._name} notified] {item_name} price: {current_price}, leader: {leading_bidder}")
 
-    @Override
-    public void update(String itemName, int currentPrice, String leadingBidder) {
-        System.out.printf("  [%s notified] %s price: %d, leader: %s%n",
-                name, itemName, currentPrice, leadingBidder);
-    }
-
-    public String getName() {
-        return name;
-    }
-}
+    @property
+    def name(self) -> str:
+        return self._name
 ``` 
 
 `BidRecorder` is a recorder that logs the history of every bid:
 
-```java
-class BidRecorder implements Bidder {
-    private List<String> history = new ArrayList<>();
+```python
+class BidRecorder(Bidder):
+    def __init__(self):
+        self._history: list[str] = []
 
-    @Override
-    public void update(String itemName, int currentPrice, String leadingBidder) {
-        String record = itemName + ": " + currentPrice + " (" + leadingBidder + ")";
-        history.add(record);
-        System.out.println("  [Recorder] recorded: " + record);
-    }
+    def update(self, item_name: str, current_price: int, leading_bidder: str):
+        record = f"{item_name}: {current_price} ({leading_bidder})"
+        self._history.append(record)
+        print(f"  [Recorder] recorded: {record}")
 
-    public void printHistory() {
-        System.out.println("=== Bid History ===");
-        for (String record : history) {
-            System.out.println("  " + record);
-        }
-    }
-}
+    def print_history(self):
+        print("=== Bid History ===")
+        for record in self._history:
+            print(f"  {record}")
 ``` 
 
 Here's the client code:
 
-```java
-public class Main {
-    public static void main(String[] args) {
-        LiveAuction auction = new LiveAuction("Antique Vase", 1000);
+```python
+auction = LiveAuction("Antique Vase", 1000)
 
-        OnlineBidder alice = new OnlineBidder("Alice");
-        OnlineBidder bob = new OnlineBidder("Bob");
-        BidRecorder recorder = new BidRecorder();
+alice = OnlineBidder("Alice")
+bob = OnlineBidder("Bob")
+recorder = BidRecorder()
 
-        // three observers register to the auction
-        auction.register(alice);
-        auction.register(bob);
-        auction.register(recorder);
+# three observers register to the auction
+auction.register(alice)
+auction.register(bob)
+auction.register(recorder)
 
-        // Alice bids, all observers get notified
-        auction.placeBid("Alice", 1500);
-        // Alice bids 1500
-        //   [Alice notified] Antique Vase price: 1500, leader: Alice
-        //   [Bob notified] Antique Vase price: 1500, leader: Alice
-        //   [Recorder] recorded: Antique Vase: 1500 (Alice)
+# Alice bids, all observers get notified
+auction.place_bid("Alice", 1500)
+# Alice bids 1500
+#   [Alice notified] Antique Vase price: 1500, leader: Alice
+#   [Bob notified] Antique Vase price: 1500, leader: Alice
+#   [Recorder] recorded: Antique Vase: 1500 (Alice)
 
-        // Bob leaves the auction
-        auction.unregister(bob);
-        System.out.println("Bob left the auction");
+# Bob leaves the auction
+auction.unregister(bob)
+print("Bob left the auction")
 
-        // Alice bids again, Bob no longer gets notified
-        auction.placeBid("Alice", 2000);
-        // Alice bids 2000
-        //   [Alice notified] Antique Vase price: 2000, leader: Alice
-        //   [Recorder] recorded: Antique Vase: 2000 (Alice)
+# Alice bids again, Bob no longer gets notified
+auction.place_bid("Alice", 2000)
+# Alice bids 2000
+#   [Alice notified] Antique Vase price: 2000, leader: Alice
+#   [Recorder] recorded: Antique Vase: 2000 (Alice)
 
-        recorder.printHistory();
-        // === Bid History ===
-        //   Antique Vase: 1500 (Alice)
-        //   Antique Vase: 2000 (Alice)
-    }
-}
+recorder.print_history()
+# === Bid History ===
+#   Antique Vase: 1500 (Alice)
+#   Antique Vase: 2000 (Alice)
 ``` 
 
 This example clearly demonstrates the core operations of the Observer Pattern:
@@ -203,59 +183,57 @@ The Observer Pattern handles this much more elegantly: the player's actions serv
 
 First, define the event types and the observer interface:
 
-```java
-// Game event types
-enum GameEventType {
-    MONSTER_KILLED, ITEM_COLLECTED, LEVEL_COMPLETED
-}
+```python
+from enum import Enum
+from abc import ABC, abstractmethod
+from typing import Any
 
-// Game event data
-class GameEvent {
-    private final GameEventType type;
-    private final Map<String, Object> data;
+# Game event types
+class GameEventType(Enum):
+    MONSTER_KILLED = "MONSTER_KILLED"
+    ITEM_COLLECTED = "ITEM_COLLECTED"
+    LEVEL_COMPLETED = "LEVEL_COMPLETED"
 
-    public GameEvent(GameEventType type, Map<String, Object> data) {
-        this.type = type;
-        this.data = data;
-    }
+# Game event data
+class GameEvent:
+    def __init__(self, event_type: GameEventType, data: dict[str, Any]):
+        self._type = event_type
+        self._data = data
 
-    public GameEventType getType() { return type; }
-    public Object getData(String key) { return data.get(key); }
-}
+    def get_type(self) -> GameEventType:
+        return self._type
 
-// Observer interface
-interface GameEventListener {
-    void onEvent(GameEvent event);
-}
+    def get_data(self, key: str) -> Any:
+        return self._data.get(key)
+
+# Observer interface
+class GameEventListener(ABC):
+    @abstractmethod
+    def on_event(self, event: GameEvent) -> None:
+        pass
 ``` 
 
 Then implement the publisher. Here we'll build an **Event Center** that allows subscription by event type, so observers can subscribe only to the events they care about:
 
-```java
-class EventCenter {
-    // key is event type, value is list of observers subscribed to that type
-    private Map<GameEventType, List<GameEventListener>> listeners = new HashMap<>();
+```python
+class EventCenter:
+    def __init__(self):
+        # key is event type, value is list of observers subscribed to that type
+        self._listeners: dict[GameEventType, list[GameEventListener]] = {}
 
-    public void subscribe(GameEventType type, GameEventListener listener) {
-        listeners.computeIfAbsent(type, k -> new ArrayList<>()).add(listener);
-    }
+    def subscribe(self, event_type: GameEventType, listener: GameEventListener) -> None:
+        self._listeners.setdefault(event_type, []).append(listener)
 
-    public void unsubscribe(GameEventType type, GameEventListener listener) {
-        List<GameEventListener> list = listeners.get(type);
-        if (list != null) {
-            list.remove(listener);
-        }
-    }
+    def unsubscribe(self, event_type: GameEventType, listener: GameEventListener) -> None:
+        lst = self._listeners.get(event_type)
+        if lst is not None:
+            lst.remove(listener)
 
-    public void publish(GameEvent event) {
-        List<GameEventListener> list = listeners.get(event.getType());
-        if (list != null) {
-            for (GameEventListener listener : list) {
-                listener.onEvent(event);
-            }
-        }
-    }
-}
+    def publish(self, event: GameEvent) -> None:
+        lst = self._listeners.get(event.get_type())
+        if lst is not None:
+            for listener in lst:
+                listener.on_event(event)
 ``` 
 
 Notice the difference from the first example:
@@ -264,106 +242,89 @@ In the auction system, all observers receive every notification. Here, observers
 
 Next, implement a few concrete observers:
 
-```java
-// Achievement system: track kill count, check if achievements unlocked
-class AchievementSystem implements GameEventListener {
-    private int killCount = 0;
+```python
+# Achievement system: track kill count, check if achievements unlocked
+class AchievementSystem(GameEventListener):
+    def __init__(self):
+        self._kill_count = 0
 
-    @Override
-    public void onEvent(GameEvent event) {
-        if (event.getType() == GameEventType.MONSTER_KILLED) {
-            killCount++;
-            System.out.println("  [Achievement] Kill count: " + killCount);
-            if (killCount == 1) {
-                System.out.println("  [Achievement] Unlocked: First Blood!");
-            } else if (killCount == 10) {
-                System.out.println("  [Achievement] Unlocked: Monster Hunter!");
-            }
-        }
-    }
-}
+    def on_event(self, event: GameEvent) -> None:
+        if event.get_type() == GameEventType.MONSTER_KILLED:
+            self._kill_count += 1
+            print(f"  [Achievement] Kill count: {self._kill_count}")
+            if self._kill_count == 1:
+                print("  [Achievement] Unlocked: First Blood!")
+            elif self._kill_count == 10:
+                print("  [Achievement] Unlocked: Monster Hunter!")
 
-// Statistics tracker: record occurrence count of each event type
-class StatisticsTracker implements GameEventListener {
-    private Map<GameEventType, Integer> stats = new HashMap<>();
+# Statistics tracker: record occurrence count of each event type
+class StatisticsTracker(GameEventListener):
+    def __init__(self):
+        self._stats: dict[GameEventType, int] = {}
 
-    @Override
-    public void onEvent(GameEvent event) {
-        stats.merge(event.getType(), 1, Integer::sum);
-        System.out.println("  [Stats] " + event.getType() + " total: " + stats.get(event.getType()));
-    }
+    def on_event(self, event: GameEvent) -> None:
+        event_type = event.get_type()
+        self._stats[event_type] = self._stats.get(event_type, 0) + 1
+        print(f"  [Stats] {event_type.value} total: {self._stats[event_type]}")
 
-    public void printStats() {
-        System.out.println("=== Game Statistics ===");
-        stats.forEach((type, count) -> System.out.println("  " + type + ": " + count));
-    }
-}
+    def print_stats(self) -> None:
+        print("=== Game Statistics ===")
+        for event_type, count in self._stats.items():
+            print(f"  {event_type.value}: {count}")
 
-// Sound system: play corresponding sound effects based on event type
-class SoundSystem implements GameEventListener {
-    @Override
-    public void onEvent(GameEvent event) {
-        switch (event.getType()) {
-            case MONSTER_KILLED:
-                String monster = (String) event.getData("monsterName");
-                System.out.println("  [Sound] Kill sound: " + monster + " defeated!");
-                break;
-            case ITEM_COLLECTED:
-                System.out.println("  [Sound] Pickup sound: Ding~");
-                break;
-            case LEVEL_COMPLETED:
-                System.out.println("  [Sound] Victory sound: Victory!");
-                break;
-        }
-    }
-}
+# Sound system: play corresponding sound effects based on event type
+class SoundSystem(GameEventListener):
+    def on_event(self, event: GameEvent) -> None:
+        if event.get_type() == GameEventType.MONSTER_KILLED:
+            monster = event.get_data("monsterName")
+            print(f"  [Sound] Kill sound: {monster} defeated!")
+        elif event.get_type() == GameEventType.ITEM_COLLECTED:
+            print("  [Sound] Pickup sound: Ding~")
+        elif event.get_type() == GameEventType.LEVEL_COMPLETED:
+            print("  [Sound] Victory sound: Victory!")
 ``` 
 
 Finally, here's how the client uses it:
 
-```java
-public class Main {
-    public static void main(String[] args) {
-        EventCenter eventCenter = new EventCenter();
+```python
+event_center = EventCenter()
 
-        AchievementSystem achievements = new AchievementSystem();
-        StatisticsTracker stats = new StatisticsTracker();
-        SoundSystem sound = new SoundSystem();
+achievements = AchievementSystem()
+stats = StatisticsTracker()
+sound = SoundSystem()
 
-        // Each module subscribes to events it cares about
-        eventCenter.subscribe(GameEventType.MONSTER_KILLED, achievements);
-        eventCenter.subscribe(GameEventType.MONSTER_KILLED, stats);
-        eventCenter.subscribe(GameEventType.MONSTER_KILLED, sound);
-        eventCenter.subscribe(GameEventType.ITEM_COLLECTED, stats);
-        eventCenter.subscribe(GameEventType.ITEM_COLLECTED, sound);
+# Each module subscribes to events it cares about
+event_center.subscribe(GameEventType.MONSTER_KILLED, achievements)
+event_center.subscribe(GameEventType.MONSTER_KILLED, stats)
+event_center.subscribe(GameEventType.MONSTER_KILLED, sound)
+event_center.subscribe(GameEventType.ITEM_COLLECTED, stats)
+event_center.subscribe(GameEventType.ITEM_COLLECTED, sound)
 
-        // Player killed a Slime
-        System.out.println("Player killed Slime:");
-        eventCenter.publish(new GameEvent(
-                GameEventType.MONSTER_KILLED,
-                Map.of("monsterName", "Slime")
-        ));
-        //   [Achievement] Kill count: 1
-        //   [Achievement] Unlocked: First Blood!
-        //   [Stats] MONSTER_KILLED total: 1
-        //   [Sound] Kill sound: Slime defeated!
+# Player killed a Slime
+print("Player killed Slime:")
+event_center.publish(GameEvent(
+    GameEventType.MONSTER_KILLED,
+    {"monsterName": "Slime"}
+))
+#   [Achievement] Kill count: 1
+#   [Achievement] Unlocked: First Blood!
+#   [Stats] MONSTER_KILLED total: 1
+#   [Sound] Kill sound: Slime defeated!
 
-        // Player collected a Treasure Chest
-        System.out.println("\nPlayer collected Treasure Chest:");
-        eventCenter.publish(new GameEvent(
-                GameEventType.ITEM_COLLECTED,
-                Map.of("itemName", "Treasure Chest")
-        ));
-        //   [Stats] ITEM_COLLECTED total: 1
-        //   [Sound] Pickup sound: Ding~
-        // Note: AchievementSystem did not subscribe to ITEM_COLLECTED, so it won't be notified
+# Player collected a Treasure Chest
+print("\nPlayer collected Treasure Chest:")
+event_center.publish(GameEvent(
+    GameEventType.ITEM_COLLECTED,
+    {"itemName": "Treasure Chest"}
+))
+#   [Stats] ITEM_COLLECTED total: 1
+#   [Sound] Pickup sound: Ding~
+# Note: AchievementSystem did not subscribe to ITEM_COLLECTED, so it won't be notified
 
-        stats.printStats();
-        // === Game Statistics ===
-        //   MONSTER_KILLED: 1
-        //   ITEM_COLLECTED: 1
-    }
-}
+stats.print_stats()
+# === Game Statistics ===
+#   MONSTER_KILLED: 1
+#   ITEM_COLLECTED: 1
 ``` 
 
 This example showcases the real-world value of the Observer Pattern:
@@ -398,4 +359,8 @@ Key drawbacks of the Observer Pattern:
 
 All in all, when you need to automatically notify multiple objects in response to a state change—without tightly coupling them together—the Observer Pattern is an excellent choice.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

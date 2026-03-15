@@ -29,31 +29,22 @@
 
 饿汉式在类初始化的时候就创建全局唯一实例，是实现单例模式最简单的方式：
 
-```java
-public class DatabaseManager {
-    // 在类加载时创建全局唯一的实例
-    // JVM 在类加载时会初始化静态变量，确保线程安全
-    private static final DatabaseManager INSTANCE = new DatabaseManager();
-    private Connection connection;
+```python
+class DatabaseManager:
+    def __init__(self):
+        # 初始化数据库连接
+        self.connection = getConnection("mysql://...", "user", "password")
+        print("Connection established.")
     
-    // 私有构造函数，外部代码无法创建实例
-    private DatabaseManager() {
-        // 初始化数据库连接
-        this.connection = getConnection("mysql://...", "user", "password");
-        System.out.println("Connection established.");
-    }
-    
-    // 提供 public static 的全局访问点
-    // 外部代码通过这个方法获取这个唯一的实例
-    public static DatabaseManager getInstance() {
-        return INSTANCE;
-    }
-    
-    // 业务方法
-    public ResultSet execute(String sql) throws SQLException {
-        ...
-    }
-}
+    # 业务方法
+    def execute(self, sql: str) -> str:
+        # ...
+
+# 在模块加载时创建全局唯一的实例
+# Python 模块级别的变量在模块首次导入时初始化，天然线程安全
+database_manager = DatabaseManager()
+
+# 使用时直接 import database_manager 即可
 ``` 
 
 ### 2\. 懒汉式实现（双重检查锁定）
@@ -62,36 +53,38 @@ public class DatabaseManager {
 
 懒加载的好处是，单例未被使用时就不会创建实例，可以节约内存并提升程序启动速度；坏处是需要额外添加代码确保懒加载的线程安全。
 
-```java
-public class DatabaseManager {
-    // 使用 volatile 保证可见性
-    private static volatile DatabaseManager instance;
-    private Connection connection;
-    
-    private DatabaseManager() {
-        // 初始化数据库连接
-        this.connection = getConnection("mysql://...", "user", "password");
-        System.out.println("Connection established.");
-    }
-    
-    public static DatabaseManager getInstance() {
-        // 第一次检查，已创建实例则直接返回
-        if (instance == null) {
-            synchronized (DatabaseManager.class) {
-                // 第二次检查，第一次进入同步块的线程才会创建实例
-                if (instance == null) {
-                    instance = new DatabaseManager();
-                }
-            }
-        }
-        return instance;
-    }
-    
-    // 业务方法
-    public ResultSet execute(String sql) throws SQLException {
-        ...
-    }
-}
+```python
+import threading
+
+# Python 装饰器实现懒加载单例
+def lazy_singleton(cls):
+    _instance = None
+    _lock = threading.Lock()
+
+    def get_instance(*args, **kwargs):
+        nonlocal _instance
+        if _instance is None:
+            with _lock:
+                if _instance is None:
+                    _instance = cls(*args, **kwargs)
+        return _instance
+
+    return get_instance
+
+@lazy_singleton
+class DatabaseManager:
+    def __init__(self):
+        self.connection = getConnection("mysql://...", "user", "password")
+        print("Connection established.")
+
+    # 业务方法
+    def execute(self, sql: str):
+        # ...
+
+# --- 使用示例 ---
+# db1 = DatabaseManager()
+# db2 = DatabaseManager()
+# print(f"Are instances the same? {db1 is db2}") # Output: True
 ``` 
 
 关于线程安全
@@ -172,3 +165,7 @@ public class AppLogger {
 单例模式虽然强大且应用广泛，但也需要警惕滥用。
 
 因为它会引入全局状态，增加代码的耦合度，给单元测试带来困难。因此，在决定使用单例模式前，请务必确认该对象确实需要全局共享。
+
+## 评论
+
+请登录后查看/发表评论

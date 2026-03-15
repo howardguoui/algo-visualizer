@@ -62,38 +62,32 @@ BFS 的算法框架其实就是 [图结构的 DFS/BFS 遍历](</zh/algo/data-str
 
 本文的例题都是中等难度，所以本文给出的解法都以第二种写法为准：
 
-```java
-// 从 s 开始 BFS 遍历图的所有节点，且记录遍历的步数
-// 当走到目标节点 target 时，返回步数
-int bfs(int s, int target) {
-    boolean[] visited = new boolean[graph.size()];
-    Queue<Integer> q = new LinkedList<>();
-    q.offer(s);
-    visited[s] = true;
-    // 记录从 s 开始走到当前节点的步数
-    int step = 0;
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        for (int i = 0; i < sz; i++) {
-            int cur = q.poll();
-            System.out.println("visit " + cur + " at step " + step);
-            // 判断是否到达终点
-            if (cur == target) {
-                return step;
-            }
-            // 将邻居节点加入队列，向四周扩散搜索
-            for (int to : neighborsOf(cur)) {
-                if (!visited[to]) {
-                    q.offer(to);
-                    visited[to] = true;
-                }
-            }
-        }
-        step++;
-    }
-    // 如果走到这里，说明在图中没有找到目标节点
-    return -1;
-}
+```python
+# 从 s 开始 BFS 遍历图的所有节点，且记录遍历的步数
+def bfs(graph, s, target):
+    visited = [False] * len(graph)
+    q = deque([s])
+    visited[s] = True
+    # 记录从 s 开始走到当前节点的步数
+    step = 0
+    
+    while q:
+        sz = len(q)
+        for i in range(sz):
+            cur = q.popleft()
+            print(f"visit {cur} at step {step}")
+            # 判断是否到达终点
+            if cur == target:
+                return step
+
+            # 将邻居节点加入队列，向四周扩散搜索
+            for to in neighborsOf(cur):
+                if not visited[to]:
+                    q.append(to)
+                    visited[to] = True
+        step += 1
+    # 如果走到这里，说明在图中没有找到目标节点
+    return -1
 ``` 
 
 上面这个代码框架几乎就是从 [图结构的 DFS/BFS 遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>) 中复制过来的，只不过添加了一个 `target` 参数，当第一次走到 `target` 时，直接结束算法并返回走过的步数。
@@ -200,16 +194,16 @@ List<int[][]> getNeighbors(int[][] board) {
 
 对于这道题，题目说输入的数组大小都是 2 x 3，所以我们可以直接手动写出来这个映射：
 
-```java
-// 记录一维字符串的相邻索引
-int[][] neighbor = new int[][]{
-    {1, 3},
-    {0, 4, 2},
-    {1, 5},
-    {0, 4},
-    {3, 1, 5},
-    {4, 2}
-};
+```python
+# 记录一维字符串的相邻索引
+neighbor = [
+    [1, 3],
+    [0, 4, 2],
+    [1, 5],
+    [0, 4],
+    [3, 1, 5],
+    [4, 2]
+]
 ``` 
 
 **这个映射的含义就是，在一维字符串中，索引`i` 在二维数组中的的相邻索引为 `neighbor[i]`**。
@@ -226,100 +220,90 @@ int[][] neighbor = new int[][]{
 
 这样，对于 `m x n` 的二维数组，我们可以写一个函数来生成它的 `neighbor` 索引映射：
 
-```java
-int[][] generateNeighborMapping(int m, int n) {
-    int[][] neighbor = new int[m * n][];
-    for (int i = 0; i < m * n; i++) {
-        List<Integer> neighbors = new ArrayList<>();
+```python
+def generateNeighborMapping(m: int, n: int) -> List[List[int]]:
+    neighbor = [[] for _ in range(m * n)]
+    for i in range(m * n):
+        neighbors = []
 
-        // 如果不是第一列，有左侧邻居
-        if (i % n != 0) neighbors.add(i - 1);
+        # 如果不是第一列，有左侧邻居
+        if i % n != 0: neighbors.append(i - 1)
         
-        // 如果不是最后一列，有右侧邻居
-        if (i % n != n - 1) neighbors.add(i + 1);
+        # 如果不是最后一列，有右侧邻居
+        if i % n != n - 1: neighbors.append(i + 1)
         
-        // 如果不是第一行，有上方邻居
-        if (i - n >= 0) neighbors.add(i - n);
+        # 如果不是第一行，有上方邻居
+        if i - n >= 0: neighbors.append(i - n)
         
-        // 如果不是最后一行，有下方邻居
-        if (i + n < m * n) neighbors.add(i + n);
+        # 如果不是最后一行，有下方邻居
+        if i + n < m * n: neighbors.append(i + n)
 
-        // Java 语言特性，将 List 类型转为 int[] 数组
-        neighbor[i] = neighbors.stream().mapToInt(Integer::intValue).toArray();
-    }
-    return neighbor;
-}
+        neighbor[i] = neighbors
+    return neighbor
 ``` 
 
 这样，无论数字 0 在哪里，都可以通过这个索引映射得到它的相邻索引进行交换了。下面是完整的代码实现：
 
-```java
-class Solution {
-    public int slidingPuzzle(int[][] board) {
-        int m = 2, n = 3;
-        StringBuilder sb = new StringBuilder();
-        String target = "123450";
-        // 将 2x3 的数组转化成字符串作为 BFS 的起点
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                sb.append(board[i][j]);
-            }
-        }
-        String start = sb.toString();
+```python
+from collections import deque
 
-        // 记录一维字符串的相邻索引
-        int[][] neighbor = new int[][]{
-                {1, 3},
-                {0, 4, 2},
-                {1, 5},
-                {0, 4},
-                {3, 1, 5},
-                {4, 2}
-        };
+class Solution:
+    def slidingPuzzle(self, board):
+        target = "123450"
+        # 将 2x3 的数组转化成字符串作为 BFS 的起点
+        start = ""
+        for i in range(len(board)):
+            for j in range(len(board[0])):
+                start += str(board[i][j])
+        
+        # ****** BFS 算法框架开始 ******
+        q = deque()
+        visited = set()
+        # 从起点开始 BFS 搜索
+        q.append(start)
+        visited.add(start)
+        
+        step = 0
+        while q: 
+            # 当前层的节点数量
+            sz = len(q)
+            for _ in range(sz):
+                cur = q.popleft()
+                # 判断是否达到目标局面
+                if cur == target:
+                    return step
+                # 将数字 0 和相邻的数字交换位置
+                for neighbor_board in self.getNeighbors(cur):
+                    # 防止走回头路
+                    if neighbor_board not in visited:
+                        q.append(neighbor_board)
+                        visited.add(neighbor_board)
+            step += 1
+        # ****** BFS 算法框架结束 ******
+        return -1
 
-        // ****** BFS 算法框架开始 ******
-        Queue<String> q = new LinkedList<>();
-        HashSet<String> visited = new HashSet<>();
-        // 从起点开始 BFS 搜索
-        q.offer(start);
-        visited.add(start);
+    def getNeighbors(self, board):
+        # 记录一维字符串的相邻索引
+        mapping = [
+            [1, 3],
+            [0, 4, 2],
+            [1, 5],
+            [0, 4],
+            [3, 1, 5],
+            [4, 2]
+        ] 
+        
+        idx = board.index('0')
+        neighbors = []
+        for adj in mapping[idx]:
+            new_board = self.swap(board, idx, adj)
+            neighbors.append(new_board)
+        return neighbors
 
-        int step = 0;
-        while (!q.isEmpty()) {
-            int sz = q.size();
-            for (int i = 0; i < sz; i++) {
-                String cur = q.poll();
-                // 判断是否达到目标局面
-                if (target.equals(cur)) {
-                    return step;
-                }
-                // 找到数字 0 的索引
-                int idx = 0;
-                for (; cur.charAt(idx) != '0'; idx++) ;
-                // 将数字 0 和相邻的数字交换位置
-                for (int adj : neighbor[idx]) {
-                    String new_board = swap(cur.toCharArray(), adj, idx);
-                    // 防止走回头路
-                    if (!visited.contains(new_board)) {
-                        q.offer(new_board);
-                        visited.add(new_board);
-                    }
-                }
-            }
-            step++;
-        }
-        // ****** BFS 算法框架结束 ******
-        return -1;
-    }
-
-    private String swap(char[] chars, int i, int j) {
-        char temp = chars[i];
-        chars[i] = chars[j];
-        chars[j] = temp;
-        return new String(chars);
-    }
-
-}
+    def swap(self, board, i, j):
+        chars = list(board)
+        chars[i], chars[j] = chars[j], chars[i]
+        return ''.join(chars)
 ``` 
 
 算法可视化
@@ -381,12 +365,10 @@ class Solution {
 
 函数签名如下：
 
-```java
-class Solution {
-    public int openLock(String[] deadends, String target) {
-        // ...
-    }
-}
+```python
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        # ...
 ``` 
 
 题目中描述的就是我们生活中常见的那种密码锁，如果没有任何约束，最少的拨动次数很好算。比方说想拨到 `"1234"`，那一个个数字拨动就可以了，最少的拨动次数就是 `1 + 2 + 3 + 4 = 10` 次。
@@ -405,61 +387,53 @@ class Solution {
 
 下面这段伪码就描述了上述思路，用层序遍历一棵八叉树：
 
-```java
-// 将 s[j] 向上拨动一次
-String plusOne(String s, int j) {
-    char[] ch = s.toCharArray();
-    if (ch[j] == '9')
-        ch[j] = '0';
-    else
-        ch[j] += 1;
-    return new String(ch);
-}
-// 将 s[i] 向下拨动一次
-String minusOne(String s, int j) {
-    char[] ch = s.toCharArray();
-    if (ch[j] == '0')
-        ch[j] = '9';
-    else
-        ch[j] -= 1;
-    return new String(ch);
-}
+```python
+from typing import List
 
-// BFS 框架，寻找最少的拨动次数
-void BFS(String target) {
-    Queue<String> q = new LinkedList<>();
-    q.offer("0000");
+# 将 s[j] 向上拨动一次
+def plusOne(s: str, j: int) -> str:
+    ch = list(s)
+    if ch[j] == '9':
+        ch[j] = '0'
+    else:
+        ch[j] = chr(ord(ch[j]) + 1)
+    return ''.join(ch)
 
-    int step = 0;
+# 将 s[i] 向下拨动一次
+def minusOne(s: str, j: int) -> str:
+    ch = list(s)
+    if ch[j] == '0':
+        ch[j] = '9'
+    else:
+        ch[j] = chr(ord(ch[j]) - 1)
+    return ''.join(ch)
 
-    while (!q.isEmpty()) {
-        int sz = q.size();
-        // 将当前队列中的所有节点向周围扩散
-        for (int i = 0; i < sz; i++) {
-            String cur = q.poll();
-            // 判断是否到达终点
-            if (cur.equals(target)) {
-                return step;
-            }
+# BFS 框架，寻找最少的拨动次数
+def BFS(target: str) -> int:
+    q = ['0000']
+    
+    while q:
+        sz = len(q)
+        # 将当前队列中的所有节点向周围扩散
+        for _ in range(sz):
+            cur = q.pop(0)
+            # 判断是否到达终点
+            if cur == target:
+                return step
+            # 将一个节点的相邻节点加入队列
+            for neighbor in getNeighbors(cur):
+                q.append(neighbor)
+        # 在这里增加步数
+        step += 1
+    return -1
 
-            // 一个密码可以衍生出 8 种相邻的密码
-            for (String neighbor : getNeighbors(cur)) {
-                q.offer(neighbor);
-            }
-        }
-        // 在这里增加步数
-        step++;
-    }
-}
-// 将 s 的每一位向上拨动一次或向下拨动一次，8 种相邻密码
-List<String> getNeighbors(String s) {
-    List<String> neighbors = new ArrayList<>();
-    for (int i = 0; i < 4; i++) {
-        neighbors.add(plusOne(s, i));
-        neighbors.add(minusOne(s, i));
-    }
-    return neighbors;
-}
+# 将 s 的每一位向上拨动一次或向下拨动一次，8 种相邻密码
+def getNeighbors(s: str) -> List[str]:
+    neighbors = []
+    for i in range(4):
+        neighbors.append(plusOne(s, i))
+        neighbors.append(minusOne(s, i))
+    return neighbors
 ``` 
 
 这个代码已经可以穷举所有可能的密码组合了，但是还有些问题需要解决。
@@ -476,77 +450,69 @@ List<String> getNeighbors(String s) {
 
 下面是完整的代码实现：
 
-```java
-class Solution {
-    public int openLock(String[] deadends, String target) {
-        // 记录需要跳过的死亡密码
-        Set<String> deads = new HashSet<>();
-        for (String s : deadends) deads.add(s);
-        if (deads.contains("0000")) return -1;
+```python
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        # 记录需要跳过的死亡密码
+        deads = set(deadends)
+        if "0000" in deads:
+            return -1
 
-        // 记录已经穷举过的密码，防止走回头路
-        Set<String> visited = new HashSet<>();
-        Queue<String> q = new LinkedList<>();
-        // 从起点开始启动广度优先搜索
-        int step = 0;
-        q.offer("0000");
-        visited.add("0000");
+        # 记录已经穷举过的密码，防止走回头路
+        visited = set()
+        q = collections.deque()
+        # 从起点开始启动广度优先搜索
+        step = 0
+        q.append("0000")
+        visited.add("0000")
         
-        while (!q.isEmpty()) {
-            int sz = q.size();
-            // 将当前队列中的所有节点向周围扩散
-            for (int i = 0; i < sz; i++) {
-                String cur = q.poll();
+        while q:
+            sz = len(q)
+            # 将当前队列中的所有节点向周围扩散
+            for _ in range(sz):
+                cur = q.popleft()
                 
-                // 判断是否到达终点
-                if (cur.equals(target))
-                    return step;
+                # 判断是否到达终点
+                if cur == target:
+                    return step
                 
-                // 将一个节点的合法相邻节点加入队列
-                for (String neighbor : getNeighbors(cur)) {
-                    if (!visited.contains(neighbor) && !deads.contains(neighbor)) {
-                        q.offer(neighbor);
-                        visited.add(neighbor);
-                    }
-                }
-            }
-            // 在这里增加步数
-            step++;
-        }
-        // 如果穷举完都没找到目标密码，那就是找不到了
-        return -1;
-    }
+                # 将一个节点的合法相邻节点加入队列
+                for neighbor in self.getNeighbors(cur):
+                    if neighbor not in visited and neighbor not in deads:
+                        q.append(neighbor)
+                        visited.add(neighbor)
+            
+            # 在这里增加步数
+            step += 1
+        
+        # 如果穷举完都没找到目标密码，那就是找不到了
+        return -1
 
-    // 将 s[j] 向上拨动一次
-    String plusOne(String s, int j) {
-        char[] ch = s.toCharArray();
-        if (ch[j] == '9')
-            ch[j] = '0';
-        else
-            ch[j] += 1;
-        return new String(ch);
-    }
+    # 将 s[j] 向上拨动一次
+    def plusOne(self, s: str, j: int) -> str:
+        ch = list(s)
+        if ch[j] == '9':
+            ch[j] = '0'
+        else:
+            ch[j] = chr(ord(ch[j]) + 1)
+        return ''.join(ch)
 
-    // 将 s[i] 向下拨动一次
-    String minusOne(String s, int j) {
-        char[] ch = s.toCharArray();
-        if (ch[j] == '0')
-            ch[j] = '9';
-        else
-            ch[j] -= 1;
-        return new String(ch);
-    }
+    # 将 s[i] 向下拨动一次
+    def minusOne(self, s: str, j: int) -> str:
+        ch = list(s)
+        if ch[j] == '0':
+            ch[j] = '9'
+        else:
+            ch[j] = chr(ord(ch[j]) - 1)
+        return ''.join(ch)
 
-    // 将 s 的每一位向上拨动一次或向下拨动一次，8 种相邻密码
-    List<String> getNeighbors(String s) {
-        List<String> neighbors = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            neighbors.add(plusOne(s, i));
-            neighbors.add(minusOne(s, i));
-        }
-        return neighbors;
-    }
-}
+    # 将 s 的每一位向上拨动一次或向下拨动一次，8 种相邻密码
+    def getNeighbors(self, s: str) -> List[str]:
+        neighbors = []
+        for i in range(4):
+            neighbors.append(self.plusOne(s, i))
+            neighbors.append(self.minusOne(s, i))
+        return neighbors
 ``` 
 
 ## 双向 BFS 优化
@@ -583,88 +549,73 @@ class Solution {
 
 下面我们就以密码锁问题为例，看看如何将普通 BFS 算法优化为双向 BFS 算法，直接看代码吧：
 
-```java
-class Solution {
-    public int openLock(String[] deadends, String target) {
-        Set<String> deads = new HashSet<>();
-        for (String s : deadends) deads.add(s);
-        // base case
-        if (deads.contains("0000")) return -1;
-        if (target.equals("0000")) return 0;
+```python
+class Solution:
+    def openLock(self, deadends: List[str], target: str) -> int:
+        deads = set(deadends)
+        # base case
+        if "0000" in deads: return -1
+        if target == "0000": return 0
 
-        // 用集合不用队列，可以快速判断元素是否存在
-        Set<String> q1 = new HashSet<>();
-        Set<String> q2 = new HashSet<>();
-        Set<String> visited = new HashSet<>();
+        # 用集合不用队列，可以快速判断元素是否存在
+        q1 = set()
+        q2 = set()
+        visited = set()
         
-        int step = 0;
-        q1.add("0000");
-        visited.add("0000");
-        q2.add(target);
-        visited.add(target);
+        step = 0
+        q1.add("0000")
+        visited.add("0000")
+        q2.add(target)
+        visited.add(target)
 
-        while (!q1.isEmpty() && !q2.isEmpty()) { 
-            // 在这里增加步数
-            step++;
+        while q1 and q2: 
+            # 在这里增加步数
+            step += 1
 
-            // 哈希集合在遍历的过程中不能修改，所以用 newQ1 存储邻居节点
-            Set<String> newQ1 = new HashSet<>();
+            # 哈希集合在遍历的过程中不能修改，所以用 newQ1 存储邻居节点
+            newQ1 = set()
 
-            // 获取 q1 中的所有节点的邻居
-            for (String cur : q1) {
-                // 将一个节点的未遍历相邻节点加入集合
-                for (String neighbor : getNeighbors(cur)) {
-                    // 判断是否到达终点
-                    if (q2.contains(neighbor)) {
-                        return step;
-                    }
-                    if (!visited.contains(neighbor) && !deads.contains(neighbor)) {
-                        newQ1.add(neighbor);
-                        visited.add(neighbor);
-                    }
-                }
-            }
-            // newQ1 存储着 q1 的邻居节点
-            q1 = newQ1;
-            // 因为每次 BFS 都是扩散 q1，所以把元素数量少的集合作为 q1
-            if (q1.size() > q2.size()) {
-                Set<String> temp = q1;
-                q1 = q2;
-                q2 = temp;
-            }
-        }
-        return -1;
-    }
+            # 获取 q1 中的所有节点的邻居
+            for cur in q1:
+                # 将一个节点的未遍历相邻节点加入集合
+                for neighbor in self.getNeighbors(cur):
+                    # 判断是否到达终点
+                    if neighbor in q2:
+                        return step
+                    if neighbor not in visited and neighbor not in deads:
+                        newQ1.add(neighbor)
+                        visited.add(neighbor)
+            # newQ1 存储着 q1 的邻居节点
+            q1 = newQ1
+            # 因为每次 BFS 都是扩散 q1，所以把元素数量少的集合作为 q1
+            if len(q1) > len(q2):
+                q1, q2 = q2, q1
+        return -1
 
-    // 将 s[j] 向上拨动一次
-    String plusOne(String s, int j) {
-        char[] ch = s.toCharArray();
-        if (ch[j] == '9')
-            ch[j] = '0';
-        else
-            ch[j] += 1;
-        return new String(ch);
-    }
+    # 将 s[j] 向上拨动一次
+    def plusOne(self, s: str, j: int) -> str:
+        ch = list(s)
+        if ch[j] == '9':
+            ch[j] = '0'
+        else:
+            ch[j] = str(int(ch[j]) + 1)
+        return ''.join(ch)
 
-    // 将 s[i] 向下拨动一次
-    String minusOne(String s, int j) {
-        char[] ch = s.toCharArray();
-        if (ch[j] == '0')
-            ch[j] = '9';
-        else
-            ch[j] -= 1;
-        return new String(ch);
-    }
+    # 将 s[i] 向下拨动一次
+    def minusOne(self, s: str, j: int) -> str:
+        ch = list(s)
+        if ch[j] == '0':
+            ch[j] = '9'
+        else:
+            ch[j] = str(int(ch[j]) - 1)
+        return ''.join(ch)
 
-    List<String> getNeighbors(String s) {
-        List<String> neighbors = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            neighbors.add(plusOne(s, i));
-            neighbors.add(minusOne(s, i));
-        }
-        return neighbors;
-    }
-}
+    def getNeighbors(self, s: str) -> List[str]:
+        neighbors = []
+        for i in range(4):
+            neighbors.append(self.plusOne(s, i))
+            neighbors.append(self.minusOne(s, i))
+        return neighbors
 ``` 
 
 双向 BFS 还是遵循 BFS 算法框架的，但是有几个细节区别：
@@ -680,3 +631,7 @@ class Solution {
 不过话说回来，**无论传统 BFS 还是双向 BFS，无论做不做优化，从 Big O 衡量标准来看，时间复杂度都是一样的** ，只能说双向 BFS 是一种进阶技巧，算法运行的速度会相对快一点，掌握不掌握其实都无所谓。
 
 最关键的还是要把 BFS 通用框架记下来，并且做到熟练运用，后面有 [BFS 习题章节](</zh/algo/problem-set/bfs/>)，请你尝试运用本文的技巧，解决其中的题目。
+
+## 评论
+
+请登录后查看/发表评论

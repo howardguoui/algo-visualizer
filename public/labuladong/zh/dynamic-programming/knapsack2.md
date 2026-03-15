@@ -32,7 +32,11 @@ LeetCode| 力扣| 难度
 
 算法的函数签名如下：
 
-```java
-// 输入一个集合，返回是否能够分割成和相等的两个子集
-boolean canPartition(int[] nums);
-```
+```python
+# 输入一个集合，返回是否能够分割成和相等的两个子集
+def canPartition(nums: List[int]) -> bool:
+``` 
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -71,9 +71,9 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 652. 寻找重复的子树](<https://leetcode.cn/problems/find-duplicate-subtrees/>)。
 
-```java
-// 函数签名如下
-List<TreeNode> findDuplicateSubtrees(TreeNode root);
+```python
+# 函数签名如下
+def findDuplicateSubtrees(self, root: TreeNode) -> List[TreeNode]:
 ``` 
 
 我来简单解释下题目，输入是一棵二叉树的根节点 `root`，返回的是一个列表，里面装着若干个二叉树节点，这些节点对应的子树在原二叉树中是存在重复的。
@@ -91,3 +91,7 @@ List<TreeNode> findDuplicateSubtrees(TreeNode root);
 ![diagram](https://labuladong.online/images/algo/binary-tree-iii/3.png)
 
 那么，我们返回的 `List` 中就应该有两个 `TreeNode`，值分别为 4 和 2（具体是哪个节点都无所谓）。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -45,36 +45,28 @@
 
 参考解法：
 
-```java
-// 游戏面板仅支持提交 JavaScript 代码
-// Java 解法仅供参考，方便读者理解算法逻辑
-public void move(List<Point> snake, String direction, Point foodPosition) {
-    Point currentHead = snake.get(0);
-    // 计算新头部位置
-    Point newHeadPos = new Point(currentHead.x, currentHead.y);
-    switch (direction) {
-        case "right":
-            newHeadPos.x += 1;
-            break;
-        case "left":
-            newHeadPos.x -= 1;
-            break;
-        case "up":
-            newHeadPos.y += 1;
-            break;
-        case "down":
-            newHeadPos.y -= 1;
-            break;
-        default:
-            throw new IllegalArgumentException("Invalid direction");
-    }
-    // 添加新的头部节点
-    snake.add(0, newHeadPos);
-    if (!newHeadPos.equals(foodPosition)) {
-        // 如果不是吃到食物，则删除尾部节点
-        snake.remove(snake.size() - 1);
-    }
-}
+```python
+# 游戏面板仅支持提交 JavaScript 代码
+# python 解法仅供参考，方便读者理解算法逻辑
+def move(snake, direction, food_position):
+    current_head = snake[0]
+    # 计算新头部位置
+    new_head_pos = Point(current_head.x, current_head.y)
+    if direction == 'right':
+        new_head_pos.x += 1
+    elif direction == 'left':
+        new_head_pos.x -= 1
+    elif direction == 'up':
+        new_head_pos.y += 1
+    elif direction == 'down':
+        new_head_pos.y -= 1
+    else:
+        raise ValueError('Invalid direction')
+    # 添加新的头部节点
+    snake.insert(0, new_head_pos)
+    if not new_head_pos.equals(food_position):
+        # 如果不是吃到食物，则删除尾部节点
+        snake.pop()
 ``` 
 
 ## 游戏汇总
@@ -156,3 +148,7 @@ public void move(List<Point> snake, String direction, Point foodPosition) {
 生命游戏考察简单的数组操作以及位运算优化方法，详见 [实现生命游戏](</zh/algo/game/life-game/>)：
 
 生命游戏
+
+## 评论
+
+请登录后查看/发表评论

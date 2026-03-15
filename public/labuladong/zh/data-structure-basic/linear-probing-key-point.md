@@ -29,54 +29,54 @@
 
 线性探查法的大致逻辑如下：
 
-```java
-// 线性探查法的基本逻辑，伪码实现
+```python
+# 线性探查法的基本逻辑，伪码实现
 
-class MyLinearProbingHashMap {
-    // 数组中每个元素都存储一个键值对
-    private KVNode[] table = new KVNode[10];
+class KVNode:
+    def __init__(self, key, value):
+        self.key = key
+        self.value = value
 
-    private int hash(int key) {
-        return key % table.length;
-    }
+class MyLinearProbingHashMap:
+    # 数组中每个元素都存储一个键值对
+    def __init__(self):
+        self.table = [None] * 10
+    
+    def hash(self, key):
+        return key % len(self.table)
 
-    public void put(int key, int value) {
-        int index = hash(key);
-        KVNode node = table[index];
-        if (node == null) {
-            table[index] = new KVNode(key, value);
-        } else {
-            // 线性探查法的逻辑
-            // 向后探查，直到找到 key 或者找到空位
-            while (index < table.length && table[index] != null && table[index].key != key) {
-                index++;
-            }
-            table[index] = new KVNode(key, value);
-        }
-    }
-
-    public int get(int key) {
-        int index = hash(key);
-        // 向后探查，直到找到 key 或者找到空位
-        while (index < table.length && table[index] != null && table[index].key != key) {
-            index++;
-        }
-        if (table[index] == null) {
-            return -1;
-        }
-        return table[index].value;
-    }
-
-    public void remove(int key) {
-        int index = hash(key);
-        // 向后探查，直到找到 key 或者找到空位
-        while (index < table.length && table[index] != null && table[index].key != key) {
-            index++;
-        }
-        // 删除 table[index]
-        // ...
-    }
-}
+    def put(self, key, value):
+        index = self.hash(key)
+        node = self.table[index]
+        if node is None:
+            self.table[index] = KVNode(key, value)
+        else:
+            # 线性探查法的逻辑
+            # 向后探查，直到找到 key 或者找到空位
+            while index < len(self.table) and self.table[index] is not None and self.table[index].key != key:
+                index += 1
+            self.table[index] = KVNode(key, value)
+    
+    def get(self, key):
+        index = self.hash(key)
+        # 向后探查，直到找到 key 或者找到空位
+        while index < len(self.table) and self.table[index] is not None and self.table[index].key != key:
+            index += 1
+        if self.table[index] is None:
+            return -1
+        return self.table[index].value
+    
+    def remove(self, key):
+        index = self.hash(key)
+        # 向后探查，直到找到 key 或者找到空位
+        while index < len(self.table) and self.table[index] is not None and self.table[index].key != key:
+            index += 1
+        # 删除 table[index]
+        # ...
 ``` 
 
 基于这个假设场景，我们来看看线性探查法的两个难点。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

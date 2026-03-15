@@ -48,8 +48,8 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-```java
-int[] maxSlidingWindow(int[] nums, int k);
+```python
+def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
 ``` 
 
 比如说力扣给出的一个示例：
@@ -74,54 +74,57 @@ int[] maxSlidingWindow(int[] nums, int k);
 
 在介绍「单调队列」这种数据结构的 API 之前，先来对比一下 [普通的队列](</zh/algo/data-structure-basic/queue-stack-basic/>) 的标准 API 和单调队列实现的 API：
 
-```java
-// 普通队列的 API
-class Queue {
-    // enqueue 操作，在队尾加入元素 n
-    void push(int n);
-    // dequeue 操作，删除队头元素
-    void pop();
-}
+```python
+# 普通队列的 API
+class Queue:
+    # enqueue 操作，在队尾加入元素 n
+    def push(self, n: int):
+        pass
+    
+    # dequeue 操作，删除队头元素
+    def pop(self):
+        pass
 
-// 单调队列的 API
-class MonotonicQueue {
-    // 在队尾添加元素 n
-    void push(int n);
-    // 返回当前队列中的最大值
-    int max();
-    // 队头元素如果是 n，删除它
-    void pop(int n);
-}
+# 单调队列的 API
+class MonotonicQueue:
+    # 在队尾添加元素 n
+    def push(self, n: int):
+        pass
+
+    # 返回当前队列中的最大值
+    def max(self) -> int:
+        pass
+
+    # 队头元素如果是 n，删除它
+    def pop(self, n: int):
+        pass
 ``` 
 
 当然，单调队列这几个 API 的实现方法肯定跟一般的 Queue 不一样，不过我们暂且不管，而且认为这几个操作的时间复杂度都是 O(1)，先把这道「滑动窗口」问题的解答框架搭出来：
 
-```java
-int[] maxSlidingWindow(int[] nums, int k) {
-    MonotonicQueue window = new MonotonicQueue();
-    List<Integer> res = new ArrayList<>();
-    
-    for (int i = 0; i < nums.length; i++) {
-        if (i < k - 1) {
-            // 先把窗口的前 k - 1 填满
-            window.push(nums[i]);
-        } else {
-            // 窗口开始向前滑动
-            // 移入新元素
-            window.push(nums[i]);
-            // 将当前窗口中的最大元素记入结果
-            res.add(window.max());
-            // 移出最后的元素
-            window.pop(nums[i - k + 1]);
-        }
-    }
-    // 将 List 类型转化成 int[] 数组作为返回值
-    int[] arr = new int[res.size()];
-    for (int i = 0; i < res.size(); i++) {
-        arr[i] = res.get(i);
-    }
-    return arr;
-}
+```python
+from collections import deque
+from typing import List
+
+def maxSlidingWindow(nums: List[int], k: int) -> List[int]:
+    window = MonotonicQueue()
+    res = []
+
+    for i in range(len(nums)):
+        if i < k - 1:
+            # 先将窗口前 k - 1 填满
+            window.append(nums[i])
+        else:
+            # 窗口开始向前滑动
+            # 移入新元素
+            window.append(nums[i])
+            # 将当前窗口中的最大元素记入结果
+            res.append(max(window))
+            # 移出最后的元素
+            window.popleft()
+
+    # 将 List 类型转化成 int[] 数组作为返回值
+    return res
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/monotonic-queue/1.png)
@@ -134,21 +137,22 @@ int[] maxSlidingWindow(int[] nums, int k) {
 
 「单调队列」的核心思路和「单调栈」类似，`push` 方法依然在队尾添加元素，但是要把前面比自己小的元素都删掉：
 
-```java
-class MonotonicQueue {
-    // 双链表，支持快速在头部和尾部增删元素
-    // 维护其中的元素自尾部到头部单调递增
-    private LinkedList<Integer> maxq = new LinkedList<>();
+```python
+from collections import deque
 
-    // 在尾部添加一个元素 n，维护 maxq 的单调性质
-    public void push(int n) {
-        // 将前面小于自己的元素都删除
-        while (!maxq.isEmpty() && maxq.getLast() < n) {
-            maxq.pollLast();
-        }
-        maxq.addLast(n);
-    }
-}
+class MonotonicQueue:
+    
+    def __init__(self):
+        # 使用双端队列，支持头部和尾部增删元素
+        # 维护其中的元素自尾部到头部单调递增
+        self.maxq = deque()
+    
+    # 在尾部添加一个元素 n，维护 maxq 的单调性质
+    def push(self, n: int) -> None:
+        # 将前面小于自己的元素都删除
+        while len(self.maxq) > 0 and self.maxq[-1] < n:
+            self.maxq.pop()
+        self.maxq.append(n)
 ``` 
 
 你可以想象，加入数字的大小代表人的体重，体重大的会把前面体重不足的压扁，直到遇到更大的量级才停住。
@@ -157,21 +161,17 @@ class MonotonicQueue {
 
 如果每个元素被加入时都这样操作，最终单调队列中的元素大小就会保持一个**单调递减** 的顺序，因此我们的 `max` 方法就很好写了，只要把队头元素返回即可；`pop` 方法也是操作队头，如果队头元素是待删除元素 `n`，那么就删除它：
 
-```java
-class MonotonicQueue {
-    // 为了节约篇幅，省略上文给出的代码部分...
+```python
+class MonotonicQueue:
+    # 为了节约篇幅，省略上文给出的代码部分...
 
-    public int max() {
-        // 队头的元素肯定是最大的
-        return maxq.getFirst();
-    }
+    def max(self) -> int:
+        # 队头的元素肯定是最大的
+        return self.maxq[0]
 
-    public void pop(int n) {
-        if (n == maxq.getFirst()) {
-            maxq.pollFirst();
-        }
-    }
-}
+    def pop(self, n: int) -> None:
+        if n == self.maxq[0]:
+            self.maxq.popleft()
 ``` 
 
 `pop` 方法之所以要判断 `n == maxq.getFirst()`，是因为我们想删除的队头元素 `n` 可能已经在 `push` 的过程中被「压扁」了，可能已经不存在了，这种情况就不用删除了：
@@ -180,57 +180,42 @@ class MonotonicQueue {
 
 至此，单调队列设计完毕，看下完整的解题代码：
 
-```java
-class Solution {
-    // 单调队列的实现
-    class MonotonicQueue {
-        LinkedList<Integer> q = new LinkedList<>();
-        public void push(int n) {
-            // 将小于 n 的元素全部删除
-            while (!q.isEmpty() && q.getLast() < n) { 
-                q.pollLast();
-            }
-            // 然后将 n 加入尾部
-            q.addLast(n);
-        }
+```python
+class MonotonicQueue:
+    def __init__(self):
+        self.maxq = []
+    
+    def push(self, n):
+        # 将小于 n 的元素全部删除
+        while self.maxq and self.maxq[-1] < n: 
+            self.maxq.pop()
+        # 然后将 n 加入尾部
+        self.maxq.append(n)
+    
+    def max(self):
+        return self.maxq[0]
+    
+    def pop(self, n):
+        if n == self.maxq[0]:
+            self.maxq.pop(0)
 
-        public int max() {
-            return q.getFirst();
-        }
-
-        public void pop(int n) {
-            if (n == q.getFirst()) {
-                q.pollFirst();
-            }
-        }
-    }
-
-    // 解题函数的实现
-    public int[] maxSlidingWindow(int[] nums, int k) {
-        MonotonicQueue window = new MonotonicQueue();
-        List<Integer> res = new ArrayList<>();
-
-        for (int i = 0; i < nums.length; i++) {
-            if (i < k - 1) {
-                // 先填满窗口的前 k - 1
-                window.push(nums[i]);
-            } else { 
-                // 窗口向前滑动，加入新数字
-                window.push(nums[i]);
-                // 记录当前窗口的最大值
-                res.add(window.max());
-                // 移出旧数字
-                window.pop(nums[i - k + 1]);
-            }
-        }
-        // 需要转成 int[] 数组再返回
-        int[] arr = new int[res.size()];
-        for (int i = 0; i < res.size(); i++) {
-            arr[i] = res.get(i);
-        }
-        return arr;
-    }
-}
+class Solution(object):
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        window = MonotonicQueue()
+        res = []
+        
+        for i in range(len(nums)):
+            if i < k - 1:
+                # 先填满窗口的前 k - 1
+                window.push(nums[i])
+            else: 
+                # 窗口向前滑动，加入新数字
+                window.push(nums[i])
+                # 记录当前窗口的最大值
+                res.append(window.max())
+                # 移出旧数字
+                window.pop(nums[i - k + 1])
+        return res
 ``` 
 
 有一点细节问题不要忽略，在实现 `MonotonicQueue` 时，我们使用了 Java 的 `LinkedList`，因为链表结构支持在头部和尾部快速增删元素；而在解法代码中的 `res` 则使用的 `ArrayList` 结构，因为后续会按照索引取元素，所以数组结构更合适。其他语言的实现也要注意这些细节。
@@ -257,25 +242,31 @@ class Solution {
 
 也就是说，你是否能够实现单调队列的通用实现：
 
-```java
-// 单调队列的通用实现，可以高效维护最大值和最小值
-class MonotonicQueue<E extends Comparable<E>> {
-
-    // 标准队列 API，向队尾加入元素
-    public void push(E elem);
-
-    // 标准队列 API，从队头弹出元素，符合先进先出的顺序
-    public E pop();
-
-    // 标准队列 API，返回队列中的元素个数
-    public int size();
-
-    // 单调队列特有 API，O(1) 时间计算队列中元素的最大值
-    public E max();
-
-    // 单调队列特有 API，O(1) 时间计算队列中元素的最小值
-    public E min();
-}
+```python
+# 单调队列的通用实现，可以高效维护最大值和最小值
+class MonotonicQueue:
+    def push(self, elem: 'Comparable') -> None:
+        pass
+    
+    # 标准队列 API，从队头弹出元素，符合先进先出的顺序
+    def pop(self) -> 'Comparable':
+        pass
+    
+    # 标准队列 API，返回队列中的元素个数
+    def size(self) -> int:
+        pass
+    
+    # 单调队列特有 API，O(1) 时间计算队列中元素的最大值
+    def max(self) -> 'Comparable':
+        pass
+    
+    # 单调队列特有 API，O(1) 时间计算队列中元素的最小值
+    def min(self) -> 'Comparable':
+        pass
 ``` 
 
 我将在 [单调队列通用实现及应用](</zh/algo/problem-set/monotonic-queue/>) 中给出单调队列的通用实现和经典习题。更多数据结构设计类题目参见 [数据结构设计经典习题](</zh/algo/problem-set/ds-design/>)。
+
+## 评论
+
+请登录后查看/发表评论

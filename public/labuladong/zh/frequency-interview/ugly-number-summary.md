@@ -51,23 +51,30 @@ boolean isUgly(int n)
 
 有了这个思路，就可以实现 `isUgly` 函数了：
 
-```java
-class Solution {
-    public boolean isUgly(int n) {
-        if (n <= 0) return false;
-        // 如果 n 是丑数，分解因子应该只有 2, 3, 5
-        while (n % 2 == 0) n /= 2;
-        while (n % 3 == 0) n /= 3;
-        while (n % 5 == 0) n /= 5;
-        return n == 1;
-    }
-}
+```python
+class Solution:
+    def isUgly(self, n: int) -> bool:
+        if n <= 0:
+            return False
+        # 如果 n 是丑数，分解因子应该只有 2, 3, 5
+        while n % 2 == 0:
+            n //= 2
+        while n % 3 == 0:
+            n //= 3
+        while n % 5 == 0:
+            n //= 5
+        # 如果能够成功分解，说明是丑数
+        return n == 1
 ``` 
 
 ## 丑数 II
 
 接下来提升难度，看下力扣第 264 题「[丑数 II](<https://leetcode.cn/problems/ugly-number-ii/>)」，现在题目不是让你判断一个数是不是丑数，而是给你输入一个 `n`，让你计算第 `n` 个丑数是多少，函数签名如下：
 
-```java
-int nthUglyNumber(int n)
-```
+```python
+def nthUglyNumber(n: int) -> int:
+``` 
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

@@ -47,32 +47,26 @@ So I suggest you separate the data reading logic from the algorithm logic as in 
 
 Here are ACM code templates for Java/C++/Python/JS/Go. The key is to remember how to read input until EOF.
 
-```java
-import java.util.*;
+```python
+import sys
 
-class Solution {
-    public int add(int a, int b) {
-        return a + b;
-    }
-}
+class Solution:
+    def add(self, a: int, b: int) -> int:
+        return a + b
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        // read until EOF
-        while (sc.hasNext()) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            int result = new Solution().add(a, b);
-            System.out.println(result);
-        }
-        sc.close();
-    }
-}
+# read until EOF
+for line in sys.stdin:
+    a, b = map(int, line.strip().split())
+    result = Solution().add(a, b)
+    print(result)
 ``` 
 
 ACM itself is not difficult. You can learn it in half an hour. The real key is the algorithms!
 
 So my suggestion is: in daily practice, you can use the core code mode to solve problems and learn algorithms. Before interviews and written tests, just practice the ACM mode in [the problem set of this site](<https://labuladong.online/zh/problemset/core/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

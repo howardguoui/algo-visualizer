@@ -39,4 +39,8 @@ This article will first show the implementation of Prim's algorithm, then explai
 
 You only need to modify a few lines in the [Dijkstra algorithm template](</en/algo/data-structure/dijkstra/>) to get Prim's algorithm. The modified parts are already highlighted:
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

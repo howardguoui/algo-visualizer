@@ -54,4 +54,8 @@
 
 下面是 PKCE 授权码流程的完整时序图：
 
-加载图表...
+Google Drive资源服务器Google授权服务器Android App用户Google Drive资源服务器Google授权服务器Android App用户点击"连接 Google Drive"生成随机 code_verifier计算 code_challenge跳转到 Google 授权页面(URL 中包含 code_challenge)访问授权页面记住 code_challenge登录并同意授权重定向URL 中包含授权码带着授权码跳转到 App用 code + code_verifier换取 Access Token验证SHA256(code_verifier) == code_challenge返回 Access Token用 Access Token访问 Google Drive返回文件列表
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

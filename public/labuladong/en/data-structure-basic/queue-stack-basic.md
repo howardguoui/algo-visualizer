@@ -32,40 +32,52 @@ A queue is like buying tickets in line, where the first to arrive is the first t
 
 The basic APIs for these two data structures are as follows:
 
-```java
-// Basic API of the queue
-class MyQueue<E> {
-    // Insert an element at the end of the queue, time complexity O(1)
-    void push(E e);
+```python
+# Basic API of the queue
+class MyQueue:
 
-    // Remove an element from the front of the queue, time complexity O(1)
-    E pop();
+    # Insert an element at the end of the queue, time complexity O(1)
+    def push(self, e):
+        pass
 
-    // View the element at the front of the queue, time complexity O(1)
-    E peek();
+    # Delete an element from the front of the queue, time complexity O(1)
+    def pop(self):
+        pass
 
-    // Return the number of elements in the queue, time complexity O(1)
-    int size();
-}
+    # View the element at the front of the queue, time complexity O(1)
+    def peek(self):
+        pass
 
-// Basic API of the stack
-class MyStack<E> {
-    // Insert an element at the top of the stack, time complexity O(1)
-    void push(E e);
+    # Return the number of elements in the queue, time complexity O(1)
+    def size(self):
+        pass
 
-    // Remove an element from the top of the stack, time complexity O(1)
-    E pop();
-
-    // View the element at the top of the stack, time complexity O(1)
-    E peek();
-
-    // Return the number of elements in the stack, time complexity O(1)
-    int size();
-}
+# Basic API of the stack
+class MyStack:
+    
+    # Insert an element at the top of the stack, time complexity O(1)
+    def push(self, e):
+        pass
+    
+    # Delete an element from the top of the stack, time complexity O(1)
+    def pop(self):
+        pass
+    
+    # View the element at the top of the stack, time complexity O(1)
+    def peek(self):
+        pass
+    
+    # Return the number of elements in the stack, time complexity O(1)
+    def size(self):
+        pass
 ``` 
 
 Different programming languages may have different method names for queues and stacks, but the effect of each method is the same.
 
 Some languages' standard libraries may not directly provide queues and stacks, but you can simulate the behavior of queues and stacks using arrays or linked lists. In the next chapter, I will first guide you in implementing queues and stacks using linked lists.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

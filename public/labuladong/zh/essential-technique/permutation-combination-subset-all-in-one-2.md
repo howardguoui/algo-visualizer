@@ -68,3 +68,7 @@ LeetCode| 力扣| 难度
 提示
 
 另外，有些读者之前看过的排列/子集/组合的解法代码可能和我在本文介绍的代码不同。这是因为回溯算法有两种穷举视角，我会在后文 [球盒模型：回溯算法穷举的两种视角](</zh/algo/practice-in-action/two-views-of-backtrack/>) 手把手给你讲清楚。现在还不适合直接跟你讲那些解法，你照着我的思路学习即可。
+
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)

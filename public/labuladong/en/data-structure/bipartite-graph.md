@@ -71,25 +71,21 @@ Since we need to traverse the graph, and we don’t need to find the shortest pa
 
 First, based on [graph traversal](</en/algo/data-structure-basic/graph-traverse-basic/>), let’s write the DFS framework for traversing a graph:
 
-```java
-// traverse all nodes of the graph
-void traverse(Graph graph, int s, boolean[] visited) {
-    // base case
-    if (s < 0 || s >= graph.size()) {
-        return;
-    }
-    if (visited[s]) {
-        // prevent infinite loop
-        return;
-    }
-    // pre-order position
-    visited[s] = true;
-    System.out.println("visit " + s);
-    for (Edge e : graph.neighbors(s)) {
-        traverse(graph, e.to, visited);
-    }
-    // post-order position
-}
+```python
+# traverse all nodes of the graph
+def traverse(graph, s, visited):
+    # base case
+    if s < 0 or s >= len(graph):
+        return
+    if visited[s]:
+        # prevent infinite loop
+        return
+    # pre-order position
+    visited[s] = True
+    print("visit", s)
+    for e in graph.neighbors(s):
+        traverse(graph, e.to, visited)
+    # post-order position
 ``` 
 
 Since there might be cycles in the graph, a `visited` array is used to prevent revisiting nodes.
@@ -98,19 +94,17 @@ You can see that I like to place all the return statements at the beginning of t
 
 In fact, if you prefer, you can place the if conditions elsewhere. For example, the graph traversal framework can be slightly adjusted:
 
-```java
-// graph traversal framework
-boolean[] visited;
-void traverse(Graph graph, int v) {
-    // pre-order traversal position, mark node v as visited
-    visited[v] = true;
-    for (int neighbor : graph.neighbors(v)) {
-        if (!visited[neighbor]) {
-            // only traverse unvisited neighboring nodes
-            traverse(graph, neighbor);
-        }
-    }
-}
+```python
+# graph traversal framework
+visited = []
+
+def traverse(graph: Graph, v: int):
+    # pre-order traversal position, mark node v as visited
+    visited[v] = True
+    for neighbor in graph.neighbors(v):
+        if not visited[neighbor]:
+            # only traverse unmarked neighboring nodes
+            traverse(graph, neighbor)
 ``` 
 
 This approach places the check for `visited` before the recursive call. The only difference from the previous approach is that you need to ensure `visited[v] == false` when calling `traverse(v)`.
@@ -121,23 +115,21 @@ Why mention this specific approach? Because we use this method in the algorithm 
 
 Therefore, the code logic to determine a bipartite graph can be written like this:
 
-```java
-// graph traversal framework
-void traverse(Graph graph, boolean[] visited, int v) {
-    visited[v] = true;
-    // traverse all adjacent nodes of node v
-    for (int neighbor : graph.neighbors(v)) {
-        if (!visited[neighbor]) {
-            // the adjacent node neighbor has not been visited
-            // then we should color node neighbor with a different color from node v
-            traverse(graph, visited, neighbor);
-        } else {
-            // the adjacent node neighbor has already been visited
-            // then we should compare the colors of node neighbor and node v
-            // if they are the same, then this graph is not a bipartite graph
-        }
-    }
-}
+```python
+# graph traversal framework
+def traverse(graph, visited, v):
+    visited[v] = True
+    # traverse all adjacent nodes of node v, called neighbor
+    for neighbor in graph.neighbors(v):
+        if not visited[neighbor]:
+            # adjacent node neighbor has not been visited
+            # then node neighbor should be colored differently from node v
+            traverse(graph, visited, neighbor)
+        else:
+            # adjacent node neighbor has already been visited
+            # then we should compare the colors of node neighbor and node v
+            # if they are the same, then this graph is not a bipartite graph
+            pass
 ``` 
 
 If you can understand the above code, you can write the specific code for determining a bipartite graph. Next, let's practice with two specific algorithm problems.
@@ -148,8 +140,8 @@ LeetCode Problem 785 "[Is Graph Bipartite?](<https://leetcode.com/problems/is-gr
 
 The function signature is as follows:
 
-```java
-boolean isBipartite(int[][] graph);
+```python
+def isBipartite(graph: List[List[int]]) -> bool:
 ``` 
 
 For example, in the given input adjacency list `graph = [[1,2,3],[0,2],[0,1,3],[0,2]]`, which represents the following graph:
@@ -166,59 +158,50 @@ By coloring nodes `{0, 2}` with one color and nodes `{1, 3}` with another color,
 
 In conjunction with the previous code framework, we can use an additional `color` array to record the color of each node, thus writing the solution code:
 
-```java
-class Solution {
+```python
+class Solution:
+    # record whether the graph is a bipartite graph
+    # record the color of the nodes in the graph, false and true represent two different colors
+    # record whether the nodes in the graph have been visited
+    def __init__(self):
+        self.ok = True
+        self.color = None
+        self.visited = None
 
-    // record whether the graph is a bipartite graph
-    private boolean ok = true;
-    // record the color of the nodes in the graph,
-    // false and true represent two different colors
-    private boolean[] color;
-    // record whether the nodes in the graph have been visited
-    private boolean[] visited;
+    # main function, input adjacency list, determine if it is a bipartite graph
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        n = len(graph)
+        self.color = [False] * n
+        self.visited = [False] * n
+        # because the graph may not be connected, there may be multiple subgraphs
+        # so we need to traverse each node as a starting point
+        # if any subgraph is not a bipartite graph, the entire graph is not a bipartite graph
+        for v in range(n):
+            if not self.visited[v]:
+                self.traverse(graph, v)
+        return self.ok
 
-    // main function, input adjacency list, determine if it is a bipartite graph
-    public boolean isBipartite(int[][] graph) {
-        int n = graph.length;
-        color = new boolean[n];
-        visited = new boolean[n];
-        // because the graph may not be connected, there may be multiple subgraphs
-        // so we need to traverse each node as a starting point
-        // if any subgraph is not a bipartite graph, the entire graph is not a bipartite graph
-        for (int v = 0; v < n; v++) {
-            if (!visited[v]) {
-                traverse(graph, v);
-            }
-        }
-        return ok;
-    }
+    # dfs traversal framework
+    def traverse(self, graph: List[List[int]], v: int) -> None:
+        # if it has been determined that it is not a bipartite graph,
+        # there is no need to waste time on recursive traversal
+        if not self.ok:
+            return
 
-    // dfs traversal framework
-    private void traverse(int[][] graph, int v) {
-        // if it has been determined that it is not a bipartite graph,
-        // there is no need to waste time on recursive traversal
-        if (!ok) return;
-
-        visited[v] = true;
-        for (int w : graph[v]) {
-            if (!visited[w]) {
-                // the adjacent node w has not been visited
-                // so node w should be colored with a different color from node v
-                color[w] = !color[v];
-                // continue to traverse w
-                traverse(graph, w);
-            } else {
-                // the adjacent node w has already been visited
-                // determine if it is a bipartite graph based on the colors of v and w
-                if (color[w] == color[v]) {
-                    // if the same, the graph is not a bipartite graph
-                    ok = false;
-                }
-            }
-        }
-    }
-
-}
+        self.visited[v] = True
+        for w in graph[v]:
+            if not self.visited[w]:
+                # the adjacent node w has not been visited
+                # so node w should be colored with a different color from node v
+                self.color[w] = not self.color[v]
+                # continue to traverse w
+                self.traverse(graph, w)
+            else:
+                # the adjacent node w has already been visited
+                # determine if it is a bipartite graph based on the colors of v and w
+                if self.color[w] == self.color[v]:
+                    # if the same, the graph is not a bipartite graph
+                    self.ok = False
 ``` 
 
 You can click the line `visited[v] = true;` multiple times to observe the node coloring process.
@@ -227,61 +210,54 @@ Algorithm Visualization
 
 Next, let's look at the logic of the BFS algorithm:
 
-```java
-class Solution {
-    // record whether the graph is bipartite
-    private boolean ok = true;
-    // record the color of each node in the graph;
-    // false and true represent two different colors
-    private boolean[] color;
-    // record whether each node in the graph has been visited
-    private boolean[] visited;
+```python
+from collections import deque
 
-    public boolean isBipartite(int[][] graph) {
-        int n = graph.length;
-        color =  new boolean[n];
-        visited =  new boolean[n];
-        
-        for (int v = 0; v < n; v++) {
-            if (!visited[v]) {
-                // use the BFS function instead
-                bfs(graph, v);
-            }
-        }
-        
-        return ok;
-    }
+class Solution:
+    def __init__(self):
+        # record whether the graph is a bipartite graph
+        self.ok = True
+        # record the color of the nodes in the graph, False
+        # and True represent two different colors
+        self.color = []
+        # record whether the nodes in the graph have been visited
+        self.visited = []
 
-    // perform BFS traversal starting from the start node
-    private void bfs(int[][] graph, int start) {
-        Queue<Integer> q = new LinkedList<>();
-        visited[start] = true;
-        q.offer(start);
-        
-        while (!q.isEmpty() && ok) {
-            int v = q.poll();
-            // spread from node v to all adjacent nodes
-            for (int w : graph[v]) {
-                if (!visited[w]) {
-                    // adjacent node w has not been visited
-                    // therefore, node w should be colored differently from node v
-                    color[w] = !color[v];
-                    // mark node w and add it to the queue
-                    visited[w] = true;
-                    q.offer(w);
-                } else {
-                    // adjacent node w has already been visited
-                    // determine if the graph is bipartite based on the colors of v and w
-                    if (color[w] == color[v]) {
-                        // if they are the same, then the graph is not bipartite
-                        ok = false;
-                        return;
-                    }
-                }
-            }
-        }
-    }
-}
+    def isBipartite(self, graph):
+        n = len(graph)
+        self.color = [False]*n
+        self.visited = [False]*n
+
+        for v in range(n):
+            if not self.visited[v]:
+                # change to use BFS function
+                self.bfs(graph, v)
+
+        return self.ok
+
+    # perform BFS traversal starting from the start node
+    def bfs(self, graph, start):
+        q = deque([start])
+        self.visited[start] = True
+
+        while q and self.ok:
+            v = q.popleft()
+            # spread from node v to all adjacent nodes
+            for w in graph[v]:
+                if not self.visited[w]:
+                    # adjacent node w has not been visited
+                    # then node w should be colored differently from node v
+                    self.color[w] = not self.color[v]
+                    # mark node w and put it in the queue
+                    self.visited[w] = True
+                    q.append(w)
+                else:
+                    # adjacent node w has already been visited
+                    # determine if it's a bipartite graph based on the colors of v and w
+                    if self.color[w] == self.color[v]:
+                        # if the same, then the graph is not a bipartite graph
+                        self.ok = False
+                        return
 ``` 
 
 The core logic is identical to the previously implemented `traverse` function (DFS algorithm), which also judges based on the colors of adjacent nodes `v` and `w`. For a discussion on the BFS algorithm framework, refer to the previous articles [BFS Algorithm Framework](</en/algo/essential-technique/bfs-framework/>) and [Dijkstra Algorithm Template](</en/algo/data-structure/dijkstra/>), which will not be elaborated here.
@@ -320,9 +296,9 @@ Explanation: We need at least 3 groups to divide them. We cannot put them in two
 
 The problem is from [LeetCode 886. Possible Bipartition](<https://leetcode.com/problems/possible-bipartition/>).
 
-```java
-// The function signature is as follows
-boolean possibleBipartition(int n, int[][] dislikes);
+```python
+# The function signature is as follows
+def possibleBipartition(n: int, dislikes: List[List[int]]):
 ``` 
 
 **This problem essentially tests the determination of a bipartite graph** :
@@ -335,69 +311,59 @@ This brings us back to the "two-color problem." If it is possible to color all n
 
 Therefore, the solution emerges. We construct a graph from the `dislikes` array and then execute the bipartite graph determination algorithm:
 
-```java
-class Solution {
+```python
+class Solution:
+    def __init__(self):
+        self.ok = True
+        self.color = None
+        self.visited = None
 
-    private boolean ok = true;
-    private boolean[] color;
-    private boolean[] visited;
+    def possibleBipartition(self, n: int, dislikes: List[List[int]]) -> bool:
+        # graph node numbering starts from 1
+        self.color = [False] * (n + 1)
+        self.visited = [False] * (n + 1)
+        # convert the graph into an adjacency list
+        graph = self.buildGraph(n, dislikes)
 
-    public boolean possibleBipartition(int n, int[][] dislikes) {
-        // graph node numbering starts from 1
-        color = new boolean[n + 1];
-        visited = new boolean[n + 1];
-        // convert the graph into an adjacency list
-        List<Integer>[] graph = buildGraph(n, dislikes);
+        for v in range(1, n + 1):
+            if not self.visited[v]:
+                self.traverse(graph, v)
+        return self.ok
 
-        for (int v = 1; v <= n; v++) {
-            if (!visited[v]) {
-                traverse(graph, v);
-            }
-        }
-        return ok;
-    }
+    # build graph function
+    def buildGraph(self, n: int, dislikes: List[List[int]]) -> List[List[int]]:
+        # graph node numbering is 1...n
+        graph = [[] for _ in range(n + 1)]
+        for edge in dislikes:
+            v = edge[1]
+            w = edge[0]
+            # "Undirected graph" is equivalent to "bidirectional graph"
+            # v -> w
+            graph[v].append(w)
+            # w -> v
+            graph[w].append(v)
+        return graph
 
-    // build graph function
-    private List<Integer>[] buildGraph(int n, int[][] dislikes) {
-        // graph node numbering is 1...n
-        List<Integer>[] graph = new LinkedList[n + 1];
-        for (int i = 1; i <= n; i++) {
-            graph[i] = new LinkedList<>();
-        }
-        for (int[] edge : dislikes) {
-            int v = edge[1];
-            int w = edge[0];
-            // "Undirected graph" is equivalent to "bidirectional graph"
-            // v -> w
-            graph[v].add(w);
-            // w -> v
-            graph[w].add(v);
-        }
-        return graph;
-    }
-
-    // this traverse function is exactly the same as
-    // the one used to determine a bipartite graph
-    private void traverse(List<Integer>[] graph, int v) {
-        if (!ok) return;
-        visited[v] = true;
-        for (int w : graph[v]) {
-            if (!visited[w]) {
-                color[w] = !color[v];
-                traverse(graph, w);
-            } else {
-                if (color[w] == color[v]) {
-                    ok = false;
-                }
-            }
-        }
-    }
-
-}
+    # this traverse function is exactly the same as the one used to determine a bipartite graph
+    def traverse(self, graph: List[List[int]], v: int):
+        if not self.ok:
+            return
+        self.visited[v] = True
+        for w in graph[v]:
+            if not self.visited[w]:
+                self.color[w] = not self.color[v]
+                self.traverse(graph, w)
+            else:
+                if self.color[w] == self.color[v]:
+                    self.ok = False
 ``` 
 
 Algorithm Visualization
 
 At this point, this problem is also solved using the DFS algorithm. If you want to use the BFS algorithm, it is similar to the previous solution. During the spread, try coloring the adjacent elements. You can try to implement it yourself.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

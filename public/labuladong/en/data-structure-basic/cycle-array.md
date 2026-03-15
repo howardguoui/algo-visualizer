@@ -23,15 +23,14 @@ Can an array really be circular? Of course not. An array is a block of linear, c
 
 But we can make an array circular in a _logical_ way. For example, look at this code:
 
-```java
-// array of length 5
-int[] arr = new int[]{1, 2, 3, 4, 5};
-int i = 0;
-// simulate a circular array, this loop will never end
-while (i < arr.length) {
-    System.out.println(arr[i]);
-    i = (i + 1) % arr.length;
-}
+```python
+# array of length 5
+arr = [1, 2, 3, 4, 5]
+i = 0
+# simulate a circular array, this loop will never end
+while i < len(arr):
+    print(arr[i])
+    i = (i + 1) % len(arr)
 ``` 
 
 **The key of this code is the modulo operator`%`, which means remainder.** When `i` reaches the last element of the array, `(i + 1) % arr.length` becomes `0` again. That means we jump back to the first element, and we can keep looping forever. This creates a circular array in logic.
@@ -92,131 +91,97 @@ If you use a fully open interval instead, moving `end` one position to the right
 
 Finally, here's the code implementation:
 
-```java
-public class CycleArray<T> {
-    private T[] arr;
-    private int start;
-    private int end;
-    private int count;
-    private int size;
+```python
+class CycleArray:
+    def __init__(self, size=1):
+        self.size = size
+        # Since Python supports directly creating generic arrays, no type conversion is needed
+        self.arr = [None] * size
+        # start points to the index of the first valid element, inclusive interval
+        self.start = 0
+        # remember that end is an open interval,
+        # that is, end points to the index of the position after the last valid element
+        self.end = 0
+        self.count = 0
 
-    public CycleArray() {
-        this(1);
-    }
+    # automatic resize helper function
+    def resize(self, newSize):
+        # create a new array
+        new_arr = [None] * newSize
+        # copy the elements of the old array to the new array
+        for i in range(self.count):
+            new_arr[i] = self.arr[(self.start + i) % self.size]
+        self.arr = new_arr
+        # reset start and end pointers
+        self.start = 0
+        self.end = self.count
+        self.size = newSize
 
-    @SuppressWarnings("unchecked")
-    public CycleArray(int size) {
-        this.size = size;
-        // Since Java does not support direct creation of
-        // generic arrays, type casting is used here
-        this.arr = (T[]) new Object[size];
-        // start points to the index of the first valid element, closed interval
-        this.start = 0;
-        // remember that end is an open interval,
-        // that is, end points to the next position index of the last valid element
-        this.end = 0;
-        this.count = 0;
-    }
+    # add an element to the head of the array, time complexity O(1)
+    def add_first(self, val):
+        # when the array is full, double the size
+        if self.is_full():
+            self.resize(self.size * 2)
+        # since start is an inclusive interval, move left first, then assign value
+        self.start = (self.start - 1 + self.size) % self.size
+        self.arr[self.start] = val
+        self.count += 1
 
-    // Helper function for automatic resizing
-    @SuppressWarnings("unchecked")
-    private void resize(int newSize) {
-        // Create a new array
-        T[] newArr = (T[]) new Object[newSize];
-        // Copy elements from the old array to the new array
-        for (int i = 0; i < count; i++) {
-            newArr[i] = arr[(start + i) % size];
-        }
-        arr = newArr;
-        // Reset start and end pointers
-        start = 0;
-        end = count;
-        size = newSize;
-    }
+    # remove an element from the head of the array, time complexity O(1)
+    def remove_first(self):
+        if self.is_empty():
+            raise Exception("Array is empty")
+        # since start is an inclusive interval, assign value first, then move right
+        self.arr[self.start] = None
+        self.start = (self.start + 1) % self.size
+        self.count -= 1
+        # if the number of elements decreases to one-fourth
+        # of the original size, halve the array size
+        if self.count > 0 and self.count == self.size // 4:
+            self.resize(self.size // 2)
 
-    // Add element to the start of the array, time complexity O(1)
-    public void addFirst(T val) {
-        // When the array is full, expand to twice its original size
-        if (isFull()) {
-            resize(size * 2);
-        }
-        // Since start is a closed interval, move left first, then assign value
-        start = (start - 1 + size) % size;
-        arr[start] = val;
-        count++;
-    }
+    # add an element to the tail of the array, time complexity O(1)
+    def add_last(self, val):
+        if self.is_full():
+            self.resize(self.size * 2)
+        # since end is an open interval, assign value first, then move right
+        self.arr[self.end] = val
+        self.end = (self.end + 1) % self.size
+        self.count += 1
 
-    // Remove element from the start of the array, time complexity O(1)
-    public void removeFirst() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Array is empty");
-        }
-        // Since start is a closed interval, assign value first, then move right
-        arr[start] = null;
-        start = (start + 1) % size;
-        count--;
-        // If the number of elements in the array is reduced to one-fourth
-        // of the original size, reduce the array size by half
-        if (count > 0 && count == size / 4) {
-            resize(size / 2);
-        }
-    }
+    # remove an element from the tail of the array, time complexity O(1)
+    def remove_last(self):
+        if self.is_empty():
+            raise Exception("Array is empty")
+        # since end is an open interval, move left first, then assign value
+        self.end = (self.end - 1 + self.size) % self.size
+        self.arr[self.end] = None
+        self.count -= 1
+        # shrink size
+        if self.count > 0 and self.count == self.size // 4:
+            self.resize(self.size // 2)
 
-    // Add element to the end of the array, time complexity O(1)
-    public void addLast(T val) {
-        if (isFull()) {
-            resize(size * 2);
-        }
-        // Since end is an open interval, assign value first, then move right
-        arr[end] = val;
-        end = (end + 1) % size;
-        count++;
-    }
+    # get the head element of the array, time complexity O(1)
+    def get_first(self):
+        if self.is_empty():
+            raise Exception("Array is empty")
+        return self.arr[self.start]
 
-    // Remove element from the end of the array, time complexity O(1)
-    public void removeLast() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Array is empty");
-        }
-        // Since end is an open interval, move left first, then assign value
-        end = (end - 1 + size) % size;
-        arr[end] = null;
-        count--;
-        // Shrink
-        if (count > 0 && count == size / 4) {
-            resize(size / 2);
-        }
-    }
+    # get the tail element of the array, time complexity O(1)
+    def get_last(self):
+        if self.is_empty():
+            raise Exception("Array is empty")
+        # end is an open interval, pointing to the next position, so subtract 1
+        return self.arr[(self.end - 1 + self.size) % self.size]
 
-    // Get the first element of the array, time complexity O(1)
-    public T getFirst() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Array is empty");
-        }
-        return arr[start];
-    }
+    def is_full(self):
+        return self.count == self.size
 
-    // Get the last element of the array, time complexity O(1)
-    public T getLast() {
-        if (isEmpty()) {
-            throw new IllegalStateException("Array is empty");
-        }
-        // end is an open interval, pointing to the next element's position, so subtract 1
-        return arr[(end - 1 + size) % size];
-    }
+    def size(self):
+        return self.count
 
-    public boolean isFull() {
-        return count == size;
-    }
-    
-    public int size() {
-        return count;
-    }
-
-    public boolean isEmpty() {
-        return count == 0;
-    }
-}
+    def is_empty(self):
+        return self.count == 0
 ``` 
 
 ## Food for Thought
@@ -239,4 +204,8 @@ A circular array can insert an element at a given index. Again, this requires sh
 
 Think about whether this is true. And if it is, why don't the standard library dynamic array implementations in most programming languages use the circular array technique under the hood?
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

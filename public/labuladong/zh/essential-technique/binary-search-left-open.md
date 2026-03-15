@@ -80,25 +80,22 @@ int binary_search(int[] nums, int target) {
 
 下面是左闭右开写法的搜索左边界代码：
 
-```java
-// 搜索左侧边界
-int left_bound(int[] nums, int target) {
-    if (nums.length == 0) return -1;
-    int left = 0, right = nums.length;
-    
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
-            // 当找到 target 时，收缩右侧边界
-            right = mid;
-        } else if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid;
-        }
-    }
-    return left;
-}
+```python
+def left_bound(nums: List[int], target: int) -> int:
+    # 搜索左侧边界
+    if len(nums) == 0:
+        return -1
+    left, right = 0, len(nums)
+    while left < right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            # 当找到 target 时，收缩右侧边界
+            right = mid
+        elif nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid
+    return left
 ``` 
 
 while 循环的结束条件、`left, right` 的更新方式同上，不做赘述。下面解释几个不同点。
@@ -141,25 +138,23 @@ return left;
 
 左闭右开的右边界搜索写法：
 
-```java
-// 搜索右侧边界
-int right_bound(int[] nums, int target) {
-    if (nums.length == 0) return -1;
-    int left = 0, right = nums.length;
+```python
+# 搜索右侧边界
+def right_bound(nums: list[int], target: int) -> int:
+    if len(nums) == 0:
+        return -1
+    left, right = 0, len(nums)
 
-    while (left < right) {
-        int mid = left + (right - left) / 2;
-        if (nums[mid] == target) {
-            // 当找到 target 时，收缩左侧边界
-            left = mid + 1;
-        } else if (nums[mid] < target) {
-            left = mid + 1;
-        } else if (nums[mid] > target) {
-            right = mid;
-        }
-    }
-    return left - 1;
-}
+    while left < right:
+        mid = left + (right - left) // 2
+        if nums[mid] == target:
+            # 当找到 target 时，收缩左侧边界
+            left = mid + 1
+        elif nums[mid] < target:
+            left = mid + 1
+        elif nums[mid] > target:
+            right = mid
+    return left - 1
 ``` 
 
 ### 为什么该算法能够搜索右侧边界？
@@ -216,3 +211,7 @@ while 条件| `left <= right`| `left < right`
 我个人比较推荐使用前文讲的 [两端都闭的写法](</zh/algo/essential-technique/binary-search-framework/>)，因为三种场景可以统一框架，只需修改 `nums[mid] == target` 条件处的代码即可。
 
 更多二分搜索算法的运用和实践参见 [二分搜索的运用](</zh/algo/frequency-interview/binary-search-in-action/>) 和 [二分搜索的更多习题](</zh/algo/problem-set/binary-search/>)。
+
+## 评论
+
+请登录后查看/发表评论

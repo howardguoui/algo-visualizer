@@ -325,4 +325,8 @@ The main disadvantage:
 
 To sum up: when you need to use an existing component that does not have a compatible interface, the adapter pattern is a very powerful and practical tool.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

@@ -140,28 +140,23 @@ return dp[N][W]
 
 Here is Java code that implements the idea and handles the case where `w - wt[i-1]` might be negative (which would cause an index error):
 
-```java
-int knapsack(int W, int[] wt, int[] val) {
-    int N = wt.length;
-    // base case has been initialized
-    int[][] dp = new int[N + 1][W + 1];
-    for (int i = 1; i <= N; i++) {
-        for (int w = 1; w <= W; w++) {
-            if (w - wt[i - 1] < 0) {
-                // in this case, we can only choose not to put it in the backpack
-                dp[i][w] = dp[i - 1][w];
-            } else {
-                // choose the better option between putting it in the backpack or not
-                dp[i][w] = Math.max(
+```python
+def knapsack(W: int, wt: List[int], val: List[int]) -> int:
+    N = len(wt)
+    # base case has been initialized
+    dp = [[0] * (W + 1) for _ in range(N + 1)]
+    for i in range(1, N + 1):
+        for w in range(1, W + 1):
+            if w - wt[i-1] < 0:
+                # in this case, we can only choose not to put it in the backpack
+                dp[i][w] = dp[i - 1][w]
+            else:
+                # choose the best option between putting it in the backpack or not
+                dp[i][w] = max(
                     dp[i - 1][w - wt[i-1]] + val[i-1], 
                     dp[i - 1][w]
-                );
-            }
-        }
-    }
-    
-    return dp[N][W];
-}
+                )
+    return dp[N][W]
 ``` 
 
 Algorithm Visualization
@@ -205,4 +200,8 @@ Now the knapsack problem is solved.
 Compared to other DP problems, this one is quite simple, because the state transition is very natural.  
 Once you make the `dp` definition clear, the transition almost follows directly.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

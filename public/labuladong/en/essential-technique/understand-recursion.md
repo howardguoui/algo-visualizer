@@ -180,49 +180,43 @@ Algorithm Visualization
 
 You don't need to fully understand the code now, just pay attention to the recursive part of the code:
 
-```java
-class Solution {
+```python
+class Solution:
+    def __init__(self):
+        self.res = []
 
-    List<List<Integer>> res = new LinkedList<>();
-
-    // Main function, input a set of unique numbers, return their permutations
-    List<List<Integer>> permute(int[] nums) {
-        // Record "path"
-        LinkedList<Integer> track = new LinkedList<>();
-        // Elements in the "path" will be marked as true to avoid reuse
-        boolean[] used = new boolean[nums.length];
+    # Main function, input a set of unique numbers, return their permutations
+    def permute(self, nums):
+        # Record "path"
+        track = []
+        # Elements in the "path" will be marked as true to avoid reuse
+        used = [False] * len(nums)
         
-        backtrack(nums, track, used);
-        return res;
-    }
+        self.backtrack(nums, track, used)
+        return self.res
 
-    // Path: recorded in track
-    // Selection list: elements in nums that are not in track (used[i] is false)
-    // Termination condition: all elements in nums appear in track
-    void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
-        // Trigger termination condition
-        if (track.size() == nums.length) {
-            res.add(new LinkedList(track));
-            return;
-        }
+    # Path: recorded in track
+    # Selection list: elements in nums that are not in track (used[i] is false)
+    # Termination condition: all elements in nums appear in track
+    def backtrack(self, nums, track, used):
+        # Trigger termination condition
+        if len(track) == len(nums):
+            self.res.append(track.copy())
+            return
 
-        for (int i = 0; i < nums.length; i++) {
-            // Exclude invalid choices
-            if (used[i]) { 
-                // nums[i] is already in track, skip
-                continue;
-            }
-            // Make a choice
-            track.add(nums[i]);
-            used[i] = true;
-            // Enter the next level of the decision tree
-            backtrack(nums, track, used);
-            // Cancel the choice
-            track.removeLast();
-            used[i] = false;
-        }
-    }
-}
+        for i in range(len(nums)):
+            # Exclude invalid choices
+            if used[i]: 
+                # nums[i] is already in track, skip
+                continue
+            # Make a choice
+            track.append(nums[i])
+            used[i] = True
+            # Enter the next level of the decision tree
+            self.backtrack(nums, track, used)
+            # Cancel the choice
+            track.pop()
+            used[i] = False
 ``` 
 
 Extracting the recursive part should reveal that this algorithm can be abstracted into a multi-branch tree:
@@ -331,27 +325,23 @@ Then, you can obtain a recursive formula similar to the Fibonacci sequence:
 
 maxDepth(root)={0if root=nullmax(maxDepth(root.left),maxDepth(root.right))+1otherwisemaxDepth(root) = \begin{cases} 0 & \text{if } root = null \\\ max(maxDepth(root.left), maxDepth(root.right)) + 1 & \text{otherwise} \end{cases}maxDepth(root)={0max(maxDepth(root.left),maxDepth(root.right))+1​if root=nullotherwise​
 
-```java
-// Divide and Conquer Idea
-class Solution {
-    // Definition: Given a node, return the maximum
-    // depth of the binary tree rooted at that node
-    public int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        // Use the definition to calculate the maximum depth of the left and right subtrees
-        int leftMax = maxDepth(root.left);
-        int rightMax = maxDepth(root.right);
+```python
+# Divide and Conquer Idea
+class Solution:
+    # Definition: Given a node, return the maximum depth of the binary tree rooted at that node
+    def maxDepth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
+        # Use the definition to calculate the maximum depth of the left and right subtrees
+        leftMax = self.maxDepth(root.left)
+        rightMax = self.maxDepth(root.right)
 
-        // Derive the maximum depth of the original binary tree based
-        // on the maximum depth of the left and right subtrees
-        // The maximum depth of the entire tree is the
-        // maximum of the left and right subtree depths,
-        // plus one for the root node itself
-        return 1 + Math.max(leftMax, rightMax);
-    }
-}
+        # Derive the maximum depth of the original binary tree based
+        # on the maximum depth of the left and right subtrees
+        # The maximum depth of the entire tree is the
+        # maximum of the left and right subtree depths,
+        # plus one for the root node itself
+        return 1 + max(leftMax, rightMax)
 ``` 
 
 For this problem, I have also provided a visual panel to demonstrate the execution process of the recursive function. The orange represents the real binary tree structure, while the pink represents the abstracted recursive tree structure, where the value of the parent node is the larger value of the left and right child nodes plus one.
@@ -406,40 +396,35 @@ Can you distinguish the difference between the two thinking modes of "traversal"
 
 Let's look at LeetCode problem 104 "Maximum Depth of Binary Tree". We can use the "traversal" thinking mode to write a solution by using the standard binary tree traversal function `traverse` to go through the entire tree. During the traversal, we update the maximum depth, ensuring that once all nodes are traversed, the maximum depth of the entire tree is determined:
 
-```java
-// Traversal Idea
-class Solution {
+```python
+# Traversal Idea
+class Solution:
 
-    // Record the depth of the traversed node
-    int depth = 0;
+    def __init__(self):
+        # Record the depth of the traversed node
+        self.depth = 0
+        # Record the maximum depth
+        self.res = 0
 
-    // Record the maximum depth
-    int res = 0;
+    def maxDepth(self, root: TreeNode) -> int:
+        self.traverse(root)
+        return self.res
 
-    public int maxDepth(TreeNode root) {
-        traverse(root);
-        return res;
-    }
+    # Traverse the binary tree
+    def traverse(self, root: TreeNode):
+        if root is None:
+            return
 
-    // Traverse the binary tree
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
+        # Pre-order traversal position (entering a node) increases depth
+        self.depth += 1
+        # Record the maximum depth during traversal
+        if root.left is None and root.right is None:
+            self.res = max(self.res, self.depth)
+        self.traverse(root.left)
+        self.traverse(root.right)
 
-        // Pre-order traversal position (entering a node) increases depth
-        depth++;
-        // Record the maximum depth during traversal
-        if (root.left == null && root.right == null) {
-            res = Math.max(res, depth);
-        }
-        traverse(root.left);
-        traverse(root.right);
-
-        // Post-order traversal position (leaving a node) decreases depth
-        depth--;
-    }
-}
+        # Post-order traversal position (leaving a node) decreases depth
+        self.depth -= 1
 ``` 
 
 For this problem, I also provided a visual panel to display the execution process of the recursive function. The orange part represents the actual binary tree structure, and the pink part represents the abstract recursive tree structure. Essentially, `traverse` is a standard binary tree traversal function that records the current depth during traversal and updates the maximum depth upon reaching a leaf node.
@@ -468,4 +453,8 @@ In fact, the "problem decomposition" thinking mode corresponds to the [Dynamic P
 
 In the [Binary Tree Exercises Chapter](</en/algo/intro/binary-tree-practice/>), I specifically solve all binary tree-related problems using these two thinking modes. Once you understand binary trees, these recursive algorithms become very straightforward.
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

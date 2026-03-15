@@ -96,14 +96,12 @@ Once you understand these terms, you can think of "path" and "choice list" as at
 
 Going one step further: how do you traverse a tree? That shouldn't be too hard. Recall what we discussed in [A Framework for Learning Data Structures](</en/algo/essential-technique/algorithm-summary/>)—all kinds of search problems are really tree traversal problems. The N-ary tree traversal framework looks like this:
 
-```java
-void traverse(TreeNode root) {
-    for (TreeNode child : root.childern) {
-        // operations needed at the preorder position
-        traverse(child);
-        // operations needed at the postorder position
-    }
-}
+```python
+def traverse(root: TreeNode):
+    for child in root.children:
+        # operations needed at the preorder position
+        traverse(child)
+        # operations needed at the postorder position
 ``` 
 
 Info
@@ -139,49 +137,43 @@ for choice in choice_list:
 
 Now let's look at the actual permutations code:
 
-```java
-class Solution {
+```python
+class Solution:
+    def __init__(self):
+        self.res = []
 
-    List<List<Integer>> res = new LinkedList<>();
-
-    // Main function, input a set of unique numbers, return their permutations
-    List<List<Integer>> permute(int[] nums) {
-        // Record "path"
-        LinkedList<Integer> track = new LinkedList<>();
-        // Elements in the "path" will be marked as true to avoid reuse
-        boolean[] used = new boolean[nums.length];
+    # Main function, input a set of unique numbers, return their permutations
+    def permute(self, nums):
+        # Record "path"
+        track = []
+        # Elements in the "path" will be marked as true to avoid reuse
+        used = [False] * len(nums)
         
-        backtrack(nums, track, used);
-        return res;
-    }
+        self.backtrack(nums, track, used)
+        return self.res
 
-    // Path: recorded in track
-    // Selection list: elements in nums that are not in track (used[i] is false)
-    // Termination condition: all elements in nums appear in track
-    void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
-        // Trigger termination condition
-        if (track.size() == nums.length) {
-            res.add(new LinkedList(track));
-            return;
-        }
+    # Path: recorded in track
+    # Selection list: elements in nums that are not in track (used[i] is false)
+    # Termination condition: all elements in nums appear in track
+    def backtrack(self, nums, track, used):
+        # Trigger termination condition
+        if len(track) == len(nums):
+            self.res.append(track.copy())
+            return
 
-        for (int i = 0; i < nums.length; i++) {
-            // Exclude invalid choices
-            if (used[i]) { 
-                // nums[i] is already in track, skip
-                continue;
-            }
-            // Make a choice
-            track.add(nums[i]);
-            used[i] = true;
-            // Enter the next level of the decision tree
-            backtrack(nums, track, used);
-            // Cancel the choice
-            track.removeLast();
-            used[i] = false;
-        }
-    }
-}
+        for i in range(len(nums)):
+            # Exclude invalid choices
+            if used[i]: 
+                # nums[i] is already in track, skip
+                continue
+            # Make a choice
+            track.append(nums[i])
+            used[i] = True
+            # Enter the next level of the decision tree
+            self.backtrack(nums, track, used)
+            # Cancel the choice
+            track.pop()
+            used[i] = False
 ``` 
 
 Algorithm Visualization
@@ -214,4 +206,8 @@ Here's something interesting to think about: doesn't backtracking look a lot lik
 
 Both dynamic programming and backtracking abstract the problem into a tree structure, but the two algorithms take completely different approaches. You'll see the deeper distinctions and connections between them in [Binary Tree Essentials (Overview)](</en/algo/essential-technique/binary-tree-summary/>).
 
-Last updated: 03/14/2026, 12:17 AM
+Last updated: 03/13/2026, 12:17 PM
+
+## Comments
+
+Please login to view/post comments

@@ -112,4 +112,8 @@ Think about it. Can you do these operations easily with HashMap or TreeMap? Usua
 
 By the way, doesn't the `keysWithPrefix` method look perfect for building an autocomplete feature?
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

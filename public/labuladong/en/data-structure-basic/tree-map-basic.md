@@ -36,7 +36,7 @@ For every node in the tree, all nodes in its **left subtree** have smaller value
 
 Here is an example of a BST:
 
-loading...
+7415910
 
 **This "left smaller, right bigger" feature helps us quickly find a node or all nodes in a certain range. This is the advantage of a BST.**
 
@@ -60,29 +60,23 @@ As for `TreeSet`, its relationship with `TreeMap` is just like the relationship 
 
 The classic `TreeNode` structure in LeetCode looks like this:
 
-```java
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-}
+```python
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 ``` 
 
 If we change this classic `TreeNode` structure a little, we can use it for `TreeMap`:
 
-```java
-// Capital K is the type for keys, capital V is the type for values
-class TreeNode<K, V> {
-    K key;
-    V value;
-
-    TreeNode<K, V> left;
-    TreeNode<K, V> right;
-    TreeNode(K key, V value) {
-        this.key = key;
-        this.value = value;
-    }
-}
+```python
+class TreeNode:
+    def __init__(self, key: K, value: V):
+        self.key = key
+        self.value = value
+        self.left = None
+        self.right = None
 ``` 
 
 The `TreeMap` we will implement has the following API:
@@ -137,4 +131,8 @@ In addition to the standard methods for adding, deleting, searching, and modifyi
 
 Hash tables are practical, but they can't effectively handle the size relationships between keys. The `LinkedHashMap` implemented in the previous article [Strengthening Hash Tables with Linked Lists](</en/algo/data-structure-basic/hashtable-with-linked-list/>) only arranges keys in the hash table by "insertion order" and still cannot arrange them by "size order."
 
-Last updated: 03/14/2026, 12:17 AM
+Upgrade to Pro to unlock all content
+
+[Learn About Pro](</en/algo/intro/site-vip/?int_source=article-lock>)
+
+Last updated: 03/13/2026, 12:17 PM

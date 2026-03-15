@@ -24,26 +24,18 @@ LeetCode| 力扣| 难度
 
 [前缀和技巧](</zh/algo/data-structure/prefix-sum/>) 主要适用的场景是原始数组不会被修改的情况下，频繁查询某个区间的累加和，核心代码就是下面这段：
 
-```java
-class PrefixSum {
-    // 前缀和数组
-    private int[] preSum;
-
-    // 输入一个数组，构造前缀和
-    public PrefixSum(int[] nums) {
-        // preSum[0] = 0，便于计算累加和
-        preSum = new int[nums.length + 1];
-        // 计算 nums 的累加和
-        for (int i = 1; i < preSum.length; i++) {
-            preSum[i] = preSum[i - 1] + nums[i - 1];
-        }
-    }
+```python
+class PrefixSum:
+    # 前缀和数组
+    def __init__(self, nums: List[int]):
+        self.prefix = [0] * (len(nums) + 1)
+        # 计算 nums 的累加和
+        for i in range(1, len(self.prefix)):
+            self.prefix[i] = self.prefix[i - 1] + nums[i - 1]
     
-    // 查询闭区间 [left, right] 的累加和
-    public int sumRange(int left, int right) {
-        return preSum[right + 1] - preSum[left];
-    }
-}
+    # 查询闭区间 [i, j] 的累加和
+    def query(self, i: int, j: int) -> int:
+        return self.prefix[j + 1] - self.prefix[i]
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/difference/1.jpeg)
@@ -60,26 +52,24 @@ class PrefixSum {
 
 这里就需要差分数组的技巧，类似前缀和技巧构造的 `preSum` 数组，我们先对 `nums` 数组构造一个 `diff` 差分数组，**`diff[i]` 就是 `nums[i]` 和 `nums[i-1]` 之差**：
 
-```java
-int[] diff = new int[nums.length];
-// 构造差分数组
-diff[0] = nums[0];
-for (int i = 1; i < nums.length; i++) {
-    diff[i] = nums[i] - nums[i - 1];
-}
+```python
+diff = [0] * len(nums)
+# 构造差分数组
+diff[0] = nums[0]
+for i in range(1, len(nums)):
+    diff[i] = nums[i] - nums[i - 1]
 ``` 
 
 ![diagram](https://labuladong.online/images/algo/difference/2.jpeg)
 
 通过这个 `diff` 差分数组是可以反推出原始数组 `nums` 的，代码逻辑如下：
 
-```java
-int[] res = new int[diff.length];
-// 根据差分数组构造结果数组
-res[0] = diff[0];
-for (int i = 1; i < diff.length; i++) {
-    res[i] = res[i - 1] + diff[i];
-}
+```python
+res = [0] * len(diff)
+# 根据差分数组构造结果数组
+res[0] = diff[0]
+for i in range(1, len(diff)):
+    res[i] = res[i - 1] + diff[i]
 ``` 
 
 **这样构造差分数组`diff`，就可以快速进行区间增减的操作**，如果你想对区间 `nums[i..j]` 的元素全部加 3，那么只需要让 `diff[i] += 3`，然后再让 `diff[j+1] -= 3` 即可：
@@ -92,52 +82,42 @@ for (int i = 1; i < diff.length; i++) {
 
 现在我们把差分数组抽象成一个类，包含 `increment` 方法和 `result` 方法：
 
-```java
-// 差分数组工具类
-class Difference {
-    // 差分数组
-    private int[] diff;
-    
-    // 输入一个初始数组，区间操作将在这个数组上进行
-    public Difference(int[] nums) {
-        diff = new int[nums.length];
-        // 根据初始数组构造差分数组
-        diff[0] = nums[0];
-        for (int i = 1; i < nums.length; i++) {
-            diff[i] = nums[i] - nums[i - 1];
-        }
-    }
+```python
+# 差分数组工具类
+class Difference:
+    # 差分数组
+    def __init__(self, nums: List[int]):
+        assert len(nums) > 0
+        self.diff = [0] * len(nums)
+        # 根据初始数组构造差分数组
+        self.diff[0] = nums[0]
+        for i in range(1, len(nums)):
+            self.diff[i] = nums[i] - nums[i - 1]
 
-    // 给闭区间 [i, j] 增加 val（可以是负数）
-    public void increment(int i, int j, int val) {
-        diff[i] += val;
-        if (j + 1 < diff.length) {
-            diff[j + 1] -= val;
-        }
-    }
+    # 给闭区间 [i, j] 增加 val（可以是负数）
+    def increment(self, i: int, j: int, val: int) -> None:
+        self.diff[i] += val
+        if j + 1 < len(self.diff):
+            self.diff[j + 1] -= val
 
-    // 返回结果数组
-    public int[] result() {
-        int[] res = new int[diff.length];
-        // 根据差分数组构造结果数组
-        res[0] = diff[0];
-        for (int i = 1; i < diff.length; i++) {
-            res[i] = res[i - 1] + diff[i];
-        }
-        return res;
-    }
-}
+    # 返回结果数组
+    def result(self) -> List[int]:
+        res = [0] * len(self.diff)
+        # 根据差分数组构造结果数组
+        res[0] = self.diff[0]
+        for i in range(1, len(self.diff)):
+            res[i] = res[i - 1] + self.diff[i]
+        return res
 ``` 
 
 这里注意一下 `increment` 方法中的 if 语句：
 
-```java
-void increment(int i, int j, int val) {
-    diff[i] += val;
-    if (j + 1 < diff.length) {
-        diff[j + 1] -= val;
-    }
-}
+```python
+def increment(i: int, j: int, val: int) -> None:
+    diff[i] += val
+    
+    if j + 1 < len(diff):
+        diff[j + 1] -= val
 ``` 
 
 当 `j+1 >= diff.length` 时，说明是对 `nums[i]` 及以后的整个数组都进行修改，那么就不需要再给 `diff` 数组减 `val` 了。
@@ -152,55 +132,43 @@ void increment(int i, int j, int val) {
 
 把我们实现的 `Difference` 类复制过去就能解决：
 
-```java
-class Solution {
-    public int[] getModifiedArray(int length, int[][] updates) {
-        // nums 初始化为全 0
-        int[] nums = new int[length];
-        // 构造差分解法
-        Difference df = new Difference(nums);
-        for (int[] update : updates) {
-            int i = update[0];
-            int j = update[1];
-            int val = update[2];
-            df.increment(i, j, val);
-        }
-        return df.result();
-    }
+```python
+class Solution:
+    def getModifiedArray(self, length: int, updates: List[List[int]]) -> List[int]:
+        # nums 初始化为全 0
+        nums = [0] * length
+        # 构造差分解法
+        df = self.Difference(nums)
+        for update in updates:
+            i = update[0]
+            j = update[1]
+            val = update[2]
+            df.increment(i, j, val)
+        return df.result()
 
-    class Difference {
-        // 差分数组
-        private int[] diff;
+    class Difference:
+        # 差分数组
+        def __init__(self, nums: List[int]):
+            assert len(nums) > 0
+            self.diff = [0] * len(nums)
+            # 构造差分数组
+            self.diff[0] = nums[0]
+            for i in range(1, len(nums)):
+                self.diff[i] = nums[i] - nums[i - 1]
 
-        public Difference(int[] nums) {
-            diff = new int[nums.length];
-            // 构造差分数组
-            diff[0] = nums[0];
-            for (int i = 1; i < nums.length; i++) {
-                diff[i] = nums[i] - nums[i - 1];
-            }
-        }
+        # 给闭区间 [i, j] 增加 val（可以是负数）
+        def increment(self, i: int, j: int, val: int):
+            self.diff[i] += val
+            if j + 1 < len(self.diff):
+                self.diff[j + 1] -= val
 
-        // 给闭区间 [i, j] 增加 val（可以是负数）
-        public void increment(int i, int j, int val) {
-            diff[i] += val;
-            if (j + 1 < diff.length) {
-                diff[j + 1] -= val;
-            }
-        }
-
-        public int[] result() {
-            int[] res = new int[diff.length];
-            // 根据差分数组构造结果数组
-            res[0] = diff[0];
-            for (int i = 1; i < diff.length; i++) {
-                res[i] = res[i - 1] + diff[i];
-            }
-            return res;
-        }
-    }
-
-}
+        def result(self) -> List[int]:
+            res = [0] * len(self.diff)
+            # 根据差分数组构造结果数组
+            res[0] = self.diff[0]
+            for i in range(1, len(self.diff)):
+                res[i] = res[i - 1] + self.diff[i]
+            return res
 ``` 
 
 当然，实际的算法题可能需要我们对题目进行联想和抽象，不会这么直接地让你看出来要用差分数组技巧，这里看一下力扣第 1109 题「[航班预订统计](<https://leetcode.cn/problems/corporate-flight-bookings/>)」：
@@ -252,8 +220,8 @@ class Solution {
 
 函数签名如下：
 
-```java
-int[] corpFlightBookings(int[][] bookings, int n)
+```python
+def corpFlightBookings(bookings: List[List[int]], n: int) -> List[int]:
 ``` 
 
 这个题目就在那绕弯弯，其实它就是个差分数组的题，我给你翻译一下：
@@ -266,59 +234,47 @@ Note
 
 这么一看，不就是一道标准的差分数组题嘛？我们可以直接复用刚才写的类：
 
-```java
-class Solution {
-    public int[] corpFlightBookings(int[][] bookings, int n) {
-        // nums 初始化为全 0
-        int[] nums = new int[n];
-        // 构造差分解法
-        Difference df = new Difference(nums);
+```python
+class Solution:
+    def corpFlightBookings(self, bookings, n):
+        # nums 初始化为全 0
+        nums = [0] * n
+        # 构造差分解法
+        df = self.Difference(nums)
 
-        for (int[] booking : bookings) {
-            // 注意转成数组索引要减一哦
-            int i = booking[0] - 1;
-            int j = booking[1] - 1;
-            int val = booking[2];
-            // 对区间 nums[i..j] 增加 val
-            df.increment(i, j, val);
-        }
-        // 返回最终的结果数组
-        return df.result();
-    }
+        for booking in bookings:
+            # 注意转成数组索引要减一哦
+            i = booking[0] - 1
+            j = booking[1] - 1
+            val = booking[2]
+            # 对区间 nums[i..j] 增加 val
+            df.increment(i, j, val)
+        # 返回最终的结果数组
+        return df.result()
 
-    class Difference {
-        // 差分数组
-        private int[] diff;
+    class Difference:
+        # 差分数组
+        def __init__(self, nums):
+            assert len(nums) > 0
+            self.diff = [0] * len(nums)
+            # 构造差分数组
+            self.diff[0] = nums[0]
+            for i in range(1, len(nums)):
+                self.diff[i] = nums[i] - nums[i - 1]
 
-        public Difference(int[] nums) {
-            diff = new int[nums.length];
-            // 构造差分数组
-            diff[0] = nums[0];
-            for (int i = 1; i < nums.length; i++) {
-                diff[i] = nums[i] - nums[i - 1];
-            }
-        }
+        # 给闭区间 [i, j] 增加 val（可以是负数）
+        def increment(self, i, j, val):
+            self.diff[i] += val
+            if j + 1 < len(self.diff):
+                self.diff[j + 1] -= val
 
-        // 给闭区间 [i, j] 增加 val（可以是负数）
-        public void increment(int i, int j, int val) {
-            diff[i] += val;
-            if (j + 1 < diff.length) {
-                diff[j + 1] -= val;
-            }
-        }
-
-        public int[] result() {
-            int[] res = new int[diff.length];
-            // 根据差分数组构造结果数组
-            res[0] = diff[0];
-            for (int i = 1; i < diff.length; i++) {
-                res[i] = res[i - 1] + diff[i];
-            }
-            return res;
-        }
-    }
-
-}
+        def result(self):
+            res = [0] * len(self.diff)
+            # 根据差分数组构造结果数组
+            res[0] = self.diff[0]
+            for i in range(1, len(self.diff)):
+                res[i] = res[i - 1] + self.diff[i]
+            return res
 ``` 
 
 这道题就解决了。
@@ -359,8 +315,8 @@ class Solution {
 
 函数签名如下：
 
-```java
-boolean carPooling(int[][] trips, int capacity);
+```python
+def carPooling(trips: List[List[int]], capacity: int) -> bool:
 ``` 
 
 比如输入：
@@ -381,73 +337,54 @@ trips = [[2,1,5],[3,3,7]], capacity = 4
 
 车站编号从 0 开始，最多到 1000，也就是最多有 1001 个车站，那么我们的差分数组长度可以直接设置为 1001，这样索引刚好能够涵盖所有车站的编号：
 
-```java
-class Solution {
-    public boolean carPooling(int[][] trips, int capacity) {
-        // 最多有 1000 个车站
-        int[] nums = new int[1001];
-        // 构造差分解法
-        Difference df = new Difference(nums);
+```python
+class Solution:
+    def carPooling(self, trips: List[List[int]], capacity: int) -> bool:
+        # 最多有 1000 个车站
+        nums = [0] * 1001
+        # 构造差分解法
+        df = self.Difference(nums)
 
-        for (int[] trip : trips) {
-            // 乘客数量
-            int val = trip[0];
-            // 第 trip[1] 站乘客上车
-            int i = trip[1];
-            // 第 trip[2] 站乘客已经下车，
-            // 即乘客在车上的区间是 [trip[1], trip[2] - 1]
-            int j = trip[2] - 1;
-            // 进行区间操作
-            df.increment(i, j, val);
-        }
+        for trip in trips:
+            # 乘客数量
+            val = trip[0]
+            # 第 trip[1] 站乘客上车
+            i = trip[1]
+            # 第 trip[2] 站乘客已经下车，
+            # 即乘客在车上的区间是 [trip[1], trip[2] - 1]
+            j = trip[2] - 1
+            # 进行区间操作
+            df.increment(i, j, val)
 
-        int[] res = df.result();
+        res = df.result()
 
-        // 客车自始至终都不应该超载
-        for (int i = 0; i < res.length; i++) {
-            if (capacity < res[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
+        # 客车自始至终都不应该超载
+        for i in range(len(res)):
+            if capacity < res[i]:
+                return False
+        return True
 
-    // 差分数组工具类
-    class Difference {
-        // 差分数组
-        private int[] diff;
+    # 差分数组工具类
+    class Difference:
+        # 差分数组
+        def __init__(self, nums: List[int]):
+            # 输入一个初始数组，区间操作将在这个数组上进行
+            # 根据初始数组构造差分数组
+            self.diff = [nums[0]] + [nums[i] - nums[i - 1] for i in range(1, len(nums))]
 
-        // 输入一个初始数组，区间操作将在这个数组上进行
-        public Difference(int[] nums) {
-            diff = new int[nums.length];
-            // 根据初始数组构造差分数组
-            diff[0] = nums[0];
-            for (int i = 1; i < nums.length; i++) {
-                diff[i] = nums[i] - nums[i - 1];
-            }
-        }
+        # 给闭区间 [i, j] 增加 val（可以是负数）
+        def increment(self, i: int, j: int, val: int) -> None:
+            self.diff[i] += val
+            if j + 1 < len(self.diff):
+                self.diff[j + 1] -= val
 
-        // 给闭区间 [i, j] 增加 val（可以是负数）
-        public void increment(int i, int j, int val) {
-            diff[i] += val;
-            if (j + 1 < diff.length) {
-                diff[j + 1] -= val;
-            }
-        }
-
-        // 返回结果数组
-        public int[] result() {
-            int[] res = new int[diff.length];
-            // 根据差分数组构造结果数组
-            res[0] = diff[0];
-            for (int i = 1; i < diff.length; i++) {
-                res[i] = res[i - 1] + diff[i];
-            }
-            return res;
-        }
-    }
-
-}
+        # 返回结果数组
+        def result(self) -> List[int]:
+            res = [self.diff[0]]
+            # 根据差分数组构造结果数组
+            for i in range(1, len(self.diff)):
+                res.append(res[i - 1] + self.diff[i])
+            return res
 ``` 
 
 至此，这道题也解决了。
@@ -461,3 +398,7 @@ class Solution {
 第二个问题，前缀和技巧可以快速进行区间查询，差分数组可以快速进行区间增减。能不能把他俩结合起来，既可以快速进行区间增减，又可以随时进行区间查询？
 
 其实这两个问题是处理区间问题的常见问题，终极答案是 [线段树](</zh/algo/data-structure-basic/segment-tree-basic/>) 这种数据结构，它可以在 O(log⁡N)O(\log N)O(logN) 的时间复杂度内完成任意长度的区间增减和区间查询操作。
+
+## 评论
+
+请登录后查看/发表评论

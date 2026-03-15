@@ -21,18 +21,16 @@
   * [图结构的遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>)
   * [BFS 算法核心框架](</zh/algo/essential-technique/bfs-framework/>)
 
+成为会员即可解锁全部内容
+
+[了解会员权益](</zh/algo/intro/site-vip/?int_source=article-lock>)
+
 此页内容
 
-  * BFS 在实际场景中的有趣应用
-  * 994\. 腐烂的橘子
-  * 924\. 尽量减少恶意软件的传播
-  * 2101\. 引爆最多的炸弹
-  * 542\. 01 矩阵
-  * 417\. 太平洋大西洋水流问题
-  * 365\. 水壶问题
-  * 721\. 账户合并
-  * 2850\. 将石头分散到网格图的最少移动次数
-  * 127\. 单词接龙
-  * 399\. 除法求值
-
 AI 助教
+
+### AI 助教上线
+
+点击右下角的按钮就能唤出网站配套的「AI 助教」答疑解惑，能大幅提升学习效率，效果非常好！ 还没用过的话可以试一试~
+
+[了解详情](</zh/algo/intro/ai-assistant/>)

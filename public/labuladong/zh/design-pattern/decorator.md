@@ -204,7 +204,7 @@ public class BusinessHandler implements Handler {
         // 模拟业务逻辑
         if ("/api/user".equals(request.getPath())) {
             response.setStatusCode(200);
-            response.setBody("{ \"name\": \"Alice\", \"email\": \"[email protected]\" }");
+            response.setBody("{ \"name\": \"Alice\", \"email\": \"alice@example.com\" }");
         } else {
             response.setStatusCode(404);
             response.setBody("Not Found");
@@ -325,7 +325,7 @@ Business logic finished.
 <<< Exiting AuthenticationMiddleware...
 Response sent with status: 200. Request took 1ms.
 <<< Exiting LoggingMiddleware...
-Final Response: Response [statusCode=200, body='{ "name": "Alice", "email": "[email protected]" }']
+Final Response: Response [statusCode=200, body='{ "name": "Alice", "email": "alice@example.com" }']
 
 >>> Entering LoggingMiddleware...
 Request received: /api/user
@@ -363,3 +363,7 @@ Final Response: Response [statusCode=401, body='Unauthorized']
 装饰器模式的主要缺点是可能导致类数量增加，因为每增加一种装饰功能，就需要增加一个新的装饰器类，如果装饰组合很多，会导致系统中出现大量的小类。
 
 总的来说，当你需要在一个现有类的基础上动态地添加功能，并且不想通过继承来修改它时，装饰器模式是一个非常不错的选择。
+
+## 评论
+
+请登录后查看/发表评论
