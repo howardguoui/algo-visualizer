@@ -11,14 +11,13 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[887\. Super Egg Drop](https://leetcode.com/problems/super-egg-drop/)|   
+[887\. Super Egg Drop](<https://leetcode.com/problems/super-egg-drop/>)|   
   
 Prerequisites
 
 Before reading this article, you should first learn:
 
-  * [Dynamic Programming Core Framework](/en/algo/essential-technique/dynamic-programming-framework/)
-
+  * [Dynamic Programming Core Framework](</en/algo/essential-technique/dynamic-programming-framework/>)
 
 This article discusses a classic algorithm problem: given several floors and several eggs, you need to determine the minimum number of attempts required to find the highest floor from which an egg can be dropped without breaking. This problem is frequently asked in interviews at major Chinese companies as well as Google and Facebook. However, they often change the context to throwing cups or bowls instead of eggs to avoid wastage.
 
@@ -26,9 +25,9 @@ We'll get to the specific problem shortly. This problem has numerous solution te
 
 Let's now use the general dynamic programming approach we've emphasized to analyze this problem.
 
-## ¶1\. Understanding the Problem
+## 1\. Understanding the Problem
 
-This is LeetCode problem 887: [Super Egg Drop](https://leetcode.com/problems/super-egg-drop/). I will explain the problem:
+This is LeetCode problem 887: [Super Egg Drop](<https://leetcode.com/problems/super-egg-drop/>). I will explain the problem:
 
 You have a building with floors numbered from 1 to `N`. You are given `K` eggs (`K` is at least 1). There is a floor `F` (where `0 <= F <= N`). If you drop an egg from floor `F`, it will **not break**. If you drop an egg from any floor higher than `F`, it will break. If you drop an egg from any floor lower than `F`, it will not break. If the egg does not break, you can pick it up and use it again.
 
@@ -69,5 +68,3 @@ If you don’t do "binary search", but do "divide by 5" or "divide by 10", you c
 After all this explanation, the goal is to make sure you understand the problem. This problem is really complex, even for humans. So how can we solve it with an algorithm?
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

@@ -11,20 +11,19 @@ All practice problems and example problems on this site are selected from LeetCo
 
 To help beginners, we will briefly introduce how online judge platforms work and some tips to use them.
 
-## ¶Core Code Mode
+## Core Code Mode
 
 On LeetCode, you are given a function signature and you need to implement the function. This is usually called **core code mode**.
 
 For example, LeetCode problem 1, Two Sum, asks you to implement a `twoSum` function:
 
-C++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int[] twoSum(int[] nums, int target) {
-            
-        }
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        
     }
+}
+``` 
 
 This means you are given an input array `nums` and a target value `target`. You need to write the algorithm and finally return an array as the result.
 
@@ -32,7 +31,7 @@ When you submit your code, the system will call your `twoSum` function on severa
 
 For users, core code mode is the most convenient form, because you only need to focus on the algorithm logic.
 
-## ¶ACM Mode
+## ACM Mode
 
 Some companies still use ACM mode in their coding tests, so we need to talk about it.
 
@@ -40,41 +39,41 @@ ACM mode is more troublesome: the input is a string with a specific format. You 
 
 After you submit your code, the system will format each test case as a string and pass it to your program. Then it compares the output your program prints with the expected output to judge correctness.
 
-All problems in [our problem set](https://labuladong.online/zh/problemset/core/) support both core code mode and ACM mode. Here is an example of ACM mode for one problem:
+All problems in [our problem set](<https://labuladong.online/zh/problemset/core/>) support both core code mode and ACM mode. Here is an example of ACM mode for one problem:
 
-![](/images/algo/acm/acm-mode-en.jpg)
+![diagram](https://labuladong.online/images/algo/acm/acm-mode-en.jpg)
 
 You can see that the code editor does not contain any starter code. You must import libraries, read input, and print the answer by yourself.
 
-In [ACM Mode I/O Template](/en/algo/intro/acm-mode/), I will give a general input/output template to turn ACM mode into core code mode. So when you learn, just use core code mode. It is simple and lets you focus on understanding the algorithm logic. Before interviews or written tests, spend one or two hours to get used to ACM mode, and mainly remember how your programming language reads input.
+In [ACM Mode I/O Template](</en/algo/intro/acm-mode/>), I will give a general input/output template to turn ACM mode into core code mode. So when you learn, just use core code mode. It is simple and lets you focus on understanding the algorithm logic. Before interviews or written tests, spend one or two hours to get used to ACM mode, and mainly remember how your programming language reads input.
 
 Next, we will look at tips for using online judges and how they check whether your solution is correct.
 
-## ¶How to Read the Problem
+## How to Read the Problem
 
-Take LeetCode #704, "[Binary Search](https://leetcode.cn/problems/binary-search/)," for example:
+Take LeetCode #704, "[Binary Search](<https://leetcode.cn/problems/binary-search/>)," for example:
 
-**704\. Binary Search** |[LeetCode](https://leetcode.com/problems/binary-search/)
+**704\. Binary Search** |[LeetCode](<https://leetcode.com/problems/binary-search/>)
 
 Given an array of integers `nums` which is sorted in ascending order, and an integer `target`, write a function to search `target` in `nums`. If `target` exists, then return its index. Otherwise, return `-1`.
 
 You must write an algorithm with `O(log n)` runtime complexity.
 
 **Example 1:**
-    
-    
-    **Input:** nums = [-1,0,3,5,9,12], target = 9
-    **Output:** 4
-    **Explanation:** 9 exists in nums and its index is 4
-    
+
+```
+Input: nums = [-1,0,3,5,9,12], target = 9
+Output: 4
+Explanation: 9 exists in nums and its index is 4
+``` 
 
 **Example 2:**
-    
-    
-    **Input:** nums = [-1,0,3,5,9,12], target = 2
-    **Output:** -1
-    **Explanation:** 2 does not exist in nums so return -1
-    
+
+```
+Input: nums = [-1,0,3,5,9,12], target = 2
+Output: -1
+Explanation: 2 does not exist in nums so return -1
+``` 
 
 **Constraints:**
 
@@ -83,19 +82,17 @@ You must write an algorithm with `O(log n)` runtime complexity.
   * All the integers in `nums` are **unique**.
   * `nums` is sorted in ascending order.
 
-
-The problem is from [LeetCode 704. Binary Search](https://leetcode.com/problems/binary-search/).
+The problem is from [LeetCode 704. Binary Search](<https://leetcode.com/problems/binary-search/>).
 
 You're given an empty function signature, and you need to implement the `search` function:
 
-C++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int search(int[] nums, int target) {
-            // your code here
-        }
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+        // your code here
     }
+}
+``` 
 
 You're given a sorted array `nums` in ascending order, and you need to return the index of `target`, or `-1` if it's not found.
 
@@ -107,30 +104,29 @@ For this one, the constraints tell you the size of `nums`, the range of values, 
 
 This matters because if there were duplicates, which index should you return? Details like this are usually in the constraints, so don't skip them.
 
-## ¶How to Solve
+## How to Solve
 
-This problem is designed to test binary search (which we'll cover in [Binary Search Algorithm](/en/algo/essential-technique/binary-search-framework/)), but let's start with a straightforward solution:
+This problem is designed to test binary search (which we'll cover in [Binary Search Algorithm](</en/algo/essential-technique/binary-search-framework/>)), but let's start with a straightforward solution:
 
-C++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int search(int[] nums, int target) {
-            // traverse the array, return the index if found
-            for (int i = 0; i < nums.length; i++) {
-                if (nums[i] == target) {
-                    return i;
-                }
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+        // traverse the array, return the index if found
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == target) {
+                return i;
             }
-            return -1;
         }
+        return -1;
     }
+}
+``` 
 
 Copy this into LeetCode's editor, hit "Run" to test it against the sample cases, or hit "Submit" to see if it passes all test cases.
 
-## ¶How to Debug
+## How to Debug
 
-The best way to debug is to solve LeetCode problems in your local editor where you can set breakpoints and step through your code. For setup instructions, check out the companion [vscode plugin](/en/algo/intro/vscode/) and [Jetbrains IDE plugin](/en/algo/intro/jetbrains/).
+The best way to debug is to solve LeetCode problems in your local editor where you can set breakpoints and step through your code. For setup instructions, check out the companion [vscode plugin](</en/algo/intro/vscode/>) and [Jetbrains IDE plugin](</en/algo/intro/jetbrains/>).
 
 If you're using the web editor, you can add print statements—LeetCode will show your output in the bottom-right panel. For simple bugs, checking the output is usually enough to spot the issue.
 
@@ -138,23 +134,24 @@ Remember to remove print statements before submitting
 
 Print statements involve I/O operations that slow down your code, so remove them before submitting—they can tank your runtime.
 
-## ¶How the Judge Works
+## How the Judge Works
 
 As of writing this, the solution above passes all of LeetCode's test cases.
 
 LeetCode has a bunch of predefined test cases behind the scenes, like:
-    
-    
-    Test case: nums = [-1,0,3,5,9,12], target = 9
-    Expected output: 4
-    
-    Test case: nums = [-1,0,3,5,9,12], target = 2
-    Expected output: -1
-    
-    Test case: nums = [5], target = 5
-    Expected output: 0
-    
-    ...
+
+```
+Test case: nums = [-1,0,3,5,9,12], target = 9
+Expected output: 4
+
+Test case: nums = [-1,0,3,5,9,12], target = 2
+Expected output: -1
+
+Test case: nums = [5], target = 5
+Expected output: 0
+
+...
+``` 
 
 These test cases get passed as arguments to your `search` function, and the system checks if your return value matches the expected output.
 
@@ -172,7 +169,7 @@ In online assessments, you can ignore these restrictions—if your code passes a
 
 That said, this is gaming the system. When you're learning, stick to the constraints—you can't pull these tricks in front of a live interviewer.
 
-## ¶Common Errors When Submitting Code
+## Common Errors When Submitting Code
 
 If the submitted code passes all the test cases in the backend, it is considered a successful submission, often referred to as AC (Accepted).
 
@@ -180,7 +177,7 @@ If the submitted code fails to pass all test cases, it is considered a failed su
 
 Compile Error
 
-The code cannot be compiled, usually due to syntax errors like spelling mistakes or missing semicolons. This kind of error often occurs when writing code directly on the webpage. Using our site's accompanying [Jetbrains IDE plugin](/en/algo/intro/jetbrains/) or [vscode plugin](/en/algo/intro/vscode/) can help prevent these errors with basic syntax checking features.
+The code cannot be compiled, usually due to syntax errors like spelling mistakes or missing semicolons. This kind of error often occurs when writing code directly on the webpage. Using our site's accompanying [Jetbrains IDE plugin](</en/algo/intro/jetbrains/>) or [vscode plugin](</en/algo/intro/vscode/>) can help prevent these errors with basic syntax checking features.
 
 Runtime Error
 
@@ -200,7 +197,6 @@ To solve this problem, check the following:
 
   2. Are there coding errors, such as incorrect boundary control leading to infinite loops, or incorrect passing of values and references causing meaningless data copying?
 
-
 If you are stuck on large-scale test cases, it generally indicates your algorithm's results are correct since the smaller test cases have passed, but the time complexity needs optimization.
 
 In written exams, scoring is usually based on the number of test cases passed. If you cannot find the optimal solution to pass all test cases, submitting a brute-force solution to pass a few test cases for partial credit is also a clever strategy.
@@ -215,16 +211,15 @@ To solve this problem, check the following:
 
   2. Are there mistakes in using value parameters in recursive functions causing meaningless data copying?
 
-
-## ¶Notes for Submitting Code on LeetCode
+## Notes for Submitting Code on LeetCode
 
 If you are new to solving problems on LeetCode, here are some common mistakes beginners make.
 
-### ¶Do Not Use File-Level Global Variables
+### Do Not Use File-Level Global Variables
 
 LeetCode will run your code with several predefined test cases, and check if your return values are correct. So, there is an important rule:
 
-**Do not use file-level global variables in your code.** Otherwise, data from one test case may affect another. LeetCode also explains this here: <https://support.leetcode.cn/hc/kb/article/1194344/>[](https://support.leetcode.cn/hc/kb/article/1194344/)
+**Do not use file-level global variables in your code.** Otherwise, data from one test case may affect another. LeetCode also explains this here: <https://support.leetcode.cn/hc/kb/article/1194344/>[](<https://support.leetcode.cn/hc/kb/article/1194344/>)
 
 Some readers say their code works for one test case, but fails when they submit. This usually happens because the code only works for a single test case, but when submitted, different test cases share the same global variable, causing errors.
 
@@ -232,54 +227,52 @@ In this tutorial, when I talk about "global variables", I mean class-level varia
 
 Here is an example. For the problem of preorder traversal of a binary tree, you are given the root of a binary tree and asked to return the preorder traversal result. You can write:
 
-C++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // correct example, class-level global variable
-        LinkedList<Integer> res = new LinkedList<>();
-    
-        public List<Integer> preorderTraversal(TreeNode root) {
-            traverse(root);
-            return res;
-        }
-    
-        void traverse(TreeNode root) {
-            if (root == null) {
-                return;
-            }
-            // other functions within the class can access res
-            res.add(root.val);
-            traverse(root.left);
-            traverse(root.right);
-        }
+```java
+class Solution {
+    // correct example, class-level global variable
+    LinkedList<Integer> res = new LinkedList<>();
+
+    public List<Integer> preorderTraversal(TreeNode root) {
+        traverse(root);
+        return res;
     }
+
+    void traverse(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        // other functions within the class can access res
+        res.add(root.val);
+        traverse(root.left);
+        traverse(root.right);
+    }
+}
+``` 
 
 For languages like Java/C++/Python, which use a `Solution` class, you can put shared variables inside the class. For Go/JavaScript, which do not use classes, you can define higher-order functions and use closures to let inner functions access shared variables.
 
 Or, you can pass the variable as a function parameter. This is also a good solution:
 
-C++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public List<Integer> preorderTraversal(TreeNode root) {
-            // correct example, passed as an argument to other functions
-            LinkedList<Integer> res = new LinkedList<>();
-            traverse(root, res);
-            return res;
-        }
-    
-        void traverse(TreeNode root, LinkedList<Integer> res) {
-            if (root == null) {
-                return;
-            }
-            // access and modify the res variable
-            res.add(root.val);
-            traverse(root.left, res);
-            traverse(root.right, res);
-        }
+```java
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        // correct example, passed as an argument to other functions
+        LinkedList<Integer> res = new LinkedList<>();
+        traverse(root, res);
+        return res;
     }
+
+    void traverse(TreeNode root, LinkedList<Integer> res) {
+        if (root == null) {
+            return;
+        }
+        // access and modify the res variable
+        res.add(root.val);
+        traverse(root.left, res);
+        traverse(root.right, res);
+    }
+}
+``` 
 
 Important
 
@@ -287,7 +280,7 @@ Important
 
 For example, in the code above, in C++, the `traverse` function must use reference parameters like `vector<int>& res`. If you use `vector<int> res`, each recursion will copy the entire vector, making the code slow and possibly giving the wrong answer.
 
-### ¶Remove Print Statements Before Submitting
+### Remove Print Statements Before Submitting
 
 When running test cases, LeetCode will show your code's standard output. You can use print statements to debug. But, **before you submit your code, always comment out all print statements.**
 
@@ -296,5 +289,3 @@ Standard output is an IO operation, which is slow. If you keep print statements,
 That's all for now. Next, I will guide you through some easy LeetCode problems for practice. Reading is not enough—you need to try it yourself!
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

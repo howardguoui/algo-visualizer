@@ -21,11 +21,6 @@
   * [图结构的遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>)
   * [BFS 算法核心框架](</zh/algo/essential-technique/bfs-framework/>)
 
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
-
 此页内容
 
   * 从树结构的层序遍历开始
@@ -40,6 +35,5 @@ Loading comments...
   * 433\. 最小基因变化
   * 1926\. 迷宫中离入口最近的出口
   * 1091\. 二进制矩阵中的最短路径
-
 
 AI 助教

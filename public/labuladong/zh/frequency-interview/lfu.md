@@ -20,7 +20,6 @@ LeetCode| 力扣| 难度
   * [哈希表基础](</zh/algo/data-structure-basic/hashmap-basic/>)
   * [哈希表实现](</zh/algo/data-structure-basic/hashtable-chaining/>)
 
-
 上篇文章 [带你手写LRU算法](</zh/algo/data-structure/lru-cache/>) 写了 LRU 缓存淘汰算法的实现方法，本文来写另一个著名的缓存淘汰算法：LFU 算法。
 
 LRU 算法的淘汰策略是 Least Recently Used，也就是每次淘汰那些最久没被使用的数据；而 LFU 算法的淘汰策略是 Least Frequently Used，也就是每次淘汰那些使用次数最少的数据。
@@ -35,21 +34,20 @@ LRU 算法的核心数据结构是使用哈希链表 `LinkedHashMap`，首先借
 
 那么本文我就带你拆解 LFU 算法，自顶向下，逐步求精，就是解决复杂问题的不二法门。
 
-## ¶一、算法描述
+## 一、算法描述
 
 要求你写一个类，接受一个 `capacity` 参数，实现 `get` 和 `put` 方法：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class LFUCache {
-        // 构造容量为 capacity 的缓存
-        public LFUCache(int capacity) {}
-        // 在缓存中查询 key
-        public int get(int key) {}
-        // 将 key 和 val 存入缓存
-        public void put(int key, int val) {}
-    }
+```java
+class LFUCache {
+    // 构造容量为 capacity 的缓存
+    public LFUCache(int capacity) {}
+    // 在缓存中查询 key
+    public int get(int key) {}
+    // 将 key 和 val 存入缓存
+    public void put(int key, int val) {}
+}
+``` 
 
 `get(key)` 方法会去缓存中查询键 `key`，如果 `key` 存在，则返回 `key` 对应的 `val`，否则返回 -1。
 
@@ -57,28 +55,27 @@ CC++GoJavaJavaScriptPython
 
 当缓存达到容量 `capacity` 时，则应该在插入新的键值对之前，删除使用频次（后文用 `freq` 表示）最低的键值对。如果 `freq` 最低的键值对有多个，则删除其中最旧的那个。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 构造一个容量为 2 的 LFU 缓存
-    LFUCache cache = new LFUCache(2);
-    
-    // 插入两对 (key, val)，对应的 freq 为 1
-    cache.put(1, 10);
-    cache.put(2, 20);
-    
-    // 查询 key 为 1 对应的 val
-    // 返回 10，同时键 1 对应的 freq 变为 2
-    cache.get(1);
-    
-    // 容量已满，淘汰 freq 最小的键 2
-    // 插入键值对 (3, 30)，对应的 freq 为 1
-    cache.put(3, 30);   
-    
-    // 键 2 已经被淘汰删除，返回 -1
-    cache.get(2);
+```java
+// 构造一个容量为 2 的 LFU 缓存
+LFUCache cache = new LFUCache(2);
 
-## ¶二、思路分析
+// 插入两对 (key, val)，对应的 freq 为 1
+cache.put(1, 10);
+cache.put(2, 20);
+
+// 查询 key 为 1 对应的 val
+// 返回 10，同时键 1 对应的 freq 变为 2
+cache.get(1);
+
+// 容量已满，淘汰 freq 最小的键 2
+// 插入键值对 (3, 30)，对应的 freq 为 1
+cache.put(3, 30);   
+
+// 键 2 已经被淘汰删除，返回 -1
+cache.get(2);
+``` 
+
+## 二、思路分析
 
 一定先从最简单的开始，根据 LFU 算法的逻辑，我们先列举出算法执行过程中的几个显而易见的事实：
 
@@ -92,20 +89,14 @@ CC++GoJavaJavaScriptPython
 
 1、使用一个 `HashMap` 存储 `key` 到 `val` 的映射，就可以快速计算 `get(key)`。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    HashMap<Integer, Integer> keyToVal;
+```java
+HashMap<Integer, Integer> keyToVal;
+``` 
 
 2、使用一个 `HashMap` 存储 `key` 到 `freq` 的映射，就可以快速操作 `key` 对应的 `freq`。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    HashMap<Integer, Integer> keyToFreq;
+```java
+HashMap<Integer, Integer> keyToFreq;
+``` 
 
 3、这个需求应该是 LFU 算法的核心，所以我们分开说：
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

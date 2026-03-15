@@ -11,22 +11,22 @@ Prerequisite
 
 Before reading this article, you should first learn:
 
-  * [Basics of Arrays (Sequential Storage)](/en/algo/data-structure-basic/array-basic/)
-
+  * [Basics of Arrays (Sequential Storage)](</en/algo/data-structure-basic/array-basic/>)
 
 First, I want to clear up a common misunderstanding for beginners.
 
 Are hash tables and the Map (key–value mapping) we often talk about the same thing? No.
 
 In Java this is very clear. `Map` is a Java interface. It only declares some methods and does not give their concrete implementation:
-    
-    
-    interface Map<K, V> {
-        V get(K key);
-        void put(K key, V value);
-        V remove(K key);
-        // ...
-    }
+
+```
+interface Map<K, V> {
+    V get(K key);
+    void put(K key, V value);
+    V remove(K key);
+    // ...
+}
+``` 
 
 The Map interface only defines a set of operations for key–value mappings. A data structure like `HashMap` implements these operations in its own way. Other data structures also implement this interface, such as `TreeMap`, `LinkedHashMap`, and so on.
 
@@ -38,7 +38,7 @@ Other languages may not have such a clear interface definition as Java. So it is
 
 In this chapter, we will implement a hash table by hand. We will see why a hash table can support insert, delete, search, and update in O(1)O(1)O(1) on average, and we will talk about two ways to handle hash collisions.
 
-## ¶Basic idea of a hash table
+## Basic idea of a hash table
 
 You can think of a hash table as an enhanced array.
 
@@ -48,47 +48,46 @@ A hash table is similar. You can use a `key` to find the corresponding `value` i
 
 How does this work? It is very simple. The bottom layer of a hash table is just an array (let’s call it `table`). It first passes the `key` into a hash function (let’s call it `hash`) to convert it into an index of the array. Then the insert, delete, search, and update operations are almost the same as operations on an array:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // Pseudocode logic for a hash table
-    class MyHashMap {
-    
-        private Object[] table;
-    
-        // Insert/Update, complexity O(1)
-        public void put(K key, V value) {
-            int index = hash(key);
-            table[index] = value;
-        }
-    
-        // Retrieve, complexity O(1)
-        public V get(K key) {
-            int index = hash(key);
-            return table[index];
-        }
-    
-        // Delete, complexity O(1)
-        public void remove(K key) {
-            int index = hash(key);
-            table[index] = null;
-        }
-    
-        // Hash function, converting key into a valid index in the table
-        // The time complexity must be O(1) to ensure that
-        // the above methods all have complexity O(1)
-        private int hash(K key) {
-            // ...
-        }
+```java
+// Pseudocode logic for a hash table
+class MyHashMap {
+
+    private Object[] table;
+
+    // Insert/Update, complexity O(1)
+    public void put(K key, V value) {
+        int index = hash(key);
+        table[index] = value;
     }
+
+    // Retrieve, complexity O(1)
+    public V get(K key) {
+        int index = hash(key);
+        return table[index];
+    }
+
+    // Delete, complexity O(1)
+    public void remove(K key) {
+        int index = hash(key);
+        table[index] = null;
+    }
+
+    // Hash function, converting key into a valid index in the table
+    // The time complexity must be O(1) to ensure that
+    // the above methods all have complexity O(1)
+    private int hash(K key) {
+        // ...
+    }
+}
+``` 
 
 In a real implementation, there are many details: how to design the hash function, how to handle hash collisions, and so on. But once you understand the core idea above, you are already halfway there. The rest is just coding, which is not that hard.
 
 Next, we will look at some key concepts in these operations and the problems that may appear.
 
-## ¶Key concepts and principles
+## Key concepts and principles
 
-### ¶`key` is unique, `value` can repeat
+### `key` is unique, `value` can repeat
 
 In a hash table, two entries cannot have the same `key`, but `value` can be repeated.
 
@@ -98,7 +97,7 @@ If you understand the principle above, this is easy. Just compare it with an arr
 
 A hash table is the same. The `key` values must be unique, but the `value` can be anything and can repeat.
 
-### ¶Hash Function
+### Hash Function
 
 A hash function turns an input of any length (the key) into a fixed-length output (the index).
 
@@ -123,46 +122,49 @@ How to ensure the index is valid
 `hashCode` returns an int. First problem: this int may be negative, but array indices must be non-negative.
 
 You may want to write code like this to make it non-negative:
-    
-    
-    int h = key.hashCode();
-    if (h < 0) h = -h;
+
+```
+int h = key.hashCode();
+if (h < 0) h = -h;
+``` 
 
 But this has a problem. The smallest int is `-2^31`, and the largest is `2^31 - 1`. So if `h = -2^31`, then `-h = 2^31`, which is larger than the max int. This is integer overflow. It can cause errors or even undefined results.
 
 Why is the minimum `-2^31` and the maximum `2^31 - 1`? This comes from how two’s complement works. Simply put, an int has 32 bits. The highest (leftmost) bit is the sign bit. If it is 0, the number is positive; if it is 1, the number is negative.
 
 Now we want `h` to be non-negative, but we cannot just use the minus sign. A simple way is to use the two’s complement rule and clear the highest sign bit to 0. Then `h` must be non-negative:
-    
-    
-    int h = key.hashCode();
-    // Bit operation to clear the highest sign bit
-    // Bit operations are usually faster than arithmetic operations
-    h = h & 0x7fffffff;
-    // 0x7fffffff in binary is 0111 1111 ... 1111
-    // The highest bit is 0, all other bits are 1
-    // After & with any int, the highest bit becomes 0, so h is non-negative
+
+```
+int h = key.hashCode();
+// Bit operation to clear the highest sign bit
+// Bit operations are usually faster than arithmetic operations
+h = h & 0x7fffffff;
+// 0x7fffffff in binary is 0111 1111 ... 1111
+// The highest bit is 0, all other bits are 1
+// After & with any int, the highest bit becomes 0, so h is non-negative
+``` 
 
 We will not go deeper into two’s complement here. You can search and learn it if you are interested.
 
 Now we solved the negative `hashCode` problem. But another problem remains: `hashCode` is usually very large. We need to map it into a valid index of the `table` array.
 
-This should not be hard for you. In [Circular Array Principles and Implementation](/en/algo/data-structure-basic/cycle-array/), we used `%` (mod) to keep the index inside the array range. Here we can also use `%` to make the index valid. The full `hash` function is:
-    
-    
-    int hash(K key) {
-        int h = key.hashCode();
-        // Make it non-negative
-        h = h & 0x7fffffff;
-        // Map it to a valid index in table
-        return h % table.length;
-    }
+This should not be hard for you. In [Circular Array Principles and Implementation](</en/algo/data-structure-basic/cycle-array/>), we used `%` (mod) to keep the index inside the array range. Here we can also use `%` to make the index valid. The full `hash` function is:
+
+```
+int hash(K key) {
+    int h = key.hashCode();
+    // Make it non-negative
+    h = h & 0x7fffffff;
+    // Map it to a valid index in table
+    return h % table.length;
+}
+``` 
 
 Of course, using `%` directly also has a downside. The `%` operation is slower. In performance-critical standard library code, they try to avoid `%` and use bit operations instead.
 
 But in this chapter, our goal is to help you understand how to build a simple hash table, so we ignore such optimizations. If you are interested, you can read the Java HashMap source and see how it implements the `hash` function.
 
-### ¶Hash Collision
+### Hash Collision
 
 We have defined the `hash` function. Now, what if two different `key`s get the same index from the hash function? This is called a hash collision.
 
@@ -178,7 +180,7 @@ How do we handle collisions? Two common methods are **separate chaining** and **
 
 The idea is simple: one is extending vertically, the other is extending horizontally:
 
-![](/images/algo/ds-basic/hash-collision-en.jpeg)
+![diagram](https://labuladong.online/images/algo/ds-basic/hash-collision-en.jpeg)
 
 In separate chaining, the hash table array does not directly store the `value`. It stores a linked list. If multiple different `key`s map to the same index, all these `key -> value` pairs are stored in the linked list at that index. This solves the collision.
 
@@ -186,11 +188,11 @@ In linear probing, if one `key` finds that its `index` is already used by anothe
 
 For example, in the figure, the insert order of keys is `k2, k4, k5, k3, k1`. Then the bottom array of the hash table looks like this:
 
-![](/images/algo/ds-basic/hash-collision-with-key-en.jpeg)
+![diagram](https://labuladong.online/images/algo/ds-basic/hash-collision-with-key-en.jpeg)
 
 Here we only talk about the idea. In later sections, we will implement both methods step by step to handle hash collisions.
 
-### ¶Resizing and Load Factor
+### Resizing and Load Factor
 
 You may have heard the term “load factor”. Now that you understand hash collisions, you can also understand what load factor means.
 
@@ -208,7 +210,6 @@ Why do hash collisions happen frequently? Two reasons:
 
   2. The hash table already stores too many `key-value` pairs. Even if the hash function is perfect, collisions cannot be avoided.
 
-
 There is nothing much we can do about the first problem. The authors of language standard libraries have already designed good hash functions. You just call them.
 
 The second problem is under our control. We can avoid making the hash table too full. This leads to the idea of “load factor”.
@@ -223,30 +224,31 @@ For a hash table using separate chaining, the load factor can be arbitrarily lar
 
 In Java’s `HashMap`, you can set the load factor when you create the hash table. If you do not set it, the default is `0.75`. This value comes from experience; usually you just keep the default.
 
-**When the number of elements reaches the load factor threshold, the hash table will resize.** This is similar to what we did when we implemented a [dynamic array](/en/algo/data-structure-basic/array-implement/): we increase the capacity of the underlying `table` array and move all data to the new bigger array. `size` stays the same, `table.length` grows, so the load factor becomes smaller.
+**When the number of elements reaches the load factor threshold, the hash table will resize.** This is similar to what we did when we implemented a [dynamic array](</en/algo/data-structure-basic/array-implement/>): we increase the capacity of the underlying `table` array and move all data to the new bigger array. `size` stays the same, `table.length` grows, so the load factor becomes smaller.
 
-### ¶Why You Cannot Rely on Hash Table Traversal Order
+### Why You Cannot Rely on Hash Table Traversal Order
 
 There is a common rule: the order of keys when you iterate over a hash table is not fixed. You should not depend on this order in your code. Why?
 
 Iterating a hash table is, in essence, iterating the underlying `table` array:
-    
-    
-    // Pseudocode: iterate all keys
-    
-    // The underlying table array of the hash table
-    KVNode[] table = new KVNode[1000];
-    
-    // Get all keys in the hash table
-    // We cannot rely on the order of this keys list
-    List<KeyType> keys = new ArrayList<>();
-    
-    for (int i = 0; i < table.length; i++) {
-        KVNode node = table[i];
-        if (node != null) {
-            keys.add(node.key);
-        }
+
+```
+// Pseudocode: iterate all keys
+
+// The underlying table array of the hash table
+KVNode[] table = new KVNode[1000];
+
+// Get all keys in the hash table
+// We cannot rely on the order of this keys list
+List<KeyType> keys = new ArrayList<>();
+
+for (int i = 0; i < table.length; i++) {
+    KVNode node = table[i];
+    if (node != null) {
+        keys.add(node.key);
     }
+}
+``` 
 
 If you understood what we discussed earlier, you can already see the reason.
 
@@ -262,7 +264,7 @@ In practice, you may see this: the first key from one traversal is `key1`, but a
 
 So you do not need to memorize this rule. Once you understand the principles, you can reason it out yourself.
 
-### ¶Why You Should Not Add/Delete Keys During a for Loop
+### Why You Should Not Add/Delete Keys During a for Loop
 
 Note: I say “not recommended”, not “never allowed”. Different languages implement hash tables differently. Some languages have special handling for this case. Whether it is allowed or not must be checked in the documentation.
 
@@ -274,7 +276,7 @@ Resizing and changing key order is a behavior special to hash tables, but even i
 
 If you really want to do this, read the documentation carefully and make sure you understand exactly what will happen.
 
-### ¶`key` must be immutable
+### `key` must be immutable
 
 **Only immutable types can be used as hash table`key`. This is very important.**
 
@@ -284,26 +286,28 @@ For example, in Java, `String` and `Integer` are immutable. After you create the
 In contrast, Java’s `ArrayList` and `LinkedList` are mutable. After creation, you can freely add or remove elements, so they are mutable types.
 
 So you can use `String` as the `key` of a hash table, but you should not use `ArrayList` as a `key`:
-    
-    
-    // You can use immutable types as key
-    Map<String, AnyOtherType> map1 = new HashMap<>();
-    Map<Integer, AnyOtherType> map2 = new HashMap<>();
-    
-    // You should not use mutable types as key
-    // Note: this is valid syntax, but the code is very likely to have bugs
-    Map<ArrayList<Integer>, AnyOtherType> map3 = new HashMap<>();
+
+```
+// You can use immutable types as key
+Map<String, AnyOtherType> map1 = new HashMap<>();
+Map<Integer, AnyOtherType> map2 = new HashMap<>();
+
+// You should not use mutable types as key
+// Note: this is valid syntax, but the code is very likely to have bugs
+Map<ArrayList<Integer>, AnyOtherType> map3 = new HashMap<>();
+``` 
 
 Why is it not recommended to use a mutable type as `key`?  
 Take `ArrayList` as an example. Its `hashCode` is implemented roughly like this:
-    
-    
-    public int hashCode() {
-        int h = 0;
-        for (int i = 0; i < elementData.length; i++) {
-            h = 31 * h + elementData[i];
-        }
+
+```
+public int hashCode() {
+    int h = 0;
+    for (int i = 0; i < elementData.length; i++) {
+        h = 31 * h + elementData[i];
     }
+}
+``` 
 
 **First problem: performance.**  
 Each time you compute `hashCode`, you must scan the whole array. Time complexity is O(N)O(N)O(N).  
@@ -318,33 +322,34 @@ If you now use this `arr` to query the hash table, you won’t find the value.
 
 **In other words, the`key-value` pair you put into the hash table has “disappeared”.  
 This is a very serious bug and can also cause memory leak.**
-    
-    
-    public class Test {
-        public static void main(String[] args) {
-            // Wrong example:
-            // Use a mutable type as HashMap key
-            Map<ArrayList<Integer>, Integer> map = new HashMap<>();
-    
-            ArrayList<Integer> arr = new ArrayList<>();
-            arr.add(1);
-            arr.add(2);
-    
-            map.put(arr, 999);
-            System.out.println(map.containsKey(arr)); // true
-            System.out.println(map.get(arr)); // 999
-    
-            arr.add(3);
-            // Serious bug: key-value pair is "lost"
-            System.out.println(map.containsKey(arr)); // false
-            System.out.println(map.get(arr)); // null
-    
-            // In fact, the key-value pair for arr is still in the underlying table of map.
-            // But because arr's hashCode has changed, this pair can no longer be found.
-            // This can also cause memory leak, because arr is still
-            // referenced by map and cannot be garbage-collected.
-        }
+
+```
+public class Test {
+    public static void main(String[] args) {
+        // Wrong example:
+        // Use a mutable type as HashMap key
+        Map<ArrayList<Integer>, Integer> map = new HashMap<>();
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        arr.add(1);
+        arr.add(2);
+
+        map.put(arr, 999);
+        System.out.println(map.containsKey(arr)); // true
+        System.out.println(map.get(arr)); // 999
+
+        arr.add(3);
+        // Serious bug: key-value pair is "lost"
+        System.out.println(map.containsKey(arr)); // false
+        System.out.println(map.get(arr)); // null
+
+        // In fact, the key-value pair for arr is still in the underlying table of map.
+        // But because arr's hashCode has changed, this pair can no longer be found.
+        // This can also cause memory leak, because arr is still
+        // referenced by map and cannot be garbage-collected.
     }
+}
+``` 
 
 This is a simple wrong example.  
 You may think: if we remove the element `3`, won’t the pair `arr -> 999` come back?  
@@ -361,13 +366,13 @@ For example, use `String` as `key`. A `String` in Java cannot change after it is
 
 The `hashCode` of `String` also needs to scan all characters.  
 But because `String` is immutable, once the hash is computed, it can be cached.  
-So the [average time complexity](/en/algo/essential-technique/complexity-analysis/) is still O(1)O(1)O(1).
+So the [average time complexity](</en/algo/essential-technique/complexity-analysis/>) is still O(1)O(1)O(1).
 
 I used Java as an example, but other languages are similar.  
 You should read the documentation of your language’s standard library.  
 Understand how the hash table computes hash values for objects. This helps you avoid such bugs.
 
-## ¶Summary
+## Summary
 
 Now we have connected all the key ideas behind hash tables.  
 Let’s summarize with a few typical interview questions:
@@ -400,5 +405,3 @@ Only then can you write correct and efficient code.
 Next, I will show you step by step how to implement simple hash tables using separate chaining and linear probing to deepen your understanding of hash tables.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

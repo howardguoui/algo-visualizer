@@ -19,7 +19,6 @@ LeetCode| 力扣| 难度
 
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
 
-
 很多读者对动态规划问题的 base case、备忘录初始值等问题存在疑问，本文就专门讲一讲这类问题，顺便聊一聊怎么通过题目的蛛丝马迹揣测出题人的小心思，辅助我们解题。
 
 看下力扣第 931 题「[下降路径最小和](<https://leetcode.cn/problems/minimum-falling-path-sum/>)」，输入为一个 `n * n` 的二维数组 `matrix`，请你计算从第一行落到最后一行，经过的路径和最小为多少：
@@ -32,23 +31,23 @@ LeetCode| 力扣| 难度
 
 **示例 1：**
 
-![](/images/lc/uploads/2021/11/03/failing1-grid.jpg)
-    
-    
-    **输入：** matrix = [[2,1,3],[6,5,4],[7,8,9]]
-    **输出：** 13
-    **解释：** 如图所示，为和最小的两条下降路径
-    
+![diagram](https://labuladong.online/images/lc/uploads/2021/11/03/failing1-grid.jpg)
+
+```
+输入：matrix = [[2,1,3],[6,5,4],[7,8,9]]
+输出：13
+解释：如图所示，为和最小的两条下降路径
+``` 
 
 **示例 2：**
 
-![](/images/lc/uploads/2021/11/03/failing2-grid.jpg)
-    
-    
-    **输入：** matrix = [[-19,57],[-40,-5]]
-    **输出：** -59
-    **解释：** 如图所示，为和最小的下降路径
-    
+![diagram](https://labuladong.online/images/lc/uploads/2021/11/03/failing2-grid.jpg)
+
+```
+输入：matrix = [[-19,57],[-40,-5]]
+输出：-59
+解释：如图所示，为和最小的下降路径
+``` 
 
 **提示：**
 
@@ -56,20 +55,14 @@ LeetCode| 力扣| 难度
   * `1 <= n <= 100`
   * `-100 <= matrix[i][j] <= 100`
 
-
 题目来源：[力扣 931. 下降路径最小和](<https://leetcode.cn/problems/minimum-falling-path-sum/>)。
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int minFallingPathSum(int[][] matrix);
+```java
+int minFallingPathSum(int[][] matrix);
+``` 
 
 今天这道题不算是困难的题目，所以**我借这道题来讲讲 base case 的返回值、备忘录的初始值、索引越界情况的返回值如何确定** 。
 
 不过还是要根据 [动态规划的标准套路](</zh/algo/essential-technique/dynamic-programming-framework/>) 讲一下这道题的解题思路。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

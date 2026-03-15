@@ -17,16 +17,10 @@
 
   * [队列/栈的原理](</zh/algo/data-structure-basic/queue-stack-basic/>)
 
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
-
 此页内容
 
   * 20\. 有效的括号
   * 921\. 使括号有效的最小添加
   * 1541\. 平衡括号串的最少插入
-
 
 AI 助教

@@ -11,23 +11,22 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[1091\. Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/)|   
+[1091\. Shortest Path in Binary Matrix](<https://leetcode.com/problems/shortest-path-in-binary-matrix/>)|   
   
 Prerequisites
 
 Before reading this article, you need to learn:
 
-  * [Overview of Shortest Path Algorithms for Graphs](/en/algo/data-structure-basic/graph-shortest-path/)
-  * [Core Principles and Implementation of Dijkstra's Algorithm](/en/algo/data-structure/dijkstra/)
-
+  * [Overview of Shortest Path Algorithms for Graphs](</en/algo/data-structure-basic/graph-shortest-path/>)
+  * [Core Principles and Implementation of Dijkstra's Algorithm](</en/algo/data-structure/dijkstra/>)
 
 One-Sentence Summary
 
 The A* algorithm is primarily used to solve point-to-point shortest path problems in 2D grids. By introducing a heuristic function, it directs the search toward the destination, improving search efficiency.
 
-[Standard BFS](/en/algo/data-structure-basic/graph-traverse-basic/) can compute the shortest path in an **unweighted graph**.
+[Standard BFS](</en/algo/data-structure-basic/graph-traverse-basic/>) can compute the shortest path in an **unweighted graph**.
 
-[Dijkstra's algorithm](/en/algo/data-structure/dijkstra/) uses a priority queue to efficiently compute the shortest path in **weighted graphs** without negative weights.
+[Dijkstra's algorithm](</en/algo/data-structure/dijkstra/>) uses a priority queue to efficiently compute the shortest path in **weighted graphs** without negative weights.
 
 But have you ever wondered: for an unweighted graph, what happens if you insist on using Dijkstra's algorithm? Would there be any performance improvement?
 
@@ -51,10 +50,8 @@ Since the destination is in the bottom-right corner, you should prioritize searc
 
 **This is the core idea behind the A* algorithm: consider not only the distance from the start to a node, but also the distance from that node to the destination**.
 
-## ¶Core Idea of the A* Algorithm
+## Core Idea of the A* Algorithm
 
 Specifically, for any node `x`, we define three quantities:
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

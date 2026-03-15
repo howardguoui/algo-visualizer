@@ -20,7 +20,6 @@ LeetCode| 力扣| 难度
 
   * [动态规划解题套路框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
 
-
 一句话总结
 
 回溯算法的剪枝优化是提前排除不可能的答案，使树结构尽可能小，最终的算法复杂度一般是指数级别；动态规划的备忘录优化是为了避免重复计算，把树形结构优化成线性结构，最终的算法复杂度一般是多项式级别。
@@ -52,44 +51,46 @@ LeetCode| 力扣| 难度
 算法可视化
 
 心里只要有这样一棵二叉树，就应该能写出代码：
+
+```
+// 定义：做 n 次选择，返回可以获得的最大金额
+int findMax(int n) {
+    if (n == 0) return 0;
     
-    
-    // 定义：做 n 次选择，返回可以获得的最大金额
-    int findMax(int n) {
-        if (n == 0) return 0;
-        
-        // 这次选择 1 元，然后递归求解剩下的 n - 1 次选择的最大值
-        int result1 = 1 + findMax(n - 1);
-        // 这次选择 100 元，然后递归求解剩下的 n - 1 次选择的最大值
-        int result2 = 100 + findMax(n - 1);
-    
-        // 返回两种选择中的最大值
-        return Math.max(result1, result2);
-    }
+    // 这次选择 1 元，然后递归求解剩下的 n - 1 次选择的最大值
+    int result1 = 1 + findMax(n - 1);
+    // 这次选择 100 元，然后递归求解剩下的 n - 1 次选择的最大值
+    int result2 = 100 + findMax(n - 1);
+
+    // 返回两种选择中的最大值
+    return Math.max(result1, result2);
+}
+``` 
 
 这个算法的复杂度是二叉树的节点数量，是指数级别，非常高。不过到这里你应该已经看出来了，`findMax(n - 1)` 的值肯定都一样，那么 `100 + findMax(n - 1)` 必然大于 `1 + findMax(n - 1)`，因此可以进行优化：
-    
-    
-    // 优化一、没必要对两种选择进行比较了
-    int findMax(int n) {
-        if (n == 0) return 0;
-        int result = 100 + findMax(n - 1);
-        return result;
+
+```
+// 优化一、没必要对两种选择进行比较了
+int findMax(int n) {
+    if (n == 0) return 0;
+    int result = 100 + findMax(n - 1);
+    return result;
+}
+
+// 优化二、递归改为迭代
+int findMax(int n) {
+    int result = 0;
+    for (int i = 0; i < n; i++) {
+        result += 100;
     }
-    
-    // 优化二、递归改为迭代
-    int findMax(int n) {
-        int result = 0;
-        for (int i = 0; i < n; i++) {
-            result += 100;
-        }
-        return result;
-    }
-    
-    // 优化三、直接计算结果就行了
-    int findMax(int n) {
-        return 100 * n;
-    }
+    return result;
+}
+
+// 优化三、直接计算结果就行了
+int findMax(int n) {
+    return 100 * n;
+}
+``` 
 
 这就是贪心算法，复杂度从 O(2n)O(2^n)O(2n) 优化到了 O(1)O(1)O(1)，堪称离谱。
 
@@ -98,7 +99,3 @@ LeetCode| 力扣| 难度
 其实算法本来就很简单，就是穷举，有什么了不起的嘛？围绕穷举，衍生出各种优化方法，起了些花里胡哨的名字，不懂的人就容易被名字骗到，其实从原理上讲，没多大差别，不过是见招拆招罢了。
 
 上面的例子虽然简单，但已经蕴含了贪心算法的精髓。接下来我们拓展延伸一下，在真实的算法问题中，如何发现贪心选择性质，如何用贪心算法解决问题。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

@@ -20,7 +20,6 @@ LeetCode| 力扣| 难度
   * [线段树基本实现](</zh/algo/data-structure/segment-tree-implement/>)
   * [优化：动态线段树](</zh/algo/data-structure/segment-tree-dynamic/>)
 
-
 [线段树基本实现](</zh/algo/data-structure/segment-tree-implement/>) 中用数组和链表分别实现了线段树，文末留了两个优化点，分别是区间更新问题和稀疏数据的内存优化问题。
 
 [优化：动态线段树](</zh/algo/data-structure/segment-tree-dynamic/>) 解决了稀疏数据的内存优化问题，**本文将基于`DynamicSegmentTree` 的链式实现，使用「懒更新」技术，为线段树新增 `rangeAdd/rangeUpdate` 方法，在 O(log⁡N)O(\log N)O(logN) 时间复杂度内完成任意长度的区间更新**。
@@ -38,53 +37,51 @@ LeetCode| 力扣| 难度
 这两种场景都是算法题中常见的，本文会同时给出这两种实现。
 
 我们之前实现的线段树主要 API 如下：
+
+```
+class SegmentTree {
+
+    // 初始化线段树
+    public SegmentTree(int[] nums, Function<Integer, Integer> merge) {}
+
+    // 查询闭区间 [qL, qR] 的聚合值，时间复杂度 O(logN)
+    public int query(int qL, int qR) {}
     
-    
-    class SegmentTree {
-    
-        // 初始化线段树
-        public SegmentTree(int[] nums, Function<Integer, Integer> merge) {}
-    
-        // 查询闭区间 [qL, qR] 的聚合值，时间复杂度 O(logN)
-        public int query(int qL, int qR) {}
-        
-        // 单点更新，设置 nums[i] = val，时间复杂度 O(logN)
-        public void update(int i, int val) {}
-    }
+    // 单点更新，设置 nums[i] = val，时间复杂度 O(logN)
+    public void update(int i, int val) {}
+}
+``` 
 
 本文将实现以下两种线段树：
-    
-    
-    // 区间累加线段树
-    class IncrSegmentTree {
-    
-        // 初始化动态线段树
-        public IncrSegmentTree(int start, int end, int defaultValue) {}
-    
-        // 将闭区间 [qL, qR] 增加 delta（可以是负数），时间复杂度 O(logN)
-        public void rangeAdd(int qL, int qR, int delta) {}
-    
-        // 查询闭区间 [qL, qR] 的元素和，时间复杂度 O(logN)
-        public int query(int qL, int qR) {}
-    }
-    
-    // 区间赋值线段树
-    class AssignSegmentTree {
-    
-        // 初始化动态线段树
-        public AssignSegmentTree(int start, int end, int defaultValue) {}
-    
-        // 将闭区间 [qL, qR] 赋值为 val，时间复杂度 O(logN)
-        public void rangeUpdate(int qL, int qR, int val) {}
-    
-        // 查询闭区间 [qL, qR] 的元素和，时间复杂度 O(logN)
-        public int query(int qL, int qR) {}
-    }
+
+```
+// 区间累加线段树
+class IncrSegmentTree {
+
+    // 初始化动态线段树
+    public IncrSegmentTree(int start, int end, int defaultValue) {}
+
+    // 将闭区间 [qL, qR] 增加 delta（可以是负数），时间复杂度 O(logN)
+    public void rangeAdd(int qL, int qR, int delta) {}
+
+    // 查询闭区间 [qL, qR] 的元素和，时间复杂度 O(logN)
+    public int query(int qL, int qR) {}
+}
+
+// 区间赋值线段树
+class AssignSegmentTree {
+
+    // 初始化动态线段树
+    public AssignSegmentTree(int start, int end, int defaultValue) {}
+
+    // 将闭区间 [qL, qR] 赋值为 val，时间复杂度 O(logN)
+    public void rangeUpdate(int qL, int qR, int val) {}
+
+    // 查询闭区间 [qL, qR] 的元素和，时间复杂度 O(logN)
+    public int query(int qL, int qR) {}
+}
+``` 
 
 `rangeAdd` 和 `rangeUpdate` 的实现逻辑非常类似，理论上可以同时实现到一个类上，但是两个逻辑混在一起代码会更复杂，徒增理解成本，而且实际的算法题中，一般只会用到区间累加或区间赋值中的一种，不会同时用到，所以本文还是把它们拆到两个类分别实现，方便大家理解其原理。
 
 本文的最后会给出一个万能线段树模板 `AllInOneSegmentTree`，同时包含上述所有 API 和线段树的所有优化，笔试时可以直接拿来使用。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

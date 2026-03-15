@@ -19,12 +19,7 @@
   * [二叉树心法（后序篇）](</zh/algo/data-structure/binary-tree-part3/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
 像求和、求高度这种基本的二叉树函数很容易写，有时候只要在它们的后序位置添加一点代码，就能得到我们想要的答案。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -35,6 +30,5 @@ Loading comments...
   * 1372\. 二叉树中的最长交错路径
   * 606\. 根据二叉树创建字符串
   * 1443\. 收集树上所有苹果的最少时间
-
 
 AI 助教

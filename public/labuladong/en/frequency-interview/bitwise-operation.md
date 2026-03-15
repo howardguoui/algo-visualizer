@@ -11,124 +11,131 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[191\. Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/)|   
-[231\. Power of Two](https://leetcode.com/problems/power-of-two/)|   
-[136\. Single Number](https://leetcode.com/problems/single-number/)|   
-[268\. Missing Number](https://leetcode.com/problems/missing-number/)|   
+[191\. Number of 1 Bits](<https://leetcode.com/problems/number-of-1-bits/>)|   
+[231\. Power of Two](<https://leetcode.com/problems/power-of-two/>)|   
+[136\. Single Number](<https://leetcode.com/problems/single-number/>)|   
+[268\. Missing Number](<https://leetcode.com/problems/missing-number/>)|   
   
 Bit manipulation is full of clever tricks. There's a website called Bit Twiddling Hacks that has collected pretty much every bit manipulation hack out there:
 
-<http://graphics.stanford.edu/~seander/bithacks.html>[](http://graphics.stanford.edu/~seander/bithacks.html)
+<http://graphics.stanford.edu/~seander/bithacks.html>[](<http://graphics.stanford.edu/~seander/bithacks.html>)
 
 Most of those tricks are way too obscure to memorize, though. I'd treat it more like a reference you look things up in when needed. That said, the ones that are genuinely fun and useful? Those are worth learning by heart.
 
 So in this article, we'll start with the fundamentals of bitwise operations, then work our way up to some commonly used bit manipulation tricks for both algorithm problems and real-world development.
 
-## ¶Bitwise Operation Basics
+## Bitwise Operation Basics
 
-### ¶Binary Representation
+### Binary Representation
 
 In a computer, all data is ultimately stored in binary. Binary uses just two digits—0 and 1—and each digit is called a bit.
 
 For example, the decimal number 13 in binary is `1101`. Here's how to read it:
-    
-    
-    1101 = 1×2³ + 1×2² + 0×2¹ + 1×2⁰ = 8 + 4 + 0 + 1 = 13
+
+```
+1101 = 1×2³ + 1×2² + 0×2¹ + 1×2⁰ = 8 + 4 + 0 + 1 = 13
+``` 
 
 In programming languages like Java, you can use the `0b` prefix to write binary literals:
-    
-    
-    int a = 0b1101;  // equivalent to decimal 13
-    int b = 0b1010;  // equivalent to decimal 10
 
-### ¶Shift Operations
+```
+int a = 0b1101;  // equivalent to decimal 13
+int b = 0b1010;  // equivalent to decimal 10
+``` 
+
+### Shift Operations
 
 **Left shift`<<`**: Shifts the binary digits to the left by a given number of positions, filling the right side with 0s. Shifting left by n is the same as multiplying by 2^n.
-    
-    
-    int a = 5;           // binary: 0b0101
-    int b = a << 1;      // binary: 0b1010, decimal: 10
-    int c = a << 2;      // binary: 0b10100, decimal: 20
-    
-    // shifting left by n equals multiplying by 2^n
-    // 5 << 1 = 5 * 2¹ = 10
-    // 5 << 2 = 5 * 2² = 20
+
+```
+int a = 5;           // binary: 0b0101
+int b = a << 1;      // binary: 0b1010, decimal: 10
+int c = a << 2;      // binary: 0b10100, decimal: 20
+
+// shifting left by n equals multiplying by 2^n
+// 5 << 1 = 5 * 2¹ = 10
+// 5 << 2 = 5 * 2² = 20
+``` 
 
 **Right shift`>>`**: Shifts the binary digits to the right by a given number of positions, filling the left side with the sign bit. Shifting right by n is the same as dividing by 2^n (rounded down).
-    
-    
-    int a = 20;          // binary: 0b10100
-    int b = a >> 1;      // binary: 0b1010, decimal: 10
-    int c = a >> 2;      // binary: 0b101, decimal: 5
-    
-    // shifting right by n equals dividing by 2^n
-    // 20 >> 1 = 20 / 2¹ = 10
-    // 20 >> 2 = 20 / 2² = 5
 
-### ¶AND Operation
+```
+int a = 20;          // binary: 0b10100
+int b = a >> 1;      // binary: 0b1010, decimal: 10
+int c = a >> 2;      // binary: 0b101, decimal: 5
+
+// shifting right by n equals dividing by 2^n
+// 20 >> 1 = 20 / 2¹ = 10
+// 20 >> 2 = 20 / 2² = 5
+``` 
+
+### AND Operation
 
 **AND`&`**: The result is 1 only when both corresponding bits are 1; otherwise it's 0.
-    
-    
-    int a = 12;          // binary: 0b1100
-    int b = 10;          // binary: 0b1010
-    int c = a & b;       // binary: 0b1000, decimal: 8
-    
-    // bit-by-bit breakdown:
-    // 1100
-    // 1010
-    // ----
-    // 1000
+
+```
+int a = 12;          // binary: 0b1100
+int b = 10;          // binary: 0b1010
+int c = a & b;       // binary: 0b1000, decimal: 8
+
+// bit-by-bit breakdown:
+// 1100
+// 1010
+// ----
+// 1000
+``` 
 
 **Common uses** :
 
   * Checking odd/even: `n & 1`—if the result is 1, n is odd; if 0, n is even
   * Extracting a specific bit: `n & (1 << k)` extracts the k-th bit of n
 
+```
+int n = 13;          // binary: 0b1101
+boolean isOdd = (n & 1) == 1;  // true, 13 is odd
 
-    
-    
-    int n = 13;          // binary: 0b1101
-    boolean isOdd = (n & 1) == 1;  // true, 13 is odd
-    
-    // extract bit 2 (counting from the right, starting at 0)
-    int bit2 = (n & (1 << 2)) != 0 ? 1 : 0;  // result is 1
+// extract bit 2 (counting from the right, starting at 0)
+int bit2 = (n & (1 << 2)) != 0 ? 1 : 0;  // result is 1
+``` 
 
-### ¶OR Operation
+### OR Operation
 
 **OR`|`**: The result is 1 if at least one of the two corresponding bits is 1.
-    
-    
-    int a = 12;          // binary: 0b1100
-    int b = 10;          // binary: 0b1010
-    int c = a | b;       // binary: 0b1110, decimal: 14
-    
-    // bit-by-bit breakdown:
-    // 1100
-    // 1010
-    // ----
-    // 1110
+
+```
+int a = 12;          // binary: 0b1100
+int b = 10;          // binary: 0b1010
+int c = a | b;       // binary: 0b1110, decimal: 14
+
+// bit-by-bit breakdown:
+// 1100
+// 1010
+// ----
+// 1110
+``` 
 
 **Common uses** : Setting a specific bit to 1: `n | (1 << k)` sets the k-th bit of n to 1
-    
-    
-    int n = 12;          // binary: 0b1100
-    n = n | (1 << 0);    // set bit 0 to 1, result: 0b1101, decimal: 13
 
-### ¶XOR Operation
+```
+int n = 12;          // binary: 0b1100
+n = n | (1 << 0);    // set bit 0 to 1, result: 0b1101, decimal: 13
+``` 
+
+### XOR Operation
 
 **XOR`^`**: The result is 0 when both bits are the same, and 1 when they differ.
-    
-    
-    int a = 12;          // binary: 0b1100
-    int b = 10;          // binary: 0b1010
-    int c = a ^ b;       // binary: 0b0110, decimal: 6
-    
-    // bit-by-bit breakdown:
-    // 1100
-    // 1010
-    // ----
-    // 0110
+
+```
+int a = 12;          // binary: 0b1100
+int b = 10;          // binary: 0b1010
+int c = a ^ b;       // binary: 0b0110, decimal: 6
+
+// bit-by-bit breakdown:
+// 1100
+// 1010
+// ----
+// 0110
+``` 
 
 **Key properties of XOR** :
 
@@ -136,80 +143,75 @@ In programming languages like Java, you can use the `0b` prefix to write binary 
   2. `a ^ 0 = a`: XORing any number with 0 gives the number itself
   3. XOR is commutative and associative: `a ^ b ^ c = a ^ (b ^ c) = (a ^ b) ^ c`
 
+```
+int a = 5;
+int result1 = a ^ a;    // result is 0
+int result2 = a ^ 0;    // result is 5
 
-    
-    
-    int a = 5;
-    int result1 = a ^ a;    // result is 0
-    int result2 = a ^ 0;    // result is 5
-    
-    // commutativity and associativity
-    int x = 3, y = 5, z = 7;
-    int r1 = x ^ y ^ z;     // result is 1
-    int r2 = x ^ (y ^ z);   // result is 1
-    int r3 = (x ^ y) ^ z;   // result is 1
+// commutativity and associativity
+int x = 3, y = 5, z = 7;
+int r1 = x ^ y ^ z;     // result is 1
+int r2 = x ^ (y ^ z);   // result is 1
+int r3 = (x ^ y) ^ z;   // result is 1
+``` 
 
 **Common uses** :
 
   * Toggling a specific bit: `n ^ (1 << k)` flips the k-th bit of n (0 becomes 1, 1 becomes 0)
   * Swapping two numbers (we'll cover this in detail later)
 
-
-    
-    
-    int n = 12;          // binary: 0b1100
-    n = n ^ (1 << 0);    // flip bit 0, result: 0b1101, decimal: 13
-    n = n ^ (1 << 0);    // flip bit 0 again, result: 0b1100, decimal: 12
+```
+int n = 12;          // binary: 0b1100
+n = n ^ (1 << 0);    // flip bit 0, result: 0b1101, decimal: 13
+n = n ^ (1 << 0);    // flip bit 0 again, result: 0b1100, decimal: 12
+``` 
 
 Now that you have a solid grasp of these basic bitwise operations, let's look at some fun and useful bit manipulation tricks.
 
-## ¶Some Interesting Bit Operations
-    
-    
-    // 1. Use OR `|` with space to convert English letters to lowercase
-    ('a' | ' ') = 'a'
-    ('A' | ' ') = 'a'
-    
-    // 2. Use AND `&` with underscore to convert English letters to uppercase
-    ('b' & '_') = 'B'
-    ('B' & '_') = 'B'
-    
-    // 3. Use XOR `^` with space to flip letter case
-    ('d' ^ ' ') = 'D'
-    ('D' ^ ' ') = 'd'
-    
-    // These work because of ASCII codes.
-    // Characters are actually numbers, and the codes for space and underscore
-    // can flip case through bit operations.
-    // If you are interested, you can check the ASCII table and do the math yourself.
-    
-    
-    // 4. Swap two numbers without a temp variable
-    int a = 1, b = 2;
-    a ^= b;
-    b ^= a;
-    a ^= b;
-    // now a = 2, b = 1
-    
-    
-    // 5. Add one
-    int n = 1;
-    n = -~n;
-    // now n = 2
-    
-    
-    // 6. Subtract one
-    int n = 2;
-    n = ~-n;
-    // now n = 1
-    
-    
-    // 7. Check if two numbers have different signs
-    int x = -1, y = 2;
-    boolean f = ((x ^ y) < 0); // true
-    
-    int x = 3, y = 2;
-    boolean f = ((x ^ y) < 0); // false
+## Some Interesting Bit Operations
+
+```
+// 1. Use OR `|` with space to convert English letters to lowercase
+('a' | ' ') = 'a'
+('A' | ' ') = 'a'
+
+// 2. Use AND `&` with underscore to convert English letters to uppercase
+('b' & '_') = 'B'
+('B' & '_') = 'B'
+
+// 3. Use XOR `^` with space to flip letter case
+('d' ^ ' ') = 'D'
+('D' ^ ' ') = 'd'
+
+// These work because of ASCII codes.
+// Characters are actually numbers, and the codes for space and underscore
+// can flip case through bit operations.
+// If you are interested, you can check the ASCII table and do the math yourself.
+
+// 4. Swap two numbers without a temp variable
+int a = 1, b = 2;
+a ^= b;
+b ^= a;
+a ^= b;
+// now a = 2, b = 1
+
+// 5. Add one
+int n = 1;
+n = -~n;
+// now n = 2
+
+// 6. Subtract one
+int n = 2;
+n = ~-n;
+// now n = 1
+
+// 7. Check if two numbers have different signs
+int x = -1, y = 2;
+boolean f = ((x ^ y) < 0); // true
+
+int x = 3, y = 2;
+boolean f = ((x ^ y) < 0); // false
+``` 
 
 The first 6 tricks are not very useful in real code. But the 7th trick is quite practical. It uses the sign bit in **two’s complement**.
 
@@ -217,7 +219,7 @@ In integer encoding, the highest bit is the sign bit. For negative numbers, the 
 
 If you do not use bit operations, you must use if-else to check the sign, which is more trouble. You may think of using the product to check the sign, but that can easily cause integer overflow and give wrong results.
 
-## ¶Modulo with Power of 2
+## Modulo with Power of 2
 
 For modulus (remainder), we usually use the `%` operator. But in some code (for example, in the source code of HashMap), you may see `&` instead. This is an optimization.
 
@@ -227,35 +229,33 @@ The bit operation `&` is much faster than `%`, so this trick is very useful wher
 
 A common use is in a circular array. The normal way is to use `%` so that the index loops in `[0, arr.length - 1]`:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int[] arr = {1,2,3,4};
-    int index = 0;
-    while (true) {
-        // looping in a circular array
-        print(arr[index % arr.length]);
-        index++;
-    }
-    // output: 1,2,3,4,1,2,3,4,1,2,3,4...
+```java
+int[] arr = {1,2,3,4};
+int index = 0;
+while (true) {
+    // looping in a circular array
+    print(arr[index % arr.length]);
+    index++;
+}
+// output: 1,2,3,4,1,2,3,4,1,2,3,4...
+``` 
 
 If the array length is a power of 2, we can use `&` to speed up the modulus:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int[] arr = {1,2,3,4};
-    int index = 0;
-    while (true) {
-        // loop in the circular array
-        print(arr[index & (arr.length - 1)]);
-        index++;
-    }
-    // output: 1,2,3,4,1,2,3,4,1,2,3,4...
+```java
+int[] arr = {1,2,3,4};
+int index = 0;
+while (true) {
+    // loop in the circular array
+    print(arr[index & (arr.length - 1)]);
+    index++;
+}
+// output: 1,2,3,4,1,2,3,4,1,2,3,4...
+``` 
 
 Important
 
-This trick only works when the array length is a power of 2, like 2, 4, 8, 16, 32, and so on. There are clever bit hacks that can round a number up to a power of 2. You can check <https://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2>[](https://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2)
+This trick only works when the array length is a power of 2, like 2, 4, 8, 16, 32, and so on. There are clever bit hacks that can round a number up to a power of 2. You can check <https://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2>[](<https://graphics.stanford.edu/~seander/bithacks.html#RoundUpPowerOf2>)
 
 Simply put, `& (arr.length - 1)` can replace `% arr.length` and gives better performance.
 
@@ -263,37 +263,36 @@ Now another question: we keep doing `index++`, and this gives us a circular effe
 
 If you use `%` for modulus, once `index` becomes negative, the result of `%` can also be negative, and you must handle this case specially. But with `&`, `index` will not become negative and everything still works:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int[] arr = {1,2,3,4};
-    int index = 0;
-    while (true) {
-        // looping in a circular array
-        print(arr[index & (arr.length - 1)]);
-        index--;
-    }
-    // output: 1,4,3,2,1,4,3,2,1,4,3,2,1...
+```java
+int[] arr = {1,2,3,4};
+int index = 0;
+while (true) {
+    // looping in a circular array
+    print(arr[index & (arr.length - 1)]);
+    index--;
+}
+// output: 1,4,3,2,1,4,3,2,1,4,3,2,1...
+``` 
 
 You may not use this trick often in your own code, but you will see it a lot when reading other code bases. Just keep it in mind so you are not confused when you see it.
 
-## ¶The Usage of `n & (n-1)`
+## The Usage of `n & (n-1)`
 
 The operation **`n& (n-1)` is common in algorithms, and its effect is to remove the last 1 in the binary form of `n`**.
 
 Look at the picture and it becomes clear:
 
-![](/images/algo/bit-op/1.png)
+![diagram](https://labuladong.online/images/algo/bit-op/1.png)
 
 The key idea: `n - 1` will remove the last 1 in `n`, and turn all the bits after it into 1. Then `n & (n - 1)` will clear only that last 1 to 0.
 
-### ¶Hamming Weight
+### Hamming Weight
 
-This is LeetCode 191: “[Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/)”:
+This is LeetCode 191: “[Number of 1 Bits](<https://leetcode.com/problems/number-of-1-bits/>)”:
 
-**191\. Number of 1 Bits** |[LeetCode](https://leetcode.com/problems/number-of-1-bits/)
+**191\. Number of 1 Bits** |[LeetCode](<https://leetcode.com/problems/number-of-1-bits/>)
 
-Write a function that takes the binary representation of a positive integer and returns the number of set bits it has (also known as the [Hamming weight](https://en.wikipedia.org/wiki/Hamming_weight)).
+Write a function that takes the binary representation of a positive integer and returns the number of set bits it has (also known as the [Hamming weight](<https://en.wikipedia.org/wiki/Hamming_weight>)).
 
 **Example 1:**
 
@@ -331,85 +330,84 @@ The input binary string **1111111111111111111111111111101** has a total of thirt
 
 **Follow up:** If this function is called many times, how would you optimize it?
 
-The problem is from [LeetCode 191. Number of 1 Bits](https://leetcode.com/problems/number-of-1-bits/).
+The problem is from [LeetCode 191. Number of 1 Bits](<https://leetcode.com/problems/number-of-1-bits/>).
 
 You need to return how many 1s are in the binary form of `n`. Since `n & (n - 1)` can remove the last 1, we can keep doing this in a loop and count, until `n` becomes 0.
 
-CC++GoJavaJavaScriptPython
-    
-    
-    public class Solution {
-        // you need to treat n as an unsigned value
-        public int hammingWeight(int n) {
-            int res = 0;
-            while (n != 0) {
-                n = n & (n - 1);
-                res++;
-            }
-            return res;
+```java
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int res = 0;
+        while (n != 0) {
+            n = n & (n - 1);
+            res++;
         }
+        return res;
     }
+}
+``` 
 
-### ¶Check If a Number Is a Power of 2
+### Check If a Number Is a Power of 2
 
-This is LeetCode 231: “[Power of Two](https://leetcode.com/problems/power-of-two/)”.
+This is LeetCode 231: “[Power of Two](<https://leetcode.com/problems/power-of-two/>)”.
 
 If a number is a power of 2, its binary form has exactly one 1:
-    
-    
-    2^0 = 1 = 0b0001
-    2^1 = 2 = 0b0010
-    2^2 = 4 = 0b0100
+
+```
+2^0 = 1 = 0b0001
+2^1 = 2 = 0b0010
+2^2 = 4 = 0b0100
+``` 
 
 Using the trick `n & (n - 1)` makes it easy (note operator precedence, you cannot remove the parentheses):
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public boolean isPowerOfTwo(int n) {
-            if (n <= 0) return false;
-            return (n & (n - 1)) == 0;
-        }
+```java
+class Solution {
+    public boolean isPowerOfTwo(int n) {
+        if (n <= 0) return false;
+        return (n & (n - 1)) == 0;
     }
+}
+``` 
 
-## ¶The Usage of `a ^ a = 0`
+## The Usage of `a ^ a = 0`
 
 We must remember these properties of XOR:
 
 A number XOR itself is 0, that is `a ^ a = 0`.  
 A number XOR 0 is the number itself, that is `a ^ 0 = a`.
 
-### ¶Find the Element That Appears Only Once
+### Find the Element That Appears Only Once
 
-This is LeetCode 136: “[Single Number](https://leetcode.com/problems/single-number/)”:
+This is LeetCode 136: “[Single Number](<https://leetcode.com/problems/single-number/>)”:
 
-**136\. Single Number** |[LeetCode](https://leetcode.com/problems/single-number/)
+**136\. Single Number** |[LeetCode](<https://leetcode.com/problems/single-number/>)
 
 Given a **non-empty** array of integers `nums`, every element appears _twice_ except for one. Find that single one.
 
 You must implement a solution with a linear runtime complexity and use only constant extra space.
 
 **Example 1:**
-    
-    
-    **Input:** nums = [2,2,1]
-    **Output:** 1
-    
+
+```
+Input: nums = [2,2,1]
+Output: 1
+``` 
 
 **Example 2:**
-    
-    
-    **Input:** nums = [4,1,2,1,2]
-    **Output:** 4
-    
+
+```
+Input: nums = [4,1,2,1,2]
+Output: 4
+``` 
 
 **Example 3:**
-    
-    
-    **Input:** nums = [1]
-    **Output:** 1
-    
+
+```
+Input: nums = [1]
+Output: 1
+``` 
 
 **Constraints:**
 
@@ -417,55 +415,53 @@ You must implement a solution with a linear runtime complexity and use only cons
   * `-3 * 104 <= nums[i] <= 3 * 104`
   * Each element in the array appears twice except for one element which appears only once.
 
-
-The problem is from [LeetCode 136. Single Number](https://leetcode.com/problems/single-number/).
+The problem is from [LeetCode 136. Single Number](<https://leetcode.com/problems/single-number/>).
 
 For this problem, we just XOR all numbers together. Pairs of equal numbers will become 0. The single number XOR 0 is still itself, so the final XOR result is the element that appears only once:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int singleNumber(int[] nums) {
-            int res = 0;
-            for (int n : nums) {
-                res ^= n;
-            }
-            return res;
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        int res = 0;
+        for (int n : nums) {
+            res ^= n;
         }
+        return res;
     }
+}
+``` 
 
-### ¶Find the Missing Number
+### Find the Missing Number
 
-This is LeetCode Problem 268: [Missing Number](https://leetcode.com/problems/missing-number/):
+This is LeetCode Problem 268: [Missing Number](<https://leetcode.com/problems/missing-number/>):
 
-**268\. Missing Number** |[LeetCode](https://leetcode.com/problems/missing-number/)
+**268\. Missing Number** |[LeetCode](<https://leetcode.com/problems/missing-number/>)
 
 Given an array `nums` containing `n` distinct numbers in the range `[0, n]`, return _the only number in the range that is missing from the array._
 
 **Example 1:**
-    
-    
-    **Input:** nums = [3,0,1]
-    **Output:** 2
-    **Explanation:** n = 3 since there are 3 numbers, so all numbers are in the range [0,3]. 2 is the missing number in the range since it does not appear in nums.
-    
+
+```
+Input: nums = [3,0,1]
+Output: 2
+Explanation: n = 3 since there are 3 numbers, so all numbers are in the range [0,3]. 2 is the missing number in the range since it does not appear in nums.
+``` 
 
 **Example 2:**
-    
-    
-    **Input:** nums = [0,1]
-    **Output:** 2
-    **Explanation:** n = 2 since there are 2 numbers, so all numbers are in the range [0,2]. 2 is the missing number in the range since it does not appear in nums.
-    
+
+```
+Input: nums = [0,1]
+Output: 2
+Explanation: n = 2 since there are 2 numbers, so all numbers are in the range [0,2]. 2 is the missing number in the range since it does not appear in nums.
+``` 
 
 **Example 3:**
-    
-    
-    **Input:** nums = [9,6,4,2,3,5,7,0,1]
-    **Output:** 8
-    **Explanation:** n = 9 since there are 9 numbers, so all numbers are in the range [0,9]. 8 is the missing number in the range since it does not appear in nums.
-    
+
+```
+Input: nums = [9,6,4,2,3,5,7,0,1]
+Output: 8
+Explanation: n = 9 since there are 9 numbers, so all numbers are in the range [0,9]. 8 is the missing number in the range since it does not appear in nums.
+``` 
 
 **Constraints:**
 
@@ -474,10 +470,9 @@ Given an array `nums` containing `n` distinct numbers in the range `[0, n]`, ret
   * `0 <= nums[i] <= n`
   * All the numbers of `nums` are **unique**.
 
-
 **Follow up:** Could you implement a solution using only `O(1)` extra space complexity and `O(n)` runtime complexity?
 
-The problem is from [LeetCode 268. Missing Number](https://leetcode.com/problems/missing-number/).
+The problem is from [LeetCode 268. Missing Number](<https://leetcode.com/problems/missing-number/>).
 
 You are given an array of length `n`. The valid indices are `[0, n)`, but now you want to put `n + 1` numbers `[0, n]` into it. So one number must be missing. Please find this missing number.
 
@@ -493,21 +488,20 @@ We can understand the problem like this: we have an arithmetic sequence `0, 1, 2
 
 `sum(0, 1, ..., n) - sum(nums)`.
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int missingNumber(int[] nums) {
-        int n = nums.length;
-        // Although the data range given by the problem is not large, we should
-        // use long type to prevent integer overflow for the sake of rigor
-        // Sum formula: (first term + last term) * number of terms / 2
-        long expect = (0 + n) * (n + 1) / 2;
-        long sum = 0;
-        for (int x : nums) {
-            sum += x;
-        }
-        return (int)(expect - sum);
+```java
+int missingNumber(int[] nums) {
+    int n = nums.length;
+    // Although the data range given by the problem is not large, we should
+    // use long type to prevent integer overflow for the sake of rigor
+    // Sum formula: (first term + last term) * number of terms / 2
+    long expect = (0 + n) * (n + 1) / 2;
+    long sum = 0;
+    for (int x : nums) {
+        sum += x;
     }
+    return (int)(expect - sum);
+}
+``` 
 
 But the main topic of this article is bit operations. So we will see how to use bit tricks to solve this problem.
 
@@ -516,46 +510,43 @@ Recall the properties of XOR:
   * A number XOR itself is 0.
   * A number XOR 0 is still the number itself.
 
-
 XOR also has commutative and associative laws. That is:
-    
-    
-    2 ^ 3 ^ 2 = 3 ^ (2 ^ 2) = 3 ^ 0 = 3
+
+```
+2 ^ 3 ^ 2 = 3 ^ (2 ^ 2) = 3 ^ 0 = 3
+``` 
 
 We can use these properties to find the missing number. For example, `nums = [0, 3, 1, 4]`:
 
-![](/images/algo/missing-elem/1.jpg)
+![diagram](https://labuladong.online/images/algo/missing-elem/1.jpg)
 
 To make it easier to understand, we first imagine extending the index by one, then match each element with the index that has the same value:
 
-![](/images/algo/missing-elem/2.jpg)
+![diagram](https://labuladong.online/images/algo/missing-elem/2.jpg)
 
 After doing this, except for the missing number, every index and element form a pair. If we can find the lonely index 2, we find the missing number.
 
 How do we find this lonely number? **Just XOR all the indices and all the elements together. All paired numbers will cancel out to 0, and only the lonely one will remain.** That is our answer:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int missingNumber(int[] nums) {
-            int n = nums.length;
-            int res = 0;
-            // first XOR with the new added index
-            res ^= n;
-            // XOR with other elements and indices
-            for (int i = 0; i < n; i++)
-                res ^= i ^ nums[i];
-            return res;
-        }
+```java
+class Solution {
+    public int missingNumber(int[] nums) {
+        int n = nums.length;
+        int res = 0;
+        // first XOR with the new added index
+        res ^= n;
+        // XOR with other elements and indices
+        for (int i = 0; i < n; i++)
+            res ^= i ^ nums[i];
+        return res;
     }
+}
+``` 
 
-![](/images/algo/missing-elem/3-en.jpg)
+![diagram](https://labuladong.online/images/algo/missing-elem/3-en.jpg)
 
 Because XOR is commutative and associative, we can always cancel all pairs and keep only the missing number.
 
 Up to here, we have covered most common bit operations. These tricks are easy once you get them, and you do not need to memorize them. Just keep a rough idea in mind, and that is enough.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

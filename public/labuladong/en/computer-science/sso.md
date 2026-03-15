@@ -11,10 +11,9 @@ Prerequisite Knowledge
 
 Before reading this article, you need to first learn:
 
-  * [How Session and Cookie Work Together](/en/algo/other-skills/session-and-cookie/)
-  * [Understanding OAuth 2.0 Authorization Framework](/en/algo/computer-science/oauth2-explained/)
-  * [OAuth 2.0 and OIDC Authentication](/en/algo/computer-science/oidc/)
-
+  * [How Session and Cookie Work Together](</en/algo/other-skills/session-and-cookie/>)
+  * [Understanding OAuth 2.0 Authorization Framework](</en/algo/computer-science/oauth2-explained/>)
+  * [OAuth 2.0 and OIDC Authentication](</en/algo/computer-science/oidc/>)
 
 Suppose you work at a company and use many different systems every day:
 
@@ -24,20 +23,21 @@ Suppose you work at a company and use many different systems every day:
   * Document system: `docs.company.com`
   * HR system: `hr.company.com`
 
+You can log in to all these systems with the same company account (for example, an email account with your employee ID like `[[email protected]](</cdn-cgi/l/email-protection>)`). But since each system uses a different subdomain, you have to log in repeatedly for each system.
 
-You can log in to all these systems with the same company account (for example, an email account with your employee ID like `[[email protected]](/cdn-cgi/l/email-protection)`). But since each system uses a different subdomain, you have to log in repeatedly for each system.
+We talked about [Session and Cookie](</en/algo/other-skills/session-and-cookie/>) before. When you log in to `git.company.com`, the server sets a Session Cookie like this:
 
-We talked about [Session and Cookie](/en/algo/other-skills/session-and-cookie/) before. When you log in to `git.company.com`, the server sets a Session Cookie like this:
-    
-    
-    Set-Cookie: sessionID=abc123; domain=git.company.com; path=/
+```
+Set-Cookie: sessionID=abc123; domain=git.company.com; path=/
+``` 
 
 This Cookie is only valid for `git.company.com`. When you visit `mail.company.com`, your browser will not send this Cookie, so `mail.company.com` does not know you are already logged in, and asks you to log in again.
 
 The simplest idea is: let the server of `git.company.com` set a Cookie for the main domain `company.com`. This way, all `*.company.com` subdomains can read this Cookie and "share login state".
-    
-    
-    Set-Cookie: sessionID=abc123; domain=.company.com; path=/
+
+```
+Set-Cookie: sessionID=abc123; domain=.company.com; path=/
+``` 
 
 Technically, this works. But there are serious security risks and architecture problems:
 
@@ -55,7 +55,6 @@ Sharing a Cookie means sharing a Session ID. All services need to access the sam
   * All services' Session data structures must be compatible
   * Services developed by different teams need to agree on Session fields
 
-
 This is not practical. Each team has its own needs and stores different data in Session. Forcing everyone to use the same Session makes things tightly coupled. If one service changes the Session structure, it could break others.
 
 **3\. Cannot integrate third-party services**
@@ -71,19 +70,19 @@ SSO uses a separate authentication center (like `op.company.com`) to solve the p
   * **Unified authentication logic** : Subsystems can focus on business logic; they don't need to write their own login logic.
   * **Unified account management** : Users only need to log in once at the authentication center. Then they can access all related subsystems without logging in again.
 
-
-## ¶How SSO Works
+## How SSO Works
 
 To use SSO, the key is to have a **central authentication server (Authentication Server)**. All applications trust this authentication server.
 
 The architecture looks like this:
-    
-    
-              Authentication Server
-                    ↓ Trust
-        ┌───────────┼─────────┬─────────┐
-        ↓           ↓         ↓         ↓
-      App A       App B     App C     App D
+
+```
+          Authentication Server
+                ↓ Trust
+    ┌───────────┼─────────┬─────────┐
+    ↓           ↓         ↓         ↓
+  App A       App B     App C     App D
+``` 
 
 There are three main roles:
 
@@ -102,16 +101,15 @@ There are three main roles:
      * Wants to use more than one application
      * Only needs to log in once at the authentication server
 
-
 Now, let’s look at the full SSO process.
 
-### ¶First Time Accessing App A
+### First Time Accessing App A
 
 加载图表...
 
 Now, you are logged in to App A. The authentication server `op.company.com` has set a Session Cookie in your browser to record your login state.
 
-### ¶Second Time Accessing App B (Key Point of SSO)
+### Second Time Accessing App B (Key Point of SSO)
 
 Now you want to use App B (for example, the CRM system):
 
@@ -122,5 +120,3 @@ Notice steps 3 and 4: **The authentication server knows from the Session Cookie 
 From the user's view, when visiting App B, there is just a quick jump, and you are logged in automatically. The experience is very smooth.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

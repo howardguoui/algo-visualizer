@@ -17,13 +17,13 @@
 
 所以不要觉得 85 分低，这个水平对于技术岗面试笔试和一般的竞赛绰绰够用了。即便你追求更高的水平，也可以先借助本站达到 85 分的水平再说，这并不冲突。
 
-## ¶阅读方法
+## 阅读方法
 
 **对于时间充裕，且对算法有一定兴趣的读者** （比如还未毕业的在校生），可以按照本站的目录顺序阅读，稳扎稳打慢慢学习。本站的难度循序渐进，配有算法可视化、算法小游戏等，相信能让你彻底掌握数据结构和算法的同时，也能乐在其中。
 
 **对于应对面试/笔试，时间比较紧的读者** ，可以按照 [速成路线图](</zh/algo/intro/quick-learning-plan/>) 中的顺序学习，着重练习常考的算法模板和习题，短时间内快速提升算法能力，通过算法考察。
 
-## ¶本站内容
+## 本站内容
 
 本站包含图文教程和视频讲解，主要分为三类：
 
@@ -59,7 +59,7 @@
 
 我非常重视大家的学习体验，一直在持续更新和优化本站内容，[bug 反馈](</zh/algo/intro/bug-report/>)。
 
-## ¶关于作者
+## 关于作者
 
 我是 [fucking-algorithm](<https://github.com/labuladong/fucking-algorithm>) 仓库的作者 labuladong，读者一般叫我「东哥」，首创框架思维解题，多次霸榜 GitHub Trending，目前已获得 125k star。
 
@@ -67,19 +67,19 @@
 
 [本站会员](</zh/algo/intro/site-vip/>) 是唯一的付费项目，解锁本站所有内容和所有配套工具，享受最流畅的学习体验。
 
-## ¶本站实用功能
+## 本站实用功能
 
-### ¶速成路线图
+### 速成路线图
 
 本站提供 [算法速成规划](</zh/algo/intro/quick-learning-plan/>) 并配套学习路线图，点击每个节点即可查看相关文章及题单，方便追踪学习进度。
 
 算法速成路线图
 
-### ¶AI 助教
+### AI 助教
 
 网站所有页面都配有 [AI 助教](</zh/algo/intro/ai-assistant/>)（页面右下角），能够基于本站的教学思路为你答疑解惑，引导你理解算法模板，大幅提高学习效率。
 
-### ¶算法可视化
+### 算法可视化
 
 **在本站以及所有配套插件中，所有解法代码下方都配了一套算法可视化面板** ，可以直观地查看算法执行过程，辅助理解算法逻辑。
 
@@ -99,7 +99,7 @@
 
 可视化面板可以大幅降低你对复杂算法的理解成本，支持所有数据结构和算法，这里仅展示几个例子。更多的经典算法可视化可以在 [算法可视化速查页](<https://labuladong.online/zh/visualization/>) 中查看。
 
-### ¶结合游戏，学以致用
+### 结合游戏，学以致用
 
 可视化面板已经可以让读者直观地理解算法执行过程，但光刷题可能有点无聊，我想做点东西把算法和实际生活联系起来，进一步展现算法的魅力，让大家发自内心地喜欢上算法。
 
@@ -115,7 +115,7 @@
 
 更多有趣的小游戏请参见 [算法游戏玩法及汇总](</zh/algo/intro/game/>)。
 
-### ¶支持所有主流编程语言
+### 支持所有主流编程语言
 
 **本站和所有配套插件** 的所有题解代码都支持了 Java/C++/Python/Golang/JavaScript 等所有常用的编程语言，能尽可能照顾到更多读者的需求。
 
@@ -123,36 +123,35 @@
 
 本站和所有配套插件都支持代码图片注释，对于较为复杂的代码块中会包含小灯泡图标，鼠标移至小灯泡图标上就会弹出图片辅助理解：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public ListNode detectCycle(ListNode head) {
-            ListNode fast, slow;
-            fast = slow = head;
-            while (fast != null && fast.next != null) {
-                fast = fast.next.next;
-                slow = slow.next;
-                if (fast == slow) break; ![](/images/algo/linked-two-pointer/3.jpeg)
-            }
-            // 上面的代码类似 hasCycle 函数
-            if (fast == null || fast.next == null) {
-                // fast 遇到空指针说明没有环
-                return null;
-            }
-    
-            // 重新指向头结点
-            slow = head; ![](/images/algo/linked-two-pointer/2.jpeg)
-            // 快慢指针同步前进，相交点就是环起点
-            while (slow != fast) {
-                fast = fast.next;
-                slow = slow.next;
-            }
-            return slow;
+```java
+class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast, slow;
+        fast = slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) break; 
         }
-    }
+        // 上面的代码类似 hasCycle 函数
+        if (fast == null || fast.next == null) {
+            // fast 遇到空指针说明没有环
+            return null;
+        }
 
-### ¶其他实用功能
+        // 重新指向头结点
+        slow = head; 
+        // 快慢指针同步前进，相交点就是环起点
+        while (slow != fast) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
+``` 
+
+### 其他实用功能
 
 **支持阅读历史** 。在侧边栏和所有文章内，未读过的文章链接前面会显示  标记，读过但未学完的文章会显示  标记，学完的文章会显示  标记，方便你了解自己的学习进度。阅读历史会自动同步到所有设备。
 
@@ -160,7 +159,7 @@ CC++GoJavaJavaScriptPython
 
 **支持全站搜索** 。页面右上角的搜索框支持全站搜索，输入力扣的题目、题号、链接也可以直接搜索对应的讲解。
 
-### ¶配套刷题插件辅助学习
+### 配套刷题插件辅助学习
 
 为了尽可能满足不同读者的需求，我开发维护了本站配套刷题插件，可以让读者在喜欢的代码编辑器中刷题，~~方便摸鱼~~ 。
 
@@ -169,7 +168,3 @@ CC++GoJavaJavaScriptPython
 刷题插件并不是必须安装的，但我会建议安装 Chrome 浏览器插件，因为你在阅读本站时，可能会经常跳转到 LeetCode/力扣 页面上刷题，Chrome 插件能够给你提供一些帮助。vscode/Jetbrain 插件可以根据自己的刷题需求选择安装。
 
 各个刷题插件的安装使用方法详见 [Chrome 插件](</zh/algo/intro/chrome/>)、[vscode 插件](</zh/algo/intro/vscode/>)、[Jetbrain 插件](</zh/algo/intro/jetbrains/>)。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

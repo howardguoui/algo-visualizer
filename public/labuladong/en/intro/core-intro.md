@@ -7,7 +7,7 @@
 
 # Chapter Introduction
 
-## ¶In This Chapter
+## In This Chapter
 
 In the previous quick start section, we explained ten sorting algorithms and helped you implement common data structures in algorithm problems. However, we have not really started practicing problems.
 
@@ -19,7 +19,7 @@ Even I get new ideas from this chapter when practicing problems, which helps me 
 
 So I suggest you come back and review this chapter during your learning. Each time you review, you will find something new.
 
-## ¶For Beginners
+## For Beginners
 
 The content in this chapter may seem abstract, but I still put it at the beginning of the practice section. I hope everyone reads it. If you remember some of it, you will benefit when practicing problems in the future. I am confident about that.
 
@@ -29,7 +29,7 @@ This chapter may mention algorithms from later chapters. This is to help connect
 
 Don't worry. The articles and exercises in later chapters are all based on this chapter. These will help you use the abstract templates in this chapter over and over again. Many things will make sense after you practice more, and when you return to this chapter, everything will be much clearer.
 
-## ¶For Readers with Some Experience
+## For Readers with Some Experience
 
 Templates are helpful, but you need to practice them to really understand and use algorithmic thinking well.
 
@@ -40,5 +40,3 @@ Many readers tell me: After learning the templates, they can come up with ideas 
 Finally, I hope you can master algorithms soon!
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

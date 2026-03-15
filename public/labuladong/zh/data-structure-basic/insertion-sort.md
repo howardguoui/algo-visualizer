@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
   * [数组的增删查改操作](</zh/algo/data-structure-basic/array-basic/>)
   * [拥有稳定性：冒泡排序](</zh/algo/data-structure-basic/bubble-sort/>)
 
-
 一句话总结
 
 插入排序是基于 [选择排序](</zh/algo/data-structure-basic/select-sort/>) 的一种优化，将 `nums[sortedIndex]` 插入到左侧的有序数组中。对于有序度较高的数组，插入排序的效率比较高。
@@ -34,39 +33,38 @@ LeetCode| 力扣| 难度
 
 回顾一下，冒泡排序的关键点在于对下面这段代码的优化：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 对选择排序进行第一波优化，获得了稳定性
-    void sort(int[] nums) {
-        int n = nums.length;
-        int sortedIndex = 0;
-        while (sortedIndex < n) {
-            // 在未排序部分中找到最小值 nums[minIndex]
-            int minIndex = sortedIndex;
-            for (int i = sortedIndex + 1; i < n; i++) {
-                if (nums[i] < nums[minIndex]) {
-                    minIndex = i;
-                }
+```java
+// 对选择排序进行第一波优化，获得了稳定性
+void sort(int[] nums) {
+    int n = nums.length;
+    int sortedIndex = 0;
+    while (sortedIndex < n) {
+        // 在未排序部分中找到最小值 nums[minIndex]
+        int minIndex = sortedIndex;
+        for (int i = sortedIndex + 1; i < n; i++) {
+            if (nums[i] < nums[minIndex]) {
+                minIndex = i;
             }
-    
-            // 交换最小值和 sortedIndex 处的元素
-            // int tmp = nums[sortedIndex];
-            // nums[sortedIndex] = nums[minIndex];
-            // nums[minIndex] = tmp;
-    
-            // 优化：将 nums[minIndex] 插入到 nums[sortedIndex] 的位置
-            // 将 nums[sortedIndex..minIndex] 的元素整体向后移动一位
-            int minVal = nums[minIndex];
-            // 数组搬移数据的操作
-            for (int i = minIndex; i > sortedIndex; i--) {
-                nums[i] = nums[i - 1];
-            }
-            nums[sortedIndex] = minVal;
-    
-            sortedIndex++;
         }
+
+        // 交换最小值和 sortedIndex 处的元素
+        // int tmp = nums[sortedIndex];
+        // nums[sortedIndex] = nums[minIndex];
+        // nums[minIndex] = tmp;
+
+        // 优化：将 nums[minIndex] 插入到 nums[sortedIndex] 的位置
+        // 将 nums[sortedIndex..minIndex] 的元素整体向后移动一位
+        int minVal = nums[minIndex];
+        // 数组搬移数据的操作
+        for (int i = minIndex; i > sortedIndex; i--) {
+            nums[i] = nums[i - 1];
+        }
+        nums[sortedIndex] = minVal;
+
+        sortedIndex++;
     }
+}
+``` 
 
 算法可视化
 
@@ -74,7 +72,7 @@ CC++GoJavaJavaScriptPython
 
 好的，先停在这一步，让我们忘记冒泡排序的优化方法，你来思考一下，是否还有其他方法能够优化上述代码，把 while 循环中的两个 for 循环优化成一个 for 循环？
 
-## ¶反向思维
+## 反向思维
 
 上面的算法思路是：在 `nums[sortedIndex..]` 中找到最小值，然后将其插入到 `nums[sortedIndex]` 的位置。
 
@@ -86,30 +84,29 @@ CC++GoJavaJavaScriptPython
 
 但是仔细想想，用二分搜索好像是多此一举的。因为就算我用二分搜索找到了 `nums[sortedIndex]` 应该插入的位置，我还是需要搬移元素进行插入，那还不如一边遍历一遍交换元素的方法简单高效呢：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 对选择排序进一步优化，向左侧有序数组中插入元素
-    // 这个算法有另一个名字，叫做插入排序
-    void sort(int[] nums) {
-        int n = nums.length;
-        // 维护 [0, sortedIndex) 是有序数组
-        int sortedIndex = 0;
-        while (sortedIndex < n) {
-            // 将 nums[sortedIndex] 插入到有序数组 [0, sortedIndex) 中
-            for (int i = sortedIndex; i > 0; i--) {
-                if (nums[i] < nums[i - 1]) {
-                    // swap(nums[i], nums[i - 1])
-                    int tmp = nums[i];
-                    nums[i] = nums[i - 1];
-                    nums[i - 1] = tmp;
-                } else {
-                    break;
-                }
+```java
+// 对选择排序进一步优化，向左侧有序数组中插入元素
+// 这个算法有另一个名字，叫做插入排序
+void sort(int[] nums) {
+    int n = nums.length;
+    // 维护 [0, sortedIndex) 是有序数组
+    int sortedIndex = 0;
+    while (sortedIndex < n) {
+        // 将 nums[sortedIndex] 插入到有序数组 [0, sortedIndex) 中
+        for (int i = sortedIndex; i > 0; i--) {
+            if (nums[i] < nums[i - 1]) {
+                // swap(nums[i], nums[i - 1])
+                int tmp = nums[i];
+                nums[i] = nums[i - 1];
+                nums[i - 1] = tmp;
+            } else {
+                break;
             }
-            sortedIndex++;
         }
+        sortedIndex++;
     }
+}
+``` 
 
 算法可视化
 
@@ -121,7 +118,7 @@ CC++GoJavaJavaScriptPython
 
 插入排序是一种稳定排序，因为只有在 `nums[i] < nums[i - 1]` 的情况下才会交换元素，所以相同元素的相对位置不会发生改变。
 
-## ¶初始有序度越高，效率越高
+## 初始有序度越高，效率越高
 
 显然，插入排序的效率和输入数组的有序度有很大关系，可以举极端例子来理解：
 
@@ -136,7 +133,3 @@ CC++GoJavaJavaScriptPython
 所以冒泡排序的操作数大约是 n2/2n^2/2n2/2，而插入排序的操作数会小于 n2/2n^2/2n2/2。
 
 你可以把插入排序的代码拿去力扣第 912 题「[排序数组](<https://leetcode.cn/problems/sort-an-array/>)」提交，它最终依然会超时，但可以说明算法代码的逻辑是正确的。之后的文章我们继续探讨如何对排序算法进行优化。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

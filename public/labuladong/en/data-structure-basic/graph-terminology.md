@@ -13,8 +13,7 @@ A graph is made of some **vertices (nodes)** and **edges** :
   * Edges can be directed (directed graph) or undirected (undirected graph).
   * Edges can have weights (weighted graph) or have no weights (unweighted graph).
 
-
-## ¶Edge weights and directions
+## Edge weights and directions
 
 Here is a directed unweighted graph:
 
@@ -42,7 +41,7 @@ Weighted graphs are very common in real world. For example, in a map app, the we
 
 Many classic graph algorithms are based on weighted graphs, such as shortest path and minimum spanning tree. We will talk about them in later chapters.
 
-## ¶Degree
+## Degree
 
 For each vertex in a graph, we have the idea of **degree**.
 
@@ -58,11 +57,11 @@ For example, in the graph below, the indegree of node `3` is 2 (two edges point 
 
 loading...
 
-## ¶Relation between number of edges and vertices
+## Relation between number of edges and vertices
 
 **In this article, when we talk about graphs, we usually mean simple graphs: graphs without self loops and multiple edges.**
 
-![](/images/algo/graph/simple-graph.jpg)
+![diagram](https://labuladong.online/images/algo/graph/simple-graph.jpg)
 
 In a simple graph, suppose there are EEE edges and VVV vertices. What is the possible range of EEE?
 
@@ -72,7 +71,7 @@ For the maximum value of EEE: each vertex can connect to at most V−1V - 1V−1
 
 If almost every pair of vertices has an edge between them, that is, EEE is close to V2V^2V2, we call the graph a **dense graph**. If there are few edges and EEE is much smaller than V2V^2V2, we call it a **sparse graph**.
 
-## ¶Subgraph
+## Subgraph
 
 Subgraph is an important basic concept in graph theory.
 
@@ -96,11 +95,11 @@ loading...
 
 Subgraphs are used in many graph algorithms. For example, when we search for a minimum spanning tree, we are actually looking for a spanning subgraph that contains all vertices and has minimum total edge weight.
 
-## ¶Connectivity
+## Connectivity
 
 Connectivity is a very important concept in graph theory. It describes whether there is a path between vertices.
 
-### ¶Connectivity in undirected graphs
+### Connectivity in undirected graphs
 
 **Connected graph** : In an undirected graph, if there is a path between every pair of vertices, we say the graph is connected.
 
@@ -114,7 +113,7 @@ For example, the graph below has two connected components: vertices `1~5` form o
 
 loading...
 
-### ¶Connectivity in directed graphs
+### Connectivity in directed graphs
 
 Connectivity in directed graphs is a bit more complex, because we must consider edge directions. We have strong connectivity and weak connectivity. You just need a basic idea here. In real interview problems, we usually focus on connectivity in undirected graphs.
 
@@ -141,5 +140,3 @@ loading...
 There are many more terms in graph theory. But for data structures and algorithms, the terms above are enough. Later, when we learn specific graph algorithms, we will use these ideas in real problems.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

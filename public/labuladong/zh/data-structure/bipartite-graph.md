@@ -22,16 +22,15 @@ LeetCode| 力扣| 难度
   * [图结构基础及通用实现](</zh/algo/data-structure-basic/graph-basic/>)
   * [图结构的 DFS/BFS 遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>)
 
-
 今天来讲一个经典图论算法：二分图判定。
 
-## ¶二分图简介
+## 二分图简介
 
 先来看二分图的定义：
 
 二分图的顶点集可分割为两个互不相交的子集，图中每条边依附的两个顶点都分属于这两个子集，且两个子集内的顶点不相邻。
 
-![](/images/algo/bipartite-graph/0.png)
+![diagram](https://labuladong.online/images/algo/bipartite-graph/0.png)
 
 其实图论里面很多术语的定义都比较拗口，不容易理解。我们甭看这个死板的定义了，来玩个游戏吧：
 
@@ -39,7 +38,7 @@ LeetCode| 力扣| 难度
 
 这就是图的「双色问题」，其实这个问题就等同于二分图的判定问题，如果你能够成功地将图染色，那么这幅图就是一幅二分图，反之则不是：
 
-![](/images/algo/algo4/1.jpg)
+![diagram](https://labuladong.online/images/algo/algo4/1.jpg)
 
 在具体讲解二分图判定算法之前，我们先来说说计算机大佬们闲着无聊解决双色问题的目的是什么。
 
@@ -55,7 +54,7 @@ LeetCode| 力扣| 难度
 
 显然，如果用哈希表存储，需要两个哈希表分别存储「每个演员到电影列表」的映射和「每部电影到演员列表」的映射。但如果用「图」结构存储，将电影和参演的演员连接，很自然地就成为了一幅二分图：
 
-![](/images/algo/algo4/2.jpg)
+![diagram](https://labuladong.online/images/algo/algo4/2.jpg)
 
 每个电影节点的相邻节点就是参演该电影的所有演员，每个演员的相邻节点就是该演员参演过的所有电影，对比哈希表的存储方式更方便直观，所需的存储空间更小。
 
@@ -63,7 +62,7 @@ LeetCode| 力扣| 难度
 
 好了，接下来进入正题，说说如何判定一幅图是否是二分图。
 
-## ¶二分图判定思路
+## 二分图判定思路
 
 判定二分图的算法很简单，就是用代码解决「双色问题」。
 
@@ -73,27 +72,26 @@ LeetCode| 力扣| 难度
 
 首先，基于 [图结构的遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>) 写出图的 DFS 遍历框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 遍历图的所有节点
-    void traverse(Graph graph, int s, boolean[] visited) {
-        // base case
-        if (s < 0 || s >= graph.size()) {
-            return;
-        }
-        if (visited[s]) {
-            // 防止死循环
-            return;
-        }
-        // 前序位置
-        visited[s] = true;
-        System.out.println("visit " + s);
-        for (Edge e : graph.neighbors(s)) {
-            traverse(graph, e.to, visited);
-        }
-        // 后序位置
+```java
+// 遍历图的所有节点
+void traverse(Graph graph, int s, boolean[] visited) {
+    // base case
+    if (s < 0 || s >= graph.size()) {
+        return;
     }
+    if (visited[s]) {
+        // 防止死循环
+        return;
+    }
+    // 前序位置
+    visited[s] = true;
+    System.out.println("visit " + s);
+    for (Edge e : graph.neighbors(s)) {
+        traverse(graph, e.to, visited);
+    }
+    // 后序位置
+}
+``` 
 
 因为图中可能存在环，所以用 `visited` 数组防止走回头路。
 
@@ -101,21 +99,20 @@ CC++GoJavaJavaScriptPython
 
 其实，如果你愿意，也可以把 if 判断放到其它地方，比如图遍历框架可以稍微改改：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 图遍历框架
-    boolean[] visited;
-    void traverse(Graph graph, int v) {
-        // 前序遍历位置，标记节点 v 已访问
-        visited[v] = true;
-        for (int neighbor : graph.neighbors(v)) {
-            if (!visited[neighbor]) {
-                // 只遍历没标记过的相邻节点
-                traverse(graph, neighbor);
-            }
+```java
+// 图遍历框架
+boolean[] visited;
+void traverse(Graph graph, int v) {
+    // 前序遍历位置，标记节点 v 已访问
+    visited[v] = true;
+    for (int neighbor : graph.neighbors(v)) {
+        if (!visited[neighbor]) {
+            // 只遍历没标记过的相邻节点
+            traverse(graph, neighbor);
         }
     }
+}
+``` 
 
 这种写法把对 `visited` 的判断放到递归调用之前，和之前的写法唯一的不同就是，你需要保证调用 `traverse(v)` 的时候，`visited[v] == false`。
 
@@ -125,106 +122,103 @@ CC++GoJavaJavaScriptPython
 
 所以，判定二分图的代码逻辑可以这样写：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 图遍历框架
-    void traverse(Graph graph, boolean[] visited, int v) {
-        visited[v] = true;
-        // 遍历节点 v 的所有相邻节点 neighbor
-        for (int neighbor : graph.neighbors(v)) {
-            if (!visited[neighbor]) {
-                // 相邻节点 neighbor 没有被访问过
-                // 那么应该给节点 neighbor 涂上和节点 v 不同的颜色
-                traverse(graph, visited, neighbor);
-            } else {
-                // 相邻节点 neighbor 已经被访问过
-                // 那么应该比较节点 neighbor 和节点 v 的颜色
-                // 若相同，则此图不是二分图
-            }
+```java
+// 图遍历框架
+void traverse(Graph graph, boolean[] visited, int v) {
+    visited[v] = true;
+    // 遍历节点 v 的所有相邻节点 neighbor
+    for (int neighbor : graph.neighbors(v)) {
+        if (!visited[neighbor]) {
+            // 相邻节点 neighbor 没有被访问过
+            // 那么应该给节点 neighbor 涂上和节点 v 不同的颜色
+            traverse(graph, visited, neighbor);
+        } else {
+            // 相邻节点 neighbor 已经被访问过
+            // 那么应该比较节点 neighbor 和节点 v 的颜色
+            // 若相同，则此图不是二分图
         }
     }
+}
+``` 
 
 如果你能看懂上面这段代码，就能写出二分图判定的具体代码了，接下来看两道具体的算法题来实操一下。
 
-## ¶题目实践
+## 题目实践
 
 力扣第 785 题「[判断二分图](<https://leetcode.cn/problems/is-graph-bipartite/>)」就是原题，题目给你输入一个 [邻接表](</zh/algo/data-structure-basic/graph-basic/>) 表示一幅无向图，请你判断这幅图是否是二分图。
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    boolean isBipartite(int[][] graph);
+```java
+boolean isBipartite(int[][] graph);
+``` 
 
 比如题目给的例子，输入的邻接表 `graph = [[1,2,3],[0,2],[0,1,3],[0,2]]`，也就是这样一幅图：
 
-![](/images/algo/bipartite-graph/1.png)
+![diagram](https://labuladong.online/images/algo/bipartite-graph/1.png)
 
 显然无法对节点着色使得每两个相邻节点的颜色都不相同，所以算法返回 false。
 
 但如果输入 `graph = [[1,3],[0,2],[1,3],[0,2]]`，也就是这样一幅图：
 
-![](/images/algo/bipartite-graph/2.png)
+![diagram](https://labuladong.online/images/algo/bipartite-graph/2.png)
 
 如果把节点 `{0, 2}` 涂一个颜色，节点 `{1, 3}` 涂另一个颜色，就可以解决「双色问题」，所以这是一幅二分图，算法返回 true。
 
 结合之前的代码框架，我们可以额外使用一个 `color` 数组来记录每个节点的颜色，从而写出解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-    
-        // 记录图是否符合二分图性质
-        private boolean ok = true;
-        // 记录图中节点的颜色，false 和 true 代表两种不同颜色
-        private boolean[] color;
-        // 记录图中节点是否被访问过
-        private boolean[] visited;
-    
-        // 主函数，输入邻接表，判断是否是二分图
-        public boolean isBipartite(int[][] graph) {
-            int n = graph.length;
-            color = new boolean[n];
-            visited = new boolean[n];
-            // 因为图不一定是联通的，可能存在多个子图
-            // 所以要把每个节点都作为起点进行一次遍历
-            // 如果发现任何一个子图不是二分图，整幅图都不算二分图
-            for (int v = 0; v < n; v++) {
-                if (!visited[v]) {
-                    traverse(graph, v);
-                }
-            }
-            return ok;
-        }
-    
-        // DFS 遍历框架
-        private void traverse(int[][] graph, int v) {
-            // 如果已经确定不是二分图了，就不用浪费时间再递归遍历了
-            if (!ok) return;
-    
-            visited[v] = true;
-            for (int w : graph[v]) {
-                if (!visited[w]) {
-                    // 相邻节点 w 没有被访问过
-                    // 那么应该给节点 w 涂上和节点 v 不同的颜色
-                    color[w] = !color[v];
-                    // 继续遍历 w
-                    traverse(graph, w);
-                } else {
-                    // 相邻节点 w 已经被访问过
-                    // 根据 v 和 w 的颜色判断是否是二分图
-                    if (color[w] == color[v]) {
-                        // 若相同，则此图不是二分图
-                        ok = false;
-                    }
-                }
+```java
+class Solution {
+
+    // 记录图是否符合二分图性质
+    private boolean ok = true;
+    // 记录图中节点的颜色，false 和 true 代表两种不同颜色
+    private boolean[] color;
+    // 记录图中节点是否被访问过
+    private boolean[] visited;
+
+    // 主函数，输入邻接表，判断是否是二分图
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        color = new boolean[n];
+        visited = new boolean[n];
+        // 因为图不一定是联通的，可能存在多个子图
+        // 所以要把每个节点都作为起点进行一次遍历
+        // 如果发现任何一个子图不是二分图，整幅图都不算二分图
+        for (int v = 0; v < n; v++) {
+            if (!visited[v]) {
+                traverse(graph, v);
             }
         }
-    
+        return ok;
     }
+
+    // DFS 遍历框架
+    private void traverse(int[][] graph, int v) {
+        // 如果已经确定不是二分图了，就不用浪费时间再递归遍历了
+        if (!ok) return;
+
+        visited[v] = true;
+        for (int w : graph[v]) {
+            if (!visited[w]) {
+                // 相邻节点 w 没有被访问过
+                // 那么应该给节点 w 涂上和节点 v 不同的颜色
+                color[w] = !color[v];
+                // 继续遍历 w
+                traverse(graph, w);
+            } else {
+                // 相邻节点 w 已经被访问过
+                // 根据 v 和 w 的颜色判断是否是二分图
+                if (color[w] == color[v]) {
+                    // 若相同，则此图不是二分图
+                    ok = false;
+                }
+            }
+        }
+    }
+
+}
+``` 
 
 你可以多次点击 `visited[v] = true;` 这行代码，查看节点的染色过程。
 
@@ -232,62 +226,61 @@ CC++GoJavaJavaScriptPython
 
 接下来看一下 BFS 算法的逻辑：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // 记录图是否符合二分图性质
-        private boolean ok = true;
-        // 记录图中节点的颜色，false 和 true 代表两种不同颜色
-        private boolean[] color;
-        // 记录图中节点是否被访问过
-        private boolean[] visited;
-    
-        public boolean isBipartite(int[][] graph) {
-            int n = graph.length;
-            color =  new boolean[n];
-            visited =  new boolean[n];
-            
-            for (int v = 0; v < n; v++) {
-                if (!visited[v]) {
-                    // 改为使用 BFS 函数
-                    bfs(graph, v);
-                }
+```java
+class Solution {
+    // 记录图是否符合二分图性质
+    private boolean ok = true;
+    // 记录图中节点的颜色，false 和 true 代表两种不同颜色
+    private boolean[] color;
+    // 记录图中节点是否被访问过
+    private boolean[] visited;
+
+    public boolean isBipartite(int[][] graph) {
+        int n = graph.length;
+        color =  new boolean[n];
+        visited =  new boolean[n];
+        
+        for (int v = 0; v < n; v++) {
+            if (!visited[v]) {
+                // 改为使用 BFS 函数
+                bfs(graph, v);
             }
-            
-            return ok;
         }
-    
-        // 从 start 节点开始进行 BFS 遍历
-        private void bfs(int[][] graph, int start) {
-            Queue<Integer> q = new LinkedList<>();
-            visited[start] = true;
-            q.offer(start);
-            
-            while (!q.isEmpty() && ok) {
-                int v = q.poll();
-                // 从节点 v 向所有相邻节点扩散
-                for (int w : graph[v]) {
-                    if (!visited[w]) {
-                        // 相邻节点 w 没有被访问过
-                        // 那么应该给节点 w 涂上和节点 v 不同的颜色
-                        color[w] = !color[v];
-                        // 标记 w 节点，并放入队列
-                        visited[w] = true;
-                        q.offer(w);
-                    } else {
-                        // 相邻节点 w 已经被访问过
-                        // 根据 v 和 w 的颜色判断是否是二分图
-                        if (color[w] == color[v]) {
-                            // 若相同，则此图不是二分图
-                            ok = false;
-                            return;
-                        }
+        
+        return ok;
+    }
+
+    // 从 start 节点开始进行 BFS 遍历
+    private void bfs(int[][] graph, int start) {
+        Queue<Integer> q = new LinkedList<>();
+        visited[start] = true;
+        q.offer(start);
+        
+        while (!q.isEmpty() && ok) {
+            int v = q.poll();
+            // 从节点 v 向所有相邻节点扩散
+            for (int w : graph[v]) {
+                if (!visited[w]) {
+                    // 相邻节点 w 没有被访问过
+                    // 那么应该给节点 w 涂上和节点 v 不同的颜色
+                    color[w] = !color[v];
+                    // 标记 w 节点，并放入队列
+                    visited[w] = true;
+                    q.offer(w);
+                } else {
+                    // 相邻节点 w 已经被访问过
+                    // 根据 v 和 w 的颜色判断是否是二分图
+                    if (color[w] == color[v]) {
+                        // 若相同，则此图不是二分图
+                        ok = false;
+                        return;
                     }
                 }
             }
         }
     }
+}
+``` 
 
 核心逻辑和刚才实现的 `traverse` 函数（DFS 算法）完全一样，也是根据相邻节点 `v` 和 `w` 的颜色来进行判断的。关于 BFS 算法框架的探讨，详见前文 [BFS 算法框架](</zh/algo/essential-technique/bfs-framework/>) 和 [Dijkstra 算法模板](</zh/algo/data-structure/dijkstra/>)，这里就不展开了。
 
@@ -299,28 +292,27 @@ CC++GoJavaJavaScriptPython
 
 给定整数 `n` 和数组 `dislikes` ，其中 `dislikes[i] = [ai, bi]` ，表示不允许将编号为 `ai` 和 `bi`的人归入同一组。当可以用这种方法将所有人分进两组时，返回 `true`；否则返回 `false`。
 
-
 **示例 1：**
-    
-    
-    **输入：** n = 4, dislikes = [[1,2],[1,3],[2,4]]
-    **输出：** true
-    **解释：** group1 [1,4], group2 [2,3]
-    
+
+```
+输入：n = 4, dislikes = [[1,2],[1,3],[2,4]]
+输出：true
+解释：group1 [1,4], group2 [2,3]
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** n = 3, dislikes = [[1,2],[1,3],[2,3]]
-    **输出：** false
-    
+
+```
+输入：n = 3, dislikes = [[1,2],[1,3],[2,3]]
+输出：false
+``` 
 
 **示例 3：**
-    
-    
-    **输入：** n = 5, dislikes = [[1,2],[2,3],[3,4],[4,5],[1,5]]
-    **输出：** false
-    
+
+```
+输入：n = 5, dislikes = [[1,2],[2,3],[3,4],[4,5],[1,5]]
+输出：false
+``` 
 
 **提示：**
 
@@ -331,14 +323,12 @@ CC++GoJavaJavaScriptPython
   * `ai < bi`
   * `dislikes` 中每一组都 **不同**
 
-
 题目来源：[力扣 886. 可能的二分法](<https://leetcode.cn/problems/possible-bipartition/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 函数签名如下
-    boolean possibleBipartition(int n, int[][] dislikes);
+```java
+// 函数签名如下
+boolean possibleBipartition(int n, int[][] dislikes);
+``` 
 
 **其实这题考察的就是二分图的判定** ：
 
@@ -350,71 +340,66 @@ CC++GoJavaJavaScriptPython
 
 所以解法就出来了，我们把 `dislikes` 构造成一幅图，然后执行二分图的判定算法即可：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-    
-        private boolean ok = true;
-        private boolean[] color;
-        private boolean[] visited;
-    
-        public boolean possibleBipartition(int n, int[][] dislikes) {
-            // 图节点编号从 1 开始
-            color = new boolean[n + 1];
-            visited = new boolean[n + 1];
-            // 转化成邻接表表示图结构
-            List<Integer>[] graph = buildGraph(n, dislikes);
-    
-            for (int v = 1; v <= n; v++) {
-                if (!visited[v]) {
-                    traverse(graph, v);
-                }
-            }
-            return ok;
-        }
-    
-        // 建图函数
-        private List<Integer>[] buildGraph(int n, int[][] dislikes) {
-            // 图节点编号为 1...n
-            List<Integer>[] graph = new LinkedList[n + 1];
-            for (int i = 1; i <= n; i++) {
-                graph[i] = new LinkedList<>();
-            }
-            for (int[] edge : dislikes) {
-                int v = edge[1];
-                int w = edge[0];
-                // 「无向图」相当于「双向图」
-                // v -> w
-                graph[v].add(w);
-                // w -> v
-                graph[w].add(v);
-            }
-            return graph;
-        }
-    
-        // 和之前判定二分图的 traverse 函数完全相同
-        private void traverse(List<Integer>[] graph, int v) {
-            if (!ok) return;
-            visited[v] = true;
-            for (int w : graph[v]) {
-                if (!visited[w]) {
-                    color[w] = !color[v];
-                    traverse(graph, w);
-                } else {
-                    if (color[w] == color[v]) {
-                        ok = false;
-                    }
-                }
+```java
+class Solution {
+
+    private boolean ok = true;
+    private boolean[] color;
+    private boolean[] visited;
+
+    public boolean possibleBipartition(int n, int[][] dislikes) {
+        // 图节点编号从 1 开始
+        color = new boolean[n + 1];
+        visited = new boolean[n + 1];
+        // 转化成邻接表表示图结构
+        List<Integer>[] graph = buildGraph(n, dislikes);
+
+        for (int v = 1; v <= n; v++) {
+            if (!visited[v]) {
+                traverse(graph, v);
             }
         }
-    
+        return ok;
     }
+
+    // 建图函数
+    private List<Integer>[] buildGraph(int n, int[][] dislikes) {
+        // 图节点编号为 1...n
+        List<Integer>[] graph = new LinkedList[n + 1];
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new LinkedList<>();
+        }
+        for (int[] edge : dislikes) {
+            int v = edge[1];
+            int w = edge[0];
+            // 「无向图」相当于「双向图」
+            // v -> w
+            graph[v].add(w);
+            // w -> v
+            graph[w].add(v);
+        }
+        return graph;
+    }
+
+    // 和之前判定二分图的 traverse 函数完全相同
+    private void traverse(List<Integer>[] graph, int v) {
+        if (!ok) return;
+        visited[v] = true;
+        for (int w : graph[v]) {
+            if (!visited[w]) {
+                color[w] = !color[v];
+                traverse(graph, w);
+            } else {
+                if (color[w] == color[v]) {
+                    ok = false;
+                }
+            }
+        }
+    }
+
+}
+``` 
 
 算法可视化
 
 至此，这道题也使用 DFS 算法解决了，如果你想用 BFS 算法，和之前写的解法是类似的，在扩散的时候，尝试对相邻元素颜色就行了，你可以自己尝试实现。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

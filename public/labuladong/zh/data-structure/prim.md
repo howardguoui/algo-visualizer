@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
   * [图结构基础及通用实现](</zh/algo/data-structure-basic/graph-basic/>)
   * [Dijkstra 原理及实现](</zh/algo/data-structure/dijkstra/>)
 
-
 一句话总结
 
 Prim 算法是求解无向图中最小生成树的经典算法。
@@ -36,10 +35,6 @@ Prim 算法是求解无向图中最小生成树的经典算法。
 
 本文先展示 Prim 算法的代码实现，然后再讲解其原理，以及为什么可以直接从 Dijkstra 算法代码推导出 Prim 算法代码。
 
-## ¶Prim 算法代码
+## Prim 算法代码
 
 仅需修改 [Dijkstra 算法模板](</zh/algo/data-structure/dijkstra/>) 中的几行代码即可得到 Prim 算法，修改部分已经高亮显示：
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

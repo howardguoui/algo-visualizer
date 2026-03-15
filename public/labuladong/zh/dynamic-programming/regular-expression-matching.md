@@ -20,7 +20,6 @@ LeetCode| 力扣| 难度
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
   * [经典动态规划：编辑距离](</zh/algo/dynamic-programming/edit-distance/>)
 
-
 正则表达式是一个非常强力的工具，本文就来具体看一看正则表达式的底层原理是什么。力扣第 10 题「[正则表达式匹配](<https://leetcode.cn/problems/regular-expression-matching/>)」就要求我们实现一个简单的正则匹配算法，包括「.」通配符和「*」通配符。
 
 这两个通配符是最常用的，其中点号「.」可以匹配任意一个字符，星号「*」可以让之前的那个字符重复任意次数（包括 0 次）。
@@ -31,10 +30,9 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    boolean isMatch(string s, string p);
+```java
+boolean isMatch(string s, string p);
+``` 
 
 对于我们将要实现的这个正则表达式，难点在那里呢？
 
@@ -42,29 +40,28 @@ CC++GoJavaJavaScriptPython
 
 对于这个问题，答案很简单，对于所有可能出现的情况，全部穷举一遍，只要有一种情况可以完成匹配，就认为 `p` 可以匹配 `s`。那么一旦涉及两个字符串的穷举，我们就应该条件反射地想到动态规划的技巧了。
 
-## ¶一、思路分析
+## 一、思路分析
 
 我们先脑补一下，`s` 和 `p` 相互匹配的过程大致是，两个指针 `i, j` 分别在 `s` 和 `p` 上移动，如果最后两个指针都能移动到字符串的末尾，那么久匹配成功，反之则匹配失败。
 
 **如果不考虑`*` 通配符，面对两个待匹配字符 `s[i]` 和 `p[j]`，我们唯一能做的就是看他俩是否匹配**：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    boolean isMatch(String s, String p) {
-        int i = 0, j = 0;
-        while (i < s.length() && j < p.length()) {
-            // 「.」通配符就是万金油
-            if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
-                // 匹配，接着匹配 s[i+1..] 和 p[j+1..]
-                i++; j++;
-            } else {
-                // 不匹配
-                return false;
-            }
+```java
+boolean isMatch(String s, String p) {
+    int i = 0, j = 0;
+    while (i < s.length() && j < p.length()) {
+        // 「.」通配符就是万金油
+        if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
+            // 匹配，接着匹配 s[i+1..] 和 p[j+1..]
+            i++; j++;
+        } else {
+            // 不匹配
+            return false;
         }
-        return i == j;
     }
+    return i == j;
+}
+``` 
 
 那么考虑一下，如果加入 `*` 通配符，局面就会稍微复杂一些，不过只要分情况来分析，也不难理解。
 
@@ -82,38 +79,34 @@ CC++GoJavaJavaScriptPython
 
 综上，可以把之前的代码针对 `*` 通配符进行一下改造：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
-        // 匹配
-        if (j < p.length() - 1 && p.charAt(j + 1) == '*') {
-            // 有 * 通配符，可以匹配 0 次或多次
-        } else {
-            // 无 * 通配符，老老实实匹配 1 次
-            i++; j++;
-        }
+```java
+if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
+    // 匹配
+    if (j < p.length() - 1 && p.charAt(j + 1) == '*') {
+        // 有 * 通配符，可以匹配 0 次或多次
     } else {
-        // 不匹配
-        if (j < p.length() - 1 && p.charAt(j + 1) == '*') {
-            // 有 * 通配符，只能匹配 0 次
-        } else {
-            // 无 * 通配符，匹配无法进行下去了
-            return false;
-        }
+        // 无 * 通配符，老老实实匹配 1 次
+        i++; j++;
     }
+} else {
+    // 不匹配
+    if (j < p.length() - 1 && p.charAt(j + 1) == '*') {
+        // 有 * 通配符，只能匹配 0 次
+    } else {
+        // 无 * 通配符，匹配无法进行下去了
+        return false;
+    }
+}
+``` 
 
 整体的思路已经很清晰了，但现在的问题是，遇到 `*` 通配符时，到底应该匹配 0 次还是匹配多次？多次是几次？
 
 你看，这就是一个做「选择」的问题，要把所有可能的选择都穷举一遍才能得出结果。动态规划算法的核心就是「状态」和「选择」，**「状态」无非就是`i` 和 `j` 两个指针的位置，「选择」就是 `p[j]` 选择匹配几个字符**。
 
-## ¶二、动态规划解法
+## 二、动态规划解法
 
 根据「状态」，我们可以定义一个 `dp` 函数：
-    
-    
-    boolean dp(String s, int i, String p, int j);
 
-更新时间：2026/03/14 00:17
-
-Loading comments...
+```
+boolean dp(String s, int i, String p, int j);
+```

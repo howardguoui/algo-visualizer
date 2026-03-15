@@ -23,7 +23,7 @@
 
 英文版购买入口 [在这里](<https://labuladong.online/algo/en/intro/site-vip/>)。
 
-## ¶购买会员
+## 购买会员
 
 本站会员拥有以下权益：
 
@@ -41,17 +41,16 @@
 
 本站目录结构
 
-#### ¶本站简介
+#### 本站简介
 
-#### ¶针对初学和速成的学习规划
+#### 针对初学和速成的学习规划
 
   * [速成目录学习规划](</zh/algo/intro/quick-learning-plan/>)
   * [完整目录学习规划](</zh/algo/intro/beginner-learning-plan/>)
   * [算法刷题的重点和坑](</zh/algo/intro/how-to-learn-algorithms/>)
   * [习题章节的练习/复习方法](</zh/algo/intro/how-to-practice/>)
 
-
-#### ¶配套学习工具使用指南
+#### 配套学习工具使用指南
 
   * [AI 助教随时答疑](</zh/algo/intro/ai-assistant/>)
   * [算法可视化面板使用说明](</zh/algo/intro/visualize/>)
@@ -61,8 +60,7 @@
   * [配套 JetBrains 刷题插件](</zh/algo/intro/jetbrains/>)
   * [本站付费会员](</zh/algo/intro/site-vip/>)
 
-
-#### ¶入门：编程语言基础及练习
+#### 入门：编程语言基础及练习
 
   * [本章导读](</zh/algo/intro/programming-language-basic/>)
   * [C 语言基础](</zh/algo/programming-language-basic/c/>)
@@ -75,8 +73,7 @@
   * [编程语言刷题实践](</zh/algo/programming-language-basic/lc-practice/>)
   * [ACM 模式代码模板](</zh/algo/intro/acm-mode/>)
 
-
-#### ¶基础：数据结构及排序精讲
+#### 基础：数据结构及排序精讲
 
   * [本章导读](</zh/algo/intro/data-structure-basic/>)
   * [时间空间复杂度入门](</zh/algo/intro/complexity-basic/>)
@@ -144,8 +141,7 @@
     * [基数排序（Radix Sort）](</zh/algo/data-structure-basic/radix-sort/>)
   * [正在更新 ing](</zh/algo/intro/updating/>)
 
-
-#### ¶第零章、核心刷题框架汇总
+#### 第零章、核心刷题框架汇总
 
   * [本章导读](</zh/algo/intro/core-intro/>)
   * [学习数据结构和算法的框架思维](</zh/algo/essential-technique/algorithm-summary/>)
@@ -162,8 +158,7 @@
   * [分治算法解题套路框架](</zh/algo/essential-technique/divide-and-conquer/>)
   * [算法时空复杂度分析实用指南](</zh/algo/essential-technique/complexity-analysis/>)
 
-
-#### ¶第一章、经典数据结构算法
+#### 第一章、经典数据结构算法
 
   * 手把手刷链表算法
     * [双指针技巧秒杀七道链表题目](</zh/algo/essential-technique/linked-list-skills-summary/>)
@@ -265,8 +260,7 @@
     * [Kruskal 最小生成树算法](</zh/algo/data-structure/kruskal/>)
     * [Prim 最小生成树算法](</zh/algo/data-structure/prim/>)
 
-
-#### ¶第二章、经典暴力搜索算法
+#### 第二章、经典暴力搜索算法
 
   * DFS/回溯算法
     * [回溯算法解题套路框架](</zh/algo/essential-technique/backtrack-framework/>)
@@ -290,8 +284,7 @@
     * [BFS 经典习题 I](</zh/algo/problem-set/bfs/>)
     * [BFS 经典习题 II](</zh/algo/problem-set/bfs-ii/>)
 
-
-#### ¶第三章、经典动态规划算法
+#### 第三章、经典动态规划算法
 
   * 动态规划基本技巧
     * [动态规划解题套路框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
@@ -335,8 +328,7 @@
     * [扫描线技巧：安排会议室](</zh/algo/frequency-interview/scan-line-technique/>)
     * [剪视频剪出一个贪心算法](</zh/algo/frequency-interview/cut-video/>)
 
-
-#### ¶第四章、其他常见算法技巧
+#### 第四章、其他常见算法技巧
 
   * 数学运算技巧
     * [一行代码就能解决的算法题](</zh/algo/frequency-interview/one-line-solutions/>)
@@ -358,8 +350,7 @@
     * [字符串乘法计算](</zh/algo/practice-in-action/multiply-strings/>)
     * [如何判定完美矩形](</zh/algo/frequency-interview/perfect-rectangle/>)
 
-
-#### ¶更多内容
+#### 更多内容
 
   * 计算机基础知识
     * [AI 时代的前端开发入门教程](</zh/algo/computer-science/frontend-introduction/>)
@@ -394,7 +385,6 @@
     * [策略模式](</zh/algo/design-pattern/strategy/>)
     * [正在更新 ing](</zh/algo/intro/updating/>)
 
-
 网站内容会不断更新，所以网站会员会逐步涨价，越早入手越划算，购买后**有效期一年** 。在有效期内可重复购买续费，每次续费将延长会员有效期一年。
 
 推荐
@@ -410,17 +400,12 @@
   * 30 天打卡挑战（可选）[](</zh/checkin/>)
   * 微信交流群（可选）
 
-
 立即订阅
 
-如有支付问题，请联系 [[email protected]](</cdn-cgi/l/email-protection#c1ada0a3b4ada0a5aeafa681a7aeb9aca0a8adefa2aeac>)
+如有支付问题，请联系 [[email protected]](</cdn-cgi/l/email-protection#8ce0edeef9e0ede8e3e2ebcceae3f4e1ede5e0a2efe3e1>)
 
 注意
 
 购买会员后，本站的所有内容会自动解锁，**但是刷题插件中的题解思路、题单不会自动解锁，需要手动操作** 。
 
 如果你需要使用配套刷题插件，请你按照 [Chrome 插件使用文档](</zh/algo/intro/chrome/>)、[vscode 插件使用文档](</zh/algo/intro/vscode/>)、[JetBrains 插件使用文档](</zh/algo/intro/jetbrains/>) 中「解锁本站的思路/题单」的操作步骤手动解锁。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

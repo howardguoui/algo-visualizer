@@ -11,18 +11,17 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[297\. Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)|   
+[297\. Serialize and Deserialize Binary Tree](<https://leetcode.com/problems/serialize-and-deserialize-binary-tree/>)|   
   
 Prerequisites
 
 Before reading this article, you need to first learn:
 
-  * [Basics of Binary Tree Structure](/en/algo/data-structure-basic/binary-tree-basic/)
-  * [DFS/BFS Traversal of Binary Trees](/en/algo/data-structure-basic/binary-tree-traverse-basic/)
-  * [Binary Tree Key Concepts (Overview)](/en/algo/essential-technique/binary-tree-summary/)
+  * [Basics of Binary Tree Structure](</en/algo/data-structure-basic/binary-tree-basic/>)
+  * [DFS/BFS Traversal of Binary Trees](</en/algo/data-structure-basic/binary-tree-traverse-basic/>)
+  * [Binary Tree Key Concepts (Overview)](</en/algo/essential-technique/binary-tree-summary/>)
 
-
-This is the third article after [Binary Tree Key Concepts (Overview)](/en/algo/essential-technique/binary-tree-summary/). The previous article, [Binary Tree Key Concepts (Construction)](/en/algo/data-structure/binary-tree-part2/), taught you how to build binary trees. In this article, we will increase the difficulty and learn how to "serialize" and "deserialize" a binary tree.
+This is the third article after [Binary Tree Key Concepts (Overview)](</en/algo/essential-technique/binary-tree-summary/>). The previous article, [Binary Tree Key Concepts (Construction)](</en/algo/data-structure/binary-tree-part2/>), taught you how to build binary trees. In this article, we will increase the difficulty and learn how to "serialize" and "deserialize" a binary tree.
 
 To explain serialization and deserialization, let's start with the JSON data format.
 
@@ -32,7 +31,7 @@ This is the purpose of serialization and deserialization: use a certain format t
 
 Now, imagine you have a binary tree in Java. You want to save it in some way, and then use C++ to read and restore this binary tree. How can you do this? You need to serialize and deserialize the binary tree.
 
-## ¶0\. Preorder/Inorder/Postorder and Uniqueness of Binary Tree
+## 0\. Preorder/Inorder/Postorder and Uniqueness of Binary Tree
 
 Before we look at real problems, let’s think: **what kind of serialized data can be deserialized to a unique binary tree**?
 
@@ -42,7 +41,7 @@ The answer is: sometimes you can, sometimes you cannot. It depends on whether th
 
 For example, if your preorder result is `[1,2,3,4,5]` and does not include nulls, then both trees below have the same preorder result:
 
-![](/images/algo/binary-tree-serialization/dup-preorder.jpg)
+![diagram](https://labuladong.online/images/algo/binary-tree-serialization/dup-preorder.jpg)
 
 So, if you do not include nulls, you cannot restore a unique binary tree from the preorder traversal.
 
@@ -54,7 +53,7 @@ We will talk more about this later. For now, the reason is: preorder and postord
 
 For example, the two trees below obviously have different structures, but their inorder traversals are both `[#,1,#,1,#]`, so you cannot tell them apart:
 
-![](/images/algo/binary-tree-serialization/dup-inorder.jpg)
+![diagram](https://labuladong.online/images/algo/binary-tree-serialization/dup-inorder.jpg)
 
 To summarize, **if the binary tree nodes have unique values** :
 
@@ -72,30 +71,28 @@ To summarize, **if the binary tree nodes have unique values** :
 
 3.2. If you have inorder, you **cannot** restore a unique binary tree.
 
-
 I mention these conclusions so you can remember them. Later, you will meet related problems, and you can come back to these notes for a deeper understanding. Now let’s look at the specific problems.
 
-## ¶1\. Problem Description
+## 1\. Problem Description
 
-LeetCode problem 297, "[Serialize and Deserialize Binary Tree](https://leetcode.com/problems/serialize-and-deserialize-binary-tree/)", gives you the root node `root` of a binary tree. You need to implement a class like this:
+LeetCode problem 297, "[Serialize and Deserialize Binary Tree](<https://leetcode.com/problems/serialize-and-deserialize-binary-tree/>)", gives you the root node `root` of a binary tree. You need to implement a class like this:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    public class Codec {
-    
-        // serialize a binary tree into a string
-        public String serialize(TreeNode root) {}
-    
-        // deserialize a string into a binary tree
-        public TreeNode deserialize(String data) {}
-    }
+```java
+public class Codec {
+
+    // serialize a binary tree into a string
+    public String serialize(TreeNode root) {}
+
+    // deserialize a string into a binary tree
+    public TreeNode deserialize(String data) {}
+}
+``` 
 
 You can use the `serialize` method to turn the binary tree into a string, and use the `deserialize` method to turn the string back into a binary tree. You can choose any format you want for serialization and deserialization.
 
 For example, given this binary tree:
 
-![](/images/algo/binary-tree-serialization/1.jpg)
+![diagram](https://labuladong.online/images/algo/binary-tree-serialization/1.jpg)
 
 The `serialize` method might turn it into the string `2,1,#,6,#,#,3,#,#`, where `#` means a `null` pointer. If you give this string to the `deserialize` method, it can restore the same binary tree.
 
@@ -105,121 +102,115 @@ Think about it: a binary tree is a two-dimensional structure, but the serialized
 
 What are the ways to traverse a binary tree? There are recursive ways like preorder, inorder, and postorder traversal. There is also iterative level-order traversal. In this article, we will try all these ways to implement the `serialize` and `deserialize` methods.
 
-## ¶2\. Preorder Traversal Solution
+## 2\. Preorder Traversal Solution
 
-In the previous article [Binary Tree Traversal Basics](/en/algo/data-structure-basic/binary-tree-traverse-basic/), we talked about several ways to traverse a binary tree. If we collect nodes in preorder, we get the preorder traversal result:
+In the previous article [Binary Tree Traversal Basics](</en/algo/data-structure-basic/binary-tree-traverse-basic/>), we talked about several ways to traverse a binary tree. If we collect nodes in preorder, we get the preorder traversal result:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    LinkedList<Integer> res;
-    
-    void traverse(TreeNode root) {
-        if (root == null) {
-            // temporarily use the number -1 to represent the null pointer
-            res.addLast(-1);
-            return;
-        }
-    
-        // ****** pre-order position ********
-        res.addLast(root.val);
-        // ***********************
-    
-        traverse(root.left);
-        traverse(root.right);
+```java
+LinkedList<Integer> res;
+
+void traverse(TreeNode root) {
+    if (root == null) {
+        // temporarily use the number -1 to represent the null pointer
+        res.addLast(-1);
+        return;
     }
+
+    // ****** pre-order position ********
+    res.addLast(root.val);
+    // ***********************
+
+    traverse(root.left);
+    traverse(root.right);
+}
+``` 
 
 After calling the `traverse` function, can you guess the order of elements in the `res` list? For the tree below (where `#` means null), we can see what preorder traversal does:
 
-![](/images/algo/binary-tree-serialization/1.jpeg)
+![diagram](https://labuladong.online/images/algo/binary-tree-serialization/1.jpeg)
 
 So, `res = [1,2,-1,4,-1,-1,3,-1,-1]`. This is the "flattened" binary tree as a list, where -1 means null.
 
 Flattening the binary tree into a string is the same idea:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // character representing separator
-    String SEP = ",";
-    
-    // character representing null pointer
-    String NULL = "#";
-    
-    // for concatenating strings
-    StringBuilder sb = new StringBuilder();
-    
-    // flatten the binary tree to a string
-    void traverse(TreeNode root, StringBuilder sb) {
-        if (root == null) {
-            sb.append(NULL).append(SEP);
-            return;
-        }
-    
-        // ***** pre-order position *****
-        sb.append(root.val).append(SEP);
-        // *********************
-    
-        traverse(root.left, sb);
-        traverse(root.right, sb);
+```java
+// character representing separator
+String SEP = ",";
+
+// character representing null pointer
+String NULL = "#";
+
+// for concatenating strings
+StringBuilder sb = new StringBuilder();
+
+// flatten the binary tree to a string
+void traverse(TreeNode root, StringBuilder sb) {
+    if (root == null) {
+        sb.append(NULL).append(SEP);
+        return;
     }
+
+    // ***** pre-order position *****
+    sb.append(root.val).append(SEP);
+    // *********************
+
+    traverse(root.left, sb);
+    traverse(root.right, sb);
+}
+``` 
 
 This code also collects the preorder result. It uses `,` as a separator and `#` for null pointers. After calling the `traverse` function, the string in `sb` should be `1,2,#,4,#,#,3,#,#,`.
 
 Now, we can write the code for the `serialize` function:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Codec {
-        String SEP = ",";
-        String NULL = "#";
-    
-        // main function, serialize the binary tree to a string
-        public String serialize(TreeNode root) {
-            StringBuilder sb = new StringBuilder();
-            _serialize(root, sb);
-            return sb.toString();
-        }
-    
-        // helper function, store the binary tree into StringBuilder
-        void _serialize(TreeNode root, StringBuilder sb) {
-            if (root == null) {
-                sb.append(NULL).append(SEP);
-                return;
-            }
-    
-            // ****** pre-order position ********
-            sb.append(root.val).append(SEP); ![](/images/algo/binary-tree-serialization/1.jpeg)
-            // ***********************
-    
-            _serialize(root.left, sb);
-            _serialize(root.right, sb);
-        }
+```java
+class Codec {
+    String SEP = ",";
+    String NULL = "#";
+
+    // main function, serialize the binary tree to a string
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        _serialize(root, sb);
+        return sb.toString();
     }
+
+    // helper function, store the binary tree into StringBuilder
+    void _serialize(TreeNode root, StringBuilder sb) {
+        if (root == null) {
+            sb.append(NULL).append(SEP);
+            return;
+        }
+
+        // ****** pre-order position ********
+        sb.append(root.val).append(SEP); 
+        // ***********************
+
+        _serialize(root.left, sb);
+        _serialize(root.right, sb);
+    }
+}
+``` 
 
 Next, let's think about how to write the `deserialize` function to turn the string back into a binary tree.
 
 First, we can change the string into a list:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    String data = "1,2,#,4,#,#,3,#,#,";
-    String[] nodes = data.split(",");
+```java
+String data = "1,2,#,4,#,#,3,#,#,";
+String[] nodes = data.split(",");
+``` 
 
 Now, the `nodes` list is the preorder result of the binary tree. The problem becomes: how can we rebuild the binary tree from its preorder result?
 
 Tip
 
-In the previous article [Binary Tree Secrets (Construction)](/en/algo/data-structure/binary-tree-part2/), we said that you need at least two types of traversals, like preorder and inorder, to rebuild a binary tree. That is because those traversals did not record null pointers. Here, the `nodes` list includes information about null pointers, so we can rebuild the binary tree using only this list.
+In the previous article [Binary Tree Secrets (Construction)](</en/algo/data-structure/binary-tree-part2/>), we said that you need at least two types of traversals, like preorder and inorder, to rebuild a binary tree. That is because those traversals did not record null pointers. Here, the `nodes` list includes information about null pointers, so we can rebuild the binary tree using only this list.
 
 From our analysis, the `nodes` list is a flattened binary tree:
 
-![](/images/algo/binary-tree-serialization/1.jpeg)
+![diagram](https://labuladong.online/images/algo/binary-tree-serialization/1.jpeg)
 
 So, for deserialization, we first find the root node, then follow the preorder rules to recursively build the left and right subtrees:
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

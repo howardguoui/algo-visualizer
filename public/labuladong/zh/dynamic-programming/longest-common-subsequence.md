@@ -21,23 +21,21 @@ LeetCode| 力扣| 难度
 
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
 
-
 不知道大家做算法题有什么感觉，我总结出来做算法题的技巧就是，把大的问题细化到一个点，先研究在这个小的点上如何解决问题，然后再通过递归/迭代的方式扩展到整个问题。
 
 比如说我们前文 [手把手带你刷二叉树第三期](</zh/algo/data-structure/binary-tree-part3/>)，解决二叉树的题目，我们就会把整个问题细化到某一个节点上，想象自己站在某个节点上，需要做什么，然后套二叉树递归框架就行了。
 
 动态规划系列问题也是一样，尤其是子序列相关的问题。**本文从「最长公共子序列问题」展开，总结三道子序列问题** ，解这道题仔细讲讲这种子序列问题的套路，你就能感受到这种思维方式了。
 
-## ¶最长公共子序列
+## 最长公共子序列
 
 计算最长公共子序列（Longest Common Subsequence，简称 LCS）是一道经典的动态规划题目，力扣第 1143 题「[最长公共子序列](<https://leetcode.cn/problems/longest-common-subsequence/>)」就是这个问题：
 
 给你输入两个字符串 `s1` 和 `s2`，请你找出他们俩的最长公共子序列，返回这个子序列的长度。函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int longestCommonSubsequence(String s1, String s2);
+```java
+int longestCommonSubsequence(String s1, String s2);
+``` 
 
 比如说输入 `s1 = "zabcde", s2 = "acez"`，它俩的最长公共子序列是 `lcs = "ace"`，长度为 3，所以算法返回 3。
 
@@ -46,7 +44,3 @@ CC++GoJavaJavaScriptPython
 显然，这种思路的复杂度非常高，你要穷举出所有子序列，这个复杂度就是指数级的，肯定不实际。
 
 正确的思路是不要考虑整个字符串，而是细化到 `s1` 和 `s2` 的每个字符。前文 [子序列解题模板](</zh/algo/dynamic-programming/subsequence-problem/>) 中总结的一个规律：
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

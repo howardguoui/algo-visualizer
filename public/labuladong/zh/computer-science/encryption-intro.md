@@ -11,7 +11,7 @@
 
 本文结合 `openssl` 命令，通过实际操作来介绍这三种技术的工作原理和使用场景，帮助你建立对现代加密技术的完整认识。
 
-## ¶对称加密
+## 对称加密
 
 对称加密比较容易理解，就是**加密和解密使用同一个秘钥** 。
 
@@ -24,25 +24,25 @@
 古老的凯撒密码很容易被破解，现代有很多更安全的对称加密算法，比如 AES、DES 等，它们更加复杂，但依然需要加密方和解密方共享秘钥。
 
 我们可以用 `openssl` 命令快速体验一下 AES 加密：
-    
-    
-    # 创建一个测试文件
-    echo "This is a secret message" > secret.txt
-    
-    # 使用 AES-256-CBC 算法加密，密码是 mypassword
-    openssl enc -aes-256-cbc -salt -in secret.txt -out secret.enc -k mypassword
-    
-    # 解密文件
-    openssl enc -aes-256-cbc -d -in secret.enc -out decrypted.txt -k mypassword
-    
-    # 查看解密后的内容
-    cat decrypted.txt
+
+```
+# 创建一个测试文件
+echo "This is a secret message" > secret.txt
+
+# 使用 AES-256-CBC 算法加密，密码是 mypassword
+openssl enc -aes-256-cbc -salt -in secret.txt -out secret.enc -k mypassword
+
+# 解密文件
+openssl enc -aes-256-cbc -d -in secret.enc -out decrypted.txt -k mypassword
+
+# 查看解密后的内容
+cat decrypted.txt
+``` 
 
   * `enc -aes-256-cbc`: 使用 AES-256-CBC 算法进行加密。
   * `-salt`: 添加随机盐值，增加安全性。
   * `-k mypassword`: 指定加密密码为 `mypassword`。
   * `-d`: 执行解密操作。
-
 
 什么是盐值（Salt）？
 
@@ -63,7 +63,6 @@
   * **速度快** ：对称加密算法的计算效率很高，适合加密大量数据。
   * **实现简单** ：相比其他加密方式，对称加密的算法相对简单。
 
-
 一些本地加密的场景，比如磁盘加密，文件加密等，常使用对称加密算法。
 
 对称加密的缺点是：
@@ -71,10 +70,9 @@
   * **密钥分发问题** ：这是对称加密最大的问题。加密方和解密方必须共享同一个秘钥，但在信道不安全的情况下，我们无法将密文和秘钥同时安全地传递给解密方。窃听者完全可以同时截获密文和秘钥，使得加密形同虚设。
   * **密钥管理困难** ：如果有 NNN 个人需要两两加密通信，就需要管理 N×(N−1)/2N \times (N-1)/2N×(N−1)/2 个不同的秘钥，管理成本很高。
 
-
 密钥分发问题催生了非对称加密技术，但在介绍非对称加密之前，我们先看另一个重要的密码学工具：哈希函数。
 
-## ¶哈希与数据指纹
+## 哈希与数据指纹
 
 哈希函数虽然不是加密算法，但它是密码学中的重要工具，特别是在数字签名中起关键作用。
 
@@ -87,31 +85,34 @@
   3. **雪崩效应** ：原始数据哪怕只改动一个字节，哈希值也会完全不同。
   4. **唯一性** ：不同的数据几乎不可能产生相同的哈希值（虽然理论上存在 [哈希冲突](</zh/algo/data-structure-basic/hashmap-basic/>) 的可能，但概率极低）。
 
-
 我们用 `openssl` 来计算一个文件的 SHA256 哈希值：
-    
-    
-    # 创建一个测试文件
-    echo 'Hello World' > test.txt
-    
-    # 计算 SHA256 哈希值
-    openssl dgst -sha256 test.txt
+
+```
+# 创建一个测试文件
+echo 'Hello World' > test.txt
+
+# 计算 SHA256 哈希值
+openssl dgst -sha256 test.txt
+``` 
 
 输出为：
-    
-    
-    SHA256(test.txt)= d2a84f4b8b650937ec8f73cd8be2c74add5a911ba64df27458ed8229da804a26
+
+```
+SHA256(test.txt)= d2a84f4b8b650937ec8f73cd8be2c74add5a911ba64df27458ed8229da804a26
+``` 
 
 这个 64 位的十六进制字符串就是 `test.txt` 的 SHA256 指纹。如果你修改文件内容，哪怕只改一个字母：
-    
-    
-    echo 'Hello World!' > test.txt
-    openssl dgst -sha256 test.txt
+
+```
+echo 'Hello World!' > test.txt
+openssl dgst -sha256 test.txt
+``` 
 
 你会发现哈希值完全变了：
-    
-    
-    SHA256(test.txt)= 03ba204e50d126e4674c005e04d82e84c21366780af1f43bd54a37816b6ab340
+
+```
+SHA256(test.txt)= 03ba204e50d126e4674c005e04d82e84c21366780af1f43bd54a37816b6ab340
+``` 
 
 哈希函数在密码学和软件工程中有广泛应用：
 
@@ -121,14 +122,13 @@
   * **版本控制** ：Git 使用 SHA-1 哈希值作为 commit ID，确保代码历史的完整性。
   * **数据去重** ：通过比较文件的哈希值快速判断文件是否重复。
 
-
 需要注意的是，**哈希函数只能用来计算指纹，不能加密数据，也不能防止数据被篡改** 。
 
 比如你把一个文件和它的哈希值一起发送给别人，攻击者可以同时篡改文件和哈希值，接收方无法发现问题。
 
 要解决这个问题，需要结合非对称加密的数字签名功能。
 
-## ¶非对称加密
+## 非对称加密
 
 **非对称加密的思路就是，加密和解密使用不同的秘钥** 。
 
@@ -150,35 +150,35 @@
 
 这样说可能还是有点抽象，我们来实操一把。
 
-### ¶`openssl` 生成秘钥对
+### `openssl` 生成秘钥对
 
 我们使用 `openssl` 命令来生成秘钥对，主流的操作系统应该都会预装这个工具。
 
 我们首先要生成一个独一无二的私钥，公钥是从私钥中提取出来的。
-    
-    
-    # 生成私钥
-    openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+
+```
+# 生成私钥
+openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
+``` 
 
   * `genpkey`: 生成密钥的命令。
   * `-algorithm RSA`: 指定使用 RSA 算法，这是最经典的非对称加密算法。
   * `-out private_key.pem`: 将生成的私钥保存到名为 `private_key.pem` 的文件中。
   * `-pkeyopt rsa_keygen_bits:2048`: 指定密钥长度为 2048 位，这是当前推荐的安全长度。
 
-
 执行后，当前目录下会多出一个 `private_key.pem` 文件。这个就是**私钥** 文件，一定要保管好，不能泄露！
 
 接下来，我们从私钥中生成对应的公钥：
-    
-    
-    # 生成公钥
-    openssl rsa -pubout -in private_key.pem -out public_key.pem
+
+```
+# 生成公钥
+openssl rsa -pubout -in private_key.pem -out public_key.pem
+``` 
 
   * `rsa`: 处理 RSA 密钥的命令。
   * `-pubout`: 表示要输出公钥。
   * `-in private_key.pem`: 指定输入的私钥文件。
   * `-out public_key.pem`: 将生成的公钥保存到名为 `public_key.pem` 的文件中。
-
 
 现在，你拥有了 `public_key.pem` 文件，这个就是你的**公钥** ，你可以把它分发给任何人。
 
@@ -192,97 +192,101 @@
 
 所以说，实际上公钥是通过私钥演算出来的。
 
-### ¶场景一：加密与解密
+### 场景一：加密与解密
 
 数据发送方想发给你一条机密消息：
-    
-    
-    echo "My name is Bob." > message.txt
+
+```
+echo "My name is Bob." > message.txt
+``` 
 
 那么他可以用你的公钥来加密消息：
-    
-    
-    # 公钥加密
-    openssl pkeyutl -encrypt -pubin -inkey public_key.pem -in message.txt -out encrypted_message.bin
+
+```
+# 公钥加密
+openssl pkeyutl -encrypt -pubin -inkey public_key.pem -in message.txt -out encrypted_message.bin
+``` 
 
   * `-encrypt`: 执行加密操作。
   * `-pubin -inkey public_key.pem`: 使用公钥 (`public_key.pem`) 进行加密。
   * `-in message.txt`: 对 `message.txt` 文件加密。
   * `-out encrypted_message.bin`: 将加密后的内容输出到 `encrypted_message.bin` 文件。
 
-
 现在目录中多了一个 `encrypted_message.bin` 文件，其内容是乱码，这就是加密后的密文。
 
 你可以用私钥解密密文：
-    
-    
-    # 私钥解密
-    openssl pkeyutl -decrypt -inkey private_key.pem -in encrypted_message.bin -out decrypted_message.txt
+
+```
+# 私钥解密
+openssl pkeyutl -decrypt -inkey private_key.pem -in encrypted_message.bin -out decrypted_message.txt
+``` 
 
   * `-decrypt`: 执行解密操作。
   * `-inkey private_key.pem`: 使用私钥 (`private_key.pem`) 进行解密。
   * `-in encrypted_message.bin`: 对加密文件进行解密。
   * `-out decrypted_message.txt`: 将解密后的明文输出到 `decrypted_message.txt` 文件。
 
-
 检查解密后的内容：
-    
-    
-    cat decrypted_message.txt
+
+```
+cat decrypted_message.txt
+``` 
 
 你会看到，原始消息 `My name is Bob.` 完美地还原了！
 
-### ¶场景二：签名与验证
+### 场景二：签名与验证
 
 假设你要发布一份公开声明，例如一份合同条款：
-    
-    
-    echo "I agree." > contract.txt
+
+```
+echo "I agree." > contract.txt
+``` 
 
 为了证明这份合同确实是你本人签署的，可以使用你的私钥对 `contract.txt` 生成一个数字签名。
-    
-    
-    # 私钥签名
-    openssl dgst -sha256 -sign private_key.pem -out signature.bin contract.txt
+
+```
+# 私钥签名
+openssl dgst -sha256 -sign private_key.pem -out signature.bin contract.txt
+``` 
 
   * `dgst -sha256`: 表示先用 SHA256 算法对文件内容计算指纹（哈希值），然后再对这个指纹进行签名。
   * `-sign private_key.pem`: 使用你的私钥 (`private_key.pem`) 进行签名。
   * `-out signature.bin`: 将生成的签名保存到 `signature.bin` 文件。
   * `contract.txt`: 要签名的原始文件。
 
-
 提示
 
 实际场景中一般不会直接对原始数据签名，而是先用 SHA256 算法计算哈希值，然后对哈希值签名。这样做有两个好处：一是效率高（哈希值长度固定，签名速度快），二是能确保数据完整性（前面讲过，哈希值可以唯一代表原始数据）。
 
 接下来，你可以把 `contract.txt`（原文）和 `signature.bin`（签名）这两个文件一起公开发布。任何拥有你的公钥 (`public_key.pem`) 的人，都可以验证这份声明的真伪：
-    
-    
-    # 公钥验证签名
-    openssl dgst -sha256 -verify public_key.pem -signature signature.bin contract.txt
+
+```
+# 公钥验证签名
+openssl dgst -sha256 -verify public_key.pem -signature signature.bin contract.txt
+``` 
 
   * `-verify public_key.pem`: 使用你的公钥 (`public_key.pem`) 进行验证。
   * `-signature signature.bin`: 指定要验证的签名文件。
   * `contract.txt`: 指定要验证的原始文件。
 
-
 如果命令成功执行，终端会输出：
-    
-    
-    Verified OK
+
+```
+Verified OK
+``` 
 
 验证成功说明了：
 
   * **身份真实性** ：这个签名确实是由与该公钥配对的私钥生成的。
   * **数据完整性** ：`contract.txt` 的内容从签名之后，一个字都没有被改动过。
 
-
 你可以尝试修改 `contract.txt` 文件的内容，或使用其他的私钥文件来生成 `signature.bin`，重新执行验证命令，就会得到验证失败的提示：
-    
-    
-    Verification Failure
 
-## ¶总结
+```
+Verification Failure
+``` 
+
+## 总结
 
 现在我们已经了解了现代密码学的三种核心技术，让我们做一个简单的对比：
 
@@ -293,7 +297,3 @@
 **非对称加密**|  公钥加密，私钥解密；私钥签名，公钥验证| 密钥交换、数字签名| 慢| RSA, ECC  
   
 加下来，我们将介绍一些常见的认证和鉴权技术，这些技术就是依托于这些密码学算法实现的。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

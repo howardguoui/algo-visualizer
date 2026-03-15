@@ -9,14 +9,13 @@
 
 单例模式（Singleton Pattern）是一种常用的设计模式，其核心思想是**保证一个类在整个应用程序生命周期内只能创建一个实例，并提供全局访问点来获取这个唯一的实例** 。
 
-## ¶代码实现
+## 代码实现
 
 实现单例模式的几个关键点：
 
   * **私有构造函数** ：防止外部代码创建实例，仅允许类内部实例化唯一的一个实例。
   * **全局访问点** ：提供一个静态方法，允许外部代码获取这个唯一的实例。
   * **并发安全** ：确保在多线程环境下，创建实例和获取实例都是线程安全的。
-
 
 让我们通过一个简化的**数据库连接管理器** 的例子来演示单例模式的实现以及应用场景。
 
@@ -26,76 +25,74 @@
 
 单例模式有几种实现方式，下面一一介绍。不同编程语言的实现方式略有不同，详细的讲解放在注释中。
 
-### ¶1\. 饿汉式实现
+### 1\. 饿汉式实现
 
 饿汉式在类初始化的时候就创建全局唯一实例，是实现单例模式最简单的方式：
 
-C++GoJavaJavaScriptPython
+```java
+public class DatabaseManager {
+    // 在类加载时创建全局唯一的实例
+    // JVM 在类加载时会初始化静态变量，确保线程安全
+    private static final DatabaseManager INSTANCE = new DatabaseManager();
+    private Connection connection;
     
-    
-    public class DatabaseManager {
-        // 在类加载时创建全局唯一的实例
-        // JVM 在类加载时会初始化静态变量，确保线程安全
-        private static final DatabaseManager INSTANCE = new DatabaseManager();
-        private Connection connection;
-        
-        // 私有构造函数，外部代码无法创建实例
-        private DatabaseManager() {
-            // 初始化数据库连接
-            this.connection = getConnection("mysql://...", "user", "password");
-            System.out.println("Connection established.");
-        }
-        
-        // 提供 public static 的全局访问点
-        // 外部代码通过这个方法获取这个唯一的实例
-        public static DatabaseManager getInstance() {
-            return INSTANCE;
-        }
-        
-        // 业务方法
-        public ResultSet execute(String sql) throws SQLException {
-            ...
-        }
+    // 私有构造函数，外部代码无法创建实例
+    private DatabaseManager() {
+        // 初始化数据库连接
+        this.connection = getConnection("mysql://...", "user", "password");
+        System.out.println("Connection established.");
     }
+    
+    // 提供 public static 的全局访问点
+    // 外部代码通过这个方法获取这个唯一的实例
+    public static DatabaseManager getInstance() {
+        return INSTANCE;
+    }
+    
+    // 业务方法
+    public ResultSet execute(String sql) throws SQLException {
+        ...
+    }
+}
+``` 
 
-### ¶2\. 懒汉式实现（双重检查锁定）
+### 2\. 懒汉式实现（双重检查锁定）
 
 懒汉式相比饿汉式，支持懒加载，即在第一次使用时才创建单例实例。
 
 懒加载的好处是，单例未被使用时就不会创建实例，可以节约内存并提升程序启动速度；坏处是需要额外添加代码确保懒加载的线程安全。
 
-C++GoJavaJavaScriptPython
+```java
+public class DatabaseManager {
+    // 使用 volatile 保证可见性
+    private static volatile DatabaseManager instance;
+    private Connection connection;
     
+    private DatabaseManager() {
+        // 初始化数据库连接
+        this.connection = getConnection("mysql://...", "user", "password");
+        System.out.println("Connection established.");
+    }
     
-    public class DatabaseManager {
-        // 使用 volatile 保证可见性
-        private static volatile DatabaseManager instance;
-        private Connection connection;
-        
-        private DatabaseManager() {
-            // 初始化数据库连接
-            this.connection = getConnection("mysql://...", "user", "password");
-            System.out.println("Connection established.");
-        }
-        
-        public static DatabaseManager getInstance() {
-            // 第一次检查，已创建实例则直接返回
-            if (instance == null) {
-                synchronized (DatabaseManager.class) {
-                    // 第二次检查，第一次进入同步块的线程才会创建实例
-                    if (instance == null) {
-                        instance = new DatabaseManager();
-                    }
+    public static DatabaseManager getInstance() {
+        // 第一次检查，已创建实例则直接返回
+        if (instance == null) {
+            synchronized (DatabaseManager.class) {
+                // 第二次检查，第一次进入同步块的线程才会创建实例
+                if (instance == null) {
+                    instance = new DatabaseManager();
                 }
             }
-            return instance;
         }
-        
-        // 业务方法
-        public ResultSet execute(String sql) throws SQLException {
-            ...
-        }
+        return instance;
     }
+    
+    // 业务方法
+    public ResultSet execute(String sql) throws SQLException {
+        ...
+    }
+}
+``` 
 
 关于线程安全
 
@@ -103,9 +100,9 @@ C++GoJavaJavaScriptPython
 
 其他方法（比如 `execute`）的线程安全不在单例模式的考虑范围内，需要自行实现。
 
-## ¶更多使用场景
+## 更多使用场景
 
-### ¶配置管理场景
+### 配置管理场景
 
 **场景描述** ：
 
@@ -114,30 +111,31 @@ C++GoJavaJavaScriptPython
 **为什么使用单例** ：
 
 使用单例模式可以提供全局一致的配置信息，同时避免重复加载数据提升性能。
-    
-    
-    // 使用场景伪代码
-    public class DatabaseService {
-        public void connect() {
-            // 从单例获取配置
-            ConfigManager config = ConfigManager.getInstance();
-            String dbUrl = config.get("database.url");
-            String dbUser = config.get("database.user");
-            // 建立数据库连接...
-        }
-    }
-    
-    public class EmailService {
-        public void sendEmail() {
-            // 同一个配置实例，避免重复加载配置
-            ConfigManager config = ConfigManager.getInstance();
-            String apiKey = config.get("email.api.key");
-            String smtpHost = config.get("email.smtp.host");
-            // 发送邮件...
-        }
-    }
 
-### ¶日志记录器
+```
+// 使用场景伪代码
+public class DatabaseService {
+    public void connect() {
+        // 从单例获取配置
+        ConfigManager config = ConfigManager.getInstance();
+        String dbUrl = config.get("database.url");
+        String dbUser = config.get("database.user");
+        // 建立数据库连接...
+    }
+}
+
+public class EmailService {
+    public void sendEmail() {
+        // 同一个配置实例，避免重复加载配置
+        ConfigManager config = ConfigManager.getInstance();
+        String apiKey = config.get("email.api.key");
+        String smtpHost = config.get("email.smtp.host");
+        // 发送邮件...
+    }
+}
+``` 
+
+### 日志记录器
 
 **场景描述** ：
 
@@ -148,32 +146,29 @@ C++GoJavaJavaScriptPython
 如果每个模块都创建自己的 Logger 实例来写同一个日志文件，就会发生文件写入冲突，导致日志内容混乱或丢失。一个单例的 Logger 对象可以确保所有的日志操作都通过一个入口点，有序地写入到指定的目标。
 
 像 Log4j, SLF4J 这类成熟的日志框架，都运用了单例或类似的思想来确保日志配置的统一和输出的协调。
-    
-    
-    public class AppLogger {
-        private static final AppLogger instance = new AppLogger();
-        private FileWriter fileWriter;
-    
-        private AppLogger() {
-            // 所有日志都写入到这一个文件中
-            fileWriter = new FileWriter("application.log", true);
-        }
-    
-        public static AppLogger getInstance() {
-            return instance;
-        }
-    
-        public void log(String level, String message) {
-            ...
-        }
+
+```
+public class AppLogger {
+    private static final AppLogger instance = new AppLogger();
+    private FileWriter fileWriter;
+
+    private AppLogger() {
+        // 所有日志都写入到这一个文件中
+        fileWriter = new FileWriter("application.log", true);
     }
 
-### ¶注意事项
+    public static AppLogger getInstance() {
+        return instance;
+    }
+
+    public void log(String level, String message) {
+        ...
+    }
+}
+``` 
+
+### 注意事项
 
 单例模式虽然强大且应用广泛，但也需要警惕滥用。
 
 因为它会引入全局状态，增加代码的耦合度，给单元测试带来困难。因此，在决定使用单例模式前，请务必确认该对象确实需要全局共享。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

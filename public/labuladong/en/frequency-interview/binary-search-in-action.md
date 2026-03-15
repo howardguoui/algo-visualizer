@@ -11,24 +11,23 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[875\. Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/)|   
-[1011\. Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)|   
-[410\. Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/)|   
+[875\. Koko Eating Bananas](<https://leetcode.com/problems/koko-eating-bananas/>)|   
+[1011\. Capacity To Ship Packages Within D Days](<https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/>)|   
+[410\. Split Array Largest Sum](<https://leetcode.com/problems/split-array-largest-sum/>)|   
   
 Required Knowledge
 
 Before reading this article, you need to learn:
 
-  * [Binary Search Framework in Detail](/en/algo/essential-technique/binary-search-framework/)
+  * [Binary Search Framework in Detail](</en/algo/essential-technique/binary-search-framework/>)
 
-
-In [Binary Search Framework in Detail](/en/algo/essential-technique/binary-search-framework/), we thoroughly examined the details of binary search, exploring three scenarios: "searching for an element", "searching for the left boundary", and "searching for the right boundary", teaching you how to write correct, bug-free binary search algorithms.
+In [Binary Search Framework in Detail](</en/algo/essential-technique/binary-search-framework/>), we thoroughly examined the details of binary search, exploring three scenarios: "searching for an element", "searching for the left boundary", and "searching for the right boundary", teaching you how to write correct, bug-free binary search algorithms.
 
 **However, the binary search framework summarized in that article is limited to the basic scenario of "searching for a specified element in a sorted array". Real algorithm problems aren't this straightforward—you might not even recognize that a problem can use binary search**.
 
 So this article summarizes a framework for applying binary search algorithms, helping you think through and analyze binary search problems systematically, step by step, to arrive at the solution.
 
-## ¶Original Binary Search Code
+## Original Binary Search Code
 
 The prototype of binary search is searching for an element `target` in a **sorted array** and returning the corresponding index.
 
@@ -36,7 +35,7 @@ If the element doesn't exist, you can return some special value. These details c
 
 There's another important issue: if the **sorted array** contains multiple `target` elements, these elements will definitely be adjacent. This involves whether the algorithm should return the index of the leftmost `target` element or the rightmost one—the so-called "searching for the left boundary" and "searching for the right boundary". This can also be implemented through minor code adjustments.
 
-**We discussed these issues in detail in the previous article[Binary Search Core Framework](/en/algo/essential-technique/binary-search-framework/). Readers who are unclear on this should review that article**. If you already understand the basic binary search algorithm, you can continue reading.
+**We discussed these issues in detail in the previous article[Binary Search Core Framework](</en/algo/essential-technique/binary-search-framework/>). Readers who are unclear on this should review that article**. If you already understand the basic binary search algorithm, you can continue reading.
 
 **In real algorithm problems, the "search left boundary" and "search right boundary" scenarios are commonly used** , while rarely will you be asked to simply "search for an element".
 
@@ -48,64 +47,60 @@ Note that I'm using the left-closed, right-open notation for binary search. If y
 
 The specific code implementation for the "search left boundary" binary search algorithm is as follows:
 
-CC++GoJavaJavaScriptPython
+```java
+// search for the left boundary
+int left_bound(int[] nums, int target) {
+    if (nums.length == 0) return -1;
+    int left = 0, right = nums.length;
     
-    
-    // search for the left boundary
-    int left_bound(int[] nums, int target) {
-        if (nums.length == 0) return -1;
-        int left = 0, right = nums.length;
-        
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] == target) {
-                // when target is found, shrink the right boundary
-                right = mid;
-            } else if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid;
-            }
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) {
+            // when target is found, shrink the right boundary
+            right = mid;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid;
         }
-        return left;
     }
+    return left;
+}
+``` 
 
 Suppose the input array is `nums = [1,2,3,3,3,5,7]` and you want to search for `target = 3`. The algorithm will return index 2.
 
 If we draw a diagram, it looks like this:
 
-![](/images/algo/binary-search-in-action/1.jpeg)
+![diagram](https://labuladong.online/images/algo/binary-search-in-action/1.jpeg)
 
 The specific code implementation for the "search right boundary" binary search algorithm is as follows:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // search for the right boundary
-    int right_bound(int[] nums, int target) {
-        if (nums.length == 0) return -1;
-        int left = 0, right = nums.length;
-    
-        while (left < right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] == target) {
-                // when target is found, shrink the left boundary
-                left = mid + 1;
-            } else if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid;
-            }
+```java
+// search for the right boundary
+int right_bound(int[] nums, int target) {
+    if (nums.length == 0) return -1;
+    int left = 0, right = nums.length;
+
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) {
+            // when target is found, shrink the left boundary
+            left = mid + 1;
+        } else if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid;
         }
-        return left - 1;
     }
+    return left - 1;
+}
+``` 
 
 With the same input, the algorithm will return index 4. If we draw a diagram, it looks like this:
 
-![](/images/algo/binary-search-in-action/2.jpeg)
+![diagram](https://labuladong.online/images/algo/binary-search-in-action/2.jpeg)
 
 Good, the above content is all review. I expect readers at this point should understand it all. Remember the diagrams above—any problem that can be abstracted into these diagrams can be solved using binary search.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

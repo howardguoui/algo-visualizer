@@ -11,20 +11,19 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[226\. Invert Binary Tree](https://leetcode.com/problems/invert-binary-tree/)|   
-[116\. Populating Next Right Pointers in Each Node](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)|   
-[114\. Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)|   
+[226\. Invert Binary Tree](<https://leetcode.com/problems/invert-binary-tree/>)|   
+[116\. Populating Next Right Pointers in Each Node](<https://leetcode.com/problems/populating-next-right-pointers-in-each-node/>)|   
+[114\. Flatten Binary Tree to Linked List](<https://leetcode.com/problems/flatten-binary-tree-to-linked-list/>)|   
   
 Prerequisites
 
 Before reading this article, you should first study:
 
-  * [Basics of Binary Tree Structure](/en/algo/data-structure-basic/binary-tree-basic/)
-  * [Binary Tree DFS/BFS Traversal](/en/algo/data-structure-basic/binary-tree-traverse-basic/)
-  * [Binary Tree Essentials (Guiding Principles)](/en/algo/essential-technique/binary-tree-summary/)
+  * [Basics of Binary Tree Structure](</en/algo/data-structure-basic/binary-tree-basic/>)
+  * [Binary Tree DFS/BFS Traversal](</en/algo/data-structure-basic/binary-tree-traverse-basic/>)
+  * [Binary Tree Essentials (Guiding Principles)](</en/algo/essential-technique/binary-tree-summary/>)
 
-
-This article continues from [Binary Tree Essentials (Guiding Principles)](/en/algo/essential-technique/binary-tree-summary/). Let’s first review the key points summarized in the previous article:
+This article continues from [Binary Tree Essentials (Guiding Principles)](</en/algo/essential-technique/binary-tree-summary/>). Let’s first review the key points summarized in the previous article:
 
 Note
 
@@ -44,5 +43,3 @@ You don’t need to worry about other nodes, as the recursive function will perf
 This article uses a few simple examples to help you practice these key principles, and to understand the differences and connections between the "traversal" and "problem decomposition" approaches.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

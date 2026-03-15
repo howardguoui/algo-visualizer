@@ -13,9 +13,9 @@ You're probably familiar with B+ trees—relational databases like MySQL use the
 
 First, let's talk about storage systems.
 
-### ¶In-Memory vs Disk-Based Data Structures
+### In-Memory vs Disk-Based Data Structures
 
-As I covered in [A Framework for Learning Data Structures and Algorithms](/en/algo/essential-technique/algorithm-summary/), every data structure boils down to create, read, update, and delete operations. But when it comes to implementation, disk-based and memory-based data structures differ quite a bit.
+As I covered in [A Framework for Learning Data Structures and Algorithms](</en/algo/essential-technique/algorithm-summary/>), every data structure boils down to create, read, update, and delete operations. But when it comes to implementation, disk-based and memory-based data structures differ quite a bit.
 
 With in-memory data structures, you just instantiate them and you're done—the OS and programming language handle how they're laid out in memory.
 
@@ -25,7 +25,7 @@ For example, if you've studied MySQL, you're probably familiar with B+ trees. Bu
 
 So generally speaking, understanding the principles of disk-based data structures and their time complexities is enough—no need to get too hung up on implementation details.
 
-### ¶Mutable vs Immutable Data
+### Mutable vs Immutable Data
 
 **Storage structures can be roughly divided into two categories: mutable and immutable.** Mutable means you can modify data in place after insertion; immutable means once data is inserted, it can't be modified.
 
@@ -57,7 +57,7 @@ The solution to this, which I'll cover later, is compaction—eliminating obsole
 
 **The challenges with LSM trees lie in compaction and optimizing read performance, which is why they're typically used in write-heavy scenarios.**
 
-### ¶Ordered vs Unordered
+### Ordered vs Unordered
 
 You could say that how ordered a storage structure is directly determines its performance ceiling. **The more ordered, the better the read performance—but maintaining that order costs more, so write performance suffers.**
 
@@ -65,11 +65,11 @@ Take B-trees—as an enhanced BST, they maintain complete ordering of all data. 
 
 LSM trees can't maintain total ordering like B-trees, but they can maintain partial ordering, which helps improve read performance to some extent.
 
-### ¶LSM Tree Design
+### LSM Tree Design
 
 From my understanding, LSM trees aren't really a data structure—they're more of a storage strategy. Three key components are involved: `memtable`, `log`, and `SSTable`, as shown in this diagram from Apache Pulsar's architecture:
 
-![](/images/algo/pulsar/10.jpg)
+![diagram](https://labuladong.online/images/algo/pulsar/10.jpg)
 
 In the diagram, `Journal` is the `log`, and `Entry Log` is a collection of `SSTables`—just different terminology.
 
@@ -85,26 +85,24 @@ The real key is the read and compaction process: how should `SSTables` be organi
 
 There are actually multiple approaches, but a common one is organizing `SSTables` into levels:
 
-![https://github.com/facebook/rocksdb/wiki/Leveled-Compaction](/images/algo/lsm/1.png)
+![https://github.com/facebook/rocksdb/wiki/Leveled-Compaction](https://labuladong.online/images/algo/lsm/1.png)
 
 Each green box in the diagram represents an `SSTable`. Multiple `SSTables` form a level, and there are multiple levels total, with each level's capacity increasing as you go down.
 
 Newly flushed `SSTables` start at level 0. When a level exceeds its capacity, it triggers a compaction operation—based on key ranges, several `SSTables` from that level and the next are selected, merged into a larger `SSTable`, and moved to the next level down:
 
-![https://github.com/facebook/rocksdb/wiki/Leveled-Compaction](/images/algo/lsm/2.png)
+![https://github.com/facebook/rocksdb/wiki/Leveled-Compaction](https://labuladong.online/images/algo/lsm/2.png)
 
-Each `SSTable` is like a sorted array or linked list, and merging multiple `SSTables` follows the same logic as merging multiple sorted linked lists, which I covered in [Linked List Two-Pointer Techniques](/en/algo/essential-technique/linked-list-skills-summary/).
+Each `SSTable` is like a sorted array or linked list, and merging multiple `SSTables` follows the same logic as merging multiple sorted linked lists, which I covered in [Linked List Two-Pointer Techniques](</en/algo/essential-technique/linked-list-skills-summary/>).
 
 This way, upper levels contain newer data and lower levels contain older data. The algorithm also ensures that `SSTables` within the same level have non-overlapping key ranges:
 
-![https://github.com/facebook/rocksdb/wiki/Leveled-Compaction](/images/algo/lsm/3.png)
+![https://github.com/facebook/rocksdb/wiki/Leveled-Compaction](https://labuladong.online/images/algo/lsm/3.png)
 
-So if we're looking for a target key like `key27`, we just traverse levels from top to bottom, using [binary search](/en/algo/essential-technique/binary-search-framework/) at each level to find the `SSTable` whose key range contains `key27`, then quickly check with a Bloom filter whether `key27` actually exists in that `SSTable`.
+So if we're looking for a target key like `key27`, we just traverse levels from top to bottom, using [binary search](</en/algo/essential-technique/binary-search-framework/>) at each level to find the `SSTable` whose key range contains `key27`, then quickly check with a Bloom filter whether `key27` actually exists in that `SSTable`.
 
-If it exists, since keys within an `SSTable` are also sorted, we can use [binary search](/en/algo/essential-technique/binary-search-framework/) again to find the corresponding value.
+If it exists, since keys within an `SSTable` are also sorted, we can use [binary search](</en/algo/essential-technique/binary-search-framework/>) again to find the corresponding value.
 
 This way, leveraging the LSM tree's level structure and the sorted nature of `SSTables`, we can use binary search to boost lookup efficiency and avoid linear scanning for key-value pairs.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

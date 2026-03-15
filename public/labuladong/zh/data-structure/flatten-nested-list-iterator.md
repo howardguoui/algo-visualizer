@@ -21,10 +21,9 @@ LeetCode| 力扣| 难度
   * [二叉树的遍历框架](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
   * [多叉树结构及遍历框架](</zh/algo/data-structure-basic/n-ary-tree-traverse-basic/>)
 
-
 今天来讲一道非常有启发性的设计题目，为什么说它有启发性，我们后面再说。
 
-## ¶一、题目描述
+## 一、题目描述
 
 这是力扣第 341 题「[扁平化嵌套列表迭代器](<https://leetcode.cn/problems/flatten-nested-list-iterator/>)」：
 
@@ -38,63 +37,59 @@ LeetCode| 力扣| 难度
   * `int next()` 返回嵌套列表的下一个整数。
   * `boolean hasNext()` 如果仍然存在待迭代的整数，返回 `true` ；否则，返回 `false` 。
 
-
 你的代码将会用下述伪代码检测：
-    
-    
-    initialize iterator with nestedList
-    res = []
-    while iterator.hasNext()
-        append iterator.next() to the end of res
-    return res
+
+```
+initialize iterator with nestedList
+res = []
+while iterator.hasNext()
+    append iterator.next() to the end of res
+return res
+``` 
 
 如果 `res` 与预期的扁平化列表匹配，那么你的代码将会被判为正确。
 
 **示例 1：**
-    
-    
-    **输入：** nestedList = [[1,1],2,[1,1]]
-    **输出：**[1,1,2,1,1]
-    **解释：** 通过重复调用  _next_ 直到  _hasNex_ t 返回 false， _next_ 返回的元素的顺序应该是: [1,1,2,1,1]。
+
+```
+[1,1,2,1,1]
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** nestedList = [1,[4,[6]]]
-    **输出：**[1,4,6]
-    **解释：** 通过重复调用  _next_ 直到  _hasNex_ t 返回 false， _next_ 返回的元素的顺序应该是: [1,4,6]。
-    
+
+```
+[1,4,6]
+``` 
 
 **提示：**
 
   * `1 <= nestedList.length <= 500`
   * 嵌套列表中的整数值在范围 `[-106, 106]` 内
 
-
 题目来源：[力扣 341. 扁平化嵌套列表迭代器](<https://leetcode.cn/problems/flatten-nested-list-iterator/>)。
 
 我们的算法会被输入一个 `NestedInteger` 列表，我们需要做的就是写一个迭代器类 `NestedIterator`，将这个带有嵌套结构 `NestedInteger` 的列表「拍平」：
 
-CC++GoJavaJavaScriptPython
+```java
+public class NestedIterator implements Iterator<Integer> {
+    // 构造器输入一个 NestedInteger 列表
+    public NestedIterator(List<NestedInteger> nestedList) {}
     
-    
-    public class NestedIterator implements Iterator<Integer> {
-        // 构造器输入一个 NestedInteger 列表
-        public NestedIterator(List<NestedInteger> nestedList) {}
-        
-        // 返回下一个整数
-        public Integer next() {}
-    
-        // 是否还有下一个元素？
-        public boolean hasNext() {}
-    }
+    // 返回下一个整数
+    public Integer next() {}
+
+    // 是否还有下一个元素？
+    public boolean hasNext() {}
+}
+``` 
 
 我们写的这个 `NestedIterator` 类会被这样调用，**先调用`hasNext` 方法，后调用 `next` 方法**：
-    
-    
-    NestedIterator i = new NestedIterator(nestedList);
-    while (i.hasNext())
-        print(i.next());
+
+```
+NestedIterator i = new NestedIterator(nestedList);
+while (i.hasNext())
+    print(i.next());
+``` 
 
 学过设计模式的朋友应该知道，迭代器也是设计模式的一种，目的就是为调用者屏蔽底层数据结构的细节，简单地通过 `hasNext` 和 `next` 方法有序地进行遍历。
 
@@ -104,8 +99,4 @@ CC++GoJavaJavaScriptPython
 
 那么话说回来，对于这个算法问题，我们怎么解决呢？`NestedInteger` 结构可以无限嵌套，怎么把这个结构「打平」，为迭代器的调用者屏蔽底层细节，得到扁平化的输出呢？
 
-## ¶二、解题思路
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
+## 二、解题思路

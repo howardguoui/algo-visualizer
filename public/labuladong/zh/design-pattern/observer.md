@@ -24,169 +24,163 @@
   * **具体发布者（Concrete Subject）** ：持有具体的状态，状态变化时调用 `notify` 通知所有观察者。
   * **具体观察者（Concrete Observer）** ：实现 `update` 方法，定义收到通知后的具体行为。
 
-
 看两个例子就能直观地理解了。
 
-## ¶场景一：在线拍卖系统
+## 场景一：在线拍卖系统
 
 在线拍卖系统是观察者模式的天然场景：拍卖师（发布者）每次喊出新报价时，需要通知所有参与竞拍的人（观察者）。竞拍者可以随时举牌加入或放弃退出，拍卖师不需要关心具体有哪些人在竞拍。
 
 先定义观察者接口和发布者接口：
 
-C++GoJavaJavaScriptPython
-    
-    
-    // 观察者接口：竞拍者
-    interface Bidder {
-        // itemName: 拍品名称, currentPrice: 当前最高价, leadingBidder: 当前最高出价者
-        void update(String itemName, int currentPrice, String leadingBidder);
-    }
-    
-    // 发布者接口：拍卖
-    interface Auction {
-        void register(Bidder bidder);
-        void unregister(Bidder bidder);
-        void notifyBidders();
-    }
+```java
+// 观察者接口：竞拍者
+interface Bidder {
+    // itemName: 拍品名称, currentPrice: 当前最高价, leadingBidder: 当前最高出价者
+    void update(String itemName, int currentPrice, String leadingBidder);
+}
+
+// 发布者接口：拍卖
+interface Auction {
+    void register(Bidder bidder);
+    void unregister(Bidder bidder);
+    void notifyBidders();
+}
+``` 
 
 然后实现具体的拍卖会（具体发布者），它管理竞拍者列表，每次报价变化时通知所有人：
 
-C++GoJavaJavaScriptPython
-    
-    
-    class LiveAuction implements Auction {
-        private List<Bidder> bidders = new ArrayList<>();
-        // 拍品名称
-        private String itemName;
-        // 当前最高价
-        private int currentPrice;
-        // 当前最高出价者
-        private String leadingBidder;
-    
-        public LiveAuction(String itemName, int startingPrice) {
-            this.itemName = itemName;
-            this.currentPrice = startingPrice;
-            this.leadingBidder = "None";
-        }
-    
-        @Override
-        public void register(Bidder bidder) {
-            bidders.add(bidder);
-        }
-    
-        @Override
-        public void unregister(Bidder bidder) {
-            bidders.remove(bidder);
-        }
-    
-        @Override
-        public void notifyBidders() {
-            for (Bidder bidder : bidders) {
-                bidder.update(itemName, currentPrice, leadingBidder);
-            }
-        }
-    
-        // 有人出价
-        public void placeBid(String bidderName, int price) {
-            if (price > currentPrice) {
-                this.currentPrice = price;
-                this.leadingBidder = bidderName;
-                System.out.println(bidderName + " bids " + price);
-                // 通知所有竞拍者
-                notifyBidders();
-            } else {
-                System.out.println(bidderName + " bids " + price + ", below current price, invalid");
-            }
+```java
+class LiveAuction implements Auction {
+    private List<Bidder> bidders = new ArrayList<>();
+    // 拍品名称
+    private String itemName;
+    // 当前最高价
+    private int currentPrice;
+    // 当前最高出价者
+    private String leadingBidder;
+
+    public LiveAuction(String itemName, int startingPrice) {
+        this.itemName = itemName;
+        this.currentPrice = startingPrice;
+        this.leadingBidder = "None";
+    }
+
+    @Override
+    public void register(Bidder bidder) {
+        bidders.add(bidder);
+    }
+
+    @Override
+    public void unregister(Bidder bidder) {
+        bidders.remove(bidder);
+    }
+
+    @Override
+    public void notifyBidders() {
+        for (Bidder bidder : bidders) {
+            bidder.update(itemName, currentPrice, leadingBidder);
         }
     }
+
+    // 有人出价
+    public void placeBid(String bidderName, int price) {
+        if (price > currentPrice) {
+            this.currentPrice = price;
+            this.leadingBidder = bidderName;
+            System.out.println(bidderName + " bids " + price);
+            // 通知所有竞拍者
+            notifyBidders();
+        } else {
+            System.out.println(bidderName + " bids " + price + ", below current price, invalid");
+        }
+    }
+}
+``` 
 
 接下来实现两种具体观察者。`OnlineBidder` 是在线竞拍者，在控制台显示最新报价：
 
-C++GoJavaJavaScriptPython
-    
-    
-    class OnlineBidder implements Bidder {
-        private String name;
-    
-        public OnlineBidder(String name) {
-            this.name = name;
-        }
-    
-        @Override
-        public void update(String itemName, int currentPrice, String leadingBidder) {
-            System.out.printf("  [%s notified] %s price: %d, leader: %s%n",
-                    name, itemName, currentPrice, leadingBidder);
-        }
-    
-        public String getName() {
-            return name;
-        }
+```java
+class OnlineBidder implements Bidder {
+    private String name;
+
+    public OnlineBidder(String name) {
+        this.name = name;
     }
+
+    @Override
+    public void update(String itemName, int currentPrice, String leadingBidder) {
+        System.out.printf("  [%s notified] %s price: %d, leader: %s%n",
+                name, itemName, currentPrice, leadingBidder);
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+``` 
 
 `BidRecorder` 是一个记录器，负责记录每次出价的历史：
 
-C++GoJavaJavaScriptPython
-    
-    
-    class BidRecorder implements Bidder {
-        private List<String> history = new ArrayList<>();
-    
-        @Override
-        public void update(String itemName, int currentPrice, String leadingBidder) {
-            String record = itemName + ": " + currentPrice + " (" + leadingBidder + ")";
-            history.add(record);
-            System.out.println("  [Recorder] recorded: " + record);
-        }
-    
-        public void printHistory() {
-            System.out.println("=== Bid History ===");
-            for (String record : history) {
-                System.out.println("  " + record);
-            }
+```java
+class BidRecorder implements Bidder {
+    private List<String> history = new ArrayList<>();
+
+    @Override
+    public void update(String itemName, int currentPrice, String leadingBidder) {
+        String record = itemName + ": " + currentPrice + " (" + leadingBidder + ")";
+        history.add(record);
+        System.out.println("  [Recorder] recorded: " + record);
+    }
+
+    public void printHistory() {
+        System.out.println("=== Bid History ===");
+        for (String record : history) {
+            System.out.println("  " + record);
         }
     }
+}
+``` 
 
 看一下客户端代码：
 
-C++GoJavaJavaScriptPython
-    
-    
-    public class Main {
-        public static void main(String[] args) {
-            LiveAuction auction = new LiveAuction("Antique Vase", 1000);
-    
-            OnlineBidder alice = new OnlineBidder("Alice");
-            OnlineBidder bob = new OnlineBidder("Bob");
-            BidRecorder recorder = new BidRecorder();
-    
-            // 三个观察者注册到拍卖会
-            auction.register(alice);
-            auction.register(bob);
-            auction.register(recorder);
-    
-            // Alice 出价，所有人收到通知
-            auction.placeBid("Alice", 1500);
-            // Alice bids 1500
-            //   [Alice notified] Antique Vase price: 1500, leader: Alice
-            //   [Bob notified] Antique Vase price: 1500, leader: Alice
-            //   [Recorder] recorded: Antique Vase: 1500 (Alice)
-    
-            // Bob 不想玩了，退出拍卖
-            auction.unregister(bob);
-            System.out.println("Bob left the auction");
-    
-            // Alice 再次出价，Bob 不再收到通知
-            auction.placeBid("Alice", 2000);
-            // Alice bids 2000
-            //   [Alice notified] Antique Vase price: 2000, leader: Alice
-            //   [Recorder] recorded: Antique Vase: 2000 (Alice)
-    
-            recorder.printHistory();
-            // === Bid History ===
-            //   Antique Vase: 1500 (Alice)
-            //   Antique Vase: 2000 (Alice)
-        }
+```java
+public class Main {
+    public static void main(String[] args) {
+        LiveAuction auction = new LiveAuction("Antique Vase", 1000);
+
+        OnlineBidder alice = new OnlineBidder("Alice");
+        OnlineBidder bob = new OnlineBidder("Bob");
+        BidRecorder recorder = new BidRecorder();
+
+        // 三个观察者注册到拍卖会
+        auction.register(alice);
+        auction.register(bob);
+        auction.register(recorder);
+
+        // Alice 出价，所有人收到通知
+        auction.placeBid("Alice", 1500);
+        // Alice bids 1500
+        //   [Alice notified] Antique Vase price: 1500, leader: Alice
+        //   [Bob notified] Antique Vase price: 1500, leader: Alice
+        //   [Recorder] recorded: Antique Vase: 1500 (Alice)
+
+        // Bob 不想玩了，退出拍卖
+        auction.unregister(bob);
+        System.out.println("Bob left the auction");
+
+        // Alice 再次出价，Bob 不再收到通知
+        auction.placeBid("Alice", 2000);
+        // Alice bids 2000
+        //   [Alice notified] Antique Vase price: 2000, leader: Alice
+        //   [Recorder] recorded: Antique Vase: 2000 (Alice)
+
+        recorder.printHistory();
+        // === Bid History ===
+        //   Antique Vase: 1500 (Alice)
+        //   Antique Vase: 2000 (Alice)
     }
+}
+``` 
 
 这个例子清晰地展示了观察者模式的几个核心操作：
 
@@ -194,10 +188,9 @@ C++GoJavaJavaScriptPython
   * **unregister** ：竞拍者放弃退出，从观察者列表中移除。Bob 退出后就不再收到通知了。
   * **notify** ：每次有人出价，拍卖师自动通知所有还在场的竞拍者。
 
-
 发布者（拍卖会）完全不关心观察者是谁、有多少个、收到通知后要干什么。`OnlineBidder` 在屏幕上显示信息，`BidRecorder` 默默记录历史，它们各自做各自的事情，互不影响。
 
-## ¶场景二：游戏成就系统
+## 场景二：游戏成就系统
 
 在游戏开发中，观察者模式几乎是标配。想象一下，玩家击杀了一只怪物，需要做很多事情：
 
@@ -209,62 +202,60 @@ C++GoJavaJavaScriptPython
 
 先定义事件类型和观察者接口：
 
-C++GoJavaJavaScriptPython
-    
-    
-    // 游戏事件类型
-    enum GameEventType {
-        MONSTER_KILLED, ITEM_COLLECTED, LEVEL_COMPLETED
+```java
+// 游戏事件类型
+enum GameEventType {
+    MONSTER_KILLED, ITEM_COLLECTED, LEVEL_COMPLETED
+}
+
+// 游戏事件数据
+class GameEvent {
+    private final GameEventType type;
+    private final Map<String, Object> data;
+
+    public GameEvent(GameEventType type, Map<String, Object> data) {
+        this.type = type;
+        this.data = data;
     }
-    
-    // 游戏事件数据
-    class GameEvent {
-        private final GameEventType type;
-        private final Map<String, Object> data;
-    
-        public GameEvent(GameEventType type, Map<String, Object> data) {
-            this.type = type;
-            this.data = data;
-        }
-    
-        public GameEventType getType() { return type; }
-        public Object getData(String key) { return data.get(key); }
-    }
-    
-    // 观察者接口
-    interface GameEventListener {
-        void onEvent(GameEvent event);
-    }
+
+    public GameEventType getType() { return type; }
+    public Object getData(String key) { return data.get(key); }
+}
+
+// 观察者接口
+interface GameEventListener {
+    void onEvent(GameEvent event);
+}
+``` 
 
 然后实现发布者，这里我们做一个**事件中心** ，允许按事件类型订阅，这样观察者可以只关心自己感兴趣的事件：
 
-C++GoJavaJavaScriptPython
-    
-    
-    class EventCenter {
-        // key 是事件类型，value 是订阅了该类型的观察者列表
-        private Map<GameEventType, List<GameEventListener>> listeners = new HashMap<>();
-    
-        public void subscribe(GameEventType type, GameEventListener listener) {
-            listeners.computeIfAbsent(type, k -> new ArrayList<>()).add(listener);
+```java
+class EventCenter {
+    // key 是事件类型，value 是订阅了该类型的观察者列表
+    private Map<GameEventType, List<GameEventListener>> listeners = new HashMap<>();
+
+    public void subscribe(GameEventType type, GameEventListener listener) {
+        listeners.computeIfAbsent(type, k -> new ArrayList<>()).add(listener);
+    }
+
+    public void unsubscribe(GameEventType type, GameEventListener listener) {
+        List<GameEventListener> list = listeners.get(type);
+        if (list != null) {
+            list.remove(listener);
         }
-    
-        public void unsubscribe(GameEventType type, GameEventListener listener) {
-            List<GameEventListener> list = listeners.get(type);
-            if (list != null) {
-                list.remove(listener);
-            }
-        }
-    
-        public void publish(GameEvent event) {
-            List<GameEventListener> list = listeners.get(event.getType());
-            if (list != null) {
-                for (GameEventListener listener : list) {
-                    listener.onEvent(event);
-                }
+    }
+
+    public void publish(GameEvent event) {
+        List<GameEventListener> list = listeners.get(event.getType());
+        if (list != null) {
+            for (GameEventListener listener : list) {
+                listener.onEvent(event);
             }
         }
     }
+}
+``` 
 
 注意这和第一个例子的区别：
 
@@ -272,115 +263,113 @@ C++GoJavaJavaScriptPython
 
 接下来实现几个具体的观察者：
 
-C++GoJavaJavaScriptPython
-    
-    
-    // 成就系统：追踪击杀数，检查是否解锁成就
-    class AchievementSystem implements GameEventListener {
-        private int killCount = 0;
-    
-        @Override
-        public void onEvent(GameEvent event) {
-            if (event.getType() == GameEventType.MONSTER_KILLED) {
-                killCount++;
-                System.out.println("  [Achievement] Kill count: " + killCount);
-                if (killCount == 1) {
-                    System.out.println("  [Achievement] Unlocked: First Blood!");
-                } else if (killCount == 10) {
-                    System.out.println("  [Achievement] Unlocked: Monster Hunter!");
-                }
+```java
+// 成就系统：追踪击杀数，检查是否解锁成就
+class AchievementSystem implements GameEventListener {
+    private int killCount = 0;
+
+    @Override
+    public void onEvent(GameEvent event) {
+        if (event.getType() == GameEventType.MONSTER_KILLED) {
+            killCount++;
+            System.out.println("  [Achievement] Kill count: " + killCount);
+            if (killCount == 1) {
+                System.out.println("  [Achievement] Unlocked: First Blood!");
+            } else if (killCount == 10) {
+                System.out.println("  [Achievement] Unlocked: Monster Hunter!");
             }
         }
     }
-    
-    // 统计模块：记录各类事件的发生次数
-    class StatisticsTracker implements GameEventListener {
-        private Map<GameEventType, Integer> stats = new HashMap<>();
-    
-        @Override
-        public void onEvent(GameEvent event) {
-            stats.merge(event.getType(), 1, Integer::sum);
-            System.out.println("  [Stats] " + event.getType() + " total: " + stats.get(event.getType()));
-        }
-    
-        public void printStats() {
-            System.out.println("=== Game Statistics ===");
-            stats.forEach((type, count) -> System.out.println("  " + type + ": " + count));
+}
+
+// 统计模块：记录各类事件的发生次数
+class StatisticsTracker implements GameEventListener {
+    private Map<GameEventType, Integer> stats = new HashMap<>();
+
+    @Override
+    public void onEvent(GameEvent event) {
+        stats.merge(event.getType(), 1, Integer::sum);
+        System.out.println("  [Stats] " + event.getType() + " total: " + stats.get(event.getType()));
+    }
+
+    public void printStats() {
+        System.out.println("=== Game Statistics ===");
+        stats.forEach((type, count) -> System.out.println("  " + type + ": " + count));
+    }
+}
+
+// 音效系统：根据不同事件播放对应音效
+class SoundSystem implements GameEventListener {
+    @Override
+    public void onEvent(GameEvent event) {
+        switch (event.getType()) {
+            case MONSTER_KILLED:
+                String monster = (String) event.getData("monsterName");
+                System.out.println("  [Sound] Kill sound: " + monster + " defeated!");
+                break;
+            case ITEM_COLLECTED:
+                System.out.println("  [Sound] Pickup sound: Ding~");
+                break;
+            case LEVEL_COMPLETED:
+                System.out.println("  [Sound] Victory sound: Victory!");
+                break;
         }
     }
-    
-    // 音效系统：根据不同事件播放对应音效
-    class SoundSystem implements GameEventListener {
-        @Override
-        public void onEvent(GameEvent event) {
-            switch (event.getType()) {
-                case MONSTER_KILLED:
-                    String monster = (String) event.getData("monsterName");
-                    System.out.println("  [Sound] Kill sound: " + monster + " defeated!");
-                    break;
-                case ITEM_COLLECTED:
-                    System.out.println("  [Sound] Pickup sound: Ding~");
-                    break;
-                case LEVEL_COMPLETED:
-                    System.out.println("  [Sound] Victory sound: Victory!");
-                    break;
-            }
-        }
-    }
+}
+``` 
 
 最后看客户端如何使用：
 
-C++GoJavaJavaScriptPython
-    
-    
-    public class Main {
-        public static void main(String[] args) {
-            EventCenter eventCenter = new EventCenter();
-    
-            AchievementSystem achievements = new AchievementSystem();
-            StatisticsTracker stats = new StatisticsTracker();
-            SoundSystem sound = new SoundSystem();
-    
-            // 各模块按需订阅感兴趣的事件
-            eventCenter.subscribe(GameEventType.MONSTER_KILLED, achievements);
-            eventCenter.subscribe(GameEventType.MONSTER_KILLED, stats);
-            eventCenter.subscribe(GameEventType.MONSTER_KILLED, sound);
-            eventCenter.subscribe(GameEventType.ITEM_COLLECTED, stats);
-            eventCenter.subscribe(GameEventType.ITEM_COLLECTED, sound);
-    
-            // 玩家击杀了一只史莱姆
-            System.out.println("Player killed Slime:");
-            eventCenter.publish(new GameEvent(
-                    GameEventType.MONSTER_KILLED,
-                    Map.of("monsterName", "Slime")
-            ));
-            //   [Achievement] Kill count: 1
-            //   [Achievement] Unlocked: First Blood!
-            //   [Stats] MONSTER_KILLED total: 1
-            //   [Sound] Kill sound: Slime defeated!
-    
-            // 玩家捡到一个宝箱
-            System.out.println("\nPlayer collected Treasure Chest:");
-            eventCenter.publish(new GameEvent(
-                    GameEventType.ITEM_COLLECTED,
-                    Map.of("itemName", "Treasure Chest")
-            ));
-            //   [Stats] ITEM_COLLECTED total: 1
-            //   [Sound] Pickup sound: Ding~
-            // 注意：成就系统没有订阅 ITEM_COLLECTED，所以不会收到通知
-    
-            stats.printStats();
-            // === Game Statistics ===
-            //   MONSTER_KILLED: 1
-            //   ITEM_COLLECTED: 1
-        }
+```java
+public class Main {
+    public static void main(String[] args) {
+        EventCenter eventCenter = new EventCenter();
+
+        AchievementSystem achievements = new AchievementSystem();
+        StatisticsTracker stats = new StatisticsTracker();
+        SoundSystem sound = new SoundSystem();
+
+        // 各模块按需订阅感兴趣的事件
+        eventCenter.subscribe(GameEventType.MONSTER_KILLED, achievements);
+        eventCenter.subscribe(GameEventType.MONSTER_KILLED, stats);
+        eventCenter.subscribe(GameEventType.MONSTER_KILLED, sound);
+        eventCenter.subscribe(GameEventType.ITEM_COLLECTED, stats);
+        eventCenter.subscribe(GameEventType.ITEM_COLLECTED, sound);
+
+        // 玩家击杀了一只史莱姆
+        System.out.println("Player killed Slime:");
+        eventCenter.publish(new GameEvent(
+                GameEventType.MONSTER_KILLED,
+                Map.of("monsterName", "Slime")
+        ));
+        //   [Achievement] Kill count: 1
+        //   [Achievement] Unlocked: First Blood!
+        //   [Stats] MONSTER_KILLED total: 1
+        //   [Sound] Kill sound: Slime defeated!
+
+        // 玩家捡到一个宝箱
+        System.out.println("\nPlayer collected Treasure Chest:");
+        eventCenter.publish(new GameEvent(
+                GameEventType.ITEM_COLLECTED,
+                Map.of("itemName", "Treasure Chest")
+        ));
+        //   [Stats] ITEM_COLLECTED total: 1
+        //   [Sound] Pickup sound: Ding~
+        // 注意：成就系统没有订阅 ITEM_COLLECTED，所以不会收到通知
+
+        stats.printStats();
+        // === Game Statistics ===
+        //   MONSTER_KILLED: 1
+        //   ITEM_COLLECTED: 1
     }
+}
+``` 
 
 这个例子体现了观察者模式在实际开发中的价值：
 
 击杀怪物的代码只需要发布一个事件，完全不用知道有哪些模块在监听。如果以后要加一个「连杀奖励」模块，只需要写一个新的观察者类并订阅 `MONSTER_KILLED` 事件，不用改动任何已有代码。
 
-## ¶观察者模式和发布-订阅模式
+## 观察者模式和发布-订阅模式
 
 你可能听说过**发布-订阅模式（Pub-Sub）** ，它和观察者模式很像，但有一个关键区别。
 
@@ -392,7 +381,7 @@ C++GoJavaJavaScriptPython
 
 我们上面的游戏成就系统中的 `EventCenter`，其实已经有一点发布-订阅的影子了——它充当了一个简单的消息中介，让发布者和观察者不直接耦合。在实际开发中，两种模式的界限往往没那么清晰，不必过于纠结分类。
 
-## ¶总结
+## 总结
 
 观察者模式的主要优势：
 
@@ -400,16 +389,10 @@ C++GoJavaJavaScriptPython
   2. **符合开闭原则** ：可以随时添加新的观察者，不影响已有的代码。
   3. **支持广播通信** ：一次状态变化，所有观察者都能自动收到通知。
 
-
 观察者模式的主要缺点：
 
   1. **通知顺序不确定** ：观察者收到通知的顺序取决于注册顺序，但不应该依赖这个顺序。
   2. **可能引起连锁反应** ：如果观察者在收到通知后又触发了新的状态变化，可能导致循环调用。
   3. **内存泄漏风险** ：如果观察者注册后忘记注销，发布者会一直持有观察者的引用，可能导致对象无法被垃圾回收。
 
-
 总的来说，当你需要在一个对象状态变化时自动通知多个其他对象，并且不希望它们之间产生紧密耦合时，观察者模式是一个非常实用的选择。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

@@ -25,7 +25,6 @@ LeetCode| 力扣| 难度
   * [多叉树结构及遍历框架](</zh/algo/data-structure-basic/n-ary-tree-traverse-basic/>)
   * [二叉树系列算法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
 一直都有很多读者说，想让我用框架思维讲一讲基本的排序算法，我觉得确实得讲讲，毕竟学习任何东西都讲求一个融会贯通，只有对其本质进行比较深刻的理解，才能运用自如。
 
 本文就先讲归并排序，给一套代码模板，然后讲讲它在算法问题中的应用。阅读本文前我希望你读过前文 [手把手刷二叉树（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)。
@@ -41,7 +40,3 @@ LeetCode| 力扣| 难度
 但如果你脑海中浮现出的是一棵二叉树，甚至浮现出二叉树后序遍历的场景，那格局就高了，大概率掌握了我经常强调的 [框架思维](</zh/algo/essential-technique/algorithm-summary/>)，用这种抽象能力学习算法就省劲多了。
 
 那么，归并排序明明就是一个数组算法，和二叉树有什么关系？接下来我就具体讲讲。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

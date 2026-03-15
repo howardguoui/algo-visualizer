@@ -22,10 +22,9 @@ LeetCode| 力扣| 难度
   * [二叉树的遍历框架](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
   * [多叉树结构及遍历框架](</zh/algo/data-structure-basic/n-ary-tree-traverse-basic/>)
 
-
 视频讲解
 
-![Video Cover](/images/algo/vod/dp-core.jpg)
+![Video Cover](https://labuladong.online/images/algo/vod/dp-core.jpg)
 
 动态规划问题（Dynamic Programming）应该是很多读者头疼的，不过这类问题也是最具有技巧性，最有意思的。本站使用了整整一个章节专门来写这个算法，动态规划的重要性也可见一斑。
 
@@ -52,45 +51,45 @@ LeetCode| 力扣| 难度
 **明确「状态」- > 明确「选择」 -> 定义 `dp` 数组/函数的含义**。
 
 按上面的套路走，最后的解法代码就会是如下的框架：
-    
-    
-    # 自顶向下递归的动态规划
-    def dp(状态1, 状态2, ...):
-        for 选择 in 所有可能的选择:
-            # 此时的状态已经因为做了选择而改变
-            result = 求最值(result, dp(状态1, 状态2, ...))
-        return result
-    
-    # 自底向上迭代的动态规划
-    # 初始化 base case
-    dp[0][0][...] = base case
-    # 进行状态转移
-    for 状态1 in 状态1的所有取值：
-        for 状态2 in 状态2的所有取值：
-            for ...
-                dp[状态1][状态2][...] = 求最值(选择1，选择2...)
+
+```
+# 自顶向下递归的动态规划
+def dp(状态1, 状态2, ...):
+    for 选择 in 所有可能的选择:
+        # 此时的状态已经因为做了选择而改变
+        result = 求最值(result, dp(状态1, 状态2, ...))
+    return result
+
+# 自底向上迭代的动态规划
+# 初始化 base case
+dp[0][0][...] = base case
+# 进行状态转移
+for 状态1 in 状态1的所有取值：
+    for 状态2 in 状态2的所有取值：
+        for ...
+            dp[状态1][状态2][...] = 求最值(选择1，选择2...)
+``` 
 
 下面通过斐波那契数列问题和凑零钱问题来详解动态规划的基本原理。前者主要是让你明白什么是重叠子问题（斐波那契数列没有求最值，所以严格来说不是动态规划问题），后者主要举集中于如何列出状态转移方程。
 
-## ¶一、斐波那契数列
+## 一、斐波那契数列
 
 力扣第 509 题「[斐波那契数](<https://leetcode.cn/problems/fibonacci-number/>)」就是这个问题，请读者不要嫌弃这个例子简单，**只有简单的例子才能让你把精力充分集中在算法背后的通用思想和技巧上，而不会被那些隐晦的细节问题搞的莫名其妙** 。想要困难的例子，接下来的动态规划系列里有的是。
 
-### ¶暴力递归
+### 暴力递归
 
 斐波那契数列的数学形式就是递归的，写成代码就是这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // f(n) 计算第 n 个斐波那契数
-    int fib(int n) {
-        // base case
-        if (n == 0 || n == 1){
-            return n;
-        }
-        return fib(n - 1) + fib(n - 2);
+```java
+// f(n) 计算第 n 个斐波那契数
+int fib(int n) {
+    // base case
+    if (n == 0 || n == 1){
+        return n;
     }
+    return fib(n - 1) + fib(n - 2);
+}
+``` 
 
 信息
 
@@ -98,7 +97,7 @@ CC++GoJavaJavaScriptPython
 
 学校老师讲递归的时候似乎都是拿这个举例。我们也知道这样写代码虽然简洁易懂，但是十分低效，低效在哪里？假设 `n = 20`，请画出递归树：
 
-![](/images/algo/dynamic-programming/1.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/1.jpg)
 
 这个递归树怎么理解？就是说想要计算原问题 `f(20)`，我就得先计算出子问题 `f(19)` 和 `f(18)`，然后要计算 `f(19)`，我就要先算出子问题 `f(18)` 和 `f(17)`，以此类推。最后遇到 `f(1)` 或者 `f(2)` 的时候，结果已知，就能直接返回结果，递归树不再向下生长了。
 
@@ -120,11 +119,11 @@ CC++GoJavaJavaScriptPython
 
 比如 `f(18)` 被计算了两次，而且你可以看到，以 `f(18)` 为根的这个递归树体量巨大，多算一遍，会耗费大量的时间。更何况还不止 `f(18)` 这一个节点被重复计算，所以这个算法效率很差。
 
-![](/images/algo/dynamic-programming/1.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/1.jpg)
 
 这就是动态规划问题的第一个性质：**重叠子问题** 。下面，我们想办法解决这个问题。
 
-### ¶带备忘录的递归解法
+### 带备忘录的递归解法
 
 即然耗时的原因是重复计算，那么我们可以造一个「备忘录」，每次算出某个子问题的答案后顺便记到「备忘录」里；每次遇到一个子问题别急着计算，先去「备忘录」里查一查，如果发现之前已经解决过这个问题了，直接把答案拿出来用，不要再耗时去计算了。
 
@@ -132,43 +131,42 @@ CC++GoJavaJavaScriptPython
 
 当然，你也可以用一个哈希表来存储，思想都是一样的。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int fib(int n) {
-        // 备忘录全初始化为 -1
-        // 因为斐波那契数肯定是非负整数，所以初始化为特殊值 -1 表示未计算
-    
-        // 因为数组的索引从 0 开始，所以需要 n + 1 个空间
-        // 这样才能把 `f(0) ~ f(n)` 都记录到 memo 中
-        int[] memo = new int[n + 1];
-        Arrays.fill(memo, -1);
-    
-        return dp(memo, n);
+```java
+int fib(int n) {
+    // 备忘录全初始化为 -1
+    // 因为斐波那契数肯定是非负整数，所以初始化为特殊值 -1 表示未计算
+
+    // 因为数组的索引从 0 开始，所以需要 n + 1 个空间
+    // 这样才能把 `f(0) ~ f(n)` 都记录到 memo 中
+    int[] memo = new int[n + 1];
+    Arrays.fill(memo, -1);
+
+    return dp(memo, n);
+}
+
+// 带着备忘录进行递归
+int dp(int[] memo, int n) {
+    // base case
+    if (n == 0 || n == 1) {
+        return n;
     }
-    
-    // 带着备忘录进行递归
-    int dp(int[] memo, int n) {
-        // base case
-        if (n == 0 || n == 1) {
-            return n;
-        }
-        // 已经计算过，不用再计算了
-        if (memo[n] != -1) {
-            return memo[n];
-        }
-        // 在返回结果之前，存入备忘录
-        memo[n] = dp(memo, n - 1) + dp(memo, n - 2);
+    // 已经计算过，不用再计算了
+    if (memo[n] != -1) {
         return memo[n];
     }
+    // 在返回结果之前，存入备忘录
+    memo[n] = dp(memo, n - 1) + dp(memo, n - 2);
+    return memo[n];
+}
+``` 
 
 现在，画出递归树，你就知道「备忘录」到底做了什么。
 
-![](/images/algo/dynamic-programming/2.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/2.jpg)
 
 实际上，带「备忘录」的递归算法，把一棵存在巨量冗余的递归树通过「剪枝」，改造成了一幅不存在冗余的递归图，极大减少了子问题（即递归图中节点）的个数，每个子问题都只会被计算一次：
 
-![](/images/algo/dynamic-programming/3.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/3.jpg)
 
 **递归算法的时间复杂度怎么计算？就是用子问题个数乘以解决一个子问题需要的时间** 。
 
@@ -184,7 +182,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-### ¶自顶向下 vs 自底向上
+### 自顶向下 vs 自底向上
 
 其实如果你只掌握上面的内容，就已经掌握动态规划的解题方法了：无非就是先写出暴力解法，然后用「备忘录」剪枝消除重叠子问题嘛，动态规划就是这么简单。
 
@@ -216,40 +214,39 @@ CC++GoJavaJavaScriptPython
 
 到这里你应该也观察出来了，其实整个计算过程就是在从左到右计算 `memo` 的值，那又何苦用递归了，搞这么复杂。一个 for 循环是不是就够用了？
 
-### ¶`dp` 数组的迭代（递推）解法
+### `dp` 数组的迭代（递推）解法
 
 有了上一步的启发，我们不再使用递归函数，直接创建一个数组（DP table），用一个 for 循环从 base case 开始从左到右进行计算即可。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int fib(int n) {
-        if (n == 0 || n == 1) {
-            return n;
-        }
-        // dp table
-        int[] dp = new int[n + 1];
-        // base case
-        dp[0] = 0; dp[1] = 1;
-        // 状态转移
-        for (int i = 2; i <= n; i++) {
-            dp[i] = dp[i - 1] + dp[i - 2];
-        }
-    
-        return dp[n];
+```java
+int fib(int n) {
+    if (n == 0 || n == 1) {
+        return n;
     }
+    // dp table
+    int[] dp = new int[n + 1];
+    // base case
+    dp[0] = 0; dp[1] = 1;
+    // 状态转移
+    for (int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+
+    return dp[n];
+}
+``` 
 
 算法可视化
 
 画个图就很好理解了，而且你发现这个 DP table 特别像之前那个「剪枝」后的结果，只是反过来算而已：
 
-![](/images/algo/dynamic-programming/4.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/4.jpg)
 
 实际上，带备忘录的递归解法中的那个「备忘录」`memo` 数组，最终完成后就是这个解法中的 `dp` 数组，你对比一下可视化面板中两个算法执行的过程可以更直观地看出它俩的联系。
 
 所以说自顶向下、自底向上两种解法本质其实是差不多的，大部分情况下，效率也基本相同。
 
-### ¶拓展延伸
+### 拓展延伸
 
 这里，引出「状态转移方程」这个名词，实际上就是描述问题结构的数学形式：
 
@@ -273,25 +270,24 @@ f(n)={0,n=01,n=1f(n−1)+f(n−2),n>1f(n) = \begin{cases} 0, & n = 0 \\\ 1, & n 
 
 所以，可以进一步优化，把空间复杂度降为 O(1)O(1)O(1)。这也就是我们最常见的计算斐波那契数的算法：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int fib(int n) {
-        if (n == 0 || n == 1) {
-            // base case
-            return n;
-        }
-        // 分别代表 dp[i - 1] 和 dp[i - 2]
-        int dp_i_1 = 1, dp_i_2 = 0;
-        for (int i = 2; i <= n; i++) {
-            // dp[i] = dp[i - 1] + dp[i - 2];
-            int dp_i = dp_i_1 + dp_i_2;
-            // 滚动更新
-            dp_i_2 = dp_i_1;
-            dp_i_1 = dp_i;
-        }
-        return dp_i_1;
+```java
+int fib(int n) {
+    if (n == 0 || n == 1) {
+        // base case
+        return n;
     }
+    // 分别代表 dp[i - 1] 和 dp[i - 2]
+    int dp_i_1 = 1, dp_i_2 = 0;
+    for (int i = 2; i <= n; i++) {
+        // dp[i] = dp[i - 1] + dp[i - 2];
+        int dp_i = dp_i_1 + dp_i_2;
+        // 滚动更新
+        dp_i_2 = dp_i_1;
+        dp_i_1 = dp_i;
+    }
+    return dp_i_1;
+}
+``` 
 
 算法可视化
 
@@ -307,23 +303,22 @@ CC++GoJavaJavaScriptPython
 
 下面会涉及。斐波那契数列的例子严格来说不算动态规划，因为没有涉及求最值，以上旨在说明重叠子问题的消除方法，演示得到最优解法逐步求精的过程。下面，看第二个例子，凑零钱问题。
 
-## ¶二、凑零钱问题
+## 二、凑零钱问题
 
 这是力扣第 322 题「[零钱兑换](<https://leetcode.cn/problems/coin-change/>)」：
 
 给你 `k` 种面值的硬币，面值分别为 `c1, c2 ... ck`，每种硬币的数量无限，再给一个总金额 `amount`，问你**最少** 需要几枚硬币凑出这个金额，如果不可能凑出，算法返回 -1 。算法的函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // coins 中是可选硬币面值，amount 是目标金额
-    int coinChange(int[] coins, int amount);
+```java
+// coins 中是可选硬币面值，amount 是目标金额
+int coinChange(int[] coins, int amount);
+``` 
 
 比如说 `k = 3`，面值分别为 1，2，5，总金额 `amount = 11`。那么最少需要 3 枚硬币凑出，即 11 = 5 + 5 + 1。
 
 你认为计算机应该如何解决这个问题？显然，就是把所有可能的凑硬币方法都穷举出来，然后找找看最少需要多少枚硬币。
 
-### ¶暴力递归
+### 暴力递归
 
 首先，这个问题是动态规划问题，因为它具有「最优子结构」的。**要符合「最优子结构」，子问题间必须互相独立** 。啥叫相互独立？你肯定不想看数学证明，我用一个直观的例子来讲解。
 
@@ -355,54 +350,52 @@ Tip
 
 搞清楚上面这几个关键点，解法的伪码就可以写出来了：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 伪码框架
-    int coinChange(int[] coins, int amount) {
-        // 题目要求的最终结果是 dp(amount)
-        return dp(coins, amount);
+```java
+// 伪码框架
+int coinChange(int[] coins, int amount) {
+    // 题目要求的最终结果是 dp(amount)
+    return dp(coins, amount);
+}
+
+// 定义：要凑出金额 n，至少要 dp(coins, n) 个硬币
+int dp(int[] coins, int n) {
+    // 做选择，选择需要硬币最少的那个结果
+    for (int coin : coins) {
+        res = min(res, 1 + dp(coins, n - coin));
     }
-    
-    // 定义：要凑出金额 n，至少要 dp(coins, n) 个硬币
-    int dp(int[] coins, int n) {
-        // 做选择，选择需要硬币最少的那个结果
-        for (int coin : coins) {
-            res = min(res, 1 + dp(coins, n - coin));
-        }
-        return res;
-    }
+    return res;
+}
+``` 
 
 根据伪码，我们加上 base case 即可得到最终的答案。显然目标金额为 0 时，所需硬币数量为 0；当目标金额小于 0 时，无解，返回 -1：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int coinChange(int[] coins, int amount) {
-            // 题目要求的最终结果是 dp(amount)
-            return dp(coins, amount);
-        }
-    
-        // 定义：要凑出目标金额 amount，至少要 dp(coins, amount) 个硬币
-        int dp(int[] coins, int amount) {
-            // base case
-            if (amount == 0) return 0;
-            if (amount < 0) return -1;
-    
-            int res = Integer.MAX_VALUE;
-            for (int coin : coins) {
-                // 计算子问题的结果
-                int subProblem = dp(coins, amount - coin);
-                // 子问题无解则跳过
-                if (subProblem == -1) continue;
-                // 在子问题中选择最优解，然后加一
-                res = Math.min(res, subProblem + 1);
-            }
-    
-            return res == Integer.MAX_VALUE ? -1 : res;
-        }
+```java
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        // 题目要求的最终结果是 dp(amount)
+        return dp(coins, amount);
     }
+
+    // 定义：要凑出目标金额 amount，至少要 dp(coins, amount) 个硬币
+    int dp(int[] coins, int amount) {
+        // base case
+        if (amount == 0) return 0;
+        if (amount < 0) return -1;
+
+        int res = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            // 计算子问题的结果
+            int subProblem = dp(coins, amount - coin);
+            // 子问题无解则跳过
+            if (subProblem == -1) continue;
+            // 在子问题中选择最优解，然后加一
+            res = Math.min(res, subProblem + 1);
+        }
+
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+}
+``` 
 
 Info
 
@@ -418,7 +411,7 @@ dp(n)={0,n=0−1,n<0min⁡{dp(n−coin)+1∣coin∈coins},n>0dp(n) = \begin{case
 
 至此，这个问题其实就解决了，只不过需要消除一下重叠子问题，比如 `amount = 11, coins = {1,2,5}` 时画出递归树看看：
 
-![](/images/algo/dynamic-programming/5.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/5.jpg)
 
 **递归算法的时间复杂度分析：子问题总数 x 解决每个子问题所需的时间** 。
 
@@ -428,51 +421,50 @@ dp(n)={0,n=0−1,n<0min⁡{dp(n−coin)+1∣coin∈coins},n>0dp(n) = \begin{case
 
 接下来看每个子问题的复杂度，由于每次递归包含一个 for 循环，复杂度为 O(k)O(k)O(k)，相乘得到总时间复杂度为 O(kn)O(k^n)O(kn)，指数级别。
 
-### ¶带备忘录的递归
+### 带备忘录的递归
 
 类似之前斐波那契数列的例子，只需要稍加修改，就可以通过备忘录消除子问题：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        int[] memo;
-    
-        public int coinChange(int[] coins, int amount) {
-            memo = new int[amount + 1];
-            // 备忘录初始化为一个不会被取到的特殊值，代表还未被计算
-            Arrays.fill(memo, -666);
-    
-            return dp(coins, amount);
-        }
-    
-        int dp(int[] coins, int amount) {
-            if (amount == 0) return 0;
-            if (amount < 0) return -1;
-            // 查备忘录，防止重复计算
-            if (memo[amount] != -666)
-                return memo[amount];
-    
-            int res = Integer.MAX_VALUE;
-            for (int coin : coins) {
-                // 计算子问题的结果
-                int subProblem = dp(coins, amount - coin); ![](/images/algo/dynamic-programming/5.jpg)
-                // 子问题无解则跳过
-                if (subProblem == -1) continue;
-                // 在子问题中选择最优解，然后加一
-                res = Math.min(res, subProblem + 1);
-            }
-            // 把计算结果存入备忘录
-            memo[amount] = (res == Integer.MAX_VALUE) ? -1 : res;
-            return memo[amount];
-        }
+```java
+class Solution {
+    int[] memo;
+
+    public int coinChange(int[] coins, int amount) {
+        memo = new int[amount + 1];
+        // 备忘录初始化为一个不会被取到的特殊值，代表还未被计算
+        Arrays.fill(memo, -666);
+
+        return dp(coins, amount);
     }
+
+    int dp(int[] coins, int amount) {
+        if (amount == 0) return 0;
+        if (amount < 0) return -1;
+        // 查备忘录，防止重复计算
+        if (memo[amount] != -666)
+            return memo[amount];
+
+        int res = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            // 计算子问题的结果
+            int subProblem = dp(coins, amount - coin); 
+            // 子问题无解则跳过
+            if (subProblem == -1) continue;
+            // 在子问题中选择最优解，然后加一
+            res = Math.min(res, subProblem + 1);
+        }
+        // 把计算结果存入备忘录
+        memo[amount] = (res == Integer.MAX_VALUE) ? -1 : res;
+        return memo[amount];
+    }
+}
+``` 
 
 算法可视化
 
 不画图了，很显然「备忘录」大大减小了子问题数目，完全消除了子问题的冗余，所以子问题总数不会超过金额数 `n`，即子问题数目为 O(n)O(n)O(n)。处理一个子问题的时间不变，仍是 O(k)O(k)O(k)，所以总的时间复杂度是 O(kn)O(kn)O(kn)。
 
-### ¶`dp` 数组的迭代解法
+### `dp` 数组的迭代解法
 
 当然，我们也可以自底向上使用 dp table 来消除重叠子问题，关于「状态」「选择」和 base case 与之前没有区别，`dp` 数组的定义和刚才 `dp` 函数类似，也是把「状态」，也就是目标金额作为变量。不过 `dp` 函数体现在函数参数，而 `dp` 数组体现在数组索引：
 
@@ -480,39 +472,38 @@ CC++GoJavaJavaScriptPython
 
 根据我们文章开头给出的动态规划代码框架可以写出如下解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int coinChange(int[] coins, int amount) {
-            int[] dp = new int[amount + 1];
-            // 数组大小为 amount + 1，初始值也为 amount + 1
-            Arrays.fill(dp, amount + 1);
-    
-            // base case
-            dp[0] = 0;
-            // 外层 for 循环在遍历所有状态的所有取值
-            for (int i = 0; i < dp.length; i++) {
-                // 内层 for 循环在求所有选择的最小值
-                for (int coin : coins) {
-                    // 子问题无解，跳过
-                    if (i - coin < 0) {
-                        continue;
-                    }
-                    dp[i] = Math.min(dp[i], 1 + dp[i - coin]); ![](/images/algo/dynamic-programming/6.jpg)
+```java
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        // 数组大小为 amount + 1，初始值也为 amount + 1
+        Arrays.fill(dp, amount + 1);
+
+        // base case
+        dp[0] = 0;
+        // 外层 for 循环在遍历所有状态的所有取值
+        for (int i = 0; i < dp.length; i++) {
+            // 内层 for 循环在求所有选择的最小值
+            for (int coin : coins) {
+                // 子问题无解，跳过
+                if (i - coin < 0) {
+                    continue;
                 }
+                dp[i] = Math.min(dp[i], 1 + dp[i - coin]); 
             }
-            return (dp[amount] == amount + 1) ? -1 : dp[amount];
         }
+        return (dp[amount] == amount + 1) ? -1 : dp[amount];
     }
+}
+``` 
 
 Info
 
 为啥 `dp` 数组中的值都初始化为 `amount + 1` 呢，因为凑成 `amount` 金额的硬币数最多只可能等于 `amount`（全用 1 元面值的硬币），所以初始化为 `amount + 1` 就相当于初始化为正无穷，便于后续取最小值。为啥不直接初始化为 int 型的最大值 `Integer.MAX_VALUE` 呢？因为后面有 `dp[i - coin] + 1`，这就会导致整型溢出。
 
-![](/images/algo/dynamic-programming/6.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/6.jpg)
 
-## ¶三、最后总结
+## 三、最后总结
 
 第一个斐波那契数列的问题，解释了如何通过「备忘录」或者「dp table」的方法来优化递归树，并且明确了这两种方法本质上是一样的，只是自顶向下和自底向上的不同而已。
 
@@ -527,7 +518,3 @@ Info
 备忘录、DP table 就是在追求「如何聪明地穷举」。用空间换时间的思路，是降低时间复杂度的不二法门，除此之外，试问，还能玩出啥花活？
 
 之后我们会有一章专门讲解动态规划问题，如果有任何问题都可以随时回来重读本文，希望读者在阅读每个题目和解法时，多往「状态」和「选择」上靠，才能对这套框架产生自己的理解，运用自如。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

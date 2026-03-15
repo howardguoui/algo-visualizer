@@ -12,16 +12,17 @@
 位图（BitMap）是一种非常节省空间的数据结构，它用一个比特位（bit）的 0 和 1 来标记某个元素是否存在。
 
 在后面做算法题时，我们会经常用到类似 `boolean[] visited` 这样的布尔数组，来记录数组中那些元素已经被访问过。
-    
-    
-    // 假设 nums 是一个包含 1000 个整数的数组
-    int[] nums = {...}
-    
-    // 我们在写算法时
-    // 可能会用一个布尔数组来记录 nums 中那些元素已经被访问过
-    boolean[] visited = new boolean[nums.length];
-    visited[10] = true;
-    visited[100] = true;
+
+```
+// 假设 nums 是一个包含 1000 个整数的数组
+int[] nums = {...}
+
+// 我们在写算法时
+// 可能会用一个布尔数组来记录 nums 中那些元素已经被访问过
+boolean[] visited = new boolean[nums.length];
+visited[10] = true;
+visited[100] = true;
+``` 
 
 我们来仔细观察这个场景，是否存在优化空间？
 
@@ -38,7 +39,3 @@
 在实际开发和求解算法题的过程中，我们使用编程语言提供的布尔数组就够了，**除非需要处理的数据规模非常大，否则没必要为了节省这一点内存空间而引入位图这种结构** 。
 
 比如后文介绍的 [布隆过滤器](</zh/algo/data-structure-basic/bloom-filter/>)，专门为了处理超大规模数据而设计，才需要使用位图这种结构进行优化。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

@@ -9,17 +9,17 @@
 
 All the code on this site and in its companion plugins supports Java/C++/Golang/Python/JavaScript simultaneously. This chapter introduces the basics of each language so that readers with no programming background can get up to speed and start solving problems quickly.
 
-## ¶Who Is This Chapter For?
+## Who Is This Chapter For?
 
 This chapter is for **complete beginners with no programming experience—you can pick any one of these languages to get started learning data structures and algorithms**.
 
 If you already have some problem-solving experience, feel free to skip this chapter.
 
-If you're comfortable with a programming language but have never solved algorithm problems before, just read [LeetCode Problem-Solving Guide](/en/algo/intro/leetcode/) in this chapter to learn how the platform works, and you'll be ready to move on.
+If you're comfortable with a programming language but have never solved algorithm problems before, just read [LeetCode Problem-Solving Guide](</en/algo/intro/leetcode/>) in this chapter to learn how the platform works, and you'll be ready to move on.
 
-If you want to use the [Algorithm Visualization Panel](/en/algo/intro/visualize/) to verify your algorithms but aren't familiar with JavaScript, check out [JavaScript Basics](/en/algo/intro/js/).
+If you want to use the [Algorithm Visualization Panel](</en/algo/intro/visualize/>) to verify your algorithms but aren't familiar with JavaScript, check out [JavaScript Basics](</en/algo/intro/js/>).
 
-## ¶What This Chapter Covers
+## What This Chapter Covers
 
 This chapter covers programming language fundamentals **tailored specifically for solving algorithm problems**.
 
@@ -33,13 +33,13 @@ This chapter covers: basic syntax, control flow, commonly used data structures f
 
 Advanced language features, language-specific idioms, popular frameworks, and project development are all big topics on their own and won't be covered here.
 
-## ¶How to Use This Chapter
+## How to Use This Chapter
 
 Since all the code on this site supports C++/Java/Python/Golang/JavaScript, this chapter introduces the basics of each one. Just pick whichever language you want to use going forward.
 
 If you're a beginner, **just pick one language to get started** , then dive into learning data structure fundamentals and algorithm problem-solving techniques—that's the real focus of this site.
 
-## ¶Choosing a Programming Language
+## Choosing a Programming Language
 
 Since this chapter targets complete beginners, let me give a brief overview of what each language is known for and where it's commonly used in practice.
 
@@ -60,5 +60,3 @@ For your first language: if you want to work in frontend, JavaScript is a must, 
 One more important thing: AI platforms currently have excellent support for Python, so getting AI to help you write Python scripts tends to work really smoothly.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

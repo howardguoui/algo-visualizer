@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
   * [哈希表原理](</zh/algo/data-structure-basic/hashmap-basic/>)
   * [滑动窗口算法框架](</zh/algo/essential-technique/sliding-window-framework/>)
 
-
 经常有读者留言，请我讲讲那些比较经典的算法，我觉得有这个必要，主要有以下原因：
 
 1、经典算法之所以经典，一定是因为有独特新颖的设计思想，那当然要带大家学习一波。
@@ -36,22 +35,17 @@ LeetCode| 力扣| 难度
 
 首先，我问你一个很基础的问题，给你输入一个字符串形式的正整数，如何把它转化成数字的形式？很简单，下面这段代码就可以做到：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    String s = "8264";
-    int number = 0;
-    for (int i = 0; i < s.length(); i++) {
-        // 将字符转化成数字
-        number = 10 * number + (s.charAt(i) - '0');
-        System.out.println(number);
-    }
-    // 打印输出：
-    // 8
-    // 82
-    // 826
-    // 8264
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
+```java
+String s = "8264";
+int number = 0;
+for (int i = 0; i < s.length(); i++) {
+    // 将字符转化成数字
+    number = 10 * number + (s.charAt(i) - '0');
+    System.out.println(number);
+}
+// 打印输出：
+// 8
+// 82
+// 826
+// 8264
+```

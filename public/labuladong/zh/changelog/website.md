@@ -7,49 +7,43 @@
 
 # labuladong.online 更新日志
 
-## ¶2025/10
+## 2025/10
 
   * 新增 [速成路线图 30 天打卡挑战](<https://labuladong.online/zh/checkin/>)。
   * 更新 [位图原理及实现](</zh/algo/data-structure-basic/bitmap/>) 和 [布隆过滤器原理及实现](</zh/algo/data-structure-basic/bloom-filter/>)。
   * 更新 [深入理解 OAuth 2.0 授权框架](</zh/algo/computer-science/oauth2-explained/>)，[OAuth 2.0 和 OIDC 认证](</zh/algo/computer-science/oidc/>) 和 [OAuth 2.0 与 PKCE](</zh/algo/computer-science/pkce/>)。
   * 更新 [深入理解数字证书和 CA](</zh/algo/computer-science/certificate-and-ca/>)。
 
-
-## ¶2025/9
+## 2025/9
 
   * 网站更新 [设计模式章节](</zh/algo/design-pattern/factory-method/>)。
   * 更新 [霍夫曼编码简介](</zh/algo/data-structure-basic/huffman-tree/>) 和 [实现霍夫曼压缩器](</zh/algo/data-structure/huffman-tree-implementation/>)。
   * 更新 [非对称加密简介](</zh/algo/computer-science/encryption-intro/>) 和 [JWT 的原理与使用](</zh/algo/computer-science/how-jwt-works/>)。
 
-
-## ¶2025/8
+## 2025/8
 
   * [速成目录](</zh/algo/intro/quick-learning-plan/>) 上线路线图。
   * 其他若干修复和优化。
 
-
-## ¶2025/6
+## 2025/6
 
   * 更新大量算法游戏，参见 [算法游戏简介](</zh/algo/intro/game/>)。
   * 更新 [欧拉图和一笔画游戏](</zh/algo/data-structure-basic/eulerian-graph/>)，[Hierholzer 算法寻找欧拉路径](</zh/algo/data-structure/eulerian-graph-hierholzer/>) 以及 [欧拉路径经典习题](</zh/algo/problem-set/eulerian-path/>)。
   * 更新 [Floyd 算法详解](</zh/algo/data-structure/floyd/>)。
 
-
-## ¶2025/5
+## 2025/5
 
   * 网站支持 GitHub/Google/微信 登录。
   * 更新若干图论算法，参见 [图论算法章节](</zh/algo/data-structure-basic/graph-basic/>)。
 
-
-## ¶2025/4
+## 2025/4
 
   * 修复部分读者无法加载图标，导致不显示阅读历史的问题。
   * 添加 [动态规划算法习题集](</zh/algo/problem-set/dynamic-programming-i/>)。
   * 给 [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>) 添加视频讲解。
   * 添加 [华容道游戏](</zh/algo/game/huarong-road/>) 和 [连连看游戏](</zh/algo/game/connect-two/>)，实践 [BFS 算法](</zh/algo/essential-technique/bfs-framework/>)。
 
-
-## ¶2025/3
+## 2025/3
 
 重大更新
 
@@ -69,12 +63,11 @@
   * [优化：实现懒更新线段树](</zh/algo/data-structure/segment-tree-lazy-update/>)
   * [线段树经典习题](</zh/algo/problem-set/segment-tree/>)
 
-
 重大更新
 
 [vscode 插件](</zh/algo/intro/vscode/>) 和 [JetBrains 插件](</zh/algo/intro/jetbrains/>) 支持本地调试代码，详情见对应插件的使用文档。
 
-## ¶2025/2
+## 2025/2
 
   * 根据读者使用插件的反馈，优化了配套插件的使用，并配套视频讲解。
   * 更新 [递归算法框架](</zh/algo/essential-technique/understand-recursion/>) 及视频讲解。
@@ -86,12 +79,11 @@
   * 更新 [分治算法核心框架](</zh/algo/essential-technique/divide-and-conquer/>)，添加可视化面板辅助理解。
   * 修复若干 bug。
 
-
 重大更新
 
 开始更新视频讲解，参见 [本站首页](</zh/algo/home/>)。
 
-## ¶2024/12
+## 2024/12
 
   * 基于网站的新内容架构，重写 [BFS 算法核心框架](</zh/algo/essential-technique/bfs-framework/>)
 
@@ -103,7 +95,6 @@
 
   * 网站中的可视化面板添加更详细的引导，方便读者更好地通过可视化理解算法过程。示例如下：
 
-
 下面的算法会寻找节点 `0` 到节点 `4` 的所有路径，你可以多次点击 `if (s === n - 1)` 这行代码，查看图的遍历以及递归树的生长过程：
 
 复杂结构及递归
@@ -112,7 +103,6 @@
   * 优化 [数组双指针技巧汇总](</zh/algo/essential-technique/array-two-pointers-summary/>) 的可视化面板，添加颜色辅助理解。
   * 优化 [链表双指针技巧汇总](</zh/algo/essential-technique/linked-list-skills-summary/>) 的可视化面板，添加颜色辅助理解。
   * 优化所有动态规划递推解法的可视化，添加颜色辅助理解状态转移的过程，示例：
-
 
 算法可视化
 
@@ -124,7 +114,7 @@
 
 为满足广大读者的不同需求，本站新增 [速成版目录](</zh/algo/intro/quick-learning-plan/>)。插件也将对速成读者的需求进行优化，大家敬请期待。
 
-## ¶2024/11
+## 2024/11
 
   * 解决评论区加载很慢的 bug。
   * 修复 [红黑树](</zh/algo/data-structure-basic/rbtree-basic/>) 部分情况下节点情况错误的 bug。
@@ -136,8 +126,7 @@
   * [可视化面板使用文档](</zh/algo/intro/visualize/>) 中添加每个数据结构的 API 文档。
   * 添加 [红黑树的完美平衡及可视化](</zh/algo/data-structure-basic/rbtree-basic/>)。
 
-
-## ¶2024/10
+## 2024/10
 
 重大升级
 
@@ -148,7 +137,6 @@
   * 修复可视化面板显示 `404 资源不存在` 的 bug。
   * 修复部分文章显示 `Fail to fetch data` 的 bug。
 
-
 若你依然遇到上述问题，请尝试刷新页面，或清除浏览器缓存，即可修复。
 
   * 修复可视化面板不能显示排序算法的 bug。
@@ -156,7 +144,6 @@
   * [Trie 树基础](</zh/algo/data-structure-basic/trie-map-basic/>) 添加可视化面板辅助理解。
   * 优化 [二叉堆](</zh/algo/data-structure-basic/binary-heap-implement/>) 的内容，改为使用索引 0 开始存储元素，并支持使用 `showArray` 方法同时展示底层数组和二叉树结构。
   * 更新 [堆排序算法](</zh/algo/data-structure-basic/heap-sort/>)。
-
 
 重大提升
 
@@ -167,8 +154,7 @@
   * 为 [回溯算法习题 I](</zh/algo/problem-set/backtrack-i/>)，[回溯算法习题 II](</zh/algo/problem-set/backtrack-ii/>)，[回溯算法习题 III](</zh/algo/problem-set/backtrack-iii/>) 的所有题目添加可视化面板。
   * 修复打卡日历样式错误的问题。
 
-
-## ¶2024/9
+## 2024/9
 
   * 修复习题章节中的代码块缺少复制按钮的 bug。
 
@@ -196,7 +182,6 @@
 
   * 对每篇文章添加「前置知识」，并在标题下方显示本文能够解决的题目数量。
 
-
 感谢大家的反馈，修复了若干 bug：
 
   * 优化有时 GitHub 登录失败的问题。
@@ -207,30 +192,25 @@
 
   * 增加 [数学技巧相关习题](</zh/algo/problem-set/math-tricks/>) 和 [并查集相关习题](</zh/algo/problem-set/union-find/>)。
 
-
 重大提升
 
   * 增加几十道习题。
-
 
 重大提升
 
 网站右上角的搜索栏支持按照题号、中英文题目名称、题目链接等信息直接搜索相关的文章。
 
-## ¶2024/8
+## 2024/8
 
   * 文中每篇文章都添加了阅读进度标记，方便判断该文章是否已经学过。
   * 文章开头添加了前置知识点，方便读者更流畅地学习理解文章内容。
-
 
 重大提升
 
   * 校准本站所有文章中的多语言代码片段，保证代码的准确性。
   * 网站搜索框支持直接搜索力扣题目名称、题号。
 
-
   * 修复习题部分可视化面板无法加载的 bug。
-
 
 重大 bug 修复
 
@@ -244,12 +224,11 @@
 
 大幅提升习题中多语言解法的准确性。
 
-## ¶2024/5
+## 2024/5
 
   * 优化阅读体验，更新代码样式。
   * 更新二叉堆、二叉树的基础知识，具体请看主站目录的「数据结构及排序精讲」章节。
   * 优化 [订单页面](<https://labuladong.online/algo/user/orders/>)，显示赠送老用户的网站会员订单及有效期。
-
 
 bug 修复
 
@@ -262,8 +241,7 @@ bug 修复
   * 增加若干基础知识，优化若干内容。
   * 添加基础知识章节。
 
-
-## ¶2024/2
+## 2024/2
 
   * 修复网站会员文章中部分链接依然指向旧版课程的 bug。
 
@@ -280,7 +258,6 @@ bug 修复
   * 修复部分链接 404 的问题。
 
   * 支持微信内直接调起支付。
-
 
 支持微信内一键登录
 
@@ -308,7 +285,6 @@ Breaking Change
   * 课程视频支持键盘控制：左右方向键快进快退，上下方向键调整音量，空格建暂停播放。
   * 其他若干小 bug 修复，若干体验优化。
 
-
 Breaking Change
 
 新网站 [labuladong.online](<https://labuladong.online/algo/>) 正式上线，全面优化使用体验。小鹅通课程全部迁往新网站，以前的付费读者可以迁移课程权限到新网站，迁移指南 [见这里](<https://labuladong.online/algo/user/orders/>)。基于新网站解锁插件中课程专属题解的方法，已经在课程的第一章进行了更新。
@@ -319,7 +295,7 @@ Breaking Change
 
 算法可视化
 
-## ¶2024/1
+## 2024/1
 
 重大 bug 修复
 
@@ -332,16 +308,14 @@ Breaking Change
   * 修复课程/会员解锁状态显示错误的问题。
   * 修复编辑器若干 bug，如登录失败、代码无法执行等。
 
-
-## ¶2023/12
+## 2023/12
 
   * 可视化在线编辑器上线：<https://labuladong.online/algo-visualize>[](<https://labuladong.online/algo-visualize>)
   * 优化网站中 力扣/LeetCode 题目的显示和跳转。
   * 修复课程中可视化面板无法全屏显示的 bug。
   * 添加部分可视化面板帮助理解。
 
-
-## ¶2023/8
+## 2023/8
 
   * 全面优化可视化面板，修复若干 bug，大幅降低多余步骤。
 
@@ -349,7 +323,7 @@ Breaking Change
 
   * 可视化面板中间添加可拖拽的分界线。
 
-  * 可视化面板可高亮显示递归树上的递归路径。 ![](/images/algo/changelog/highlight-recur-tree.jpg)
+  * 可视化面板可高亮显示递归树上的递归路径。 ![diagram](https://labuladong.online/images/algo/changelog/highlight-recur-tree.jpg)
 
   * 修复在网页上学习课程时，无法显示多语言代码和代码行内注释的 bug。
 
@@ -361,10 +335,9 @@ Breaking Change
 
   * 算法可视化面板功能升级，代码可直接点击，跳转对应的执行步骤：
 
+![diagram](https://labuladong.online/images/algo/animation/explain.jpg)
 
-![](/images/algo/animation/explain.jpg)
-
-## ¶2023/7
+## 2023/7
 
   * 修复了会员解锁内容中多语言 tab 无法切换的问题。
 
@@ -374,23 +347,17 @@ Breaking Change
 
   * 在第一章添加算法可视化功能的 [使用手册](</zh/algo/intro/visualize/>)。
 
-  * 在可视化面板右上角添加两个按钮，支持复制算法可视化面板的 URL；支持刷新算法可视化面板（适用于动画加载失败时重新刷新面板）： ![](/images/algo/animation/explain.jpg)
+  * 在可视化面板右上角添加两个按钮，支持复制算法可视化面板的 URL；支持刷新算法可视化面板（适用于动画加载失败时重新刷新面板）： ![diagram](https://labuladong.online/images/algo/animation/explain.jpg)
 
-  * 优化每篇文章最后的「相关文章」显示样式。 ![](/images/algo/changelog/related_article.jpg)
+  * 优化每篇文章最后的「相关文章」显示样式。 ![diagram](https://labuladong.online/images/algo/changelog/related_article.jpg)
 
   * 添加网站以及各个插件的更新日志，方便大家了解更新情况。
 
-  * 可视化功能升级，支持以树的视角可视化所有递归算法： ![](/images/algo/visualize_intro/permute.jpg)
+  * 可视化功能升级，支持以树的视角可视化所有递归算法： ![diagram](https://labuladong.online/images/algo/visualize_intro/permute.jpg)
 
-
-## ¶2023/6
+## 2023/6
 
   * 修复算法可视化的 bug，添加 50 道题目的算法可视化。
   * 支持 [Chrome 插件](</zh/algo/intro/chrome/>) 和网站联动，在网页右上方显示插件连接状态。
   * 添加阅读历史功能，阅读完的文章会显示  标记，未读完的文章会显示  标记。
   * 新主题上线，全面优化使用体验。
-
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

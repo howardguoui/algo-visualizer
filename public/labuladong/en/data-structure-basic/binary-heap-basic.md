@@ -11,13 +11,12 @@ Prerequisite Knowledge
 
 Before reading this article, you should first learn:
 
-  * [Basics and Common Types of Binary Trees](/en/algo/data-structure-basic/binary-tree-basic/)
-  * [Recursive and Level Order Traversal of Binary Trees](/en/algo/data-structure-basic/binary-tree-traverse-basic/)
-
+  * [Basics and Common Types of Binary Trees](</en/algo/data-structure-basic/binary-tree-basic/>)
+  * [Recursive and Level Order Traversal of Binary Trees](</en/algo/data-structure-basic/binary-tree-traverse-basic/>)
 
 Summary in One Sentence
 
-A binary heap is a data structure capable of dynamically sorting, extending from the [binary tree structure](/en/algo/data-structure-basic/binary-tree-basic/).
+A binary heap is a data structure capable of dynamically sorting, extending from the [binary tree structure](</en/algo/data-structure-basic/binary-tree-basic/>).
 
 The main operations of a binary heap are twofold: `sink` (downward adjustment) and `swim` (upward adjustment), which are used to maintain the properties of the binary heap.
 
@@ -30,5 +29,3 @@ Algorithm Visualization
 Next, I will use the visualization panel to demonstrate the principles of a binary heap. Finally, I will show the implementation of a binary heap using a priority queue as an example.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

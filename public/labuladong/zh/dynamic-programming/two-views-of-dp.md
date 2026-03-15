@@ -21,10 +21,9 @@ LeetCode| 力扣| 难度
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
   * [球盒模型：回溯算法穷举的两种视角](</zh/algo/practice-in-action/two-views-of-backtrack/>)
 
-
 本文我会带大家复习一下动态规划相关问题的一系列解题套路，然后着重讨论一下动态规划穷举时不同视角的问题。
 
-## ¶动态规划解题组合拳
+## 动态规划解题组合拳
 
 首先，[我的刷题心得](</zh/algo/essential-technique/algorithm-summary/>) 讲了，我们刷的算法问题的本质是「穷举」，动态规划问题也不例外，你必须想办法穷举所有可能的解，然后从中筛选出符合题目要求的解。
 
@@ -35,7 +34,3 @@ LeetCode| 力扣| 难度
 **接下来就是本文要着重探讨的问题了：就算`dp` 函数/数组的定义相同，如果你使用不同的「视角」进行穷举，效率也不见得是相同的**。
 
 关于穷举「视角」的问题，前文 [球盒模型：回溯算法穷举的两种视角](</zh/algo/practice-in-action/two-views-of-backtrack/>) 讲了回溯算法中不同的穷举视角导致的不同解法，其实这种视角的切换在动态规划类型问题中依然存在。前文对排列的举例非常有助于你理解穷举视角的问题，这里再简单提一下。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

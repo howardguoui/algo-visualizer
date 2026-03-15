@@ -18,12 +18,7 @@
   * [二叉树的遍历基础](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
 二叉树大部分题目都可以用递归的算法解决，但少部分题目用递归比较麻烦的话，我们可以考虑使用层序遍历的方式解决。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -38,6 +33,5 @@ Loading comments...
   * 1161\. 最大层内元素和
   * 1302\. 层数最深叶子节点的和
   * 1609\. 奇偶树
-
 
 AI 助教

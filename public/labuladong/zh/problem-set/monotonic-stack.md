@@ -18,12 +18,7 @@
   * [队列/栈的原理](</zh/algo/data-structure-basic/queue-stack-basic/>)
   * [单调栈模板](</zh/algo/data-structure/monotonic-stack/>)
 
-
 本文给出单调栈模板的更多变形，后面讲的一些经典例题可以抽象成下面的这些标准场景，你到时候可以直接复制粘贴代码去解决。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -45,6 +40,5 @@ Loading comments...
   * 853\. 车队
   * 581\. 最短无序连续子数组
   * 84\. 柱状图中最大的矩形
-
 
 AI 助教

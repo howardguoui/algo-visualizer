@@ -18,7 +18,7 @@ LeetCode| 力扣| 难度
   
 视频讲解
 
-![Video Cover](/images/algo/vod/sliding-window.jpg)
+![Video Cover](https://labuladong.online/images/algo/vod/sliding-window.jpg)
 
 前文 [双指针技巧汇总](</zh/algo/essential-technique/array-two-pointers-summary/>) 讲解了一些较为简单的数组双指针技巧，本文就讲解一个稍微复杂的技巧：滑动窗口技巧。
 
@@ -30,34 +30,36 @@ LeetCode| 力扣| 难度
 
 本文会总结出一套框架，可以保你闭着眼睛都能写出正确的解法，同时每道题目都配备了算法可视化面板，帮助你直观地理解窗口滑动的过程。
 
-## ¶滑动窗口框架概览
+## 滑动窗口框架概览
 
 如果用暴力解的话，你需要嵌套 for 循环这样穷举所有子数组，时间复杂度是 O(N2)O(N^2)O(N2)：
-    
-    
-    for (int i = 0; i < nums.length; i++) {
-        for (int j = i; j < nums.length; j++) {
-            // nums[i, j] 是一个子数组
-        }
+
+```
+for (int i = 0; i < nums.length; i++) {
+    for (int j = i; j < nums.length; j++) {
+        // nums[i, j] 是一个子数组
     }
+}
+``` 
 
 滑动窗口算法技巧的思路也不难，就是维护一个窗口，不断滑动，然后更新答案，该算法的大致逻辑如下：
+
+```
+// 索引区间 [left, right) 是窗口
+int left = 0, right = 0;
+
+while (right < nums.size()) {
+    // 增大窗口
+    window.addLast(nums[right]);
+    right++;
     
-    
-    // 索引区间 [left, right) 是窗口
-    int left = 0, right = 0;
-    
-    while (right < nums.size()) {
-        // 增大窗口
-        window.addLast(nums[right]);
-        right++;
-        
-        while (window needs shrink) {
-            // 缩小窗口
-            window.removeFirst(nums[left]);
-            left++;
-        }
+    while (window needs shrink) {
+        // 缩小窗口
+        window.removeFirst(nums[left]);
+        left++;
     }
+}
+``` 
 
 基于滑动窗口算法框架写出的代码，时间复杂度是 O(N)O(N)O(N)，比嵌套 for 循环的暴力解法效率高。
 
@@ -85,44 +87,43 @@ LeetCode| 力扣| 难度
 
 因为本文的例题大多是子串相关的题目，字符串实际上就是数组，所以我就把输入设置成字符串了。你做题的时候根据具体题目自行变通即可：
 
-CC++GoJavaJavaScriptPython
+```java
+// 滑动窗口算法伪码框架
+void slidingWindow(String s) {
+    // 用合适的数据结构记录窗口中的数据，根据具体场景变通
+    // 比如说，我想记录窗口中元素出现的次数，就用 map
+    // 如果我想记录窗口中的元素和，就可以只用一个 int
+    Object window = ...
     
-    
-    // 滑动窗口算法伪码框架
-    void slidingWindow(String s) {
-        // 用合适的数据结构记录窗口中的数据，根据具体场景变通
-        // 比如说，我想记录窗口中元素出现的次数，就用 map
-        // 如果我想记录窗口中的元素和，就可以只用一个 int
-        Object window = ...
-        
-        int left = 0, right = 0;
-        while (right < s.length()) {
-            // c 是将移入窗口的字符
-            char c = s[right];
-            window.add(c)
-            // 增大窗口
-            right++;
+    int left = 0, right = 0;
+    while (right < s.length()) {
+        // c 是将移入窗口的字符
+        char c = s[right];
+        window.add(c)
+        // 增大窗口
+        right++;
+        // 进行窗口内数据的一系列更新
+        ...
+
+        // *** debug 输出的位置 ***
+        // 注意在最终的解法代码中不要 print
+        // 因为 IO 操作很耗时，可能导致超时
+        printf("window: [%d, %d)\n", left, right);
+        // ***********************
+
+        // 判断左侧窗口是否要收缩
+        while (left < right && window needs shrink) {
+            // d 是将移出窗口的字符
+            char d = s[left];
+            window.remove(d)
+            // 缩小窗口
+            left++;
             // 进行窗口内数据的一系列更新
             ...
-    
-            // *** debug 输出的位置 ***
-            // 注意在最终的解法代码中不要 print
-            // 因为 IO 操作很耗时，可能导致超时
-            printf("window: [%d, %d)\n", left, right);
-            // ***********************
-    
-            // 判断左侧窗口是否要收缩
-            while (left < right && window needs shrink) {
-                // d 是将移出窗口的字符
-                char d = s[left];
-                window.remove(d)
-                // 缩小窗口
-                left++;
-                // 进行窗口内数据的一系列更新
-                ...
-            }
         }
     }
+}
+``` 
 
 **框架中两处`...` 表示的更新窗口数据的地方，在具体的题目中，你需要做的就是往这里面填代码逻辑**。而且，这两个 `...` 处的操作分别是扩大和缩小窗口的更新操作，等会你会发现它们操作是完全对称的。
 
@@ -138,7 +139,7 @@ CC++GoJavaJavaScriptPython
 
 下面就直接上四道力扣原题来套这个框架，其中第一道题会详细说明其原理，其他题目就直接闭眼睛秒杀了。
 
-## ¶一、最小覆盖子串
+## 一、最小覆盖子串
 
 先来看看力扣第 76 题「[最小覆盖子串](<https://leetcode.cn/problems/minimum-window-substring/>)」难度 Hard：
 
@@ -151,30 +152,30 @@ CC++GoJavaJavaScriptPython
   * 对于 `t` 中重复字符，我们寻找的子字符串中该字符数量必须不少于 `t` 中该字符数量。
   * 如果 `s` 中存在这样的子串，我们保证它是唯一的答案。
 
-
 **示例 1：**
-    
-    
-    **输入：** s = "ADOBECODEBANC", t = "ABC"
-    **输出：** "BANC"
-    **解释：** 最小覆盖子串 "BANC" 包含来自字符串 t 的 'A'、'B' 和 'C'。
-    
+
+```
+输入：s = "ADOBECODEBANC", t = "ABC"
+输出："BANC"
+解释：最小覆盖子串 "BANC" 包含来自字符串 t 的 'A'、'B' 和 'C'。
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** s = "a", t = "a"
-    **输出：** "a"
-    **解释：** 整个字符串 s 是最小覆盖子串。
-    
+
+```
+输入：s = "a", t = "a"
+输出："a"
+解释：整个字符串 s 是最小覆盖子串。
+``` 
 
 **示例 3:**
-    
-    
-    **输入:** s = "a", t = "aa"
-    **输出:** ""
-    **解释:** t 中两个字符 'a' 均应包含在 s 的子串中，
-    因此没有符合条件的子字符串，返回空字符串。
+
+```
+输入: s = "a", t = "aa"
+输出: ""
+解释: t 中两个字符 'a' 均应包含在 s 的子串中，
+因此没有符合条件的子字符串，返回空字符串。
+``` 
 
 **提示：**
 
@@ -190,12 +191,13 @@ CC++GoJavaJavaScriptPython
 就是说要在 `S`(source) 中找到包含 `T`(target) 中全部字母的一个子串，且这个子串一定是所有可能子串中最短的。
 
 如果我们使用暴力解法，代码大概是这样的：
-    
-    
-    for (int i = 0; i < s.length(); i++)
-        for (int j = i + 1; j < s.length(); j++)
-            if s[i:j] 包含 t 的所有字母:
-                更新答案
+
+```
+for (int i = 0; i < s.length(); i++)
+    for (int j = i + 1; j < s.length(); j++)
+        if s[i:j] 包含 t 的所有字母:
+            更新答案
+``` 
 
 思路很直接，但是显然，这个算法的复杂度肯定大于 O(N2)O(N^2)O(N2) 了，不好。
 
@@ -223,49 +225,51 @@ CC++GoJavaJavaScriptPython
 
 初始状态：
 
-![](/images/algo/slidingwindow/1.png)
+![diagram](https://labuladong.online/images/algo/slidingwindow/1.png)
 
 增加 `right`，直到窗口 `[left, right)` 包含了 `T` 中所有字符：
 
-![](/images/algo/slidingwindow/2.png)
+![diagram](https://labuladong.online/images/algo/slidingwindow/2.png)
 
 现在开始增加 `left`，缩小窗口 `[left, right)`：
 
-![](/images/algo/slidingwindow/3.png)
+![diagram](https://labuladong.online/images/algo/slidingwindow/3.png)
 
 直到窗口中的字符串不再符合要求，`left` 不再继续移动：
 
-![](/images/algo/slidingwindow/4.png)
+![diagram](https://labuladong.online/images/algo/slidingwindow/4.png)
 
 之后重复上述过程，先移动 `right`，再移动 `left`... 直到 `right` 指针到达字符串 `S` 的末端，算法结束。
 
 如果你能够理解上述过程，恭喜，你已经完全掌握了滑动窗口算法思想。**现在我们来看看这个滑动窗口代码框架怎么用** ：
 
 首先，初始化 `window` 和 `need` 两个哈希表，记录窗口中的字符和需要凑齐的字符：
-    
-    
-    // 记录 window 中的字符出现次数
-    HashMap<Character, Integer> window = new HashMap<>();
-    // 记录所需的字符出现次数
-    HashMap<Character, Integer> need = new HashMap<>();
-    for (int i = 0; i < t.length(); i++) {
-        char c = t.charAt(i);
-        need.put(c, need.getOrDefault(c, 0) + 1);
-    }
+
+```
+// 记录 window 中的字符出现次数
+HashMap<Character, Integer> window = new HashMap<>();
+// 记录所需的字符出现次数
+HashMap<Character, Integer> need = new HashMap<>();
+for (int i = 0; i < t.length(); i++) {
+    char c = t.charAt(i);
+    need.put(c, need.getOrDefault(c, 0) + 1);
+}
+``` 
 
 然后，使用 `left` 和 `right` 变量初始化窗口的两端，不要忘了，区间 `[left, right)` 是左闭右开的，所以初始情况下窗口没有包含任何元素：
-    
-    
-    int left = 0, right = 0;
-    int valid = 0;
-    while (right < s.length()) {
-        // c 是将移入窗口的字符
-        char c = s.charAt(right);
-        // 右移窗口
-        right++;
-        // 进行窗口内数据的一系列更新
-        ...
-    }
+
+```
+int left = 0, right = 0;
+int valid = 0;
+while (right < s.length()) {
+    // c 是将移入窗口的字符
+    char c = s.charAt(right);
+    // 右移窗口
+    right++;
+    // 进行窗口内数据的一系列更新
+    ...
+}
+``` 
 
 **其中`valid` 变量表示窗口中满足 `need` 条件的字符个数**，如果 `valid` 和 `need.size` 的大小相同，则说明窗口已满足条件，已经完全覆盖了串 `T`。
 
@@ -281,56 +285,55 @@ CC++GoJavaJavaScriptPython
 
 下面是完整代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public String minWindow(String s, String t) {
-            Map<Character, Integer> need = new HashMap<>();
-            Map<Character, Integer> window = new HashMap<>();
-            for (char c : t.toCharArray()) {
-                need.put(c, need.getOrDefault(c, 0) + 1);
-            }
-    
-            int left = 0, right = 0; ![](/images/algo/slidingwindow/1.png)
-            int valid = 0;
-            // 记录最小覆盖子串的起始索引及长度
-            int start = 0, len = Integer.MAX_VALUE;
-            while (right < s.length()) {
-                // c 是将移入窗口的字符
-                char c = s.charAt(right);
-                // 扩大窗口
-                right++;
-                // 进行窗口内数据的一系列更新
-                if (need.containsKey(c)) {
-                    window.put(c, window.getOrDefault(c, 0) + 1);
-                    if (window.get(c).equals(need.get(c)))
-                        valid++;
-                }
-    
-                // 判断左侧窗口是否要收缩
-                while (valid == need.size()) { ![](/images/algo/slidingwindow/2.png)
-                    // 在这里更新最小覆盖子串
-                    if (right - left < len) {
-                        start = left;
-                        len = right - left;
-                    }
-                    // d 是将移出窗口的字符
-                    char d = s.charAt(left);
-                    // 缩小窗口
-                    left++;
-                    // 进行窗口内数据的一系列更新
-                    if (need.containsKey(d)) {
-                        if (window.get(d).equals(need.get(d)))
-                            valid--;
-                        window.put(d, window.get(d) - 1);
-                    }                    
-                } ![](/images/algo/slidingwindow/4.png)
-            }
-            // 返回最小覆盖子串
-            return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
+```java
+class Solution {
+    public String minWindow(String s, String t) {
+        Map<Character, Integer> need = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            need.put(c, need.getOrDefault(c, 0) + 1);
         }
+
+        int left = 0, right = 0; 
+        int valid = 0;
+        // 记录最小覆盖子串的起始索引及长度
+        int start = 0, len = Integer.MAX_VALUE;
+        while (right < s.length()) {
+            // c 是将移入窗口的字符
+            char c = s.charAt(right);
+            // 扩大窗口
+            right++;
+            // 进行窗口内数据的一系列更新
+            if (need.containsKey(c)) {
+                window.put(c, window.getOrDefault(c, 0) + 1);
+                if (window.get(c).equals(need.get(c)))
+                    valid++;
+            }
+
+            // 判断左侧窗口是否要收缩
+            while (valid == need.size()) { 
+                // 在这里更新最小覆盖子串
+                if (right - left < len) {
+                    start = left;
+                    len = right - left;
+                }
+                // d 是将移出窗口的字符
+                char d = s.charAt(left);
+                // 缩小窗口
+                left++;
+                // 进行窗口内数据的一系列更新
+                if (need.containsKey(d)) {
+                    if (window.get(d).equals(need.get(d)))
+                        valid--;
+                    window.put(d, window.get(d) - 1);
+                }                    
+            } 
+        }
+        // 返回最小覆盖子串
+        return len == Integer.MAX_VALUE ? "" : s.substring(start, start + len);
     }
+}
+``` 
 
 你可以点开下面的可视化面板，多次点击 `while (right < s.length)` 这一行代码，即可看到滑动窗口 `[left, right)` 的滑动过程：
 
@@ -350,7 +353,7 @@ CC++GoJavaJavaScriptPython
 
 下面就直接利用这套框架秒杀几道题吧，你基本上一眼就能看出思路了。
 
-## ¶二、字符串排列
+## 二、字符串排列
 
 这是力扣第 567 题「[字符串的排列](<https://leetcode.cn/problems/permutation-in-string/>)」，难度中等：
 
@@ -361,25 +364,24 @@ CC++GoJavaJavaScriptPython
 换句话说，`s1` 的排列之一是 `s2` 的 **子串** 。
 
 **示例 1：**
-    
-    
-    **输入：** s1 = "ab" s2 = "eidbaooo"
-    **输出：** true
-    **解释：** s2 包含 s1 的排列之一 ("ba").
-    
+
+```
+输入：s1 = "ab" s2 = "eidbaooo"
+输出：true
+解释：s2 包含 s1 的排列之一 ("ba").
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** s1= "ab" s2 = "eidboaoo"
-    **输出：** false
-    
+
+```
+输入：s1= "ab" s2 = "eidboaoo"
+输出：false
+``` 
 
 **提示：**
 
   * `1 <= s1.length, s2.length <= 104`
   * `s1` 和 `s2` 仅包含小写字母
-
 
 题目来源：[力扣 567. 字符串的排列](<https://leetcode.cn/problems/permutation-in-string/>)。
 
@@ -389,47 +391,46 @@ CC++GoJavaJavaScriptPython
 
 首先，先复制粘贴之前的算法框架代码，然后明确刚才提出的几个问题，即可写出这道题的答案：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // 判断 s 中是否存在 t 的排列
-        public boolean checkInclusion(String t, String s) {
-            Map<Character, Integer> need = new HashMap<>();
-            Map<Character, Integer> window = new HashMap<>();
-            for (char c : t.toCharArray()) need.put(c, need.getOrDefault(c, 0) + 1);
-    
-            int left = 0, right = 0;
-            int valid = 0;
-            while (right < s.length()) {
-                char c = s.charAt(right);
-                right++;
+```java
+class Solution {
+    // 判断 s 中是否存在 t 的排列
+    public boolean checkInclusion(String t, String s) {
+        Map<Character, Integer> need = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();
+        for (char c : t.toCharArray()) need.put(c, need.getOrDefault(c, 0) + 1);
+
+        int left = 0, right = 0;
+        int valid = 0;
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            right++;
+            // 进行窗口内数据的一系列更新
+            if (need.containsKey(c)) {
+                window.put(c, window.getOrDefault(c, 0) + 1);
+                if (window.get(c).equals(need.get(c)))
+                    valid++;
+            }
+
+            // 判断左侧窗口是否要收缩
+            while (right - left >= t.length()) {
+                // 在这里判断是否找到了合法的子串
+                if (valid == need.size())
+                    return true;
+                char d = s.charAt(left);
+                left++;
                 // 进行窗口内数据的一系列更新
-                if (need.containsKey(c)) {
-                    window.put(c, window.getOrDefault(c, 0) + 1);
-                    if (window.get(c).equals(need.get(c)))
-                        valid++;
-                }
-    
-                // 判断左侧窗口是否要收缩
-                while (right - left >= t.length()) {
-                    // 在这里判断是否找到了合法的子串
-                    if (valid == need.size())
-                        return true;
-                    char d = s.charAt(left);
-                    left++;
-                    // 进行窗口内数据的一系列更新
-                    if (need.containsKey(d)) {
-                        if (window.get(d).equals(need.get(d)))
-                            valid--;
-                        window.put(d, window.get(d) - 1);
-                    }
+                if (need.containsKey(d)) {
+                    if (window.get(d).equals(need.get(d)))
+                        valid--;
+                    window.put(d, window.get(d) - 1);
                 }
             }
-            // 未找到符合条件的子串
-            return false;
         }
+        // 未找到符合条件的子串
+        return false;
     }
+}
+``` 
 
 你可以点开下面的可视化面板，多次点击 `while (right < s.length)` 这一行代码，即可看到定长窗口滑动的过程：
 
@@ -447,7 +448,7 @@ CC++GoJavaJavaScriptPython
 
 由于这道题中 `[left, right)` 其实维护的是一个**定长** 的窗口，窗口长度为 `t.length()`。因为定长窗口每次向前滑动时只会移出一个字符，所以完全可以把内层的 while 改成 if，效果是一样的。
 
-## ¶三、找所有字母异位词
+## 三、找所有字母异位词
 
 这是力扣第 438 题「[找到字符串中所有字母异位词](<https://leetcode.cn/problems/find-all-anagrams-in-a-string/>)」，难度中等：
 
@@ -458,31 +459,30 @@ CC++GoJavaJavaScriptPython
 **异位词** 指由相同字母重排列形成的字符串（包括相同的字符串）。
 
 **示例 1:**
-    
-    
-    **输入:** s = "cbaebabacd", p = "abc"
-    **输出:**[0,6]
-    **解释:**
-    起始索引等于 0 的子串是 "cba", 它是 "abc" 的异位词。
-    起始索引等于 6 的子串是 "bac", 它是 "abc" 的异位词。
-    
+
+```
+输入: s = "cbaebabacd", p = "abc"
+输出: [0,6]
+解释:
+起始索引等于 0 的子串是 "cba", 它是 "abc" 的异位词。
+起始索引等于 6 的子串是 "bac", 它是 "abc" 的异位词。
+``` 
 
 **示例 2:**
-    
-    
-    **输入:** s = "abab", p = "ab"
-    **输出:**[0,1,2]
-    **解释:**
-    起始索引等于 0 的子串是 "ab", 它是 "ab" 的异位词。
-    起始索引等于 1 的子串是 "ba", 它是 "ab" 的异位词。
-    起始索引等于 2 的子串是 "ab", 它是 "ab" 的异位词。
-    
+
+```
+输入: s = "abab", p = "ab"
+输出: [0,1,2]
+解释:
+起始索引等于 0 的子串是 "ab", 它是 "ab" 的异位词。
+起始索引等于 1 的子串是 "ba", 它是 "ab" 的异位词。
+起始索引等于 2 的子串是 "ab", 它是 "ab" 的异位词。
+``` 
 
 **提示:**
 
   * `1 <= s.length, p.length <= 3 * 104`
   * `s` 和 `p` 仅包含小写字母
-
 
 题目来源：[力扣 438. 找到字符串中所有字母异位词](<https://leetcode.cn/problems/find-all-anagrams-in-a-string/>)。
 
@@ -490,51 +490,50 @@ CC++GoJavaJavaScriptPython
 
 直接默写一下框架，明确刚才讲的三个问题，即可秒杀这道题：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public List<Integer> findAnagrams(String s, String t) {
-            Map<Character, Integer> need = new HashMap<>();
-            Map<Character, Integer> window = new HashMap<>();
-            for (char c : t.toCharArray()) {
-                need.put(c, need.getOrDefault(c, 0) + 1);
-            }
-    
-            int left = 0, right = 0;
-            int valid = 0;
-            // 记录结果
-            List<Integer> res = new ArrayList<>();
-            while (right < s.length()) {
-                char c = s.charAt(right);
-                right++;
-                // 进行窗口内数据的一系列更新
-                if (need.containsKey(c)) {
-                    window.put(c, window.getOrDefault(c, 0) + 1);
-                    if (window.get(c).equals(need.get(c))) {
-                        valid++;
-                    }
-                }
-                // 判断左侧窗口是否要收缩
-                while (right - left >= t.length()) {
-                    // 当窗口符合条件时，把起始索引加入 res
-                    if (valid == need.size()) {
-                        res.add(left);
-                    }
-                    char d = s.charAt(left);
-                    left++;
-                    // 进行窗口内数据的一系列更新
-                    if (need.containsKey(d)) {
-                        if (window.get(d).equals(need.get(d))) {
-                            valid--;
-                        }
-                        window.put(d, window.get(d) - 1);
-                    }
-                }
-            }
-            return res;
+```java
+class Solution {
+    public List<Integer> findAnagrams(String s, String t) {
+        Map<Character, Integer> need = new HashMap<>();
+        Map<Character, Integer> window = new HashMap<>();
+        for (char c : t.toCharArray()) {
+            need.put(c, need.getOrDefault(c, 0) + 1);
         }
+
+        int left = 0, right = 0;
+        int valid = 0;
+        // 记录结果
+        List<Integer> res = new ArrayList<>();
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            right++;
+            // 进行窗口内数据的一系列更新
+            if (need.containsKey(c)) {
+                window.put(c, window.getOrDefault(c, 0) + 1);
+                if (window.get(c).equals(need.get(c))) {
+                    valid++;
+                }
+            }
+            // 判断左侧窗口是否要收缩
+            while (right - left >= t.length()) {
+                // 当窗口符合条件时，把起始索引加入 res
+                if (valid == need.size()) {
+                    res.add(left);
+                }
+                char d = s.charAt(left);
+                left++;
+                // 进行窗口内数据的一系列更新
+                if (need.containsKey(d)) {
+                    if (window.get(d).equals(need.get(d))) {
+                        valid--;
+                    }
+                    window.put(d, window.get(d) - 1);
+                }
+            }
+        }
+        return res;
     }
+}
+``` 
 
 跟寻找字符串的排列一样，只是找到一个合法异位词（排列）之后将起始索引加入 `res` 即可。
 
@@ -542,7 +541,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-## ¶四、最长无重复子串
+## 四、最长无重复子串
 
 这是力扣第 3 题「[无重复字符的最长子串](<https://leetcode.cn/problems/longest-substring-without-repeating-characters/>)」，难度中等：
 
@@ -551,68 +550,59 @@ CC++GoJavaJavaScriptPython
 给定一个字符串 `s` ，请你找出其中不含有重复字符的 **最长 子串****** 的长度。
 
 **示例 1:**
-    
-    
-    **输入:** s = "abcabcbb"
-    **输出:** 3 
-    **解释:** 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
-    
+
+```
+"abc"
+``` 
 
 **示例 2:**
-    
-    
-    **输入:** s = "bbbbb"
-    **输出:** 1
-    **解释:** 因为无重复字符的最长子串是 "b"，所以其长度为 1。
-    
+
+```
+"b"
+``` 
 
 **示例 3:**
-    
-    
-    **输入:** s = "pwwkew"
-    **输出:** 3
-    **解释:** 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
-         请注意，你的答案必须是 **子串** 的长度，"pwke" 是一个 _子序列，_ 不是子串。
-    
+
+```
+"wke"
+``` 
 
 **提示：**
 
   * `0 <= s.length <= 5 * 104`
   * `s` 由英文字母、数字、符号和空格组成
 
-
 题目来源：[力扣 3. 无重复字符的最长子串](<https://leetcode.cn/problems/longest-substring-without-repeating-characters/>)。
 
 这个题终于有了点新意，不是一套框架就出答案，不过反而更简单了，稍微改一改框架就行了：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int lengthOfLongestSubstring(String s) {
-            Map<Character, Integer> window = new HashMap<>();
-    
-            int left = 0, right = 0;
-            // 记录结果
-            int res = 0;
-            while (right < s.length()) {
-                char c = s.charAt(right);
-                right++;
+```java
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        Map<Character, Integer> window = new HashMap<>();
+
+        int left = 0, right = 0;
+        // 记录结果
+        int res = 0;
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            right++;
+            // 进行窗口内数据的一系列更新
+            window.put(c, window.getOrDefault(c, 0) + 1);
+            // 判断左侧窗口是否要收缩
+            while (window.get(c) > 1) {
+                char d = s.charAt(left);
+                left++;
                 // 进行窗口内数据的一系列更新
-                window.put(c, window.getOrDefault(c, 0) + 1);
-                // 判断左侧窗口是否要收缩
-                while (window.get(c) > 1) {
-                    char d = s.charAt(left);
-                    left++;
-                    // 进行窗口内数据的一系列更新
-                    window.put(d, window.get(d) - 1);
-                }
-                // 在这里更新答案
-                res = Math.max(res, right - left);
+                window.put(d, window.get(d) - 1);
             }
-            return res;
+            // 在这里更新答案
+            res = Math.max(res, right - left);
         }
+        return res;
     }
+}
+``` 
 
 你可以点开下面的可视化面板，多次点击 `while (right < s.length)` 这一行代码，即可看到窗口滑动更新答案的过程：
 
@@ -635,7 +625,3 @@ CC++GoJavaJavaScriptPython
 3、什么时候应该更新答案？
 
 我在 [滑动窗口经典习题](</zh/algo/problem-set/sliding-window/>) 中使用这套思维模式列举了更多经典的习题，旨在强化你对算法的理解和记忆，以后就再也不怕子串、子数组问题了。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

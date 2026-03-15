@@ -27,10 +27,9 @@ LeetCode| 力扣| 难度
 
   * [链表基础](</zh/algo/data-structure-basic/linkedlist-basic/>)
 
-
 视频讲解
 
-![Video Cover](/images/algo/vod/linked-two-pointer.jpg)
+![Video Cover](https://labuladong.online/images/algo/vod/linked-two-pointer.jpg)
 
 本文总结一下单链表的基本技巧，每个技巧都对应着至少一道算法题：
 
@@ -50,7 +49,7 @@ LeetCode| 力扣| 难度
 
 这些解法都用到了双指针技巧，所以说对于单链表相关的题目，双指针的运用是非常广泛的，下面我们就来一个一个看。
 
-## ¶合并两个有序链表
+## 合并两个有序链表
 
 这是最基本的链表技巧，力扣第 21 题「[合并两个有序链表](<https://leetcode.cn/problems/merge-two-sorted-lists/>)」就是这个问题，给你输入两个有序链表，请你把他俩合并成一个新的有序链表：
 
@@ -60,26 +59,26 @@ LeetCode| 力扣| 难度
 
 **示例 1：**
 
-![](/images/lc/uploads/2020/10/03/merge_ex1.jpg)
-    
-    
-    **输入：** l1 = [1,2,4], l2 = [1,3,4]
-    **输出：**[1,1,2,3,4,4]
-    
+![diagram](https://labuladong.online/images/lc/uploads/2020/10/03/merge_ex1.jpg)
+
+```
+输入：l1 = [1,2,4], l2 = [1,3,4]
+输出：[1,1,2,3,4,4]
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** l1 = [], l2 = []
-    **输出：**[]
-    
+
+```
+输入：l1 = [], l2 = []
+输出：[]
+``` 
 
 **示例 3：**
-    
-    
-    **输入：** l1 = [], l2 = [0]
-    **输出：**[0]
-    
+
+```
+输入：l1 = [], l2 = [0]
+输出：[0]
+``` 
 
 **提示：**
 
@@ -87,55 +86,52 @@ LeetCode| 力扣| 难度
   * `-100 <= Node.val <= 100`
   * `l1` 和 `l2` 均按 **非递减顺序** 排列
 
-
 题目来源：[力扣 21. 合并两个有序链表](<https://leetcode.cn/problems/merge-two-sorted-lists/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 函数签名如下
-    ListNode mergeTwoLists(ListNode l1, ListNode l2);
+```java
+// 函数签名如下
+ListNode mergeTwoLists(ListNode l1, ListNode l2);
+``` 
 
 这题比较简单，我们直接看解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-            // 虚拟头结点
-            ListNode dummy = new ListNode(-1), p = dummy;
-            ListNode p1 = l1, p2 = l2;
-    
-            while (p1 != null && p2 != null) { ![](/images/algo/linked-list-two-pointer/1.gif)
-                // 比较 p1 和 p2 两个指针
-                // 将值较小的的节点接到 p 指针
-                if (p1.val > p2.val) {
-                    p.next = p2;
-                    p2 = p2.next;
-                } else {
-                    p.next = p1;
-                    p1 = p1.next;
-                }
-                // p 指针不断前进
-                p = p.next;
-            }
-    
-            if (p1 != null) {
-                p.next = p1;
-            }
-    
-            if (p2 != null) {
+```java
+class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        // 虚拟头结点
+        ListNode dummy = new ListNode(-1), p = dummy;
+        ListNode p1 = l1, p2 = l2;
+
+        while (p1 != null && p2 != null) { 
+            // 比较 p1 和 p2 两个指针
+            // 将值较小的的节点接到 p 指针
+            if (p1.val > p2.val) {
                 p.next = p2;
+                p2 = p2.next;
+            } else {
+                p.next = p1;
+                p1 = p1.next;
             }
-    
-            return dummy.next;
+            // p 指针不断前进
+            p = p.next;
         }
+
+        if (p1 != null) {
+            p.next = p1;
+        }
+
+        if (p2 != null) {
+            p.next = p2;
+        }
+
+        return dummy.next;
     }
+}
+``` 
 
 我们的 while 循环每次比较 `p1` 和 `p2` 的大小，把较小的节点接到结果链表上，看如下 GIF：
 
-![](/images/algo/linked-list-two-pointer/1.gif)
+![diagram](https://labuladong.online/images/algo/linked-list-two-pointer/1.gif)
 
 形象地理解，这个算法的逻辑类似于拉拉链，`l1, l2` 类似于拉链两侧的锯齿，指针 `p` 就好像拉链的拉索，将两个有序链表合并。
 
@@ -151,7 +147,7 @@ CC++GoJavaJavaScriptPython
 
 比如说，让你把两条有序链表合并成一条新的有序链表，是不是要创造一条新链表？再比你想把一条链表分解成两条链表，是不是也在创造新链表？这些情况都可以使用虚拟头结点简化边界情况的处理。
 
-## ¶单链表的分解
+## 单链表的分解
 
 直接看下力扣第 86 题「[分隔链表](<https://leetcode.cn/problems/partition-list/>)」：
 
@@ -163,19 +159,19 @@ CC++GoJavaJavaScriptPython
 
 **示例 1：**
 
-![](/images/lc/uploads/2021/01/04/partition.jpg)
-    
-    
-    **输入：** head = [1,4,3,2,5,2], x = 3
-    **输出** ：[1,2,2,4,3,5]
-    
+![diagram](https://labuladong.online/images/lc/uploads/2021/01/04/partition.jpg)
+
+```
+输入：head = [1,4,3,2,5,2], x = 3
+输出：[1,2,2,4,3,5]
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** head = [2,1], x = 2
-    **输出** ：[1,2]
-    
+
+```
+输入：head = [2,1], x = 2
+输出：[1,2]
+``` 
 
 **提示：**
 
@@ -183,56 +179,55 @@ CC++GoJavaJavaScriptPython
   * `-100 <= Node.val <= 100`
   * `-200 <= x <= 200`
 
-
 题目来源：[力扣 86. 分隔链表](<https://leetcode.cn/problems/partition-list/>)。
 
 在合并两个有序链表时让你合二为一，而这里需要分解让你把原链表一分为二。具体来说，我们可以把原链表分成两个小链表，一个链表中的元素大小都小于 `x`，另一个链表中的元素都大于等于 `x`，最后再把这两条链表接到一起，就得到了题目想要的结果。
 
 整体逻辑和合并有序链表非常相似，细节直接看代码吧，注意虚拟头结点的运用：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public ListNode partition(ListNode head, int x) {
-            // 存放小于 x 的链表的虚拟头结点
-            ListNode dummy1 = new ListNode(-1);
-            // 存放大于等于 x 的链表的虚拟头结点
-            ListNode dummy2 = new ListNode(-1);
-            // p1, p2 指针负责生成结果链表
-            ListNode p1 = dummy1, p2 = dummy2;
-            // p 负责遍历原链表，类似合并两个有序链表的逻辑
-            // 这里是将一个链表分解成两个链表
-            ListNode p = head;
-            while (p != null) {
-                if (p.val >= x) {
-                    p2.next = p;
-                    p2 = p2.next;
-                } else {
-                    p1.next = p;
-                    p1 = p1.next;
-                }
-                // 断开原链表中的每个节点的 next 指针
-                ListNode temp = p.next;
-                p.next = null;
-                p = temp;
+```java
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        // 存放小于 x 的链表的虚拟头结点
+        ListNode dummy1 = new ListNode(-1);
+        // 存放大于等于 x 的链表的虚拟头结点
+        ListNode dummy2 = new ListNode(-1);
+        // p1, p2 指针负责生成结果链表
+        ListNode p1 = dummy1, p2 = dummy2;
+        // p 负责遍历原链表，类似合并两个有序链表的逻辑
+        // 这里是将一个链表分解成两个链表
+        ListNode p = head;
+        while (p != null) {
+            if (p.val >= x) {
+                p2.next = p;
+                p2 = p2.next;
+            } else {
+                p1.next = p;
+                p1 = p1.next;
             }
-            // 链接两个链表
-            p1.next = dummy2.next;
-    
-            return dummy1.next;
+            // 断开原链表中的每个节点的 next 指针
+            ListNode temp = p.next;
+            p.next = null;
+            p = temp;
         }
+        // 链接两个链表
+        p1.next = dummy2.next;
+
+        return dummy1.next;
     }
+}
+``` 
 
 我知道有很多读者会对这段代码有疑问：
-    
-    
-    // 不能直接让 p 指针前进，
-    // p = p.next
-    // 断开原链表中的每个节点的 next 指针
-    ListNode temp = p.next;
-    p.next = null;
-    p = temp;
+
+```
+// 不能直接让 p 指针前进，
+// p = p.next
+// 断开原链表中的每个节点的 next 指针
+ListNode temp = p.next;
+p.next = null;
+p = temp;
+``` 
 
 借助我们的可视化面板看一下就明白了。首先看下正确的写法，你可以多次点击 `while (p !== null)` 这一行代码即可看到链表分解的过程：
 
@@ -244,7 +239,7 @@ CC++GoJavaJavaScriptPython
 
 总的来说，如果我们需要把原链表的节点接到新链表上，而不是 new 新节点来组成新链表的话，那么断开节点和原链表之间的链接可能是必要的。那其实我们可以养成一个好习惯，但凡遇到这种情况，就把原链表的节点断开，这样就不会出错了。
 
-## ¶合并 `k` 个有序链表
+## 合并 `k` 个有序链表
 
 看下力扣第 23 题「[合并K个升序链表](<https://leetcode.cn/problems/merge-k-sorted-lists/>)」：
 
@@ -255,33 +250,33 @@ CC++GoJavaJavaScriptPython
 请你将所有链表合并到一个升序链表中，返回合并后的链表。
 
 **示例 1：**
-    
-    
-    **输入：** lists = [[1,4,5],[1,3,4],[2,6]]
-    **输出：**[1,1,2,3,4,4,5,6]
-    **解释：** 链表数组如下：
-    [
-      1->4->5,
-      1->3->4,
-      2->6
-    ]
-    将它们合并到一个有序链表中得到。
-    1->1->2->3->4->4->5->6
-    
+
+```
+输入：lists = [[1,4,5],[1,3,4],[2,6]]
+输出：[1,1,2,3,4,4,5,6]
+解释：链表数组如下：
+[
+  1->4->5,
+  1->3->4,
+  2->6
+]
+将它们合并到一个有序链表中得到。
+1->1->2->3->4->4->5->6
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** lists = []
-    **输出：**[]
-    
+
+```
+输入：lists = []
+输出：[]
+``` 
 
 **示例 3：**
-    
-    
-    **输入：** lists = [[]]
-    **输出：**[]
-    
+
+```
+输入：lists = [[]]
+输出：[]
+``` 
 
 **提示：**
 
@@ -292,50 +287,47 @@ CC++GoJavaJavaScriptPython
   * `lists[i]` 按 **升序** 排列
   * `lists[i].length` 的总和不超过 `10^4`
 
-
 题目来源：[力扣 23. 合并 K 个升序链表](<https://leetcode.cn/problems/merge-k-sorted-lists/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 函数签名如下
-    ListNode mergeKLists(ListNode[] lists);
+```java
+// 函数签名如下
+ListNode mergeKLists(ListNode[] lists);
+``` 
 
 合并 `k` 个有序链表的逻辑类似合并两个有序链表，难点在于，如何快速得到 `k` 个节点中的最小节点，接到结果链表上？
 
 这里我们就要用到优先级队列这种数据结构，把链表节点放入一个最小堆，就可以每次获得 `k` 个节点中的最小节点。关于优先级队列可以参考 [优先级队列（二叉堆）原理及实现](</zh/algo/data-structure-basic/binary-heap-implement/>)，本文不展开。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public ListNode mergeKLists(ListNode[] lists) {
-            if (lists.length == 0) return null;
-            // 虚拟头结点
-            ListNode dummy = new ListNode(-1);
-            ListNode p = dummy;
-            // 优先级队列，最小堆
-            PriorityQueue<ListNode> pq = new PriorityQueue<>(
-                lists.length, (a, b)->(a.val - b.val));
-            // 将 k 个链表的头结点加入最小堆
-            for (ListNode head : lists) {
-                if (head != null)
-                    pq.add(head);
-            }
-    
-            while (!pq.isEmpty()) {
-                // 获取最小节点，接到结果链表中
-                ListNode node = pq.poll();
-                p.next = node;
-                if (node.next != null) {
-                    pq.add(node.next);
-                }
-                // p 指针不断前进
-                p = p.next;
-            }
-            return dummy.next;
+```java
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists.length == 0) return null;
+        // 虚拟头结点
+        ListNode dummy = new ListNode(-1);
+        ListNode p = dummy;
+        // 优先级队列，最小堆
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(
+            lists.length, (a, b)->(a.val - b.val));
+        // 将 k 个链表的头结点加入最小堆
+        for (ListNode head : lists) {
+            if (head != null)
+                pq.add(head);
         }
+
+        while (!pq.isEmpty()) {
+            // 获取最小节点，接到结果链表中
+            ListNode node = pq.poll();
+            p.next = node;
+            if (node.next != null) {
+                pq.add(node.next);
+            }
+            // p 指针不断前进
+            p = p.next;
+        }
+        return dummy.next;
     }
+}
+``` 
 
 你可以点开下面的可视化面板，点击 `while (pq.size() > 0)` 这一行代码，即可看到有序链表合并的过程：
 
@@ -349,7 +341,7 @@ CC++GoJavaJavaScriptPython
 
 这道题还有一个经典的解法，在 [分治算法核心框架](</zh/algo/essential-technique/divide-and-conquer/>) 中详细讲解，这里不展开。
 
-## ¶单链表的倒数第 `k` 个节点
+## 单链表的倒数第 `k` 个节点
 
 从前往后寻找单链表的第 `k` 个节点很简单，一个 for 循环遍历过去就找到了，但是如何寻找从后往前数的第 `k` 个节点呢？
 
@@ -365,41 +357,40 @@ CC++GoJavaJavaScriptPython
 
 首先，我们先让一个指针 `p1` 指向链表的头节点 `head`，然后走 `k` 步：
 
-![](/images/algo/linked-list-two-pointer/1.jpeg)
+![diagram](https://labuladong.online/images/algo/linked-list-two-pointer/1.jpeg)
 
 现在的 `p1`，只要再走 `n - k` 步，就能走到链表末尾的空指针了对吧？
 
 趁这个时候，再用一个指针 `p2` 指向链表头节点 `head`：
 
-![](/images/algo/linked-list-two-pointer/2.jpeg)
+![diagram](https://labuladong.online/images/algo/linked-list-two-pointer/2.jpeg)
 
 接下来就很显然了，让 `p1` 和 `p2` 同时向前走，`p1` 走到链表末尾的空指针时前进了 `n - k` 步，`p2` 也从 `head` 开始前进了 `n - k` 步，停留在第 `n - k + 1` 个节点上，即恰好停链表的倒数第 `k` 个节点上：
 
-![](/images/algo/linked-list-two-pointer/3.jpeg)
+![diagram](https://labuladong.online/images/algo/linked-list-two-pointer/3.jpeg)
 
 这样，只遍历了一次链表，就获得了倒数第 `k` 个节点 `p2`。
 
 上述逻辑的代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 返回链表的倒数第 k 个节点
-    ListNode findFromEnd(ListNode head, int k) {
-        ListNode p1 = head;
-        // p1 先走 k 步
-        for (int i = 0; i < k; i++) {
-            p1 = p1.next;
-        }
-        ListNode p2 = head;
-        // p1 和 p2 同时走 n - k 步
-        while (p1 != null) {
-            p2 = p2.next;
-            p1 = p1.next;
-        }
-        // p2 现在指向第 n - k + 1 个节点，即倒数第 k 个节点
-        return p2;
+```java
+// 返回链表的倒数第 k 个节点
+ListNode findFromEnd(ListNode head, int k) {
+    ListNode p1 = head;
+    // p1 先走 k 步
+    for (int i = 0; i < k; i++) {
+        p1 = p1.next;
     }
+    ListNode p2 = head;
+    // p1 和 p2 同时走 n - k 步
+    while (p1 != null) {
+        p2 = p2.next;
+        p1 = p1.next;
+    }
+    // p2 现在指向第 n - k + 1 个节点，即倒数第 k 个节点
+    return p2;
+}
+``` 
 
 你可以点开下面的可视化面板，代码将计算倒数第二个节点。多次点击 `i++` 即可看到快指针 `p1` 先前进了 2 步，然后多次点击 `while (p1 !== null)` 这一行代码，即可看到 `p1` 和 `p2` 同时前进，最终 `p2` 停在了倒数第 `k` 个节点上：
 
@@ -415,26 +406,26 @@ CC++GoJavaJavaScriptPython
 
 **示例 1：**
 
-![](/images/lc/uploads/2020/10/03/remove_ex1.jpg)
-    
-    
-    **输入：** head = [1,2,3,4,5], n = 2
-    **输出：**[1,2,3,5]
-    
+![diagram](https://labuladong.online/images/lc/uploads/2020/10/03/remove_ex1.jpg)
+
+```
+输入：head = [1,2,3,4,5], n = 2
+输出：[1,2,3,5]
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** head = [1], n = 1
-    **输出：**[]
-    
+
+```
+输入：head = [1], n = 1
+输出：[]
+``` 
 
 **示例 3：**
-    
-    
-    **输入：** head = [1,2], n = 1
-    **输出：**[1]
-    
+
+```
+输入：head = [1,2], n = 1
+输出：[1]
+``` 
 
 **提示：**
 
@@ -443,32 +434,30 @@ CC++GoJavaJavaScriptPython
   * `0 <= Node.val <= 100`
   * `1 <= n <= sz`
 
-
 **进阶：** 你能尝试使用一趟扫描实现吗？
 
 题目来源：[力扣 19. 删除链表的倒数第 N 个结点](<https://leetcode.cn/problems/remove-nth-node-from-end-of-list/>)。
 
 我们直接看解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public ListNode removeNthFromEnd(ListNode head, int n) {
-            // 虚拟头结点
-            ListNode dummy = new ListNode(-1);
-            dummy.next = head;
-            // 删除倒数第 n 个，要先找倒数第 n + 1 个节点
-            ListNode x = findFromEnd(dummy, n + 1);
-            // 删掉倒数第 n 个节点
-            x.next = x.next.next;
-            return dummy.next;
-        }
-            
-        private ListNode findFromEnd(ListNode head, int k) {
-            // 代码见上文
-        }
+```java
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        // 虚拟头结点
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        // 删除倒数第 n 个，要先找倒数第 n + 1 个节点
+        ListNode x = findFromEnd(dummy, n + 1);
+        // 删掉倒数第 n 个节点
+        x.next = x.next.next;
+        return dummy.next;
     }
+        
+    private ListNode findFromEnd(ListNode head, int k) {
+        // 代码见上文
+    }
+}
+``` 
 
 你可以打开可视化面板，点击 `let p2 = head;` 这一行代码一次，可以看到 `p1` 先前进了 `k` 步，然后多次点击 `while (p1 !== null)` 这一行代码，可以看到 `p1` 和 `p2` 同时前进，最终 `p2` 停在了倒数第 `k` 个节点上：
 
@@ -480,7 +469,7 @@ CC++GoJavaJavaScriptPython
 
 但有了我们虚拟节点 `dummy` 的存在，就避免了这个问题，能够对这种情况进行正确的删除。
 
-## ¶单链表的中点
+## 单链表的中点
 
 力扣第 876 题「[链表的中间结点](<https://leetcode.cn/problems/middle-of-the-linked-list/>)」就是这个题目，问题的关键也在于我们无法直接得到单链表的长度 `n`，常规方法也是先遍历链表计算 `n`，再遍历一次得到第 `n / 2` 个节点，也就是中间节点。
 
@@ -492,23 +481,22 @@ CC++GoJavaJavaScriptPython
 
 上述思路的代码实现如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public ListNode middleNode(ListNode head) {
-            // 快慢指针初始化指向 head
-            ListNode slow = head, fast = head;
-            // 快指针走到末尾时停止
-            while (fast != null && fast.next != null) {
-                // 慢指针走一步，快指针走两步
-                slow = slow.next;
-                fast = fast.next.next;
-            }
-            // 慢指针指向中点
-            return slow;
+```java
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        // 快慢指针初始化指向 head
+        ListNode slow = head, fast = head;
+        // 快指针走到末尾时停止
+        while (fast != null && fast.next != null) {
+            // 慢指针走一步，快指针走两步
+            slow = slow.next;
+            fast = fast.next.next;
         }
+        // 慢指针指向中点
+        return slow;
     }
+}
+``` 
 
 你可以点开可视化面板，点击 `while (fast !== null && fast.next !== null)` 这一行代码，可以看到快慢指针的运动过程：
 
@@ -518,7 +506,7 @@ CC++GoJavaJavaScriptPython
 
 另外，这段代码稍加修改就可以直接用到判断链表成环的算法题上。
 
-## ¶判断链表是否包含环
+## 判断链表是否包含环
 
 判断链表是否包含环属于经典问题了，解决方案也是用快慢指针：
 
@@ -528,27 +516,26 @@ CC++GoJavaJavaScriptPython
 
 只需要把寻找链表中点的代码稍加修改就行了：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    public class Solution {
-        public boolean hasCycle(ListNode head) {
-            // 快慢指针初始化指向 head
-            ListNode slow = head, fast = head;
-            // 快指针走到末尾时停止
-            while (fast != null && fast.next != null) {
-                // 慢指针走一步，快指针走两步
-                slow = slow.next;
-                fast = fast.next.next;
-                // 快慢指针相遇，说明含有环
-                if (slow == fast) {
-                    return true;
-                }
+```java
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        // 快慢指针初始化指向 head
+        ListNode slow = head, fast = head;
+        // 快指针走到末尾时停止
+        while (fast != null && fast.next != null) {
+            // 慢指针走一步，快指针走两步
+            slow = slow.next;
+            fast = fast.next.next;
+            // 快慢指针相遇，说明含有环
+            if (slow == fast) {
+                return true;
             }
-            // 不包含环
-            return false;
         }
+        // 不包含环
+        return false;
     }
+}
+``` 
 
 你可以打开下面的可视化面板，多次点击 `fast = fast.next.next;` 这一行代码，即可看到快慢指针运动的过程，最终相遇：
 
@@ -558,38 +545,37 @@ CC++GoJavaJavaScriptPython
 
 举个例子，环的起点是指下面这幅图中的节点 2：
 
-![](/images/algo/linked-list-two-pointer/circularlinkedlist.png)
+![diagram](https://labuladong.online/images/algo/linked-list-two-pointer/circularlinkedlist.png)
 
 这里先直接看一下寻找环起点的解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public ListNode detectCycle(ListNode head) {
-            ListNode fast, slow;
-            fast = slow = head;
-            while (fast != null && fast.next != null) {
-                fast = fast.next.next;
-                slow = slow.next;
-                if (fast == slow) break; ![](/images/algo/linked-two-pointer/3.jpeg)
-            }
-            // 上面的代码类似 hasCycle 函数
-            if (fast == null || fast.next == null) {
-                // fast 遇到空指针说明没有环
-                return null;
-            }
-    
-            // 重新指向头结点
-            slow = head; ![](/images/algo/linked-two-pointer/2.jpeg)
-            // 快慢指针同步前进，相交点就是环起点
-            while (slow != fast) {
-                fast = fast.next;
-                slow = slow.next;
-            }
-            return slow;
+```java
+class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast, slow;
+        fast = slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) break; 
         }
+        // 上面的代码类似 hasCycle 函数
+        if (fast == null || fast.next == null) {
+            // fast 遇到空指针说明没有环
+            return null;
+        }
+
+        // 重新指向头结点
+        slow = head; 
+        // 快慢指针同步前进，相交点就是环起点
+        while (slow != fast) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow;
     }
+}
+``` 
 
 你可以打开下面的可视化面板，多次点击 `fast = fast.next.next;` 这一行代码，即可看到快慢指针追逐相遇的过程；然后多次点击 `while (slow != fast)` 这一行代码，可以看到快慢指针同步前进，最终相遇在环的起点：
 
@@ -601,7 +587,7 @@ CC++GoJavaJavaScriptPython
 
 我们假设快慢指针相遇时，慢指针 `slow` 走了 `k` 步，那么快指针 `fast` 一定走了 `2k` 步：
 
-![](/images/algo/linked-two-pointer/3.jpeg)
+![diagram](https://labuladong.online/images/algo/linked-two-pointer/3.jpeg)
 
 `fast` 一定比 `slow` 多走了 `k` 步，这多走的 `k` 步其实就是 `fast` 指针在环里转圈圈，所以 `k` 的值就是环长度的「整数倍」。
 
@@ -609,18 +595,17 @@ CC++GoJavaJavaScriptPython
 
 巧的是，如果从相遇点继续前进 `k - m` 步，也恰好到达环起点。因为结合上图的 `fast` 指针，从相遇点开始走k步可以转回到相遇点，那走 `k - m` 步肯定就走到环起点了：
 
-![](/images/algo/linked-two-pointer/2.jpeg)
+![diagram](https://labuladong.online/images/algo/linked-two-pointer/2.jpeg)
 
 所以，只要我们把快慢指针中的任一个重新指向 `head`，然后两个指针同速前进，`k - m` 步后一定会相遇，相遇之处就是环的起点了。
 
-## ¶两个链表是否相交
+## 两个链表是否相交
 
 这个问题有意思，也是力扣第 160 题「[相交链表](<https://leetcode.cn/problems/intersection-of-two-linked-lists/>)」函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    ListNode getIntersectionNode(ListNode headA, ListNode headB);
+```java
+ListNode getIntersectionNode(ListNode headA, ListNode headB);
+``` 
 
 给你输入两个链表的头结点 `headA` 和 `headB`，这两个链表可能存在相交。
 
@@ -628,7 +613,7 @@ CC++GoJavaJavaScriptPython
 
 比如题目给我们举的例子，如果输入的两个链表如下图：
 
-![](/images/algo/linked-list-two-pointer/4.png)
+![diagram](https://labuladong.online/images/algo/linked-list-two-pointer/4.png)
 
 那么我们的算法应该返回 `c1` 这个节点。
 
@@ -638,7 +623,7 @@ CC++GoJavaJavaScriptPython
 
 难点在于，由于两条链表的长度可能不同，两条链表之间的节点无法对应：
 
-![](/images/algo/linked-list-two-pointer/5.jpeg)
+![diagram](https://labuladong.online/images/algo/linked-list-two-pointer/5.jpeg)
 
 如果用两个指针 `p1` 和 `p2` 分别在两条链表上前进，并不能**同时** 走到公共节点，也就无法得到相交节点 `c1`。
 
@@ -648,7 +633,7 @@ CC++GoJavaJavaScriptPython
 
 如果这样进行拼接，就可以让 `p1` 和 `p2` 同时进入公共部分，也就是同时到达相交节点 `c1`：
 
-![](/images/algo/linked-list-two-pointer/6.jpeg)
+![diagram](https://labuladong.online/images/algo/linked-list-two-pointer/6.jpeg)
 
 那你可能会问，如果说两个链表没有相交点，是否能够正确的返回 null 呢？
 
@@ -656,24 +641,23 @@ CC++GoJavaJavaScriptPython
 
 按照这个思路，可以写出如下代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    public class Solution {
-        public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-            // p1 指向 A 链表头结点，p2 指向 B 链表头结点
-            ListNode p1 = headA, p2 = headB;
-            while (p1 != p2) {
-                // p1 走一步，如果走到 A 链表末尾，转到 B 链表
-                if (p1 == null) p1 = headB;
-                else            p1 = p1.next;
-                // p2 走一步，如果走到 B 链表末尾，转到 A 链表
-                if (p2 == null) p2 = headA;
-                else            p2 = p2.next;
-            }
-            return p1;
+```java
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        // p1 指向 A 链表头结点，p2 指向 B 链表头结点
+        ListNode p1 = headA, p2 = headB;
+        while (p1 != p2) {
+            // p1 走一步，如果走到 A 链表末尾，转到 B 链表
+            if (p1 == null) p1 = headB;
+            else            p1 = p1.next;
+            // p2 走一步，如果走到 B 链表末尾，转到 A 链表
+            if (p2 == null) p2 = headA;
+            else            p2 = p2.next;
         }
+        return p1;
     }
+}
+``` 
 
 你可以打开下面的可视化面板，多次点击 `while (p1 !== p2)` 这一行代码，即可看到两个指针在交点相遇的过程：
 
@@ -689,53 +673,48 @@ CC++GoJavaJavaScriptPython
 
 首先有读者提到，如果把两条链表首尾相连，那么「寻找两条链表的交点」的问题转换成了前面讲的「寻找环起点」的问题：
 
-![](/images/algo/linked-list-two-pointer/7.png)
+![diagram](https://labuladong.online/images/algo/linked-list-two-pointer/7.png)
 
 说实话我没有想到这种思路，不得不说这是一个很巧妙的转换！不过需要注意的是，这道题说不让你改变原始链表的结构，所以你把题目输入的链表转化成环形链表求解之后记得还要改回来，否则无法通过。
 
 另外，还有读者提到，既然「寻找两条链表的交点」的核心在于让 `p1` 和 `p2` 两个指针能够同时到达相交节点 `c1`，那么可以通过预先计算两条链表的长度来做到这一点，具体代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-            int lenA = 0, lenB = 0;
-            // 计算两条链表的长度
-            for (ListNode p1 = headA; p1 != null; p1 = p1.next) {
-                lenA++;
-            }
-            for (ListNode p2 = headB; p2 != null; p2 = p2.next) {
-                lenB++;
-            }
-            // 让 p1 和 p2 到达尾部的距离相同
-            ListNode p1 = headA, p2 = headB;
-            if (lenA > lenB) {
-                for (int i = 0; i < lenA - lenB; i++) {
-                    p1 = p1.next;
-                }
-            } else {
-                for (int i = 0; i < lenB - lenA; i++) {
-                    p2 = p2.next;
-                }
-            }
-            // 看两个指针是否会相同，p1 == p2 时有两种情况：
-            // 1、要么是两条链表不相交，他俩同时走到尾部空指针
-            // 2、要么是两条链表相交，他俩走到两条链表的相交点
-            while (p1 != p2) {
+```java
+class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        int lenA = 0, lenB = 0;
+        // 计算两条链表的长度
+        for (ListNode p1 = headA; p1 != null; p1 = p1.next) {
+            lenA++;
+        }
+        for (ListNode p2 = headB; p2 != null; p2 = p2.next) {
+            lenB++;
+        }
+        // 让 p1 和 p2 到达尾部的距离相同
+        ListNode p1 = headA, p2 = headB;
+        if (lenA > lenB) {
+            for (int i = 0; i < lenA - lenB; i++) {
                 p1 = p1.next;
+            }
+        } else {
+            for (int i = 0; i < lenB - lenA; i++) {
                 p2 = p2.next;
             }
-            return p1;
         }
+        // 看两个指针是否会相同，p1 == p2 时有两种情况：
+        // 1、要么是两条链表不相交，他俩同时走到尾部空指针
+        // 2、要么是两条链表相交，他俩走到两条链表的相交点
+        while (p1 != p2) {
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        return p1;
     }
+}
+``` 
 
 虽然代码多一些，但是时间复杂度是还是 O(N)O(N)O(N)，而且会更容易理解一些。
 
 总之，我的解法代码并不一定就是最优或者最正确的，鼓励大家在评论区多多提出自己的疑问和思考，我也很高兴和大家探讨更多的解题思路~
 
 到这里，链表相关的双指针技巧就全部讲完了，这些技巧的更多扩展延伸见 [更多链表双指针经典习题](</zh/algo/problem-set/linkedlist-two-pointers/>)。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

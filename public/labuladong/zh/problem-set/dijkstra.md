@@ -18,14 +18,9 @@
   * [Dijkstra 算法核心原理及实现](</zh/algo/data-structure/dijkstra/>)
   * [Dijkstra 算法拓展](</zh/algo/data-structure/dijkstra-follow-up/>)
 
-
 前面的文章介绍了 Dijkstra 算法的代码实现，下面我们实践一下。
 
 先解决几个标准的最短路径问题，然后再解决几个带限制条件的最短路径问题。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -36,6 +31,5 @@ Loading comments...
   * 1368\. 使网格图至少有一条有效路径的最小代价
   * 带限制条件的最短路径问题
   * 787\. K 站中转内最便宜的航班
-
 
 AI 助教

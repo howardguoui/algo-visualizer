@@ -11,18 +11,17 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[514\. Freedom Trail](https://leetcode.com/problems/freedom-trail/)|   
+[514\. Freedom Trail](<https://leetcode.com/problems/freedom-trail/>)|   
   
 Prerequisite Knowledge
 
 Before reading this article, you should first learn:
 
-  * [Core Framework of Dynamic Programming](/en/algo/essential-technique/dynamic-programming-framework/)
-
+  * [Core Framework of Dynamic Programming](</en/algo/essential-technique/dynamic-programming-framework/>)
 
 The cover image of this article is from a mission storyline in a game called "Fallout 4":
 
-![](/images/algo/ring/1.jpg)
+![diagram](https://labuladong.online/images/algo/ring/1.jpg)
 
 This rotating disk resembles a combination lock. Notice the red pointer slightly above the center. By rotating the disk, you can align the pointer with different letters and then press the central button to input the selected letter.
 
@@ -48,7 +47,7 @@ The notes on the staff go up and down, and the fingers of both hands must coordi
 
 For example, a piece I really like is called "Liebestraum," and here is the score from when I was a beginner:
 
-![](/images/algo/ring/2.jpg)
+![diagram](https://labuladong.online/images/algo/ring/2.jpg)
 
 The number 1 on the notes represents the thumb, 2 represents the index finger, and so on. By practicing according to the determined fingerings, you develop muscle memory and eventually master a piece.
 
@@ -56,7 +55,7 @@ Fingerings vary from person to person. For instance, those with larger hands mig
 
 **So the question arises: How should I design the fingerings to minimize the "awkwardness" of finger transitions, thereby maximizing the smoothness of the performance?**
 
-Here, I employed dynamic programming techniques: aren't finger transitions just state transitions? Referring to the earlier article [Detailed Explanation of Dynamic Programming](/en/algo/essential-technique/dynamic-programming-framework/), we can solve this problem by clearly defining "states" and "choices."
+Here, I employed dynamic programming techniques: aren't finger transitions just state transitions? Referring to the earlier article [Detailed Explanation of Dynamic Programming](</en/algo/essential-technique/dynamic-programming-framework/>), we can solve this problem by clearly defining "states" and "choices."
 
 **What is a state? A state is "the next note to be played" and "the current state of the hand."**
 
@@ -74,20 +73,19 @@ Moreover, this loss function is difficult to quantify. Hitting the black and whi
 
 However, there is no need to calculate the fingering for the entire piece; only certain complex passages need to be considered. This algorithm is still relatively effective.
 
-Having digressed so much, it is finally time to get to the main topic. Today, we will discuss LeetCode Problem 514, "[Freedom Trail](https://leetcode.com/problems/freedom-trail/)," which has a similar concept to the piano fingering problem. If you understand the piano example, you should be able to solve this algorithm problem quickly.
+Having digressed so much, it is finally time to get to the main topic. Today, we will discuss LeetCode Problem 514, "[Freedom Trail](<https://leetcode.com/problems/freedom-trail/>)," which has a similar concept to the piano fingering problem. If you understand the piano example, you should be able to solve this algorithm problem quickly.
 
 The problem provides you with an input string `ring` representing the characters on a dial (the pointer is at the 12 o'clock position, initially pointing to `ring[0]`), and another input string `key` representing the string you need to type by rotating the dial. Your algorithm needs to return the minimum number of operations required to input this `key` (rotating one notch of the dial and pressing the button in the center of the dial both count as one operation).
 
 The function signature is as follows:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int findRotateSteps(String ring, String key);
+```java
+int findRotateSteps(String ring, String key);
+``` 
 
 For example, given the input `ring = "godding", key = "gd"`, the corresponding disk is shown below (uppercase is for clarity, the actual input strings are lowercase letters):
 
-![](/images/algo/ring/3.jpg)
+![diagram](https://labuladong.online/images/algo/ring/3.jpg)
 
 We need to input `key = "gd"`, and the algorithm returns 4.
 
@@ -107,10 +105,9 @@ More specifically, the "state" is represented by two variables `i` and `j`. We c
 
 Thus, we can write a `dp` function:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int dp(String ring, int i, String key, int j);
+```java
+int dp(String ring, int i, String key, int j);
+``` 
 
 The `dp` function is defined as follows:
 
@@ -118,14 +115,13 @@ The `dp` function is defined as follows:
 
 According to this definition, the problem is essentially asking to calculate the value of `dp(ring, 0, key, 0)`, and we can write the base case of the `dp` function:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int dp(String ring, int i, String key, int j) {
-        // base case, input is complete
-        if (j == key.length()) return 0;
-        // ...
-    }
+```java
+int dp(String ring, int i, String key, int j) {
+    // base case, input is complete
+    if (j == key.length()) return 0;
+    // ...
+}
+``` 
 
 Next, consider how to make choices based on the state and how to transition between states.
 
@@ -135,34 +131,35 @@ Specifically, for the character `key[j]` that you want to input, how can the dia
 
 For example, if the input is `ring = "gdonidg"`, the state of the dial is shown below:
 
-![](/images/algo/ring/4.jpeg)
+![diagram](https://labuladong.online/images/algo/ring/4.jpeg)
 
 Assume the character you want to input is `key[j] = "d"`. There are two letters `"d"` on the dial, and you can move the pointer clockwise or counterclockwise. Therefore, there are four "choices" to input the character `"d"`, and we need to choose the method with the least number of operations.
 
 The general code logic is as follows:
+
+```
+int dp(String ring, int i, String key, int j) {
+    // base case: finished input
+    if (j == key.length()) return 0;
     
-    
-    int dp(String ring, int i, String key, int j) {
-        // base case: finished input
-        if (j == key.length()) return 0;
-        
-        // make a choice
-        int res = Integer.MAX_VALUE;
-        for (int k : [all indices of character key[j] in ring]) {
-            res = min(
-                cost of rotating i clockwise to k,
-                cost of rotating i counterclockwise to k
-            );
-        }
-        
-        return res;
+    // make a choice
+    int res = Integer.MAX_VALUE;
+    for (int k : [all indices of character key[j] in ring]) {
+        res = min(
+            cost of rotating i clockwise to k,
+            cost of rotating i counterclockwise to k
+        );
     }
+    
+    return res;
+}
+``` 
 
 As for whether to move clockwise or counterclockwise, it's straightforward to decide; just choose the closer direction. However, for the two characters `"d"` on the dial, can you still choose the closer one?
 
 No, because it depends on the character that needs to be input after `key[i]`. Consider the previous example:
 
-![](/images/algo/ring/4.jpeg)
+![diagram](https://labuladong.online/images/algo/ring/4.jpeg)
 
 If the input is `key = "di"`, even if the right `"d"` is closer, you should choose the left `"d"` because the `"i"` is right next to the left `"d"`, resulting in fewer overall operations.
 
@@ -170,65 +167,62 @@ So, how should it be determined? Essentially, it's brute-force search. Recursive
 
 That's about it. Let's look at the final code:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // character -> index list
-        private Map<Character, List<Integer>> charToIndex = new HashMap<>();
-        // memoization
-        private int[][] memo;
-    
-        // main function
-        public int findRotateSteps(String ring, String key) {
-            int m = ring.length();
-            int n = key.length();
-            // initialize all memoization entries to 0
-            memo = new int[m][n];
-            // record the mapping of characters to indices on the ring
-            for (int i = 0; i < ring.length(); i++) {
-                char c = ring.charAt(i);
-                if (!charToIndex.containsKey(c)) {
-                    charToIndex.put(c, new ArrayList<>());
-                }
-                charToIndex.get(c).add(i);
+```java
+class Solution {
+    // character -> index list
+    private Map<Character, List<Integer>> charToIndex = new HashMap<>();
+    // memoization
+    private int[][] memo;
+
+    // main function
+    public int findRotateSteps(String ring, String key) {
+        int m = ring.length();
+        int n = key.length();
+        // initialize all memoization entries to 0
+        memo = new int[m][n];
+        // record the mapping of characters to indices on the ring
+        for (int i = 0; i < ring.length(); i++) {
+            char c = ring.charAt(i);
+            if (!charToIndex.containsKey(c)) {
+                charToIndex.put(c, new ArrayList<>());
             }
-            // the initial pointer of the ring points at the 12 o'clock direction,
-            // start inputting the key from the first character
-            return dp(ring, 0, key, 0);
+            charToIndex.get(c).add(i);
         }
-    
-        // calculate the minimum number of operations when the
-        // pointer is at ring[i] and inputting key[j..]
-        private int dp(String ring, int i, String key, int j) {
-            // base case: finished inputting
-            if (j == key.length()) return 0;
-            // check the memoization to avoid overlapping subproblems
-            if (memo[i][j] != 0) return memo[i][j];
-    
-            int n = ring.length();
-            // make choices
-            int res = Integer.MAX_VALUE;
-            // there might be multiple characters key[j] on the ring
-            for (int k : charToIndex.get(key.charAt(j))) {
-                // number of times to move the pointer
-                int delta = Math.abs(k - i);
-                // choose clockwise or counterclockwise
-                delta = Math.min(delta, n - delta);
-                // move the pointer to ring[k] and continue inputting key[j+1..]
-                int subProblem = dp(ring, k, key, j + 1);
-                // choose the overall minimum number of operations
-                // add one because pressing the button is also an operation
-                res = Math.min(res, 1 + delta + subProblem);
-            }
-            // store the result in the memoization table
-            memo[i][j] = res;
-            return res;
-        }
+        // the initial pointer of the ring points at the 12 o'clock direction,
+        // start inputting the key from the first character
+        return dp(ring, 0, key, 0);
     }
+
+    // calculate the minimum number of operations when the
+    // pointer is at ring[i] and inputting key[j..]
+    private int dp(String ring, int i, String key, int j) {
+        // base case: finished inputting
+        if (j == key.length()) return 0;
+        // check the memoization to avoid overlapping subproblems
+        if (memo[i][j] != 0) return memo[i][j];
+
+        int n = ring.length();
+        // make choices
+        int res = Integer.MAX_VALUE;
+        // there might be multiple characters key[j] on the ring
+        for (int k : charToIndex.get(key.charAt(j))) {
+            // number of times to move the pointer
+            int delta = Math.abs(k - i);
+            // choose clockwise or counterclockwise
+            delta = Math.min(delta, n - delta);
+            // move the pointer to ring[k] and continue inputting key[j+1..]
+            int subProblem = dp(ring, k, key, j + 1);
+            // choose the overall minimum number of operations
+            // add one because pressing the button is also an operation
+            res = Math.min(res, 1 + delta + subProblem);
+        }
+        // store the result in the memoization table
+        memo[i][j] = res;
+        return res;
+    }
+}
+``` 
 
 Algorithm Visualization
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

@@ -18,16 +18,11 @@
   * [二分搜索算法核心代码模板](</zh/algo/essential-technique/binary-search-framework/>)
   * [实际运用二分搜索时的思维框架](</zh/algo/frequency-interview/binary-search-in-action/>)
 
-
 **二分搜索的精髓在于快速收缩搜索区间** 。本文带大家看一看二分搜索算法在数组中的经典运用场景。
 
-## ¶二维数组中的二分搜索
+## 二维数组中的二分搜索
 
 前文 [二分搜索框架详解](</zh/algo/essential-technique/binary-search-framework/>) 讲的二分搜索都是在一维数组中的，在二维矩阵中如何施展二分搜索呢？
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -48,6 +43,5 @@ Loading comments...
   * 33\. 搜索旋转排序数组
   * 81\. 搜索旋转排序数组 II
   * 153\. 寻找旋转排序数组中的最小值
-
 
 AI 助教

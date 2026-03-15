@@ -25,310 +25,313 @@
   * **叶子节点（Leaf）** ：表示组合中的叶子节点对象，它没有子节点。
   * **组合节点（Composite）** ：表示组合中的容器节点，它可以包含若干子节点，子节点类型可以是叶子节点也可以是组合节点。组合节点可以调用子节点的接口方法，然后聚合结果。
 
-
 举两个例子就能直观地理解组合模式了。
 
-## ¶场景一：文件系统
+## 场景一：文件系统
 
 一个文件系统由文件和文件夹组成，文件夹可以包含文件和其他文件夹，形成一个树状结构。
 
 对于用户来说，无论是文件还是文件夹，我们都可能关心一些共同的操作，比如获取名称、计算磁盘占用大小等。组合模式可以让我们统一处理这两种类型的对象。
 
 首先，我们定义一个统一的**组件接口** `FSNode`，它声明了文件和文件夹共有的操作。
-    
-    
-    // Component: 组件接口
-    public interface FSNode {
-        // 获取名字
-        String getName();
-        // 计算包含的文件总数
-        int count();
-        // 计算磁盘占用总大小
-        long size();
-        // 生成目录结构，用于打印目录树
-        String tree(String indent);
-    }
+
+```
+// Component: 组件接口
+public interface FSNode {
+    // 获取名字
+    String getName();
+    // 计算包含的文件总数
+    int count();
+    // 计算磁盘占用总大小
+    long size();
+    // 生成目录结构，用于打印目录树
+    String tree(String indent);
+}
+``` 
 
 然后，我们创建**叶子节点** `File` 类。文件是最小的单位，它不能包含其他任何节点。
-    
-    
-    // Leaf: 叶子节点 - 文件
-    public class File implements FSNode {
-        private final String name;
-        private final long size;
-    
-        public File(String name, long size) {
-            this.name = name;
-            this.size = size;
-        }
-    
-        @Override
-        public String getName() { return name; }
-    
-        @Override
-        public int count() {
-            // 文件本身就是一个文件
-            return 1;
-        }
-    
-        @Override
-        public long size() {
-            return size;
-        }
-    
-        @Override
-        public String tree(String indent) {
-            return indent + name + " (" + size + " bytes)\n";
-        }
+
+```
+// Leaf: 叶子节点 - 文件
+public class File implements FSNode {
+    private final String name;
+    private final long size;
+
+    public File(String name, long size) {
+        this.name = name;
+        this.size = size;
     }
 
-接下来是**组合节点** `Folder` 类。文件夹可以包含实现了 `FSNode` 接口的子节点，既可以是叶子节点 `File`，也可以是其他组合节点 `Folder`。
-    
-    
-    // Composite: 组合节点 - 文件夹
-    import java.util.ArrayList;
-    import java.util.List;
-    
-    public class Folder implements FSNode {
-        private final String name;
-        private final List<FSNode> children = new ArrayList<>();
-    
-        public Folder(String name) {
-            this.name = name;
-        }
-    
-        public void add(FSNode node) {
-            children.add(node);
-        }
-    
-        public void remove(FSNode node) {
-            children.remove(node);
-        }
-    
-        @Override
-        public String getName() {
-            return name;
-        }
-    
-        @Override
-        public int count() {
-            int totalFiles = 0;
-            // 递归计算所有子节点的文件数
-            for (FSNode child : children) {
-                totalFiles += child.count();
-            }
-            return totalFiles;
-        }
-    
-        @Override
-        public long size() {
-            long totalSize = 0;
-            // 递归计算所有子节点的字节数
-            for (FSNode child : children) {
-                totalSize += child.size();
-            }
-            return totalSize;
-        }
-    
-        @Override
-        public String tree(String indent) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(indent).append("+ ").append(name).append("/\n");
-            // 递归打印所有子节点的目录结构
-            for (FSNode child : children) {
-                sb.append(child.tree(indent + "  "));
-            }
-            return sb.toString();
-        }
+    @Override
+    public String getName() { return name; }
+
+    @Override
+    public int count() {
+        // 文件本身就是一个文件
+        return 1;
     }
+
+    @Override
+    public long size() {
+        return size;
+    }
+
+    @Override
+    public String tree(String indent) {
+        return indent + name + " (" + size + " bytes)\n";
+    }
+}
+``` 
+
+接下来是**组合节点** `Folder` 类。文件夹可以包含实现了 `FSNode` 接口的子节点，既可以是叶子节点 `File`，也可以是其他组合节点 `Folder`。
+
+```
+// Composite: 组合节点 - 文件夹
+import java.util.ArrayList;
+import java.util.List;
+
+public class Folder implements FSNode {
+    private final String name;
+    private final List<FSNode> children = new ArrayList<>();
+
+    public Folder(String name) {
+        this.name = name;
+    }
+
+    public void add(FSNode node) {
+        children.add(node);
+    }
+
+    public void remove(FSNode node) {
+        children.remove(node);
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public int count() {
+        int totalFiles = 0;
+        // 递归计算所有子节点的文件数
+        for (FSNode child : children) {
+            totalFiles += child.count();
+        }
+        return totalFiles;
+    }
+
+    @Override
+    public long size() {
+        long totalSize = 0;
+        // 递归计算所有子节点的字节数
+        for (FSNode child : children) {
+            totalSize += child.size();
+        }
+        return totalSize;
+    }
+
+    @Override
+    public String tree(String indent) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(indent).append("+ ").append(name).append("/\n");
+        // 递归打印所有子节点的目录结构
+        for (FSNode child : children) {
+            sb.append(child.tree(indent + "  "));
+        }
+        return sb.toString();
+    }
+}
+``` 
 
 组合节点的 `count()`、`size()` 和 `tree()` 方法都体现了组合模式的核心：**将操作委托给它的子节点，然后聚合结果** 。
 
 最后，看一下客如何使用这个文件系统树：
-    
-    
-    public class Main {
-        public static void main(String[] args) {
-            Folder root = new Folder("root");
-            root.add(new File("README.md", 1024));
-            root.add(new File("LICENSE", 512));
-    
-            Folder documents = new Folder("documents");
-            documents.add(new File("index.html", 2048));
-            documents.add(new File("config.txt", 1536));
-            root.add(documents);
-            
-            // 打印整个目录树
-            System.out.println(root.tree(""));
-            // + root/
-            //   README.md (1024 bytes)
-            //   LICENSE (512 bytes)
-            //   + documents/
-            //     index.html (2048 bytes)
-            //     config.txt (1536 bytes)
-    
-            // 统一计算文件数和总大小
-            System.out.println("Total files: " + root.count()); // Total files: 4
-            System.out.println("Total size: " + root.size() + " bytes"); // Total size: 5120 bytes
-        }
+
+```
+public class Main {
+    public static void main(String[] args) {
+        Folder root = new Folder("root");
+        root.add(new File("README.md", 1024));
+        root.add(new File("LICENSE", 512));
+
+        Folder documents = new Folder("documents");
+        documents.add(new File("index.html", 2048));
+        documents.add(new File("config.txt", 1536));
+        root.add(documents);
+        
+        // 打印整个目录树
+        System.out.println(root.tree(""));
+        // + root/
+        //   README.md (1024 bytes)
+        //   LICENSE (512 bytes)
+        //   + documents/
+        //     index.html (2048 bytes)
+        //     config.txt (1536 bytes)
+
+        // 统一计算文件数和总大小
+        System.out.println("Total files: " + root.count()); // Total files: 4
+        System.out.println("Total size: " + root.size() + " bytes"); // Total size: 5120 bytes
     }
+}
+``` 
 
 客户端代码通过统一的 `FSNode` 接口与文件和文件夹进行交互，无需编写任何 `if-else` 来区分它们。
 
 当调用 `root.count()` 时，客户端并不知道 `root` 是一个复杂的文件夹结构，它只是调用了一个方法，然后整个树形结构就开始协作，最终返回正确的结果。
 
-## ¶场景二：形状组合
+## 场景二：形状组合
 
 在图形编辑器中，用户可以绘制基本图形（如圆形、正方形），也可以将这些基本图形组合成一个复杂的图形。组合后的图形可以作为一个整体被移动、缩放或显示，也可以继续组合成更复杂的图形。
 
 首先，定义**组件接口** `Shape`，它声明了基本图形和组合图形共有的操作。
-    
-    
-    // Component: 组件接口
-    public interface Shape {
-        // 移动形状
-        void move(int dx, int dy);
-    
-        // 打印形状的信息
-        void display(String indent);
-    }
+
+```
+// Component: 组件接口
+public interface Shape {
+    // 移动形状
+    void move(int dx, int dy);
+
+    // 打印形状的信息
+    void display(String indent);
+}
+``` 
 
 然后是**叶子节点** `Circle` 和 `Square`，它们是基本图形，没有子节点。
-    
-    
-    // Leaf: 叶子节点 - 圆形
-    public class Circle implements Shape {
-        private int x, y;
-        private final int radius;
-    
-        public Circle(int x, int y, int radius) {
-            this.x = x;
-            this.y = y;
-            this.radius = radius;
-        }
-    
-        @Override
-        public void move(int dx, int dy) {
-            this.x += dx;
-            this.y += dy;
-        }
-    
-        @Override
-        public void display(String indent) {
-            System.out.println(indent + "Circle at (" + x + ", " + y + ")");
-        }
+
+```
+// Leaf: 叶子节点 - 圆形
+public class Circle implements Shape {
+    private int x, y;
+    private final int radius;
+
+    public Circle(int x, int y, int radius) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
+    }
+
+    @Override
+    public void move(int dx, int dy) {
+        this.x += dx;
+        this.y += dy;
+    }
+
+    @Override
+    public void display(String indent) {
+        System.out.println(indent + "Circle at (" + x + ", " + y + ")");
+    }
+}
+
+// Leaf: 叶子节点 - 正方形
+public class Square implements Shape {
+    private int x, y;
+    private final int side;
+
+    public Square(int x, int y, int side) {
+        this.x = x;
+        this.y = y;
+        this.side = side;
     }
     
-    // Leaf: 叶子节点 - 正方形
-    public class Square implements Shape {
-        private int x, y;
-        private final int side;
-    
-        public Square(int x, int y, int side) {
-            this.x = x;
-            this.y = y;
-            this.side = side;
-        }
-        
-        @Override
-        public void move(int dx, int dy) {
-            this.x += dx;
-            this.y += dy;
-        }
-    
-        @Override
-        public void display(String indent) {
-            System.out.println(indent + "Square at (" + x + ", " + y + ")");
-        }
+    @Override
+    public void move(int dx, int dy) {
+        this.x += dx;
+        this.y += dy;
     }
+
+    @Override
+    public void display(String indent) {
+        System.out.println(indent + "Square at (" + x + ", " + y + ")");
+    }
+}
+``` 
 
 接下来是**组合节点** `Group` 类，它可以包含多个实现了 `Shape` 接口的子节点，子节点类型可以是叶子节点 `Circle` 或 `Square`，也可以是其他组合节点 `Group`。
-    
-    
-    // Composite: 组合节点 - 形状组
-    import java.util.ArrayList;
-    import java.util.List;
-    
-    public class Group implements Shape {
-        private final List<Shape> children = new ArrayList<>();
-    
-        public void add(Shape shape) {
-            children.add(shape);
-        }
-    
-        @Override
-        public void move(int dx, int dy) {
-            // 当组合被移动时，它会遍历所有子形状，并依次移动它们
-            for (Shape child : children) {
-                child.move(dx, dy);
-            }
-        }
-    
-        @Override
-        public void display(String indent) {
-            // 显示组合自身的信息，并递归显示所有子形状的信息
-            System.out.println(indent + "Group {");
-            for (Shape child : children) {
-                // 子形状增加缩进
-                child.display(indent + "  ");
-            }
-            System.out.println(indent + "}");
+
+```
+// Composite: 组合节点 - 形状组
+import java.util.ArrayList;
+import java.util.List;
+
+public class Group implements Shape {
+    private final List<Shape> children = new ArrayList<>();
+
+    public void add(Shape shape) {
+        children.add(shape);
+    }
+
+    @Override
+    public void move(int dx, int dy) {
+        // 当组合被移动时，它会遍历所有子形状，并依次移动它们
+        for (Shape child : children) {
+            child.move(dx, dy);
         }
     }
 
-接下来，我们就可以创建复杂的图形，并像操作单个形状一样操作它们了。
-    
-    
-    public class Main {
-        public static void main(String[] args) {
-            // 创建一个画布，它本身就是一个顶层组合
-            Group canvas = new Group();
-    
-            // 创建另一个组合，并向其中添加形状
-            Group subGroup = new Group();
-            subGroup.add(new Square(100, 110, 40));
-            subGroup.add(new Circle(200, 210, 25));
-    
-            // 将一个独立的形状和一个组合都添加到画布上
-            canvas.add(new Circle(10, 20, 15));
-            canvas.add(subGroup);
-    
-            System.out.println("--- Initial State ---");
-            canvas.display("");
-            // --- Initial State ---
-            // Group {
-            //   Circle at (10, 20)
-            //   Group {
-            //     Square at (100, 110)
-            //     Circle at (200, 210)
-            //   }
-            // }
-    
-            // 移动整个画布，所有子元素都会被移动
-            canvas.move(100, -50);
-            System.out.println("\n--- After Moving (100, -50) ---");
-            canvas.display("");
-            // --- After Moving (100, -50) ---
-            // Group {
-            //   Circle at (110, -30)
-            //   Group {
-            //     Square at (200, 60)
-            //     Circle at (300, 160)
-            //   }
-            // }
+    @Override
+    public void display(String indent) {
+        // 显示组合自身的信息，并递归显示所有子形状的信息
+        System.out.println(indent + "Group {");
+        for (Shape child : children) {
+            // 子形状增加缩进
+            child.display(indent + "  ");
         }
+        System.out.println(indent + "}");
     }
+}
+``` 
+
+接下来，我们就可以创建复杂的图形，并像操作单个形状一样操作它们了。
+
+```
+public class Main {
+    public static void main(String[] args) {
+        // 创建一个画布，它本身就是一个顶层组合
+        Group canvas = new Group();
+
+        // 创建另一个组合，并向其中添加形状
+        Group subGroup = new Group();
+        subGroup.add(new Square(100, 110, 40));
+        subGroup.add(new Circle(200, 210, 25));
+
+        // 将一个独立的形状和一个组合都添加到画布上
+        canvas.add(new Circle(10, 20, 15));
+        canvas.add(subGroup);
+
+        System.out.println("--- Initial State ---");
+        canvas.display("");
+        // --- Initial State ---
+        // Group {
+        //   Circle at (10, 20)
+        //   Group {
+        //     Square at (100, 110)
+        //     Circle at (200, 210)
+        //   }
+        // }
+
+        // 移动整个画布，所有子元素都会被移动
+        canvas.move(100, -50);
+        System.out.println("\n--- After Moving (100, -50) ---");
+        canvas.display("");
+        // --- After Moving (100, -50) ---
+        // Group {
+        //   Circle at (110, -30)
+        //   Group {
+        //     Square at (200, 60)
+        //     Circle at (300, 160)
+        //   }
+        // }
+    }
+}
+``` 
 
 在这个例子中，当客户端调用 `canvas.move()` 时，这个移动操作会通过 `Group` 对象递归地传递给它包含的所有子形状，无论是独立的 `Circle` 还是 `subGroup` 中的形状，都会被统一移动。
 
-## ¶总结
+## 总结
 
 组合模式的优势有：
 
 1、**简化客户端代码** ：客户端可以统一处理所有对象，无需区分叶子节点和组合节点。 2、**易于扩展** ：可以轻松地向组合结构中添加新的叶子节点或组合节点类。
 
 当你处理的对象可以被组织成树形结构，且树上的每个节点能够提供统一的接口时，组合模式是一个非常优雅的解决方案，能以统一的方式处理所有对象。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

@@ -13,7 +13,6 @@
 
   * [链表（链式存储）基础](</zh/algo/data-structure-basic/linkedlist-basic/>)
 
-
 **我认为二叉树是最重要的基本数据结构，没有之一** 。
 
 如果你是初学者，现在这个阶段我很难给你彻底解释清楚得出这个结论的原因，你需要认真学习本站后面的内容才能逐渐理解。我暂且总结两个点：
@@ -24,7 +23,7 @@
 
 后面的数据结构章节包含大量关于二叉树的讲解和习题，你按照本站的目录顺序学习，我会带你把二叉树彻底搞懂，到时候你就明白我为什么这么重视二叉树了。
 
-## ¶几种常见的二叉树
+## 几种常见的二叉树
 
 二叉树的主要难点在于做算法题，它本身其实没啥难的，就是这样一种树形结构嘛：
 
@@ -44,7 +43,7 @@ loading...
 
 有一些稍微特殊一些的二叉树，有他们自己的名字，你要了解一下，后面做题时见到这些专业术语，你就知道题目在说啥了。
 
-### ¶满二叉树
+### 满二叉树
 
 直接看图比较直观，满二叉树就是每一层节点都是满的，整棵树像一个正三角形：
 
@@ -52,7 +51,7 @@ loading...
 
 **满二叉树有个优势，就是它的节点个数很好算** 。假设深度为 `h`，那么总节点数就是 `2^h - 1`，等比数列求和嘛，我们应该都学过的。
 
-### ¶完全二叉树
+### 完全二叉树
 
 完全二叉树是指，二叉树的每一层的节点都紧凑靠左排列，且除了最后一层，其他每层都必须是满的：
 
@@ -68,7 +67,7 @@ loading...
 
 或者更准确地说应该是：**完全二叉树的左右子树中，至少有一棵是满二叉树** 。
 
-![](/images/algo/complete_tree/1.jpg)
+![diagram](https://labuladong.online/images/algo/complete_tree/1.jpg)
 
 这个性质在做算法题的时候会用到，比如 [巧算完全二叉树的节点数](</zh/algo/data-structure/count-complete-tree-nodes/>)，这里就先提一下。
 
@@ -82,11 +81,11 @@ loading...
 
 而英文中的 Full Binary Tree 是指一棵二叉树的所有节点要么没有孩子节点，要么有两个孩子节点。
 
-![](/images/algo/complete_tree/trees.png)
+![diagram](https://labuladong.online/images/algo/complete_tree/trees.png)
 
 以上定义出自 wikipedia，这里就是顺便一提。其实名词叫什么都无所谓，你知道有这个区别，在看英文资料时留意一下就行了。
 
-### ¶二叉搜索树
+### 二叉搜索树
 
 二叉搜索树（Binary Search Tree，简称 BST）是一种很常见的二叉树，它的定义是：
 
@@ -114,7 +113,7 @@ loading...
 
 关于 BST，后面会有专门的章节详细讲解，并且配有大量的习题，这里先讲些基础概念就够你用了。
 
-### ¶高度平衡二叉树
+### 高度平衡二叉树
 
 高度平衡二叉树（Height-Balanced Binary Tree）是一种特殊的二叉树，**它的「每个节点」的左右子树的高度差不超过 1** 。
 
@@ -136,7 +135,7 @@ loading...
 
 那么这棵树其实就等同于单链表，在树中进行增删查改的效率就会大幅降低。
 
-### ¶自平衡二叉树
+### 自平衡二叉树
 
 上面介绍了高度平衡二叉树，说到它的高度为 O(log⁡N)O(\log N)O(logN)，增删查改的效率高。
 
@@ -148,36 +147,35 @@ loading...
 
 算法可视化
 
-## ¶二叉树的实现方式
+## 二叉树的实现方式
 
 最常见的二叉树就是类似链表那样的链式存储结构，每个二叉树节点有指向左右子节点的指针，这种方式比较简单直观。
 
 力扣/LeetCode 上给你输入的二叉树一般都是用这种方式构建的，二叉树节点类 `TreeNode` 一般长这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode(int x) { this.val = x; }
-    }
-    
-    // 你可以这样构建一棵二叉树：
-    TreeNode root = new TreeNode(1);
-    root.left = new TreeNode(2);
-    root.right = new TreeNode(3);
-    root.left.left = new TreeNode(4);
-    root.right.left = new TreeNode(5);
-    root.right.right = new TreeNode(6);
-    
-    // 构建出来的二叉树是这样的：
-    //     1
-    //    / \
-    //   2   3
-    //  /   / \
-    // 4   5   6
+```java
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { this.val = x; }
+}
+
+// 你可以这样构建一棵二叉树：
+TreeNode root = new TreeNode(1);
+root.left = new TreeNode(2);
+root.right = new TreeNode(3);
+root.left.left = new TreeNode(4);
+root.right.left = new TreeNode(5);
+root.right.right = new TreeNode(6);
+
+// 构建出来的二叉树是这样的：
+//     1
+//    / \
+//   2   3
+//  /   / \
+// 4   5   6
+``` 
 
 既然说上面是比较常见的实现方式，那言下之意就是还有其他实现方式，对吧？
 
@@ -193,20 +191,15 @@ loading...
 
 我可以用一个哈希表，其中的键是父节点 id，值是子节点 id 的列表（每个节点的 id 是唯一的），那么一个键值对就是一个多叉树节点了，这棵多叉树就可以表示成这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 1 -> [2, 3]
-    // 2 -> [4]
-    // 3 -> [5, 6]
-    
-    HashMap<Integer, List<Integer>> tree = new HashMap<>();
-    tree.put(1, Arrays.asList(2, 3));
-    tree.put(2, Collections.singletonList(4));
-    tree.put(3, Arrays.asList(5, 6));
+```java
+// 1 -> [2, 3]
+// 2 -> [4]
+// 3 -> [5, 6]
+
+HashMap<Integer, List<Integer>> tree = new HashMap<>();
+tree.put(1, Arrays.asList(2, 3));
+tree.put(2, Collections.singletonList(4));
+tree.put(3, Arrays.asList(5, 6));
+``` 
 
 这样就可以模拟和操作二叉树/多叉树结构，后文讲到图论的时候你就会知道，它有一个新的名字叫做 [邻接表](</zh/algo/data-structure-basic/graph-basic/>)。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

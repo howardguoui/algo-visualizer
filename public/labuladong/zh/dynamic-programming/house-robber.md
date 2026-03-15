@@ -22,14 +22,13 @@ LeetCode| 力扣| 难度
   * [二叉树系列算法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
 
-
 今天来讲「打家劫舍」系列问题（英文版叫 House Robber），这个系列是比较有代表性和技巧性的动态规划题目。
 
 打家劫舍系列总共有三道，难度设计比较合理，层层递进。第一道是比较标准的动态规划问题，而第二道融入了环形数组的条件，第三道更绝，把动态规划的自底向上和自顶向下解法和二叉树结合起来，我认为很有启发性。
 
 下面，我们从第一道开始分析。
 
-## ¶打家劫舍 I
+## 打家劫舍 I
 
 力扣第 198 题「[打家劫舍](<https://leetcode.cn/problems/house-robber/>)」的题目如下：
 
@@ -37,15 +36,10 @@ LeetCode| 力扣| 难度
 
 请你写一个算法，计算在不触动报警器的前提下，最多能够盗窃多少现金呢？函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int rob(int[] nums);
+```java
+int rob(int[] nums);
+``` 
 
 比如说输入 `nums=[2,1,7,9,3,1]`，算法返回 12，小偷可以盗窃 `nums[0], nums[3], nums[5]` 三个房屋，得到的现金之和为 2 + 9 + 1 = 12，是最优的选择。
 
 题目很容易理解，而且动态规划的特征很明显。我们前文 [动态规划详解](</zh/algo/essential-technique/dynamic-programming-framework/>) 做过总结，**解决动态规划问题就是找「状态」和「选择」，仅此而已** 。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

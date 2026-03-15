@@ -7,7 +7,7 @@
 
 # Essential Math Techniques
 
-## ¶Modulo Operation Tricks
+## Modulo Operation Tricks
 
 You must know how to use modulo operations. The important rules are:
 
@@ -15,29 +15,32 @@ You must know how to use modulo operations. The important rules are:
   * Multiplication: `(a * b) % k = (a % k) * (b % k) % k`
   * Subtraction: `(a - b) % k = (a % k - b % k + k) % k`
 
-
 In the subtraction formula, the `+ k` part is to avoid negative results. For example, `(1 - 3) % 5` might be `-2` in some programming languages, but mathematically it should be positive: `(-2 + 5) % 5 = 3`.
 
 The multiplication rule might not be so obvious, so let's prove it simply. Suppose:
-    
-    
-    a = Ak + B; b = Ck + D
+
+```
+a = Ak + B; b = Ck + D
+``` 
 
 where `A, B, C, D` are any numbers. Then:
-    
-    
-    ab = ACk^2 + ADk + BCk + BD
-    ab % k = BD % k
+
+```
+ab = ACk^2 + ADk + BCk + BD
+ab % k = BD % k
+``` 
 
 Also,
-    
-    
-    a % k = B; b % k = D
+
+```
+a % k = B; b % k = D
+``` 
 
 So,
-    
-    
-    (a % k)(b % k) % k = BD % k = ab % k
+
+```
+(a % k)(b % k) % k = BD % k = ab % k
+``` 
 
 This means our formula for modulo simplification is correct.
 
@@ -45,7 +48,7 @@ This means our formula for modulo simplification is correct.
 
 The multiplication rule is very useful. When `a` and `b` are large, you can avoid overflow by using this rule. The fast exponentiation algorithm below also uses this property.
 
-## ¶Fast Exponentiation
+## Fast Exponentiation
 
 How to calculate ab(modk)a^b \pmod kab(modk)? If you simply multiply `a` by itself `b` times, the time complexity is O(b)O(b)O(b). When `b` is big (like 10910^9109), this is too slow.
 
@@ -56,28 +59,29 @@ ab={(ab/2)2,if b is evena⋅ab−1,if b is odda^b = \begin{cases} (a^{b/2})^2, &
 Each time the size halves, so the time complexity is O(log⁡b)O(\log b)O(logb).
 
 Example code:
-    
-    
-    // Calculate (a ^ b) % k
-    long quickPow(long a, long b, long k) {
-        long res = 1;
-        // Prevent a from being greater than k
-        a %= k;
-        while (b > 0) {
-            // Check for odd number, same as b % 2 == 1
-            if ((b & 1) == 1) {
-                res = (res * a) % k;
-            }
-            a = (a * a) % k;
-            // Shift right, same as divide by 2
-            b >>= 1;
+
+```
+// Calculate (a ^ b) % k
+long quickPow(long a, long b, long k) {
+    long res = 1;
+    // Prevent a from being greater than k
+    a %= k;
+    while (b > 0) {
+        // Check for odd number, same as b % 2 == 1
+        if ((b & 1) == 1) {
+            res = (res * a) % k;
         }
-        return res;
+        a = (a * a) % k;
+        // Shift right, same as divide by 2
+        b >>= 1;
     }
+    return res;
+}
+``` 
 
 Some programming languages (like Python's `pow` function) have fast exponentiation built-in. You can use them directly.
 
-## ¶Greatest Common Divisor
+## Greatest Common Divisor
 
 Finding the greatest common divisor (GCD) of two numbers is a very common math problem.
 
@@ -85,7 +89,6 @@ The greatest common divisor is the largest positive integer that can divide both
 
   * `a % d == 0` and `b % d == 0` (d divides both a and b)
   * There is no number larger than `d` that fits the above
-
 
 **Examples:**
 
@@ -103,7 +106,6 @@ The greatest common divisor is the largest positive integer that can divide both
     * Divisors of 36: 1, 2, 3, 4, 6, 9, 12, 18, 36
     * Common divisors: 1, 2, 3, 4, 6, 12, largest is 12
 
-
 **Euclidean Algorithm**
 
 The most popular method is the Euclidean algorithm. The key idea:
@@ -113,18 +115,19 @@ The most popular method is the Euclidean algorithm. The key idea:
 This works because of a math theorem: **the common divisors of`a` and `b` are the same as the common divisors of `b` and `a % b`**.
 
 Example, find `gcd(48, 18)`:
-    
-    
-    gcd(48, 18)
-    = gcd(18, 48 % 18)
-    = gcd(18, 12)
-    = gcd(12, 18 % 12)
-    = gcd(12, 6)
-    = gcd(6, 12 % 6)
-    = gcd(6, 0)
-    = 6
 
-## ¶Least Common Multiple
+```
+gcd(48, 18)
+= gcd(18, 48 % 18)
+= gcd(18, 12)
+= gcd(12, 18 % 12)
+= gcd(12, 6)
+= gcd(6, 12 % 6)
+= gcd(6, 0)
+= 6
+``` 
+
+## Least Common Multiple
 
 Find the least common multiple (LCM) of two numbers.
 
@@ -132,7 +135,6 @@ The least common multiple is the smallest positive integer that is a multiple of
 
   * `m % a == 0` and `m % b == 0` (m is divisible by both a and b)
   * No number smaller than `m` fits the above
-
 
 **Examples:**
 
@@ -150,7 +152,6 @@ The least common multiple is the smallest positive integer that is a multiple of
 
     * For two equal numbers, the LCM is the number itself
 
-
 You can get the LCM from the GCD, which is very important:
 
 lcm(a,b)=∣a⋅b∣gcd(a,b)\text{lcm}(a, b) = \frac{|a \cdot b|}{\text{gcd}(a, b)}lcm(a,b)=gcd(a,b)∣a⋅b∣​
@@ -158,23 +159,23 @@ lcm(a,b)=∣a⋅b∣gcd(a,b)\text{lcm}(a, b) = \frac{|a \cdot b|}{\text{gcd}(a, 
 The math behind this: **the product of two numbers equals their GCD times their LCM** , that is, `a * b = gcd(a, b) * lcm(a, b)`.
 
 Examples:
-    
-    
-    lcm(4, 6) = (4 * 6) / gcd(4, 6) = 24 / 2 = 12
-    lcm(12, 18) = (12 * 18) / gcd(12, 18) = 216 / 6 = 36
+
+```
+lcm(4, 6) = (4 * 6) / gcd(4, 6) = 24 / 2 = 12
+lcm(12, 18) = (12 * 18) / gcd(12, 18) = 216 / 6 = 36
+``` 
 
 To avoid overflow from `a * b`, usually it is written as:
 
 lcm(a,b)=(a/gcd(a,b))∗b\text{lcm}(a, b) = (a / \text{gcd}(a, b)) * blcm(a,b)=(a/gcd(a,b))∗b
 
 Example code:
-    
-    
-    int lcm(int a, int b) {
-        // Divide first, then multiply, to avoid overflow
-        return (a / gcd(a, b)) * b;
-    }
+
+```
+int lcm(int a, int b) {
+    // Divide first, then multiply, to avoid overflow
+    return (a / gcd(a, b)) * b;
+}
+``` 
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

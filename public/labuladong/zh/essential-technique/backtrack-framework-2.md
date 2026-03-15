@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
   * [二叉树的遍历框架](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
   * [多叉树结构及遍历框架](</zh/algo/data-structure-basic/n-ary-tree-traverse-basic/>)
 
-
 本文解决几个问题：
 
 回溯算法是什么？解决回溯算法相关的问题有什么技巧？如何学习回溯算法？回溯算法代码是否有规律可循？
@@ -41,24 +40,25 @@ LeetCode| 力扣| 难度
 如果你不理解这三个词语的解释，没关系，我们后面会用「全排列」这个经典的回溯算法问题来帮你理解这些词语是什么意思，现在你先留着印象。
 
 代码方面，回溯算法的框架：
+
+```
+result = []
+def backtrack(路径, 选择列表):
+    if 满足结束条件:
+        result.add(路径)
+        return
     
-    
-    result = []
-    def backtrack(路径, 选择列表):
-        if 满足结束条件:
-            result.add(路径)
-            return
-        
-        for 选择 in 选择列表:
-            做选择
-            backtrack(路径, 选择列表)
-            撤销选择
+    for 选择 in 选择列表:
+        做选择
+        backtrack(路径, 选择列表)
+        撤销选择
+``` 
 
 **其核心就是 for 循环里面的递归，在递归调用之前「做选择」，在递归调用之后「撤销选择」** ，特别简单。
 
 什么叫做选择和撤销选择呢，这个框架的底层原理是什么呢？下面我们就通过「全排列」这个问题来解开之前的疑惑，详细探究一下其中的奥妙！
 
-## ¶全排列问题解析
+## 全排列问题解析
 
 力扣第 46 题「[全排列](<https://leetcode.cn/problems/permutations/>)」就是给你输入一个数组 `nums`，让你返回这些数字的全排列。
 
@@ -76,13 +76,13 @@ LeetCode| 力扣| 难度
 
 其实这就是回溯算法，我们高中无师自通就会用，或者有的同学直接画出如下这棵回溯树：
 
-![](/images/algo/backtracking/1.jpg)
+![diagram](https://labuladong.online/images/algo/backtracking/1.jpg)
 
 只要从根遍历这棵树，记录路径上的数字，其实就是所有的全排列。**我们不妨把这棵树称为回溯算法的「决策树」** 。
 
 **为啥说这是决策树呢，因为你在每个节点上其实都在做决策** 。比如说你站在下图的红色节点上：
 
-![](/images/algo/backtracking/2.jpg)
+![diagram](https://labuladong.online/images/algo/backtracking/2.jpg)
 
 你现在就在做决策，可以选择 1 那条树枝，也可以选择 3 那条树枝。为啥只能在 1 和 3 之中选择呢？因为 2 这个树枝在你身后，这个选择你之前做过了，而全排列是不允许重复使用数字的。
 
@@ -90,22 +90,21 @@ LeetCode| 力扣| 难度
 
 如果明白了这几个名词，可以把「路径」和「选择」列表作为决策树上每个节点的属性，比如下图列出了几个蓝色节点的属性：
 
-![](/images/algo/backtracking/3.jpg)
+![diagram](https://labuladong.online/images/algo/backtracking/3.jpg)
 
 **我们定义的`backtrack` 函数其实就像一个指针，在这棵树上游走，同时要正确维护每个节点的属性，每当走到树的底层叶子节点，其「路径」就是一个全排列**。
 
 再进一步，如何遍历一棵树？这个应该不难吧。回忆一下之前 [学习数据结构的框架思维](</zh/algo/essential-technique/algorithm-summary/>) 写过，各种搜索问题其实都是树的遍历问题，而多叉树的遍历框架就是这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void traverse(TreeNode root) {
-        for (TreeNode child : root.childern) {
-            // 前序位置需要的操作
-            traverse(child);
-            // 后序位置需要的操作
-        }
+```java
+void traverse(TreeNode root) {
+    for (TreeNode child : root.childern) {
+        // 前序位置需要的操作
+        traverse(child);
+        // 后序位置需要的操作
     }
+}
+``` 
 
 Info
 
@@ -115,81 +114,81 @@ Info
 
 而所谓的前序遍历和后序遍历，他们只是两个很有用的时间点，我给你画张图你就明白了：
 
-![](/images/algo/backtracking/4.jpg)
+![diagram](https://labuladong.online/images/algo/backtracking/4.jpg)
 
 **前序遍历的代码在进入某一个节点之前的那个时间点执行，后序遍历代码在离开某个节点之后的那个时间点执行** 。
 
 回想我们刚才说的，「路径」和「选择」是每个节点的属性，函数在树上游走要正确处理节点的属性，那么就要在这两个特殊时间点搞点动作：
 
-![](/images/algo/backtracking/5.jpg)
+![diagram](https://labuladong.online/images/algo/backtracking/5.jpg)
 
 现在，你是否理解了回溯算法的这段核心框架？
-    
-    
-    for 选择 in 选择列表:
-        # 做选择
-        将该选择从选择列表移除
-        路径.add(选择)
-        backtrack(路径, 选择列表)
-        # 撤销选择
-        路径.remove(选择)
-        将该选择再加入选择列表
+
+```
+for 选择 in 选择列表:
+    # 做选择
+    将该选择从选择列表移除
+    路径.add(选择)
+    backtrack(路径, 选择列表)
+    # 撤销选择
+    路径.remove(选择)
+    将该选择再加入选择列表
+``` 
 
 **我们只要在递归之前做出选择，在递归之后撤销刚才的选择** ，就能正确得到每个节点的选择列表和路径。
 
 下面，直接看全排列代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-    
-        List<List<Integer>> res = new LinkedList<>();
-    
-        // 主函数，输入一组不重复的数字，返回它们的全排列
-        List<List<Integer>> permute(int[] nums) {
-            // 记录「路径」
-            LinkedList<Integer> track = new LinkedList<>();
-            // 「路径」中的元素会被标记为 true，避免重复使用
-            boolean[] used = new boolean[nums.length];
-            
-            backtrack(nums, track, used);
-            return res;
+```java
+class Solution {
+
+    List<List<Integer>> res = new LinkedList<>();
+
+    // 主函数，输入一组不重复的数字，返回它们的全排列
+    List<List<Integer>> permute(int[] nums) {
+        // 记录「路径」
+        LinkedList<Integer> track = new LinkedList<>();
+        // 「路径」中的元素会被标记为 true，避免重复使用
+        boolean[] used = new boolean[nums.length];
+        
+        backtrack(nums, track, used);
+        return res;
+    }
+
+    // 路径：记录在 track 中
+    // 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
+    // 结束条件：nums 中的元素全都在 track 中出现
+    void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
+        // 触发结束条件
+        if (track.size() == nums.length) {
+            res.add(new LinkedList(track));
+            return;
         }
-    
-        // 路径：记录在 track 中
-        // 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
-        // 结束条件：nums 中的元素全都在 track 中出现
-        void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
-            // 触发结束条件
-            if (track.size() == nums.length) {
-                res.add(new LinkedList(track));
-                return;
+
+        for (int i = 0; i < nums.length; i++) {
+            // 排除不合法的选择
+            if (used[i]) { 
+                // nums[i] 已经在 track 中，跳过
+                continue;
             }
-    
-            for (int i = 0; i < nums.length; i++) {
-                // 排除不合法的选择
-                if (used[i]) { ![](/images/algo/backtracking/6.jpg)
-                    // nums[i] 已经在 track 中，跳过
-                    continue;
-                }
-                // 做选择
-                track.add(nums[i]);
-                used[i] = true;
-                // 进入下一层决策树
-                backtrack(nums, track, used);
-                // 取消选择
-                track.removeLast();
-                used[i] = false;
-            }
+            // 做选择
+            track.add(nums[i]);
+            used[i] = true;
+            // 进入下一层决策树
+            backtrack(nums, track, used);
+            // 取消选择
+            track.removeLast();
+            used[i] = false;
         }
     }
+}
+``` 
 
 算法可视化
 
 我们这里稍微做了些变通，没有显式记录「选择列表」，而是通过 `used` 数组排除已经存在 `track` 中的元素，从而推导出当前的选择列表：
 
-![](/images/algo/backtracking/6.jpg)
+![diagram](https://labuladong.online/images/algo/backtracking/6.jpg)
 
 至此，我们就通过全排列问题详解了回溯算法的底层原理。当然，这个算法解决全排列不是最高效的，你可能看到有的解法连 `used` 数组都不使用，通过交换元素达到目的。但是那种解法稍微难理解一些，我会在 [球盒模型：回溯算法两种穷举视角](</zh/algo/practice-in-action/two-views-of-backtrack/>) 中介绍。
 
@@ -197,23 +196,20 @@ CC++GoJavaJavaScriptPython
 
 **这也是回溯算法的一个特点，不像动态规划存在重叠子问题可以优化，回溯算法就是纯暴力穷举，复杂度一般都很高** 。
 
-## ¶最后总结
+## 最后总结
 
 回溯算法就是个多叉树的遍历问题，关键就是在前序遍历和后序遍历的位置做一些操作，算法框架如下：
-    
-    
-    def backtrack(...):
-        for 选择 in 选择列表:
-            做选择
-            backtrack(...)
-            撤销选择
+
+```
+def backtrack(...):
+    for 选择 in 选择列表:
+        做选择
+        backtrack(...)
+        撤销选择
+``` 
 
 **写`backtrack` 函数时，需要维护走过的「路径」和当前可以做的「选择列表」，当触发「结束条件」时，将「路径」记入结果集**。
 
 其实想想看，回溯算法和动态规划是不是有点像呢？我们在动态规划系列文章中多次强调，动态规划的三个需要明确的点就是「状态」「选择」和「base case」，是不是就对应着走过的「路径」，当前的「选择列表」和「结束条件」？
 
 动态规划和回溯算法底层都把问题抽象成了树的结构，但这两种算法在思路上是完全不同的。在 [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>) 你将看到动态规划和回溯算法更深层次的区别和联系。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

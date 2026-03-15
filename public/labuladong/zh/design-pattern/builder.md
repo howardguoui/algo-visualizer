@@ -12,35 +12,37 @@
 比如你需要创建一个 `Resume`（简历）对象，其中包含姓名、年龄、教育背景等必选项，同时还可以有获奖情况、工作经验、公司名称等多个可选项。
 
 如果通过构造函数来传递这些参数，可能会是这样：
-    
-    
-    class Resume {
-        private String name;
-        private int age;
-        private String education;
-        private String awards;
-        private String workExperience;
-        private String companyName;
-    
-        public Resume(String name, int age, String education, String awards, 
-                String workExperience, String companyName) {
-            this.name = name;
-            this.age = age;
-            this.education = education;
-            this.awards = awards;
-            this.workExperience = workExperience;
-            this.companyName = companyName;
-        }
+
+```
+class Resume {
+    private String name;
+    private int age;
+    private String education;
+    private String awards;
+    private String workExperience;
+    private String companyName;
+
+    public Resume(String name, int age, String education, String awards, 
+            String workExperience, String companyName) {
+        this.name = name;
+        this.age = age;
+        this.education = education;
+        this.awards = awards;
+        this.workExperience = workExperience;
+        this.companyName = companyName;
     }
+}
+``` 
 
 使用时就类似这样：
-    
-    
-    // Tom 没有工作经验、公司名称等信息
-    Resume resume1 = new Resume("Tom", 23, "本科", "某奖项", null, null);
-    
-    // Jack 有工作经验、公司名称等信息
-    Resume resume2 = new Resume("Jack", 30, "硕士", null, "XX工程师", "A公司");
+
+```
+// Tom 没有工作经验、公司名称等信息
+Resume resume1 = new Resume("Tom", 23, "本科", "某奖项", null, null);
+
+// Jack 有工作经验、公司名称等信息
+Resume resume2 = new Resume("Jack", 30, "硕士", null, "XX工程师", "A公司");
+``` 
 
 这种方式可以完成对象的创建，但是问题也很明显：
 
@@ -55,59 +57,61 @@
 生成器模式是一种创建型设计模式，简单来说就是通过一个 `Builder` 类来一步一步地构建对象，最后再通过一个 `build()` 方法生成最终的对象。
 
 我们来看下如何用生成器模式来改造 `Resume` 类的创建过程，首先创建一个 `ResumeBuilder` 类用于构建 `Resume` 对象：
-    
-    
-    class ResumeBuilder {
-        private String name;
-        private int age;
-        private String education;
-        private String awards;
-        private String workExperience;
-        private String companyName;
-    
-        public ResumeBuilder setBasicInfo(String name, int age, String education) {
-            this.name = name;
-            this.age = age;
-            this.education = education;
-            return this;
-        }
-    
-        public ResumeBuilder setAwards(String awards) {
-            this.awards = awards;
-            return this;
-        }
-    
-        public ResumeBuilder setWorkExperience(String workExperience) {
-            this.workExperience = workExperience;
-            return this;
-        }
-    
-        public ResumeBuilder setCompanyName(String companyName) {
-            this.companyName = companyName;
-            return this;
-        }
-    
-        public Resume build() {
-            if (name == null || age == 0 || education == null) {
-                throw new IllegalArgumentException("Name, age and education are required");
-            }
-            return new Resume(name, age, education, awards, workExperience, companyName);
-        }
+
+```
+class ResumeBuilder {
+    private String name;
+    private int age;
+    private String education;
+    private String awards;
+    private String workExperience;
+    private String companyName;
+
+    public ResumeBuilder setBasicInfo(String name, int age, String education) {
+        this.name = name;
+        this.age = age;
+        this.education = education;
+        return this;
     }
 
+    public ResumeBuilder setAwards(String awards) {
+        this.awards = awards;
+        return this;
+    }
+
+    public ResumeBuilder setWorkExperience(String workExperience) {
+        this.workExperience = workExperience;
+        return this;
+    }
+
+    public ResumeBuilder setCompanyName(String companyName) {
+        this.companyName = companyName;
+        return this;
+    }
+
+    public Resume build() {
+        if (name == null || age == 0 || education == null) {
+            throw new IllegalArgumentException("Name, age and education are required");
+        }
+        return new Resume(name, age, education, awards, workExperience, companyName);
+    }
+}
+``` 
+
 `ResumeBuilder` 类的关键在于它的每个方法都返回 `this`，这样就可以链式调用创建 `Resume` 对象：
-    
-    
-    Resume resume1 = new ResumeBuilder()
-            .setBasicInfo("Tom", 23, "本科")
-            .setAwards("某奖项")
-            .build();
-    
-    Resume resume2 = new ResumeBuilder()
-            .setBasicInfo("Jack", 30, "硕士")
-            .setWorkExperience("XX工程师")
-            .setCompanyName("A公司")
-            .build();
+
+```
+Resume resume1 = new ResumeBuilder()
+        .setBasicInfo("Tom", 23, "本科")
+        .setAwards("某奖项")
+        .build();
+
+Resume resume2 = new ResumeBuilder()
+        .setBasicInfo("Jack", 30, "硕士")
+        .setWorkExperience("XX工程师")
+        .setCompanyName("A公司")
+        .build();
+``` 
 
 通过这种方式，代码的可读性大大提高，我们能够清楚地看到每个设置的是哪个属性，并且可以灵活地设置可选属性，而不需要传递一堆 `null`。
 
@@ -116,72 +120,74 @@
   * **产品（Product）** ：表示被构建的复杂对象，即上面的 `Resume` 类。
   * **生成器（Builder）** ：即上面的 `ResumeBuilder` 类，它提供了链式调用方法来设置 `Resume` 类的各个字段，并提供一个 `build()` 方法来创建 `Resume` 对象。
 
-
 上述例子是最简单常用的生成器模式，当然你也可以根据实际情况变通。
 
 比如你可以把 `Resume` 类的数据字段和构造函数都设置为私有的，这样就能限制调用方只能通过 `ResumeBuilder` 来创建对象。
 
 再比如，可以将 `ResumeBuilder` 作为 `Resume` 类的内部类并提供一个 `builder()` 方法创建生成器对象，这样可以让代码实现更紧凑简洁：
-    
-    
-    class Resume {
+
+```
+class Resume {
+    // ...
+
+    private static class ResumeBuilder {
         // ...
-    
-        private static class ResumeBuilder {
-            // ...
-        }
-    
-        public static ResumeBuilder builder() {
-            return new ResumeBuilder();
-        }
     }
-    
-    // 这样使用
-    Resume resume = Resume.builder()
-            .setBasicInfo("Tom", 23, "本科")
-            .setAwards("某奖项")
-            .build();
 
-## ¶更多场景
+    public static ResumeBuilder builder() {
+        return new ResumeBuilder();
+    }
+}
 
-### ¶SQL 构建器
+// 这样使用
+Resume resume = Resume.builder()
+        .setBasicInfo("Tom", 23, "本科")
+        .setAwards("某奖项")
+        .build();
+``` 
+
+## 更多场景
+
+### SQL 构建器
 
 Java 的 MyBatis 框架中就有很多生成器模式的应用，以便我们用编程方式构建 SQL 语句，避免了手动拼接字符串带来的各种问题（如 SQL 注入、语法错误等）：
-    
-    
-    // 使用流式 API 构建查询语句
-    SelectStatementProvider selectStatement = select(order.allColumns())
-        .from(order)
-        // 条件1: 订单名称精确匹配 
-        .where(name, isEqualTo("example"))
-            // 条件2: 订单状态精确匹配 
-            .and(status, isEqualTo("finished"))
-            // 条件3: 创建时间大于 2025-01-01 
-            .and(createTime, isGreaterThan(LocalDate.of(2025, 1, 1)))
-        .build();
-    
-    // SELECT * FROM order WHERE name = 'example' AND status = 'finished' AND create_time > '2025-01-01'
 
-### ¶HTTP 请求构建器
+```
+// 使用流式 API 构建查询语句
+SelectStatementProvider selectStatement = select(order.allColumns())
+    .from(order)
+    // 条件1: 订单名称精确匹配 
+    .where(name, isEqualTo("example"))
+        // 条件2: 订单状态精确匹配 
+        .and(status, isEqualTo("finished"))
+        // 条件3: 创建时间大于 2025-01-01 
+        .and(createTime, isGreaterThan(LocalDate.of(2025, 1, 1)))
+    .build();
+
+// SELECT * FROM order WHERE name = 'example' AND status = 'finished' AND create_time > '2025-01-01'
+``` 
+
+### HTTP 请求构建器
 
 在现代应用中，与服务器进行网络通信非常普遍。构建一个 HTTP 请求，需要指定 URL、请求方法（GET, POST）、请求头（Headers）、请求体（Body）等多个部分。
 
 流行的 Java HTTP 客户端库 OkHttp 就使用了生成器模式来构建 `Request` 对象：
-    
-    
-    RequestBody body = RequestBody.create(
-        "{\"name\":\"labuladong\",\"age\":30}",
-        MediaType.get("application/json; charset=utf-8")
-    );
-    
-    // 使用生成器模式构建 HTTP Request 对象
-    Request request = new Request.Builder()
-            .url("https://api.example.com/users")
-            .header("User-Agent", "My-Awesome-App")
-            .post(body)
-            .build();
 
-## ¶总结
+```
+RequestBody body = RequestBody.create(
+    "{\"name\":\"labuladong\",\"age\":30}",
+    MediaType.get("application/json; charset=utf-8")
+);
+
+// 使用生成器模式构建 HTTP Request 对象
+Request request = new Request.Builder()
+        .url("https://api.example.com/users")
+        .header("User-Agent", "My-Awesome-App")
+        .post(body)
+        .build();
+``` 
+
+## 总结
 
 生成器模式的主要优势：
 
@@ -198,7 +204,3 @@ Java 的 MyBatis 框架中就有很多生成器模式的应用，以便我们用
 2、**冗余代码** 。Builder 类中的字段通常会与产品类中的字段重复，导致代码冗余。
 
 总的来说，当一个类的构造函数参数过多（通常超过4个）或者可选参数很多时，生成器模式是一个非常值得考虑的设计模式。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

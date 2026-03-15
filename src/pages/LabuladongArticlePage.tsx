@@ -12,11 +12,18 @@ export function LabuladongArticlePage() {
   const [content, setContent] = useState('')
   const [loadState, setLoadState] = useState<LoadState>('loading')
 
+  // NOTE: findArticle is called outside and inside the effect intentionally:
+  // - Outside: for rendering breadcrumb / prev-next nav (always needed)
+  // - Inside the effect: so `result` is NOT in the dep array (it's a new
+  //   object reference every render, which would cause an infinite loop)
   const result = articleId ? findArticle(articleId) : null
 
   useEffect(() => {
-    if (!result) return
-    const { article } = result
+    if (!articleId) return
+    const r = findArticle(articleId)
+    if (!r) return
+    const { article } = r
+
     setLoadState('loading')
     setContent('')
 
@@ -49,7 +56,7 @@ export function LabuladongArticlePage() {
     }
 
     load()
-  }, [articleId, lang, result])
+  }, [articleId, lang])
 
   if (!articleId) return <Navigate to="/labuladong/article/lb-home" />
 

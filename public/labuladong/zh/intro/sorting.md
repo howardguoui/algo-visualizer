@@ -19,13 +19,8 @@
 
 这个视频会结合可视化面板，用 30 分钟快速过一遍十大排序算法的原理。
 
-![Video Cover](/images/algo/vod/sorting.jpg)
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
+![Video Cover](https://labuladong.online/images/algo/vod/sorting.jpg)
 
 此页内容
-
 
 AI 助教

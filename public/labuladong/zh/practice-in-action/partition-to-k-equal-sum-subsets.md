@@ -22,7 +22,6 @@ LeetCode| 力扣| 难度
   * [回溯算法框架套路](</zh/algo/essential-technique/backtrack-framework/>)
   * [球盒模型：回溯算法的两种穷举视角](</zh/algo/practice-in-action/two-views-of-backtrack/>)
 
-
 我之前说过回溯算法是笔试中最好用的算法，只要你没什么思路，就用回溯算法暴力求解，即便不能通过所有测试用例，多少能过一点。回溯算法的技巧也不算难，就是穷举一棵决策树的过程，只要在递归之前「做选择」，在递归之后「撤销选择」就行了。
 
 **但是，就算暴力穷举，不同的思路也有优劣之分** 。本文就来看一道非常经典的回溯算法问题，力扣第 698 题「[划分为k个相等的子集](<https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/>)」。这道题可以帮你更深刻理解回溯算法的思维，得心应手地写出回溯函数。
@@ -33,10 +32,9 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    boolean canPartitionKSubsets(int[] nums, int k);
+```java
+boolean canPartitionKSubsets(int[] nums, int k);
+``` 
 
 思考题
 
@@ -51,7 +49,3 @@ CC++GoJavaJavaScriptPython
 [背包问题之子集划分](</zh/algo/dynamic-programming/knapsack2/>) 的场景中，有一个背包和若干物品，每个物品有**两个选择** ，分别是「装进背包」和「不装进背包」。把原集合 `S` 划分成两个相等子集 `S_1, S_2` 的场景下，`S` 中的每个元素也有**两个选择** ，分别是「装进 `S_1`」和「不装进 `S_1`（装进 `S_2`）」，这时候的穷举思路其实和背包问题相同。
 
 但如果你想把 `S` 划分成 `k` 个相等的子集，相当于 `S` 中的每个元素有 **`k` 个选择**，这和标准背包问题的场景有本质区别，是无法套用背包问题的解题思路的。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

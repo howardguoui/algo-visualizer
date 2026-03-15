@@ -20,52 +20,49 @@ LeetCode| 力扣| 难度
   * [线段树核心原理及可视化](</zh/algo/data-structure-basic/segment-tree-basic/>)
   * [小而美的算法技巧：前缀和数组](</zh/algo/data-structure/prefix-sum/>)
 
-
 线段树结构也是解决区间求值的问题，同时支持元素动态更新，解决了前缀和技巧的痛点。当然，代价就是时间复杂度稍微高一些，区间查询操作和单点动态更新操作的时间复杂度都是 O(log⁡n)O(\log n)O(logn)。
 
 线段树的原理在前面的数据结构基础章节 [线段树核心原理及可视化](</zh/algo/data-structure-basic/segment-tree-basic/>) 已经讲解过了，本文将不再重复，直接给出线段树的代码实现。
 
-## ¶链式实现 vs 数组实现
+## 链式实现 vs 数组实现
 
 最直接的想法，就是使用类似二叉树节点的 `SegmentNode` 类来实现线段树，我们不妨称之为线段树的链式实现：
-    
-    
-    // 线段树节点
-    class SegmentNode {
-        // 当前节点对应的索引区间
-        int l, r;
-    
-        // 当前区间内元素的聚合值
-        int mergeValue;
-    
-        // 左右子节点
-        SegmentNode left = null, right = null;
-    }
-    
-    // 线段树
-    class SegmentTree {
-        SegmentNode root;
-    
-        // ...
-    }
+
+```
+// 线段树节点
+class SegmentNode {
+    // 当前节点对应的索引区间
+    int l, r;
+
+    // 当前区间内元素的聚合值
+    int mergeValue;
+
+    // 左右子节点
+    SegmentNode left = null, right = null;
+}
+
+// 线段树
+class SegmentTree {
+    SegmentNode root;
+
+    // ...
+}
+``` 
 
 因为线段树是一种近似于完全二叉树的结构，所以也可以用数组来存储线段树，不需要真的使用 `SegmentNode` 构建树结构，我们不妨称这种实现方式为线段树的数组实现：
-    
-    
-    // 线段树
-    class SegmentTree {
-        // 用数组存储完全二叉树结构
-        int[] tree;
-    
-        // ...
-    }
+
+```
+// 线段树
+class SegmentTree {
+    // 用数组存储完全二叉树结构
+    int[] tree;
+
+    // ...
+}
+``` 
 
 从算法分析的角度，两种实现的理论复杂度都一样，但是链式结构需要额外维护指针信息，所以在实际的运行中肯定会比数组实现的效率差一点。不过在数组上实现树结构更抽象，理解难度更大。
 
 本站会给出两种实现的代码，先讲解链式的实现方式，你理解之后，再看数组实现的代码会很容易。
 
 在实际笔试中，如果需要使用线段树，可以直接复制数组实现的代码去使用。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

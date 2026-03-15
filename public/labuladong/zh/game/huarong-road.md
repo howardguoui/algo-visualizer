@@ -13,10 +13,9 @@
 
   * [BFS 算法框架](</zh/algo/essential-technique/bfs-framework/>)
 
-
 华容道游戏展示
 
-![Video Cover](/images/algo/vod/huarong-road.jpg)
+![Video Cover](https://labuladong.online/images/algo/vod/huarong-road.jpg)
 
 华容道游戏
 
@@ -29,17 +28,14 @@
 我们可以用 BFS 算法对棋盘的所有移动进行穷举，同时使用额外的数据结构记录操作步骤，找到可行解后再调用 `gameHandler.move` 来操作棋盘，即可完成游戏。
 
 游戏面板仅支持运行 JavaScript 代码，但是这道要求你实现的 `solveHuarongRoad` 函数求的是一个操作序列，不是游戏运行逻辑的一部分，所以我们可以变通一下，用任意编程语言实现算法，只要打印出类似这样的操作序列：
-    
-    
-    gameHandler.move(10, 'left')
-    gameHandler.move(9, 'right')
-    gameHandler.move(5, 'down')
-    ...
+
+```
+gameHandler.move(10, 'left')
+gameHandler.move(9, 'right')
+gameHandler.move(5, 'down')
+...
+``` 
 
 然后把这个操作序列复制到游戏面板的 `solveHuarongRoad` 函数中，也可以完成游戏，检验算法是否正确。
 
-## ¶讲解
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
+## 讲解

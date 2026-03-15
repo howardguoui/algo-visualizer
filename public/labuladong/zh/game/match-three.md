@@ -13,50 +13,45 @@
 
 消消乐游戏
 
-## ¶讲解
+## 讲解
 
 这道题本质上是考察 [数组双指针技巧汇总](</zh/algo/essential-technique/array-two-pointers-summary/>) 中的 `moveZeroes` 解法，使用快慢指针技巧将每一列方块的元素 0 移动到顶部。
 
 参考解法如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 游戏面板仅支持提交 JavaScript 代码
-    // 其他语言代码的作用是帮助大家理解算法逻辑
-    
-    class Solution {
-        public void applyGravity(int[][] board) {
-            if (board == null || board.length == 0) {
-                return;
+```java
+// 游戏面板仅支持提交 JavaScript 代码
+// 其他语言代码的作用是帮助大家理解算法逻辑
+
+class Solution {
+    public void applyGravity(int[][] board) {
+        if (board == null || board.length == 0) {
+            return;
+        }
+        
+        int rows = board.length;
+        int cols = board[0].length;
+        
+        // 遍历每一列
+        for (int col = 0; col < cols; col++) {
+            // 初始化快慢指针
+            int slow = rows - 1;
+            int fast = rows - 1;
+            
+            while (fast >= 0) {
+                if (board[fast][col] != 0) {
+                    // 将非 0 元素移动到慢指针位置
+                    board[slow][col] = board[fast][col];
+                    slow--;
+                }
+                fast--;
             }
             
-            int rows = board.length;
-            int cols = board[0].length;
-            
-            // 遍历每一列
-            for (int col = 0; col < cols; col++) {
-                // 初始化快慢指针
-                int slow = rows - 1;
-                int fast = rows - 1;
-                
-                while (fast >= 0) {
-                    if (board[fast][col] != 0) {
-                        // 将非 0 元素移动到慢指针位置
-                        board[slow][col] = board[fast][col];
-                        slow--;
-                    }
-                    fast--;
-                }
-                
-                // 将剩余的顶部位置填充为 0
-                for (int i = 0; i <= slow; i++) {
-                    board[i][col] = 0;
-                }
+            // 将剩余的顶部位置填充为 0
+            for (int i = 0; i <= slow; i++) {
+                board[i][col] = 0;
             }
         }
     }
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
+}
+```

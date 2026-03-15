@@ -18,11 +18,6 @@
   * [链表基础](</zh/algo/data-structure-basic/linkedlist-basic/>)
   * [单链表的双指针技巧汇总](</zh/algo/essential-technique/linked-list-skills-summary/>)
 
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
-
 此页内容
 
   * 链表的分解
@@ -35,6 +30,5 @@ Loading comments...
   * 445\. 两数相加 II
   * 链表环检测
   * 287\. 寻找重复数
-
 
 AI 助教

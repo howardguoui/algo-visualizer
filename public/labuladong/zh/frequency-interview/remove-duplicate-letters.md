@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
   * [队列/栈的原理](</zh/algo/data-structure-basic/queue-stack-basic/>)
   * [单调栈原理及实现](</zh/algo/data-structure/monotonic-stack/>)
 
-
 关于去重算法，应该没什么难度，往哈希集合里面塞不就行了么？
 
 最多给你加点限制，问你怎么给有序数组原地去重，这个我们前文 [双指针技巧秒杀七道数组题目](</zh/algo/essential-technique/array-two-pointers-summary/>) 讲过。
@@ -35,23 +34,21 @@ LeetCode| 力扣| 难度
 给你一个字符串 `s` ，请你去除字符串中重复的字母，使得每个字母只出现一次。需保证 **返回结果的 字典序最小**（要求不能打乱其他字符的相对位置）。
 
 **示例 1：**
-    
-    
-    **输入：**s = "bcabc"
-    **输出：**"abc"
-    
+
+```
+s = "bcabc"
+``` 
 
 **示例 2：**
-    
-    
-    **输入：**s = "cbacdcbc"
-    **输出：**"acdb"
+
+```
+s = "cbacdcbc"
+``` 
 
 **提示：**
 
   * `1 <= s.length <= 104`
   * `s` 由小写英文字母组成
-
 
 **注意：** 该题与 1081 <https://leetcode-cn.com/problems/smallest-subsequence-of-distinct-characters> 相同
 
@@ -76,7 +73,3 @@ LeetCode| 力扣| 难度
 其实这里会借鉴前文 [单调栈解题框架](</zh/algo/data-structure/monotonic-stack/>) 中讲到的「单调栈」的思路，没看过也无妨，等会你就明白了。
 
 **我们先暂时忽略要求三，用「栈」来实现一下要求一和要求二** ，至于为什么用栈来实现，后面你就知道了：
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

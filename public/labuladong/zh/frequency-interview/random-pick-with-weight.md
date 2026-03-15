@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
   * [前缀和算法技巧](</zh/algo/data-structure/prefix-sum/>)
   * [二分查找框架详解](</zh/algo/essential-technique/binary-search-framework/>)
 
-
 写这篇的文章的原因是玩 LOL 手游。我有个朋友抱怨说打排位匹配的队友太菜了，我就说我打排位觉得队友都挺行的啊，好像不怎么坑？
 
 朋友意味深长地说了句：一般隐藏分比较高的玩家，排位如果排不到实力相当的队友，就会排到一些菜狗。
@@ -32,7 +31,7 @@ LeetCode| 力扣| 难度
 
 打完之后我就来发文了，因为我对游戏的匹配机制有了一点思考。
 
-![](/images/algo/random-weight/images.png)
+![diagram](https://labuladong.online/images/algo/random-weight/images.png)
 
 **所谓「隐藏分」我不知道是不是真的，毕竟匹配机制是所有竞技类游戏的核心环节，想必非常复杂，不是简单几个指标就能搞定的** 。
 
@@ -52,47 +51,46 @@ LeetCode| 力扣| 难度
 
 请你实现一个函数 `pickIndex` ，它可以 **随机地** 从范围 `[0, w.length - 1]` 内（含 `0` 和 `w.length - 1`）选出并返回一个下标。选取下标 `i` 的 **概率** 为 `w[i] / sum(w)` 。
 
-
   * 例如，对于 `w = [1, 3]`，挑选下标 `0` 的概率为 `1 / (1 + 3) = 0.25` （即，25%），而选取下标 `1` 的概率为 `3 / (1 + 3) = 0.75`（即，`75%`）。
 
-
 **示例 1：**
-    
-    
-    **输入：**
-    ["Solution","pickIndex"]
-    [[[1]],[]]
-    **输出：**
-    [null,0]
-    **解释：**
-    Solution solution = new Solution([1]);
-    solution.pickIndex(); // 返回 0，因为数组中只有一个元素，所以唯一的选择是返回下标 0。
+
+```
+输入：
+["Solution","pickIndex"]
+[[[1]],[]]
+输出：
+[null,0]
+解释：
+Solution solution = new Solution([1]);
+solution.pickIndex(); // 返回 0，因为数组中只有一个元素，所以唯一的选择是返回下标 0。
+``` 
 
 **示例 2：**
-    
-    
-    **输入：**
-    ["Solution","pickIndex","pickIndex","pickIndex","pickIndex","pickIndex"]
-    [[[1,3]],[],[],[],[],[]]
-    **输出：**
-    [null,1,1,1,1,0]
-    **解释：**
-    Solution solution = new Solution([1, 3]);
-    solution.pickIndex(); // 返回 1，返回下标 1，返回该下标概率为 3/4 。
-    solution.pickIndex(); // 返回 1
-    solution.pickIndex(); // 返回 1
-    solution.pickIndex(); // 返回 1
-    solution.pickIndex(); // 返回 0，返回下标 0，返回该下标概率为 1/4 。
-    
-    由于这是一个随机问题，允许多个答案，因此下列输出都可以被认为是正确的:
-    [null,1,1,1,1,0]
-    [null,1,1,1,1,1]
-    [null,1,1,1,0,0]
-    [null,1,1,1,0,1]
-    [null,1,0,1,0,0]
-    ......
-    诸若此类。
-    
+
+```
+输入：
+["Solution","pickIndex","pickIndex","pickIndex","pickIndex","pickIndex"]
+[[[1,3]],[],[],[],[],[]]
+输出：
+[null,1,1,1,1,0]
+解释：
+Solution solution = new Solution([1, 3]);
+solution.pickIndex(); // 返回 1，返回下标 1，返回该下标概率为 3/4 。
+solution.pickIndex(); // 返回 1
+solution.pickIndex(); // 返回 1
+solution.pickIndex(); // 返回 1
+solution.pickIndex(); // 返回 0，返回下标 0，返回该下标概率为 1/4 。
+
+由于这是一个随机问题，允许多个答案，因此下列输出都可以被认为是正确的:
+[null,1,1,1,1,0]
+[null,1,1,1,1,1]
+[null,1,1,1,0,0]
+[null,1,1,1,0,1]
+[null,1,0,1,0,0]
+......
+诸若此类。
+``` 
 
 **提示：**
 
@@ -100,11 +98,6 @@ LeetCode| 力扣| 难度
   * `1 <= w[i] <= 105`
   * `pickIndex` 将被调用不超过 `104` 次
 
-
 题目来源：[力扣 528. 按权重随机选择](<https://leetcode.cn/problems/random-pick-with-weight/>)。
 
 我们就来思考一下这个问题，解决按照权重随机选择元素的问题。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

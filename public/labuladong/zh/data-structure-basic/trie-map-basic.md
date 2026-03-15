@@ -13,7 +13,6 @@
 
   * [二叉树基础及常见类型](</zh/algo/data-structure-basic/binary-tree-basic/>)
 
-
 一句话总结
 
 Trie 树就是 [多叉树结构](</zh/algo/data-structure-basic/n-ary-tree-traverse-basic/>) 的延伸，是一种针对字符串进行特殊优化的数据结构。
@@ -44,73 +43,71 @@ Trie 树在处理字符串相关操作时有诸多优势，比如节省公共字
 
   * [`TreeMap` 映射](</zh/algo/data-structure-basic/tree-map-basic/>)，底层是一棵二叉搜索树（编程语言标准库一般使用经过改良的自平衡 [红黑树](</zh/algo/data-structure-basic/rbtree-basic/>)），基本增删查改操作复杂度是 O(logN)O(logN)O(logN)，它的特点是可以动态维护键值对的大小关系，有很多额外的 API 操作键值对。`TreeSet` 集合是 `TreeMap` 映射的简单封装。
 
-
 `TrieSet` 也是 `TrieMap` 的简单封装，所以下面我们聚焦 `TrieMap` 的实现原理即可。
 
-## ¶Trie 树的主要应用场景
+## Trie 树的主要应用场景
 
 **Trie 树是一种针对字符串有特殊优化的数据结构** ，这也许它又被叫做字典树的原因。Trie 树针对字符串的处理有若干优势，下面一一列举。
 
-### ¶节约存储空间
+### 节约存储空间
 
 用 `HashMap` 对比吧，比如说这样存储几个键值对：
-    
-    
-    Map<String, Integer> map = new HashMap<>();
-    map.put("apple", 1);
-    map.put("app", 2);
-    map.put("appl", 3);
+
+```
+Map<String, Integer> map = new HashMap<>();
+map.put("apple", 1);
+map.put("app", 2);
+map.put("appl", 3);
+``` 
 
 回想哈希表的实现原理，键值对会被存到 `table` 数组中，也就是说它真的创建 `"apple"`、`"app"`、`"appl"` 这三个字符串，占用了 12 个字符的内存空间。
 
 但是注意，这三个字符串拥有共同的前缀，`"app"` 这个前缀被重复存储了三次，`"l"` 也被重复存储了两次。
 
 如果换成 TrieMap 来存储：
-    
-    
-    // Trie 树的键类型固定为 String 类型，值类型可以是泛型
-    TrieMap<Integer> map = new TrieMap<>();
-    map.put("apple", 1);
-    map.put("app", 2);
-    map.put("appl", 3);
+
+```
+// Trie 树的键类型固定为 String 类型，值类型可以是泛型
+TrieMap<Integer> map = new TrieMap<>();
+map.put("apple", 1);
+map.put("app", 2);
+map.put("appl", 3);
+``` 
 
 Trie 树底层并不会重复存储公共前缀，所以只需要 `"apple"` 这 5 个字符的内存空间来存储键。
 
 这个例子数据量很小，你感觉重复存储几次没啥大不了，但如果键非常多、非常长，且存在大量公共前缀（现实中确实经常有这种情况，比如证件号），那么 Trie 树就能节约大量的内存空间。
 
-### ¶方便处理前缀操作
+### 方便处理前缀操作
 
 举个例子就明白了：
-    
-    
-    // Trie 树的键类型固定为 String 类型，值类型可以是泛型
-    TrieMap<Integer> map = new TrieMap<>();
-    map.put("that", 1);
-    map.put("the", 2);
-    map.put("them", 3);
-    map.put("apple", 4);
-    
-    // "the" 是 "themxyz" 的最短前缀
-    System.out.println(map.shortestPrefixOf("themxyz")); // "the"
-    
-    // "them" 是 "themxyz" 的最长前缀
-    System.out.println(map.longestPrefixOf("themxyz")); // "them"
-    
-    // "tha" 是 "that" 的前缀
-    System.out.println(map.hasKeyWithPrefix("tha")); // true
-    
-    // 没有以 "thz" 为前缀的键
-    System.out.println(map.hasKeyWithPrefix("thz")); // false
-    
-    // "that", "the", "them" 都是 "th" 的前缀
-    System.out.println(map.keysWithPrefix("th")); // ["that", "the", "them"]
+
+```
+// Trie 树的键类型固定为 String 类型，值类型可以是泛型
+TrieMap<Integer> map = new TrieMap<>();
+map.put("that", 1);
+map.put("the", 2);
+map.put("them", 3);
+map.put("apple", 4);
+
+// "the" 是 "themxyz" 的最短前缀
+System.out.println(map.shortestPrefixOf("themxyz")); // "the"
+
+// "them" 是 "themxyz" 的最长前缀
+System.out.println(map.longestPrefixOf("themxyz")); // "them"
+
+// "tha" 是 "that" 的前缀
+System.out.println(map.hasKeyWithPrefix("tha")); // true
+
+// 没有以 "thz" 为前缀的键
+System.out.println(map.hasKeyWithPrefix("thz")); // false
+
+// "that", "the", "them" 都是 "th" 的前缀
+System.out.println(map.keysWithPrefix("th")); // ["that", "the", "them"]
+``` 
 
 除了 `keysWithPrefix` 方法的复杂度取决于返回结果的长度，其他前缀操作的复杂度都是 O(L)O(L)O(L)，其中 LLL 是前缀字符串长度。
 
 你想想上面这几个操作，用 HashMap 或者 TreeMap 能做到吗？应该只能强行遍历所有键，然后一个个比较字符串前缀，复杂度非常高。
 
 话说，这个 `keysWithPrefix` 方法，是不是很适合做自动补全功能呢？
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

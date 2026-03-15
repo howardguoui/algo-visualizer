@@ -19,10 +19,9 @@ LeetCode| 力扣| 难度
 
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
 
-
 本文的封面图是一款叫做《辐射4》的游戏中的一个任务剧情画面：
 
-![](/images/algo/ring/1.jpg)
+![diagram](https://labuladong.online/images/algo/ring/1.jpg)
 
 这个可以转动的圆盘类似是一个密码机关，中间偏上的位置有个红色的指针看到没，你只要转动圆盘可以让指针指向不同的字母，然后再按下中间的按钮就可以输入指针指向的字母。
 
@@ -48,7 +47,7 @@ LeetCode| 力扣| 难度
 
 比如说我很喜欢的一首曲子叫做《爱之梦》，这是我初学时的谱子：
 
-![](/images/algo/ring/2.jpg)
+![diagram](https://labuladong.online/images/algo/ring/2.jpg)
 
 音符上的数字 1 代表用大拇指，2 代表用食指，以此类推。按照确定下来的指法不断练习，形成肌肉记忆，就算是练会一首曲子了。
 
@@ -80,14 +79,13 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int findRotateSteps(String ring, String key);
+```java
+int findRotateSteps(String ring, String key);
+``` 
 
 比如题目举的例子，输入 `ring = "godding", key = "gd"`，对应的圆盘如下（大写只是为了清晰，实际上输入的字符串都是小写字母）：
 
-![](/images/algo/ring/3.jpg)
+![diagram](https://labuladong.online/images/algo/ring/3.jpg)
 
 我们需要输入 `key = "gd"`，算法返回 4。
 
@@ -107,10 +105,9 @@ CC++GoJavaJavaScriptPython
 
 这样我们可以写这样一个 `dp` 函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int dp(String ring, int i, String key, int j);
+```java
+int dp(String ring, int i, String key, int j);
+``` 
 
 这个 `dp` 函数的定义如下：
 
@@ -118,14 +115,13 @@ CC++GoJavaJavaScriptPython
 
 根据这个定义，题目其实就是想计算 `dp(ring, 0, key, 0)` 的值，而且我们可以把 `dp` 函数的 base case 写出来：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int dp(String ring, int i, String key, int j) {
-        // base case，完成输入
-        if (j == key.length()) return 0;
-        // ...
-    }
+```java
+int dp(String ring, int i, String key, int j) {
+    // base case，完成输入
+    if (j == key.length()) return 0;
+    // ...
+}
+``` 
 
 接下来，思考一下如何根据状态做选择，如何进行状态转移？
 
@@ -135,34 +131,35 @@ CC++GoJavaJavaScriptPython
 
 比如说输入 `ring = "gdonidg"`，现在圆盘的状态如下图：
 
-![](/images/algo/ring/4.jpeg)
+![diagram](https://labuladong.online/images/algo/ring/4.jpeg)
 
 假设我想输入的字符 `key[j] = "d"`，圆盘中有两个字母 `"d"`，而且我可以顺时针也可以逆时针拨动指针，所以总共有四种「选择」输入字符 `"d"`，我们需要选择操作次数最少的那个拨法。
 
 大致的代码逻辑如下：
+
+```
+int dp(String ring, int i, String key, int j) {
+    // base case 完成输入
+    if (j == key.length()) return 0;
     
-    
-    int dp(String ring, int i, String key, int j) {
-        // base case 完成输入
-        if (j == key.length()) return 0;
-        
-        // 做选择
-        int res = Integer.MAX_VALUE;
-        for (int k : [字符 key[j] 在 ring 中的所有索引]) {
-            res = min(
-                把 i 顺时针转到 k 的代价,
-                把 i 逆时针转到 k 的代价
-            );
-        }
-        
-        return res;
+    // 做选择
+    int res = Integer.MAX_VALUE;
+    for (int k : [字符 key[j] 在 ring 中的所有索引]) {
+        res = min(
+            把 i 顺时针转到 k 的代价,
+            把 i 逆时针转到 k 的代价
+        );
     }
+    
+    return res;
+}
+``` 
 
 至于到底是顺时针还是逆时针，其实非常好判断，怎么近就怎么来；但是对于圆盘中的两个字符 `"d"`，还能是怎么近怎么来吗？
 
 不能，因为这和 `key[i]` 之后需要输入的字符有关，还是上面的例子：
 
-![](/images/algo/ring/4.jpeg)
+![diagram](https://labuladong.online/images/algo/ring/4.jpeg)
 
 如果输入的是 `key = "di"`，那么即便右边的 `"d"` 离得近，也应该去左边的 `"d"`，因为左边的 `"d"` 旁边就是 `"i"`，「整体」的操作数最少。
 
@@ -170,64 +167,59 @@ CC++GoJavaJavaScriptPython
 
 讲到这就差不多了，直接看最终代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // 字符 -> 索引列表
-        private Map<Character, List<Integer>> charToIndex = new HashMap<>();
-        // 备忘录
-        private int[][] memo;
-    
-        // 主函数
-        public int findRotateSteps(String ring, String key) {
-            int m = ring.length();
-            int n = key.length();
-            // 备忘录全部初始化为 0
-            memo = new int[m][n];
-            // 记录圆环上字符到索引的映射
-            for (int i = 0; i < ring.length(); i++) {
-                char c = ring.charAt(i);
-                if (!charToIndex.containsKey(c)) {
-                    charToIndex.put(c, new ArrayList<>());
-                }
-                charToIndex.get(c).add(i);
+```java
+class Solution {
+    // 字符 -> 索引列表
+    private Map<Character, List<Integer>> charToIndex = new HashMap<>();
+    // 备忘录
+    private int[][] memo;
+
+    // 主函数
+    public int findRotateSteps(String ring, String key) {
+        int m = ring.length();
+        int n = key.length();
+        // 备忘录全部初始化为 0
+        memo = new int[m][n];
+        // 记录圆环上字符到索引的映射
+        for (int i = 0; i < ring.length(); i++) {
+            char c = ring.charAt(i);
+            if (!charToIndex.containsKey(c)) {
+                charToIndex.put(c, new ArrayList<>());
             }
-            // 圆盘指针最初指向 12 点钟方向，
-            // 从第一个字符开始输入 key
-            return dp(ring, 0, key, 0);
+            charToIndex.get(c).add(i);
         }
-    
-        // 计算圆盘指针在 ring[i]，输入 key[j..] 的最少操作数
-        private int dp(String ring, int i, String key, int j) {
-            // base case 完成输入
-            if (j == key.length()) return 0;
-            // 查找备忘录，避免重叠子问题
-            if (memo[i][j] != 0) return memo[i][j];
-    
-            int n = ring.length();
-            // 做选择
-            int res = Integer.MAX_VALUE;
-            // ring 上可能有多个字符 key[j]
-            for (int k : charToIndex.get(key.charAt(j))) {
-                // 拨动指针的次数
-                int delta = Math.abs(k - i);
-                // 选择顺时针还是逆时针
-                delta = Math.min(delta, n - delta);
-                // 将指针拨到 ring[k]，继续输入 key[j+1..]
-                int subProblem = dp(ring, k, key, j + 1);
-                // 选择「整体」操作次数最少的
-                // 加一是因为按动按钮也是一次操作
-                res = Math.min(res, 1 + delta + subProblem);
-            }
-            // 将结果存入备忘录
-            memo[i][j] = res;
-            return res;
-        }
+        // 圆盘指针最初指向 12 点钟方向，
+        // 从第一个字符开始输入 key
+        return dp(ring, 0, key, 0);
     }
 
+    // 计算圆盘指针在 ring[i]，输入 key[j..] 的最少操作数
+    private int dp(String ring, int i, String key, int j) {
+        // base case 完成输入
+        if (j == key.length()) return 0;
+        // 查找备忘录，避免重叠子问题
+        if (memo[i][j] != 0) return memo[i][j];
+
+        int n = ring.length();
+        // 做选择
+        int res = Integer.MAX_VALUE;
+        // ring 上可能有多个字符 key[j]
+        for (int k : charToIndex.get(key.charAt(j))) {
+            // 拨动指针的次数
+            int delta = Math.abs(k - i);
+            // 选择顺时针还是逆时针
+            delta = Math.min(delta, n - delta);
+            // 将指针拨到 ring[k]，继续输入 key[j+1..]
+            int subProblem = dp(ring, k, key, j + 1);
+            // 选择「整体」操作次数最少的
+            // 加一是因为按动按钮也是一次操作
+            res = Math.min(res, 1 + delta + subProblem);
+        }
+        // 将结果存入备忘录
+        memo[i][j] = res;
+        return res;
+    }
+}
+``` 
+
 算法可视化
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

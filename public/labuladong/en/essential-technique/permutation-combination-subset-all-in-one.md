@@ -11,22 +11,21 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[78\. Subsets](https://leetcode.com/problems/subsets/)|   
-[77\. Combinations](https://leetcode.com/problems/combinations/)|   
-[46\. Permutations](https://leetcode.com/problems/permutations/)|   
-[90\. Subsets II](https://leetcode.com/problems/subsets-ii/)|   
-[40\. Combination Sum II](https://leetcode.com/problems/combination-sum-ii/)|   
-[47\. Permutations II](https://leetcode.com/problems/permutations-ii/)|   
-[39\. Combination Sum](https://leetcode.com/problems/combination-sum/)|   
-[216\. Combination Sum III](https://leetcode.com/problems/combination-sum-iii/)|   
+[78\. Subsets](<https://leetcode.com/problems/subsets/>)|   
+[77\. Combinations](<https://leetcode.com/problems/combinations/>)|   
+[46\. Permutations](<https://leetcode.com/problems/permutations/>)|   
+[90\. Subsets II](<https://leetcode.com/problems/subsets-ii/>)|   
+[40\. Combination Sum II](<https://leetcode.com/problems/combination-sum-ii/>)|   
+[47\. Permutations II](<https://leetcode.com/problems/permutations-ii/>)|   
+[39\. Combination Sum](<https://leetcode.com/problems/combination-sum/>)|   
+[216\. Combination Sum III](<https://leetcode.com/problems/combination-sum-iii/>)|   
   
 Prerequisite
 
 Before reading this article, you need to learn:
 
-  * [Binary Tree Algorithms (Overview)](/en/algo/essential-technique/binary-tree-summary/)
-  * [Backtracking Algorithm Core Framework](/en/algo/essential-technique/backtrack-framework/)
-
+  * [Binary Tree Algorithms (Overview)](</en/algo/essential-technique/binary-tree-summary/>)
+  * [Backtracking Algorithm Core Framework](</en/algo/essential-technique/backtrack-framework/>)
 
 You learned permutations, combinations, and subsets in high school math. But it is still hard to write algorithms to solve them. This article will teach you the key ideas to solve these problems with code. After you learn this, you can easily handle different variants later.
 
@@ -52,11 +51,11 @@ On top of that, the problem can add more conditions. For example, “find combin
 
 **But no matter how the form changes, the essence is to brute-force all solutions. These solutions form a tree structure. So if you use the backtracking framework correctly, you can solve all these problems by slightly changing the same code framework.**
 
-More concretely, you should first read and understand [Backtracking Algorithm Core Framework](/en/algo/essential-technique/backtrack-framework/). Then remember the backtracking trees for the subset problem and the permutation problem below. With these two trees, you can solve all permutation/combination/subset problems:
+More concretely, you should first read and understand [Backtracking Algorithm Core Framework](</en/algo/essential-technique/backtrack-framework/>). Then remember the backtracking trees for the subset problem and the permutation problem below. With these two trees, you can solve all permutation/combination/subset problems:
 
-![](/images/algo/permutation/1-en.jpeg)
+![diagram](https://labuladong.online/images/algo/permutation/1-en.jpeg)
 
-![](/images/algo/permutation/2-en.jpeg)
+![diagram](https://labuladong.online/images/algo/permutation/2-en.jpeg)
 
 Why can these two tree structures solve all related problems?
 
@@ -66,8 +65,6 @@ Next, we will start brute-forcing. We will go through all 9 forms of permutation
 
 Tip
 
-Some of you may have seen other solutions for permutations/subsets/combinations before. The code you saw may be different from what I show in this article. That is because backtracking has two ways to view the brute-force process. I will explain them step by step in [Ball-and-Box Model: Two Views of Backtracking](/en/algo/practice-in-action/two-views-of-backtrack/). It is not the right time to explain those other solutions now. Just follow the approach in this article.
+Some of you may have seen other solutions for permutations/subsets/combinations before. The code you saw may be different from what I show in this article. That is because backtracking has two ways to view the brute-force process. I will explain them step by step in [Ball-and-Box Model: Two Views of Backtracking](</en/algo/practice-in-action/two-views-of-backtrack/>). It is not the right time to explain those other solutions now. Just follow the approach in this article.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

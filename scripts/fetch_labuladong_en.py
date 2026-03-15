@@ -1,15 +1,21 @@
 """
 scripts/fetch_labuladong_en.py
--------------------------------
+------------------------------
 Fetch the English versions of labuladong articles.
 
-Chinese URL pattern: https://labuladong.online/zh/algo/[section]/[article]/
-English URL pattern: https://labuladong.online/algo/en/[section]/[article]/
+Chinese URL : https://labuladong.online/zh/algo/[section]/[article]/
+English URL : https://labuladong.online/algo/en/[section]/[article]/
 
-Saves to: public/labuladong/en/[section]/[article].md
+Output: public/labuladong/en/<section>/<article>.md
+
+Usage
+-----
+    python scripts/fetch_labuladong_en.py              # skip existing files
+    python scripts/fetch_labuladong_en.py --force      # re-crawl & overwrite all
+    python scripts/fetch_labuladong_en.py --dry-run    # print URLs only
 """
 
-import sys, io, os, re, time, textwrap, urllib.request
+import sys, io, time, urllib.request
 from pathlib import Path
 
 if sys.platform == "win32":
@@ -20,47 +26,39 @@ try:
 except ImportError:
     sys.exit("pip install beautifulsoup4")
 try:
-    import html2text
+    import html2text  # noqa
 except ImportError:
     sys.exit("pip install html2text")
 
-BASE_URL = "https://labuladong.online"
-EN_PREFIX = "/algo/en"
+sys.path.insert(0, str(Path(__file__).parent))
+from _extractor import extract_article  # noqa
 
-SCRIPT_DIR = Path(__file__).parent
+
+# ── Configuration ─────────────────────────────────────────────────────────────
+
+BASE_URL    = "https://labuladong.online"
+EN_PREFIX   = "/algo/en"
+SCRIPT_DIR  = Path(__file__).parent
 OUTPUT_ROOT = SCRIPT_DIR.parent / "public" / "labuladong" / "en"
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36"
+    ),
     "Accept-Language": "en-US,en;q=0.9",
 }
-DELAY = 1.0
+DELAY   = 1.0
 TIMEOUT = 20
 
-# ── Convert a Chinese path to an English path ────────────────────────────────
-# /zh/algo/essential-technique/algorithm-summary/  →  /algo/en/essential-technique/algorithm-summary/
 
-ZH_SECTIONS = [
-    "intro", "programming-language-basic", "data-structure-basic",
-    "essential-technique", "data-structure", "practice-in-action",
-    "frequency-interview", "dynamic-programming", "problem-set",
-    "design-pattern", "computer-science", "other-skills", "game",
-    "changelog",
-]
+# ── Convert Chinese path → English path ──────────────────────────────────────
 
-def zh_to_en_path(zh_path: str) -> str:
-    # /zh/algo/section/article/ → /algo/en/section/article/
-    rel = zh_path.removeprefix("/zh/algo/")
-    return f"/algo/en/{rel}"
+def zh_to_en(zh_path: str) -> str:
+    """/zh/algo/section/article/ → /algo/en/section/article/"""
+    return "/algo/en/" + zh_path.removeprefix("/zh/algo/")
 
-def en_path_to_file(en_path: str) -> Path:
-    rel = en_path.removeprefix("/algo/en/").strip("/")
-    parts = rel.split("/")
-    if len(parts) == 1:
-        return OUTPUT_ROOT / f"{parts[0]}.md"
-    return OUTPUT_ROOT / parts[0] / f"{parts[1]}.md"
 
-# Seed: same as Chinese list but converted
 ZH_SEED = [
     "/zh/algo/home/",
     "/zh/algo/intro/quick-learning-plan/",
@@ -239,10 +237,20 @@ ZH_SEED = [
     "/zh/algo/other-skills/lsm-tree/",
 ]
 
-EN_SEED = [zh_to_en_path(p) for p in ZH_SEED]
+EN_SEED = [zh_to_en(p) for p in ZH_SEED]
 
 
-def fetch_html(url: str):
+# ── Helpers ──────────────────────────────────────────────────────────────────
+
+def en_path_to_file(en_path: str) -> Path:
+    rel   = en_path.removeprefix(EN_PREFIX + "/").strip("/")
+    parts = rel.split("/")
+    if len(parts) == 1:
+        return OUTPUT_ROOT / f"{parts[0]}.md"
+    return OUTPUT_ROOT / parts[0] / f"{parts[1]}.md"
+
+
+def fetch_html(url: str) -> str | None:
     req = urllib.request.Request(url, headers=HEADERS)
     try:
         with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
@@ -252,70 +260,45 @@ def fetch_html(url: str):
         return None
 
 
-def extract_article(html: str, url: str) -> str:
-    soup = BeautifulSoup(html, "html.parser")
-    for tag in soup.select("script,style,noscript,nav,header,footer,.ads,[class*='navigation'],[class*='paywall'],[class*='vip']"):
-        tag.decompose()
-    content = None
-    for sel in ["article", "main", "[class*='article']", "[class*='content']", "[class*='prose']"]:
-        found = soup.select_one(sel)
-        if found and len(found.get_text(strip=True)) > 200:
-            content = found
-            break
-    if content is None:
-        content = soup.body or soup
-    h = html2text.HTML2Text()
-    h.ignore_links = False; h.body_width = 0; h.unicode_snob = True; h.skip_internal_links = True
-    md = h.handle(str(content))
-    md = re.sub(r"\n{4,}", "\n\n\n", md)
-    title_tag = soup.find("title")
-    title = title_tag.get_text(strip=True).split("|")[0].strip() if title_tag else "Untitled"
-    header = textwrap.dedent(f"""\
-        # {title}
-
-        > Source: {BASE_URL}{url}
-        > Archived: labuladong.online
-
-        ---
-
-    """)
-    return header + md.strip() + "\n"
-
+# ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
     dry_run = "--dry-run" in sys.argv
-    visited, queue = set(), list(EN_SEED)
+    force   = "--force"   in sys.argv
+
+    if dry_run:
+        print(f"\nDRY RUN — {len(EN_SEED)} English URLs\n")
+        for p in EN_SEED:
+            print(f"  {p}  ->  {en_path_to_file(p)}")
+        return
+
+    visited: set[str] = set()
+    queue:   list[str] = list(EN_SEED)
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
     saved = skipped = errors = 0
 
-    print(f"\n{'='*55}\n  labuladong English content archiver\n  Output: {OUTPUT_ROOT}\n  URLs: {len(queue)}\n{'='*55}\n")
+    print(f"\n{'='*58}")
+    print(f"  labuladong English archiver  (v2 — improved extraction)")
+    print(f"  Output : {OUTPUT_ROOT}")
+    print(f"  Seeds  : {len(queue)}   force={force}")
+    print(f"{'='*58}\n")
 
     idx = 0
     while queue:
         path = queue.pop(0)
-        if path in visited: continue
+        if path in visited:
+            continue
         visited.add(path)
         idx += 1
 
-        url = BASE_URL + path
-        # Convert English path → output file path
-        # /algo/en/section/article/ → section/article.md
-        rel = path.removeprefix("/algo/en/").strip("/")
-        parts = rel.split("/")
-        if len(parts) >= 2:
-            out_path = OUTPUT_ROOT / parts[0] / f"{parts[1]}.md"
-        else:
-            out_path = OUTPUT_ROOT / f"{parts[0]}.md"
+        url      = BASE_URL + path
+        out_path = en_path_to_file(path)
 
         print(f"[{idx:>3}] {path}")
 
-        if out_path.exists():
+        if out_path.exists() and not force:
             print(f"       -> already exists, skipping")
             skipped += 1
-            continue
-
-        if dry_run:
-            print(f"       -> {out_path}")
             continue
 
         html = fetch_html(url)
@@ -325,7 +308,7 @@ def main():
             continue
 
         try:
-            md = extract_article(html, path)
+            md = extract_article(html, path, archive_label="labuladong.online")
             out_path.parent.mkdir(parents=True, exist_ok=True)
             out_path.write_text(md, encoding="utf-8")
             print(f"       -> saved {out_path.name} ({len(md)//1024}KB)")
@@ -336,7 +319,9 @@ def main():
 
         time.sleep(DELAY)
 
-    print(f"\n{'='*55}\n  Done! Saved:{saved}  Skipped:{skipped}  Errors:{errors}\n{'='*55}\n")
+    print(f"\n{'='*58}")
+    print(f"  Done!  Saved:{saved}  Skipped:{skipped}  Errors:{errors}")
+    print(f"{'='*58}\n")
 
 
 if __name__ == "__main__":

@@ -20,11 +20,6 @@ LeetCode| 力扣| 难度
 
   * [用数组加强哈希表](</zh/algo/data-structure-basic/hashtable-with-array/>)
 
-
 本文讲两道比较有技巧性的数据结构设计题，都是和随机读取元素相关的，我在前文 [谈谈游戏中的随机算法](</zh/algo/frequency-interview/random-algorithm/>) 也写过类似的问题。
 
 这些问题的一个技巧点在于，如何结合哈希表和数组，使得数组的删除操作时间复杂度也变成 O(1)？下面来一道道看。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

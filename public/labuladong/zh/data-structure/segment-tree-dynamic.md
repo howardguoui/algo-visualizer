@@ -19,11 +19,6 @@ LeetCode| 力扣| 难度
 
   * [线段树基本实现](</zh/algo/data-structure/segment-tree-implement/>)
 
-
 [线段树基本实现](</zh/algo/data-structure/segment-tree-implement/>) 中用数组和链表分别实现了线段树，文末留了两个优化点，分别是区间更新问题和稀疏数据的内存优化问题。
 
 本文将实现一个动态线段树 `DynamicSegmentTree`，利用「动态开点技术」，优化稀疏数据的内存占用问题。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

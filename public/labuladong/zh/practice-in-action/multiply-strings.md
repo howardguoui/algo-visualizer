@@ -24,16 +24,18 @@ LeetCode| 力扣| 难度
 **注意：** 不能使用任何内置的 BigInteger 库或直接将输入转换为整数。
 
 **示例 1:**
-    
-    
-    **输入:** num1 = "2", num2 = "3"
-    **输出:** "6"
+
+```
+输入: num1 = "2", num2 = "3"
+输出: "6"
+``` 
 
 **示例 2:**
-    
-    
-    **输入:** num1 = "123", num2 = "456"
-    **输出:** "56088"
+
+```
+输入: num1 = "123", num2 = "456"
+输出: "56088"
+``` 
 
 **提示：**
 
@@ -41,14 +43,13 @@ LeetCode| 力扣| 难度
   * `num1` 和 `num2` 只能由数字组成。
   * `num1` 和 `num2` 都不包含任何前导零，除了数字0本身。
 
-
 题目来源：[力扣 43. 字符串相乘](<https://leetcode.cn/problems/multiply-strings/>)。
 
 需要注意的是，`num1` 和 `num2` 可以非常长，所以不可以把他们直接转成整型然后运算，唯一的思路就是模仿我们手算乘法。
 
 比如说我们手算 `123 × 45`，应该会这样计算：
 
-![](/images/algo/string-multiply/1.jpg)
+![diagram](https://labuladong.online/images/algo/string-multiply/1.jpg)
 
 计算 `123 × 5`，再计算 `123 × 4`，最后错一位相加。这个流程恐怕小学生都可以熟练完成，但是你是否能**把这个运算过程进一步机械化** ，写成一套算法指令让没有任何智商的计算机来执行呢？
 
@@ -56,56 +57,55 @@ LeetCode| 力扣| 难度
 
 首先，我们这种手算方式还是太「高级」了，我们要再「低级」一点，`123 × 5` 和 `123 × 4` 的过程还可以进一步分解，最后再相加：
 
-![](/images/algo/string-multiply/2.jpg)
+![diagram](https://labuladong.online/images/algo/string-multiply/2.jpg)
 
 现在 `123` 并不大，如果是个很大的数字的话，是无法直接计算乘积的。我们可以用一个数组在底下接收相加结果：
 
-![](/images/algo/string-multiply/3.jpg)
+![diagram](https://labuladong.online/images/algo/string-multiply/3.jpg)
 
 整个计算过程大概是这样，**有两个指针`i，j` 在 `num1` 和 `num2` 上游走，计算乘积，同时将乘积叠加到 `res` 的正确位置**，如下 GIF 图所示：
 
-![](/images/algo/string-multiply/4.gif)
+![diagram](https://labuladong.online/images/algo/string-multiply/4.gif)
 
 现在还有一个关键问题，如何将乘积叠加到 `res` 的正确位置，或者说，如何通过 `i，j` 计算 `res` 的对应索引呢？
 
 其实，细心观察之后就发现，**`num1[i]` 和 `num2[j]` 的乘积对应的就是 `res[i+j]` 和 `res[i+j+1]` 这两个位置**。
 
-![](/images/algo/string-multiply/6.jpg)
+![diagram](https://labuladong.online/images/algo/string-multiply/6.jpg)
 
 明白了这一点，就可以用代码模仿出这个计算过程了：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public String multiply(String num1, String num2) {
-            int m = num1.length(), n = num2.length();
-            // 结果最多为 m + n 位数
-            int[] res = new int[m + n];
-            // 从个位数开始逐位相乘
-            for (int i = m - 1; i >= 0; i--) {
-                for (int j = n - 1; j >= 0; j--) {
-                    int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
-                    // 乘积在 res 对应的索引位置
-                    int p1 = i + j, p2 = i + j + 1;
-                    // 叠加到 res 上
-                    int sum = mul + res[p2];
-                    res[p2] = sum % 10;
-                    res[p1] += sum / 10;
-                }
+```java
+class Solution {
+    public String multiply(String num1, String num2) {
+        int m = num1.length(), n = num2.length();
+        // 结果最多为 m + n 位数
+        int[] res = new int[m + n];
+        // 从个位数开始逐位相乘
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                // 乘积在 res 对应的索引位置
+                int p1 = i + j, p2 = i + j + 1;
+                // 叠加到 res 上
+                int sum = mul + res[p2];
+                res[p2] = sum % 10;
+                res[p1] += sum / 10;
             }
-            // 结果前缀可能存的 0（未使用的位）
-            int i = 0;
-            while (i < res.length && res[i] == 0)
-                i++;
-            // 将计算结果转化成字符串
-            StringBuilder str = new StringBuilder();
-            for (; i < res.length; i++)
-                str.append(res[i]);
-            
-            return str.length() == 0 ? "0" : str.toString();
         }
+        // 结果前缀可能存的 0（未使用的位）
+        int i = 0;
+        while (i < res.length && res[i] == 0)
+            i++;
+        // 将计算结果转化成字符串
+        StringBuilder str = new StringBuilder();
+        for (; i < res.length; i++)
+            str.append(res[i]);
+        
+        return str.length() == 0 ? "0" : str.toString();
     }
+}
+``` 
 
 至此，字符串乘法算法就完成了。
 
@@ -114,7 +114,3 @@ CC++GoJavaJavaScriptPython
 俗话教育我们，不要陷入思维定式，不要程序化，要发散思维，要创新。但我觉得程序化并不是坏事，可以大幅提高效率，减小失误率。算法不就是一套程序化的思维吗，只有程序化才能让计算机帮助我们解决复杂问题呀！
 
 也许算法就是一种**寻找思维定式的思维** 吧，希望本文对你有帮助。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

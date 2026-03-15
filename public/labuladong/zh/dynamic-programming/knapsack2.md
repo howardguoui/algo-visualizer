@@ -20,12 +20,11 @@ LeetCode| 力扣| 难度
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
   * [0-1 背包问题详解](</zh/algo/dynamic-programming/knapsack1/>)
 
-
 上篇文章 [经典动态规划：0-1 背包问题](</zh/algo/dynamic-programming/knapsack1/>) 详解了通用的 0-1 背包问题，今天来看看背包问题的思想能够如何运用到其他算法题目。
 
 **读者在阅读本文之前务必读懂前文[经典动态规划：0-1 背包问题](</zh/algo/dynamic-programming/knapsack1/>) 中讲的套路，因为本文就是按照背包问题的解题模板来讲解的**。
 
-## ¶一、问题分析
+## 一、问题分析
 
 看一下力扣第 416 题「[分割等和子集](<https://leetcode.cn/problems/partition-equal-subset-sum/>)」：
 
@@ -33,12 +32,7 @@ LeetCode| 力扣| 难度
 
 算法的函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 输入一个集合，返回是否能够分割成和相等的两个子集
-    boolean canPartition(int[] nums);
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
+```java
+// 输入一个集合，返回是否能够分割成和相等的两个子集
+boolean canPartition(int[] nums);
+```

@@ -29,7 +29,6 @@ LeetCode| 力扣| 难度
   * [二叉树系列算法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
   * [回溯算法核心框架](</zh/algo/essential-technique/backtrack-framework/>)
 
-
 虽然排列、组合、子集系列问题是高中就学过的，但如果想编写算法解决它们，还是非常考验计算机思维的，本文就讲讲编程解决这几个问题的核心思路，以后再有什么变体，你也能手到擒来，以不变应万变。
 
 无论是排列、组合还是子集问题，简单说无非就是让你从序列 `nums` 中以给定规则取若干元素，主要有以下几种变体：
@@ -56,9 +55,9 @@ LeetCode| 力扣| 难度
 
 具体来说，你需要先阅读并理解前文 [回溯算法核心套路](</zh/algo/essential-technique/backtrack-framework/>)，然后记住如下子集问题和排列问题的回溯树，就可以解决所有排列组合子集相关的问题：
 
-![](/images/algo/permutation/1.jpeg)
+![diagram](https://labuladong.online/images/algo/permutation/1.jpeg)
 
-![](/images/algo/permutation/2.jpeg)
+![diagram](https://labuladong.online/images/algo/permutation/2.jpeg)
 
 为什么只要记住这两种树形结构就能解决所有相关问题呢？
 
@@ -69,7 +68,3 @@ LeetCode| 力扣| 难度
 提示
 
 另外，有些读者之前看过的排列/子集/组合的解法代码可能和我在本文介绍的代码不同。这是因为回溯算法有两种穷举视角，我会在后文 [球盒模型：回溯算法穷举的两种视角](</zh/algo/practice-in-action/two-views-of-backtrack/>) 手把手给你讲清楚。现在还不适合直接跟你讲那些解法，你照着我的思路学习即可。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

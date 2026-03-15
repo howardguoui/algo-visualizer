@@ -18,12 +18,7 @@
   * [用链表加强哈希表](</zh/algo/data-structure-basic/hashtable-with-linked-list/>)
   * [用数组加强哈希表](</zh/algo/data-structure-basic/hashtable-with-array/>)
 
-
 设计类题目都是让你把基本数据结构进行组合，去解决某些具体场景中的问题。我们先来看几道比较简单但比较有意思的题目吧。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -36,6 +31,5 @@ Loading comments...
   * 895\. 最大频率栈
   * 设计迭代器
   * 284\. 窥视迭代器
-
 
 AI 助教

@@ -19,14 +19,13 @@ LeetCode| 力扣| 难度
 
   * [二叉树的递归/层序遍历](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
 
-
 一句话总结
 
 一个视角是指「树」的视角，两种思维模式是指「遍历」和「分解问题」两种思维模式。
 
 视频讲解
 
-![Video Cover](/images/algo/vod/recursion.jpg)
+![Video Cover](https://labuladong.online/images/algo/vod/recursion.jpg)
 
 本文给你讲清楚：
 
@@ -36,7 +35,7 @@ LeetCode| 力扣| 难度
 
 本文的主要目的是借助 [可视化面板](</zh/algo/intro/visualize/>) 给你讲清楚正确的思维方法，而不会深入探讨代码细节。本站后面有专门的章节讲解各种递归算法以及习题，都遵循文本讲解的思维模式，有了本文的铺垫，学习起来将事半功倍。
 
-## ¶从树的角度理解递归
+## 从树的角度理解递归
 
 对于初学者，递归算法确实不容易理解，我刚学算法时也不例外。
 
@@ -50,7 +49,7 @@ LeetCode| 力扣| 难度
 
 再次强调，本文的重点是思维方法而不是代码，所以不必太纠结代码细节。请结合可视化面板，重点理解「递归树」的抽象，以及「遍历」和「分解问题」这两种思维模式的区别。
 
-### ¶斐波那契数列
+### 斐波那契数列
 
 首先来看一个既简单又经典的问题：斐波那契数列。
 
@@ -63,19 +62,21 @@ fib(n)={0n=01n=1fib(n−1)+fib(n−2)n>1fib(n) = \begin{cases} 0 & n = 0 \\\ 1 &
 fib(4)=fib(3)+fib(2)=(fib(2)+fib(1))+(fib(1)+fib(0))=((fib(1)+fib(0))+fib(1))+(fib(1)+fib(0))=((1+0)+1)+(1+0)=3\begin{aligned} & fib(4) \\\ & = fib(3) + fib(2) \\\ & = (fib(2) + fib(1)) + (fib(1) + fib(0)) \\\ & = ((fib(1) + fib(0)) + fib(1)) + (fib(1) + fib(0)) \\\ & = ((1 + 0) + 1) + (1 + 0) = 3 \end{aligned}​fib(4)=fib(3)+fib(2)=(fib(2)+fib(1))+(fib(1)+fib(0))=((fib(1)+fib(0))+fib(1))+(fib(1)+fib(0))=((1+0)+1)+(1+0)=3​
 
 那么现在请你写一个函数，输入一个整数 nnn，返回斐波那契数列 fib(n)fib(n)fib(n) 的值：
-    
-    
-    int fib(int n);
+
+```
+int fib(int n);
+``` 
 
 其实直接把斐波那契数列的数学定义翻译成代码，就可以得到一个递归解法：
-    
-    
-    int fib(int n) {
-        if (n < 2) {
-            return n;
-        }
-        return fib(n - 1) + fib(n - 2);
+
+```
+int fib(int n) {
+    if (n < 2) {
+        return n;
     }
+    return fib(n - 1) + fib(n - 2);
+}
+``` 
 
 当然，这个解法的效率并不高，在 [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>) 中，我们会继续优化，这里暂且不优化，就看这个递归解法。
 
@@ -114,38 +115,40 @@ fib(4)=fib(3)+fib(2)=(fib(2)+fib(1))+(fib(1)+fib(0))=((fib(1)+fib(0))+fib(1))+(f
 你可以对比上面可视化面版的递归树，就很容易理解这个过程了。一个节点要等待左子节点计算完成，再等待右子节点计算完成，最后把两个子节点的值相加，得到当前节点的值，正符合 `fib(n) = fib(n-1) + fib(n-2)` 的定义。
 
 从树结构的角度，是不是很容易理解递归的计算过程？你看这个 `fib` 函数和二叉树的遍历函数像不像？所以这个函数抽象出来的递归树就是一棵二叉树：
-    
-    
-    // 斐波那契数列
-    int fib(int n) {
-        if (n < 2) {
-            return n;
-        }
-        return fib(n - 1)
-             + fib(n - 2);
+
+```
+// 斐波那契数列
+int fib(int n) {
+    if (n < 2) {
+        return n;
     }
-    
-    // 二叉树遍历函数
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        traverse(root.left);
-        traverse(root.right);
+    return fib(n - 1)
+         + fib(n - 2);
+}
+
+// 二叉树遍历函数
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
     }
+    traverse(root.left);
+    traverse(root.right);
+}
+``` 
 
 接下来，我们再看一个稍微复杂一些的递归算法：全排列问题。
 
-### ¶全排列问题
+### 全排列问题
 
 现在给你输入一个 `nums` 数组，其中有不重复的 `n` 个元素，请你返回这些元素的所有排列方式。
 
 比方说输入 `nums = [1,2,3]`，那么算法返回如下 6 种排列：
-    
-    
-    [1,2,3], [1,3,2],
-    [2,1,3], [2,3,1],
-    [3,1,2], [3,2,1]
+
+```
+[1,2,3], [1,3,2],
+[2,1,3], [2,3,1],
+[3,1,2], [3,2,1]
+``` 
 
 排列组合问题可以有多种变体，我们将在 [回溯算法秒杀所有排列组合子集问题](</zh/algo/essential-technique/permutation-combination-subset-all-in-one/>) 中详细探讨，本文不讲代码实现，仅借助可视化面板来理解全排列算法的执行过程。
 
@@ -181,78 +184,78 @@ fib(4)=fib(3)+fib(2)=(fib(2)+fib(1))+(fib(1)+fib(0))=((fib(1)+fib(0))+fib(1))+(f
 
 目前不需要你彻底理解代码，只需留意代码中的递归部分：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-    
-        List<List<Integer>> res = new LinkedList<>();
-    
-        // 主函数，输入一组不重复的数字，返回它们的全排列
-        List<List<Integer>> permute(int[] nums) {
-            // 记录「路径」
-            LinkedList<Integer> track = new LinkedList<>();
-            // 「路径」中的元素会被标记为 true，避免重复使用
-            boolean[] used = new boolean[nums.length];
-            
-            backtrack(nums, track, used);
-            return res;
-        }
-    
-        // 路径：记录在 track 中
-        // 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
-        // 结束条件：nums 中的元素全都在 track 中出现
-        void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
-            // 触发结束条件
-            if (track.size() == nums.length) {
-                res.add(new LinkedList(track));
-                return;
-            }
-    
-            for (int i = 0; i < nums.length; i++) {
-                // 排除不合法的选择
-                if (used[i]) { ![](/images/algo/backtracking/6.jpg)
-                    // nums[i] 已经在 track 中，跳过
-                    continue;
-                }
-                // 做选择
-                track.add(nums[i]);
-                used[i] = true;
-                // 进入下一层决策树
-                backtrack(nums, track, used);
-                // 取消选择
-                track.removeLast();
-                used[i] = false;
-            }
-        }
+```java
+class Solution {
+
+    List<List<Integer>> res = new LinkedList<>();
+
+    // 主函数，输入一组不重复的数字，返回它们的全排列
+    List<List<Integer>> permute(int[] nums) {
+        // 记录「路径」
+        LinkedList<Integer> track = new LinkedList<>();
+        // 「路径」中的元素会被标记为 true，避免重复使用
+        boolean[] used = new boolean[nums.length];
+        
+        backtrack(nums, track, used);
+        return res;
     }
 
-抽出递归部分，应该能看出这个算法可以抽象成一棵多叉树：
-    
-    
-    // 全排列算法主要结构
-    void backtrack(int[] nums, List<Integer> track) {
+    // 路径：记录在 track 中
+    // 选择列表：nums 中不存在于 track 的那些元素（used[i] 为 false）
+    // 结束条件：nums 中的元素全都在 track 中出现
+    void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
+        // 触发结束条件
         if (track.size() == nums.length) {
+            res.add(new LinkedList(track));
             return;
         }
+
         for (int i = 0; i < nums.length; i++) {
-            backtrack(nums, track);
+            // 排除不合法的选择
+            if (used[i]) { 
+                // nums[i] 已经在 track 中，跳过
+                continue;
+            }
+            // 做选择
+            track.add(nums[i]);
+            used[i] = true;
+            // 进入下一层决策树
+            backtrack(nums, track, used);
+            // 取消选择
+            track.removeLast();
+            used[i] = false;
         }
     }
-    
-    // 多叉树遍历函数
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        for (TreeNode child : root.children) {
-            traverse(child);
-        }
+}
+``` 
+
+抽出递归部分，应该能看出这个算法可以抽象成一棵多叉树：
+
+```
+// 全排列算法主要结构
+void backtrack(int[] nums, List<Integer> track) {
+    if (track.size() == nums.length) {
+        return;
     }
+    for (int i = 0; i < nums.length; i++) {
+        backtrack(nums, track);
+    }
+}
+
+// 多叉树遍历函数
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
+    }
+    for (TreeNode child : root.children) {
+        traverse(child);
+    }
+}
+``` 
 
 **你应该已经感觉到了，「树」结构是一个非常有效的数据结构。把问题抽象成树结构，然后用代码去遍历这棵树，就是递归的本质** 。
 
-## ¶编写递归的两种思维模式
+## 编写递归的两种思维模式
 
 现在你已经知道了一切递归算法都要抽象成树结构来理解，接下来要更进一步：如果你想用递归算法来求解一个问题，应该怎么写代码呢？
 
@@ -262,7 +265,7 @@ CC++GoJavaJavaScriptPython
 
 上面讲的两道例题中，它们虽然都抽象成了一棵递归树，但斐波那契数列使用的是「分解问题」的思维模式求解，全排列使用的是「遍历」的思维模式求解。
 
-### ¶分解问题的思维模式
+### 分解问题的思维模式
 
 你看斐波那契数列问题，递归树上的每个节点，其实就是一个子问题的解。`fib(5)` 是怎么算出来的？是根节点 `fib(5)` 去问左右子节点 `fib(4)` 和 `fib(3)` 的值，然后相加得到的：
 
@@ -277,20 +280,21 @@ CC++GoJavaJavaScriptPython
 这样你才能利用这个定义来计算子问题，反推原问题的解。
 
 比如斐波那契数列的递归函数 `fib` 就有一个清晰的定义，且算法就在利用这个定义：
-    
-    
-    // 定义：输入一个非负整数 n，返回斐波那契数列中的第 n 个数
-    int fib(int n) {
-        if (n < 2) {
-            return n;
-        }
-        // 利用定义，计算前两个斐波那契数（子问题）
-        int fib_n_1 = fib(n - 1);
-        int fib_n_2 = fib(n - 2);
-    
-        // 通过子问题的解，计算原问题的解
-        return fib_n_1 + fib_n_2;
+
+```
+// 定义：输入一个非负整数 n，返回斐波那契数列中的第 n 个数
+int fib(int n) {
+    if (n < 2) {
+        return n;
     }
+    // 利用定义，计算前两个斐波那契数（子问题）
+    int fib_n_1 = fib(n - 1);
+    int fib_n_2 = fib(n - 2);
+
+    // 通过子问题的解，计算原问题的解
+    return fib_n_1 + fib_n_2;
+}
+``` 
 
 再来一个简单的例题吧，比如计算二叉树的最大深度，力扣第 104 题「[二叉树的最大深度](<https://leetcode.cn/problems/maximum-depth-of-binary-tree/>)」：
 
@@ -302,25 +306,24 @@ CC++GoJavaJavaScriptPython
 
 **示例 1：**
 
-![](/images/lc/uploads/2020/11/26/tmp-tree.jpg)
-    
-    
-    **输入：** root = [3,9,20,null,null,15,7]
-    **输出：** 3
-    
+![diagram](https://labuladong.online/images/lc/uploads/2020/11/26/tmp-tree.jpg)
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：3
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** root = [1,null,2]
-    **输出：** 2
-    
+
+```
+输入：root = [1,null,2]
+输出：2
+``` 
 
 **提示：**
 
   * 树中节点的数量在 `[0, 104]` 区间内。
   * `-100 <= Node.val <= 100`
-
 
 题目来源：[力扣 104. 二叉树的最大深度](<https://leetcode.cn/problems/maximum-depth-of-binary-tree/>)。
 
@@ -332,26 +335,25 @@ CC++GoJavaJavaScriptPython
 
 maxDepth(root)={0if root=nullmax(maxDepth(root.left),maxDepth(root.right))+1otherwisemaxDepth(root) = \begin{cases} 0 & \text{if } root = null \\\ max(maxDepth(root.left), maxDepth(root.right)) + 1 & \text{otherwise} \end{cases}maxDepth(root)={0max(maxDepth(root.left),maxDepth(root.right))+1​if root=nullotherwise​
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 分解问题的思路
-    class Solution {
-        // 定义：输入一个节点，返回以该节点为根的二叉树的最大深度
-        public int maxDepth(TreeNode root) {
-            if (root == null) {
-                return 0;
-            }
-            // 利用定义，计算左右子树的最大深度
-            int leftMax = maxDepth(root.left);
-            int rightMax = maxDepth(root.right);
-    
-            // 根据左右子树的最大深度推出原二叉树的最大深度
-            // 整棵树的最大深度等于左右子树的最大深度取最大值，
-            // 然后再加上根节点自己
-            return 1 + Math.max(leftMax, rightMax);
+```java
+// 分解问题的思路
+class Solution {
+    // 定义：输入一个节点，返回以该节点为根的二叉树的最大深度
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
         }
+        // 利用定义，计算左右子树的最大深度
+        int leftMax = maxDepth(root.left);
+        int rightMax = maxDepth(root.right);
+
+        // 根据左右子树的最大深度推出原二叉树的最大深度
+        // 整棵树的最大深度等于左右子树的最大深度取最大值，
+        // 然后再加上根节点自己
+        return 1 + Math.max(leftMax, rightMax);
     }
+}
+``` 
 
 对于这道题，我也配了一个可视化面板来展现递归函数的执行过程，其中橙色的是真实二叉树结构，粉色的是抽象出来的递归树结构，其中父节点的值是左右子节点的较大值加一。
 
@@ -361,7 +363,7 @@ CC++GoJavaJavaScriptPython
 
 现在你应该理解了什么叫做「分解问题」的思路了，下面来看另一种编写递归算法的思路。
 
-### ¶遍历的思维模式
+### 遍历的思维模式
 
 再结合可视化面板看全排列问题：
 
@@ -374,72 +376,72 @@ CC++GoJavaJavaScriptPython
 **如果你想用「遍历」的思维模式来写递归算法，那么你需要一个无返回值的遍历函数，在遍历的过程中收集结果** 。
 
 比如全排列问题，目前你不需要完全理解全排列的代码，只需注意 `backtrack` 函数没有返回值，也没有一个明确的定义，它就类似 for 循环一样，单纯起到遍历递归树，收集叶子节点上的结果的作用：
-    
-    
-    // 全排列算法主要结构
-    
-    // 全局变量，存储 backtrack 函数的遍历状态
-    List<List<Integer>> res = new LinkedList<>();
-    List<Integer> track = new LinkedList<>();
-    
-    // 递归树遍历函数
-    void backtrack(int[] nums, List<Integer> track) {
-        if (track.size() == nums.length) {
-            // 到达叶子节点，收集结果
-            res.add(new LinkedList<>(track));
-            return;
-        }
-        for (int i = 0; i < nums.length; i++) {
-            // 做选择
-            track.add(nums[i]);
-    
-            backtrack(nums, track);
-    
-            // 撤销选择
-            track.removeLast();
-        }
+
+```
+// 全排列算法主要结构
+
+// 全局变量，存储 backtrack 函数的遍历状态
+List<List<Integer>> res = new LinkedList<>();
+List<Integer> track = new LinkedList<>();
+
+// 递归树遍历函数
+void backtrack(int[] nums, List<Integer> track) {
+    if (track.size() == nums.length) {
+        // 到达叶子节点，收集结果
+        res.add(new LinkedList<>(track));
+        return;
     }
+    for (int i = 0; i < nums.length; i++) {
+        // 做选择
+        track.add(nums[i]);
+
+        backtrack(nums, track);
+
+        // 撤销选择
+        track.removeLast();
+    }
+}
+``` 
 
 有没有感觉出「遍历」和「分解问题」两种思维模式的区别？
 
 再来看力扣第 104 题「二叉树的最大深度」，我们也可以用「遍历」的思维模式来写解法，用标准的二叉树遍历函数 `traverse` 来遍历整棵树，在遍历的过程更新最大深度，这样当遍历完所有节点时，必然可以求出整棵树的最大深度：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 遍历的思路
-    class Solution {
-    
-        // 记录遍历到的节点的深度
-        int depth = 0;
-    
-        // 记录最大深度
-        int res = 0;
-    
-        public int maxDepth(TreeNode root) {
-            traverse(root);
-            return res;
-        }
-    
-        // 遍历二叉树
-        void traverse(TreeNode root) {
-            if (root == null) {
-                return;
-            }
-    
-            // 前序遍历位置（进入节点）增加深度
-            depth++;
-            // 遍历到叶子节点时记录最大深度
-            if (root.left == null && root.right == null) {
-                res = Math.max(res, depth);
-            }
-            traverse(root.left);
-            traverse(root.right);
-    
-            // 后序遍历位置（离开节点）减少深度
-            depth--;
-        }
+```java
+// 遍历的思路
+class Solution {
+
+    // 记录遍历到的节点的深度
+    int depth = 0;
+
+    // 记录最大深度
+    int res = 0;
+
+    public int maxDepth(TreeNode root) {
+        traverse(root);
+        return res;
     }
+
+    // 遍历二叉树
+    void traverse(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        // 前序遍历位置（进入节点）增加深度
+        depth++;
+        // 遍历到叶子节点时记录最大深度
+        if (root.left == null && root.right == null) {
+            res = Math.max(res, depth);
+        }
+        traverse(root.left);
+        traverse(root.right);
+
+        // 后序遍历位置（离开节点）减少深度
+        depth--;
+    }
+}
+``` 
 
 对于这道题，我也配了一个可视化面板来展现递归函数的执行过程，其中橙色的是真实二叉树结构，粉色的是抽象出来的递归树结构。其实 `traverse` 就是一个普通的二叉树遍历函数，只不过它会在遍历的过程中记录当前深度，并在遍历到叶子节点时更新最大深度。
 
@@ -447,7 +449,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-## ¶总结
+## 总结
 
 本文先用斐波那契数列和全排列问题的递归可视化，论证一定要从「树」的角度理解递归算法。
 
@@ -466,7 +468,3 @@ CC++GoJavaJavaScriptPython
 其实，「分解问题」的思维模式就对应着后面要讲解的 [动态规划算法](</zh/algo/essential-technique/dynamic-programming-framework/>) 和 [分治算法](</zh/algo/essential-technique/divide-and-conquer/>)，「遍历」的思维模式就对应着后面要讲解的 [DFS/回溯算法](</zh/algo/essential-technique/backtrack-framework/>)。
 
 在 [二叉树习题章节](</zh/algo/intro/binary-tree-practice/>)，我专门把所有二叉树相关的题目都用这两种思维模式来解一遍。你只要把二叉树玩明白了，这些递归算法就都玩明白了，真的很简单。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

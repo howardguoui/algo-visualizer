@@ -11,14 +11,13 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[104\. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/)|   
+[104\. Maximum Depth of Binary Tree](<https://leetcode.com/problems/maximum-depth-of-binary-tree/>)|   
   
 Prerequisite Knowledge
 
 Before reading this article, you should first learn:
 
-  * [Binary Tree Recursion/Level Order Traversal](/en/algo/data-structure-basic/binary-tree-traverse-basic/)
-
+  * [Binary Tree Recursion/Level Order Traversal](</en/algo/data-structure-basic/binary-tree-traverse-basic/>)
 
 Summary in One Sentence
 
@@ -30,10 +29,9 @@ This article clearly explains:
 
   2. There are two thinking modes for writing recursive algorithms: one is to get the answer by "traversing" the tree, and the other is to get the answer by "decomposing the problem."
 
+The main purpose of this article is to clarify the correct thinking methods with the help of the [Visualization Panel](</en/algo/intro/visualize/>) without delving into code details. Later sections on this site have dedicated chapters explaining various recursive algorithms and exercises, all following the thinking modes explained in the text, making learning much more effective with the foundation laid by this article.
 
-The main purpose of this article is to clarify the correct thinking methods with the help of the [Visualization Panel](/en/algo/intro/visualize/) without delving into code details. Later sections on this site have dedicated chapters explaining various recursive algorithms and exercises, all following the thinking modes explained in the text, making learning much more effective with the foundation laid by this article.
-
-## ¶Understanding Recursion from the Tree Perspective
+## Understanding Recursion from the Tree Perspective
 
 For beginners, recursive algorithms are indeed not easy to understand, and I was no exception when I first learned algorithms.
 
@@ -47,7 +45,7 @@ Below, I will use the Fibonacci tree and permutation problems, two simple classi
 
 Again, the focus of this article is on thinking methods rather than code, so don't get too caught up in code details. Please use the visualization panel to focus on understanding the abstraction of the "recursion tree" and the difference between the "traversal" and "problem decomposition" thinking modes.
 
-### ¶Fibonacci Sequence
+### Fibonacci Sequence
 
 Let's first look at a problem that is both simple and classic: the Fibonacci sequence.
 
@@ -60,21 +58,23 @@ For example:
 fib(4)=fib(3)+fib(2)=(fib(2)+fib(1))+(fib(1)+fib(0))=((fib(1)+fib(0))+fib(1))+(fib(1)+fib(0))=((1+0)+1)+(1+0)=3\begin{aligned} & fib(4) \\\ & = fib(3) + fib(2) \\\ & = (fib(2) + fib(1)) + (fib(1) + fib(0)) \\\ & = ((fib(1) + fib(0)) + fib(1)) + (fib(1) + fib(0)) \\\ & = ((1 + 0) + 1) + (1 + 0) = 3 \end{aligned}​fib(4)=fib(3)+fib(2)=(fib(2)+fib(1))+(fib(1)+fib(0))=((fib(1)+fib(0))+fib(1))+(fib(1)+fib(0))=((1+0)+1)+(1+0)=3​
 
 Now, please write a function that takes an integer nnn as input and returns the value of the Fibonacci sequence fib(n)fib(n)fib(n):
-    
-    
-    int fib(int n);
+
+```
+int fib(int n);
+``` 
 
 By directly translating the mathematical definition of the Fibonacci sequence into code, we can obtain a recursive solution:
-    
-    
-    int fib(int n) {
-        if (n < 2) {
-            return n;
-        }
-        return fib(n - 1) + fib(n - 2);
-    }
 
-Certainly, this solution is not very efficient. We will continue to optimize it in [Dynamic Programming Core Framework](/en/algo/essential-technique/dynamic-programming-framework/). For now, let's just look at this recursive solution.
+```
+int fib(int n) {
+    if (n < 2) {
+        return n;
+    }
+    return fib(n - 1) + fib(n - 2);
+}
+``` 
+
+Certainly, this solution is not very efficient. We will continue to optimize it in [Dynamic Programming Core Framework](</en/algo/essential-technique/dynamic-programming-framework/>). For now, let's just look at this recursive solution.
 
 Put this solution into the visualization panel, and let's calculate `fib(5)`. Please follow my steps:
 
@@ -111,40 +111,42 @@ Let's first calculate the value of `fib(2)`: according to the definition, `fib(2
 You can compare this with the recursion tree in the visualization panel, and it becomes easy to understand this process. A node must wait for the left child node to complete its calculation, then wait for the right child node to complete, and finally add the values of the two child nodes to obtain the value of the current node, which aligns with the definition `fib(n) = fib(n-1) + fib(n-2)`.
 
 From the perspective of tree structure, isn't it easy to understand the recursive calculation process? See how similar this `fib` function is to a binary tree traversal function. Therefore, the recursive tree abstracted from this function is a binary tree:
-    
-    
-    // Fibonacci sequence
-    int fib(int n) {
-        if (n < 2) {
-            return n;
-        }
-        return fib(n - 1)
-             + fib(n - 2);
+
+```
+// Fibonacci sequence
+int fib(int n) {
+    if (n < 2) {
+        return n;
     }
-    
-    // Binary tree traversal function
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        traverse(root.left);
-        traverse(root.right);
+    return fib(n - 1)
+         + fib(n - 2);
+}
+
+// Binary tree traversal function
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
     }
+    traverse(root.left);
+    traverse(root.right);
+}
+``` 
 
 Next, let's look at a slightly more complex recursive algorithm: the permutation problem.
 
-### ¶Permutation Problem
+### Permutation Problem
 
 You are given an input array `nums` with `n` distinct elements. You are asked to return all possible permutations of these elements.
 
 For example, given `nums = [1,2,3]`, the algorithm returns the following 6 permutations:
-    
-    
-    [1,2,3], [1,3,2],
-    [2,1,3], [2,3,1],
-    [3,1,2], [3,2,1]
 
-The permutation and combination problem can have various variations, which we will explore in detail in [Backtracking Algorithm: Mastering All Permutation and Combination Subset Problems](/en/algo/essential-technique/permutation-combination-subset-all-in-one/). This article does not cover the code implementation but uses a visualization panel to understand the execution process of the permutation algorithm.
+```
+[1,2,3], [1,3,2],
+[2,1,3], [2,3,1],
+[3,1,2], [3,2,1]
+``` 
+
+The permutation and combination problem can have various variations, which we will explore in detail in [Backtracking Algorithm: Mastering All Permutation and Combination Subset Problems](</en/algo/essential-technique/permutation-combination-subset-all-in-one/>). This article does not cover the code implementation but uses a visualization panel to understand the execution process of the permutation algorithm.
 
 In middle school, we learned about permutations and combinations and solved similar problems. If you were to manually calculate the permutations of `[1,2,3]`, how would you do it? Essentially, it's brute-force, but the process requires some organization:
 
@@ -178,78 +180,78 @@ Algorithm Visualization
 
 You don't need to fully understand the code now, just pay attention to the recursive part of the code:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-    
-        List<List<Integer>> res = new LinkedList<>();
-    
-        // Main function, input a set of unique numbers, return their permutations
-        List<List<Integer>> permute(int[] nums) {
-            // Record "path"
-            LinkedList<Integer> track = new LinkedList<>();
-            // Elements in the "path" will be marked as true to avoid reuse
-            boolean[] used = new boolean[nums.length];
-            
-            backtrack(nums, track, used);
-            return res;
-        }
-    
-        // Path: recorded in track
-        // Selection list: elements in nums that are not in track (used[i] is false)
-        // Termination condition: all elements in nums appear in track
-        void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
-            // Trigger termination condition
-            if (track.size() == nums.length) {
-                res.add(new LinkedList(track));
-                return;
-            }
-    
-            for (int i = 0; i < nums.length; i++) {
-                // Exclude invalid choices
-                if (used[i]) { ![](/images/algo/backtracking/6.jpg)
-                    // nums[i] is already in track, skip
-                    continue;
-                }
-                // Make a choice
-                track.add(nums[i]);
-                used[i] = true;
-                // Enter the next level of the decision tree
-                backtrack(nums, track, used);
-                // Cancel the choice
-                track.removeLast();
-                used[i] = false;
-            }
-        }
+```java
+class Solution {
+
+    List<List<Integer>> res = new LinkedList<>();
+
+    // Main function, input a set of unique numbers, return their permutations
+    List<List<Integer>> permute(int[] nums) {
+        // Record "path"
+        LinkedList<Integer> track = new LinkedList<>();
+        // Elements in the "path" will be marked as true to avoid reuse
+        boolean[] used = new boolean[nums.length];
+        
+        backtrack(nums, track, used);
+        return res;
     }
 
-Extracting the recursive part should reveal that this algorithm can be abstracted into a multi-branch tree:
-    
-    
-    // Permutations algorithm main structure
-    void backtrack(int[] nums, List<Integer> track) {
+    // Path: recorded in track
+    // Selection list: elements in nums that are not in track (used[i] is false)
+    // Termination condition: all elements in nums appear in track
+    void backtrack(int[] nums, LinkedList<Integer> track, boolean[] used) {
+        // Trigger termination condition
         if (track.size() == nums.length) {
+            res.add(new LinkedList(track));
             return;
         }
+
         for (int i = 0; i < nums.length; i++) {
-            backtrack(nums, track);
+            // Exclude invalid choices
+            if (used[i]) { 
+                // nums[i] is already in track, skip
+                continue;
+            }
+            // Make a choice
+            track.add(nums[i]);
+            used[i] = true;
+            // Enter the next level of the decision tree
+            backtrack(nums, track, used);
+            // Cancel the choice
+            track.removeLast();
+            used[i] = false;
         }
     }
-    
-    // Multi-fork tree traversal function
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        for (TreeNode child : root.children) {
-            traverse(child);
-        }
+}
+``` 
+
+Extracting the recursive part should reveal that this algorithm can be abstracted into a multi-branch tree:
+
+```
+// Permutations algorithm main structure
+void backtrack(int[] nums, List<Integer> track) {
+    if (track.size() == nums.length) {
+        return;
     }
+    for (int i = 0; i < nums.length; i++) {
+        backtrack(nums, track);
+    }
+}
+
+// Multi-fork tree traversal function
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
+    }
+    for (TreeNode child : root.children) {
+        traverse(child);
+    }
+}
+``` 
 
 **You might have already sensed that the "tree" structure is a highly effective data structure. Abstracting a problem into a tree structure and then traversing this tree with code is the essence of recursion**.
 
-## ¶Two Mindsets for Writing Recursive Algorithms
+## Two Mindsets for Writing Recursive Algorithms
 
 Now that you know every recursive algorithm must be understood as a tree structure, let's go a step further: if you want to solve a problem with a recursive algorithm, how should you write the code?
 
@@ -259,7 +261,7 @@ One is the "traversal" mindset, and the other is the "problem decomposition" min
 
 In the examples discussed above, although both are abstracted into a recursive tree, the Fibonacci sequence uses the "problem decomposition" mindset, while the full permutation uses the "traversal" mindset.
 
-### ¶Problem Decomposition Mindset
+### Problem Decomposition Mindset
 
 Consider the Fibonacci sequence problem; each node on the recursive tree is essentially the solution to a sub-problem. How is `fib(5)` calculated? The root node `fib(5)` asks its left and right child nodes `fib(4)` and `fib(3)` for their values, and then sums them:
 
@@ -274,24 +276,25 @@ Key Point
 This way, you can use this definition to calculate sub-problems and backtrack to the solution of the original problem.
 
 For example, the recursive function `fib` for the Fibonacci sequence has a clear definition, and the algorithm uses this definition:
-    
-    
-    // Definition: Input a non-negative integer n, return the nth number in the Fibonacci sequence
-    int fib(int n) {
-        if (n < 2) {
-            return n;
-        }
-        // Use the definition to calculate the first two Fibonacci numbers (subproblems)
-        int fib_n_1 = fib(n - 1);
-        int fib_n_2 = fib(n - 2);
-    
-        // Use the answers of subproblems to calculate the original problem
-        return fib_n_1 + fib_n_2;
+
+```
+// Definition: Input a non-negative integer n, return the nth number in the Fibonacci sequence
+int fib(int n) {
+    if (n < 2) {
+        return n;
     }
+    // Use the definition to calculate the first two Fibonacci numbers (subproblems)
+    int fib_n_1 = fib(n - 1);
+    int fib_n_2 = fib(n - 2);
 
-Let's consider a simple example, such as calculating the maximum depth of a binary tree, LeetCode problem 104 ["Maximum Depth of Binary Tree"](https://leetcode.com/problems/maximum-depth-of-binary-tree/):
+    // Use the answers of subproblems to calculate the original problem
+    return fib_n_1 + fib_n_2;
+}
+``` 
 
-**104\. Maximum Depth of Binary Tree** |[LeetCode](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+Let's consider a simple example, such as calculating the maximum depth of a binary tree, LeetCode problem 104 ["Maximum Depth of Binary Tree"](<https://leetcode.com/problems/maximum-depth-of-binary-tree/>):
+
+**104\. Maximum Depth of Binary Tree** |[LeetCode](<https://leetcode.com/problems/maximum-depth-of-binary-tree/>)
 
 Given the `root` of a binary tree, return _its maximum depth_.
 
@@ -299,27 +302,26 @@ A binary tree's **maximum depth** is the number of nodes along the longest path 
 
 **Example 1:**
 
-![](/images/lc/uploads/2020/11/26/tmp-tree.jpg)
-    
-    
-    **Input:** root = [3,9,20,null,null,15,7]
-    **Output:** 3
-    
+![diagram](https://labuladong.online/images/lc/uploads/2020/11/26/tmp-tree.jpg)
+
+```
+Input: root = [3,9,20,null,null,15,7]
+Output: 3
+``` 
 
 **Example 2:**
-    
-    
-    **Input:** root = [1,null,2]
-    **Output:** 2
-    
+
+```
+Input: root = [1,null,2]
+Output: 2
+``` 
 
 **Constraints:**
 
   * The number of nodes in the tree is in the range `[0, 104]`.
   * `-100 <= Node.val <= 100`
 
-
-The problem is from [LeetCode 104. Maximum Depth of Binary Tree](https://leetcode.com/problems/maximum-depth-of-binary-tree/).
+The problem is from [LeetCode 104. Maximum Depth of Binary Tree](<https://leetcode.com/problems/maximum-depth-of-binary-tree/>).
 
 This problem can be solved by decomposing the problem: to calculate the maximum depth of the entire tree, first calculate the maximum depth of the left and right subtrees, take the maximum of the two values and add one, which gives the maximum depth of the entire tree.
 
@@ -329,29 +331,28 @@ Then, you can obtain a recursive formula similar to the Fibonacci sequence:
 
 maxDepth(root)={0if root=nullmax(maxDepth(root.left),maxDepth(root.right))+1otherwisemaxDepth(root) = \begin{cases} 0 & \text{if } root = null \\\ max(maxDepth(root.left), maxDepth(root.right)) + 1 & \text{otherwise} \end{cases}maxDepth(root)={0max(maxDepth(root.left),maxDepth(root.right))+1​if root=nullotherwise​
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // Divide and Conquer Idea
-    class Solution {
-        // Definition: Given a node, return the maximum
-        // depth of the binary tree rooted at that node
-        public int maxDepth(TreeNode root) {
-            if (root == null) {
-                return 0;
-            }
-            // Use the definition to calculate the maximum depth of the left and right subtrees
-            int leftMax = maxDepth(root.left);
-            int rightMax = maxDepth(root.right);
-    
-            // Derive the maximum depth of the original binary tree based
-            // on the maximum depth of the left and right subtrees
-            // The maximum depth of the entire tree is the
-            // maximum of the left and right subtree depths,
-            // plus one for the root node itself
-            return 1 + Math.max(leftMax, rightMax);
+```java
+// Divide and Conquer Idea
+class Solution {
+    // Definition: Given a node, return the maximum
+    // depth of the binary tree rooted at that node
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
         }
+        // Use the definition to calculate the maximum depth of the left and right subtrees
+        int leftMax = maxDepth(root.left);
+        int rightMax = maxDepth(root.right);
+
+        // Derive the maximum depth of the original binary tree based
+        // on the maximum depth of the left and right subtrees
+        // The maximum depth of the entire tree is the
+        // maximum of the left and right subtree depths,
+        // plus one for the root node itself
+        return 1 + Math.max(leftMax, rightMax);
     }
+}
+``` 
 
 For this problem, I have also provided a visual panel to demonstrate the execution process of the recursive function. The orange represents the real binary tree structure, while the pink represents the abstracted recursive tree structure, where the value of the parent node is the larger value of the left and right child nodes plus one.
 
@@ -361,7 +362,7 @@ Algorithm Visualization
 
 Now you should understand the "decomposition" approach. Next, let's look at another way to write recursive algorithms.
 
-### ¶Traversal Approach
+### Traversal Approach
 
 Combine with the visual panel to look at the permutation problem:
 
@@ -374,72 +375,72 @@ Key Takeaway
 **If you want to write a recursive algorithm using the "traversal" approach, you need a traversal function without a return value, which collects results during the traversal.**
 
 For example, in the permutation problem, you don't need to fully understand the permutation code right now, just note that the `backtrack` function has no return value and no explicit definition. It acts like a for loop, simply traversing the recursive tree and collecting results from the leaf nodes:
-    
-    
-    // Permutations algorithm main structure
-    
-    // Global variable, store the state of backtrack function traversal
-    List<List<Integer>> res = new LinkedList<>();
-    List<Integer> track = new LinkedList<>();
-    
-    // Recursion tree traversal function
-    void backtrack(int[] nums, List<Integer> track) {
-        if (track.size() == nums.length) {
-            // Reach the leaf node, collect the result
-            res.add(new LinkedList<>(track));
-            return;
-        }
-        for (int i = 0; i < nums.length; i++) {
-            // Make a choice
-            track.add(nums[i]);
-    
-            backtrack(nums, track);
-    
-            // Undo the choice
-            track.removeLast();
-        }
+
+```
+// Permutations algorithm main structure
+
+// Global variable, store the state of backtrack function traversal
+List<List<Integer>> res = new LinkedList<>();
+List<Integer> track = new LinkedList<>();
+
+// Recursion tree traversal function
+void backtrack(int[] nums, List<Integer> track) {
+    if (track.size() == nums.length) {
+        // Reach the leaf node, collect the result
+        res.add(new LinkedList<>(track));
+        return;
     }
+    for (int i = 0; i < nums.length; i++) {
+        // Make a choice
+        track.add(nums[i]);
+
+        backtrack(nums, track);
+
+        // Undo the choice
+        track.removeLast();
+    }
+}
+``` 
 
 Can you distinguish the difference between the two thinking modes of "traversal" and "problem decomposition"?
 
 Let's look at LeetCode problem 104 "Maximum Depth of Binary Tree". We can use the "traversal" thinking mode to write a solution by using the standard binary tree traversal function `traverse` to go through the entire tree. During the traversal, we update the maximum depth, ensuring that once all nodes are traversed, the maximum depth of the entire tree is determined:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // Traversal Idea
-    class Solution {
-    
-        // Record the depth of the traversed node
-        int depth = 0;
-    
-        // Record the maximum depth
-        int res = 0;
-    
-        public int maxDepth(TreeNode root) {
-            traverse(root);
-            return res;
-        }
-    
-        // Traverse the binary tree
-        void traverse(TreeNode root) {
-            if (root == null) {
-                return;
-            }
-    
-            // Pre-order traversal position (entering a node) increases depth
-            depth++;
-            // Record the maximum depth during traversal
-            if (root.left == null && root.right == null) {
-                res = Math.max(res, depth);
-            }
-            traverse(root.left);
-            traverse(root.right);
-    
-            // Post-order traversal position (leaving a node) decreases depth
-            depth--;
-        }
+```java
+// Traversal Idea
+class Solution {
+
+    // Record the depth of the traversed node
+    int depth = 0;
+
+    // Record the maximum depth
+    int res = 0;
+
+    public int maxDepth(TreeNode root) {
+        traverse(root);
+        return res;
     }
+
+    // Traverse the binary tree
+    void traverse(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        // Pre-order traversal position (entering a node) increases depth
+        depth++;
+        // Record the maximum depth during traversal
+        if (root.left == null && root.right == null) {
+            res = Math.max(res, depth);
+        }
+        traverse(root.left);
+        traverse(root.right);
+
+        // Post-order traversal position (leaving a node) decreases depth
+        depth--;
+    }
+}
+``` 
 
 For this problem, I also provided a visual panel to display the execution process of the recursive function. The orange part represents the actual binary tree structure, and the pink part represents the abstract recursive tree structure. Essentially, `traverse` is a standard binary tree traversal function that records the current depth during traversal and updates the maximum depth upon reaching a leaf node.
 
@@ -447,7 +448,7 @@ You can click on the line of code `if (root === null)` multiple times to observe
 
 Algorithm Visualization
 
-## ¶Summary
+## Summary
 
 This article first uses the Fibonacci sequence and permutation problems for recursion visualization, arguing that recursion algorithms must be understood from the "tree" perspective.
 
@@ -463,11 +464,8 @@ Some problems can be approached using both thinking modes, such as LeetCode prob
 
   3. If using the "problem decomposition" mode, clearly define the recursive function and use this definition to break down the problem and derive the solution from subproblems; if using the "traversal" mode, use a non-returning recursive function to purely traverse the recursive tree and collect the target results.
 
+In fact, the "problem decomposition" thinking mode corresponds to the [Dynamic Programming Algorithm](</en/algo/essential-technique/dynamic-programming-framework/>) and [Divide and Conquer Algorithm](</en/algo/essential-technique/divide-and-conquer/>) to be explained later, while the "traversal" mode corresponds to the [DFS/Backtracking Algorithm](</en/algo/essential-technique/backtrack-framework/>) to be explained later.
 
-In fact, the "problem decomposition" thinking mode corresponds to the [Dynamic Programming Algorithm](/en/algo/essential-technique/dynamic-programming-framework/) and [Divide and Conquer Algorithm](/en/algo/essential-technique/divide-and-conquer/) to be explained later, while the "traversal" mode corresponds to the [DFS/Backtracking Algorithm](/en/algo/essential-technique/backtrack-framework/) to be explained later.
-
-In the [Binary Tree Exercises Chapter](/en/algo/intro/binary-tree-practice/), I specifically solve all binary tree-related problems using these two thinking modes. Once you understand binary trees, these recursive algorithms become very straightforward.
+In the [Binary Tree Exercises Chapter](</en/algo/intro/binary-tree-practice/>), I specifically solve all binary tree-related problems using these two thinking modes. Once you understand binary trees, these recursive algorithms become very straightforward.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

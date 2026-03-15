@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
   * [排序算法的关键指标](</zh/algo/data-structure-basic/sort-basic/>)
   * [选择排序所面临的问题](</zh/algo/data-structure-basic/select-sort/>)
 
-
 一句话总结
 
 计数排序的原理比较简单：统计每种元素出现的次数，进而推算出每个元素在排序后数组中的索引位置，最终完成排序。
@@ -42,22 +41,21 @@ LeetCode| 力扣| 难度
 
 我们使用整数 `0`、 `1` 和 `2` 分别表示红色、白色和蓝色。
 
-
 必须在不使用库内置的 sort 函数的情况下解决这个问题。
 
 **示例 1：**
-    
-    
-    **输入：** nums = [2,0,2,1,1,0]
-    **输出：**[0,0,1,1,2,2]
-    
+
+```
+输入：nums = [2,0,2,1,1,0]
+输出：[0,0,1,1,2,2]
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** nums = [2,0,1]
-    **输出：**[0,1,2]
-    
+
+```
+输入：nums = [2,0,1]
+输出：[0,1,2]
+``` 
 
 **提示：**
 
@@ -65,11 +63,9 @@ LeetCode| 力扣| 难度
   * `1 <= n <= 300`
   * `nums[i]` 为 `0`、`1` 或 `2`
 
-
 **进阶：**
 
   * 你能想出一个仅使用常数空间的一趟扫描算法吗？
-
 
 题目来源：[力扣 75. 颜色分类](<https://leetcode.cn/problems/sort-colors/>)。
 
@@ -77,31 +73,30 @@ LeetCode| 力扣| 难度
 
 我们可以创建一个大小为 3 的 `count` 数组，`count[0], count[1], count[2]` 分别表示数组中 0、1、2 出现的次数。然后我们按照 `count` 数组的统计结果，依次填充原数组即可。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public void sortColors(int[] nums) {
-            // 统计 0, 1, 2 出现的次数
-            int[] count = new int[3];
-            for (int element : nums) {
-                count[element]++;
-            }
-    
-            // 按照 count 数组的统计结果，依次填充原数组
-            int index = 0;
-            for (int element = 0; element < 3; element++) {
-                for (int i = 0; i < count[element]; i++) {
-                    nums[index] = element;
-                    index++;
-                }
+```java
+class Solution {
+    public void sortColors(int[] nums) {
+        // 统计 0, 1, 2 出现的次数
+        int[] count = new int[3];
+        for (int element : nums) {
+            count[element]++;
+        }
+
+        // 按照 count 数组的统计结果，依次填充原数组
+        int index = 0;
+        for (int element = 0; element < 3; element++) {
+            for (int i = 0; i < count[element]; i++) {
+                nums[index] = element;
+                index++;
             }
         }
     }
+}
+``` 
 
 这就是一个简单的计数排序算法，不过这个题目给的场景比较简单，只有 `0, 1, 2` 三种元素，下面我们给出一个更通用的计数排序算法。
 
-## ¶通用的计数排序
+## 通用的计数排序
 
 虽然计数排序的原理简单，但是在通用的计数排序代码中，还是有一些编码技巧的。
 
@@ -114,7 +109,3 @@ CC++GoJavaJavaScriptPython
 3、因为计数排序需要将元素的值作为 `count` 数组的索引，那么如果数组中的最大元素的值很大时，会不会导致 `count` 数组太大，空间复杂度过高？
 
 下面我们来一步一步思考这些问题，尝试给出解法。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

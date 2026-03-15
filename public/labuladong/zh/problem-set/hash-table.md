@@ -18,12 +18,7 @@
   * [哈希表原理](</zh/algo/data-structure-basic/hashmap-basic/>)
   * [拉链法实现哈希表](</zh/algo/data-structure-basic/hashtable-chaining/>)
 
-
 哈希表在算法题中是常考的数据结构，主要出现在数据结构的设计题，或者配合数组、字符串等结构进行考察（比如之前的 [前缀和习题](</zh/algo/problem-set/perfix-sum/>)），这里列出一些常见的哈希表考题。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -40,6 +35,5 @@ Loading comments...
   * 389\. 找不同
   * 442\. 数组中重复的数据
   * 448\. 找到所有数组中消失的数字
-
 
 AI 助教

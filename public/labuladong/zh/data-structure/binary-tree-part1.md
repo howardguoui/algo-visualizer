@@ -23,7 +23,6 @@ LeetCode| 力扣| 难度
   * [二叉树的 DFS/BFS 遍历](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
 本文承接 [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)，先复述一下前文总结的二叉树解题总纲：
 
 Note
@@ -39,7 +38,3 @@ Note
 **如果单独抽出一个二叉树节点，它需要做什么事情？需要在什么时候（前/中/后序位置）做** ？其他的节点不用你操心，递归函数会帮你在所有节点上执行相同的操作。
 
 本文就以几道比较简单的题目为例，带你实践运用这几条总纲，理解「遍历」的思维和「分解问题」的思维有何区别和联系。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
   * [二叉堆原理](</zh/algo/data-structure-basic/binary-heap-basic/>)
   * [二叉堆实现优先级队列](</zh/algo/data-structure-basic/binary-heap-implement/>)
 
-
 田忌赛马的故事大家应该都听说过：
 
 田忌和齐王赛马，两人的马分上中下三等，如果同等级的马对应着比赛，田忌赢不了齐王。但是田忌遇到了孙膑，孙膑就教他用自己的下等马对齐王的上等马，再用自己的上等马对齐王的中等马，最后用自己的中等马对齐王的下等马，结果三局两胜，田忌赢了。
@@ -40,21 +39,17 @@ LeetCode| 力扣| 难度
 
 算法签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int[] advantageCount(int[] nums1, int[] nums2);
+```java
+int[] advantageCount(int[] nums1, int[] nums2);
+``` 
 
 比如输入：
-    
-    
-    nums1 = [12,24,8,32]
-    nums2 = [13,25,32,11]
+
+```
+nums1 = [12,24,8,32]
+nums2 = [13,25,32,11]
+``` 
 
 你的算法应该返回 `[24,32,8,12]`，因为这样排列 `nums1` 的话有三个元素都有「优势」。
 
 **这就像田忌赛马的情景，`nums1` 就是田忌的马，`nums2` 就是齐王的马，数组中的元素就是马的战斗力，你就是孙膑，展示你真正的技术吧**。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

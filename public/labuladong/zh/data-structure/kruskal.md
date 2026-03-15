@@ -22,7 +22,6 @@ LeetCode| 力扣| 难度
   * [Union-Find 并查集算法](</zh/algo/data-structure/union-find/>)
   * [最小生成树算法概览](</zh/algo/data-structure-basic/graph-minimum-spanning-tree/>)
 
-
 一句话总结
 
 Kruskal 算法是求解无向图中最小生成树的经典算法。
@@ -38,7 +37,3 @@ Kruskal 算法是求解无向图中最小生成树的经典算法。
 Kruskal 算法其实很容易理解和记忆，其关键是要熟悉并查集算法，如果不熟悉，建议先看下前文 [Union-Find 并查集算法](</zh/algo/data-structure/union-find/>)。
 
 在讲 Kruskal 算法之前，先回顾一下 Union-Find 并查集算法。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

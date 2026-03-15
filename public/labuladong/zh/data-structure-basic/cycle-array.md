@@ -13,49 +13,50 @@
 
   * [数组（顺序存储）基础](</zh/algo/data-structure-basic/array-basic/>)
 
-
 一句话总结
 
 环形数组技巧利用求模（余数）运算，将普通数组变成逻辑上的环形数组，可以让我们用 O(1)O(1)O(1) 的时间在数组头部增删元素。
 
-## ¶环形数组原理
+## 环形数组原理
 
 数组可能是环形的么？不可能。数组就是一块线性连续的内存空间，怎么可能有环的概念？
 
 但是，我们可以在「逻辑上」把数组变成环形的，比如下面这段代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 长度为 5 的数组
-    int[] arr = new int[]{1, 2, 3, 4, 5};
-    int i = 0;
-    // 模拟环形数组，这个循环永远不会结束
-    while (i < arr.length) {
-        System.out.println(arr[i]);
-        i = (i + 1) % arr.length;
-    }
+```java
+// 长度为 5 的数组
+int[] arr = new int[]{1, 2, 3, 4, 5};
+int i = 0;
+// 模拟环形数组，这个循环永远不会结束
+while (i < arr.length) {
+    System.out.println(arr[i]);
+    i = (i + 1) % arr.length;
+}
+``` 
 
 **这段代码的关键在于求模运算`%`，也就是求余数**。当 `i` 到达数组末尾元素时，`i + 1` 和 `arr.length` 取余数又会变成 0，即会回到数组头部，这样就在逻辑上形成了一个环形数组，永远遍历不完。
 
 这就是环形数组技巧。这个技巧如何帮助我们在 O(1)O(1)O(1) 的时间在数组头部增删元素呢？
 
 是这样，假设我们现在有一个长度为 6 的数组，现在其中只装了 3 个元素，如下（未装元素的位置用 `_` 标识）：
-    
-    
-    [1, 2, 3, _, _, _]
+
+```
+[1, 2, 3, _, _, _]
+``` 
 
 现在我们要在数组头部删除元素 `1`，那么我们可以把数组变成这样：
-    
-    
-    [_, 2, 3, _, _, _]
+
+```
+[_, 2, 3, _, _, _]
+``` 
 
 即，我们仅仅把元素 `1` 的位置标记为空，但并不做数据搬移。
 
 此时，如果我们要在数组头部增加元素 `4` 和元素 `5`，我们可以把数组变成这样：
-    
-    
-    [4, 2, 3, _, _, 5]
+
+```
+[4, 2, 3, _, _, 5]
+``` 
 
 你可以看到，当头部没有位置添加新元素时，它转了一圈，把新元素加到尾部了。
 
@@ -67,7 +68,7 @@ CC++GoJavaJavaScriptPython
 
 当 `start, end` 移动超出数组边界（`< 0` 或 `>= arr.length`）时，我们可以通过求模运算 `%` 让它们转一圈到数组头部或尾部继续工作，这样就实现了环形数组的效果。
 
-## ¶动手环节
+## 动手环节
 
 纸上得来终觉浅，绝知此事要躬行。
 
@@ -75,7 +76,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-## ¶代码实现
+## 代码实现
 
 关键点、注意开闭区间
 
@@ -91,133 +92,132 @@ CC++GoJavaJavaScriptPython
 
 最后，请看代码实现：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    public class CycleArray<T> {
-        private T[] arr;
-        private int start;
-        private int end;
-        private int count;
-        private int size;
-    
-        public CycleArray() {
-            this(1);
+```java
+public class CycleArray<T> {
+    private T[] arr;
+    private int start;
+    private int end;
+    private int count;
+    private int size;
+
+    public CycleArray() {
+        this(1);
+    }
+
+    @SuppressWarnings("unchecked")
+    public CycleArray(int size) {
+        this.size = size;
+        // 因为 Java 不支持直接创建泛型数组，所以这里使用了类型转换
+        this.arr = (T[]) new Object[size];
+        // start 指向第一个有效元素的索引，闭区间
+        this.start = 0;
+        // 切记 end 是一个开区间，
+        // 即 end 指向最后一个有效元素的下一个位置索引
+        this.end = 0;
+        this.count = 0;
+    }
+
+    // 自动扩缩容辅助函数
+    @SuppressWarnings("unchecked")
+    private void resize(int newSize) {
+        // 创建新的数组
+        T[] newArr = (T[]) new Object[newSize];
+        // 将旧数组的元素复制到新数组中
+        for (int i = 0; i < count; i++) {
+            newArr[i] = arr[(start + i) % size];
         }
-    
-        @SuppressWarnings("unchecked")
-        public CycleArray(int size) {
-            this.size = size;
-            // 因为 Java 不支持直接创建泛型数组，所以这里使用了类型转换
-            this.arr = (T[]) new Object[size];
-            // start 指向第一个有效元素的索引，闭区间
-            this.start = 0;
-            // 切记 end 是一个开区间，
-            // 即 end 指向最后一个有效元素的下一个位置索引
-            this.end = 0;
-            this.count = 0;
+        arr = newArr;
+        // 重置 start 和 end 指针
+        start = 0;
+        end = count;
+        size = newSize;
+    }
+
+    // 在数组头部添加元素，时间复杂度 O(1)
+    public void addFirst(T val) {
+        // 当数组满时，扩容为原来的两倍
+        if (isFull()) {
+            resize(size * 2);
         }
-    
-        // 自动扩缩容辅助函数
-        @SuppressWarnings("unchecked")
-        private void resize(int newSize) {
-            // 创建新的数组
-            T[] newArr = (T[]) new Object[newSize];
-            // 将旧数组的元素复制到新数组中
-            for (int i = 0; i < count; i++) {
-                newArr[i] = arr[(start + i) % size];
-            }
-            arr = newArr;
-            // 重置 start 和 end 指针
-            start = 0;
-            end = count;
-            size = newSize;
+        // 因为 start 是闭区间，所以先左移，再赋值
+        start = (start - 1 + size) % size;
+        arr[start] = val;
+        count++;
+    }
+
+    // 删除数组头部元素，时间复杂度 O(1)
+    public void removeFirst() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Array is empty");
         }
-    
-        // 在数组头部添加元素，时间复杂度 O(1)
-        public void addFirst(T val) {
-            // 当数组满时，扩容为原来的两倍
-            if (isFull()) {
-                resize(size * 2);
-            }
-            // 因为 start 是闭区间，所以先左移，再赋值
-            start = (start - 1 + size) % size;
-            arr[start] = val;
-            count++;
-        }
-    
-        // 删除数组头部元素，时间复杂度 O(1)
-        public void removeFirst() {
-            if (isEmpty()) {
-                throw new IllegalStateException("Array is empty");
-            }
-            // 因为 start 是闭区间，所以先赋值，再右移
-            arr[start] = null;
-            start = (start + 1) % size;
-            count--;
-            // 如果数组元素数量减少到原大小的四分之一，则减小数组大小为一半
-            if (count > 0 && count == size / 4) {
-                resize(size / 2);
-            }
-        }
-    
-        // 在数组尾部添加元素，时间复杂度 O(1)
-        public void addLast(T val) {
-            if (isFull()) {
-                resize(size * 2);
-            }
-            // 因为 end 是开区间，所以是先赋值，再右移
-            arr[end] = val;
-            end = (end + 1) % size;
-            count++;
-        }
-    
-        // 删除数组尾部元素，时间复杂度 O(1)
-        public void removeLast() {
-            if (isEmpty()) {
-                throw new IllegalStateException("Array is empty");
-            }
-            // 因为 end 是开区间，所以先左移，再赋值
-            end = (end - 1 + size) % size;
-            arr[end] = null;
-            count--;
-            // 缩容
-            if (count > 0 && count == size / 4) {
-                resize(size / 2);
-            }
-        }
-    
-        // 获取数组头部元素，时间复杂度 O(1)
-        public T getFirst() {
-            if (isEmpty()) {
-                throw new IllegalStateException("Array is empty");
-            }
-            return arr[start];
-        }
-    
-        // 获取数组尾部元素，时间复杂度 O(1)
-        public T getLast() {
-            if (isEmpty()) {
-                throw new IllegalStateException("Array is empty");
-            }
-            // end 是开区间，指向的是下一个元素的位置，所以要减 1
-            return arr[(end - 1 + size) % size];
-        }
-    
-        public boolean isFull() {
-            return count == size;
-        }
-        
-        public int size() {
-            return count;
-        }
-    
-        public boolean isEmpty() {
-            return count == 0;
+        // 因为 start 是闭区间，所以先赋值，再右移
+        arr[start] = null;
+        start = (start + 1) % size;
+        count--;
+        // 如果数组元素数量减少到原大小的四分之一，则减小数组大小为一半
+        if (count > 0 && count == size / 4) {
+            resize(size / 2);
         }
     }
 
-## ¶思考题
+    // 在数组尾部添加元素，时间复杂度 O(1)
+    public void addLast(T val) {
+        if (isFull()) {
+            resize(size * 2);
+        }
+        // 因为 end 是开区间，所以是先赋值，再右移
+        arr[end] = val;
+        end = (end + 1) % size;
+        count++;
+    }
+
+    // 删除数组尾部元素，时间复杂度 O(1)
+    public void removeLast() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Array is empty");
+        }
+        // 因为 end 是开区间，所以先左移，再赋值
+        end = (end - 1 + size) % size;
+        arr[end] = null;
+        count--;
+        // 缩容
+        if (count > 0 && count == size / 4) {
+            resize(size / 2);
+        }
+    }
+
+    // 获取数组头部元素，时间复杂度 O(1)
+    public T getFirst() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Array is empty");
+        }
+        return arr[start];
+    }
+
+    // 获取数组尾部元素，时间复杂度 O(1)
+    public T getLast() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Array is empty");
+        }
+        // end 是开区间，指向的是下一个元素的位置，所以要减 1
+        return arr[(end - 1 + size) % size];
+    }
+
+    public boolean isFull() {
+        return count == size;
+    }
+    
+    public int size() {
+        return count;
+    }
+
+    public boolean isEmpty() {
+        return count == 0;
+    }
+}
+``` 
+
+## 思考题
 
 数组增删头部元素的效率真的只能是 O(N)O(N)O(N) 么？
 
@@ -236,7 +236,3 @@ CC++GoJavaJavaScriptPython
 环形数组也可以在指定索引插入元素，当然也要做数据搬移，和普通数组一样，复杂度是 O(N)O(N)O(N)。
 
 你可以思考一下是不是这样。如果是这样，为什么编程语言的标准库中提供的动态数组容器底层并没有用环形数组技巧。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

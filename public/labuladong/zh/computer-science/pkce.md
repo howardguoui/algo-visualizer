@@ -14,7 +14,6 @@
   * [认证与授权的区别与联系](</zh/algo/computer-science/authentication-vs-authorization/>)
   * [深入理解 OAuth 2.0 授权框架](</zh/algo/computer-science/oauth2-explained/>)
 
-
 在前面的 [OAuth 2.0](</zh/algo/computer-science/oauth2-explained/>) 和 [OIDC](</zh/algo/computer-science/oidc/>) 文章中，我们详细讲解了授权码流程，其中有一个关键步骤：
 
 > ExampleNote 的服务器用授权码 + `client_secret` 换取 Access Token。
@@ -37,7 +36,7 @@
 
 **不可信客户端（Public Client）** ：无法安全保管 `client_secret` 的客户端，比如移动端、SPA 应用、桌面应用等。
 
-## ¶不可信客户端的困境
+## 不可信客户端的困境
 
 不可信客户端面临两难：
 
@@ -56,7 +55,3 @@
 下面是 PKCE 授权码流程的完整时序图：
 
 加载图表...
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

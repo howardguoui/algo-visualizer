@@ -11,11 +11,11 @@ When it comes to processes, the most common interview question is the relationsh
 
 In Linux, a process is just a data structure. Once you understand it, you can understand how file descriptors, redirection, and pipes work under the hood. In the end, we will also see why we say threads and processes are almost the same from the operating system’s point of view.
 
-### ¶1\. What Is a Process
+### 1\. What Is a Process
 
 First, in an abstract way, our computer looks like this:
 
-![](/images/algo/linuxProcess/1.jpg)
+![diagram](https://labuladong.online/images/algo/linuxProcess/1.jpg)
 
 The big rectangle is the computer’s **memory space**. The small rectangles inside are **processes**. The circle at the bottom left is the **disk**. The shape at the bottom right is some **I/O devices** , such as mouse, keyboard, and monitor. Note that the memory space is divided into two parts: the upper part is **user space** , the lower part is **kernel space**.
 
@@ -26,30 +26,31 @@ We write a hello program in C, compile it into an executable file, then run it i
 **The compiled executable is just a file** , not a process. To really run, the executable must be loaded into memory and wrapped as a process. The process is created by the OS. Each process has its own properties, such as process ID (PID), process state, open files, and so on. After the process is created, the OS loads your program into it, then your program runs.
 
 So how does the OS create a process? **For the OS, a process is just a data structure**. Let’s look directly at Linux source code:
-    
-    
-    struct task_struct {
-    	// process state
-    	long			  state;
-    	// virtual memory structure
-    	struct mm_struct  *mm;
-    	// process ID
-    	pid_t			  pid;
-    	// pointer to the parent process
-    	struct task_struct __rcu  *parent;
-    	// list of child processes
-    	struct list_head		children;
-    	// pointer to filesystem information
-    	struct fs_struct		*fs;
-    	// an array containing pointers to files opened by the process
-    	struct files_struct		*files;
-    };
+
+```
+struct task_struct {
+	// process state
+	long			  state;
+	// virtual memory structure
+	struct mm_struct  *mm;
+	// process ID
+	pid_t			  pid;
+	// pointer to the parent process
+	struct task_struct __rcu  *parent;
+	// list of child processes
+	struct list_head		children;
+	// pointer to filesystem information
+	struct fs_struct		*fs;
+	// an array containing pointers to files opened by the process
+	struct files_struct		*files;
+};
+``` 
 
 `task_struct` is the kernel’s description of a process. You can also call it the “process descriptor”. The full code is complex; here we only show some common fields.
 
 Two interesting fields are the `mm` pointer and the `files` pointer. `mm` points to the process’s virtual memory, which is where resources and executables are loaded. `files` points to an array that holds pointers to all files opened by this process.
 
-### ¶2\. What Is a File Descriptor
+### 2\. What Is a File Descriptor
 
 Let’s talk about `files`. It is an array of file pointers. In general, a process reads input from `files[0]`, writes output to `files[1]`, and writes errors to `files[2]`.
 
@@ -59,7 +60,7 @@ For example, in our view, C’s `printf` prints to the terminal. But from the pr
 
 We can draw a picture:
 
-![](/images/algo/linuxProcess/2.jpg)
+![diagram](https://labuladong.online/images/algo/linuxProcess/2.jpg)
 
 On a normal computer, the input stream is the keyboard, the output stream is the monitor, and the error stream is also the monitor. So this process connects to the kernel with three “lines”. Because hardware is managed by the kernel, our process must use “system calls” to ask the kernel to access hardware.
 
@@ -69,34 +70,37 @@ Don’t forget, in Linux everything is abstracted as a file. Devices are also fi
 
 If our program needs other resources, such as opening a file to read or write, this is also simple. We make a system call and let the kernel open the file. That file will then be placed in the 4th position of `files`:
 
-![](/images/algo/linuxProcess/3.jpg)
+![diagram](https://labuladong.online/images/algo/linuxProcess/3.jpg)
 
 With this, **input redirection** is easy to understand. When a program wants to read data, it reads from `files[0]`. So if we point `files[0]` to a file, the program will read from that file instead of the keyboard:
-    
-    
-    $ command < file.txt
 
-![](/images/algo/linuxProcess/5.jpg)
+```
+$ command < file.txt
+``` 
+
+![diagram](https://labuladong.online/images/algo/linuxProcess/5.jpg)
 
 Similarly, **output redirection** is just pointing `files[1]` to a file. Then the program’s output will be written to that file, not to the monitor:
-    
-    
-    $ command > file.txt
 
-![](/images/algo/linuxProcess/4.jpg)
+```
+$ command > file.txt
+``` 
+
+![diagram](https://labuladong.online/images/algo/linuxProcess/4.jpg)
 
 Error redirection is the same idea, so we skip it.
 
 The **pipe operator** works in a similar way. It connects the output stream of one process to the input stream of another process with a “pipe”. Data flows in this pipe. This design is very elegant:
-    
-    
-    $ cmd1 | cmd2 | cmd3
 
-![](/images/algo/linuxProcess/6.jpg)
+```
+$ cmd1 | cmd2 | cmd3
+``` 
+
+![diagram](https://labuladong.online/images/algo/linuxProcess/6.jpg)
 
 Now you can see how clever “everything is a file” is in Linux. No matter if it is a device, another process, a socket, or a real file, everything can be read and written. The OS puts them all into one simple `files` array. The process only needs a simple file descriptor to access the right resource. The OS hides the complex details, which decouples things well and is both simple and efficient.
 
-### ¶3\. What Is a Thread
+### 3\. What Is a Thread
 
 First we need to be clear: both multi-process and multi-thread are concurrency. Both can improve CPU usage. So the key question is: what is the difference between them?
 
@@ -106,9 +110,9 @@ We know that the system call `fork()` can create a new child process, and the fu
 
 In other words, a thread looks just like a process. The difference is: some data areas of a thread are shared with its parent process, while a child process gets its own copy, not a shared area. For example, in threads, the `mm` structure and `files` structure are shared. Look at the two diagrams:
 
-![](/images/algo/linuxProcess/7.jpg)
+![diagram](https://labuladong.online/images/algo/linuxProcess/7.jpg)
 
-![](/images/algo/linuxProcess/8.jpg)
+![diagram](https://labuladong.online/images/algo/linuxProcess/8.jpg)
 
 So, in our multi-thread programs, we need locks to avoid multiple threads writing to the same area at the same time, or data may get corrupted.
 
@@ -121,5 +125,3 @@ We should also note: only in Linux are threads treated as processes that share s
 In Linux, creating threads and processes is both very efficient. To handle the problem of copying memory when creating a new process, Linux uses a copy-on-write strategy. That is, it does not actually copy the parent’s memory at first. It copies only when a write happens. **So creating a new process or a new thread in Linux is very fast.**
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

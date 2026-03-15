@@ -19,11 +19,6 @@
   * [二叉搜索树心法（基操篇）](</zh/algo/data-structure/bst-part2/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
-
 此页内容
 
   * 108\. 将有序数组转换为二叉搜索树
@@ -32,6 +27,5 @@ Loading comments...
   * 109\. 有序链表转换二叉搜索树
   * 173\. 二叉搜索树迭代器
   * 1305\. 两棵二叉搜索树中的所有元素
-
 
 AI 助教

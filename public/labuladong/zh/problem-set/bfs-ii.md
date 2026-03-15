@@ -21,11 +21,6 @@
   * [图结构的遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>)
   * [BFS 算法核心框架](</zh/algo/essential-technique/bfs-framework/>)
 
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
-
 此页内容
 
   * BFS 在实际场景中的有趣应用
@@ -39,6 +34,5 @@ Loading comments...
   * 2850\. 将石头分散到网格图的最少移动次数
   * 127\. 单词接龙
   * 399\. 除法求值
-
 
 AI 助教

@@ -17,11 +17,6 @@
 
   * [并查集（Union Find）算法详解](</zh/algo/data-structure/union-find/>)
 
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
-
 此页内容
 
   * 323\. 无向图中连通分量的数目
@@ -30,6 +25,5 @@ Loading comments...
   * 547\. 省份数量
   * 1361\. 验证二叉树
   * 947\. 移除最多的同行或同列石头
-
 
 AI 助教

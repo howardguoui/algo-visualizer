@@ -11,18 +11,17 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[263\. Ugly Number](https://leetcode.com/problems/ugly-number/)|   
-[264\. Ugly Number II](https://leetcode.com/problems/ugly-number-ii/)|   
-[313\. Super Ugly Number](https://leetcode.com/problems/super-ugly-number/)|   
-[1201\. Ugly Number III](https://leetcode.com/problems/ugly-number-iii/)|   
+[263\. Ugly Number](<https://leetcode.com/problems/ugly-number/>)|   
+[264\. Ugly Number II](<https://leetcode.com/problems/ugly-number-ii/>)|   
+[313\. Super Ugly Number](<https://leetcode.com/problems/super-ugly-number/>)|   
+[1201\. Ugly Number III](<https://leetcode.com/problems/ugly-number-iii/>)|   
   
 Prerequisites
 
 Before reading this article, you should learn:
 
-  * [Summary of Linked List Two Pointer Techniques](/en/algo/essential-technique/linked-list-skills-summary/)
-  * [Binary Search Framework Explained](/en/algo/essential-technique/binary-search-framework/)
-
+  * [Summary of Linked List Two Pointer Techniques](</en/algo/essential-technique/linked-list-skills-summary/>)
+  * [Binary Search Framework Explained](</en/algo/essential-technique/binary-search-framework/>)
 
 Recently, a reader from our community messaged me privately, saying they were completely stumped by a series of math-related algorithm problems during a Microsoft interview. I looked at the problems and found they were actually modified versions of the "Ugly Number" series on LeetCode.
 
@@ -32,14 +31,15 @@ Additionally, these problems really test your ability to think abstractly. They 
 
 So today I'll use this one article to tackle all ugly number related problems comprehensively, and see how these problems can vary and how to solve them.
 
-## ¶Ugly Number I
+## Ugly Number I
 
-First is LeetCode problem 263 "[Ugly Number](https://leetcode.cn/problems/ugly-number/)". The problem gives you a number `n` and asks you to determine whether `n` is an "ugly number". An "ugly number" is a positive integer whose prime factors are limited to `2`, `3`, and `5`.
+First is LeetCode problem 263 "[Ugly Number](<https://leetcode.cn/problems/ugly-number/>)". The problem gives you a number `n` and asks you to determine whether `n` is an "ugly number". An "ugly number" is a positive integer whose prime factors are limited to `2`, `3`, and `5`.
 
 The function signature is:
-    
-    
-    boolean isUgly(int n)
+
+```
+boolean isUgly(int n)
+``` 
 
 For example, 12 = 2 × 2 × 3 is an ugly number, while 42 = 2 × 3 × 7 is not an ugly number.
 
@@ -51,29 +51,25 @@ Since any positive integer greater than one can be decomposed into a product of 
 
 With this idea, you can implement the `isUgly` function:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public boolean isUgly(int n) {
-            if (n <= 0) return false;
-            // If n is an ugly number, its prime factors should only be 2, 3, 5
-            while (n % 2 == 0) n /= 2;
-            while (n % 3 == 0) n /= 3;
-            while (n % 5 == 0) n /= 5;
-            return n == 1;
-        }
+```java
+class Solution {
+    public boolean isUgly(int n) {
+        if (n <= 0) return false;
+        // If n is an ugly number, its prime factors should only be 2, 3, 5
+        while (n % 2 == 0) n /= 2;
+        while (n % 3 == 0) n /= 3;
+        while (n % 5 == 0) n /= 5;
+        return n == 1;
     }
+}
+``` 
 
-## ¶Ugly Number II
+## Ugly Number II
 
-Now let's increase the difficulty and look at LeetCode problem 264 "[Ugly Number II](https://leetcode.cn/problems/ugly-number-ii/)". This time, the problem doesn't ask you to determine whether a number is ugly, but instead gives you an input `n` and asks you to calculate what the `n`-th ugly number is. The function signature is:
+Now let's increase the difficulty and look at LeetCode problem 264 "[Ugly Number II](<https://leetcode.cn/problems/ugly-number-ii/>)". This time, the problem doesn't ask you to determine whether a number is ugly, but instead gives you an input `n` and asks you to calculate what the `n`-th ugly number is. The function signature is:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int nthUglyNumber(int n)
+```java
+int nthUglyNumber(int n)
+``` 
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

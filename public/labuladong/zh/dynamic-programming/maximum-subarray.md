@@ -21,15 +21,13 @@ LeetCode| 力扣| 难度
   * [滑动窗口算法框架详解](</zh/algo/essential-technique/sliding-window-framework/>)
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
 
-
 力扣第 53 题「[最大子序和](<https://leetcode.cn/problems/maximum-subarray/>)」问题和前文讲过的 [经典动态规划：最长递增子序列](</zh/algo/dynamic-programming/longest-increasing-subsequence/>) 的套路非常相似，代表着一类比较特殊的动态规划问题的思路，题目如下：
 
 给你输入一个整数数组 `nums`，请你找在其中找一个和最大的子数组，返回这个子数组的和。函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int maxSubArray(int[] nums);
+```java
+int maxSubArray(int[] nums);
+``` 
 
 比如说输入 `nums = [-3,1,3,-1,2,-4,2]`，算法返回 5，因为最大子数组 `[1,3,-1,2]` 的和为 5。
 
@@ -46,7 +44,3 @@ CC++GoJavaJavaScriptPython
 我之前认为这题用不了滑动窗口算法，理由是在包含负数的条件下对 `nums` 求和，应该无法确定什么时候扩大和缩小窗口（类似 [前缀和习题](</zh/algo/problem-set/perfix-sum/>) 中讲解的第 560 题）。但经读者评论的启发，我发现这道题确实是可以用滑动窗口技巧解决，不过有些 case 有点过于精巧，确实不容易想到。
 
 所以我认为滑动窗口解法可以作为思路拓展，真正遇到类似的问题，还是以动态规划/前缀和的思路来做，更容易按照模板化的思维解决问题。下面我来依次讲解这三种解法。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

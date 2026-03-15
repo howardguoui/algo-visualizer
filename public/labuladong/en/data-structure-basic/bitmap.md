@@ -12,16 +12,17 @@ Summary in One Sentence
 A bitmap is a space-saving data structure. It uses a single bit (0 or 1) to mark whether an element exists.
 
 When solving algorithm problems, we often use a boolean array like `boolean[] visited` to track whether elements in an array have been visited.
-    
-    
-    // Suppose nums is an array of 1000 integers
-    int[] nums = {...}
-    
-    // When writing algorithms,
-    // we might use a boolean array to record which elements in nums have been visited
-    boolean[] visited = new boolean[nums.length];
-    visited[10] = true;
-    visited[100] = true;
+
+```
+// Suppose nums is an array of 1000 integers
+int[] nums = {...}
+
+// When writing algorithms,
+// we might use a boolean array to record which elements in nums have been visited
+boolean[] visited = new boolean[nums.length];
+visited[10] = true;
+visited[100] = true;
+``` 
 
 Let's look closely at this situation. Is there any room to optimize?
 
@@ -37,8 +38,6 @@ Tip
 
 When writing code or solving algorithm problems, using the built-in boolean array is good enough. **Only when the data size is very large, should you use a bitmap to save memory. Otherwise, it is not necessary to introduce extra complexity just to save some memory.**
 
-For example, the [Bloom filter](/en/algo/data-structure-basic/bloom-filter/) needs to handle huge data. That is why it uses a bitmap for optimization.
+For example, the [Bloom filter](</en/algo/data-structure-basic/bloom-filter/>) needs to handle huge data. That is why it uses a bitmap for optimization.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

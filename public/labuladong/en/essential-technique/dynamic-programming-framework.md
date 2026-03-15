@@ -11,17 +11,16 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[509\. Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)|   
-[70\. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)|   
-[322\. Coin Change](https://leetcode.com/problems/coin-change/)|   
+[509\. Fibonacci Number](<https://leetcode.com/problems/fibonacci-number/>)|   
+[70\. Climbing Stairs](<https://leetcode.com/problems/climbing-stairs/>)|   
+[322\. Coin Change](<https://leetcode.com/problems/coin-change/>)|   
   
 Prerequisite Knowledge
 
 Before reading this article, you should first learn:
 
-  * [Binary Tree Traversal Framework](/en/algo/data-structure-basic/binary-tree-traverse-basic/)
-  * [N-ary Tree Structure and Traversal Framework](/en/algo/data-structure-basic/n-ary-tree-traverse-basic/)
-
+  * [Binary Tree Traversal Framework](</en/algo/data-structure-basic/binary-tree-traverse-basic/>)
+  * [N-ary Tree Structure and Traversal Framework](</en/algo/data-structure-basic/n-ary-tree-traverse-basic/>)
 
 Dynamic Programming (DP) problems can be challenging for many readers, but they are also among the most interesting and skillful types of problems. This site dedicates an entire chapter to this algorithm, which shows the importance of dynamic programming.
 
@@ -30,7 +29,6 @@ This article will address several questions:
   * What is dynamic programming?
   * What are the techniques to solve dynamic programming problems?
   * How should you learn dynamic programming?
-
 
 After solving many problems, you will notice that there are only a few main algorithm strategies. In the following chapters about dynamic programming, we will use the same problem-solving framework discussed here. If you understand the framework, tackling DP problems will become much easier. That is why this article is placed at the beginning, aiming to serve as a guide for solving dynamic programming problems. Now, let’s get to the main content.
 
@@ -51,45 +49,45 @@ The three key elements of dynamic programming are: overlapping subproblems, opti
 **Clarify the "state" - > Clarify the "choices" -> Define the meaning of the `dp` array/function.**
 
 By following this framework, your final code will look like this:
-    
-    
-    # Top-down recursive dynamic programming
-    def dp(state1, state2, ...):
-        for choice in all possible choices:
-            # The state changes after making the choice
-            result = find_optimal(result, dp(state1, state2, ...))
-        return result
-    
-    # Bottom-up iterative dynamic programming
-    # Initialize base case
-    dp[0][0][...] = base case
-    # Perform state transitions
-    for state1 in all possible values of state1:
-        for state2 in all possible values of state2:
-            for ...
-                dp[state1][state2][...] = find_optimal(choice1, choice2, ...)
+
+```
+# Top-down recursive dynamic programming
+def dp(state1, state2, ...):
+    for choice in all possible choices:
+        # The state changes after making the choice
+        result = find_optimal(result, dp(state1, state2, ...))
+    return result
+
+# Bottom-up iterative dynamic programming
+# Initialize base case
+dp[0][0][...] = base case
+# Perform state transitions
+for state1 in all possible values of state1:
+    for state2 in all possible values of state2:
+        for ...
+            dp[state1][state2][...] = find_optimal(choice1, choice2, ...)
+``` 
 
 Next, we will use the Fibonacci problem and the coin change problem to explain the basic principles of dynamic programming. The first example will help you understand what overlapping subproblems are (although Fibonacci does not optimize for an optimal value, so strictly speaking, it is not a DP problem), and the second will focus on how to construct state transition equations.
 
-## ¶1\. Fibonacci Sequence
+## 1\. Fibonacci Sequence
 
-LeetCode Problem 509 "[Fibonacci Number](https://leetcode.com/problems/fibonacci-number/)" is about this problem. Please don't be discouraged by the simplicity of this example. **Only simple examples allow you to focus fully on the underlying ideas and techniques of the algorithm, without getting distracted by tricky details.** If you want more challenging examples, there will be plenty in the upcoming dynamic programming series.
+LeetCode Problem 509 "[Fibonacci Number](<https://leetcode.com/problems/fibonacci-number/>)" is about this problem. Please don't be discouraged by the simplicity of this example. **Only simple examples allow you to focus fully on the underlying ideas and techniques of the algorithm, without getting distracted by tricky details.** If you want more challenging examples, there will be plenty in the upcoming dynamic programming series.
 
-### ¶Brute-force Recursion
+### Brute-force Recursion
 
 The mathematical definition of the Fibonacci sequence is recursive. The code implementation is as follows:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // f(n) calculates the nth Fibonacci number
-    int fib(int n) {
-        // base case
-        if (n == 0 || n == 1){
-            return n;
-        }
-        return fib(n - 1) + fib(n - 2);
+```java
+// f(n) calculates the nth Fibonacci number
+int fib(int n) {
+    // base case
+    if (n == 0 || n == 1){
+        return n;
     }
+    return fib(n - 1) + fib(n - 2);
+}
+``` 
 
 Info
 
@@ -97,7 +95,7 @@ According to the LeetCode problem description, the base cases are `f(0) = 0` and
 
 When teaching recursion, school teachers often use this as an example. We also know that although this code is simple and easy to understand, it is very inefficient. Why is it inefficient? Suppose `n = 20`. Let's draw the recursion tree:
 
-![](/images/algo/dynamic-programming/1.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/1.jpg)
 
 How do we understand this recursion tree? To compute the original problem `f(20)`, we first need to compute the subproblems `f(19)` and `f(18)`. To compute `f(19)`, we need to compute `f(18)` and `f(17)`, and so on. When we reach `f(1)` or `f(2)`, we already know the results, so we can return immediately, and the recursion tree does not grow further downward.
 
@@ -119,11 +117,11 @@ Looking at the recursion tree, it is clear why the algorithm is inefficient: the
 
 For example, `f(18)` is calculated twice, and as you can see, the subtree rooted at `f(18)` is quite large. Recomputing it wastes a lot of time. And `f(18)` is not the only node that gets recalculated, so the algorithm is very inefficient.
 
-![](/images/algo/dynamic-programming/1.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/1.jpg)
 
 This demonstrates the first property of dynamic programming problems: **overlapping subproblems**. Next, we will look for ways to solve this issue.
 
-### ¶Recursive Solution with Memoization
+### Recursive Solution with Memoization
 
 Since the main cause of inefficiency is repeated calculations, we can create a "memoization" table. Each time we solve a subproblem, we save the answer in the memoization table. When we encounter a subproblem, we first check the table. If the answer has already been computed, we simply return it instead of recalculating.
 
@@ -131,44 +129,43 @@ For the Fibonacci problem, we need a memoization table to record the value of th
 
 Of course, you can also use a hash table for storage. The idea is the same.
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int fib(int n) {
-        // initialize the memo array to all -1
-        // because the Fibonacci number is a non-negative integer, so
-        // initialize it with -1 to indicate that it has not been calculated
-    
-        // because the index of the array starts at 0, so we need n + 1 spaces
-        // so we can record `f(0) ~ f(n)` in memo
-        int[] memo = new int[n + 1];
-        Arrays.fill(memo, -1);
-    
-        return dp(memo, n);
+```java
+int fib(int n) {
+    // initialize the memo array to all -1
+    // because the Fibonacci number is a non-negative integer, so
+    // initialize it with -1 to indicate that it has not been calculated
+
+    // because the index of the array starts at 0, so we need n + 1 spaces
+    // so we can record `f(0) ~ f(n)` in memo
+    int[] memo = new int[n + 1];
+    Arrays.fill(memo, -1);
+
+    return dp(memo, n);
+}
+
+// perform recursion with memoization
+int dp(int[] memo, int n) {
+    // base case
+    if (n == 0 || n == 1) {
+        return n;
     }
-    
-    // perform recursion with memoization
-    int dp(int[] memo, int n) {
-        // base case
-        if (n == 0 || n == 1) {
-            return n;
-        }
-        // already calculated, no need to calculate again
-        if (memo[n] != -1) {
-            return memo[n];
-        }
-        // before returning the result, store it in the memo
-        memo[n] = dp(memo, n - 1) + dp(memo, n - 2);
+    // already calculated, no need to calculate again
+    if (memo[n] != -1) {
         return memo[n];
     }
+    // before returning the result, store it in the memo
+    memo[n] = dp(memo, n - 1) + dp(memo, n - 2);
+    return memo[n];
+}
+``` 
 
 Now, let's draw the recursion tree to see what memoization actually does.
 
-![](/images/algo/dynamic-programming/2.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/2.jpg)
 
 In fact, recursive algorithms with memoization prune away the redundant branches of the recursion tree, turning it into a recursion graph without redundancy. This greatly reduces the number of subproblems (nodes in the graph), and each subproblem is calculated only once:
 
-![](/images/algo/dynamic-programming/3-en.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/3-en.jpg)
 
 **How do you calculate the time complexity of a recursive algorithm? Multiply the number of subproblems by the time needed to solve each subproblem.**
 
@@ -184,7 +181,7 @@ Please open this visualization panel and click the line `if (n == 0 || n == 1)` 
 
 Algorithm Visualization
 
-### ¶Top-Down vs Bottom-Up
+### Top-Down vs Bottom-Up
 
 If you have mastered the content above, you already know how to solve dynamic programming problems: start with a brute-force solution, then use a "memoization" technique to prune and eliminate overlapping subproblems. Dynamic programming is just that simple.
 
@@ -216,40 +213,39 @@ You can see that the process of passing results up the recursion tree is just th
 
 By now, you might have noticed that the entire computation is just calculating the values in `memo` from left to right. Why bother using recursion, making things more complex? Isn't a for loop enough?
 
-### ¶Iterative DP Array Solution
+### Iterative DP Array Solution
 
 With this insight, we no longer need to use recursion. We simply create an array (the DP table) and use a for loop to calculate values from the base cases from left to right.
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int fib(int n) {
-        if (n == 0 || n == 1) {
-            return n;
-        }
-        // dp table
-        int[] dp = new int[n + 1];
-        // base case
-        dp[0] = 0; dp[1] = 1;
-        // state transition
-        for (int i = 2; i <= n; i++) {
-            dp[i] = dp[i - 1] + dp[i - 2];
-        }
-    
-        return dp[n];
+```java
+int fib(int n) {
+    if (n == 0 || n == 1) {
+        return n;
     }
+    // dp table
+    int[] dp = new int[n + 1];
+    // base case
+    dp[0] = 0; dp[1] = 1;
+    // state transition
+    for (int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+    }
+
+    return dp[n];
+}
+``` 
 
 Algorithm Visualization
 
 The diagram makes this approach easy to understand, and you can see that this DP table is similar to the "pruned" result from before, just calculated in the opposite direction:
 
-![](/images/algo/dynamic-programming/4-en.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/4-en.jpg)
 
 In fact, the "memo" array in the recursive solution with memoization ends up being the same as the `dp` array in this solution. If you compare the visualizations of the two algorithms, you can clearly see their connection.
 
 So, the top-down and bottom-up approaches are essentially the same, and in most cases, their efficiency is about the same.
 
-### ¶Going Further
+### Going Further
 
 Now let me introduce the term "state transition equation." It's really just a mathematical way of describing the structure of the problem:
 
@@ -273,57 +269,55 @@ Sharp readers may have noticed that according to the Fibonacci state transition 
 
 This means you can optimize further and bring the space complexity down to O(1)O(1)O(1). This gives us the most common algorithm for computing Fibonacci numbers:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int fib(int n) {
-        if (n == 0 || n == 1) {
-            // base case
-            return n;
-        }
-        // represent dp[i - 1] and dp[i - 2] respectively
-        int dp_i_1 = 1, dp_i_2 = 0;
-        for (int i = 2; i <= n; i++) {
-            // dp[i] = dp[i - 1] + dp[i - 2];
-            int dp_i = dp_i_1 + dp_i_2;
-            // rolling update
-            dp_i_2 = dp_i_1;
-            dp_i_1 = dp_i;
-        }
-        return dp_i_1;
+```java
+int fib(int n) {
+    if (n == 0 || n == 1) {
+        // base case
+        return n;
     }
+    // represent dp[i - 1] and dp[i - 2] respectively
+    int dp_i_1 = 1, dp_i_2 = 0;
+    for (int i = 2; i <= n; i++) {
+        // dp[i] = dp[i - 1] + dp[i - 2];
+        int dp_i = dp_i_1 + dp_i_2;
+        // rolling update
+        dp_i_2 = dp_i_1;
+        dp_i_1 = dp_i;
+    }
+    return dp_i_1;
+}
+``` 
 
 Algorithm Visualization
 
 This is typically the final optimization step in dynamic programming. If each state transition only uses a portion of the DP table, you can try shrinking the table to store only the necessary data, reducing space complexity.
 
-In this example, we shrank the DP table from size `n` down to 2, dropping the space complexity by an entire order of magnitude. I'll go deeper into this space compression technique in [Dimensionality Reduction in Dynamic Programming](/en/algo/dynamic-programming/space-optimization/), where it's commonly used to compress a 2D DP table into 1D, reducing space complexity from O(n2)O(n^2)O(n2) to O(n)O(n)O(n).
+In this example, we shrank the DP table from size `n` down to 2, dropping the space complexity by an entire order of magnitude. I'll go deeper into this space compression technique in [Dimensionality Reduction in Dynamic Programming](</en/algo/dynamic-programming/space-optimization/>), where it's commonly used to compress a 2D DP table into 1D, reducing space complexity from O(n2)O(n^2)O(n2) to O(n)O(n)O(n).
 
 See how the thought process becomes clear when you lay it all out like this? Who knew there was so much depth hiding in the simple Fibonacci sequence?
 
-The core ideas behind algorithms are actually simple and intuitive—it's just that problems wrap them in layers of disguise to hide them from you. For instance, try [70\. Climbing Stairs](https://leetcode.com/problems/climbing-stairs/). It looks like a word problem, but at its core, it's just the Fibonacci sequence.
+The core ideas behind algorithms are actually simple and intuitive—it's just that problems wrap them in layers of disguise to hide them from you. For instance, try [70\. Climbing Stairs](<https://leetcode.com/problems/climbing-stairs/>). It looks like a word problem, but at its core, it's just the Fibonacci sequence.
 
 At this point you might be wondering: what about that other key property of dynamic programming—"optimal substructure"? Why haven't we covered it?
 
 We're about to. The Fibonacci example isn't technically dynamic programming, since it doesn't involve finding an optimum. Everything above was meant to illustrate how to eliminate overlapping subproblems and show the step-by-step refinement process from brute-force to optimal solution. Next up, let's look at the second example: the coin change problem.
 
-## ¶2\. Coin Change Problem
+## 2\. Coin Change Problem
 
-This is LeetCode Problem 322: [Coin Change](https://leetcode.com/problems/coin-change/):
+This is LeetCode Problem 322: [Coin Change](<https://leetcode.com/problems/coin-change/>):
 
 You are given `k` types of coins, with denominations `c1, c2 ... ck`. Each type of coin has an unlimited supply. Given a total amount `amount`, find the **minimum** number of coins needed to make up that amount. If it is not possible, return -1. The function signature is as follows:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // `coins` contains the denominations of available coins, and `amount` is the target amount
-    int coinChange(int[] coins, int amount);
+```java
+// `coins` contains the denominations of available coins, and `amount` is the target amount
+int coinChange(int[] coins, int amount);
+``` 
 
 For example, if `k = 3`, the denominations are 1, 2, and 5, and the total amount `amount = 11`. The minimum number of coins required is 3, that is, 11 = 5 + 5 + 1.
 
 How should a computer solve this problem? Clearly, we can enumerate all possible combinations of coins and find the one that uses the fewest coins.
 
-### ¶Brute-force Recursion
+### Brute-force Recursion
 
 First, this is a dynamic programming problem because it has an "optimal substructure." **For the optimal substructure to hold, the subproblems must be independent of each other.** What does it mean to be independent? Instead of a mathematical proof, let's look at an intuitive example.
 
@@ -339,7 +333,7 @@ Back to the coin change problem, why does it have an optimal substructure? Suppo
 
 Tip
 
-For more examples about the optimal substructure property, see [Dynamic Programming Q&A](/en/algo/dynamic-programming/faq-summary/) later in this article.
+For more examples about the optimal substructure property, see [Dynamic Programming Q&A](</en/algo/dynamic-programming/faq-summary/>) later in this article.
 
 Now that we know this is a dynamic programming problem, how do we write the correct state transition equation?
 
@@ -355,54 +349,52 @@ According to this definition, our final answer is the return value of `dp(amount
 
 Once you understand these key points, you can write the pseudocode for the solution:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // Pseudocode framework
-    int coinChange(int[] coins, int amount) {
-        // The final result required by the problem is dp(amount)
-        return dp(coins, amount);
+```java
+// Pseudocode framework
+int coinChange(int[] coins, int amount) {
+    // The final result required by the problem is dp(amount)
+    return dp(coins, amount);
+}
+
+// Definition: To make up the amount n, at least dp(coins, n) coins are needed
+int dp(int[] coins, int n) {
+    // Make a choice, choose the result that requires the fewest coins
+    for (int coin : coins) {
+        res = min(res, 1 + dp(coins, n - coin));
     }
-    
-    // Definition: To make up the amount n, at least dp(coins, n) coins are needed
-    int dp(int[] coins, int n) {
-        // Make a choice, choose the result that requires the fewest coins
-        for (int coin : coins) {
-            res = min(res, 1 + dp(coins, n - coin));
-        }
-        return res;
-    }
+    return res;
+}
+``` 
 
 Based on the pseudocode, we add the base cases to get the final solution. Obviously, when the target amount is 0, the minimum number of coins needed is 0. When the target amount is less than 0, there is no solution, so return -1:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int coinChange(int[] coins, int amount) {
-            // the final result required by the problem is dp(amount)
-            return dp(coins, amount);
-        }
-    
-        // definition: to make up the `amount`, at least dp(coins, amount) coins are needed
-        int dp(int[] coins, int amount) {
-            // base case
-            if (amount == 0) return 0;
-            if (amount < 0) return -1;
-    
-            int res = Integer.MAX_VALUE;
-            for (int coin : coins) {
-                // calculate the result of the subproblem
-                int subProblem = dp(coins, amount - coin);
-                // skip if the subproblem has no solution
-                if (subProblem == -1) continue;
-                // choose the optimal solution from the subproblem, then add one
-                res = Math.min(res, subProblem + 1);
-            }
-    
-            return res == Integer.MAX_VALUE ? -1 : res;
-        }
+```java
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        // the final result required by the problem is dp(amount)
+        return dp(coins, amount);
     }
+
+    // definition: to make up the `amount`, at least dp(coins, amount) coins are needed
+    int dp(int[] coins, int amount) {
+        // base case
+        if (amount == 0) return 0;
+        if (amount < 0) return -1;
+
+        int res = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            // calculate the result of the subproblem
+            int subProblem = dp(coins, amount - coin);
+            // skip if the subproblem has no solution
+            if (subProblem == -1) continue;
+            // choose the optimal solution from the subproblem, then add one
+            res = Math.min(res, subProblem + 1);
+        }
+
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+}
+``` 
 
 Info
 
@@ -418,7 +410,7 @@ dp(n)={0,n=0−1,n<0min⁡{dp(n−coin)+1∣coin∈coins},n>0dp(n) = \begin{case
 
 So, the problem is basically solved. The only thing left is to eliminate overlapping subproblems. For example, when `amount = 11` and `coins = {1,2,5}`, you can draw out the recursion tree to see:
 
-![](/images/algo/dynamic-programming/5.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/5.jpg)
 
 **Time complexity analysis of the recursive algorithm: total number of subproblems × time required to solve each subproblem.**
 
@@ -428,52 +420,51 @@ Assume the target amount is `n`, and there are `k` types of coins. In the worst 
 
 Next, consider the complexity for each subproblem. Since each recursion contains a for loop, the complexity is O(k)O(k)O(k). Multiply them to get a total time complexity of O(kn)O(k^n)O(kn), which is exponential.
 
-### ¶Recursive Solution with Memoization
+### Recursive Solution with Memoization
 
 Similar to the previous Fibonacci example, with slight modification, we can use memoization to eliminate redundant subproblems:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        int[] memo;
-    
-        public int coinChange(int[] coins, int amount) {
-            memo = new int[amount + 1];
-            // Initialize the memo with a special value that won't be
-            // picked, representing it has not been calculated
-            Arrays.fill(memo, -666);
-    
-            return dp(coins, amount);
-        }
-    
-        int dp(int[] coins, int amount) {
-            if (amount == 0) return 0;
-            if (amount < 0) return -1;
-            // Check the memo to prevent repeated calculations
-            if (memo[amount] != -666)
-                return memo[amount];
-    
-            int res = Integer.MAX_VALUE;
-            for (int coin : coins) {
-                // Calculate the result of the subproblem
-                int subProblem = dp(coins, amount - coin); ![](/images/algo/dynamic-programming/5.jpg)
-                // Skip if the subproblem has no solution
-                if (subProblem == -1) continue;
-                // Choose the optimal solution in the subproblem, then add one
-                res = Math.min(res, subProblem + 1);
-            }
-            // Store the calculation result in the memo
-            memo[amount] = (res == Integer.MAX_VALUE) ? -1 : res;
-            return memo[amount];
-        }
+```java
+class Solution {
+    int[] memo;
+
+    public int coinChange(int[] coins, int amount) {
+        memo = new int[amount + 1];
+        // Initialize the memo with a special value that won't be
+        // picked, representing it has not been calculated
+        Arrays.fill(memo, -666);
+
+        return dp(coins, amount);
     }
+
+    int dp(int[] coins, int amount) {
+        if (amount == 0) return 0;
+        if (amount < 0) return -1;
+        // Check the memo to prevent repeated calculations
+        if (memo[amount] != -666)
+            return memo[amount];
+
+        int res = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            // Calculate the result of the subproblem
+            int subProblem = dp(coins, amount - coin); 
+            // Skip if the subproblem has no solution
+            if (subProblem == -1) continue;
+            // Choose the optimal solution in the subproblem, then add one
+            res = Math.min(res, subProblem + 1);
+        }
+        // Store the calculation result in the memo
+        memo[amount] = (res == Integer.MAX_VALUE) ? -1 : res;
+        return memo[amount];
+    }
+}
+``` 
 
 Algorithm Visualization
 
 Without showing the diagram, it is clear that memoization greatly reduces the number of subproblems and completely removes redundancy. Therefore, the total number of subproblems will not exceed the amount `n`, making the number of subproblems O(n)O(n)O(n). The time to process each subproblem remains O(k)O(k)O(k), so the total time complexity is O(kn)O(kn)O(kn).
 
-### ¶Iterative Solution Using `dp` Array
+### Iterative Solution Using `dp` Array
 
 Of course, we can also use a bottom-up approach with a dp table to eliminate overlapping subproblems. The concepts of "state", "choice", and base case remain the same as before. The definition of the `dp` array is similar to the previous `dp` function; both use the target amount as a variable. The `dp` function uses function arguments, while the `dp` array uses array indices:
 
@@ -481,39 +472,38 @@ Of course, we can also use a bottom-up approach with a dp table to eliminate ove
 
 Based on the dynamic programming framework provided at the beginning of this article, we can write the following solution:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int coinChange(int[] coins, int amount) {
-            int[] dp = new int[amount + 1];
-            // The array size is amount + 1, and the initial value is also amount + 1
-            Arrays.fill(dp, amount + 1);
-    
-            // base case
-            dp[0] = 0;
-            // The outer for loop traverses all possible values of all states
-            for (int i = 0; i < dp.length; i++) {
-                // The inner for loop finds the minimum value among all choices
-                for (int coin : coins) {
-                    // The subproblem has no solution, skip
-                    if (i - coin < 0) {
-                        continue;
-                    }
-                    dp[i] = Math.min(dp[i], 1 + dp[i - coin]); ![](/images/algo/dynamic-programming/6.jpg)
+```java
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount + 1];
+        // The array size is amount + 1, and the initial value is also amount + 1
+        Arrays.fill(dp, amount + 1);
+
+        // base case
+        dp[0] = 0;
+        // The outer for loop traverses all possible values of all states
+        for (int i = 0; i < dp.length; i++) {
+            // The inner for loop finds the minimum value among all choices
+            for (int coin : coins) {
+                // The subproblem has no solution, skip
+                if (i - coin < 0) {
+                    continue;
                 }
+                dp[i] = Math.min(dp[i], 1 + dp[i - coin]); 
             }
-            return (dp[amount] == amount + 1) ? -1 : dp[amount];
         }
+        return (dp[amount] == amount + 1) ? -1 : dp[amount];
     }
+}
+``` 
 
 Info
 
 Why do we initialize all values in the `dp` array to `amount + 1`? Because the maximum number of coins needed to make up `amount` is at most `amount` (using only coins of value 1). So initializing to `amount + 1` is equivalent to initializing to positive infinity, which makes it easier to take the minimum value later. Why not use the maximum value of the integer type, `Integer.MAX_VALUE`? Because later we have `dp[i - coin] + 1`, which could cause integer overflow.
 
-![](/images/algo/dynamic-programming/6.jpg)
+![diagram](https://labuladong.online/images/algo/dynamic-programming/6.jpg)
 
-## ¶3\. Final Summary
+## 3\. Final Summary
 
 The first Fibonacci sequence problem explained how to optimize the recursive tree using either "memoization" or a "DP table." It also clarified that these two methods are essentially the same, differing only in their top-down and bottom-up approaches.
 
@@ -530,5 +520,3 @@ Memoization and DP tables are ways to "brute-force smartly." The idea of trading
 We will have a dedicated chapter on dynamic programming problems later. If you have any questions, feel free to come back and reread this article. I hope readers will focus more on "states" and "choices" when reading each problem and solution, so you can develop your own understanding of this framework and use it fluently.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

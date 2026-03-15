@@ -26,7 +26,6 @@ LeetCode| 力扣| 难度
   * [数组基础](</zh/algo/data-structure-basic/array-basic/>)
   * [单链表的六大解题套路](</zh/algo/essential-technique/linked-list-skills-summary/>)
 
-
 在处理数组和链表相关问题时，双指针技巧是经常用到的，双指针技巧主要分为两类：**左右指针** 和**快慢指针** 。
 
 所谓左右指针，就是两个指针相向而行或者相背而行；而所谓快慢指针，就是两个指针同向而行，一快一慢。
@@ -35,9 +34,9 @@ LeetCode| 力扣| 难度
 
 在数组中并没有真正意义上的指针，但我们可以把索引当做数组中的指针，这样也可以在数组中施展双指针技巧，**本文主要讲数组相关的双指针算法** 。
 
-## ¶一、快慢指针技巧
+## 一、快慢指针技巧
 
-### ¶原地修改
+### 原地修改
 
 **数组问题中比较常见的快慢指针技巧，是让你原地修改数组** 。
 
@@ -52,39 +51,35 @@ LeetCode| 力扣| 难度
   * 更改数组 `nums` ，使 `nums` 的前 `k` 个元素包含唯一元素，并按照它们最初在 `nums` 中出现的顺序排列。`nums` 的其余元素与 `nums` 的大小不重要。
   * 返回 `k` 。
 
-
 **判题标准:**
 
 系统会用下面的代码来测试你的题解:
-    
-    
-    int[] nums = [...]; // 输入数组
-    int[] expectedNums = [...]; // 长度正确的期望答案
-    
-    int k = removeDuplicates(nums); // 调用
-    
-    assert k == expectedNums.length;
-    for (int i = 0; i < k; i++) {
-        assert nums[i] == expectedNums[i];
-    }
+
+```
+int[] nums = [...]; // 输入数组
+int[] expectedNums = [...]; // 长度正确的期望答案
+
+int k = removeDuplicates(nums); // 调用
+
+assert k == expectedNums.length;
+for (int i = 0; i < k; i++) {
+    assert nums[i] == expectedNums[i];
+}
+``` 
 
 如果所有断言都通过，那么您的题解将被 **通过** 。
 
 **示例 1：**
-    
-    
-    **输入：** nums = [1,1,2]
-    **输出：** 2, nums = [1,2,_]
-    **解释：** 函数应该返回新的长度 **2** ，并且原数组 _nums_ 的前两个元素被修改为 **1** , **2**。不需要考虑数组中超出新长度后面的元素。
-    
+
+```
+2
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** nums = [0,0,1,1,1,2,2,3,3,4]
-    **输出：** 5, nums = [0,1,2,3,4]
-    **解释：** 函数应该返回新的长度 **5** ， 并且原数组 _nums_ 的前五个元素被修改为 **0** , **1** , **2** , **3** , **4** 。不需要考虑数组中超出新长度后面的元素。
-    
+
+```
+5
+``` 
 
 **提示：**
 
@@ -92,15 +87,13 @@ LeetCode| 力扣| 难度
   * `-104 <= nums[i] <= 104`
   * `nums` 已按 **非严格递增** 排列
 
-
 题目来源：[力扣 26. 删除有序数组中的重复项](<https://leetcode.cn/problems/remove-duplicates-from-sorted-array/>)。
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int removeDuplicates(int[] nums);
+```java
+int removeDuplicates(int[] nums);
+``` 
 
 简单解释一下什么是原地修改：
 
@@ -118,27 +111,26 @@ CC++GoJavaJavaScriptPython
 
 看代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int removeDuplicates(int[] nums) {
-            if (nums.length == 0) {
-                return 0;
-            }
-            int slow = 0, fast = 0;
-            while (fast < nums.length) {
-                if (nums[fast] != nums[slow]) {
-                    slow++;
-                    // 维护 nums[0..slow] 无重复
-                    nums[slow] = nums[fast];
-                }
-                fast++;
-            }
-            // 数组长度为索引 + 1
-            return slow + 1;
+```java
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
         }
+        int slow = 0, fast = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != nums[slow]) {
+                slow++;
+                // 维护 nums[0..slow] 无重复
+                nums[slow] = nums[fast];
+            }
+            fast++;
+        }
+        // 数组长度为索引 + 1
+        return slow + 1;
     }
+}
+``` 
 
 你可以打开下面的可视化面板，多次点击 `while (fast < nums.length)` 这一行代码，即可看到两个指针维护 `nums[0..slow]` 无重复元素：
 
@@ -148,28 +140,27 @@ CC++GoJavaJavaScriptPython
 
 其实和数组去重是一模一样的，唯一的区别是把数组赋值操作变成操作指针而已，你对照着之前的代码来看：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public ListNode deleteDuplicates(ListNode head) {
-            if (head == null) return null;
-            ListNode slow = head, fast = head;
-            while (fast != null) {
-                if (fast.val != slow.val) {
-                    // nums[slow] = nums[fast];
-                    slow.next = fast;
-                    // slow++;
-                    slow = slow.next;
-                }
-                // fast++
-                fast = fast.next;
+```java
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null) return null;
+        ListNode slow = head, fast = head;
+        while (fast != null) {
+            if (fast.val != slow.val) {
+                // nums[slow] = nums[fast];
+                slow.next = fast;
+                // slow++;
+                slow = slow.next;
             }
-            // 断开与后面重复元素的连接
-            slow.next = null;
-            return head;
+            // fast++
+            fast = fast.next;
         }
+        // 断开与后面重复元素的连接
+        slow.next = null;
+        return head;
     }
+}
+``` 
 
 算法执行的过程请看下面这个可视化面板：
 
@@ -196,44 +187,45 @@ Note
   * 更改 `nums` 数组，使 `nums` 的前 `k` 个元素包含不等于 `val` 的元素。`nums` 的其余元素和 `nums` 的大小并不重要。
   * 返回 `k`。
 
-
 **用户评测：**
 
 评测机将使用以下代码测试您的解决方案：
-    
-    
-    int[] nums = [...]; // 输入数组
-    int val = ...; // 要移除的值
-    int[] expectedNums = [...]; // 长度正确的预期答案。
-                                // 它以不等于 val 的值排序。
-    
-    int k = removeElement(nums, val); // 调用你的实现
-    
-    assert k == expectedNums.length;
-    sort(nums, 0, k); // 排序 nums 的前 k 个元素
-    for (int i = 0; i < actualLength; i++) {
-        assert nums[i] == expectedNums[i];
-    }
+
+```
+int[] nums = [...]; // 输入数组
+int val = ...; // 要移除的值
+int[] expectedNums = [...]; // 长度正确的预期答案。
+                            // 它以不等于 val 的值排序。
+
+int k = removeElement(nums, val); // 调用你的实现
+
+assert k == expectedNums.length;
+sort(nums, 0, k); // 排序 nums 的前 k 个元素
+for (int i = 0; i < actualLength; i++) {
+    assert nums[i] == expectedNums[i];
+}
+``` 
 
 如果所有的断言都通过，你的解决方案将会 **通过** 。
 
 **示例 1：**
-    
-    
-    **输入：** nums = [3,2,2,3], val = 3
-    **输出：** 2, nums = [2,2,_,_]
-    **解释：** 你的函数函数应该返回 k = 2, 并且 nums __ 中的前两个元素均为 2。
-    你在返回的 k 个元素之外留下了什么并不重要（因此它们并不计入评测）。
+
+```
+输入：nums = [3,2,2,3], val = 3
+输出：2, nums = [2,2,_,_]
+解释：你的函数函数应该返回 k = 2, 并且 nums 中的前两个元素均为 2。
+你在返回的 k 个元素之外留下了什么并不重要（因此它们并不计入评测）。
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** nums = [0,1,2,2,3,0,4,2], val = 2
-    **输出：** 5, nums = [0,1,4,0,3,_,_,_]
-    **解释：** 你的函数应该返回 k = 5，并且 nums 中的前五个元素为 0,0,1,3,4。
-    注意这五个元素可以任意顺序返回。
-    你在返回的 k 个元素之外留下了什么并不重要（因此它们并不计入评测）。
-    
+
+```
+输入：nums = [0,1,2,2,3,0,4,2], val = 2
+输出：5, nums = [0,1,4,0,3,_,_,_]
+解释：你的函数应该返回 k = 5，并且 nums 中的前五个元素为 0,0,1,3,4。
+注意这五个元素可以任意顺序返回。
+你在返回的 k 个元素之外留下了什么并不重要（因此它们并不计入评测）。
+``` 
 
 **提示：**
 
@@ -241,14 +233,12 @@ Note
   * `0 <= nums[i] <= 50`
   * `0 <= val <= 100`
 
-
 题目来源：[力扣 27. 移除元素](<https://leetcode.cn/problems/remove-element/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 函数签名如下
-    int removeElement(int[] nums, int val);
+```java
+// 函数签名如下
+int removeElement(int[] nums, int val);
+``` 
 
 题目要求我们把 `nums` 中所有值为 `val` 的元素原地删除，依然需要使用快慢指针技巧：
 
@@ -256,22 +246,21 @@ CC++GoJavaJavaScriptPython
 
 这和前面说到的数组去重问题解法思路是完全一样的，直接看代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int removeElement(int[] nums, int val) {
-            int fast = 0, slow = 0;
-            while (fast < nums.length) {
-                if (nums[fast] != val) {
-                    nums[slow] = nums[fast];
-                    slow++;
-                }
-                fast++;
+```java
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int fast = 0, slow = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow++;
             }
-            return slow;
+            fast++;
         }
+        return slow;
     }
+}
+``` 
 
 你可以打开下面的可视化面板，多次点击 `while (fast < nums.length)` 这一行代码，即可看到两个指针维护 `nums[0..slow]` 无重复元素：
 
@@ -283,10 +272,9 @@ CC++GoJavaJavaScriptPython
 
 给你输入一个数组 `nums`，请你**原地修改** ，将数组中的所有值为 0 的元素移到数组末尾，函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void moveZeroes(int[] nums);
+```java
+void moveZeroes(int[] nums);
+``` 
 
 比如说给你输入 `nums = [0,1,4,0,2]`，你的算法没有返回值，但是会把 `nums` 数组原地修改成 `[1,4,2,0,0]`。
 
@@ -296,33 +284,32 @@ CC++GoJavaJavaScriptPython
 
 题目让我们将所有 0 移到最后，其实就相当于移除 `nums` 中的所有 0，然后再把后面的元素都赋值为 0：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public void moveZeroes(int[] nums) {
-            // 去除 nums 中的所有 0
-            // 返回去除 0 之后的数组长度
-            int p = removeElement(nums, 0);
-            // 将 p 之后的所有元素赋值为 0
-            for (; p < nums.length; p++) {
-                nums[p] = 0;
-            }
-        }
-    
-        // 双指针技巧，复用 [27. 移除元素] 的解法。
-        int removeElement(int[] nums, int val) {
-            int fast = 0, slow = 0;
-            while (fast < nums.length) {
-                if (nums[fast] != val) {
-                    nums[slow] = nums[fast];
-                    slow++;
-                }
-                fast++;
-            }
-            return slow;
+```java
+class Solution {
+    public void moveZeroes(int[] nums) {
+        // 去除 nums 中的所有 0
+        // 返回去除 0 之后的数组长度
+        int p = removeElement(nums, 0);
+        // 将 p 之后的所有元素赋值为 0
+        for (; p < nums.length; p++) {
+            nums[p] = 0;
         }
     }
+
+    // 双指针技巧，复用 [27. 移除元素] 的解法。
+    int removeElement(int[] nums, int val) {
+        int fast = 0, slow = 0;
+        while (fast < nums.length) {
+            if (nums[fast] != val) {
+                nums[slow] = nums[fast];
+                slow++;
+            }
+            fast++;
+        }
+        return slow;
+    }
+}
+``` 
 
 你可以点开下面的可视化面板，多次点击 `while (fast < nums.length)` 这行代码查看快慢指针的运动，然后多次点击 `nums[p] = 0;` 这行代码将后面的元素都改为 0：
 
@@ -330,55 +317,55 @@ CC++GoJavaJavaScriptPython
 
 到这里，原地修改数组的这些题目就已经差不多了。
 
-### ¶滑动窗口
+### 滑动窗口
 
 数组中另一大类快慢指针的题目就是「滑动窗口算法」。我在另一篇文章 [滑动窗口算法核心框架详解](</zh/algo/essential-technique/sliding-window-framework/>) 给出了滑动窗口的代码框架：
+
+```
+// 滑动窗口算法框架伪码
+int left = 0, right = 0;
+
+while (right < nums.size()) {
+    // 增大窗口
+    window.addLast(nums[right]);
+    right++;
     
-    
-    // 滑动窗口算法框架伪码
-    int left = 0, right = 0;
-    
-    while (right < nums.size()) {
-        // 增大窗口
-        window.addLast(nums[right]);
-        right++;
-        
-        while (window needs shrink) {
-            // 缩小窗口
-            window.removeFirst(nums[left]);
-            left++;
-        }
+    while (window needs shrink) {
+        // 缩小窗口
+        window.removeFirst(nums[left]);
+        left++;
     }
+}
+``` 
 
 具体的题目本文就不重复了，这里只强调滑动窗口算法的快慢指针特性：
 
 `left` 指针在后，`right` 指针在前，两个指针中间的部分就是「窗口」，算法通过扩大和缩小「窗口」来解决某些问题。
 
-## ¶二、左右指针的常用算法
+## 二、左右指针的常用算法
 
-### ¶二分查找
+### 二分查找
 
 我在另一篇文章 [二分查找框架详解](</zh/algo/essential-technique/binary-search-framework/>) 中有详细探讨二分搜索代码的细节问题，这里只写最简单的二分算法，旨在突出它的双指针特性：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int binarySearch(int[] nums, int target) {
-        // 一左一右两个指针相向而行
-        int left = 0, right = nums.length - 1;
-        while(left <= right) {
-            int mid = (right + left) / 2;
-            if(nums[mid] == target)
-                return mid; 
-            else if (nums[mid] < target)
-                left = mid + 1; 
-            else if (nums[mid] > target)
-                right = mid - 1;
-        }
-        return -1;
+```java
+int binarySearch(int[] nums, int target) {
+    // 一左一右两个指针相向而行
+    int left = 0, right = nums.length - 1;
+    while(left <= right) {
+        int mid = (right + left) / 2;
+        if(nums[mid] == target)
+            return mid; 
+        else if (nums[mid] < target)
+            left = mid + 1; 
+        else if (nums[mid] > target)
+            right = mid - 1;
     }
+    return -1;
+}
+``` 
 
-### ¶`n` 数之和
+### `n` 数之和
 
 看下力扣第 167 题「[两数之和 II](<https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/>)」：
 
@@ -393,26 +380,28 @@ CC++GoJavaJavaScriptPython
 你所设计的解决方案必须只使用常量级的额外空间。
 
 **示例 1：**
-    
-    
-    **输入：** numbers = [**_2_** ,**_7_** ,11,15], target = 9
-    **输出：**[1,2]
-    **解释：** 2 与 7 之和等于目标数 9 。因此 index1 = 1, index2 = 2 。返回 [1, 2] 。
+
+```
+输入：numbers = [2,7,11,15], target = 9
+输出：[1,2]
+解释：2 与 7 之和等于目标数 9 。因此 index1 = 1, index2 = 2 。返回 [1, 2] 。
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** numbers = [**_2_** ,3,**_4_**], target = 6
-    **输出：**[1,3]
-    **解释：** 2 与 4 之和等于目标数 6 。因此 index1 = 1, index2 = 3 。返回 [1, 3] 。
+
+```
+输入：numbers = [2,3,4], target = 6
+输出：[1,3]
+解释：2 与 4 之和等于目标数 6 。因此 index1 = 1, index2 = 3 。返回 [1, 3] 。
+``` 
 
 **示例 3：**
-    
-    
-    **输入：** numbers = [**_-1_** ,**_0_**], target = -1
-    **输出：**[1,2]
-    **解释：** -1 与 0 之和等于目标数 -1 。因此 index1 = 1, index2 = 2 。返回 [1, 2] 。
-    
+
+```
+输入：numbers = [-1,0], target = -1
+输出：[1,2]
+解释：-1 与 0 之和等于目标数 -1 。因此 index1 = 1, index2 = 2 。返回 [1, 2] 。
+``` 
 
 **提示：**
 
@@ -422,80 +411,76 @@ CC++GoJavaJavaScriptPython
   * `-1000 <= target <= 1000`
   * **仅存在一个有效答案**
 
-
 题目来源：[力扣 167. 两数之和 II - 输入有序数组](<https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/>)。
 
 只要数组有序，就应该想到双指针技巧。这道题的解法有点类似二分查找，通过调节 `left` 和 `right` 就可以调整 `sum` 的大小：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int[] twoSum(int[] numbers, int target) {
-            // 一左一右两个指针相向而行
-            int left = 0, right = numbers.length - 1;
-            while (left < right) {
-                int sum = numbers[left] + numbers[right];
-                if (sum == target) {
-                    // 题目要求的索引是从 1 开始的
-                    return new int[]{left + 1, right + 1};
-                } else if (sum < target) {
-                    // 让 sum 大一点
-                    left++;
-                } else if (sum > target) {
-                    // 让 sum 小一点
-                    right--;
-                }
+```java
+class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        // 一左一右两个指针相向而行
+        int left = 0, right = numbers.length - 1;
+        while (left < right) {
+            int sum = numbers[left] + numbers[right];
+            if (sum == target) {
+                // 题目要求的索引是从 1 开始的
+                return new int[]{left + 1, right + 1};
+            } else if (sum < target) {
+                // 让 sum 大一点
+                left++;
+            } else if (sum > target) {
+                // 让 sum 小一点
+                right--;
             }
-            return new int[]{-1, -1};
         }
+        return new int[]{-1, -1};
     }
+}
+``` 
 
 我在另一篇文章 [一个函数秒杀所有 nSum 问题](</zh/algo/practice-in-action/nsum/>) 中也运用类似的左右指针技巧给出了 `nSum` 问题的一种通用思路，本质上利用的也是双指针技巧。
 
-### ¶反转数组
+### 反转数组
 
 一般编程语言都会提供 `reverse` 函数，其实这个函数的原理非常简单，力扣第 344 题「[反转字符串](<https://leetcode.cn/problems/reverse-string/>)」就是类似的需求，让你反转一个 `char[]` 类型的字符数组，我们直接看代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void reverseString(char[] s) {
-        // 一左一右两个指针相向而行
-        int left = 0, right = s.length - 1;
-        while (left < right) {
-            // 交换 s[left] 和 s[right]
-            char temp = s[left];
-            s[left] = s[right];
-            s[right] = temp;
-            left++;
-            right--;
-        }
+```java
+void reverseString(char[] s) {
+    // 一左一右两个指针相向而行
+    int left = 0, right = s.length - 1;
+    while (left < right) {
+        // 交换 s[left] 和 s[right]
+        char temp = s[left];
+        s[left] = s[right];
+        s[right] = temp;
+        left++;
+        right--;
     }
+}
+``` 
 
 关于数组翻转的更多进阶问题，可以参见 [二维数组的花式遍历](</zh/algo/practice-in-action/2d-array-traversal-summary/>)。
 
-### ¶回文串判断
+### 回文串判断
 
 回文串就是正着读和反着读都一样的字符串。比如说字符串 `aba` 和 `abba` 都是回文串，因为它们对称，反过来还是和本身一样；反之，字符串 `abac` 就不是回文串。
 
 现在你应该能感觉到回文串问题和左右指针肯定有密切的联系，比如让你判断一个字符串是不是回文串，你可以写出下面这段代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    boolean isPalindrome(String s) {
-        // 一左一右两个指针相向而行
-        int left = 0, right = s.length() - 1;
-        while (left < right) {
-            if (s.charAt(left) != s.charAt(right)) {
-                return false;
-            }
-            left++;
-            right--;
+```java
+boolean isPalindrome(String s) {
+    // 一左一右两个指针相向而行
+    int left = 0, right = s.length() - 1;
+    while (left < right) {
+        if (s.charAt(left) != s.charAt(right)) {
+            return false;
         }
-        return true;
+        left++;
+        right--;
     }
+    return true;
+}
+``` 
 
 那接下来我提升一点难度，给你一个字符串，让你用双指针技巧从中找出最长的回文串，你会做吗？
 
@@ -506,97 +491,94 @@ CC++GoJavaJavaScriptPython
 给你一个字符串 `s`，找到 `s` 中最长的 回文 子串。
 
 **示例 1：**
-    
-    
-    **输入：** s = "babad"
-    **输出：** "bab"
-    **解释：** "aba" 同样是符合题意的答案。
-    
+
+```
+输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** s = "cbbd"
-    **输出：** "bb"
-    
+
+```
+输入：s = "cbbd"
+输出："bb"
+``` 
 
 **提示：**
 
   * `1 <= s.length <= 1000`
   * `s` 仅由数字和英文字母组成
 
-
 题目来源：[力扣 5. 最长回文子串](<https://leetcode.cn/problems/longest-palindromic-substring/>)。
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    String longestPalindrome(String s);
+```java
+String longestPalindrome(String s);
+``` 
 
 找回文串的难点在于，回文串的的长度可能是奇数也可能是偶数，解决该问题的核心是**从中心向两端扩散的双指针技巧** 。
 
 如果回文串的长度为奇数，则它有一个中心字符；如果回文串的长度为偶数，则可以认为它有两个中心字符。所以我们可以先实现这样一个函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 在 s 中寻找以 s[l] 和 s[r] 为中心的最长回文串
-    String palindrome(String s, int l, int r) {
-        // 防止索引越界
-        while (l >= 0 && r < s.length()
-                && s.charAt(l) == s.charAt(r)) {
-            // 双指针，向两边展开
-            l--; r++;
-        }
-    
-        // 此时 s[l+1..r-1] 就是最长回文串
-        return s.substring(l + 1, r);
+```java
+// 在 s 中寻找以 s[l] 和 s[r] 为中心的最长回文串
+String palindrome(String s, int l, int r) {
+    // 防止索引越界
+    while (l >= 0 && r < s.length()
+            && s.charAt(l) == s.charAt(r)) {
+        // 双指针，向两边展开
+        l--; r++;
     }
+
+    // 此时 s[l+1..r-1] 就是最长回文串
+    return s.substring(l + 1, r);
+}
+``` 
 
 这样，如果输入相同的 `l` 和 `r`，就相当于寻找长度为奇数的回文串，如果输入相邻的 `l` 和 `r`，则相当于寻找长度为偶数的回文串。
 
 那么回到最长回文串的问题，解法的大致思路就是：
-    
-    
-    for 0 <= i < len(s):
-        找到以 s[i] 为中心的回文串
-        找到以 s[i] 和 s[i+1] 为中心的回文串
-        更新答案
+
+```
+for 0 <= i < len(s):
+    找到以 s[i] 为中心的回文串
+    找到以 s[i] 和 s[i+1] 为中心的回文串
+    更新答案
+``` 
 
 翻译成代码，就可以解决最长回文子串这个问题：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public String longestPalindrome(String s) {
-            String res = "";
-            for (int i = 0; i < s.length(); i++) {
-                // 以 s[i] 为中心的最长回文子串
-                String s1 = palindrome(s, i, i);
-                // 以 s[i] 和 s[i+1] 为中心的最长回文子串
-                String s2 = palindrome(s, i, i + 1);
-                // res = longest(res, s1, s2)
-                res = res.length() > s1.length() ? res : s1;
-                res = res.length() > s2.length() ? res : s2;
-            }
-            return res;
+```java
+class Solution {
+    public String longestPalindrome(String s) {
+        String res = "";
+        for (int i = 0; i < s.length(); i++) {
+            // 以 s[i] 为中心的最长回文子串
+            String s1 = palindrome(s, i, i);
+            // 以 s[i] 和 s[i+1] 为中心的最长回文子串
+            String s2 = palindrome(s, i, i + 1);
+            // res = longest(res, s1, s2)
+            res = res.length() > s1.length() ? res : s1;
+            res = res.length() > s2.length() ? res : s2;
         }
-    
-        String palindrome(String s, int l, int r) {
-            // 防止索引越界
-            while (l >= 0 && r < s.length()
-                    && s.charAt(l) == s.charAt(r)) {
-                // 向两边展开
-                l--;
-                r++;
-            }
-            // 此时 [l+1, r-1] 就是最长回文串
-            return s.substring(l + 1, r);
-        }
+        return res;
     }
+
+    String palindrome(String s, int l, int r) {
+        // 防止索引越界
+        while (l >= 0 && r < s.length()
+                && s.charAt(l) == s.charAt(r)) {
+            // 向两边展开
+            l--;
+            r++;
+        }
+        // 此时 [l+1, r-1] 就是最长回文串
+        return s.substring(l + 1, r);
+    }
+}
+``` 
 
 你可以点开下面的可视化面板，多次点击 `while (l >= 0 && r < s.length && s[l] === s[r])` 这一行代码，即可看到 `l, r` 两个指针向两边展开的过程：
 
@@ -605,7 +587,3 @@ CC++GoJavaJavaScriptPython
 你应该能发现最长回文子串使用的左右指针和之前题目的左右指针有一些不同：之前的左右指针都是从两端向中间相向而行，而回文子串问题则是让左右指针从中心向两端扩展。不过这种情况也就回文串这类问题会遇到，所以我也把它归为左右指针了。
 
 到这里，数组相关的双指针技巧就全部讲完了，这些技巧的更多扩展延伸见 [更多数组双指针经典高频题](</zh/algo/problem-set/array-two-pointers/>)。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

@@ -11,19 +11,19 @@
 
 每章开头的章节导读部分会详细介绍不同读者的阅读方法，请认真阅读。
 
-![](/images/algo/intro/table-pos.png)
+![diagram](https://labuladong.online/images/algo/intro/table-pos.png)
 
-## ¶本站完整题单
+## 本站完整题单
 
 配套的 [vscode 插件](</zh/algo/intro/vscode/>) 和 [Jetbrains 插件](</zh/algo/intro/jetbrains/>) 中集成了本站涉及的所有题目列表，方便你复习：
 
-![](/images/algo/intro/plugin_problemlist.jpeg)
+![diagram](https://labuladong.online/images/algo/intro/plugin_problemlist.jpeg)
 
 题单的使用方法
 
 不建议直接开始刷题单，题单的主要作用是复习。我建议学完网站文章之后再去刷题单，用来检验学习效果。
 
-## ¶不止于刷题
+## 不止于刷题
 
 我觉得算法特别好，尤其是对于初学者，比较容易获得正反馈：只要你每掌握一个算法框架，就能直接秒杀一大波题，这种成就感是非常强烈的。
 
@@ -38,7 +38,3 @@
 现在你觉得能做对几道算法题就很高兴，但当你彻底掌握本站所讲的所有思维方法后，你会发现算法题实在是太简单，这点小成就实在不能带来正反馈了。
 
 所以，我希望能够在这个学习的过程中，你能培养出自己勤于动手动脑的能力，最终把这些能力运用到更广泛的领域，时刻保持对新事物的好奇心，永远在路上。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

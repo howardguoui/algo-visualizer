@@ -20,7 +20,6 @@ LeetCode| 力扣| 难度
   * [选择排序所面临的问题](</zh/algo/data-structure-basic/select-sort/>)
   * [运用逆向思维：插入排序](</zh/algo/data-structure-basic/insertion-sort/>)
 
-
 一句话总结
 
 希尔排序是基于 [插入排序](</zh/algo/data-structure-basic/insertion-sort/>) 的简单改进，通过预处理增加数组的局部有序性，突破了插入排序的 O(N2)O(N^2)O(N2) 时间复杂度。
@@ -33,12 +32,8 @@ LeetCode| 力扣| 难度
 
 首先我们要明确一个 **`h` 有序数组** 的概念。
 
-## ¶`h` 有序数组
+## `h` 有序数组
 
 一个数组是 `h` 有序的，是指这个数组中任意间隔为 `h`（或者说间隔元素的个数为 `h-1`）的元素都是有序的。
 
 这个概念用文字不好描述清楚，直接看个例子吧。比方说 `h=3` 时，一个 `3` 有序数组是这样的：
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

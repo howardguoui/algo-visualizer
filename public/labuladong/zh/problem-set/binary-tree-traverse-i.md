@@ -19,12 +19,7 @@
   * [二叉树心法（思路篇）](</zh/algo/data-structure/binary-tree-part1/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
 一般来说，如果让你在二叉树的「树枝」上做文章，那么用遍历的思维模式解题是比较自然的想法。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -34,6 +29,5 @@ Loading comments...
   * 988\. 从叶结点开始的最小字符串
   * 1022\. 从根到叶的二进制数之和
   * 1457\. 二叉树中的伪回文路径
-
 
 AI 助教

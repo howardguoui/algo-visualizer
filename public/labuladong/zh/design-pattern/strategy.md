@@ -15,26 +15,27 @@
 
 这是继 [观察者模式](</zh/algo/design-pattern/observer/>) 之后我们介绍的第二个行为型设计模式。观察者模式关注「一个对象变化时如何通知其他对象」，而策略模式关注的是「同一件事有多种做法时如何优雅地切换」。
 
-## ¶场景一：报告导出器
+## 场景一：报告导出器
 
 假设你在开发一个数据分析工具，需要把报告导出为不同的格式。最直接的写法大概是这样：
-    
-    
-    class ReportExporter {
-        public String export(String title, String content, String format) {
-            if ("markdown".equals(format)) {
-                return "# " + title + "\n\n" + content;
-            } else if ("html".equals(format)) {
-                return "<h1>" + title + "</h1>\n<p>" + content + "</p>";
-            } else if ("plaintext".equals(format)) {
-                return title.toUpperCase() + "\n"
-                        + "=".repeat(title.length()) + "\n"
-                        + content;
-            } else {
-                throw new IllegalArgumentException("不支持的格式: " + format);
-            }
+
+```
+class ReportExporter {
+    public String export(String title, String content, String format) {
+        if ("markdown".equals(format)) {
+            return "# " + title + "\n\n" + content;
+        } else if ("html".equals(format)) {
+            return "<h1>" + title + "</h1>\n<p>" + content + "</p>";
+        } else if ("plaintext".equals(format)) {
+            return title.toUpperCase() + "\n"
+                    + "=".repeat(title.length()) + "\n"
+                    + content;
+        } else {
+            throw new IllegalArgumentException("不支持的格式: " + format);
         }
     }
+}
+``` 
 
 目前只有三种格式，看起来还能接受。但想象一下，产品经理后续又要加 LaTeX 格式、JSON 格式、Confluence Wiki 格式……每次你都得打开这个类，在 if-else 里面再加一个分支。
 
@@ -43,91 +44,86 @@
   * 违反了开闭原则（对扩展开放，对修改关闭），每次新增格式都要修改已有代码，容易引入 bug。
   * 所有格式的导出逻辑挤在一个方法里，这个方法会越来越臃肿。
 
-
 用策略模式来重构。首先把「格式化」这个会变化的行为抽象成一个接口：
 
-C++GoJavaJavaScriptPython
-    
-    
-    // 策略接口：定义导出格式的通用行为
-    interface ExportStrategy {
-        String export(String title, String content);
-    }
+```java
+// 策略接口：定义导出格式的通用行为
+interface ExportStrategy {
+    String export(String title, String content);
+}
+``` 
 
 然后每种格式各写一个策略类：
 
-C++GoJavaJavaScriptPython
-    
-    
-    // Markdown 格式策略
-    class MarkdownExporter implements ExportStrategy {
-        @Override
-        public String export(String title, String content) {
-            return "# " + title + "\n\n" + content;
-        }
+```java
+// Markdown 格式策略
+class MarkdownExporter implements ExportStrategy {
+    @Override
+    public String export(String title, String content) {
+        return "# " + title + "\n\n" + content;
     }
-    
-    // HTML 格式策略
-    class HtmlExporter implements ExportStrategy {
-        @Override
-        public String export(String title, String content) {
-            return "<h1>" + title + "</h1>\n<p>" + content + "</p>";
-        }
+}
+
+// HTML 格式策略
+class HtmlExporter implements ExportStrategy {
+    @Override
+    public String export(String title, String content) {
+        return "<h1>" + title + "</h1>\n<p>" + content + "</p>";
     }
-    
-    // 纯文本格式策略
-    class PlainTextExporter implements ExportStrategy {
-        @Override
-        public String export(String title, String content) {
-            return title.toUpperCase() + "\n"
-                    + "=".repeat(title.length()) + "\n"
-                    + content;
-        }
+}
+
+// 纯文本格式策略
+class PlainTextExporter implements ExportStrategy {
+    @Override
+    public String export(String title, String content) {
+        return title.toUpperCase() + "\n"
+                + "=".repeat(title.length()) + "\n"
+                + content;
     }
+}
+``` 
 
 最后修改 `ReportExporter`，让它不再关心具体的格式化逻辑，只需要持有一个策略对象并调用它：
 
-C++GoJavaJavaScriptPython
-    
-    
-    class ReportExporter {
-        private ExportStrategy strategy;
-    
-        public ReportExporter(ExportStrategy strategy) {
-            this.strategy = strategy;
-        }
-    
-        // 运行时可以切换策略
-        public void setStrategy(ExportStrategy strategy) {
-            this.strategy = strategy;
-        }
-    
-        public String export(String title, String content) {
-            return strategy.export(title, content);
-        }
+```java
+class ReportExporter {
+    private ExportStrategy strategy;
+
+    public ReportExporter(ExportStrategy strategy) {
+        this.strategy = strategy;
     }
+
+    // 运行时可以切换策略
+    public void setStrategy(ExportStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public String export(String title, String content) {
+        return strategy.export(title, content);
+    }
+}
+``` 
 
 客户端使用起来很简洁：
 
-C++GoJavaJavaScriptPython
-    
-    
-    public class Main {
-        public static void main(String[] args) {
-            ReportExporter exporter = new ReportExporter(new MarkdownExporter());
-    
-            System.out.println(exporter.export("Monthly Report", "Sales grew by 20% this month"));
-            // # Monthly Report
-            //
-            // Sales grew by 20% this month
-    
-            // 需要 HTML 格式？换个策略就行
-            exporter.setStrategy(new HtmlExporter());
-            System.out.println(exporter.export("Monthly Report", "Sales grew by 20% this month"));
-            // <h1>Monthly Report</h1>
-            // <p>Sales grew by 20% this month</p>
-        }
+```java
+public class Main {
+    public static void main(String[] args) {
+        ReportExporter exporter = new ReportExporter(new MarkdownExporter());
+
+        System.out.println(exporter.export("Monthly Report", "Sales grew by 20% this month"));
+        // # Monthly Report
+        //
+        // Sales grew by 20% this month
+
+        // 需要 HTML 格式？换个策略就行
+        exporter.setStrategy(new HtmlExporter());
+        System.out.println(exporter.export("Monthly Report", "Sales grew by 20% this month"));
+        // <h1>Monthly Report</h1>
+        // <p>Sales grew by 20% this month</p>
     }
+}
+``` 
 
 if-else 消失了。如果以后要加 LaTeX 格式，只需要新建一个 `LatexExporter` 实现 `ExportStrategy` 接口，完全不用动已有代码。每个策略类只负责自己的格式化逻辑，职责清晰，互不干扰。
 
@@ -139,8 +135,7 @@ if-else 消失了。如果以后要加 LaTeX 格式，只需要新建一个 `Lat
   * **具体策略（Concrete Strategy）** ：实现策略接口的具体算法。上面的 `MarkdownExporter`、`HtmlExporter`、`PlainTextExporter`。
   * **上下文（Context）** ：持有一个策略接口的引用，把具体工作委托给策略对象。上面的 `ReportExporter`。
 
-
-## ¶场景二：游戏 NPC 行为
+## 场景二：游戏 NPC 行为
 
 报告导出器展示了策略模式如何消除 if-else。接下来用一个更有趣的例子，展示策略模式的另一个能力：**运行时动态切换策略** 。
 
@@ -148,109 +143,106 @@ if-else 消失了。如果以后要加 LaTeX 格式，只需要新建一个 `Lat
 
 定义策略接口和三种具体策略：
 
-C++GoJavaJavaScriptPython
-    
-    
-    // 战斗策略接口
-    interface BattleStrategy {
-        String decideAction(int myHp, int enemyHp);
+```java
+// 战斗策略接口
+interface BattleStrategy {
+    String decideAction(int myHp, int enemyHp);
+}
+
+// 激进型：不管不顾，全力输出
+class AggressiveStrategy implements BattleStrategy {
+    @Override
+    public String decideAction(int myHp, int enemyHp) {
+        return "Full attack! Deal 30 damage";
     }
-    
-    // 激进型：不管不顾，全力输出
-    class AggressiveStrategy implements BattleStrategy {
-        @Override
-        public String decideAction(int myHp, int enemyHp) {
-            return "Full attack! Deal 30 damage";
+}
+
+// 防御型：以防御为主
+class DefensiveStrategy implements BattleStrategy {
+    @Override
+    public String decideAction(int myHp, int enemyHp) {
+        return "Raise shield, reduce 50% incoming damage";
+    }
+}
+
+// 狡猾型：看情况行事
+class CunningStrategy implements BattleStrategy {
+    @Override
+    public String decideAction(int myHp, int enemyHp) {
+        if (enemyHp < 30) {
+            return "Enemy is weak, go for the kill! Deal 40 damage";
         }
+        return "Probe cautiously, deal 10 damage";
     }
-    
-    // 防御型：以防御为主
-    class DefensiveStrategy implements BattleStrategy {
-        @Override
-        public String decideAction(int myHp, int enemyHp) {
-            return "Raise shield, reduce 50% incoming damage";
-        }
-    }
-    
-    // 狡猾型：看情况行事
-    class CunningStrategy implements BattleStrategy {
-        @Override
-        public String decideAction(int myHp, int enemyHp) {
-            if (enemyHp < 30) {
-                return "Enemy is weak, go for the kill! Deal 40 damage";
-            }
-            return "Probe cautiously, deal 10 damage";
-        }
-    }
+}
+``` 
 
 然后定义游戏角色（上下文），它持有一个策略引用：
 
-C++GoJavaJavaScriptPython
-    
-    
-    class GameCharacter {
-        private String name;
-        private int hp;
-        private BattleStrategy strategy;
-    
-        public GameCharacter(String name, int hp, BattleStrategy strategy) {
-            this.name = name;
-            this.hp = hp;
-            this.strategy = strategy;
-        }
-    
-        public void setStrategy(BattleStrategy strategy) {
-            this.strategy = strategy;
-        }
-    
-        public void takeTurn(int enemyHp) {
-            String action = strategy.decideAction(hp, enemyHp);
-            System.out.println(name + ": " + action);
-        }
+```java
+class GameCharacter {
+    private String name;
+    private int hp;
+    private BattleStrategy strategy;
+
+    public GameCharacter(String name, int hp, BattleStrategy strategy) {
+        this.name = name;
+        this.hp = hp;
+        this.strategy = strategy;
     }
+
+    public void setStrategy(BattleStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public void takeTurn(int enemyHp) {
+        String action = strategy.decideAction(hp, enemyHp);
+        System.out.println(name + ": " + action);
+    }
+}
+``` 
 
 看客户端如何使用：
 
-C++GoJavaJavaScriptPython
-    
-    
-    public class Main {
-        public static void main(String[] args) {
-            // 游戏设计师给不同 NPC 分配不同的行为策略
-            GameCharacter warrior = new GameCharacter("Warrior", 100, new AggressiveStrategy());
-            GameCharacter guardian = new GameCharacter("Guardian", 120, new DefensiveStrategy());
-            GameCharacter assassin = new GameCharacter("Assassin", 80, new CunningStrategy());
-    
-            // 各自按照自己的策略行动
-            warrior.takeTurn(80);
-            // Warrior: Full attack! Deal 30 damage
-    
-            guardian.takeTurn(80);
-            // Guardian: Raise shield, reduce 50% incoming damage
-    
-            assassin.takeTurn(100);
-            // Assassin: Probe cautiously, deal 10 damage
-    
-            assassin.takeTurn(25);
-            // Assassin: Enemy is weak, go for the kill! Deal 40 damage
-    
-            // 玩家对守卫使用了「激怒」技能，迫使守卫切换为激进模式
-            System.out.println("\nPlayer used 'Enrage' on Guardian!");
-            guardian.setStrategy(new AggressiveStrategy());
-            guardian.takeTurn(80);
-            // Guardian: Full attack! Deal 30 damage
-        }
+```java
+public class Main {
+    public static void main(String[] args) {
+        // 游戏设计师给不同 NPC 分配不同的行为策略
+        GameCharacter warrior = new GameCharacter("Warrior", 100, new AggressiveStrategy());
+        GameCharacter guardian = new GameCharacter("Guardian", 120, new DefensiveStrategy());
+        GameCharacter assassin = new GameCharacter("Assassin", 80, new CunningStrategy());
+
+        // 各自按照自己的策略行动
+        warrior.takeTurn(80);
+        // Warrior: Full attack! Deal 30 damage
+
+        guardian.takeTurn(80);
+        // Guardian: Raise shield, reduce 50% incoming damage
+
+        assassin.takeTurn(100);
+        // Assassin: Probe cautiously, deal 10 damage
+
+        assassin.takeTurn(25);
+        // Assassin: Enemy is weak, go for the kill! Deal 40 damage
+
+        // 玩家对守卫使用了「激怒」技能，迫使守卫切换为激进模式
+        System.out.println("\nPlayer used 'Enrage' on Guardian!");
+        guardian.setStrategy(new AggressiveStrategy());
+        guardian.takeTurn(80);
+        // Guardian: Full attack! Deal 30 damage
     }
+}
+``` 
 
 这个例子的关键在于最后几行：玩家使用「激怒」技能后，守卫的行为从防御型切换为了激进型。`GameCharacter` 完全不关心当前用的是什么策略，只管调用 `strategy.decideAction()` 就行。
 
 以后要加一种新的行为模式（比如「治疗型」），只需要新建一个策略类实现 `BattleStrategy` 接口，不用改动 `GameCharacter` 或任何已有策略的代码。
 
-## ¶与其他模式的区别
+## 与其他模式的区别
 
 策略模式和好几个设计模式在代码结构上很相似，容易混淆。这里厘清两个最常被问到的。
 
-### ¶策略模式 vs 桥接模式
+### 策略模式 vs 桥接模式
 
 从代码上看，两者都是「持有一个接口引用，通过接口调用方法」，长得几乎一样。区别在于它们解决的问题不同。
 
@@ -260,7 +252,7 @@ C++GoJavaJavaScriptPython
 
 一句话：策略是**选一个算法** ，桥接是**分离两个或多个维度** 。
 
-### ¶策略模式 vs 状态模式
+### 策略模式 vs 状态模式
 
 这两个模式在结构上几乎一模一样，都是上下文持有一个接口引用，都支持运行时切换。但语义完全不同。
 
@@ -270,7 +262,7 @@ C++GoJavaJavaScriptPython
 
 所以策略模式是客户端（调用方）选算法，状态模式是内部（对象自己）根据状态的变化自动切换行为。
 
-## ¶总结
+## 总结
 
 策略模式的主要优势：
 
@@ -278,15 +270,9 @@ C++GoJavaJavaScriptPython
   2. **符合开闭原则** ：新增策略只需添加新类，不用修改已有代码。
   3. **运行时可切换** ：通过 `setStrategy()` 在运行时动态替换算法。
 
-
 策略模式的主要缺点：
 
   1. **类数量增加** ：每种算法都需要一个单独的类，策略很多时类的数量会膨胀。
   2. **客户端需要了解策略** ：客户端必须知道有哪些策略可选，才能做出正确的选择。
 
-
 总的来说，当你发现代码中出现了大量条件分支来选择不同的算法或行为时，策略模式是一个非常好的重构方向。它把「做什么」和「怎么做」分离开来，让系统更灵活、更易扩展。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

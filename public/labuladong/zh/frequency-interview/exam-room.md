@@ -20,17 +20,18 @@ LeetCode| 力扣| 难度
 你作为考官，要安排考生们的座位，满足：**每当一个学生进入时，你需要最大化他和最近其他人的距离；如果有多个这样的座位，安排到他到索引最小的那个座位** 。这很符合实际情况对吧，
 
 也就是请你实现下面这样一个类：
-    
-    
-    class ExamRoom {
-        // 构造函数，传入座位总数 N
-        public ExamRoom(int N);
-        // 来了一名考生，返回你给他分配的座位
-        public int seat();
-        // 坐在 p 位置的考生离开了
-        // 可以认为 p 位置一定坐有考生
-        public void leave(int p);
-    }
+
+```
+class ExamRoom {
+    // 构造函数，传入座位总数 N
+    public ExamRoom(int N);
+    // 来了一名考生，返回你给他分配的座位
+    public int seat();
+    // 坐在 p 位置的考生离开了
+    // 可以认为 p 位置一定坐有考生
+    public void leave(int p);
+}
+``` 
 
 比方说考场有 5 个座位，分别是 `[0..4]`：
 
@@ -50,7 +51,7 @@ LeetCode| 力扣| 难度
 
 核心思路很简单对吧，所以这个问题实际上实在考察你对数据结构的理解。对于上述这个逻辑，你用什么数据结构来实现呢？
 
-### ¶一、思路分析
+### 一、思路分析
 
 根据上述思路，首先需要把坐在教室的学生抽象成线段，我们可以简单的用一个大小为 2 的数组表示。
 
@@ -70,238 +71,239 @@ LeetCode| 力扣| 难度
 
 我们使用的 `TreeSet` 就是一个有序集合，目的就是为了保持线段长度的有序性，快速查找最大线段，快速删除和插入。
 
-### ¶二、简化问题
+### 二、简化问题
 
 首先，如果有多个可选座位，需要选择索引最小的座位对吧？**我们先简化一下问题，暂时不管这个要求** ，实现上述思路。
 
 这个问题还用到一个常用的编程技巧，就是使用一个「虚拟线段」让算法正确启动，这就和链表相关的算法需要「虚拟头结点」一个道理。
-    
-    
-    class ExamRoom {
-        // 将端点 p 映射到以 p 为左端点的线段
-        private Map<Integer, int[]> startMap;
-        // 将端点 p 映射到以 p 为右端点的线段
-        private Map<Integer, int[]> endMap;
-        // 根据线段长度从小到大存放所有线段
-        private TreeSet<int[]> pq;
-        private int N;
-    
-        public ExamRoom(int N) {
-            this.N = N;
-            startMap = new HashMap<>();
-            endMap = new HashMap<>();
-            pq = new TreeSet<>((a, b) -> {
-                // 算出两个线段的长度
-                int distA = distance(a);
-                int distB = distance(b);
-                // 长度更长的更大，排后面
-                return distA - distB;
-            });
-            // 在有序集合中先放一个虚拟线段
-            addInterval(new int[] {-1, N});
-        }
-    
-        // 去除一个线段
-        private void removeInterval(int[] intv) {
-            pq.remove(intv);
-            startMap.remove(intv[0]);
-            endMap.remove(intv[1]);
-        }
-    
-        // 增加一个线段
-        private void addInterval(int[] intv) {
-            pq.add(intv);
-            startMap.put(intv[0], intv);
-            endMap.put(intv[1], intv);
-        }
-    
-        // 计算一个线段的长度
-        private int distance(int[] intv) {
-            return intv[1] - intv[0] - 1;
-        }
-    
-        // ...
+
+```
+class ExamRoom {
+    // 将端点 p 映射到以 p 为左端点的线段
+    private Map<Integer, int[]> startMap;
+    // 将端点 p 映射到以 p 为右端点的线段
+    private Map<Integer, int[]> endMap;
+    // 根据线段长度从小到大存放所有线段
+    private TreeSet<int[]> pq;
+    private int N;
+
+    public ExamRoom(int N) {
+        this.N = N;
+        startMap = new HashMap<>();
+        endMap = new HashMap<>();
+        pq = new TreeSet<>((a, b) -> {
+            // 算出两个线段的长度
+            int distA = distance(a);
+            int distB = distance(b);
+            // 长度更长的更大，排后面
+            return distA - distB;
+        });
+        // 在有序集合中先放一个虚拟线段
+        addInterval(new int[] {-1, N});
     }
+
+    // 去除一个线段
+    private void removeInterval(int[] intv) {
+        pq.remove(intv);
+        startMap.remove(intv[0]);
+        endMap.remove(intv[1]);
+    }
+
+    // 增加一个线段
+    private void addInterval(int[] intv) {
+        pq.add(intv);
+        startMap.put(intv[0], intv);
+        endMap.put(intv[1], intv);
+    }
+
+    // 计算一个线段的长度
+    private int distance(int[] intv) {
+        return intv[1] - intv[0] - 1;
+    }
+
+    // ...
+}
+``` 
 
 「虚拟线段」其实就是为了将所有座位表示为一个线段：
 
-![](/images/algo/seat-schedule/1.jpg)
+![diagram](https://labuladong.online/images/algo/seat-schedule/1.jpg)
 
 有了上述铺垫，主要 API `seat` 和 `leave` 就可以写了：
-    
-    
-    class ExamRoom {
-        // ...
-    
-        public int seat() {
-            // 从有序集合拿出最长的线段
-            int[] longest = pq.last();
-            int x = longest[0];
-            int y = longest[1];
-            int seat;
-            if (x == -1) { // 情况一
-                seat = 0;
-            } else if (y == N) { // 情况二
-                seat = N - 1;
-            } else { // 情况三
-                seat = (y - x) / 2 + x;
-            }
-            // 将最长的线段分成两段
-            int[] left = new int[] {x, seat};
-            int[] right = new int[] {seat, y};
-            removeInterval(longest);
-            addInterval(left);
-            addInterval(right);
-            return seat;
+
+```
+class ExamRoom {
+    // ...
+
+    public int seat() {
+        // 从有序集合拿出最长的线段
+        int[] longest = pq.last();
+        int x = longest[0];
+        int y = longest[1];
+        int seat;
+        if (x == -1) { // 情况一
+            seat = 0;
+        } else if (y == N) { // 情况二
+            seat = N - 1;
+        } else { // 情况三
+            seat = (y - x) / 2 + x;
         }
-    
-        public void leave(int p) {
-            // 将 p 左右的线段找出来
-            int[] right = startMap.get(p);
-            int[] left = endMap.get(p);
-            // 合并两个线段成为一个线段
-            int[] merged = new int[] {left[0], right[1]};
-            removeInterval(left);
-            removeInterval(right);
-            addInterval(merged);
-        }
+        // 将最长的线段分成两段
+        int[] left = new int[] {x, seat};
+        int[] right = new int[] {seat, y};
+        removeInterval(longest);
+        addInterval(left);
+        addInterval(right);
+        return seat;
     }
 
-![](/images/algo/seat-schedule/2.jpg)
+    public void leave(int p) {
+        // 将 p 左右的线段找出来
+        int[] right = startMap.get(p);
+        int[] left = endMap.get(p);
+        // 合并两个线段成为一个线段
+        int[] merged = new int[] {left[0], right[1]};
+        removeInterval(left);
+        removeInterval(right);
+        addInterval(merged);
+    }
+}
+``` 
+
+![diagram](https://labuladong.online/images/algo/seat-schedule/2.jpg)
 
 至此，算法就基本实现了，代码虽多，但思路很简单：找最长的线段，从中间分隔成两段，中点就是 `seat()` 的返回值；找 `p` 的左右线段，合并成一个线段，这就是 `leave(p)` 的逻辑。
 
-### ¶三、进阶问题
+### 三、进阶问题
 
 但是，题目要求多个选择时选择索引最小的那个座位，我们刚才忽略了这个问题。比如下面这种情况会出错：
 
-![](/images/algo/seat-schedule/3.jpg)
+![diagram](https://labuladong.online/images/algo/seat-schedule/3.jpg)
 
 现在有序集合里有线段 `[0,4]` 和 `[4,9]`，那么最长线段 `longest` 就是后者，按照 `seat` 的逻辑，就会分割 `[4,9]`，也就是返回座位 6。但正确答案应该是座位 2，因为 2 和 6 都满足最大化相邻考生距离的条件，二者应该取较小的。
 
-![](/images/algo/seat-schedule/4.jpg)
+![diagram](https://labuladong.online/images/algo/seat-schedule/4.jpg)
 
 **遇到题目的这种要求，解决方式就是修改有序数据结构的排序方式** 。具体到这个问题，就是修改 `TreeMap` 的比较函数逻辑：
-    
-    
-    pq = new TreeSet<>((a, b) -> {
-        int distA = distance(a);
-        int distB = distance(b);
-        // 如果长度相同，就比较索引
-        if (distA == distB)
-            return b[0] - a[0];
-        return distA - distB;
-    });
+
+```
+pq = new TreeSet<>((a, b) -> {
+    int distA = distance(a);
+    int distB = distance(b);
+    // 如果长度相同，就比较索引
+    if (distA == distB)
+        return b[0] - a[0];
+    return distA - distB;
+});
+``` 
 
 除此之外，还要改变 `distance` 函数，**不能简单地让它计算一个线段两个端点间的长度，而是让它计算该线段中点和端点之间的长度** 。
-    
-    
-    class ExamRoom {
-        // ...
-    
-        private int distance(int[] intv) {
-            int x = intv[0];
-            int y = intv[1];
-            if (x == -1) return y;
-            if (y == N) return N - 1 - x;
-            // 中点和端点之间的长度
-            return (y - x) / 2;
-        }
-    }
 
-![](/images/algo/seat-schedule/5.jpg)
+```
+class ExamRoom {
+    // ...
+
+    private int distance(int[] intv) {
+        int x = intv[0];
+        int y = intv[1];
+        if (x == -1) return y;
+        if (y == N) return N - 1 - x;
+        // 中点和端点之间的长度
+        return (y - x) / 2;
+    }
+}
+``` 
+
+![diagram](https://labuladong.online/images/algo/seat-schedule/5.jpg)
 
 这样，`[0,4]` 和 `[4,9]` 的 `distance` 值就相等了，算法会比较二者的索引，取较小的线段进行分割。
 
 这道算法题目算是完全解决了，完整代码如下：
-    
-    
-    class ExamRoom {
-        // 将端点 p 映射到以 p 为左端点的线段
-        private Map<Integer, int[]> startMap;
-        // 将端点 p 映射到以 p 为右端点的线段
-        private Map<Integer, int[]> endMap;
-        // 根据线段长度从小到大存放所有线段
-        private TreeSet<int[]> pq;
-        private int N;
-    
-        public ExamRoom(int N) {
-            this.N = N;
-            startMap = new HashMap<>();
-            endMap = new HashMap<>();
-            pq = new TreeSet<>((a, b) -> {
-                int distA = distance(a);
-                int distB = distance(b);
-                // 如果长度相同，就比较索引
-                if (distA == distB)
-                    return b[0] - a[0];
-                return distA - distB;
-            });
-            // 在有序集合中先放一个虚拟线段
-            addInterval(new int[]{-1, N});
-        }
-    
-        public int seat() {
-            // 从有序集合拿出最长的线段
-            int[] longest = pq.last();
-            int x = longest[0];
-            int y = longest[1];
-            int seat;
-            // 情况一
-            if (x == -1) {
-                seat = 0;
-            // 情况二
-            } else if (y == N) {
-                seat = N - 1;
-            // 情况三
-            } else {
-                seat = (y - x) / 2 + x;
-            }
-            // 将最长的线段分成两段
-            int[] left = new int[]{x, seat};
-            int[] right = new int[]{seat, y};
-            removeInterval(longest);
-            addInterval(left);
-            addInterval(right);
-            return seat;
-        }
-    
-        public void leave(int p) {
-            // 将 p 左右的线段找出来
-            int[] right = startMap.get(p);
-            int[] left = endMap.get(p);
-            // 合并两个线段成为一个线段
-            int[] merged = new int[]{left[0], right[1]};
-            removeInterval(left);
-            removeInterval(right);
-            addInterval(merged);
-        }
-    
-        // 增加一个线段
-        private void addInterval(int[] intv) {
-            pq.add(intv);
-            startMap.put(intv[0], intv);
-            endMap.put(intv[1], intv);
-        }
-    
-        // 去除一个线段
-        private void removeInterval(int[] intv) {
-            pq.remove(intv);
-            startMap.remove(intv[0]);
-            endMap.remove(intv[1]);
-        }
-    
-        // 计算一个线段的长度
-        private int distance(int[] intv) {
-            int x = intv[0];
-            int y = intv[1];
-            if (x == -1) return y;
-            if (y == N) return N - 1 - x;
-            // 中点和端点之间的长度
-            return (y - x) / 2;
-        }
+
+```
+class ExamRoom {
+    // 将端点 p 映射到以 p 为左端点的线段
+    private Map<Integer, int[]> startMap;
+    // 将端点 p 映射到以 p 为右端点的线段
+    private Map<Integer, int[]> endMap;
+    // 根据线段长度从小到大存放所有线段
+    private TreeSet<int[]> pq;
+    private int N;
+
+    public ExamRoom(int N) {
+        this.N = N;
+        startMap = new HashMap<>();
+        endMap = new HashMap<>();
+        pq = new TreeSet<>((a, b) -> {
+            int distA = distance(a);
+            int distB = distance(b);
+            // 如果长度相同，就比较索引
+            if (distA == distB)
+                return b[0] - a[0];
+            return distA - distB;
+        });
+        // 在有序集合中先放一个虚拟线段
+        addInterval(new int[]{-1, N});
     }
 
-更新时间：2026/03/14 00:17
+    public int seat() {
+        // 从有序集合拿出最长的线段
+        int[] longest = pq.last();
+        int x = longest[0];
+        int y = longest[1];
+        int seat;
+        // 情况一
+        if (x == -1) {
+            seat = 0;
+        // 情况二
+        } else if (y == N) {
+            seat = N - 1;
+        // 情况三
+        } else {
+            seat = (y - x) / 2 + x;
+        }
+        // 将最长的线段分成两段
+        int[] left = new int[]{x, seat};
+        int[] right = new int[]{seat, y};
+        removeInterval(longest);
+        addInterval(left);
+        addInterval(right);
+        return seat;
+    }
 
-Loading comments...
+    public void leave(int p) {
+        // 将 p 左右的线段找出来
+        int[] right = startMap.get(p);
+        int[] left = endMap.get(p);
+        // 合并两个线段成为一个线段
+        int[] merged = new int[]{left[0], right[1]};
+        removeInterval(left);
+        removeInterval(right);
+        addInterval(merged);
+    }
+
+    // 增加一个线段
+    private void addInterval(int[] intv) {
+        pq.add(intv);
+        startMap.put(intv[0], intv);
+        endMap.put(intv[1], intv);
+    }
+
+    // 去除一个线段
+    private void removeInterval(int[] intv) {
+        pq.remove(intv);
+        startMap.remove(intv[0]);
+        endMap.remove(intv[1]);
+    }
+
+    // 计算一个线段的长度
+    private int distance(int[] intv) {
+        int x = intv[0];
+        int y = intv[1];
+        if (x == -1) return y;
+        if (y == N) return N - 1 - x;
+        // 中点和端点之间的长度
+        return (y - x) / 2;
+    }
+}
+```

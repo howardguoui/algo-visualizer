@@ -14,7 +14,6 @@
   * [二叉树基础及常见类型](</zh/algo/data-structure-basic/binary-tree-basic/>)
   * [多叉树的递归/层序遍历](</zh/algo/data-structure-basic/n-ary-tree-traverse-basic/>)
 
-
 一句话总结
 
 二叉搜索树是特殊的 [二叉树结构](</zh/algo/data-structure-basic/binary-tree-basic/>)，其主要的实际应用是 `TreeMap` 和 `TreeSet`。
@@ -29,7 +28,7 @@
 
 好了，废话不多说，让我们开始吧。
 
-## ¶二叉搜索树的优势
+## 二叉搜索树的优势
 
 前文 [几种常见的二叉树类型](</zh/algo/data-structure-basic/binary-tree-basic/>) 介绍过二叉搜索树（BST）的特点，即左小右大：
 
@@ -53,7 +52,7 @@ loading...
 
 至于其他增、删、改的操作，你首先查到目标节点，才能进行增删改的操作对吧？增删改的操作无非就是改一改指针，所以增删改的时间复杂度也是 O(logN)O(logN)O(logN)。
 
-## ¶TreeMap/TreeSet 实现原理
+## TreeMap/TreeSet 实现原理
 
 你看 `TreeMap` 这个名字，应该就能看出来，它和前文介绍的 [哈希表 `HashMap`](</zh/algo/data-structure-basic/hashmap-basic/>) 的结构是类似的，都是存储键值对的，`HashMap` 底层把键值对存储在一个 `table` 数组里面，而 `TreeMap` 底层把键值对存储在一棵二叉搜索树的节点里面。
 
@@ -61,84 +60,79 @@ loading...
 
 力扣经典的 `TreeNode` 结构长这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-    }
+```java
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+}
+``` 
 
 我们只要改一改这个经典的 `TreeNode` 结构，就可以用来实现 `TreeMap` 了：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 大写 K 为键的类型，大写 V 为值的类型
-    class TreeNode<K, V> {
-        K key;
-        V value;
-    
-        TreeNode<K, V> left;
-        TreeNode<K, V> right;
-        TreeNode(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
+```java
+// 大写 K 为键的类型，大写 V 为值的类型
+class TreeNode<K, V> {
+    K key;
+    V value;
+
+    TreeNode<K, V> left;
+    TreeNode<K, V> right;
+    TreeNode(K key, V value) {
+        this.key = key;
+        this.value = value;
     }
+}
+``` 
 
 我们将实现的 `TreeMap` 结构有如下 API：
-    
-    
-    // TreeMap 主要接口
-    class MyTreeMap<K, V> {
-    
-        // ****** Map 键值映射的基本方法 ******
-    
-        // 增/改，复杂度 O(logN)
-        public void put(K key, V value) {}
-    
-        // 查，复杂度 O(logN)
-        public V get(K key) {}
-    
-        // 删，复杂度 O(logN)
-        public void remove(K key) {}
-    
-        // 是否包含键 key，复杂度 O(logN)
-        public boolean containsKey(K key) {}
-    
-        // 返回所有键的集合，结果有序，复杂度 O(N)
-        public List<K> keys() {}
-    
-        // ****** TreeMap 提供的额外方法 ******
-    
-        // 查找最小键，复杂度 O(logN)
-        public K firstKey() {}
-    
-        // 查找最大键，复杂度 O(logN)
-        public K lastKey() {}
-    
-        // 查找小于等于 key 的最大键，复杂度 O(logN)
-        public K floorKey(K key) {}
-    
-        // 查找大于等于 key 的最小键，复杂度 O(logN)
-        public K ceilingKey(K key) {}
-    
-        // 查找排名为 k 的键，复杂度 O(logN)
-        public K selectKey(int k) {}
-    
-        // 查找键 key 的排名，复杂度 O(logN)
-        public int rank(K key) {}
-    
-        // 区间查找，复杂度 O(logN + M)，M 为区间大小
-        public List<K> rangeKeys(K low, K high) {}
-    }
+
+```
+// TreeMap 主要接口
+class MyTreeMap<K, V> {
+
+    // ****** Map 键值映射的基本方法 ******
+
+    // 增/改，复杂度 O(logN)
+    public void put(K key, V value) {}
+
+    // 查，复杂度 O(logN)
+    public V get(K key) {}
+
+    // 删，复杂度 O(logN)
+    public void remove(K key) {}
+
+    // 是否包含键 key，复杂度 O(logN)
+    public boolean containsKey(K key) {}
+
+    // 返回所有键的集合，结果有序，复杂度 O(N)
+    public List<K> keys() {}
+
+    // ****** TreeMap 提供的额外方法 ******
+
+    // 查找最小键，复杂度 O(logN)
+    public K firstKey() {}
+
+    // 查找最大键，复杂度 O(logN)
+    public K lastKey() {}
+
+    // 查找小于等于 key 的最大键，复杂度 O(logN)
+    public K floorKey(K key) {}
+
+    // 查找大于等于 key 的最小键，复杂度 O(logN)
+    public K ceilingKey(K key) {}
+
+    // 查找排名为 k 的键，复杂度 O(logN)
+    public K selectKey(int k) {}
+
+    // 查找键 key 的排名，复杂度 O(logN)
+    public int rank(K key) {}
+
+    // 区间查找，复杂度 O(logN + M)，M 为区间大小
+    public List<K> rangeKeys(K low, K high) {}
+}
+``` 
 
 除了标准的增删查改方法 `get, put, remove, containsKey` 之外，`TreeMap` 还提供了很多额外方法，主要和 key 的大小相关。怎么样，是不是感觉很强大？
 
 哈希表很实用，但是它确实没办法很好地处理键之间的大小关系。前文 [用链表加强哈希表](</zh/algo/data-structure-basic/hashtable-with-linked-list/>) 中实现的 `LinkedHashMap` 也只是做到按「**插入顺序** 」排列哈希表中的键，依然做不到按「**大小顺序** 」排列。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

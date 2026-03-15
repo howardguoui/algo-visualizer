@@ -1,8 +1,14 @@
+import { createContext, useContext } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Link } from 'react-router-dom'
 import type { Components } from 'react-markdown'
 import { practiceProblemIds } from '../../data/problems/practiceProblems'
+
+// react-markdown v10 removed the `inline` prop from the code component.
+// We use a context to tell <code> whether it's nested inside a <pre> block,
+// so inline code and fenced code blocks can be styled differently.
+const BlockCodeCtx = createContext(false)
 
 const components: Components = {
   h1: ({ children }) => (
@@ -26,11 +32,19 @@ const components: Components = {
   li: ({ children }) => (
     <li className="leading-7">{children}</li>
   ),
-  code: ({ children, className }) => {
-    const isBlock = className?.includes('language-')
-    if (isBlock) {
-      const lang = className?.replace('language-', '') ?? ''
-      return (
+
+  // All fenced code blocks pass through <pre>. We detect the language here
+  // from the hast node's first child (the <code> element) and render the
+  // full styled container. A context flag tells <code> it's inside a block.
+  pre: ({ node, children }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const codeNode = (node as any)?.children?.[0]
+    const classNames: string[] = codeNode?.properties?.className ?? []
+    const langClass = classNames.find((c: string) => c.startsWith('language-')) ?? ''
+    const lang = langClass.replace('language-', '')
+
+    return (
+      <BlockCodeCtx.Provider value={true}>
         <div className="my-4 rounded-xl overflow-hidden border border-slate-700">
           {lang && (
             <div className="bg-slate-800 px-4 py-2 text-xs text-slate-400 font-mono border-b border-slate-700 flex items-center gap-2">
@@ -41,10 +55,21 @@ const components: Components = {
             </div>
           )}
           <pre className="bg-slate-900 p-4 overflow-x-auto text-sm font-mono text-slate-200 leading-6">
-            <code>{children}</code>
+            {children}
           </pre>
         </div>
-      )
+      </BlockCodeCtx.Provider>
+    )
+  },
+
+  // <code> is called for both fenced blocks (nested inside <pre>) and inline
+  // backtick spans. Use context to tell them apart.
+  code: ({ children }) => {
+    const isBlock = useContext(BlockCodeCtx)
+    if (isBlock) {
+      // Inside a fenced block — <pre> already provides the styled container,
+      // just render a plain <code> so the text inherits the pre's font/color.
+      return <code>{children}</code>
     }
     return (
       <code className="bg-slate-800 text-blue-300 px-1.5 py-0.5 rounded text-sm font-mono">
@@ -52,7 +77,7 @@ const components: Components = {
       </code>
     )
   },
-  pre: ({ children }) => <>{children}</>,
+
   blockquote: ({ children }) => (
     <blockquote className="border-l-4 border-blue-500 pl-4 my-4 text-slate-400 italic">
       {children}

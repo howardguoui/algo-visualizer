@@ -17,9 +17,9 @@ The solutions in this article may not be the most optimal
 
 These problems will be explained and optimized in later chapters. As you learn more about data structures and algorithms, you will understand them better.
 
-## ¶1\. Two Sum
+## 1\. Two Sum
 
-**1\. Two Sum** |[LeetCode](https://leetcode.com/problems/two-sum/)
+**1\. Two Sum** |[LeetCode](<https://leetcode.com/problems/two-sum/>)
 
 Given an array of integers `nums` and an integer `target`, return _indices of the two numbers such that they add up to`target`_.
 
@@ -28,26 +28,26 @@ You may assume that each input would have **_exactly_ one solution**, and you ma
 You can return the answer in any order.
 
 **Example 1:**
-    
-    
-    **Input:** nums = [2,7,11,15], target = 9
-    **Output:** [0,1]
-    **Explanation:** Because nums[0] + nums[1] == 9, we return [0, 1].
-    
+
+```
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+``` 
 
 **Example 2:**
-    
-    
-    **Input:** nums = [3,2,4], target = 6
-    **Output:** [1,2]
-    
+
+```
+Input: nums = [3,2,4], target = 6
+Output: [1,2]
+``` 
 
 **Example 3:**
-    
-    
-    **Input:** nums = [3,3], target = 6
-    **Output:** [0,1]
-    
+
+```
+Input: nums = [3,3], target = 6
+Output: [0,1]
+``` 
 
 **Constraints:**
 
@@ -58,115 +58,112 @@ You can return the answer in any order.
 
 **Follow-up:** Can you come up with an algorithm that is less than `O(n2)` time complexity?
 
-The problem is from [LeetCode 1. Two Sum](https://leetcode.com/problems/two-sum/).
+The problem is from [LeetCode 1. Two Sum](<https://leetcode.com/problems/two-sum/>).
 
 This is a classic first problem on LeetCode. Let's try to solve it.
 
 The simplest way is brute-force. Use nested for loops: fix the first number with the outer loop, and use the inner loop to find another number. Check if their sum equals the target.
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int[] twoSum(int[] nums, int target) {
-            for (int i = 0; i < nums.length; i++) {
-                for (int j = i + 1; j < nums.length; j++) {
-                    if (nums[i] + nums[j] == target) {
-                        return new int[] {i, j};
-                    }
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+                    return new int[] {i, j};
                 }
             }
-            return new int[0];
         }
+        return new int[0];
     }
+}
+``` 
 
 This uses for loops and if statements. Notice that when we loop over `j`, it starts from `i+1`. We can't start from `i` because we cannot use the same element twice. We also don't need to start from 0, because the combinations with earlier elements have already been checked.
 
-## ¶217\. Contains Duplicate
+## 217\. Contains Duplicate
 
-**217\. Contains Duplicate** |[LeetCode](https://leetcode.com/problems/contains-duplicate/)
+**217\. Contains Duplicate** |[LeetCode](<https://leetcode.com/problems/contains-duplicate/>)
 
 Given an integer array `nums`, return `true` if any value appears **at least twice** in the array, and return `false` if every element is distinct.
 
 **Example 1:**
-    
-    
-    **Input:** nums = [1,2,3,1]
-    **Output:** true
-    
+
+```
+Input: nums = [1,2,3,1]
+Output: true
+``` 
 
 **Example 2:**
-    
-    
-    **Input:** nums = [1,2,3,4]
-    **Output:** false
-    
+
+```
+Input: nums = [1,2,3,4]
+Output: false
+``` 
 
 **Example 3:**
-    
-    
-    **Input:** nums = [1,1,1,3,3,4,3,2,4,2]
-    **Output:** true
-    
+
+```
+Input: nums = [1,1,1,3,3,4,3,2,4,2]
+Output: true
+``` 
 
 **Constraints:**
 
   * `1 <= nums.length <= 105`
   * `-109 <= nums[i] <= 109`
 
-
-The problem is from [LeetCode 217. Contains Duplicate](https://leetcode.com/problems/contains-duplicate/).
+The problem is from [LeetCode 217. Contains Duplicate](<https://leetcode.com/problems/contains-duplicate/>).
 
 This problem asks if there are duplicate elements in the array. Removing duplicates is a classic use case for hash sets, because a hash set can quickly check if an element exists.
 
 We can add each number into a hash set. If we find a number that is already in the set, we return `true`.
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public boolean containsDuplicate(int[] nums) {
-            HashSet<Integer> set = new HashSet<>();
-            for (int num : nums) {
-                // if the element already exists, return true
-                if (set.contains(num)) {
-                    return true;
-                }
-                // put the element into the hash set
-                set.add(num);
+```java
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            // if the element already exists, return true
+            if (set.contains(num)) {
+                return true;
             }
-            return false;
+            // put the element into the hash set
+            set.add(num);
         }
+        return false;
     }
+}
+``` 
 
-## ¶136\. Single Number
+## 136\. Single Number
 
-**136\. Single Number** |[LeetCode](https://leetcode.com/problems/single-number/)
+**136\. Single Number** |[LeetCode](<https://leetcode.com/problems/single-number/>)
 
 Given a **non-empty** array of integers `nums`, every element appears _twice_ except for one. Find that single one.
 
 You must implement a solution with a linear runtime complexity and use only constant extra space.
 
 **Example 1:**
-    
-    
-    **Input:** nums = [2,2,1]
-    **Output:** 1
-    
+
+```
+Input: nums = [2,2,1]
+Output: 1
+``` 
 
 **Example 2:**
-    
-    
-    **Input:** nums = [4,1,2,1,2]
-    **Output:** 4
-    
+
+```
+Input: nums = [4,1,2,1,2]
+Output: 4
+``` 
 
 **Example 3:**
-    
-    
-    **Input:** nums = [1]
-    **Output:** 1
-    
+
+```
+Input: nums = [1]
+Output: 1
+``` 
 
 **Constraints:**
 
@@ -174,35 +171,33 @@ You must implement a solution with a linear runtime complexity and use only cons
   * `-3 * 104 <= nums[i] <= 3 * 104`
   * Each element in the array appears twice except for one element which appears only once.
 
-
-The problem is from [LeetCode 136. Single Number](https://leetcode.com/problems/single-number/).
+The problem is from [LeetCode 136. Single Number](<https://leetcode.com/problems/single-number/>).
 
 This problem asks you to find the number that appears only once in the array. When a problem is about counting elements, we usually use a hash map to store each element and its count.
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int singleNumber(int[] nums) {
-            Map<Integer, Integer> count = new HashMap<>();
-            // traverse the array, count the frequency of each number
-            for (int num : nums) {
-                count.put(num, count.getOrDefault(num, 0) + 1);
-            }
-    
-            // find the number that only appears once
-            for (int num : nums) {
-                if (count.get(num) == 1) {
-                    return num;
-                }
-            }
-            return -1;
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        Map<Integer, Integer> count = new HashMap<>();
+        // traverse the array, count the frequency of each number
+        for (int num : nums) {
+            count.put(num, count.getOrDefault(num, 0) + 1);
         }
+
+        // find the number that only appears once
+        for (int num : nums) {
+            if (count.get(num) == 1) {
+                return num;
+            }
+        }
+        return -1;
     }
+}
+``` 
 
-## ¶20\. Valid Parentheses
+## 20\. Valid Parentheses
 
-**20\. Valid Parentheses** |[LeetCode](https://leetcode.com/problems/valid-parentheses/)
+**20\. Valid Parentheses** |[LeetCode](<https://leetcode.com/problems/valid-parentheses/>)
 
 Given a string `s` containing just the characters `'('`, `')'`, `'{'`, `'}'`, `'['` and `']'`, determine if the input string is valid.
 
@@ -212,72 +207,69 @@ An input string is valid if:
   2. Open brackets must be closed in the correct order.
   3. Every close bracket has a corresponding open bracket of the same type.
 
-
 **Example 1:**
-    
-    
-    **Input:** s = "()"
-    **Output:** true
-    
+
+```
+Input: s = "()"
+Output: true
+``` 
 
 **Example 2:**
-    
-    
-    **Input:** s = "()[]{}"
-    **Output:** true
-    
+
+```
+Input: s = "()[]{}"
+Output: true
+``` 
 
 **Example 3:**
-    
-    
-    **Input:** s = "(]"
-    **Output:** false
-    
+
+```
+Input: s = "(]"
+Output: false
+``` 
 
 **Constraints:**
 
   * `1 <= s.length <= 104`
   * `s` consists of parentheses only `'()[]{}'`.
 
-
-The problem is from [LeetCode 20. Valid Parentheses](https://leetcode.com/problems/valid-parentheses/).
+The problem is from [LeetCode 20. Valid Parentheses](<https://leetcode.com/problems/valid-parentheses/>).
 
 This is a classic parentheses problem. Such problems can usually be solved with a stack. The idea is: **when you see a left parenthesis, push it onto the stack; when you see a right parenthesis, pop the top left parenthesis from the stack and check if they match.**
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public boolean isValid(String str) {
-            Stack<Character> left = new Stack<>();
-            for (char c : str.toCharArray()) {
-                if (c == '(' || c == '{' || c == '[') {
-                    // character c is a left parenthesis, push to the stack
-                    left.push(c);
+```java
+class Solution {
+    public boolean isValid(String str) {
+        Stack<Character> left = new Stack<>();
+        for (char c : str.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                // character c is a left parenthesis, push to the stack
+                left.push(c);
+            } else {
+                // character c is a right parenthesis
+                if (!left.isEmpty() && leftOf(c) == left.peek()) {
+                    left.pop();
                 } else {
-                    // character c is a right parenthesis
-                    if (!left.isEmpty() && leftOf(c) == left.peek()) {
-                        left.pop();
-                    } else {
-                        // does not match the most recent left parenthesis
-                        return false;
-                    }
+                    // does not match the most recent left parenthesis
+                    return false;
                 }
             }
-            // check if all left parentheses have been matched
-            return left.isEmpty();
         }
-    
-        char leftOf(char c) {
-            if (c == '}') return '{';
-            if (c == ')') return '(';
-            return '[';
-        }
+        // check if all left parentheses have been matched
+        return left.isEmpty();
     }
 
-## ¶2073\. Time Needed to Buy Tickets
+    char leftOf(char c) {
+        if (c == '}') return '{';
+        if (c == ')') return '(';
+        return '[';
+    }
+}
+``` 
 
-**2073\. Time Needed to Buy Tickets** |[LeetCode](https://leetcode.com/problems/time-needed-to-buy-tickets/)
+## 2073\. Time Needed to Buy Tickets
+
+**2073\. Time Needed to Buy Tickets** |[LeetCode](<https://leetcode.com/problems/time-needed-to-buy-tickets/>)
 
 There are `n` people in a line queuing to buy tickets, where the `0th` person is at the **front** of the line and the `(n - 1)th` person is at the **back** of the line.
 
@@ -288,26 +280,26 @@ Each person takes **exactly 1 second** to buy a ticket. A person can only buy **
 Return _the**time taken** for the person at position _`k` __**_(0-indexed)_ ** _to finish buying tickets_.
 
 **Example 1:**
-    
-    
-    **Input:** tickets = [2,3,2], k = 2
-    **Output:** 6
-    **Explanation:** 
-    - In the first pass, everyone in the line buys a ticket and the line becomes [1, 2, 1].
-    - In the second pass, everyone in the line buys a ticket and the line becomes [0, 1, 0].
-    The person at position 2 has successfully bought 2 tickets and it took 3 + 3 = 6 seconds.
-    
+
+```
+Input: tickets = [2,3,2], k = 2
+Output: 6
+Explanation: 
+- In the first pass, everyone in the line buys a ticket and the line becomes [1, 2, 1].
+- In the second pass, everyone in the line buys a ticket and the line becomes [0, 1, 0].
+The person at position 2 has successfully bought 2 tickets and it took 3 + 3 = 6 seconds.
+``` 
 
 **Example 2:**
-    
-    
-    **Input:** tickets = [5,1,1,1], k = 0
-    **Output:** 8
-    **Explanation:**
-    - In the first pass, everyone in the line buys a ticket and the line becomes [4, 0, 0, 0].
-    - In the next 4 passes, only the person in position 0 is buying tickets.
-    The person at position 0 has successfully bought 5 tickets and it took 4 + 1 + 1 + 1 + 1 = 8 seconds.
-    
+
+```
+Input: tickets = [5,1,1,1], k = 0
+Output: 8
+Explanation:
+- In the first pass, everyone in the line buys a ticket and the line becomes [4, 0, 0, 0].
+- In the next 4 passes, only the person in position 0 is buying tickets.
+The person at position 0 has successfully bought 5 tickets and it took 4 + 1 + 1 + 1 + 1 = 8 seconds.
+``` 
 
 **Constraints:**
 
@@ -316,47 +308,45 @@ Return _the**time taken** for the person at position _`k` __**_(0-indexed)_ ** _
   * `1 <= tickets[i] <= 100`
   * `0 <= k < n`
 
-
-The problem is from [LeetCode 2073. Time Needed to Buy Tickets](https://leetcode.com/problems/time-needed-to-buy-tickets/).
+The problem is from [LeetCode 2073. Time Needed to Buy Tickets](<https://leetcode.com/problems/time-needed-to-buy-tickets/>).
 
 This is an interesting problem based on a real-world scenario. If we use a queue to simulate the process, we can solve this problem easily. Let's look at the code:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int timeRequiredToBuy(int[] tickets, int k) {
-            // use queue to simulate the whole process
-            // initialize the queue, store the id of each person
-            Queue<Integer> queue = new LinkedList<>();
-            for (int i = 0; i < tickets.length; i++) {
-                queue.offer(i);
-            }
-    
-            int time = 0;
-            while (!queue.isEmpty()) {
-                // the person at the front of the queue buys a ticket
-                int front = queue.poll();
-                time++;
-                tickets[front]--;
-                
-                if (front == k && tickets[front] == 0) {
-                    // if person k has bought the ticket, return the total time
-                    return time;
-                }
-    
-                if (tickets[front] == 0) {
-                    continue;
-                }
-    
-                // if the person needs to buy more tickets, put him back to the end of the queue
-                queue.offer(front);
-            }
-            return time;
+```java
+class Solution {
+    public int timeRequiredToBuy(int[] tickets, int k) {
+        // use queue to simulate the whole process
+        // initialize the queue, store the id of each person
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < tickets.length; i++) {
+            queue.offer(i);
         }
-    }
 
-## ¶Summary & Next Steps
+        int time = 0;
+        while (!queue.isEmpty()) {
+            // the person at the front of the queue buys a ticket
+            int front = queue.poll();
+            time++;
+            tickets[front]--;
+            
+            if (front == k && tickets[front] == 0) {
+                // if person k has bought the ticket, return the total time
+                return time;
+            }
+
+            if (tickets[front] == 0) {
+                continue;
+            }
+
+            // if the person needs to buy more tickets, put him back to the end of the queue
+            queue.offer(front);
+        }
+        return time;
+    }
+}
+``` 
+
+## Summary & Next Steps
 
 By practicing these problems, you should now know how to solve problems on LeetCode, and how to use your programming language to solve them.
 
@@ -370,9 +360,6 @@ The next content will focus on two main parts:
 
   2. We will use algorithm templates and practice many problems. This will help you master different problem-solving methods and use them freely. The problems above are simple, but the next ones will get harder step by step. Don't worry—algorithms are still based on brute-force ideas. Once you master some common brute-force methods, you can always find a way to solve the problem.
 
-
 Finally, I wish you can explore the world of coding problems on your own soon!
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

@@ -17,7 +17,7 @@
 
 经过调研，我认为把算法学习和游戏结合起来是个很好的思路。因为这样不仅有意思，而且还能让读者了解到算法在实际场景中的应用，可谓一举两得。
 
-## ¶游戏化 vs 可视化
+## 游戏化 vs 可视化
 
 有了 [可视化面板](</zh/algo/intro/visualize/>)，为什么还需要算法游戏？
 
@@ -31,7 +31,7 @@
 
 下面简单介绍一下本站配套游戏面板的使用方法。
 
-## ¶游戏面板的用法
+## 游戏面板的用法
 
 在面板右上方有一个全屏  按钮，开启全屏显示后编写代码会更方便。
 
@@ -45,76 +45,75 @@
 
 参考解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 游戏面板仅支持提交 JavaScript 代码
-    // Java 解法仅供参考，方便读者理解算法逻辑
-    public void move(List<Point> snake, String direction, Point foodPosition) {
-        Point currentHead = snake.get(0);
-        // 计算新头部位置
-        Point newHeadPos = new Point(currentHead.x, currentHead.y);
-        switch (direction) {
-            case "right":
-                newHeadPos.x += 1;
-                break;
-            case "left":
-                newHeadPos.x -= 1;
-                break;
-            case "up":
-                newHeadPos.y += 1;
-                break;
-            case "down":
-                newHeadPos.y -= 1;
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid direction");
-        }
-        // 添加新的头部节点
-        snake.add(0, newHeadPos);
-        if (!newHeadPos.equals(foodPosition)) {
-            // 如果不是吃到食物，则删除尾部节点
-            snake.remove(snake.size() - 1);
-        }
+```java
+// 游戏面板仅支持提交 JavaScript 代码
+// Java 解法仅供参考，方便读者理解算法逻辑
+public void move(List<Point> snake, String direction, Point foodPosition) {
+    Point currentHead = snake.get(0);
+    // 计算新头部位置
+    Point newHeadPos = new Point(currentHead.x, currentHead.y);
+    switch (direction) {
+        case "right":
+            newHeadPos.x += 1;
+            break;
+        case "left":
+            newHeadPos.x -= 1;
+            break;
+        case "up":
+            newHeadPos.y += 1;
+            break;
+        case "down":
+            newHeadPos.y -= 1;
+            break;
+        default:
+            throw new IllegalArgumentException("Invalid direction");
     }
+    // 添加新的头部节点
+    snake.add(0, newHeadPos);
+    if (!newHeadPos.equals(foodPosition)) {
+        // 如果不是吃到食物，则删除尾部节点
+        snake.remove(snake.size() - 1);
+    }
+}
+``` 
 
-## ¶游戏汇总
+## 游戏汇总
 
 游戏章节散落在本站目录中（标有  的章节）。这里做一个汇总，方便感兴趣的读者查找。
 
 游戏功能还在内测，我有很多有趣的设想，但目前只上线了一部分，更多有趣的游戏敬请期待~
 
-### ¶贪吃蛇游戏
+### 贪吃蛇游戏
 
 考察双链表的实际运用，详见 [实现贪吃蛇游戏](</zh/algo/game/snake/>)：
 
 贪吃蛇游戏
 
-### ¶消消乐游戏
+### 消消乐游戏
 
 考察数组双指针技巧，详见 [实现消消乐游戏](</zh/algo/game/match-three/>)：
 
 消消乐游戏
 
-### ¶华容道
+### 华容道
 
 华容道游戏是 [BFS 算法框架](</zh/algo/essential-technique/bfs-framework/>) 中数字谜题的进阶问题，非常有意思，建议开启游戏 BGM 尝试求解。解法详见 [实现华容道游戏](</zh/algo/game/huarong-road/>)：
 
 华容道游戏
 
-### ¶连连看
+### 连连看
 
 连连看游戏会考察 BFS 算法，详见 [实现连连看游戏](</zh/algo/game/connect-two/>)：
 
 连连看游戏
 
-### ¶一笔画游戏
+### 一笔画游戏
 
 一笔画游戏会考察欧拉图，详见 [欧拉图和一笔画游戏](</zh/algo/data-structure-basic/eulerian-graph/>)：
 
 一笔画游戏
 
-### ¶扫雷游戏
+### 扫雷游戏
 
 扫雷游戏会考察多种算法。
 
@@ -134,30 +133,26 @@ CC++GoJavaJavaScriptPython
 
 扫雷作弊器
 
-### ¶数独游戏
+### 数独游戏
 
 用回溯算法解决任意难度的数独题目，详见 [实现数独游戏](</zh/algo/game/sudoku/>)：
 
 数独作弊器
 
-### ¶迷宫游戏
+### 迷宫游戏
 
 用 DFS/BFS 算法求解迷宫，详见 [完成迷宫游戏](</zh/algo/game/maze/>)：
 
 迷宫游戏
 
-### ¶迷宫地图生成
+### 迷宫地图生成
 
 用随机算法生成迷宫的地图，可以使用 DFS、最小生成树算法或递归切分算法：
 
 生成迷宫的随机地图
 
-### ¶生命游戏
+### 生命游戏
 
 生命游戏考察简单的数组操作以及位运算优化方法，详见 [实现生命游戏](</zh/algo/game/life-game/>)：
 
 生命游戏
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

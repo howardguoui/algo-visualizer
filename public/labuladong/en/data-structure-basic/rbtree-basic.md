@@ -11,10 +11,9 @@ Prerequisites
 
 Before reading this article, you should first learn:
 
-  * [Basics and Common Types of Binary Trees](/en/algo/data-structure-basic/binary-tree-basic/)
-  * [Recursive and Level-order Traversal of Multi-way Trees](/en/algo/data-structure-basic/n-ary-tree-traverse-basic/)
-  * [Applications and Visualization of Binary Search Trees](/en/algo/data-structure-basic/tree-map-basic/)
-
+  * [Basics and Common Types of Binary Trees](</en/algo/data-structure-basic/binary-tree-basic/>)
+  * [Recursive and Level-order Traversal of Multi-way Trees](</en/algo/data-structure-basic/n-ary-tree-traverse-basic/>)
+  * [Applications and Visualization of Binary Search Trees](</en/algo/data-structure-basic/tree-map-basic/>)
 
 Summary in One Sentence
 
@@ -24,12 +23,10 @@ The visualization panel supports creating red-black trees:
 
 Algorithm Visualization
 
-The article [Applications and Visualization of Binary Search Trees](/en/algo/data-structure-basic/tree-map-basic/) discusses the implementation of `TreeMap/TreeSet` using a regular binary search tree to store key-value pairs.
+The article [Applications and Visualization of Binary Search Trees](</en/algo/data-structure-basic/tree-map-basic/>) discusses the implementation of `TreeMap/TreeSet` using a regular binary search tree to store key-value pairs.
 
 The efficiency of operations on a binary search tree depends on its height. A more balanced tree has a height close to log⁡N\log NlogN, leading to higher efficiency in insertion, deletion, search, and update operations. The main issue with a regular binary search tree is that it does not automatically balance itself, and in specific cases, it can degrade into a linked list, causing the time complexity of operations to degrade to O(N)O(N)O(N).
 
 The following visualization panel is an example: if you insert several ordered key-value pairs, you will notice that each new key is added to the far right, causing this binary search tree to degrade into a linked list:
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

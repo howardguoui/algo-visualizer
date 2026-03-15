@@ -22,7 +22,6 @@ LeetCode| 力扣| 难度
 
   * [二叉树基本概念和几种特殊的二叉树](</zh/algo/data-structure-basic/binary-tree-basic/>)
 
-
 一句话总结
 
 二叉树只有**递归遍历** 和**层序遍历** 这两种，再无其他。递归遍历可以衍生出 DFS 算法，层序遍历可以衍生出 BFS 算法。
@@ -31,11 +30,9 @@ LeetCode| 力扣| 难度
 
 层序遍历二叉树节点的顺序也是固定的，但是有三种不同的写法，对应不同的场景。
 
-加载思维导图...
-
 视频讲解
 
-![Video Cover](/images/algo/vod/tree-traverse.jpg)
+![Video Cover](https://labuladong.online/images/algo/vod/tree-traverse.jpg)
 
 了解了 [二叉树基本概念和几种特殊的二叉树](</zh/algo/data-structure-basic/binary-tree-basic/>)，本文来讲解如何遍历和访问二叉树的节点。
 
@@ -43,27 +40,26 @@ LeetCode| 力扣| 难度
 
 大家熟知的前序遍历、中序遍历、后序遍历，都属于二叉树的递归遍历，只不过是把自定义代码插入到了代码模板的不同位置而已，下面我会结合可视化面板来讲解。
 
-## ¶递归遍历（DFS）
+## 递归遍历（DFS）
 
 递归遍历二叉树的代码模板如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 基本的二叉树节点
-    class TreeNode {
-        int val;
-        TreeNode left, right;
+```java
+// 基本的二叉树节点
+class TreeNode {
+    int val;
+    TreeNode left, right;
+}
+
+// 二叉树的递归遍历框架
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
     }
-    
-    // 二叉树的递归遍历框架
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        traverse(root.left);
-        traverse(root.right);
-    }
+    traverse(root.left);
+    traverse(root.right);
+}
+``` 
 
 请问，这段短小精干的代码为什么能遍历二叉树？又是以什么顺序遍历二叉树的？
 
@@ -81,18 +77,17 @@ CC++GoJavaJavaScriptPython
 
 那么我们简单拓展一下，如果修改前面的 `traverse` 函数，先递归遍历 `root.right`，再递归遍历 `root.left`，会是什么效果？
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 修改标准的二叉树遍历框架
-    void traverseFlip(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // 反过来，先递归遍历右子树，再递归遍历左子树
-        traverseFlip(root.right);
-        traverseFlip(root.left);
+```java
+// 修改标准的二叉树遍历框架
+void traverseFlip(TreeNode root) {
+    if (root == null) {
+        return;
     }
+    // 反过来，先递归遍历右子树，再递归遍历左子树
+    traverseFlip(root.right);
+    traverseFlip(root.left);
+}
+``` 
 
 你可以先脑补一下这个函数遍历二叉树节点的顺序，然后再点开下面的可视化面板，多次点击 `if (root === null)` 这一行代码，观察 `root` 指针在树上移动的顺序，看看和你的设想是否一致：
 
@@ -106,23 +101,22 @@ CC++GoJavaJavaScriptPython
 
 我们说二叉树遍历时，一般不会像 `traverseFlip` 这样遍历二叉树，默认还是按照先左后右的顺序，所以当我们说二叉树遍历的代码模板时，指的是先左后右的遍历顺序：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 基本的二叉树节点
-    class TreeNode {
-        int val;
-        TreeNode left, right;
+```java
+// 基本的二叉树节点
+class TreeNode {
+    int val;
+    TreeNode left, right;
+}
+
+// 二叉树的递归遍历框架
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
     }
-    
-    // 二叉树的递归遍历框架
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        traverse(root.left);
-        traverse(root.right);
-    }
+    traverse(root.left);
+    traverse(root.right);
+}
+``` 
 
 只要这个先左后右的调用顺序不变，那么 `traverse` 函数访问节点的顺序就是固定的，你插入一万行代码进去，也不会变。
 
@@ -132,7 +126,7 @@ CC++GoJavaJavaScriptPython
 
 这个问题很好，下面来解答。
 
-### ¶理解前/中/后序遍历
+### 理解前/中/后序遍历
 
 递归遍历的顺序，即 `traverse` 函数访问节点的顺序确实是固定的。正如可视化面板所示，`root` 指针在树上移动的顺序是固定的：
 
@@ -144,24 +138,23 @@ CC++GoJavaJavaScriptPython
 
 所谓的前中后序遍历，其实就是在二叉树遍历框架的不同位置写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 二叉树的遍历框架
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // 前序位置
-        traverse(root.left);
-        // 中序位置
-        traverse(root.right);
-        // 后序位置
+```java
+// 二叉树的遍历框架
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
     }
+    // 前序位置
+    traverse(root.left);
+    // 中序位置
+    traverse(root.right);
+    // 后序位置
+}
+``` 
 
 **前序位置的代码会在进入节点时立即执行；中序位置的代码会在左子树遍历完成后，遍历右子树之前执行；后序位置的代码会在左右子树遍历完成后执行** ：
 
-![](/images/algo/binary-tree-summary/2.jpeg)
+![diagram](https://labuladong.online/images/algo/binary-tree-summary/2.jpeg)
 
 下面结合可视化代码就能很直观地理解了。
 
@@ -197,43 +190,42 @@ BST 的中序遍历结果是有序的
 
 在后面的 [BST 相关习题集](</zh/algo/problem-set/bst1/>) 中，会有一些题目利用到这个特性。
 
-## ¶层序遍历（BFS）
+## 层序遍历（BFS）
 
 上面讲的递归遍历是依赖函数堆栈递归遍历二叉树的，遍历顺序是从最左侧开始，一列一列地走到最右侧。
 
 二叉树的层序遍历，顾名思义，就是一层一层地遍历二叉树：
 
-![](/images/algo/dijkstra/1.jpeg)
+![diagram](https://labuladong.online/images/algo/dijkstra/1.jpeg)
 
 层序遍历需要借助队列来实现，而且根据不同的需求，可以有三种不同的写法，下面一一列举。
 
-### ¶写法一
+### 写法一
 
 这是最简单的写法，代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void levelOrderTraverse(TreeNode root) {
-        if (root == null) {
-            return;
+```java
+void levelOrderTraverse(TreeNode root) {
+    if (root == null) {
+        return;
+    }
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+    while (!q.isEmpty()) {
+        TreeNode cur = q.poll();
+        // 访问 cur 节点
+        System.out.println(cur.val);
+
+        // 把 cur 的左右子节点加入队列
+        if (cur.left != null) {
+            q.offer(cur.left);
         }
-        Queue<TreeNode> q = new LinkedList<>();
-        q.offer(root);
-        while (!q.isEmpty()) {
-            TreeNode cur = q.poll();
-            // 访问 cur 节点
-            System.out.println(cur.val);
-    
-            // 把 cur 的左右子节点加入队列
-            if (cur.left != null) {
-                q.offer(cur.left);
-            }
-            if (cur.right != null) {
-                q.offer(cur.right);
-            }
+        if (cur.right != null) {
+            q.offer(cur.right);
         }
     }
+}
+``` 
 
 你可以打开这个可视化面板，点击其中的 `while (q.length > 0)` 这一行代码，观察 `cur` 变量在树上游走的顺序，就可以看到层序遍历是一层一层，从左到右的遍历二叉树节点：
 
@@ -247,56 +239,57 @@ CC++GoJavaJavaScriptPython
 
 所以这种写法虽然简单，但用的不多，下面介绍的写法会更常见一些。
 
-### ¶写法二
+### 写法二
 
 对上面的解法稍加改造，就得出了下面这种写法：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void levelOrderTraverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        Queue<TreeNode> q = new LinkedList<>();
-        q.offer(root);
-        // 记录当前遍历到的层数（根节点视为第 1 层）
-        int depth = 1;
-    
-        while (!q.isEmpty()) {
-            int sz = q.size();
-            for (int i = 0; i < sz; i++) {
-                TreeNode cur = q.poll();
-                // 访问 cur 节点，同时知道它所在的层数
-                System.out.println("depth = " + depth + ", val = " + cur.val);
-    
-                // 把 cur 的左右子节点加入队列
-                if (cur.left != null) {
-                    q.offer(cur.left);
-                }
-                if (cur.right != null) {
-                    q.offer(cur.right);
-                }
-            }
-            depth++;
-        }
+```java
+void levelOrderTraverse(TreeNode root) {
+    if (root == null) {
+        return;
     }
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+    // 记录当前遍历到的层数（根节点视为第 1 层）
+    int depth = 1;
+
+    while (!q.isEmpty()) {
+        int sz = q.size();
+        for (int i = 0; i < sz; i++) {
+            TreeNode cur = q.poll();
+            // 访问 cur 节点，同时知道它所在的层数
+            System.out.println("depth = " + depth + ", val = " + cur.val);
+
+            // 把 cur 的左右子节点加入队列
+            if (cur.left != null) {
+                q.offer(cur.left);
+            }
+            if (cur.right != null) {
+                q.offer(cur.right);
+            }
+        }
+        depth++;
+    }
+}
+``` 
 
 注意代码中的内层 for 循环：
-    
-    
-    int sz = q.size();
-    for (int i = 0; i < sz; i++) {
-        ...
-    }
+
+```
+int sz = q.size();
+for (int i = 0; i < sz; i++) {
+    ...
+}
+``` 
 
 这个变量 `i` 记录的是节点 `cur` 是当前层的第几个，大部分算法题中都不会用到这个变量，所以你完全可以改用下面的写法：
-    
-    
-    int sz = q.size();
-    while (sz-- > 0) {
-        ...
-    }
+
+```
+int sz = q.size();
+while (sz-- > 0) {
+    ...
+}
+``` 
 
 这个属于细节问题，按照自己的喜好来就行。
 
@@ -308,7 +301,7 @@ CC++GoJavaJavaScriptPython
 
 这种写法就可以记录下来每个节点所在的层数，可以解决诸如二叉树最小深度这样的问题，是我们最常用的层序遍历写法。
 
-### ¶写法三
+### 写法三
 
 既然写法二是最常见的，为啥还有个写法三呢？因为要给后面的进阶内容做铺垫。
 
@@ -322,41 +315,40 @@ CC++GoJavaJavaScriptPython
 
 写法三就是为了解决这个问题，在写法一的基础上添加一个 `State` 类，让每个节点自己负责维护自己的路径权重和，代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class State {
-        TreeNode node;
-        int depth;
-    
-        State(TreeNode node, int depth) {
-            this.node = node;
-            this.depth = depth;
+```java
+class State {
+    TreeNode node;
+    int depth;
+
+    State(TreeNode node, int depth) {
+        this.node = node;
+        this.depth = depth;
+    }
+}
+
+void levelOrderTraverse(TreeNode root) {
+    if (root == null) {
+        return;
+    }
+    Queue<State> q = new LinkedList<>();
+    // 根节点的路径权重和是 1
+    q.offer(new State(root, 1));
+
+    while (!q.isEmpty()) {
+        State cur = q.poll();
+        // 访问 cur 节点，同时知道它的路径权重和
+        System.out.println("depth = " + cur.depth + ", val = " + cur.node.val);
+
+        // 把 cur 的左右子节点加入队列
+        if (cur.node.left != null) {
+            q.offer(new State(cur.node.left, cur.depth + 1));
+        }
+        if (cur.node.right != null) {
+            q.offer(new State(cur.node.right, cur.depth + 1));
         }
     }
-    
-    void levelOrderTraverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        Queue<State> q = new LinkedList<>();
-        // 根节点的路径权重和是 1
-        q.offer(new State(root, 1));
-    
-        while (!q.isEmpty()) {
-            State cur = q.poll();
-            // 访问 cur 节点，同时知道它的路径权重和
-            System.out.println("depth = " + cur.depth + ", val = " + cur.node.val);
-    
-            // 把 cur 的左右子节点加入队列
-            if (cur.node.left != null) {
-                q.offer(new State(cur.node.left, cur.depth + 1));
-            }
-            if (cur.node.right != null) {
-                q.offer(new State(cur.node.right, cur.depth + 1));
-            }
-        }
-    }
+}
+``` 
 
 你可以打开这个可视化面板，点击其中的 `console.log` 这一行代码，就可以看到还是一层一层，从左到右的遍历二叉树节点，还会输出节点所在的层数：
 
@@ -366,7 +358,7 @@ CC++GoJavaJavaScriptPython
 
 其实你很快就会学到，这种边带有权重的场景属于图结构算法，在之后的 [BFS 算法习题集](</zh/algo/problem-set/bfs/>) 和 [dijkstra 算法](</zh/algo/data-structure/dijkstra/>) 中，才会用到这种写法。
 
-## ¶其他遍历？
+## 其他遍历？
 
 二叉树的遍历方式只有上面两种，也许有其他的写法，但都是表现形式上的差异，本质上不可能跳出上面两种遍历方式。
 
@@ -375,7 +367,3 @@ CC++GoJavaJavaScriptPython
 再比如，你还可能看到递归地一层层遍历二叉树的代码。但这本质还是层序遍历，只不过他把层序遍历代码中的 for 循环用递归的形式展现了。
 
 总之，不要被表象迷惑，二叉树的遍历方式就上面两种，结合后面的教程和习题，你把这两种遍历方式玩明白，一切暴力穷举算法都小菜一碟。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

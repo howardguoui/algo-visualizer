@@ -19,12 +19,7 @@
   * [二叉搜索树心法（特性篇）](</zh/algo/data-structure/bst-part1/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
 下面列出的 BST 题目主要考察 BST 左小右大、中序遍历有序的特点。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -35,6 +30,5 @@ Loading comments...
   * 530\. 二叉搜索树的最小绝对差
   * 653\. 两数之和 IV - 输入二叉搜索树
   * 1008\. 前序遍历构造二叉搜索树
-
 
 AI 助教

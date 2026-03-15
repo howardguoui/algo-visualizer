@@ -19,7 +19,6 @@ LeetCode| 力扣| 难度
 
   * [排序算法的关键指标](</zh/algo/data-structure-basic/sort-basic/>)
 
-
 一句话总结
 
 选择排序是最简单朴素的排序算法，但是时间复杂度较高，且不是稳定排序。其他基础排序算法都是基于选择排序的优化。
@@ -37,11 +36,12 @@ LeetCode| 力扣| 难度
 总有些读者，愁眉苦脸地找我诉苦，说算法题刷完了就忘怎么办啊。我还觉得这是好事呢，念念不忘的是执念，忘了才好，说明还没被塞满，这就是独立思考的机缘呀。
 
 所以回到问题，让我们抓住这次机缘。现在就是给你输入一个数组，让你写个排序算法把所有元素从小到大排序，你来说，怎么写？如果你从来没有思考过这个问题，可以停下几分钟想一想。
-    
-    
-    void sort(int[] nums) {
-        // 你的代码，将 nums 中的元素从小到大排序
-    }
+
+```
+void sort(int[] nums) {
+    // 你的代码，将 nums 中的元素从小到大排序
+}
+``` 
 
 我第一次思考这个问题时，想到的最直接的方法是这样的：
 
@@ -49,33 +49,32 @@ LeetCode| 力扣| 难度
 
 这个算法有一个被大家熟知的名字，叫做「**选择排序** 」，即每次都去遍历选择最小的元素。写成代码就是这样的：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void sort(int[] nums) {
-        int n = nums.length;
-        // sortedIndex 是一个分割线
-        // 索引 < sortedIndex 的元素都是已排序的
-        // 索引 >= sortedIndex 的元素都是未排序的
-        // 初始化为 0，表示整个数组都是未排序的
-        int sortedIndex = 0;
-        while (sortedIndex < n) {
-            // 找到未排序部分 [sortedIndex, n) 中的最小值
-            int minIndex = sortedIndex;
-            for (int i = sortedIndex + 1; i < n; i++) {
-                if (nums[i] < nums[minIndex]) {
-                    minIndex = i;
-                }
+```java
+void sort(int[] nums) {
+    int n = nums.length;
+    // sortedIndex 是一个分割线
+    // 索引 < sortedIndex 的元素都是已排序的
+    // 索引 >= sortedIndex 的元素都是未排序的
+    // 初始化为 0，表示整个数组都是未排序的
+    int sortedIndex = 0;
+    while (sortedIndex < n) {
+        // 找到未排序部分 [sortedIndex, n) 中的最小值
+        int minIndex = sortedIndex;
+        for (int i = sortedIndex + 1; i < n; i++) {
+            if (nums[i] < nums[minIndex]) {
+                minIndex = i;
             }
-            // 交换最小值和 sortedIndex 处的元素
-            int tmp = nums[sortedIndex];
-            nums[sortedIndex] = nums[minIndex];
-            nums[minIndex] = tmp;
-    
-            // sortedIndex 后移一位
-            sortedIndex++;
         }
+        // 交换最小值和 sortedIndex 处的元素
+        int tmp = nums[sortedIndex];
+        nums[sortedIndex] = nums[minIndex];
+        nums[minIndex] = tmp;
+
+        // sortedIndex 后移一位
+        sortedIndex++;
     }
+}
+``` 
 
 上述算法的可视化过程如下：
 
@@ -87,20 +86,21 @@ CC++GoJavaJavaScriptPython
 
 暂且不管如何通过 912 题，我们先来按照 [排序算法的几个关键指标](</zh/algo/data-structure-basic/sort-basic/>) 来分析一下这个排序算法。
 
-## ¶是否是原地排序
+## 是否是原地排序
 
 是的。因为算法并没有使用额外的数组空间进行辅助，只是用了几个变量，空间复杂度是 O(1)O(1)O(1)。
 
-## ¶时空复杂度分析
+## 时空复杂度分析
 
 这个 `sort` 函数中包含一个 while 循环嵌套一个 for 循环，相当于是这样：
-    
-    
-    for (int sortedIndex = 0; sortedIndex < n; sortedIndex++) {
-        for (int i = sortedIndex + 1; i < n; i++) {
-            // ...
-        }
+
+```
+for (int sortedIndex = 0; sortedIndex < n; sortedIndex++) {
+    for (int i = sortedIndex + 1; i < n; i++) {
+        // ...
     }
+}
+``` 
 
 你看到了，这就是嵌套 for 循环，总的循环次数是 `(n - 1) + (n - 2) + (n - 3) +... + 1`，这是等差数列求和，结果近似是 `n^2 / 2`，所以这个排序算法的时间复杂度用 Big O 表示法就是 O(n2)O(n^2)O(n2)，其中 `n` 是待排序数组的元素个数。
 
@@ -114,7 +114,7 @@ CC++GoJavaJavaScriptPython
 
 因为有多种排序算法从 Big O 的视角来看都是 O(n2)O(n^2)O(n2) 复杂度，那么我们要根据他们的实际执行次数以及特殊情况下的表现，来分析它们的优劣。
 
-## ¶时间都去哪了？优化思路？
+## 时间都去哪了？优化思路？
 
 现在，请你观察这个算法的逻辑，仔细思考几分钟，时间复杂度是否还有优化的可能？
 
@@ -147,20 +147,21 @@ CC++GoJavaJavaScriptPython
 答案是可以的，`min(nums[0..]) = min(nums[0], min(nums[1..]))`。
 
 有了这个思路，这个 `suffixMin` 数组就能算出来了，关键是倒着计算：
-    
-    
-    int[] nums = new int[]{3, 1, 4, 2};
-    // suffixMin[i] 表示 nums[i..] 中的最小值
-    int[] suffixMin = new int[nums.length];
-    
-    // 从后往前计算 suffixMin
-    suffixMin[nums.length - 1] = nums[nums.length - 1];
-    for (int i = nums.length - 2; i >= 0; i--) {
-        suffixMin[i] = Math.min(nums[i], suffixMin[i + 1]);
-    }
-    
-    // [1, 1, 2, 2]
-    System.out.println(suffixMin);
+
+```
+int[] nums = new int[]{3, 1, 4, 2};
+// suffixMin[i] 表示 nums[i..] 中的最小值
+int[] suffixMin = new int[nums.length];
+
+// 从后往前计算 suffixMin
+suffixMin[nums.length - 1] = nums[nums.length - 1];
+for (int i = nums.length - 2; i >= 0; i--) {
+    suffixMin[i] = Math.min(nums[i], suffixMin[i + 1]);
+}
+
+// [1, 1, 2, 2]
+System.out.println(suffixMin);
+``` 
 
 好了，这个计算 `suffixMin` 数组的问题解决了，现在回到选择排序的优化，我现在只需要花 O(n)O(n)O(n) 的时间遍历一遍 `nums` 数组算出 `suffixMin` 数组，就可以在 O(1)O(1)O(1) 的时间内得到 `nums[1..], nums[2..], ...` 任意子数组的最小值。
 
@@ -192,7 +193,7 @@ CC++GoJavaJavaScriptPython
 
 在本站的教程中，我会经常展现这种思考过程。在后面讲到的排序算法中，你也可以思考一下，它们的本质上和选择排序有什么区别？凭什么它们就能把时间复杂度降到 O(n2)O(n^2)O(n2) 以下？
 
-## ¶排序的稳定性
+## 排序的稳定性
 
 请你按照 [排序算法的几个关键指标](</zh/algo/data-structure-basic/sort-basic/>) 中对排序稳定性的定义，分析一下这个算法是不是稳定排序？
 
@@ -203,26 +204,25 @@ CC++GoJavaJavaScriptPython
 **选择排序算法不是稳定排序** 。
 
 按照稳定排序的定义，相同元素的相对位置不会发生变化才能称为稳定排序。你举个简单的例子就看出这个算法不稳定了：
-    
-    
-    [2', 2''', 2'', 1]
+
+```
+[2', 2''', 2'', 1]
+``` 
 
 这个例子中有多个重复元素 `2`，我分别用 `2'`、`2'''`、`2''` 来区别这三个元素。如果这个排序算法是稳定的，那么排序后的结果应该保持三个 `2` 的相对顺序：
-    
-    
-    [1, 2', 2''', 2'']
+
+```
+[1, 2', 2''', 2'']
+``` 
 
 但实际上，你在脑子里跑一下这个算法就能想到，它第一次寻找最小值时，肯定会把元素 `2'` 和 `1` 交换，这一下就会打乱 `2` 之间的相对顺序了：
-    
-    
-    [1, 2''', 2'', 2']
+
+```
+[1, 2''', 2'', 2']
+``` 
 
 **是交换操作，使得选择排序失去了排序的稳定性** 。
 
 有没有什么办法可以优化这个算法，使它成为稳定排序？现在时间复杂度都到 O(n2)O(n^2)O(n2) 了，属于排序算法里面最差的那一档，好歹咱也支棱起来，把自己搞成一个稳定排序，行不行？
 
 你可以自己想一想这个问题，在后面的排序算法，我们会尝试解决这个问题。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

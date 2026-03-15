@@ -11,15 +11,15 @@ After reading this article, you can solve the following problems:
 
 LeetCode| Difficulty  
 ---|---  
-[292\. Nim Game](https://leetcode.com/problems/nim-game/)|   
-[877\. Stone Game](https://leetcode.com/problems/stone-game/)|   
-[319\. Bulb Switcher](https://leetcode.com/problems/bulb-switcher/)|   
+[292\. Nim Game](<https://leetcode.com/problems/nim-game/>)|   
+[877\. Stone Game](<https://leetcode.com/problems/stone-game/>)|   
+[319\. Bulb Switcher](<https://leetcode.com/problems/bulb-switcher/>)|   
   
 Below are three interesting "brain teasers" I summarized during my problem-solving journey. Although they can be solved using algorithmic programming, a little thought can reveal patterns to directly find the answer.
 
-## ¶1\. Nim Game
+## 1\. Nim Game
 
-LeetCode Problem 292 "[Nim Game](https://leetcode.com/problems/nim-game/)" provides the following game rules:
+LeetCode Problem 292 "[Nim Game](<https://leetcode.com/problems/nim-game/>)" provides the following game rules:
 
 You and your friend face a pile of stones and take turns to remove 1 to 3 stones. The player who removes the last stone wins.
 
@@ -41,20 +41,19 @@ How do I create a situation with 5 to 7 stones? By making the opponent face 8 st
 
 This cycle continues, and we realize that stepping on a multiple of 4 is a trap. Once trapped in multiples of 4, you can never escape and will always lose. Thus, the solution to this problem is very simple:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public boolean canWinNim(int n) {
-            // If you start on a multiple of 4, just admit defeat
-            // Otherwise, you can control the opponent to a multiple of 4 and be guaranteed to win
-            return n % 4 != 0;
-        }
+```java
+class Solution {
+    public boolean canWinNim(int n) {
+        // If you start on a multiple of 4, just admit defeat
+        // Otherwise, you can control the opponent to a multiple of 4 and be guaranteed to win
+        return n % 4 != 0;
     }
+}
+``` 
 
-## ¶II. Stone Game
+## II. Stone Game
 
-The rules of LeetCode Problem 877 "[Stone Game](https://leetcode.com/problems/stone-game/)" are as follows:
+The rules of LeetCode Problem 877 "[Stone Game](<https://leetcode.com/problems/stone-game/>)" are as follows:
 
 You and your friend are facing a row of stone piles, represented by an array `piles`, where `piles[i]` denotes the number of stones in the `i`-th pile. You take turns to pick a pile of stones, but you can only take stones from the leftmost or rightmost pile. The winner is the one with more stones after all stones are taken.
 
@@ -78,14 +77,13 @@ This highlights why both players being clever is crucial, as the algorithm seeks
 
 This problem involves a two-player game and can be approached with dynamic programming, which may seem complex. However, a deeper understanding of the rules reveals: as long as you are clever enough, you are guaranteed to win because you go first.
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public boolean stoneGame(int[] piles) {
-            return true;
-        }
+```java
+class Solution {
+    public boolean stoneGame(int[] piles) {
+        return true;
     }
+}
+``` 
 
 The reason for this is that the problem has two important conditions: first, the total number of stone piles is even, and the total number of stones is odd. These two conditions, which seem to increase the fairness of the game, actually make it a game of exploiting others. Let's explain with `piles=[2, 1, 9, 5]`, assuming these four piles are indexed from left to right as 1, 2, 3, and 4.
 
@@ -97,9 +95,9 @@ You can initially choose either pile 1 or pile 4. If you want the even-indexed p
 
 In other words, you can observe in the first step whether the total number of stones in the odd-indexed piles is greater than or less than that in the even-indexed piles. Then, by planning your moves carefully, you can control the game entirely. Knowing this loophole allows you to outsmart unsuspecting players.
 
-## ¶3\. The Light Bulb Switch Problem
+## 3\. The Light Bulb Switch Problem
 
-The rule for LeetCode Problem 319, "[Bulb Switcher](https://leetcode.com/problems/bulb-switcher/)," is as follows:
+The rule for LeetCode Problem 319, "[Bulb Switcher](<https://leetcode.com/problems/bulb-switcher/>)," is as follows:
 
 There are `n` light bulbs, all initially turned off. You will perform `n` rounds of operations:
 
@@ -115,14 +113,13 @@ Given a positive integer `n` representing the number of bulbs, how many bulbs ar
 
 We could use a boolean array to represent the switch states of the bulbs, simulate the operations, and count the results. However, this method lacks elegance; the best solution is as follows:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int bulbSwitch(int n) {
-            return (int)Math.sqrt(n);
-        }
+```java
+class Solution {
+    public int bulbSwitch(int n) {
+        return (int)Math.sqrt(n);
     }
+}
+``` 
 
 What? How is this problem related to square roots? Actually, the solution is quite clever. If no one tells you the solution, it might be hard to figure out.
 
@@ -143,5 +140,3 @@ Assume there are 16 lights. We take the square root of 16, which is 4. This mean
 Even if the square root of some `n` is a decimal, converting it to an integer acts as an upper bound. All integers below this bound, when squared, will be the indices of the lights that are on at the end. So, directly converting the square root to an integer gives us the answer to this problem.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

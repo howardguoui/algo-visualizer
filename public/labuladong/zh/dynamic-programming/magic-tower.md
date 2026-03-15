@@ -19,12 +19,11 @@ LeetCode| 力扣| 难度
 
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
 
-
 「魔塔」是一款经典的地牢类游戏，碰怪物要掉血，吃血瓶能加血，你要收集钥匙，一层一层上楼，最后救出美丽的公主。
 
 现在手机上仍然可以玩这个游戏：
 
-![](/images/algo/dungeons/0.png)
+![diagram](https://labuladong.online/images/algo/dungeons/0.png)
 
 嗯，相信这款游戏承包了不少人的童年回忆，记得小时候，一个人拿着游戏机玩，两三个人围在左右指手画脚，这导致玩游戏的人体验极差，而左右的人异常快乐 😂
 
@@ -46,19 +45,20 @@ LeetCode| 力扣| 难度
 
 **示例 1：**
 
-![](/images/lc/uploads/2021/03/13/dungeon-grid-1.jpg)
-    
-    
-    **输入：** dungeon = [[-2,-3,3],[-5,-10,1],[10,30,-5]]
-    **输出：** 7
-    **解释：** 如果骑士遵循最佳路径：右 -> 右 -> 下 -> 下 ，则骑士的初始健康点数至少为 7 。
+![diagram](https://labuladong.online/images/lc/uploads/2021/03/13/dungeon-grid-1.jpg)
+
+```
+输入：dungeon = [[-2,-3,3],[-5,-10,1],[10,30,-5]]
+输出：7
+解释：如果骑士遵循最佳路径：右 -> 右 -> 下 -> 下 ，则骑士的初始健康点数至少为 7 。
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** dungeon = [[0]]
-    **输出：** 1
-    
+
+```
+输入：dungeon = [[0]]
+输出：1
+``` 
 
 **提示：**
 
@@ -67,17 +67,15 @@ LeetCode| 力扣| 难度
   * `1 <= m, n <= 200`
   * `-1000 <= dungeon[i][j] <= 1000`
 
-
 题目来源：[力扣 174. 地下城游戏](<https://leetcode.cn/problems/dungeon-game/>)。
 
 **简单说，就是问你至少需要多少初始生命值，能够让骑士从最左上角移动到最右下角，且任何时候生命值都要大于 0** 。
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int calculateMinimumHP(int[][] grid);
+```java
+int calculateMinimumHP(int[][] grid);
+``` 
 
 上篇文章 [最小路径和](</zh/algo/dynamic-programming/minimum-path-sum/>) 写过类似的问题，问你从左上角到右下角的最小路径和是多少。
 
@@ -89,20 +87,19 @@ CC++GoJavaJavaScriptPython
 
 比如如下这种情况，如果想要吃到最多的血瓶获得「最大路径和」，应该按照下图箭头所示的路径，初始生命值需要 11：
 
-![](/images/algo/dungeons/2.png)
+![diagram](https://labuladong.online/images/algo/dungeons/2.png)
 
 但也很容易看到，正确的答案应该是下图箭头所示的路径，初始生命值只需要 1：
 
-![](/images/algo/dungeons/3.png)
+![diagram](https://labuladong.online/images/algo/dungeons/3.png)
 
 **所以，关键不在于吃最多的血瓶，而是在于如何损失最少的生命值** 。
 
 这类求最值的问题，肯定要借助动态规划技巧，要合理设计 `dp` 数组/函数的定义。类比前文 [最小路径和问题](</zh/algo/dynamic-programming/minimum-path-sum/>)，`dp` 函数签名肯定长这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int dp(int[][] grid, int i, int j);
+```java
+int dp(int[][] grid, int i, int j);
+``` 
 
 但是这道题对 `dp` 函数的定义比较有意思，按照常理，这个 `dp` 函数的定义应该是：
 
@@ -110,24 +107,23 @@ CC++GoJavaJavaScriptPython
 
 这样定义的话，base case 就是 `i, j` 都等于 0 的时候，我们可以这样写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int calculateMinimumHP(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        // 我们想计算左上角到右下角所需的最小生命值
-        return dp(grid, m - 1, n - 1);
+```java
+int calculateMinimumHP(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    // 我们想计算左上角到右下角所需的最小生命值
+    return dp(grid, m - 1, n - 1);
+}
+
+int dp(int[][] grid, int i, int j) {
+    // base case
+    if (i == 0 && j == 0) {
+        // 保证骑士落地不死就行了
+        return grid[i][j] > 0 ? 1 : -grid[i][j] + 1;
     }
-    
-    int dp(int[][] grid, int i, int j) {
-        // base case
-        if (i == 0 && j == 0) {
-            // 保证骑士落地不死就行了
-            return grid[i][j] > 0 ? 1 : -grid[i][j] + 1;
-        }
-        ...
-    }
+    ...
+}
+``` 
 
 为了简洁，之后 `dp(grid, i, j)` 就简写为 `dp(i, j)`，大家理解就好。
 
@@ -137,7 +133,7 @@ CC++GoJavaJavaScriptPython
 
 具体来说，「到达 `A` 的最小生命值」应该能够由「到达 `B` 的最小生命值」和「到达 `C` 的最小生命值」推导出来：
 
-![](/images/algo/dungeons/4.png)
+![diagram](https://labuladong.online/images/algo/dungeons/4.png)
 
 **但问题是，能推出来么？实际上是不能的** 。
 
@@ -145,7 +141,7 @@ CC++GoJavaJavaScriptPython
 
 「到达 `B` 时的生命值」是进行状态转移的必要参考，我给你举个例子你就明白了，假设下图这种情况：
 
-![](/images/algo/dungeons/5.png)
+![diagram](https://labuladong.online/images/algo/dungeons/5.png)
 
 你说这种情况下，骑士救公主的最优路线是什么？
 
@@ -163,10 +159,9 @@ CC++GoJavaJavaScriptPython
 
 正确的做法需要反向思考，依然是如下的 `dp` 函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int dp(int[][] grid, int i, int j);
+```java
+int dp(int[][] grid, int i, int j);
+``` 
 
 但是我们要修改 `dp` 函数的定义：
 
@@ -174,29 +169,28 @@ CC++GoJavaJavaScriptPython
 
 那么可以这样写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int calculateMinimumHP(int[][] grid) {
-        // 我们想计算左上角到右下角所需的最小生命值
-        return dp(grid, 0, 0);
+```java
+int calculateMinimumHP(int[][] grid) {
+    // 我们想计算左上角到右下角所需的最小生命值
+    return dp(grid, 0, 0);
+}
+
+int dp(int[][] grid, int i, int j) {
+    int m = grid.length;
+    int n = grid[0].length;
+    // base case
+    if (i == m - 1 && j == n - 1) {
+        return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
     }
-    
-    int dp(int[][] grid, int i, int j) {
-        int m = grid.length;
-        int n = grid[0].length;
-        // base case
-        if (i == m - 1 && j == n - 1) {
-            return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
-        }
-        ...
-    }
+    ...
+}
+``` 
 
 根据新的 `dp` 函数定义和 base case，我们想求 `dp(0, 0)`，那就应该试图通过 `dp(i, j+1)` 和 `dp(i+1, j)` 推导出 `dp(i, j)`，这样才能不断逼近 base case，正确进行状态转移。
 
 具体来说，「从 `A` 到达右下角的最少生命值」应该由「从 `B` 到达右下角的最少生命值」和「从 `C` 到达右下角的最少生命值」推导出来：
 
-![](/images/algo/dungeons/6.png)
+![diagram](https://labuladong.online/images/algo/dungeons/6.png)
 
 能不能推导出来呢？这次是可以的，假设 `dp(0, 1) = 5, dp(1, 0) = 4`，那么可以肯定要从 `A` 走向 `C`，因为 4 小于 5 嘛。
 
@@ -207,63 +201,63 @@ CC++GoJavaJavaScriptPython
 那如果 `A` 的值为 10，落地就能捡到一个大血瓶，超出了后续需求，4 - 10 = -6 意味着骑士的初始生命值为负数，这显然不可以，骑士的生命值小于 1 就挂了，所以这种情况下骑士的初始生命值应该是 1。
 
 综上，状态转移方程已经推出来了：
-    
-    
-    int res = min(
-        dp(i + 1, j),
-        dp(i, j + 1)
-    ) - grid[i][j];
-    
-    dp(i, j) = res <= 0 ? 1 : res;
+
+```
+int res = min(
+    dp(i + 1, j),
+    dp(i, j + 1)
+) - grid[i][j];
+
+dp(i, j) = res <= 0 ? 1 : res;
+``` 
 
 根据这个核心逻辑，加一个备忘录消除重叠子问题，就可以直接写出最终的代码了：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-    
-        public int calculateMinimumHP(int[][] grid) {
-            int m = grid.length;
-            int n = grid[0].length;
-            // 备忘录中都初始化为 -1
-            memo = new int[m][n];
-            for (int[] row : memo) {
-                Arrays.fill(row, -1);
-            }
-    
-            return dp(grid, 0, 0);
+```java
+class Solution {
+
+    public int calculateMinimumHP(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        // 备忘录中都初始化为 -1
+        memo = new int[m][n];
+        for (int[] row : memo) {
+            Arrays.fill(row, -1);
         }
-    
-        // 备忘录，消除重叠子问题
-        int[][] memo;
-    
-        // 定义：从 (i, j) 到达右下角，需要的初始血量至少是多少
-        int dp(int[][] grid, int i, int j) {
-            int m = grid.length;
-            int n = grid[0].length;
-            // base case
-            if (i == m - 1 && j == n - 1) {
-                return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
-            }
-            if (i == m || j == n) {
-                return Integer.MAX_VALUE;
-            }
-            // 避免重复计算
-            if (memo[i][j] != -1) {
-                return memo[i][j];
-            }
-            // 状态转移逻辑
-            int res = Math.min(
-                    dp(grid, i, j + 1),
-                    dp(grid, i + 1, j)
-            ) - grid[i][j];
-            // 骑士的生命值至少为 1
-            memo[i][j] = res <= 0 ? 1 : res;
-    
+
+        return dp(grid, 0, 0);
+    }
+
+    // 备忘录，消除重叠子问题
+    int[][] memo;
+
+    // 定义：从 (i, j) 到达右下角，需要的初始血量至少是多少
+    int dp(int[][] grid, int i, int j) {
+        int m = grid.length;
+        int n = grid[0].length;
+        // base case
+        if (i == m - 1 && j == n - 1) {
+            return grid[i][j] >= 0 ? 1 : -grid[i][j] + 1;
+        }
+        if (i == m || j == n) {
+            return Integer.MAX_VALUE;
+        }
+        // 避免重复计算
+        if (memo[i][j] != -1) {
             return memo[i][j];
         }
+        // 状态转移逻辑
+        int res = Math.min(
+                dp(grid, i, j + 1),
+                dp(grid, i + 1, j)
+        ) - grid[i][j];
+        // 骑士的生命值至少为 1
+        memo[i][j] = res <= 0 ? 1 : res;
+
+        return memo[i][j];
     }
+}
+``` 
 
 算法可视化
 
@@ -276,54 +270,50 @@ CC++GoJavaJavaScriptPython
 base case 是 `dp[m-1][n-1] = 1`，即站在终点位置所需的最少生命值为 1。
 
 站在 `grid[i][j]` 这个格子，要么往右边走，要么往下边走，所以状态转移方程就是：
-    
-    
-    dp[i][j] = Math.min(dp[i + 1][j], dp[i][j + 1]) - grid[i][j];
+
+```
+dp[i][j] = Math.min(dp[i + 1][j], dp[i][j + 1]) - grid[i][j];
+``` 
 
 `dp[i][j]` 的状态转移需要依赖下方 `dp[i+1][j]` 和右侧 `dp[i][j+1]`，所以我们还需要计算出最后一行 `dp[n-1][..]` 和最后一列 `dp[..][m-1]` 的值，然后才能自下而上，自右向左进行状态转移：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-    
-        public int calculateMinimumHP(int[][] grid) {
-            int m = grid.length;
-            int n = grid[0].length;
-            final int INF = Integer.MAX_VALUE / 2;
-            // dp[i][j] 表示从 (i, j) 到右下角需要的最少初始血量
-            int[][] dp = new int[m][n];
-    
-            // base case，右下角至少要 1 点血
-            dp[m - 1][n - 1] = Math.max(1, 1 - grid[m - 1][n - 1]);
-    
-            // 最后一列
-            for (int i = m - 2; i >= 0; i--) {
-                int need = dp[i + 1][n - 1] - grid[i][n - 1];
-                dp[i][n - 1] = need <= 0 ? 1 : need;
-            }
-            // 最后一行
-            for (int j = n - 2; j >= 0; j--) {
-                int need = dp[m - 1][j + 1] - grid[m - 1][j];
-                dp[m - 1][j] = need <= 0 ? 1 : need;
-            }
-    
-            // 其余格子，自底向上、自右向左填表
-            for (int i = m - 2; i >= 0; i--) {
-                for (int j = n - 2; j >= 0; j--) {
-                    int down = dp[i + 1][j];
-                    int right = dp[i][j + 1];
-                    int need = Math.min(down, right) - grid[i][j];
-                    dp[i][j] = need <= 0 ? 1 : need;
-                }
-            }
-    
-            return dp[0][0];
+```java
+class Solution {
+
+    public int calculateMinimumHP(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        final int INF = Integer.MAX_VALUE / 2;
+        // dp[i][j] 表示从 (i, j) 到右下角需要的最少初始血量
+        int[][] dp = new int[m][n];
+
+        // base case，右下角至少要 1 点血
+        dp[m - 1][n - 1] = Math.max(1, 1 - grid[m - 1][n - 1]);
+
+        // 最后一列
+        for (int i = m - 2; i >= 0; i--) {
+            int need = dp[i + 1][n - 1] - grid[i][n - 1];
+            dp[i][n - 1] = need <= 0 ? 1 : need;
         }
+        // 最后一行
+        for (int j = n - 2; j >= 0; j--) {
+            int need = dp[m - 1][j + 1] - grid[m - 1][j];
+            dp[m - 1][j] = need <= 0 ? 1 : need;
+        }
+
+        // 其余格子，自底向上、自右向左填表
+        for (int i = m - 2; i >= 0; i--) {
+            for (int j = n - 2; j >= 0; j--) {
+                int down = dp[i + 1][j];
+                int right = dp[i][j + 1];
+                int need = Math.min(down, right) - grid[i][j];
+                dp[i][j] = need <= 0 ? 1 : need;
+            }
+        }
+
+        return dp[0][0];
     }
+}
+``` 
 
 这样，这道题的动态规划解法就完成了，难点其实是定义 `dp` 函数，然后才能找到正确的状态转移方程，计算出正确的答案。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

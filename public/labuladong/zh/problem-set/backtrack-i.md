@@ -19,11 +19,6 @@
   * [回溯算法秒杀排列/组合/子集的九种变体](</zh/algo/essential-technique/permutation-combination-subset-all-in-one/>)
   * [球盒模型：回溯算法的两种穷举视角](</zh/algo/practice-in-action/two-views-of-backtrack/>)
 
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
-
 此页内容
 
   * 967\. 连续差相同的数字
@@ -36,6 +31,5 @@ Loading comments...
   * 17\. 电话号码的字母组合
   * 79\. 单词搜索
   * 473\. 火柴拼正方形
-
 
 AI 助教

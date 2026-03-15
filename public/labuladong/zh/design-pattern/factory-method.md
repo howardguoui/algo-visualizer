@@ -13,7 +13,7 @@
 
 文字不太容易描述清楚，看个例子就懂了。
 
-## ¶场景案例
+## 场景案例
 
 假设我们有一个应用程序在不同环境下需要使用不同的日志记录方式：
 
@@ -21,127 +21,131 @@
   * **测试环境** ：将日志以普通文本的形式写入文件，方便查询历史日志。
   * **生产环境** ：将日志信息和其他运行时信息（比如线程ID、时间戳等）组合成JSON格式，发送到远程服务器，方便实时监控和告警。
 
-
 无论在什么部署环境，业务逻辑的代码都是一样的，所以我们需要在不改变业务代码的前提下，使得不同环境下的日志记录行为不同。
 
 首先，我们定义一个日志记录器接口 `ILogger`，它包含一个 `log()` 方法，用于记录日志：
-    
-    
-    interface ILogger {
-        void log(String message);
-    }
+
+```
+interface ILogger {
+    void log(String message);
+}
+``` 
 
 然后我们可以实现三种不同的日志记录器：
-    
-    
-    // 控制台日志记录器
-    class ConsoleLogger implements ILogger {
-        @Override
-        public void log(String message) {
-            System.out.println("CONSOLE: " + message);
-        }
+
+```
+// 控制台日志记录器
+class ConsoleLogger implements ILogger {
+    @Override
+    public void log(String message) {
+        System.out.println("CONSOLE: " + message);
     }
-    
-    // 文件日志记录器
-    class FileLogger implements ILogger {
-        private String filePath;
-    
-        public FileLogger(String filePath) {
-            this.filePath = filePath;
-        }
-    
-        @Override
-        public void log(String message) {
-            // 实际应用中会写入文件
-            System.out.println("WRITE TO " + filePath + ": " + message);
-        }
+}
+
+// 文件日志记录器
+class FileLogger implements ILogger {
+    private String filePath;
+
+    public FileLogger(String filePath) {
+        this.filePath = filePath;
     }
-    
-    // 远程日志记录器
-    class RemoteLogger implements ILogger {
-        private String remoteServer;
-        
-        public RemoteLogger(String remoteServer) {
-            this.remoteServer = remoteServer;
-        }
-    
-        @Override
-        public void log(String message) {
-            // 实际应用中会收集其他系统信息并序列化为 JSON 格式，发送到远程服务器
-            String payload = "{\"message\":\"" + message + "\",\"timestamp\":\"" + System.currentTimeMillis() + "\"}";
-            System.out.println("SEND TO " + remoteServer + ": " + payload);
-        }
+
+    @Override
+    public void log(String message) {
+        // 实际应用中会写入文件
+        System.out.println("WRITE TO " + filePath + ": " + message);
     }
+}
+
+// 远程日志记录器
+class RemoteLogger implements ILogger {
+    private String remoteServer;
+    
+    public RemoteLogger(String remoteServer) {
+        this.remoteServer = remoteServer;
+    }
+
+    @Override
+    public void log(String message) {
+        // 实际应用中会收集其他系统信息并序列化为 JSON 格式，发送到远程服务器
+        String payload = "{\"message\":\"" + message + "\",\"timestamp\":\"" + System.currentTimeMillis() + "\"}";
+        System.out.println("SEND TO " + remoteServer + ": " + payload);
+    }
+}
+``` 
 
 接下来要实现我们应用程序的业务逻辑，用工厂方法来创建日志记录器：
+
+```
+abstract class Application {
+
+    private ILogger logger;
     
-    
-    abstract class Application {
-    
-        private ILogger logger;
-        
-        public Application() {
-            // 调用工厂方法来获取对象
-            this.logger = createLogger();
-        }
-    
-        // 业务方法
-        public void doSomething() {
-            logger.log("Start doing something...");
-        }
-    
-        // 抽象的工厂方法，由子类实现
-        public abstract ILogger createLogger();
+    public Application() {
+        // 调用工厂方法来获取对象
+        this.logger = createLogger();
     }
+
+    // 业务方法
+    public void doSomething() {
+        logger.log("Start doing something...");
+    }
+
+    // 抽象的工厂方法，由子类实现
+    public abstract ILogger createLogger();
+}
+``` 
 
 最后，针对不同的环境，我们实现不同的子类：
-    
-    
-    // 开发环境
-    class DevelopmentApplication extends Application {
-        @Override
-        public ILogger createLogger() {
-            return new ConsoleLogger();
-        }
+
+```
+// 开发环境
+class DevelopmentApplication extends Application {
+    @Override
+    public ILogger createLogger() {
+        return new ConsoleLogger();
     }
-    
-    // 测试环境
-    class TestingApplication extends Application {
-        @Override
-        public ILogger createLogger() {
-            return new FileLogger("application.log");
-        }
+}
+
+// 测试环境
+class TestingApplication extends Application {
+    @Override
+    public ILogger createLogger() {
+        return new FileLogger("application.log");
     }
-    
-    // 生产环境
-    class ProductionApplication extends Application {
-        @Override
-        public ILogger createLogger() {
-            return new RemoteLogger("http://remote-server.com");
-        }
+}
+
+// 生产环境
+class ProductionApplication extends Application {
+    @Override
+    public ILogger createLogger() {
+        return new RemoteLogger("http://remote-server.com");
     }
+}
+``` 
 
 这样，我们就可以在不同的环境下使用不同的日志记录器了：
-    
-    
-    class Main {
-        public static void main(String[] args) {
-            // 根据环境变量选择不同的应用
-            Application app;
-            String env = System.getenv("ENV");
-            if (env.equals("dev")) {
-                app = new DevelopmentApplication();
-            } else if (env.equals("test")) {
-                app = new TestingApplication();
-            } else if (env.equals("prod")) {
-                app = new ProductionApplication();
-            } else {
-                throw new IllegalArgumentException("Invalid environment: " + env);
-            }
-    
-            app.doSomething();
+
+```
+class Main {
+    public static void main(String[] args) {
+        // 根据环境变量选择不同的应用
+        Application app;
+        String env = System.getenv("ENV");
+        if (env.equals("dev")) {
+            app = new DevelopmentApplication();
+        } else if (env.equals("test")) {
+            app = new TestingApplication();
+        } else if (env.equals("prod")) {
+            app = new ProductionApplication();
+        } else {
+            throw new IllegalArgumentException("Invalid environment: " + env);
         }
+
+        app.doSomething();
     }
+}
+``` 
 
 结合上面这个简单的例子，可以总结出工厂方法模式中的几个关键角色：
 
@@ -149,7 +153,6 @@
   * **ConcreteProduct（具体产品）** ：工厂方法创建的具体对象，即 `ConsoleLogger`、`FileLogger` 和 `RemoteLogger` 类。
   * **Creator（创建者）** ：声明工厂方法的父类，即 `Application` 类。
   * **ConcreteCreator（具体创建者）** ：重写工厂方法的子类，即 `DevelopmentApplication`、`TestingApplication` 和 `ProductionApplication` 类。
-
 
 **上面举的日志记录器的例子仅用来帮助你理解工厂方法，在实际开发中其实并不常用** 。
 
@@ -159,7 +162,7 @@
 
 但是工厂方法模式在 UI 框架中比较常用。因为 UI 框架经常需要使用继承的方式复用通用渲染逻辑，所以工厂方法模式就可以在继承的基础上，很好地将子类和父类解耦。
 
-## ¶总结
+## 总结
 
 最后结合上面的例子，对工厂方法模式做一个简单的总结。
 
@@ -169,14 +172,8 @@
   * 扩展性：创建新的 `ILogger` 和 `Application` 子类即可扩展新的功能，不需要修改业务逻辑。
   * 单一职责：每个 `Application` 子类只负责创建一种 `ILogger` 实现，职责清晰。
 
-
 缺点：
 
   * 类的数量增多：每增加一种 `ILogger` 实现，就需要增加一个 `Application` 子类，这会使得系统中的类的个数快速增加，增加复杂度。
 
-
 所以，在实践中需要权衡扩展性和增加的类数量，来决定是否使用工厂方法模式。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

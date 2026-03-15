@@ -14,12 +14,10 @@
   * [深入理解数字证书和 CA](</zh/algo/computer-science/certificate-and-ca/>)
   * [深入理解 TLS 密钥协商](</zh/algo/computer-science/tls-key-exchange/>)
 
-
 在前面的文章中，我们学习了：
 
   * [证书和 CA](</zh/algo/computer-science/certificate-and-ca/>) 解决了公钥分发的信任问题，让客户端能验证服务器身份。
   * [TLS 密钥协商算法](</zh/algo/computer-science/tls-key-exchange/>) 解决了密钥交换的前向保密问题，让客户端和服务端可以安全地通信。
-
 
 这两个机制结合起来，让 HTTPS 能够建立安全的加密通信。
 
@@ -45,7 +43,7 @@
 
 这就是 mTLS（Mutual TLS，双向 TLS）要解决的问题。
 
-## ¶什么是 mTLS
+## 什么是 mTLS
 
 在标准的 TLS 连接中（比如 HTTPS），认证是单向的：客户端验证服务器的证书，但服务器不验证客户端的身份。
 
@@ -61,11 +59,11 @@ mTLS 的核心理念是：**证书就是身份** 。
 
 这就像办理银行业务时，你需要出示由政府（CA）颁发的身份证（Client Certificate），银行需要出示由政府颁发的执照（Server Certificate），你们才能建立信任关系。
 
-## ¶mTLS 握手流程
+## mTLS 握手流程
 
 TLS 握手我们在[前文](</zh/algo/computer-science/tls-key-exchange/>)已经详细讲过了，这里重点说明 mTLS 与标准 TLS 的区别。
 
-### ¶标准 TLS vs mTLS
+### 标准 TLS vs mTLS
 
 两者的主要区别在于证书交换阶段：
 
@@ -76,7 +74,3 @@ TLS 握手我们在[前文](</zh/algo/computer-science/tls-key-exchange/>)已经
 **mTLS（双向认证）** ：
 
 加载图表...
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

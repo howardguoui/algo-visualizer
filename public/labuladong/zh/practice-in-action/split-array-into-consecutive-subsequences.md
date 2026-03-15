@@ -23,10 +23,9 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    boolean isPossible(int[] nums);
+```java
+boolean isPossible(int[] nums);
+``` 
 
 比如题目举的例子，输入 `nums = [1,2,3,3,4,4,5,5]`，算法返回 true。
 
@@ -39,7 +38,3 @@ CC++GoJavaJavaScriptPython
 那么，我们如何判断 `nums` 是否能够被划分成若干符合条件的子序列呢？
 
 类似前文 [回溯算法进行集合划分](</zh/algo/practice-in-action/partition-to-k-equal-sum-subsets/>)，我们想把 `nums` 的元素划分到若干个子序列中，其实就是下面这个代码逻辑：
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

@@ -14,7 +14,6 @@
   * [图结构基础及通用代码实现](</zh/algo/data-structure-basic/graph-basic/>)
   * [多叉树的递归/层序遍历](</zh/algo/data-structure-basic/n-ary-tree-traverse-basic/>)
 
-
 一句话总结
 
 图的遍历就是 [多叉树遍历](</zh/algo/data-structure-basic/n-ary-tree-traverse-basic/>) 的延伸，主要遍历方式还是深度优先搜索（DFS）和广度优先搜索（BFS）。
@@ -37,73 +36,72 @@
 
 下面具体讲解。
 
-## ¶深度优先搜索（DFS）
+## 深度优先搜索（DFS）
 
 前文 [图结构基础和通用实现](</zh/algo/data-structure-basic/graph-basic/>) 中说了，我们一般不用 `Vertex` 这样的类来存储图，但是这里我还是先用一下这个类，以便大家把图的遍历和多叉树的遍历做对比。后面我会给出基于邻接表/邻接矩阵的遍历代码。
 
-### ¶遍历所有节点（`visited` 数组）
+### 遍历所有节点（`visited` 数组）
 
 对比多叉树的遍历框架看图的遍历框架吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 多叉树节点
-    class Node {
-        int val;
-        List<Node> children;
+```java
+// 多叉树节点
+class Node {
+    int val;
+    List<Node> children;
+}
+
+// 多叉树的遍历框架
+void traverse(Node root) {
+    // base case
+    if (root == null) {
+        return;
     }
-    
-    // 多叉树的遍历框架
-    void traverse(Node root) {
-        // base case
-        if (root == null) {
-            return;
-        }
-        // 前序位置
-        System.out.println("visit " + root.val);
-        for (Node child : root.children) {
-            traverse(child);
-        }
-        // 后序位置
+    // 前序位置
+    System.out.println("visit " + root.val);
+    for (Node child : root.children) {
+        traverse(child);
     }
-    
-    
-    // 图节点
-    class Vertex {
-        int id;
-        Vertex[] neighbors;
+    // 后序位置
+}
+
+// 图节点
+class Vertex {
+    int id;
+    Vertex[] neighbors;
+}
+
+// 图的遍历框架
+// 需要一个 visited 数组记录被遍历过的节点
+// 避免走回头路陷入死循环
+void traverse(Vertex s, boolean[] visited) {
+    // base case
+    if (s == null) {
+        return;
     }
-    
-    // 图的遍历框架
-    // 需要一个 visited 数组记录被遍历过的节点
-    // 避免走回头路陷入死循环
-    void traverse(Vertex s, boolean[] visited) {
-        // base case
-        if (s == null) {
-            return;
-        }
-        if (visited[s.id]) {
-            // 防止死循环
-            return;
-        }
-        // 前序位置
-        visited[s.id] = true;
-        System.out.println("visit " + s.id);
-        for (Vertex neighbor : s.neighbors) {
-            traverse(neighbor, visited);
-        }
-        // 后序位置
+    if (visited[s.id]) {
+        // 防止死循环
+        return;
     }
+    // 前序位置
+    visited[s.id] = true;
+    System.out.println("visit " + s.id);
+    for (Vertex neighbor : s.neighbors) {
+        traverse(neighbor, visited);
+    }
+    // 后序位置
+}
+``` 
 
 可以看到，图的遍历比多叉树的遍历多了一个 `visited` 数组，用来记录被遍历过的节点，避免遇到环时陷入死循环。
 
 为什么成环会导致死循环
 
 举个最简单的成环场景，有一条 `1 -> 2` 的边，同时有一条 `2 -> 1` 的边，节点 `1, 2` 就形成了一个环：
-    
-    
-    1 <=> 2
+
+```
+1 <=> 2
+``` 
 
 如果我们不标记遍历过的节点，那么从 `1` 开始遍历，会走到 `2`，再走到 `1`，再走到 `2`，再走到 `1`，如此 `1->2->1->2->...` 无限递归循环下去。
 
@@ -111,27 +109,26 @@ CC++GoJavaJavaScriptPython
 
 有了上面的铺垫，就可以写出基于邻接表/邻接矩阵的图遍历代码了。虽然邻接表/邻接矩阵的底层存储方式不同，但提供了统一的 API，所以直接使用 [图结构基础和通用实现](</zh/algo/data-structure-basic/graph-basic/>) 中那个 `Graph` 接口的方法即可：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 遍历图的所有节点
-    void traverse(Graph graph, int s, boolean[] visited) {
-        // base case
-        if (s < 0 || s >= graph.size()) {
-            return;
-        }
-        if (visited[s]) {
-            // 防止死循环
-            return;
-        }
-        // 前序位置
-        visited[s] = true;
-        System.out.println("visit " + s);
-        for (Edge e : graph.neighbors(s)) {
-            traverse(graph, e.to, visited);
-        }
-        // 后序位置
+```java
+// 遍历图的所有节点
+void traverse(Graph graph, int s, boolean[] visited) {
+    // base case
+    if (s < 0 || s >= graph.size()) {
+        return;
     }
+    if (visited[s]) {
+        // 防止死循环
+        return;
+    }
+    // 前序位置
+    visited[s] = true;
+    System.out.println("visit " + s);
+    for (Edge e : graph.neighbors(s)) {
+        traverse(graph, e.to, visited);
+    }
+    // 后序位置
+}
+``` 
 
 你可以打开下面的可视化面板，多次点击 `console.log` 这行代码，即可看到 DFS 遍历图的过程：
 
@@ -155,7 +152,7 @@ CC++GoJavaJavaScriptPython
 
 而对于图结构来说，任意两个节点之间都可以连接一条边，边的数量和节点的数量不再有特定的关系，所以我们要说图的遍历函数时间复杂度是 O(E+V)O(E + V)O(E+V)。
 
-### ¶遍历所有边（二维 `visited` 数组）
+### 遍历所有边（二维 `visited` 数组）
 
 对于图结构，遍历所有边的场景并不多见，主要是 [计算欧拉路径](</zh/algo/data-structure-basic/eulerian-graph/>) 时会用到，所以这里简单提一下。
 
@@ -163,51 +160,50 @@ CC++GoJavaJavaScriptPython
 
 先参考多叉树的遍历进行对比：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 多叉树节点
-    class Node {
-        int val;
-        List<Node> children;
+```java
+// 多叉树节点
+class Node {
+    int val;
+    List<Node> children;
+}
+
+// 遍历多叉树的树枝
+void traverseBranch(Node root) {
+    // base case
+    if (root == null) {
+        return;
     }
-    
-    // 遍历多叉树的树枝
-    void traverseBranch(Node root) {
-        // base case
-        if (root == null) {
-            return;
-        }
-        for (Node child : root.children) {
-            System.out.println("visit branch: " + root.val + " -> " + child.val);
-            traverseBranch(child);
-        }
+    for (Node child : root.children) {
+        System.out.println("visit branch: " + root.val + " -> " + child.val);
+        traverseBranch(child);
     }
-    
-    // 图节点
-    class Vertex {
-        int id;
-        Vertex[] neighbors;
+}
+
+// 图节点
+class Vertex {
+    int id;
+    Vertex[] neighbors;
+}
+
+// 遍历图的边
+// 需要一个二维 visited 数组记录被遍历过的边，visited[u][v] 表示边 u->v 已经被遍历过
+void traverseEdges(Vertex s, boolean[][] visited) {
+    // base case
+    if (s == null) {
+        return;
     }
-    
-    // 遍历图的边
-    // 需要一个二维 visited 数组记录被遍历过的边，visited[u][v] 表示边 u->v 已经被遍历过
-    void traverseEdges(Vertex s, boolean[][] visited) {
-        // base case
-        if (s == null) {
-            return;
-        }
-        for (Vertex neighbor : s.neighbors) {
-          // 如果边已经被遍历过，则跳过
-          if (visited[s.id][neighbor.id]) {
-            continue;
-          }
-          // 标记并访问边
-          visited[s.id][neighbor.id] = true;
-          System.out.println("visit edge: " + s.id + " -> " + neighbor.id);
-          traverseEdges(neighbor, visited);
-        }
+    for (Vertex neighbor : s.neighbors) {
+      // 如果边已经被遍历过，则跳过
+      if (visited[s.id][neighbor.id]) {
+        continue;
+      }
+      // 标记并访问边
+      visited[s.id][neighbor.id] = true;
+      System.out.println("visit edge: " + s.id + " -> " + neighbor.id);
+      traverseEdges(neighbor, visited);
     }
+}
+``` 
 
 提示
 
@@ -215,39 +211,34 @@ CC++GoJavaJavaScriptPython
 
 接下来，我们可以用 [图结构基础和通用实现](</zh/algo/data-structure-basic/graph-basic/>) 中的 `Graph` 接口来实现：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 从起点 s 开始遍历图的所有边
-    void traverseEdges(Graph graph, int s, boolean[][] visited) {
-        // base case
-        if (s < 0 || s >= graph.size()) {
-            return;
-        }
-        for (Edge e : graph.neighbors(s)) {
-          // 如果边已经被遍历过，则跳过
-          if (visited[s][e.to]) {
-            continue;
-          }
-          // 标记并访问边
-          visited[s][e.to] = true;
-          System.out.println("visit edge: " + s + " -> " + e.to);
-          traverseEdges(graph, e.to, visited);
-        }
+```java
+// 从起点 s 开始遍历图的所有边
+void traverseEdges(Graph graph, int s, boolean[][] visited) {
+    // base case
+    if (s < 0 || s >= graph.size()) {
+        return;
     }
+    for (Edge e : graph.neighbors(s)) {
+      // 如果边已经被遍历过，则跳过
+      if (visited[s][e.to]) {
+        continue;
+      }
+      // 标记并访问边
+      visited[s][e.to] = true;
+      System.out.println("visit edge: " + s + " -> " + e.to);
+      traverseEdges(graph, e.to, visited);
+    }
+}
+``` 
 
 显然，使用二维 `visited` 数组并不是一个很高效的实现方式，因为需要创建二维 `visited` 数组，这个算法的时间复杂度是 O(E+V2)O(E + V^2)O(E+V2)，空间复杂度是 O(V2)O(V^2)O(V2)，其中 EEE 是边的数量，VVV 是节点的数量。
 
 在讲解 [Hierholzer 算法计算欧拉路径](</zh/algo/data-structure/eulerian-graph-hierholzer/>) 时，我们会介绍一种简单的优化避免使用二维 `visited` 数组，这里暂不展开。
 
-### ¶遍历所有路径（`onPath` 数组）
+### 遍历所有路径（`onPath` 数组）
 
 为啥要把图的这几种遍历都讲清楚？因为本站开篇就讲，一切算法的本质是穷举。只要你学会了穷举一切路径，就肯定会计算最短路径，这是图论中一类经典问题。
 
 对于树结构，遍历所有「路径」和遍历所有「节点」是没什么区别的。而对于图结构，遍历所有「路径」和遍历所有「节点」稍有不同。
 
 因为对于树结构来说，只能由父节点指向子节点，所以从根节点 `root` 出发，到任意一个节点 `targetNode` 的路径都是唯一的。换句话说，我遍历一遍树结构的所有节点之后，必然可以找到 `root` 到 `targetNode` 的唯一路径：
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

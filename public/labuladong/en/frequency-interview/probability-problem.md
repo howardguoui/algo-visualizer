@@ -7,7 +7,7 @@
 
 # Interesting Probability Problems
 
-In the previous article [Discussing Random Algorithms in Games](/en/algo/frequency-interview/random-algorithm/), we talked about the Monte Carlo method for verifying probability algorithms. Today, let's dive into some lighter content: a few interesting problems related to probability.
+In the previous article [Discussing Random Algorithms in Games](</en/algo/frequency-interview/random-algorithm/>), we talked about the Monte Carlo method for verifying probability algorithms. Today, let's dive into some lighter content: a few interesting problems related to probability.
 
 There are two simplest principles for calculating probability:
 
@@ -21,7 +21,7 @@ First, we overlook Principle Two and incorrectly calculate the sample space. The
 
 Next, let's explore a few simple yet deceptive problems: the Boy or Girl problem, the Birthday Paradox, and the Monty Hall problem. Of course, the Monty Hall problem is probably the most familiar to everyone, so we'll delve into some interesting thoughts about it.
 
-### ¶I. The Boy-Girl Problem
+### I. The Boy-Girl Problem
 
 Imagine a family with two children. You are told that one of the children is a boy. What is the probability that the other child is also a boy?
 
@@ -34,7 +34,6 @@ Why does the calculation of the sample space often go wrong? It's because we ove
   1. If a family has only one child, what is the probability that the child is a boy?
   2. If a family has two children, and one of them is a boy, what is the probability that the other child is also a boy?
 
-
 According to the second principle, probability problems are continuous, and these two questions should not be confused. The second question requires the use of conditional probability, which is the probability of one child being a boy given that the other child is a boy. Applying the formula for conditional probability makes this calculation straightforward.
 
 Through this problem, readers should understand the relationship between the two principles of probability calculation. The most misleading aspect is the neglect of conditional probability. To avoid being misled, the simplest method is to enumerate all possible outcomes.
@@ -43,7 +42,7 @@ Finally, I've encountered a rather odd objection to this problem: What if the tw
 
 I must admit, there seems to be a hint of logic in this! However, we use age difference to represent the independence of the two children. Even if the children are of the same gender, there are still two distinct possibilities. So, let's not use twins as a counterargument.
 
-### ¶II. Birthday Paradox
+### II. Birthday Paradox
 
 The birthday paradox arises from the question: How many people need to be in a room for there to be at least a 50% chance that two of them share the same birthday?
 
@@ -75,11 +74,11 @@ The same logic applies to the birthday paradox. Probability isn't simply additiv
 
 Why is it that with just 23 people, the probability of sharing a birthday exceeds 50%? First, calculate the probability that all 23 have unique (non-repeating) birthdays. With 1 person, the probability is `365/365`; with 2 people, it's `365/365 × 364/365`, and so on. For 23 people, the probability is:
 
-![](/images/algo/probability/p.png)
+![diagram](https://labuladong.online/images/algo/probability/p.png)
 
 This calculation yields approximately 0.493, so the probability of at least two people sharing a birthday is 0.507, roughly 50%. In fact, following this method, when the number of people reaches 70, the probability of a shared birthday rises to 99.9%, almost certain. Thus, probabilistically, it's not surprising to find people with the same birthday in a small group of a few dozen people.
 
-### ¶3\. The Monty Hall Problem
+### 3\. The Monty Hall Problem
 
 This classic game involves a participant facing three doors. Behind two doors are goats, and behind one door is a car. The participant picks a door, and whatever is behind it becomes theirs (the car is obviously more valuable). The host decides to assist: after the participant chooses a door, the host opens one of the remaining doors to reveal a goat (the host knows what is behind each door). The participant is then given a chance to switch doors. Should they switch or stick with their original choice?
 
@@ -87,13 +86,13 @@ To avoid confusion for those encountering this problem for the first time, let's
 
 You are the participant in the game. There are doors 1, 2, and 3. Suppose you randomly choose door 1. The host then opens door 3 and shows you a goat. Should you stick with your initial choice of door 1, or switch to door 2?
 
-![](/images/algo/probability/sanmen.png)
+![diagram](https://labuladong.online/images/algo/probability/sanmen.png)
 
 The answer is to switch doors. If you switch, the probability of winning the car is 2/3, whereas if you don't switch, it is 1/3. This counterintuitive result might suggest that the probability should be 1/2 since there are two remaining doors, one with a goat and one with a car. However, this is not the case.
 
 Like the boy-girl paradox mentioned earlier, the simplest and safest method is to enumerate all possible outcomes:
 
-![](/images/algo/probability/tree.png)
+![diagram](https://labuladong.online/images/algo/probability/tree.png)
 
 It is clear that the probability of winning by switching doors is 2/3, while not switching gives a probability of 1/3.
 
@@ -112,5 +111,3 @@ For Xiao Ming, who is uninformed, he randomly picks a box and a ball, leading to
 For you, who is informed and knows the higher probability of drawing from Box 2, the probability is: 0 × 2/6 + 1 × 4/6 = 2/3
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

@@ -9,31 +9,29 @@
 
 刷过力扣的读者肯定对单链表非常熟悉，力扣上的单链表节点定义如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) { val = x; }
-    }
+```java
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
+``` 
 
 这仅仅是一个最简单的**单链表节点** ，方便力扣出算法题来考你。在实际的编程语言中，我们使用的链表节点会稍微复杂一点，类似这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Node<E> {
-        E val;
-        Node<E> next;
-        Node<E> prev;
-    
-        Node(Node<E> prev, E element, Node<E> next) {
-            this.val = element;
-            this.next = next;
-            this.prev = prev;
-        }
+```java
+class Node<E> {
+    E val;
+    Node<E> next;
+    Node<E> prev;
+
+    Node(Node<E> prev, E element, Node<E> next) {
+        this.val = element;
+        this.next = next;
+        this.prev = prev;
     }
+}
+``` 
 
 主要区别有两个：
 
@@ -43,7 +41,7 @@ CC++GoJavaJavaScriptPython
 
 有了 `prev` 前驱指针，链表支持双向遍历，但由于要多维护一个指针，增删查改时会稍微复杂一些，后面带大家实现双链表时会具体介绍。
 
-## ¶为什么需要链表
+## 为什么需要链表
 
 前面介绍了 [数组（顺序存储）的底层原理](</zh/algo/data-structure-basic/array-basic/>)，说白了就是一块连续的内存空间，有了这块内存空间的首地址，就能直接通过索引计算出任意位置的元素地址。
 
@@ -59,72 +57,69 @@ CC++GoJavaJavaScriptPython
 
 上面是对链表这种数据结构的基本介绍，接下来我们就结合代码实现单/双链表的几个基本操作。
 
-## ¶单链表的基本操作
+## 单链表的基本操作
 
 我先写一个工具函数，用于创建一条单链表，方便后面的讲解：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class ListNode {
-        int val;
-        ListNode next;
-        ListNode(int x) { val = x; }
-    }
-    
-    // 输入一个数组，转换为一条单链表
-    ListNode createLinkedList(int[] arr) {
-        if (arr == null || arr.length == 0) {
-            return null;
-        }
-        ListNode head = new ListNode(arr[0]);
-        ListNode cur = head;
-        for (int i = 1; i < arr.length; i++) {
-            cur.next = new ListNode(arr[i]);
-            cur = cur.next;
-        }
-        return head;
-    }
+```java
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) { val = x; }
+}
 
-### ¶查/改
+// 输入一个数组，转换为一条单链表
+ListNode createLinkedList(int[] arr) {
+    if (arr == null || arr.length == 0) {
+        return null;
+    }
+    ListNode head = new ListNode(arr[0]);
+    ListNode cur = head;
+    for (int i = 1; i < arr.length; i++) {
+        cur.next = new ListNode(arr[i]);
+        cur = cur.next;
+    }
+    return head;
+}
+``` 
+
+### 查/改
 
 单链表的遍历/查找/修改
 
 比方说，我想访问单链表的每一个节点，并打印其值，可以这样写：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条单链表
-    ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 遍历单链表
-    for (ListNode p = head; p != null; p = p.next) {
-        System.out.println(p.val);
-    }
+```java
+// 创建一条单链表
+ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 遍历单链表
+for (ListNode p = head; p != null; p = p.next) {
+    System.out.println(p.val);
+}
+``` 
 
 类似的，如果是要通过索引访问或修改链表中的某个节点，也只能用 for 循环从头结点开始往后找，直到找到索引对应的节点，然后进行访问或修改。
 
 这个操作的最坏时间复杂度是 O(n)O(n)O(n)，其中 nnn 是链表的长度。
 
-### ¶增
+### 增
 
 在单链表头部插入新元素
 
 我们会持有单链表的头结点，所以只需要将插入的节点接到头结点之前，并将新插入的节点作为头结点即可。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条单链表
-    ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 在单链表头部插入一个新节点 0
-    ListNode newNode = new ListNode(0);
-    newNode.next = head;
-    head = newNode;
-    
-    // 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
+```java
+// 创建一条单链表
+ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 在单链表头部插入一个新节点 0
+ListNode newNode = new ListNode(0);
+newNode.next = head;
+head = newNode;
+
+// 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
+``` 
 
 这个操作的时间复杂度是 O(1)O(1)O(1)。
 
@@ -132,23 +127,22 @@ CC++GoJavaJavaScriptPython
 
 直接看代码吧，很简单：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条单链表
-    ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 在单链表尾部插入一个新节点 6
-    ListNode p = head;
-    // 先走到链表的最后一个节点
-    while (p.next != null) {
-        p = p.next;
-    }
-    // 现在 p 就是链表的最后一个节点
-    // 在 p 后面插入新节点
-    p.next = new ListNode(6);
-    
-    // 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
+```java
+// 创建一条单链表
+ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 在单链表尾部插入一个新节点 6
+ListNode p = head;
+// 先走到链表的最后一个节点
+while (p.next != null) {
+    p = p.next;
+}
+// 现在 p 就是链表的最后一个节点
+// 在 p 后面插入新节点
+p.next = new ListNode(6);
+
+// 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
+``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到链表尾部。当然，如果我们持有对链表尾节点的引用，那么在尾部插入新节点的操作就会变得非常简单，不用每次从头去遍历了。这个优化会在后面具体实现双链表时介绍。
 
@@ -158,55 +152,53 @@ CC++GoJavaJavaScriptPython
 
 这个操作稍微有点复杂，我们还是要先找到要插入位置的前驱节点，然后操作前驱节点把新节点插入进去：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条单链表
-    ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 在第 3 个节点后面插入一个新节点 66
-    // 先要找到前驱节点，即第 3 个节点
-    ListNode p = head;
-    for (int i = 0; i < 2; i++) {
-        p = p.next;
-    }
-    // 此时 p 指向第 3 个节点
-    // 组装新节点的后驱指针
-    ListNode newNode = new ListNode(66);
-    newNode.next = p.next;
-    
-    // 插入新节点
-    p.next = newNode;
-    
-    // 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
+```java
+// 创建一条单链表
+ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 在第 3 个节点后面插入一个新节点 66
+// 先要找到前驱节点，即第 3 个节点
+ListNode p = head;
+for (int i = 0; i < 2; i++) {
+    p = p.next;
+}
+// 此时 p 指向第 3 个节点
+// 组装新节点的后驱指针
+ListNode newNode = new ListNode(66);
+newNode.next = p.next;
+
+// 插入新节点
+p.next = newNode;
+
+// 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
+``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到插入位置的前驱节点。
 
 在单链表中间插入新元素
 
-### ¶删
+### 删
 
 在单链表中删除一个节点
 
 删除一个节点，首先要找到要被删除节点的前驱节点，然后把这个前驱节点的 `next` 指针指向被删除节点的下一个节点。这样就能把被删除节点从链表中摘除了。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条单链表
-    ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 删除第 4 个节点，要操作前驱节点
-    ListNode p = head;
-    for (int i = 0; i < 2; i++) {
-        p = p.next;
-    }
-    
-    // 此时 p 指向第 3 个节点，即要删除节点的前驱节点
-    // 把第 4 个节点从链表中摘除
-    p.next = p.next.next;
-    
-    // 现在链表变成了 1 -> 2 -> 3 -> 5
+```java
+// 创建一条单链表
+ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 删除第 4 个节点，要操作前驱节点
+ListNode p = head;
+for (int i = 0; i < 2; i++) {
+    p = p.next;
+}
+
+// 此时 p 指向第 3 个节点，即要删除节点的前驱节点
+// 把第 4 个节点从链表中摘除
+p.next = p.next.next;
+
+// 现在链表变成了 1 -> 2 -> 3 -> 5
+``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到被删除节点的前驱节点。
 
@@ -216,24 +208,23 @@ CC++GoJavaJavaScriptPython
 
 这个操作比较简单，找到倒数第二个节点，然后把它的 `next` 指针置为 null 就行了：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条单链表
-    ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 删除尾节点
-    ListNode p = head;
-    // 找到倒数第二个节点
-    while (p.next.next != null) {
-        p = p.next;
-    }
-    
-    // 此时 p 指向倒数第二个节点
-    // 把尾节点从链表中摘除
-    p.next = null;
-    
-    // 现在链表变成了 1 -> 2 -> 3 -> 4
+```java
+// 创建一条单链表
+ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 删除尾节点
+ListNode p = head;
+// 找到倒数第二个节点
+while (p.next.next != null) {
+    p = p.next;
+}
+
+// 此时 p 指向倒数第二个节点
+// 把尾节点从链表中摘除
+p.next = null;
+
+// 现在链表变成了 1 -> 2 -> 3 -> 4
+``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到倒数第二个节点。
 
@@ -243,16 +234,15 @@ CC++GoJavaJavaScriptPython
 
 这个操作比较简单，直接把 `head` 移动到下一个节点就行了，直接看代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条单链表
-    ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 删除头结点
-    head = head.next;
-    
-    // 现在链表变成了 2 -> 3 -> 4 -> 5
+```java
+// 创建一条单链表
+ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 删除头结点
+head = head.next;
+
+// 现在链表变成了 2 -> 3 -> 4 -> 5
+``` 
 
 这个操作的时间复杂度是 O(1)O(1)O(1)。
 
@@ -284,79 +274,76 @@ CC++GoJavaJavaScriptPython
 
 虚拟节点技巧在 [单链表经典算法技巧](</zh/algo/essential-technique/linked-list-skills-summary/>) 中也会经常运用，这里仅仅简单提一下，具体实现会在后面讲到。
 
-## ¶双链表的基本操作
+## 双链表的基本操作
 
 我先写一个工具函数，用于创建一条双链表，方便后面的讲解：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class DoublyListNode {
-        int val;
-        DoublyListNode next, prev;
-        DoublyListNode(int x) { val = x; }
-    }
-    
-    DoublyListNode createDoublyLinkedList(int[] arr) {
-        if (arr == null || arr.length == 0) {
-            return null;
-        }
-        DoublyListNode head = new DoublyListNode(arr[0]);
-        DoublyListNode cur = head;
-        // for 循环迭代创建双链表
-        for (int i = 1; i < arr.length; i++) {
-            DoublyListNode newNode = new DoublyListNode(arr[i]);
-            cur.next = newNode;
-            newNode.prev = cur;
-            cur = cur.next;
-        }
-        return head;
-    }
+```java
+class DoublyListNode {
+    int val;
+    DoublyListNode next, prev;
+    DoublyListNode(int x) { val = x; }
+}
 
-### ¶查/改
+DoublyListNode createDoublyLinkedList(int[] arr) {
+    if (arr == null || arr.length == 0) {
+        return null;
+    }
+    DoublyListNode head = new DoublyListNode(arr[0]);
+    DoublyListNode cur = head;
+    // for 循环迭代创建双链表
+    for (int i = 1; i < arr.length; i++) {
+        DoublyListNode newNode = new DoublyListNode(arr[i]);
+        cur.next = newNode;
+        newNode.prev = cur;
+        cur = cur.next;
+    }
+    return head;
+}
+``` 
+
+### 查/改
 
 双链表的遍历/查找/修改
 
 对于双链表的遍历和查找，我们可以从头节点或尾节点开始，根据需要向前或向后遍历：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条双链表
-    DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
-    DoublyListNode tail = null;
-    
-    // 从头节点向后遍历双链表
-    for (DoublyListNode p = head; p != null; p = p.next) {
-        System.out.println(p.val);
-        tail = p;
-    }
-    
-    // 从尾节点向前遍历双链表
-    for (DoublyListNode p = tail; p != null; p = p.prev) {
-        System.out.println(p.val);
-    }
+```java
+// 创建一条双链表
+DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+DoublyListNode tail = null;
+
+// 从头节点向后遍历双链表
+for (DoublyListNode p = head; p != null; p = p.next) {
+    System.out.println(p.val);
+    tail = p;
+}
+
+// 从尾节点向前遍历双链表
+for (DoublyListNode p = tail; p != null; p = p.prev) {
+    System.out.println(p.val);
+}
+``` 
 
 这个操作的最坏时间复杂度是 O(n)O(n)O(n)。访问或修改节点时，可以根据索引是靠近头部还是尾部，选择合适的方向遍历，这样可以一定程度上提高效率。
 
-### ¶增
+### 增
 
 在双链表头部插入新元素
 
 在双链表头部插入元素，需要调整新节点和原头节点的指针：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条双链表
-    DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 在双链表头部插入新节点 0
-    DoublyListNode newHead = new DoublyListNode(0);
-    newHead.next = head;
-    head.prev = newHead;
-    head = newHead;
-    // 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
+```java
+// 创建一条双链表
+DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 在双链表头部插入新节点 0
+DoublyListNode newHead = new DoublyListNode(0);
+newHead.next = head;
+head.prev = newHead;
+head = newHead;
+// 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
+``` 
 
 这个操作的时间复杂度是 O(1)O(1)O(1)。
 
@@ -366,26 +353,25 @@ CC++GoJavaJavaScriptPython
 
 在双链表尾部插入元素时，如果我们持有尾节点的引用，这个操作会非常简单：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条双链表
-    DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    DoublyListNode tail = head;
-    // 先走到链表的最后一个节点
-    while (tail.next != null) {
-        tail = tail.next;
-    }
-    
-    // 在双链表尾部插入新节点 6
-    DoublyListNode newNode = new DoublyListNode(6);
-    tail.next = newNode;
-    newNode.prev = tail;
-    // 更新尾节点引用
-    tail = newNode;
-    
-    // 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
+```java
+// 创建一条双链表
+DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+
+DoublyListNode tail = head;
+// 先走到链表的最后一个节点
+while (tail.next != null) {
+    tail = tail.next;
+}
+
+// 在双链表尾部插入新节点 6
+DoublyListNode newNode = new DoublyListNode(6);
+tail.next = newNode;
+newNode.prev = tail;
+// 更新尾节点引用
+tail = newNode;
+
+// 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
+``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到尾节点。如果持有尾节点引用，则是 O(1)O(1)O(1)。
 
@@ -397,65 +383,63 @@ CC++GoJavaJavaScriptPython
 
 比如下面的例子，把元素 66 插入到索引 3（第 4 个节点）的位置：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条双链表
-    DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 想要插入到索引 3（第 4 个节点）
-    // 需要操作索引 2（第 3 个节点）的指针
-    DoublyListNode p = head;
-    for (int i = 0; i < 2; i++) {
-        p = p.next;
-    }
-    
-    // 组装新节点
-    DoublyListNode newNode = new DoublyListNode(66);
-    newNode.next = p.next;
-    newNode.prev = p;
-    
-    // 插入新节点
-    p.next.prev = newNode;
-    p.next = newNode;
-    
-    // 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
+```java
+// 创建一条双链表
+DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 想要插入到索引 3（第 4 个节点）
+// 需要操作索引 2（第 3 个节点）的指针
+DoublyListNode p = head;
+for (int i = 0; i < 2; i++) {
+    p = p.next;
+}
+
+// 组装新节点
+DoublyListNode newNode = new DoublyListNode(66);
+newNode.next = p.next;
+newNode.prev = p;
+
+// 插入新节点
+p.next.prev = newNode;
+p.next = newNode;
+
+// 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
+``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到插入位置。
 
 在双链表中间插入新元素
 
-### ¶删
+### 删
 
 在双链表中删除一个节点
 
 在双链表中删除节点时，需要调整前驱节点和后继节点的指针来摘除目标节点：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条双链表
-    DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 删除第 4 个节点
-    // 先找到第 3 个节点
-    DoublyListNode p = head;
-    for (int i = 0; i < 2; i++) {
-        p = p.next;
-    }
-    
-    // 现在 p 指向第 3 个节点，我们它后面那个节点摘除出去
-    DoublyListNode toDelete = p.next;
-    
-    // 把 toDelete 从链表中摘除
-    p.next = toDelete.next;
-    toDelete.next.prev = p;
-    
-    // 把 toDelete 的前后指针都置为 null 是个好习惯（可选）
-    toDelete.next = null;
-    toDelete.prev = null;
-    
-    // 现在链表变成了 1 -> 2 -> 3 -> 5
+```java
+// 创建一条双链表
+DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 删除第 4 个节点
+// 先找到第 3 个节点
+DoublyListNode p = head;
+for (int i = 0; i < 2; i++) {
+    p = p.next;
+}
+
+// 现在 p 指向第 3 个节点，我们它后面那个节点摘除出去
+DoublyListNode toDelete = p.next;
+
+// 把 toDelete 从链表中摘除
+p.next = toDelete.next;
+toDelete.next.prev = p;
+
+// 把 toDelete 的前后指针都置为 null 是个好习惯（可选）
+toDelete.next = null;
+toDelete.prev = null;
+
+// 现在链表变成了 1 -> 2 -> 3 -> 5
+``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到被删除节点的位置。如果已知被删除节点的引用，则删除操作本身是 O(1)O(1)O(1)。
 
@@ -465,21 +449,20 @@ CC++GoJavaJavaScriptPython
 
 在双链表头部删除元素需要调整头节点的指针：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条双链表
-    DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 删除头结点
-    DoublyListNode toDelete = head;
-    head = head.next;
-    head.prev = null;
-    
-    // 清理已删除节点的指针
-    toDelete.next = null;
-    
-    // 现在链表变成了 2 -> 3 -> 4 -> 5
+```java
+// 创建一条双链表
+DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 删除头结点
+DoublyListNode toDelete = head;
+head = head.next;
+head.prev = null;
+
+// 清理已删除节点的指针
+toDelete.next = null;
+
+// 现在链表变成了 2 -> 3 -> 4 -> 5
+``` 
 
 这个操作的时间复杂度是 O(1)O(1)O(1)。
 
@@ -491,36 +474,31 @@ CC++GoJavaJavaScriptPython
 
 但在双链表中，由于每个节点都存储了前驱节点的指针，所以我们可以直接操作尾节点，把它自己从链表中摘除：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 创建一条双链表
-    DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
-    
-    // 删除尾节点
-    DoublyListNode p = head;
-    // 找到尾结点
-    while (p.next != null) {
-        p = p.next;
-    }
-    
-    // 现在 p 指向尾节点
-    // 把尾节点从链表中摘除
-    p.prev.next = null;
-    
-    // 把被删结点的指针都断开是个好习惯（可选）
-    p.prev = null;
-    
-    // 现在链表变成了 1 -> 2 -> 3 -> 4
+```java
+// 创建一条双链表
+DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
+
+// 删除尾节点
+DoublyListNode p = head;
+// 找到尾结点
+while (p.next != null) {
+    p = p.next;
+}
+
+// 现在 p 指向尾节点
+// 把尾节点从链表中摘除
+p.prev.next = null;
+
+// 把被删结点的指针都断开是个好习惯（可选）
+p.prev = null;
+
+// 现在链表变成了 1 -> 2 -> 3 -> 4
+``` 
 
 这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到尾节点。如果持有尾节点引用，则是 O(1)O(1)O(1)。
 
 在双链表尾部删除元素
 
-## ¶接下来
+## 接下来
 
 在下一篇文章中，我们分别用单链表和双链表实现一个拥有增删查改等基本操作的 `MyLinkedList`，并且会使用「虚拟头结点」技巧简化代码逻辑，避免处理头尾指针为空情况的边界情况。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

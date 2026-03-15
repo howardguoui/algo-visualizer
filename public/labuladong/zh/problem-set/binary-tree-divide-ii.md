@@ -19,14 +19,9 @@
   * [二叉树心法（构造篇）](</zh/algo/data-structure/binary-tree-part2/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
-## ¶技巧一
+## 技巧一
 
 类似于判断镜像二叉树、翻转二叉树的问题，一般也可以用分解问题的思路，无非就是把整棵树的问题（原问题）分解成子树之间的问题（子问题）。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -36,6 +31,5 @@ Loading comments...
   * 951\. 翻转等价二叉树
   * 技巧二
   * 124\. 二叉树中的最大路径和
-
 
 AI 助教

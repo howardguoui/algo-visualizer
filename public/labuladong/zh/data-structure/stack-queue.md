@@ -22,91 +22,88 @@ LeetCode| 力扣| 难度
   * [链表基础](</zh/algo/data-structure-basic/linkedlist-basic/>)
   * [队列基础](</zh/algo/data-structure-basic/queue-stack-basic/>)
 
-
 队列是一种先进先出的数据结构，栈是一种先进后出的数据结构，形象一点就是这样：
 
-![](/images/algo/stack-queue/1.jpg)
+![diagram](https://labuladong.online/images/algo/stack-queue/1.jpg)
 
 这两种数据结构底层其实都是数组或者链表实现的，只是 API 限定了它们的特性，具体实现可以参见基础知识章节的 [队列/栈的原理及实现](</zh/algo/data-structure-basic/queue-stack-basic/>)。
 
 今天来看看如何使用「栈」的特性来实现一个「队列」，如何用「队列」实现一个「栈」。
 
-### ¶一、用栈实现队列
+### 一、用栈实现队列
 
 力扣第 232 题「[用栈实现队列](<https://leetcode.cn/problems/implement-queue-using-stacks/>)」让我们实现的 API 如下：
 
-CC++GoJavaJavaScriptPython
+```java
+class MyQueue {
     
+    // 添加元素到队尾
+    public void push(int x);
     
-    class MyQueue {
-        
-        // 添加元素到队尾
-        public void push(int x);
-        
-        // 删除队头的元素并返回
-        public int pop();
-        
-        // 返回队头元素
-        public int peek();
-        
-        // 判断队列是否为空
-        public boolean empty();
-    }
+    // 删除队头的元素并返回
+    public int pop();
+    
+    // 返回队头元素
+    public int peek();
+    
+    // 判断队列是否为空
+    public boolean empty();
+}
+``` 
 
 我们使用两个栈 `s1, s2` 就能实现一个队列的功能（这样放置栈可能更容易理解）：
 
-![](/images/algo/stack-queue/2.jpg)
+![diagram](https://labuladong.online/images/algo/stack-queue/2.jpg)
 
 当调用 `push` 让元素入队时，只要把元素压入 `s1` 即可，比如说 `push` 进 3 个元素分别是 1,2,3，那么底层结构就是这样：
 
-![](/images/algo/stack-queue/3.jpg)
+![diagram](https://labuladong.online/images/algo/stack-queue/3.jpg)
 
 那么如果这时候使用 `peek` 查看队头的元素怎么办呢？按道理队头元素应该是 1，但是在 `s1` 中 1 被压在栈底，现在就要轮到 `s2` 起到一个中转的作用了：当 `s2` 为空时，可以把 `s1` 的所有元素取出再添加进 `s2`，**这时候`s2` 中元素就是先进先出顺序了**：
 
-![](/images/algo/stack-queue/4.jpg)
+![diagram](https://labuladong.online/images/algo/stack-queue/4.jpg)
 
 当 `s2` 中存在元素时，直接调用操作 `s2` 的 `pop` 方法，弹出的就是最先插入的元素，即实现了队列的 `pop` 操作。
 
 完整代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class MyQueue {
-        private Stack<Integer> s1, s2;
-    
-        public MyQueue() {
-            s1 = new Stack<>();
-            s2 = new Stack<>();
-        }
-    
-        
-        // 添加元素到队尾
-        public void push(int x) {
-            s1.push(x);
-        }
-    
-        // 删除队头元素并返回
-        public int pop() {
-            // 先调用 peek 保证 s2 非空
-            peek();
-            return s2.pop();
-        }
-    
-        // 返回队头元素
-        public int peek() {
-            if (s2.isEmpty())
-                // 把 s1 元素压入 s2
-                while (!s1.isEmpty())
-                    s2.push(s1.pop());
-            return s2.peek();
-        }
-    
-        // 判断队列是否为空
-        public boolean empty() {
-            return s1.isEmpty() && s2.isEmpty();
-        }
+```java
+class MyQueue {
+    private Stack<Integer> s1, s2;
+
+    public MyQueue() {
+        s1 = new Stack<>();
+        s2 = new Stack<>();
     }
+
+    
+    // 添加元素到队尾
+    public void push(int x) {
+        s1.push(x);
+    }
+
+    // 删除队头元素并返回
+    public int pop() {
+        // 先调用 peek 保证 s2 非空
+        peek();
+        return s2.pop();
+    }
+
+    // 返回队头元素
+    public int peek() {
+        if (s2.isEmpty())
+            // 把 s1 元素压入 s2
+            while (!s1.isEmpty())
+                s2.push(s1.pop());
+        return s2.peek();
+    }
+
+    // 判断队列是否为空
+    public boolean empty() {
+        return s1.isEmpty() && s2.isEmpty();
+    }
+}
+``` 
 
 至此，就用栈结构实现了一个队列，核心思想是利用两个栈互相配合。
 
@@ -120,157 +117,148 @@ CC++GoJavaJavaScriptPython
 
 关于时间复杂度的分析方法，详见 [时空复杂度实用分析方法](</zh/algo/essential-technique/complexity-analysis/>)。
 
-### ¶二、用队列实现栈
+### 二、用队列实现栈
 
 如果说双栈实现队列比较巧妙，那么用队列实现栈就比较简单粗暴了，只需要一个队列作为底层数据结构就能实现了。
 
 力扣第 225 题「[用队列实现栈](<https://leetcode.cn/problems/implement-stack-using-queues/>)」让我们实现如下 API：
 
-CC++GoJavaJavaScriptPython
+```java
+class MyStack {
     
+    // 添加元素到栈顶
+    public void push(int x);
     
-    class MyStack {
-        
-        // 添加元素到栈顶
-        public void push(int x);
-        
-        // 删除栈顶的元素并返回
-        public int pop();
-        
-        // 返回栈顶元素
-        public int top();
-        
-        // 判断栈是否为空
-        public boolean empty();
-    }
+    // 删除栈顶的元素并返回
+    public int pop();
+    
+    // 返回栈顶元素
+    public int top();
+    
+    // 判断栈是否为空
+    public boolean empty();
+}
+``` 
 
 先说 `push` API，直接将元素加入队列，同时记录队尾元素，因为队尾元素相当于栈顶元素，如果要 `top` 查看栈顶元素的话可以直接返回：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class MyStack {
-        Queue<Integer> q = new LinkedList<>();
-        int top_elem = 0;
-    
-        // 添加元素到栈顶
-        public void push(int x) {
-            // x 是队列的队尾，是栈的栈顶
-            q.offer(x);
-            top_elem = x;
-        }
-        
-        // 返回栈顶元素
-        public int top() {
-            return top_elem;
-        }
-    
-        public boolean empty() {
-            return q.isEmpty();
-        }
+```java
+class MyStack {
+    Queue<Integer> q = new LinkedList<>();
+    int top_elem = 0;
+
+    // 添加元素到栈顶
+    public void push(int x) {
+        // x 是队列的队尾，是栈的栈顶
+        q.offer(x);
+        top_elem = x;
     }
+    
+    // 返回栈顶元素
+    public int top() {
+        return top_elem;
+    }
+
+    public boolean empty() {
+        return q.isEmpty();
+    }
+}
+``` 
 
 我们的底层数据结构是先进先出的队列，每次 `pop` 只能从队头取元素；但是栈是后进先出，也就是说 `pop` API 要从队尾取元素：
 
-![](/images/algo/stack-queue/5.jpg)
+![diagram](https://labuladong.online/images/algo/stack-queue/5.jpg)
 
 解决方法简单粗暴，把队列前面的都取出来再加入队尾，让之前的队尾元素排到队头，这样就可以取出了：
 
-![](/images/algo/stack-queue/6.jpg)
+![diagram](https://labuladong.online/images/algo/stack-queue/6.jpg)
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class MyStack {
-        // 为了节约篇幅，省略上文给出的代码部分...
-    
-        // 删除栈顶的元素并返回
-        public int pop() {
-            int size = q.size();
-            while (size > 1) {
-                q.offer(q.poll());
-                size--;
-            }
-            // 之前的队尾元素已经到了队头
-            return q.poll();
+```java
+class MyStack {
+    // 为了节约篇幅，省略上文给出的代码部分...
+
+    // 删除栈顶的元素并返回
+    public int pop() {
+        int size = q.size();
+        while (size > 1) {
+            q.offer(q.poll());
+            size--;
         }
+        // 之前的队尾元素已经到了队头
+        return q.poll();
     }
+}
+``` 
 
 这样实现还有一点小问题就是，原来的队尾元素被推到队头并删除了，但是 `top_elem` 变量没有更新，我们还需要一点小修改：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class MyStack {
-        // 为了节约篇幅，省略上文给出的代码部分...
-    
-        // 删除栈顶的元素并返回
-        public int pop() {
-            int size = q.size();
-            // 留下队尾 2 个元素
-            while (size > 2) {
-                q.offer(q.poll());
-                size--;
-            }
-            // 记录新的队尾元素
-            top_elem = q.peek();
+```java
+class MyStack {
+    // 为了节约篇幅，省略上文给出的代码部分...
+
+    // 删除栈顶的元素并返回
+    public int pop() {
+        int size = q.size();
+        // 留下队尾 2 个元素
+        while (size > 2) {
             q.offer(q.poll());
-            // 删除之前的队尾元素
-            return q.poll();
+            size--;
         }
+        // 记录新的队尾元素
+        top_elem = q.peek();
+        q.offer(q.poll());
+        // 删除之前的队尾元素
+        return q.poll();
     }
+}
+``` 
 
 这样就实现完了，完整的代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class MyStack {
-        Queue<Integer> q = new LinkedList<>();
-        int top_elem = 0;
-    
-        // 将元素 x 压入栈顶
-        public void push(int x) {
-            // x 是队列的队尾，是栈的栈顶
-            q.offer(x);
-            top_elem = x;
-        }
-    
-        // 返回栈顶元素
-        public int top() {
-            return top_elem;
-        }
-    
-        
-        // 删除栈顶的元素并返回
-        public int pop() {
-            int size = q.size();
-            // 留下队尾 2 个元素
-            while (size > 2) {
-                q.offer(q.poll());
-                size--;
-            }
-            // 记录新的队尾元素
-            top_elem = q.peek();
-            q.offer(q.poll());
-            // 删除之前的队尾元素
-            return q.poll();
-        }
-    
-        // 判断栈是否为空
-        public boolean empty() {
-            return q.isEmpty();
-        }
+```java
+class MyStack {
+    Queue<Integer> q = new LinkedList<>();
+    int top_elem = 0;
+
+    // 将元素 x 压入栈顶
+    public void push(int x) {
+        // x 是队列的队尾，是栈的栈顶
+        q.offer(x);
+        top_elem = x;
     }
+
+    // 返回栈顶元素
+    public int top() {
+        return top_elem;
+    }
+
+    
+    // 删除栈顶的元素并返回
+    public int pop() {
+        int size = q.size();
+        // 留下队尾 2 个元素
+        while (size > 2) {
+            q.offer(q.poll());
+            size--;
+        }
+        // 记录新的队尾元素
+        top_elem = q.peek();
+        q.offer(q.poll());
+        // 删除之前的队尾元素
+        return q.poll();
+    }
+
+    // 判断栈是否为空
+    public boolean empty() {
+        return q.isEmpty();
+    }
+}
+``` 
 
 很明显，用队列实现栈的话，`pop` 操作时间复杂度是 O(N)，其他操作都是 O(1)。
 
 个人认为，用队列实现栈是没啥亮点的问题，但是用双栈实现队列是值得学习的。
 
-![](/images/algo/stack-queue/4.jpg)
+![diagram](https://labuladong.online/images/algo/stack-queue/4.jpg)
 
 从栈 `s1` 搬运元素到 `s2` 之后，元素在 `s2` 中就变成了队列的先进先出顺序，这个特性有点类似「负负得正」，确实不太容易想到。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

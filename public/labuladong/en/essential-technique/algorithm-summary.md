@@ -18,12 +18,9 @@ The summary in this article is the core outline of all content on this site. It 
   1. my understanding of the nature of data structures and algorithms
   2. a summary of common algorithms
 
-
 There is no heavy code in this article. It is mostly my experience. It will help you avoid wrong paths and understand algorithms better.
 
-加载思维导图...
-
-## ¶One summary for all data structures and algorithms
+## One summary for all data structures and algorithms
 
 All data structures are transformations of **arrays** (stored in order) and **linked lists** (stored by links).
 
@@ -37,29 +34,29 @@ If you truly understand these lines, you don’t need to read the 7000 words of 
 
 If you don’t understand, then I will use the following thousands of words, plus the many later articles and exercises, to explain these two summaries. When you study, keep thinking about these two lines. It will greatly improve your learning speed.
 
-## ¶How data structures are stored
+## How data structures are stored
 
-**There are only two ways to store data structures:[arrays (stored in order)](/en/algo/data-structure-basic/array-basic/) and [linked lists (stored by links)](/en/algo/data-structure-basic/linkedlist-basic/).**
+**There are only two ways to store data structures:[arrays (stored in order)](</en/algo/data-structure-basic/array-basic/>) and [linked lists (stored by links)](</en/algo/data-structure-basic/linkedlist-basic/>).**
 
 How to understand this? Aren’t there hash tables, stacks, queues, heaps, trees, graphs, and many other data structures?
 
 When we analyze a problem, we should think in a recursive way: top-down, from abstract to concrete. If you list all those structures first, they are higher-level designs. Arrays and linked lists are the base. All those different structures are special operations on arrays or linked lists. They just have different APIs.
 
-For example, [queues and stacks](/en/algo/data-structure-basic/queue-stack-basic/) can be implemented with either a linked list or an array. With an array, you need to handle growing and shrinking. With a linked list, you don’t have this problem, but you need more memory for node pointers.
+For example, [queues and stacks](</en/algo/data-structure-basic/queue-stack-basic/>) can be implemented with either a linked list or an array. With an array, you need to handle growing and shrinking. With a linked list, you don’t have this problem, but you need more memory for node pointers.
 
-A [graph](/en/algo/data-structure-basic/graph-basic/) has two common storage ways. An adjacency list is a linked list. An adjacency matrix is a 2D array. An adjacency matrix is fast for checking connections, and you can use matrix operations to solve some problems. But if the graph is sparse, it wastes a lot of space. An adjacency list saves space, but many operations are slower than an adjacency matrix.
+A [graph](</en/algo/data-structure-basic/graph-basic/>) has two common storage ways. An adjacency list is a linked list. An adjacency matrix is a 2D array. An adjacency matrix is fast for checking connections, and you can use matrix operations to solve some problems. But if the graph is sparse, it wastes a lot of space. An adjacency list saves space, but many operations are slower than an adjacency matrix.
 
-A [hash table](/en/algo/data-structure-basic/hashmap-basic/) uses a hash function to map keys into a large array. For hash collisions, [separate chaining](/en/algo/data-structure-basic/hashtable-chaining/) needs linked list features. It is simple, but needs extra space for pointers. [linear probing](/en/algo/data-structure-basic/linear-probing-key-point/) needs array features for continuous addressing. It does not need pointer space, but the operations are a bit more complex.
+A [hash table](</en/algo/data-structure-basic/hashmap-basic/>) uses a hash function to map keys into a large array. For hash collisions, [separate chaining](</en/algo/data-structure-basic/hashtable-chaining/>) needs linked list features. It is simple, but needs extra space for pointers. [linear probing](</en/algo/data-structure-basic/linear-probing-key-point/>) needs array features for continuous addressing. It does not need pointer space, but the operations are a bit more complex.
 
-For [trees](/en/algo/data-structure-basic/binary-tree-basic/): if you use an array, it becomes a “heap”, because a heap is a complete binary tree. With an array, you don’t need node pointers, and operations are simpler. A classic example is the [binary heap](/en/algo/data-structure-basic/binary-heap-basic/). If you use a linked list, it is the common “tree” form. Because it may not be a complete binary tree, it is not good to store it in an array. Based on this linked-list “tree”, people created many designs, like [binary search tree](/en/algo/data-structure-basic/tree-map-basic/), AVL tree, [red-black tree](/en/algo/data-structure-basic/rbtree-basic/), [segment tree](/en/algo/data-structure-basic/segment-tree-basic/), B-tree, and so on, for different problems.
+For [trees](</en/algo/data-structure-basic/binary-tree-basic/>): if you use an array, it becomes a “heap”, because a heap is a complete binary tree. With an array, you don’t need node pointers, and operations are simpler. A classic example is the [binary heap](</en/algo/data-structure-basic/binary-heap-basic/>). If you use a linked list, it is the common “tree” form. Because it may not be a complete binary tree, it is not good to store it in an array. Based on this linked-list “tree”, people created many designs, like [binary search tree](</en/algo/data-structure-basic/tree-map-basic/>), AVL tree, [red-black tree](</en/algo/data-structure-basic/rbtree-basic/>), [segment tree](</en/algo/data-structure-basic/segment-tree-basic/>), B-tree, and so on, for different problems.
 
 So there are many data structures. You can even invent your own. But at the storage level, it is still just arrays or linked lists. Their pros and cons are:
 
-**[Array](/en/algo/data-structure-basic/array-basic/)** stores data in a tight, continuous block. You can do random access and quickly find an element by index, and it saves space. But because it must be continuous, memory must be allocated in one piece. So if you need to grow the array, you must allocate a bigger block and copy all data, which is O(N)O(N)O(N). Also, if you insert or delete in the middle, you must move all later elements to keep it continuous, which is also O(N)O(N)O(N).
+**[Array](</en/algo/data-structure-basic/array-basic/>)** stores data in a tight, continuous block. You can do random access and quickly find an element by index, and it saves space. But because it must be continuous, memory must be allocated in one piece. So if you need to grow the array, you must allocate a bigger block and copy all data, which is O(N)O(N)O(N). Also, if you insert or delete in the middle, you must move all later elements to keep it continuous, which is also O(N)O(N)O(N).
 
-**[Linked list](/en/algo/data-structure-basic/linkedlist-basic/)** does not store elements continuously. Each node uses pointers to the next node, so there is no “grow array” problem. If you know the previous and next node, you can delete or insert by changing pointers, which is O(1)O(1)O(1). But because memory is not continuous, you cannot compute an element’s address from an index, so you cannot do random access. Also, each element needs pointers (to previous/next), so it uses more space.
+**[Linked list](</en/algo/data-structure-basic/linkedlist-basic/>)** does not store elements continuously. Each node uses pointers to the next node, so there is no “grow array” problem. If you know the previous and next node, you can delete or insert by changing pointers, which is O(1)O(1)O(1). But because memory is not continuous, you cannot compute an element’s address from an index, so you cannot do random access. Also, each element needs pointers (to previous/next), so it uses more space.
 
-## ¶Basic operations of data structures
+## Basic operations of data structures
 
 **For any data structure, the basic operations are traversal + access. More specifically: insert, delete, search, update.**
 
@@ -71,82 +68,78 @@ Linear is like for/while loops. Non-linear is like recursion. More specifically,
 
 Array traversal framework, a typical linear loop:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void traverse(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            // iterate through arr[i]
-        }
+```java
+void traverse(int[] arr) {
+    for (int i = 0; i < arr.length; i++) {
+        // iterate through arr[i]
     }
+}
+``` 
 
 Linked list traversal framework, has both loop and recursion:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // basic singly linked list node
-    class ListNode {
-        int val;
-        ListNode next;
+```java
+// basic singly linked list node
+class ListNode {
+    int val;
+    ListNode next;
+}
+
+void traverse(ListNode head) {
+    for (ListNode p = head; p != null; p = p.next) {
+        // iteratively access p.val
     }
-    
-    void traverse(ListNode head) {
-        for (ListNode p = head; p != null; p = p.next) {
-            // iteratively access p.val
-        }
-    }
-    
-    void traverse(ListNode head) {
-        // recursively access head.val
-        traverse(head.next);
-    }
+}
+
+void traverse(ListNode head) {
+    // recursively access head.val
+    traverse(head.next);
+}
+``` 
 
 Binary tree traversal framework, a typical non-linear recursive traversal:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // basic binary tree node
-    class TreeNode {
-        int val;
-        TreeNode left, right;
-    }
-    
-    void traverse(TreeNode root) {
-        traverse(root.left);
-        traverse(root.right);
-    }
+```java
+// basic binary tree node
+class TreeNode {
+    int val;
+    TreeNode left, right;
+}
+
+void traverse(TreeNode root) {
+    traverse(root.left);
+    traverse(root.right);
+}
+``` 
 
 The recursive traversal of a binary tree and the recursive traversal of a linked list look similar, right? And the structure of a binary tree and a singly linked list also looks similar, right? If we add more branches, can you traverse an N-ary tree?
 
 The binary tree framework can be extended to an N-ary tree traversal framework:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // basic N-ary tree node
-    class TreeNode {
-        int val;
-        TreeNode[] children;
-    }
-    
-    void traverse(TreeNode root) {
-        for (TreeNode child : root.children)
-            traverse(child);
-    }
+```java
+// basic N-ary tree node
+class TreeNode {
+    int val;
+    TreeNode[] children;
+}
 
-Traversal of an `N`-ary tree can be extended to graph traversal, because a graph is like many `N`-ary trees combined. You may say a graph can have cycles. That is easy: use a boolean array `visited` to mark nodes. See [graph traversal](/en/algo/data-structure-basic/graph-traverse-basic/) for details.
+void traverse(TreeNode root) {
+    for (TreeNode child : root.children)
+        traverse(child);
+}
+``` 
+
+Traversal of an `N`-ary tree can be extended to graph traversal, because a graph is like many `N`-ary trees combined. You may say a graph can have cycles. That is easy: use a boolean array `visited` to mark nodes. See [graph traversal](</en/algo/data-structure-basic/graph-traverse-basic/>) for details.
 
 **A “framework” is a pattern. No matter insert/delete/search/update, this structure never changes.** You can treat it as an outline. For a specific problem, you just add code into the framework.
 
-## ¶The Essence of Algorithms
+## The Essence of Algorithms
 
 **If I had to sum it up in one sentence, I'd say the essence of algorithms is "enumeration."**
 
 I'm sure some people will push back on this—is every algorithm problem really just about enumeration? Are there no exceptions?
 
-Of course there are exceptions. For instance, [Algorithm Problems Solvable in One Line of Code](/en/algo/frequency-interview/one-line-solutions/) covers problems that are more like brain teasers—you observe a pattern, spot a trick, and arrive at the optimal solution. But these types of problems are relatively rare, so don't get hung up on them. Another example: cryptographic algorithms and machine learning algorithms aren't really about enumeration—they're programmatic implementations of mathematical principles. Their essence is math, which falls outside the scope of what we're discussing here under "data structures and algorithms."
+Of course there are exceptions. For instance, [Algorithm Problems Solvable in One Line of Code](</en/algo/frequency-interview/one-line-solutions/>) covers problems that are more like brain teasers—you observe a pattern, spot a trick, and arrive at the optimal solution. But these types of problems are relatively rare, so don't get hung up on them. Another example: cryptographic algorithms and machine learning algorithms aren't really about enumeration—they're programmatic implementations of mathematical principles. Their essence is math, which falls outside the scope of what we're discussing here under "data structures and algorithms."
 
 **I should also clarify: what an "ML engineer" (or "algorithm engineer" in Chinese tech) does with "algorithms" is a completely different thing from "data structures and algorithms."** I don't want any beginners to get confused.
 
@@ -168,7 +161,7 @@ When I was first starting out, I thought computer algorithms were something supe
 
 For example, if you told someone who's never studied computer algorithms that you wrote an algorithm for generating permutations and combinations, they'd probably assume you invented a formula that directly computes all of them.
 
-But what's the reality? There's no fancy formula. As [Backtracking Solves Permutation/Combination/Subset Problems](/en/algo/essential-technique/permutation-combination-subset-all-in-one/) explains, you just model all possible permutations and combinations as an n-ary tree, then write code to traverse that tree and collect all the results. What's so magical about that?
+But what's the reality? There's no fancy formula. As [Backtracking Solves Permutation/Combination/Subset Problems](</en/algo/essential-technique/permutation-combination-subset-all-in-one/>) explains, you just model all possible permutations and combinations as an n-ary tree, then write code to traverse that tree and collect all the results. What's so magical about that?
 
 This misconception about algorithms probably comes from how we learned math in school. Math problems are typically about careful observation—find geometric relationships, set up equations, and compute the answer. If you had to resort to large-scale enumeration to find an answer, something was probably wrong with your approach.
 
@@ -178,7 +171,7 @@ Theoretically, if you keep randomly shuffling an array, you'll eventually end up
 
 Those algorithm questions on coding interviews—finding the max, the min, whatever—how do you solve them? Enumerate all feasible solutions and you'll find the optimal one. When you boil it down, that's all there is to it.
 
-## ¶The Hard Parts of Enumeration
+## The Hard Parts of Enumeration
 
 Two Keys to Enumeration
 
@@ -198,13 +191,13 @@ So when you encounter an algorithm problem, think about it from these two angles
 
 **2\. How to enumerate smartly?** That is, how to avoid redundant computation during enumeration and find the answer using as few resources as possible.
 
-### ¶How to Enumerate
+### How to Enumerate
 
 **Which algorithms are hard because of the "how to enumerate" part? Typically recursive problems—things like backtracking and dynamic programming.**
 
 Let's start with backtracking. Take the permutation and combination problems you learned in high school. Back then, you could work them out on scratch paper: pick a possibility for the first position, fix it, then look at what's available for the second position, fix that... and so on. But without training, it's really hard to write code that enumerates all permutations and combinations, because it's hard to abstract that manual process into a programmable pattern.
 
-First, you need to model the permutation/combination problem as a tree. Then you need to precisely **traverse** every node of that tree—no more, no less—to produce correct code. In later chapters, I'll introduce the [Backtracking Algorithm Core Framework](/en/algo/essential-technique/backtrack-framework/), and then in [Backtracking Solves Subset/Permutation/Combination Problems](/en/algo/essential-technique/permutation-combination-subset-all-in-one/), we'll tackle all subset, permutation, and combination problems in one go.
+First, you need to model the permutation/combination problem as a tree. Then you need to precisely **traverse** every node of that tree—no more, no less—to produce correct code. In later chapters, I'll introduce the [Backtracking Algorithm Core Framework](</en/algo/essential-technique/backtrack-framework/>), and then in [Backtracking Solves Subset/Permutation/Combination Problems](</en/algo/essential-technique/permutation-combination-subset-all-in-one/>), we'll tackle all subset, permutation, and combination problems in one go.
 
 Dynamic programming is a step harder than backtracking. Both are fundamentally about enumeration, but the thinking patterns differ. Backtracking uses a "**traversal** " mindset, while dynamic programming uses a "**problem decomposition** " mindset.
 
@@ -222,45 +215,45 @@ If a confused student follows up with "well, how many are 'the rest'?", the answ
 
 Now you see why I say the hard part of dynamic programming is "how to enumerate," right? A normal person wouldn't naturally think this way. But this mindset, combined with a computer, is a killer combo. You just have to practice. Once you've got it down, you can write algorithms effortlessly—and they'll be correct no matter how you approach them.
 
-In the [Dynamic Programming Core Framework](/en/algo/essential-technique/dynamic-programming-framework/), I walk through the process of solving DP problems. It's really just: first write out the brute-force enumeration (the state transition equation), add memoization and you've got a top-down recursive solution, tweak it a bit more and you've got a bottom-up iterative solution. [Space Optimization in Dynamic Programming](/en/algo/dynamic-programming/space-optimization/) also covers how to use space compression techniques to optimize the space complexity of DP algorithms.
+In the [Dynamic Programming Core Framework](</en/algo/essential-technique/dynamic-programming-framework/>), I walk through the process of solving DP problems. It's really just: first write out the brute-force enumeration (the state transition equation), add memoization and you've got a top-down recursive solution, tweak it a bit more and you've got a bottom-up iterative solution. [Space Optimization in Dynamic Programming](</en/algo/dynamic-programming/space-optimization/>) also covers how to use space compression techniques to optimize the space complexity of DP algorithms.
 
 Adding memoization and applying space compression are both standard patterns—they're not the hard part. When you actually try DP problems yourself, you'll find that you simply can't come up with the state transition equation—you can't even write the brute-force solution in the first step. That's why finding the state transition equation (i.e., how to enumerate) is the real challenge.
 
-I wrote [DP Design Method: Mathematical Induction](/en/algo/dynamic-programming/longest-increasing-subsequence/) specifically to explain that the core of enumeration is mathematical induction: clearly define your function, decompose the problem, and then use that definition to recursively solve subproblems.
+I wrote [DP Design Method: Mathematical Induction](</en/algo/dynamic-programming/longest-increasing-subsequence/>) specifically to explain that the core of enumeration is mathematical induction: clearly define your function, decompose the problem, and then use that definition to recursively solve subproblems.
 
-### ¶Smart Enumeration
+### Smart Enumeration
 
 **What algorithms focus on "smart enumeration"? A lot of well-known non-recursive techniques fall into this category.**
 
-The simplest example: if you need to find an element in a sorted array, anyone can brute-force it with a for loop. But [binary search](/en/algo/essential-technique/binary-search-framework/) is a smarter way to enumerate, with better time complexity.
+The simplest example: if you need to find an element in a sorted array, anyone can brute-force it with a for loop. But [binary search](</en/algo/essential-technique/binary-search-framework/>) is a smarter way to enumerate, with better time complexity.
 
-Another example: [Union Find Explained](/en/algo/data-structure/union-find/) shows you an efficient way to compute connected components. In theory, you could use DFS/BFS brute-force to check if two nodes are connected, but Union Find uses arrays to simulate tree structures and brings connectivity operations down to O(1)O(1)O(1).
+Another example: [Union Find Explained](</en/algo/data-structure/union-find/>) shows you an efficient way to compute connected components. In theory, you could use DFS/BFS brute-force to check if two nodes are connected, but Union Find uses arrays to simulate tree structures and brings connectivity operations down to O(1)O(1)O(1).
 
 That's smart enumeration. These techniques were invented by brilliant people—if you've learned them, you can use them. If you haven't, you'd probably never think of them on your own.
 
-Take greedy algorithms, for example. [When Veterans Learn Greedy Algorithms](/en/algo/frequency-interview/gas-station-greedy/) explains that greedy algorithms are all about spotting patterns (formally called the greedy choice property) that let you find the answer without enumerating every possible solution.
+Take greedy algorithms, for example. [When Veterans Learn Greedy Algorithms](</en/algo/frequency-interview/gas-station-greedy/>) explains that greedy algorithms are all about spotting patterns (formally called the greedy choice property) that let you find the answer without enumerating every possible solution.
 
-Dynamic programming at least enumerates all solutions without redundancy and finds the optimal value. Greedy algorithms? They don't even need to enumerate all solutions to find the answer. That's why in [Greedy Algorithms for Jump Game](/en/algo/essential-technique/greedy/), greedy beats dynamic programming in efficiency. Of course, not every problem has a greedy choice property you can exploit. Full enumeration might be plain and boring, but it works in any situation.
+Dynamic programming at least enumerates all solutions without redundancy and finds the optimal value. Greedy algorithms? They don't even need to enumerate all solutions to find the answer. That's why in [Greedy Algorithms for Jump Game](</en/algo/essential-technique/greedy/>), greedy beats dynamic programming in efficiency. Of course, not every problem has a greedy choice property you can exploit. Full enumeration might be plain and boring, but it works in any situation.
 
 Below, I'll cover some common algorithm techniques for your reference.
 
-## ¶Array and Linked List Algorithms
+## Array and Linked List Algorithms
 
-**The most common linked list technique is the two-pointer pattern, which falls under "smart enumeration".** [Linked List Two-Pointer Techniques](/en/algo/essential-technique/linked-list-skills-summary/) covers everything you need—easy if you know it, tricky if you don't.
+**The most common linked list technique is the two-pointer pattern, which falls under "smart enumeration".** [Linked List Two-Pointer Techniques](</en/algo/essential-technique/linked-list-skills-summary/>) covers everything you need—easy if you know it, tricky if you don't.
 
 Take cycle detection in a linked list. The obvious brute-force? Use a `HashSet` to track visited nodes—if you see a duplicate, there's a cycle. But with fast and slow pointers, you can avoid extra space. That's smart enumeration.
 
-**Arrays also rely heavily on two-pointer techniques, all of which fall under "smart enumeration".** [Array Two-Pointer Techniques](/en/algo/essential-technique/array-two-pointers-summary/) has you covered—easy if you know it, tricky if you don't.
+**Arrays also rely heavily on two-pointer techniques, all of which fall under "smart enumeration".** [Array Two-Pointer Techniques](</en/algo/essential-technique/array-two-pointers-summary/>) has you covered—easy if you know it, tricky if you don't.
 
 **First up: binary search** , which is essentially two pointers moving from both ends toward the center. If you need to search for an element in an array, a for loop takes O(N)O(N)O(N) time and will definitely work. But binary search says: if the array is sorted, I only need O(logN)O(logN)O(logN). That's a smarter way to search.
 
-[Binary Search Framework Explained](/en/algo/essential-technique/binary-search-framework/) gives you a code template that guarantees you won't run into boundary issues. [Binary Search in Practice](/en/algo/frequency-interview/binary-search-in-action/) summarizes common patterns in binary search problems and how to apply binary search thinking to real algorithms.
+[Binary Search Framework Explained](</en/algo/essential-technique/binary-search-framework/>) gives you a code template that guarantees you won't run into boundary issues. [Binary Search in Practice](</en/algo/frequency-interview/binary-search-in-action/>) summarizes common patterns in binary search problems and how to apply binary search thinking to real algorithms.
 
-**Next up:[Sliding Window Techniques](/en/algo/essential-technique/sliding-window-framework/)**, a classic fast-slow pointer pattern. You could use nested for loops to enumerate all subarrays in O(N2)O(N^2)O(N2) time, which would definitely find the subarray you're looking for. But sliding window says: in certain scenarios, I can use one fast and one slow pointer to find the answer in just O(N)O(N)O(N) time. That's smarter enumeration.
+**Next up:[Sliding Window Techniques](</en/algo/essential-technique/sliding-window-framework/>)**, a classic fast-slow pointer pattern. You could use nested for loops to enumerate all subarrays in O(N2)O(N^2)O(N2) time, which would definitely find the subarray you're looking for. But sliding window says: in certain scenarios, I can use one fast and one slow pointer to find the answer in just O(N)O(N)O(N) time. That's smarter enumeration.
 
-[Sliding Window Framework Explained](/en/algo/essential-technique/sliding-window-framework/) covers when to use sliding window and provides a universal code template to ensure you write correct code. [Sliding Window Exercises](/en/algo/problem-set/sliding-window/) walks you through applying the sliding window framework to various problems.
+[Sliding Window Framework Explained](</en/algo/essential-technique/sliding-window-framework/>) covers when to use sliding window and provides a universal code template to ensure you write correct code. [Sliding Window Exercises](</en/algo/problem-set/sliding-window/>) walks you through applying the sliding window framework to various problems.
 
-**Finally, let's talk about[Prefix Sum Techniques](/en/algo/data-structure/prefix-sum/) and [Difference Array Techniques](/en/algo/data-structure/diff-array/).**
+**Finally, let's talk about[Prefix Sum Techniques](</en/algo/data-structure/prefix-sum/>) and [Difference Array Techniques](</en/algo/data-structure/diff-array/>).**
 
 If you're constantly computing subarray sums, traversing with a for loop each time will work, but the prefix sum technique pre-computes a `preSum` array to avoid the loop.
 
@@ -268,7 +261,7 @@ Similarly, if you're frequently incrementing or decrementing subarrays, you coul
 
 That covers most array and linked list techniques. They're pretty standard patterns—once you've seen them, they're not that hard to apply. Now let's talk about slightly trickier algorithms.
 
-## ¶Binary Tree Algorithms
+## Binary Tree Algorithms
 
 Long-time readers know I've stressed the importance of binary trees countless times. Binary tree models are the foundation for almost all advanced algorithms. If you struggle with recursion, you should definitely grind through binary tree problems.
 
@@ -276,260 +269,253 @@ Tip
 
 In the binary tree section, I'll walk through 150 binary tree problems using consistent patterns and thinking modes. I'll guide you step-by-step through the entire binary tree category to quickly master recursive thinking.
 
-**As I mentioned in[Binary Tree Fundamentals](/en/algo/essential-technique/binary-tree-summary/), recursive solutions to binary tree problems fall into two categories: the first is traversing the tree once to get the answer, and the second is decomposing the problem to compute the answer. These two approaches correspond to [Backtracking Framework](/en/algo/essential-technique/backtrack-framework/) and [Dynamic Programming Framework](/en/algo/essential-technique/dynamic-programming-framework/) respectively.**
+**As I mentioned in[Binary Tree Fundamentals](</en/algo/essential-technique/binary-tree-summary/>), recursive solutions to binary tree problems fall into two categories: the first is traversing the tree once to get the answer, and the second is decomposing the problem to compute the answer. These two approaches correspond to [Backtracking Framework](</en/algo/essential-technique/backtrack-framework/>) and [Dynamic Programming Framework](</en/algo/essential-technique/dynamic-programming-framework/>) respectively.**
 
-### ¶The Traversal Mindset
+### The Traversal Mindset
 
 **What does it mean to get the answer by traversing the tree once?**
 
 Take the problem of computing the maximum depth of a binary tree. If you need to implement the `maxDepth` function, this code works perfectly:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-    
-        // record the maximum depth
-        int res = 0;
-        // record the depth of the current node being traversed
-        int depth = 0;
-    
-        // main function
-        int maxDepth(TreeNode root) {
-            traverse(root);
-            return res;
-        }
-    
-        // binary tree traversal framework
-        void traverse(TreeNode root) {
-            if (root == null) {
-                // reach a leaf node
-                res = Math.max(res, depth);
-                return;
-            }
-            // pre-order traversal position
-            depth++;
-            traverse(root.left);
-            traverse(root.right);
-            // post-order traversal position
-            depth--;
-        }
+```java
+class Solution {
+
+    // record the maximum depth
+    int res = 0;
+    // record the depth of the current node being traversed
+    int depth = 0;
+
+    // main function
+    int maxDepth(TreeNode root) {
+        traverse(root);
+        return res;
     }
+
+    // binary tree traversal framework
+    void traverse(TreeNode root) {
+        if (root == null) {
+            // reach a leaf node
+            res = Math.max(res, depth);
+            return;
+        }
+        // pre-order traversal position
+        depth++;
+        traverse(root.left);
+        traverse(root.right);
+        // post-order traversal position
+        depth--;
+    }
+}
+``` 
 
 The logic here is to use the `traverse` function to visit all nodes in the tree, maintain a `depth` variable, and update the maximum depth at leaf nodes.
 
 Does this code look familiar? Can you map it to the backtracking algorithm template?
 
-Check out the permutation problem code in [Backtracking Framework](/en/algo/essential-technique/backtrack-framework/). The `backtrack` function is just the `traverse` function—same thing, different name. The overall logic is very similar:
+Check out the permutation problem code in [Backtracking Framework](</en/algo/essential-technique/backtrack-framework/>). The `backtrack` function is just the `traverse` function—same thing, different name. The overall logic is very similar:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // record all permutations
-        List<List<Integer>> res = new LinkedList<>();
-        // record the current permutation being enumerated
-        LinkedList<Integer> track = new LinkedList<>();
-    
-        // elements in track will be marked as true to avoid reuse
-        boolean[] used;
-    
-        // main function, input a set of unique numbers, return all their permutations
-        List<List<Integer>> permute(int[] nums) {
-            used = new boolean[nums.length];
-            
-            backtrack(nums);
-            return res;
+```java
+class Solution {
+    // record all permutations
+    List<List<Integer>> res = new LinkedList<>();
+    // record the current permutation being enumerated
+    LinkedList<Integer> track = new LinkedList<>();
+
+    // elements in track will be marked as true to avoid reuse
+    boolean[] used;
+
+    // main function, input a set of unique numbers, return all their permutations
+    List<List<Integer>> permute(int[] nums) {
+        used = new boolean[nums.length];
+        
+        backtrack(nums);
+        return res;
+    }
+
+    // the core framework of the backtracking algorithm, traverse the
+    // backtracking tree, collect all permutations at leaf nodes
+    void backtrack(int[] nums) {
+        // reached a leaf node, elements in track form a permutation
+        if (track.size() == nums.length) {
+            res.add(new LinkedList(track));
+            return;
         }
-    
-        // the core framework of the backtracking algorithm, traverse the
-        // backtracking tree, collect all permutations at leaf nodes
-        void backtrack(int[] nums) {
-            // reached a leaf node, elements in track form a permutation
-            if (track.size() == nums.length) {
-                res.add(new LinkedList(track));
-                return;
+        
+        for (int i = 0; i < nums.length; i++) {
+            // exclude invalid choices
+            if (used[i]) {
+                // nums[i] is already in track, skip
+                continue;
             }
+            // make a choice
+            track.add(nums[i]);
+            used[i] = true;
+
+            // enter the next level of the recursion tree
+            backtrack(nums);
             
-            for (int i = 0; i < nums.length; i++) {
-                // exclude invalid choices
-                if (used[i]) {
-                    // nums[i] is already in track, skip
-                    continue;
-                }
-                // make a choice
-                track.add(nums[i]);
-                used[i] = true;
-    
-                // enter the next level of the recursion tree
-                backtrack(nums);
-                
-                // undo the choice
-                track.removeLast();
-                used[i] = false;
-            }
+            // undo the choice
+            track.removeLast();
+            used[i] = false;
         }
     }
+}
+``` 
 
 This code might look long, but isn't it just traversing an n-ary tree? Backtracking is essentially n-ary tree traversal. If you can abstract a problem into a tree structure, you can definitely solve it with backtracking.
 
-### ¶The Problem Decomposition Mindset
+### The Problem Decomposition Mindset
 
 **So what does it mean to compute the answer by decomposing the problem?**
 
 For the same maximum depth problem, you can also write a solution like this:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // definition: input the root node, return the maximum depth of this binary tree
-    int maxDepth(TreeNode root) {
-    	if (root == null) {
-    		return 0;
-    	}
-    	// recursively calculate the maximum depth of left and right subtrees
-    	int leftMax = maxDepth(root.left);
-    	int rightMax = maxDepth(root.right);
-    	// the maximum depth of the whole tree is the maximum depth of the left and right subtrees plus one
-    	int res = Math.max(leftMax, rightMax) + 1;
-    
-    	return res;
-    }
+```java
+// definition: input the root node, return the maximum depth of this binary tree
+int maxDepth(TreeNode root) {
+	if (root == null) {
+		return 0;
+	}
+	// recursively calculate the maximum depth of left and right subtrees
+	int leftMax = maxDepth(root.left);
+	int rightMax = maxDepth(root.right);
+	// the maximum depth of the whole tree is the maximum depth of the left and right subtrees plus one
+	int res = Math.max(leftMax, rightMax) + 1;
+
+	return res;
+}
+``` 
 
 Does this code look familiar? Does it remind you of dynamic programming solutions?
 
-Check out the brute-force solution to the coin change problem in [Dynamic Programming Framework](/en/algo/essential-technique/dynamic-programming-framework/):
+Check out the brute-force solution to the coin change problem in [Dynamic Programming Framework](</en/algo/essential-technique/dynamic-programming-framework/>):
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int coinChange(int[] coins, int amount) {
-            // the final result required by the problem is dp(amount)
-            return dp(coins, amount);
-        }
-    
-        // definition: to make up the `amount`, at least dp(coins, amount) coins are needed
-        int dp(int[] coins, int amount) {
-            // base case
-            if (amount == 0) return 0;
-            if (amount < 0) return -1;
-    
-            int res = Integer.MAX_VALUE;
-            for (int coin : coins) {
-                // calculate the result of the subproblem
-                int subProblem = dp(coins, amount - coin);
-                // skip if the subproblem has no solution
-                if (subProblem == -1) continue;
-                // choose the optimal solution from the subproblem, then add one
-                res = Math.min(res, subProblem + 1);
-            }
-    
-            return res == Integer.MAX_VALUE ? -1 : res;
-        }
+```java
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        // the final result required by the problem is dp(amount)
+        return dp(coins, amount);
     }
+
+    // definition: to make up the `amount`, at least dp(coins, amount) coins are needed
+    int dp(int[] coins, int amount) {
+        // base case
+        if (amount == 0) return 0;
+        if (amount < 0) return -1;
+
+        int res = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            // calculate the result of the subproblem
+            int subProblem = dp(coins, amount - coin);
+            // skip if the subproblem has no solution
+            if (subProblem == -1) continue;
+            // choose the optimal solution from the subproblem, then add one
+            res = Math.min(res, subProblem + 1);
+        }
+
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+}
+``` 
 
 Add a `memo` to this brute-force solution and you get top-down dynamic programming. Compare it to the binary tree maximum depth solution—see the similarity?
 
-### ¶Expanding the Idea
+### Expanding the Idea
 
 **If you understand the difference between these two approaches for the maximum depth problem, let's strike while the iron's hot: how do you write binary tree preorder traversal?**
 
 I'm sure everyone would scoff at this question and write this code without hesitation:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    List<Integer> res = new LinkedList<>();
-    
-    // return the preorder traversal result
-    List<Integer> preorder(TreeNode root) {
-        traverse(root);
-        return res;
+```java
+List<Integer> res = new LinkedList<>();
+
+// return the preorder traversal result
+List<Integer> preorder(TreeNode root) {
+    traverse(root);
+    return res;
+}
+
+// binary tree traversal function
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
     }
-    
-    // binary tree traversal function
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // preorder traversal position
-        res.add(root.val);
-        traverse(root.left);
-        traverse(root.right);
-    }
+    // preorder traversal position
+    res.add(root.val);
+    traverse(root.left);
+    traverse(root.right);
+}
+``` 
 
 But given the two different thinking modes we discussed, can you also solve tree traversal using the problem decomposition approach?
 
 Let's observe the characteristics of preorder traversal results:
 
-![](/images/algo/binary-tree-ii/1.jpeg)
+![diagram](https://labuladong.online/images/algo/binary-tree-ii/1.jpeg)
 
 **Notice that in preorder traversal results, the root node's value comes first, followed by the preorder traversal of the left subtree, then the preorder traversal of the right subtree.**
 
 Getting it? You can totally rewrite the preorder traversal code using the problem decomposition approach:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // Definition: input the root node of a binary tree,
-    // return the preorder traversal result of this tree
-    List<Integer> preorder(TreeNode root) {
-        List<Integer> res = new LinkedList<>();
-        if (root == null) {
-            return res;
-        }
-        // The result of preorder traversal, root.val is first
-        res.add(root.val);
-        // Followed by the preorder traversal result of the left subtree
-        res.addAll(preorder(root.left));
-        // Finally followed by the preorder traversal result of the right subtree
-        res.addAll(preorder(root.right));
+```java
+// Definition: input the root node of a binary tree,
+// return the preorder traversal result of this tree
+List<Integer> preorder(TreeNode root) {
+    List<Integer> res = new LinkedList<>();
+    if (root == null) {
         return res;
     }
+    // The result of preorder traversal, root.val is first
+    res.add(root.val);
+    // Followed by the preorder traversal result of the left subtree
+    res.addAll(preorder(root.left));
+    // Finally followed by the preorder traversal result of the right subtree
+    res.addAll(preorder(root.right));
+    return res;
+}
+``` 
 
 There you go—that's binary tree preorder traversal written with the problem decomposition mindset. Inorder and postorder traversals follow the same pattern.
 
-### ¶Level Order Traversal
+### Level Order Traversal
 
-Besides dynamic programming, backtracking (DFS), and divide-and-conquer, another common algorithm is BFS. [BFS Framework](/en/algo/essential-technique/bfs-framework/) is adapted from this binary tree level order traversal code:
+Besides dynamic programming, backtracking (DFS), and divide-and-conquer, another common algorithm is BFS. [BFS Framework](</en/algo/essential-technique/bfs-framework/>) is adapted from this binary tree level order traversal code:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // Input the root node of a binary tree, perform level-order traversal on the binary tree
-    void levelTraverse(TreeNode root) {
-        if (root == null) return;
-        Queue<TreeNode> q = new LinkedList<>();
-        q.offer(root);
-    
-        int depth = 1;
-        // Traverse each level of the binary tree from top to bottom
-        while (!q.isEmpty()) {
-            int sz = q.size();
-            // Traverse each node of the level from left to right
-            for (int i = 0; i < sz; i++) {
-                TreeNode cur = q.poll();
-    
-                // put the nodes of the next level into the queue
-                if (cur.left != null) {
-                    q.offer(cur.left);
-                }
-                if (cur.right != null) {
-                    q.offer(cur.right);
-                }
+```java
+// Input the root node of a binary tree, perform level-order traversal on the binary tree
+void levelTraverse(TreeNode root) {
+    if (root == null) return;
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+
+    int depth = 1;
+    // Traverse each level of the binary tree from top to bottom
+    while (!q.isEmpty()) {
+        int sz = q.size();
+        // Traverse each node of the level from left to right
+        for (int i = 0; i < sz; i++) {
+            TreeNode cur = q.poll();
+
+            // put the nodes of the next level into the queue
+            if (cur.left != null) {
+                q.offer(cur.left);
             }
-            depth++;
+            if (cur.right != null) {
+                q.offer(cur.right);
+            }
         }
+        depth++;
     }
+}
+``` 
 
 **Going further, graph algorithms are also extensions of binary tree algorithms.**
 
-For example, [Graph Theory Basics](/en/algo/data-structure-basic/graph-basic/), [Cycle Detection and Topological Sort](/en/algo/data-structure/topological-sort/), and [Bipartite Graph Detection](/en/algo/data-structure/bipartite-graph/) all use DFS. And [Dijkstra's Algorithm Template](/en/algo/data-structure/dijkstra/) is an improved version of BFS.
+For example, [Graph Theory Basics](</en/algo/data-structure-basic/graph-basic/>), [Cycle Detection and Topological Sort](</en/algo/data-structure/topological-sort/>), and [Bipartite Graph Detection](</en/algo/data-structure/bipartite-graph/>) all use DFS. And [Dijkstra's Algorithm Template](</en/algo/data-structure/dijkstra/>) is an improved version of BFS.
 
 Alright, that's about it. All these algorithms essentially enumerate binary (or n-ary) trees. When possible, they reduce redundant computation through pruning or memoization to improve efficiency. That's really all there is to it.
 
-## ¶Final Thoughts
+## Final Thoughts
 
 Many readers ask me what's the right way to practice. I believe the right approach is to solve one problem and get the benefit of solving ten. Otherwise, with LeetCode having 2000+ problems now, are you really planning to do them all?
 
@@ -542,5 +528,3 @@ Give a man a fish and you feed him for a day; teach a man to fish and you feed h
 I hope you'll develop systematic thinking here and enjoy mastering algorithms, instead of being mastered by them.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

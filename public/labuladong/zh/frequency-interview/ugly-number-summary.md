@@ -23,7 +23,6 @@ LeetCode| 力扣| 难度
   * [链表双指针技巧汇总](</zh/algo/essential-technique/linked-list-skills-summary/>)
   * [二分查找框架详解](</zh/algo/essential-technique/binary-search-framework/>)
 
-
 最近读者群里有个读者跟我私信，说去面试微软遇到了一系列和数学相关的算法题，直接懵圈了。我看了下题目发现这些题其实就是 LeetCode 上面「丑数」系列问题的修改版。
 
 首先，「丑数」系列问题属于会者不难难者不会的类型，因为会用到些数学定理嘛，如果没有专门学过，靠自己恐怕是想不出来的。
@@ -32,14 +31,15 @@ LeetCode| 力扣| 难度
 
 那么今天我就来用一篇文章把所有丑数相关的问题一网打尽，看看这类问题能够如何变化，应该如何解决。
 
-## ¶丑数 I
+## 丑数 I
 
 首先是力扣第 263 题「[丑数](<https://leetcode.cn/problems/ugly-number/>)」，题目给你输入一个数字 `n`，请你判断 `n` 是否为「丑数」。所谓「丑数」，就是只包含质因数 `2`、`3` 和 `5` 的正整数。
 
 函数签名如下：
-    
-    
-    boolean isUgly(int n)
+
+```
+boolean isUgly(int n)
+``` 
 
 比如 12 = 2 x 2 x 3 就是一个丑数，而 42 = 2 x 3 x 7 就不是一个丑数。
 
@@ -51,29 +51,23 @@ LeetCode| 力扣| 难度
 
 有了这个思路，就可以实现 `isUgly` 函数了：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public boolean isUgly(int n) {
-            if (n <= 0) return false;
-            // 如果 n 是丑数，分解因子应该只有 2, 3, 5
-            while (n % 2 == 0) n /= 2;
-            while (n % 3 == 0) n /= 3;
-            while (n % 5 == 0) n /= 5;
-            return n == 1;
-        }
+```java
+class Solution {
+    public boolean isUgly(int n) {
+        if (n <= 0) return false;
+        // 如果 n 是丑数，分解因子应该只有 2, 3, 5
+        while (n % 2 == 0) n /= 2;
+        while (n % 3 == 0) n /= 3;
+        while (n % 5 == 0) n /= 5;
+        return n == 1;
     }
+}
+``` 
 
-## ¶丑数 II
+## 丑数 II
 
 接下来提升难度，看下力扣第 264 题「[丑数 II](<https://leetcode.cn/problems/ugly-number-ii/>)」，现在题目不是让你判断一个数是不是丑数，而是给你输入一个 `n`，让你计算第 `n` 个丑数是多少，函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int nthUglyNumber(int n)
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
+```java
+int nthUglyNumber(int n)
+```

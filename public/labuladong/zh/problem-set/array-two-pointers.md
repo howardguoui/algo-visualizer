@@ -18,16 +18,11 @@
   * [数组基础](</zh/algo/data-structure-basic/array-basic/>)
   * [数组双指针技巧汇总](</zh/algo/essential-technique/array-two-pointers-summary/>)
 
-
 不要小看数组双指针技巧，它可以变出很多花样来。下面就来看看几个有趣的例题。
 
 Tip
 
 先看几道和 [数组双指针技巧汇总](</zh/algo/essential-technique/array-two-pointers-summary/>) 中例题类似的题目，巩固一下基础。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -40,6 +35,5 @@ Loading comments...
   * 1260\. 二维网格迁移
   * 867\. 转置矩阵
   * 14\. 最长公共前缀
-
 
 AI 助教

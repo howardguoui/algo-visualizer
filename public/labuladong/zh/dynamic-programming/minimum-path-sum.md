@@ -19,7 +19,6 @@ LeetCode| 力扣| 难度
 
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
 
-
 今天聊一道经典的动态规划题目，它是力扣第 64 题「[最小路径和](<https://leetcode.cn/problems/minimum-path-sum/>)」：
 
 **64\. 最小路径和** |[力扣](<https://leetcode.cn/problems/minimum-path-sum/>)|[LeetCode](<https://leetcode.com/problems/minimum-path-sum/>)
@@ -30,20 +29,20 @@ LeetCode| 力扣| 难度
 
 **示例 1：**
 
-![](/images/lc/uploads/2020/11/05/minpath.jpg)
-    
-    
-    **输入：** grid = [[1,3,1],[1,5,1],[4,2,1]]
-    **输出：** 7
-    **解释：** 因为路径 1→3→1→1→1 的总和最小。
-    
+![diagram](https://labuladong.online/images/lc/uploads/2020/11/05/minpath.jpg)
+
+```
+输入：grid = [[1,3,1],[1,5,1],[4,2,1]]
+输出：7
+解释：因为路径 1→3→1→1→1 的总和最小。
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** grid = [[1,2,3],[4,5,6]]
-    **输出：** 12
-    
+
+```
+输入：grid = [[1,2,3],[4,5,6]]
+输出：12
+``` 
 
 **提示：**
 
@@ -52,15 +51,13 @@ LeetCode| 力扣| 难度
   * `1 <= m, n <= 200`
   * `0 <= grid[i][j] <= 200`
 
-
 题目来源：[力扣 64. 最小路径和](<https://leetcode.cn/problems/minimum-path-sum/>)。
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int minPathSum(int[][] grid);
+```java
+int minPathSum(int[][] grid);
+``` 
 
 其实这道题难度不算大，但你可能会遇到一些难度比较大的变体，所以统一讲一讲这种问题的通用思路。
 
@@ -68,7 +65,7 @@ CC++GoJavaJavaScriptPython
 
 就拿题目举的例子来说，我给图中的几个格子编个号方便描述：
 
-![](/images/algo/shortest-path/minpath.jpg)
+![diagram](https://labuladong.online/images/algo/shortest-path/minpath.jpg)
 
 我们想计算从起点 `D` 到达 `B` 的最小路径和，那你说怎么才能到达 `B` 呢？
 
@@ -86,10 +83,9 @@ CC++GoJavaJavaScriptPython
 
 比如我们定义如下一个 `dp` 函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int dp(int[][] grid, int i, int j);
+```java
+int dp(int[][] grid, int i, int j);
+``` 
 
 这个 `dp` 函数的定义如下：
 
@@ -97,51 +93,50 @@ CC++GoJavaJavaScriptPython
 
 根据这个定义，我们想求的最小路径和就可以通过调用这个 `dp` 函数计算出来：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int minPathSum(int[][] grid) {
-        int m = grid.length;
-        int n = grid[0].length;
-        // 计算从左上角走到右下角的最小路径和
-        return dp(grid, m - 1, n - 1);
-    }
+```java
+int minPathSum(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    // 计算从左上角走到右下角的最小路径和
+    return dp(grid, m - 1, n - 1);
+}
+``` 
 
 再根据刚才的分析，很容易发现，`dp(grid, i, j)` 的值取决于 `dp(grid, i - 1, j)` 和 `dp(grid, i, j - 1)` 返回的值。
 
 我们可以直接写代码了：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int dp(int[][] grid, int i, int j) {
-        // base case
-        if (i == 0 && j == 0) {
-            return grid[0][0];
-        }
-        // 如果索引出界，返回一个很大的值，
-        // 保证在取 min 的时候不会被取到
-        if (i < 0 || j < 0) {
-            return Integer.MAX_VALUE;
-        }
-    
-        // 左边和上面的最小路径和加上 grid[i][j]
-        // 就是到达 (i, j) 的最小路径和
-        return Math.min(
-                dp(grid, i - 1, j), 
-                dp(grid, i, j - 1)
-            ) + grid[i][j];
+```java
+int dp(int[][] grid, int i, int j) {
+    // base case
+    if (i == 0 && j == 0) {
+        return grid[0][0];
     }
+    // 如果索引出界，返回一个很大的值，
+    // 保证在取 min 的时候不会被取到
+    if (i < 0 || j < 0) {
+        return Integer.MAX_VALUE;
+    }
+
+    // 左边和上面的最小路径和加上 grid[i][j]
+    // 就是到达 (i, j) 的最小路径和
+    return Math.min(
+            dp(grid, i - 1, j), 
+            dp(grid, i, j - 1)
+        ) + grid[i][j];
+}
+``` 
 
 上述代码逻辑已经完整了，接下来就分析一下，这个递归算法是否存在重叠子问题？是否需要用备忘录优化一下执行效率？
 
 **前文多次说过判断重叠子问题的技巧，首先抽象出上述代码的递归框架** ：
-    
-    
-    int dp(int i, int j) {
-        dp(i - 1, j); // #1
-        dp(i, j - 1); // #2
-    }
+
+```
+int dp(int i, int j) {
+    dp(i - 1, j); // #1
+    dp(i, j - 1); // #2
+}
+``` 
 
 如果我想从 `dp(i, j)` 递归到 `dp(i-1, j-1)`，有几种不同的递归调用路径？
 
@@ -149,44 +144,43 @@ CC++GoJavaJavaScriptPython
 
 那么我们可以使用备忘录技巧进行优化：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        int[][] memo;
-    
-        public int minPathSum(int[][] grid) {
-            int m = grid.length;
-            int n = grid[0].length;
-            // 构造备忘录，初始值全部设为 -1
-            memo = new int[m][n];
-            for (int[] row : memo)
-                Arrays.fill(row, -1);
-    
-            return dp(grid, m - 1, n - 1);
+```java
+class Solution {
+    int[][] memo;
+
+    public int minPathSum(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        // 构造备忘录，初始值全部设为 -1
+        memo = new int[m][n];
+        for (int[] row : memo)
+            Arrays.fill(row, -1);
+
+        return dp(grid, m - 1, n - 1);
+    }
+
+    int dp(int[][] grid, int i, int j) {
+        // base case
+        if (i == 0 && j == 0) {
+            return grid[0][0];
         }
-    
-        int dp(int[][] grid, int i, int j) {
-            // base case
-            if (i == 0 && j == 0) {
-                return grid[0][0];
-            }
-            if (i < 0 || j < 0) {
-                return Integer.MAX_VALUE;
-            }
-            // 避免重复计算
-            if (memo[i][j] != -1) {
-                return memo[i][j];
-            }
-            // 将计算结果记入备忘录
-            memo[i][j] = Math.min(
-                    dp(grid, i - 1, j),
-                    dp(grid, i, j - 1)
-            ) + grid[i][j];
-    
+        if (i < 0 || j < 0) {
+            return Integer.MAX_VALUE;
+        }
+        // 避免重复计算
+        if (memo[i][j] != -1) {
             return memo[i][j];
         }
+        // 将计算结果记入备忘录
+        memo[i][j] = Math.min(
+                dp(grid, i - 1, j),
+                dp(grid, i, j - 1)
+        ) + grid[i][j];
+
+        return memo[i][j];
     }
+}
+``` 
 
 算法可视化
 
@@ -200,48 +194,48 @@ CC++GoJavaJavaScriptPython
 
 状态转移方程当然不会变的，`dp[i][j]` 依然取决于 `dp[i-1][j]` 和 `dp[i][j-1]`，直接看代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int minPathSum(int[][] grid) {
-            int m = grid.length;
-            int n = grid[0].length;
-            int[][] dp = new int[m][n];
-    
-            // **** base case ****
-            dp[0][0] = grid[0][0];
-    
-            for (int i = 1; i < m; i++)
-                dp[i][0] = dp[i - 1][0] + grid[i][0];
-            
-            for (int j = 1; j < n; j++)
-                dp[0][j] = dp[0][j - 1] + grid[0][j];        
-            // *******************
-            
-            // 状态转移
-            for (int i = 1; i < m; i++) {
-                for (int j = 1; j < n; j++) {
-                    dp[i][j] = Math.min(
-                        dp[i - 1][j],
-                        dp[i][j - 1]
-                    ) + grid[i][j];
-                }
+```java
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int[][] dp = new int[m][n];
+
+        // **** base case ****
+        dp[0][0] = grid[0][0];
+
+        for (int i = 1; i < m; i++)
+            dp[i][0] = dp[i - 1][0] + grid[i][0];
+        
+        for (int j = 1; j < n; j++)
+            dp[0][j] = dp[0][j - 1] + grid[0][j];        
+        // *******************
+        
+        // 状态转移
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = Math.min(
+                    dp[i - 1][j],
+                    dp[i][j - 1]
+                ) + grid[i][j];
             }
-    
-            return dp[m - 1][n - 1];
         }
+
+        return dp[m - 1][n - 1];
     }
+}
+``` 
 
 **这个解法的 base case 看起来和递归解法略有不同，但实际上是一样的** 。
 
 因为状态转移为下面这段代码：
-    
-    
-    dp[i][j] = Math.min(
-        dp[i - 1][j],
-        dp[i][j - 1]
-    ) + grid[i][j];
+
+```
+dp[i][j] = Math.min(
+    dp[i - 1][j],
+    dp[i][j - 1]
+) + grid[i][j];
+``` 
 
 那如果 `i` 或者 `j` 等于 0 的时候，就会出现索引越界的错误。
 
@@ -249,27 +243,24 @@ CC++GoJavaJavaScriptPython
 
 `dp[0][..]` 和 `dp[..][0]` 的值怎么算呢？其实很简单，第一行和第一列的路径和只有下面这一种情况嘛：
 
-![](/images/algo/shortest-path/1.jpeg)
+![diagram](https://labuladong.online/images/algo/shortest-path/1.jpeg)
 
 那么按照 `dp` 数组的定义，`dp[i][0] = sum(grid[0..i][0]), dp[0][j] = sum(grid[0][0..j])`，也就是如下代码：
-    
-    
-    // **** base case ****
-    dp[0][0] = grid[0][0];
-    
-    for (int i = 1; i < m; i++)
-        dp[i][0] = dp[i - 1][0] + grid[i][0];
-    
-    for (int j = 1; j < n; j++)
-        dp[0][j] = dp[0][j - 1] + grid[0][j];        
-    // *******************
+
+```
+// **** base case ****
+dp[0][0] = grid[0][0];
+
+for (int i = 1; i < m; i++)
+    dp[i][0] = dp[i - 1][0] + grid[i][0];
+
+for (int j = 1; j < n; j++)
+    dp[0][j] = dp[0][j - 1] + grid[0][j];        
+// *******************
+``` 
 
 到这里，自底向上的迭代解法也搞定了，那有的读者可能又要问了，能不能优化一下算法的空间复杂度呢？
 
 前文 [动态规划的降维打击：空间压缩](</zh/algo/dynamic-programming/space-optimization/>) 说过降低 `dp` 数组的技巧，这里也是适用的，不过略微复杂些，本文由于篇幅所限就不写了，有兴趣的读者可以自己尝试一下。
 
 本文到此结束，下篇文章写一道进阶题目，更加巧妙和有趣，敬请期待~
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

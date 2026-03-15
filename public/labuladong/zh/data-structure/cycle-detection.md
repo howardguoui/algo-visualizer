@@ -20,7 +20,6 @@ LeetCode| 力扣| 难度
   * [图结构基础及通用实现](</zh/algo/data-structure-basic/graph-basic/>)
   * [图结构的 DFS/BFS 遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>)
 
-
 一句话总结
 
 用 DFS 的 `onPath` 数组或 BFS 的入度数组，可以判断有向图中是否存在环。
@@ -31,7 +30,7 @@ LeetCode| 力扣| 难度
 
 相对而言 BFS 解法从代码实现上看更简洁一些，但 DFS 解法有助于你进一步理解递归遍历数据结构的奥义，所以本文中我先讲 DFS 遍历的思路，再讲 BFS 遍历的思路。
 
-## ¶环检测算法（DFS 版本）
+## 环检测算法（DFS 版本）
 
 先来看看力扣第 207 题「[课程表](<https://leetcode.cn/problems/course-schedule/>)」：
 
@@ -43,22 +42,23 @@ LeetCode| 力扣| 难度
 
   * 例如，先修课程对 `[0, 1]` 表示：想要学习课程 `0` ，你需要先完成课程 `1` 。
 
-
 请你判断是否可能完成所有课程的学习？如果可以，返回 `true` ；否则，返回 `false` 。
 
 **示例 1：**
-    
-    
-    **输入：** numCourses = 2, prerequisites = [[1,0]]
-    **输出：** true
-    **解释：** 总共有 2 门课程。学习课程 1 之前，你需要完成课程 0 。这是可能的。
+
+```
+输入：numCourses = 2, prerequisites = [[1,0]]
+输出：true
+解释：总共有 2 门课程。学习课程 1 之前，你需要完成课程 0 。这是可能的。
+``` 
 
 **示例 2：**
-    
-    
-    **输入：** numCourses = 2, prerequisites = [[1,0],[0,1]]
-    **输出：** false
-    **解释：** 总共有 2 门课程。学习课程 1 之前，你需要先完成​课程 0 ；并且学习课程 0 之前，你还应先完成课程 1 。这是不可能的。
+
+```
+输入：numCourses = 2, prerequisites = [[1,0],[0,1]]
+输出：false
+解释：总共有 2 门课程。学习课程 1 之前，你需要先完成​课程 0 ；并且学习课程 0 之前，你还应先完成课程 1 。这是不可能的。
+``` 
 
 **提示：**
 
@@ -68,14 +68,12 @@ LeetCode| 力扣| 难度
   * `0 <= ai, bi < numCourses`
   * `prerequisites[i]` 中的所有课程对 **互不相同**
 
-
 题目来源：[力扣 207. 课程表](<https://leetcode.cn/problems/course-schedule/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 函数签名如下
-    boolean canFinish(int numCourses, int[][] prerequisites);
+```java
+// 函数签名如下
+boolean canFinish(int numCourses, int[][] prerequisites);
+``` 
 
 题目应该不难理解，什么时候无法修完所有课程？当存在循环依赖的时候。
 
@@ -87,7 +85,7 @@ CC++GoJavaJavaScriptPython
 
 所以我们可以根据题目输入的 `prerequisites` 数组生成一幅类似这样的图：
 
-![](/images/algo/topological-sort/1.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/1.jpeg)
 
 **如果发现这幅有向图中存在环，那就说明课程之间存在循环依赖，肯定没办法全部上完；反之，如果没有环，那么肯定能上完全部课程** 。
 
@@ -95,23 +93,22 @@ CC++GoJavaJavaScriptPython
 
 前文 [图结构的存储](</zh/algo/data-structure-basic/graph-basic/>) 写过图的两种存储形式，邻接矩阵和邻接表。这里我就用邻接表形式存储图吧，写一个建图函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-        // 图中共有 numCourses 个节点
-        List<Integer>[] graph = new LinkedList[numCourses];
-        for (int i = 0; i < numCourses; i++) {
-            graph[i] = new LinkedList<>();
-        }
-        for (int[] edge : prerequisites) {
-            int from = edge[1], to = edge[0];
-            // 添加一条从 from 指向 to 的有向边
-            // 边的方向是「被依赖」关系，即修完课程 from 才能修课程 to
-            graph[from].add(to);
-        }
-        return graph;
+```java
+List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
+    // 图中共有 numCourses 个节点
+    List<Integer>[] graph = new LinkedList[numCourses];
+    for (int i = 0; i < numCourses; i++) {
+        graph[i] = new LinkedList<>();
     }
+    for (int[] edge : prerequisites) {
+        int from = edge[1], to = edge[0];
+        // 添加一条从 from 指向 to 的有向边
+        // 边的方向是「被依赖」关系，即修完课程 from 才能修课程 to
+        graph[from].add(to);
+    }
+    return graph;
+}
+``` 
 
 图建出来了，怎么判断图中有没有环呢？
 
@@ -123,54 +120,53 @@ CC++GoJavaJavaScriptPython
 
 基于这个思路，先看第一版代码（会超时）：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // 记录递归堆栈中的节点
-        boolean[] onPath;
-        // 记录图中是否有环
-        boolean hasCycle = false;
-    
-        public boolean canFinish(int numCourses, int[][] prerequisites) {
-            List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-            
-            onPath = new boolean[numCourses];
-            
-            for (int i = 0; i < numCourses; i++) {
-                // 遍历图中的所有节点
-                traverse(graph, i);
-            }
-            // 只要没有循环依赖可以完成所有课程
-            return !hasCycle;
+```java
+class Solution {
+    // 记录递归堆栈中的节点
+    boolean[] onPath;
+    // 记录图中是否有环
+    boolean hasCycle = false;
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+        
+        onPath = new boolean[numCourses];
+        
+        for (int i = 0; i < numCourses; i++) {
+            // 遍历图中的所有节点
+            traverse(graph, i);
         }
-    
-        // 图遍历函数，遍历所有路径
-        void traverse(List<Integer>[] graph, int s) {
-            if (hasCycle) {
-                // 如果已经找到了环，也不用再遍历了
-                return;
-            }
-    
-            if (onPath[s]) {
-                // s 已经在递归路径上，说明成环了
-                hasCycle = true; ![](/images/algo/topological-sort/4.jpeg)
-                return;
-            }
-            
-            // 前序代码位置
-            onPath[s] = true;
-            for (int t : graph[s]) {
-                traverse(graph, t);
-            }
-            // 后序代码位置
-            onPath[s] = false;
-        }
-    
-        List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-            // 代码见前文
-        }
+        // 只要没有循环依赖可以完成所有课程
+        return !hasCycle;
     }
+
+    // 图遍历函数，遍历所有路径
+    void traverse(List<Integer>[] graph, int s) {
+        if (hasCycle) {
+            // 如果已经找到了环，也不用再遍历了
+            return;
+        }
+
+        if (onPath[s]) {
+            // s 已经在递归路径上，说明成环了
+            hasCycle = true; 
+            return;
+        }
+        
+        // 前序代码位置
+        onPath[s] = true;
+        for (int t : graph[s]) {
+            traverse(graph, t);
+        }
+        // 后序代码位置
+        onPath[s] = false;
+    }
+
+    List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
+        // 代码见前文
+    }
+}
+``` 
 
 注意图中并不是所有节点都相连，所以要用一个 for 循环将所有节点都作为起点调用一次 DFS 搜索算法。
 
@@ -188,64 +184,62 @@ CC++GoJavaJavaScriptPython
 
 优化后的代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // 记录一次递归堆栈中的节点
-        boolean[] onPath;
-        // 记录节点是否被遍历过
-        boolean[] visited;
-        // 记录图中是否有环
-        boolean hasCycle = false;
-    
-        public boolean canFinish(int numCourses, int[][] prerequisites) {
-            List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-            
-            onPath = new boolean[numCourses];
-            visited = new boolean[numCourses];
-            
-            for (int i = 0; i < numCourses; i++) {
-                // 遍历图中的所有节点
-                traverse(graph, i);
-            }
-            // 只要没有循环依赖可以完成所有课程
-            return !hasCycle;
+```java
+class Solution {
+    // 记录一次递归堆栈中的节点
+    boolean[] onPath;
+    // 记录节点是否被遍历过
+    boolean[] visited;
+    // 记录图中是否有环
+    boolean hasCycle = false;
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+        
+        onPath = new boolean[numCourses];
+        visited = new boolean[numCourses];
+        
+        for (int i = 0; i < numCourses; i++) {
+            // 遍历图中的所有节点
+            traverse(graph, i);
         }
-    
-        // 图遍历函数，遍历所有路径
-        void traverse(List<Integer>[] graph, int s) {
-            if (hasCycle) {
-                // 如果已经找到了环，也不用再遍历了
-                return;
-            }
-    
-            if (onPath[s]) {
-                // s 已经在递归路径上，说明成环了
-                hasCycle = true; ![](/images/algo/topological-sort/4.jpeg)
-                return;
-            }
-            
-            if (visited[s]) {
-                // 不用再重复遍历已遍历过的节点
-                return;
-            }
-    
-            // 前序代码位置
-            visited[s] = true;
-            onPath[s] = true;
-            for (int t : graph[s]) {
-                traverse(graph, t);
-            }
-            // 后序代码位置
-            onPath[s] = false;
-        }
-    
-    
-        List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
-            // 代码见前文
-        }
+        // 只要没有循环依赖可以完成所有课程
+        return !hasCycle;
     }
+
+    // 图遍历函数，遍历所有路径
+    void traverse(List<Integer>[] graph, int s) {
+        if (hasCycle) {
+            // 如果已经找到了环，也不用再遍历了
+            return;
+        }
+
+        if (onPath[s]) {
+            // s 已经在递归路径上，说明成环了
+            hasCycle = true; 
+            return;
+        }
+        
+        if (visited[s]) {
+            // 不用再重复遍历已遍历过的节点
+            return;
+        }
+
+        // 前序代码位置
+        visited[s] = true;
+        onPath[s] = true;
+        for (int t : graph[s]) {
+            traverse(graph, t);
+        }
+        // 后序代码位置
+        onPath[s] = false;
+    }
+
+    List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
+        // 代码见前文
+    }
+}
+``` 
 
 `visited` 为 true 的节点为绿色，`onPath` 为 true 的节点为橙色。
 
@@ -261,7 +255,7 @@ CC++GoJavaJavaScriptPython
 
 不是的，假设从节点 `0` 开始遍历，下图中绿色的节点是递归的路径，它们在 `onPath` 中的值都是 true，但显然成环的节点只是其中的一部分：
 
-![](/images/algo/topological-sort/4.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/4.jpeg)
 
 这个问题大家可以先思考一下，办法肯定有很多啦，我只给出一个常用的解法。
 
@@ -271,7 +265,7 @@ CC++GoJavaJavaScriptPython
 
 比如按照上图绿色的遍历顺序，`path` 从栈底到栈顶的元素就是 `[0,4,5,9,8,7,6]`。此时又一次遇到了节点 `5`，那么就可以知道 `[5,9,8,7,6]` 这部分是环了。
 
-## ¶环检测算法（BFS 版本）
+## 环检测算法（BFS 版本）
 
 上面讲了用 DFS 算法利用 `onPath` 数组判断是否存在环，接下来看看如何用 BFS 算法来解决这个问题。
 
@@ -279,56 +273,55 @@ CC++GoJavaJavaScriptPython
 
 直接看 BFS 算法的解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public boolean canFinish(int numCourses, int[][] prerequisites) {
-            // 建图，有向边代表「被依赖」关系
-            List<Integer>[] graph = buildGraph(numCourses, prerequisites);
-            // 构建入度数组
-            int[] indegree = new int[numCourses];
-            for (int[] edge : prerequisites) {
-                int from = edge[1], to = edge[0];
-                // 节点 to 的入度加一
-                indegree[to]++;
+```java
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // 建图，有向边代表「被依赖」关系
+        List<Integer>[] graph = buildGraph(numCourses, prerequisites);
+        // 构建入度数组
+        int[] indegree = new int[numCourses];
+        for (int[] edge : prerequisites) {
+            int from = edge[1], to = edge[0];
+            // 节点 to 的入度加一
+            indegree[to]++;
+        }
+
+        // 根据入度初始化队列中的节点
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; i++) {
+            if (indegree[i] == 0) {
+                // 节点 i 没有入度，即没有依赖的节点
+                // 可以作为拓扑排序的起点，加入队列
+                q.offer(i); 
             }
-    
-            // 根据入度初始化队列中的节点
-            Queue<Integer> q = new LinkedList<>();
-            for (int i = 0; i < numCourses; i++) {
-                if (indegree[i] == 0) {
-                    // 节点 i 没有入度，即没有依赖的节点
-                    // 可以作为拓扑排序的起点，加入队列
-                    q.offer(i); ![](/images/algo/topological-sort/6.jpeg)
+        }
+
+        // 记录遍历的节点个数
+        int count = 0;
+        // 开始执行 BFS 循环
+        while (!q.isEmpty()) {
+            // 弹出节点 cur，并将它指向的节点的入度减一
+            int cur = q.poll();
+            count++;
+            for (int next : graph[cur]) { 
+                indegree[next]--;
+                if (indegree[next] == 0) {
+                    // 如果入度变为 0，说明 next 依赖的节点都已被遍历
+                    q.offer(next);
                 }
             }
-    
-            // 记录遍历的节点个数
-            int count = 0;
-            // 开始执行 BFS 循环
-            while (!q.isEmpty()) {
-                // 弹出节点 cur，并将它指向的节点的入度减一
-                int cur = q.poll();
-                count++;
-                for (int next : graph[cur]) { ![](/images/algo/topological-sort/7.jpeg)
-                    indegree[next]--;
-                    if (indegree[next] == 0) {
-                        // 如果入度变为 0，说明 next 依赖的节点都已被遍历
-                        q.offer(next);
-                    }
-                }
-            }
-    
-            // 如果所有节点都被遍历过，说明不成环
-            return count == numCourses;
         }
-    
-        // 建图函数
-        List<Integer>[] buildGraph(int n, int[][] edges) {
-            // 见前文
-        }
+
+        // 如果所有节点都被遍历过，说明不成环
+        return count == numCourses;
     }
+
+    // 建图函数
+    List<Integer>[] buildGraph(int n, int[][] edges) {
+        // 见前文
+    }
+}
+``` 
 
 我先总结下这段 BFS 算法的思路：
 
@@ -344,27 +337,27 @@ CC++GoJavaJavaScriptPython
 
 我画个图你就容易理解了，比如下面这幅图，节点中的数字代表该节点的入度：
 
-![](/images/algo/topological-sort/5.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/5.jpeg)
 
 队列进行初始化后，入度为 0 的节点首先被加入队列：
 
-![](/images/algo/topological-sort/6.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/6.jpeg)
 
 开始执行 BFS 循环，从队列中弹出一个节点，减少相邻节点的入度，同时将新产生的入度为 0 的节点加入队列：
 
-![](/images/algo/topological-sort/7.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/7.jpeg)
 
 继续从队列弹出节点，并减少相邻节点的入度，这一次没有新产生的入度为 0 的节点：
 
-![](/images/algo/topological-sort/8.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/8.jpeg)
 
 继续从队列弹出节点，并减少相邻节点的入度，同时将新产生的入度为 0 的节点加入队列：
 
-![](/images/algo/topological-sort/9.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/9.jpeg)
 
 继续弹出节点，直到队列为空：
 
-![](/images/algo/topological-sort/10.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/10.jpeg)
 
 这时候，所有节点都被遍历过一遍，也就说明图中不存在环。
 
@@ -372,11 +365,11 @@ CC++GoJavaJavaScriptPython
 
 比如下面这种情况，队列中最初只有一个入度为 0 的节点：
 
-![](/images/algo/topological-sort/11.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/11.jpeg)
 
 当弹出这个节点并减小相邻节点的入度之后队列为空，但并没有产生新的入度为 0 的节点加入队列，所以 BFS 算法终止：
 
-![](/images/algo/topological-sort/12.jpeg)
+![diagram](https://labuladong.online/images/algo/topological-sort/12.jpeg)
 
 你看到了，如果存在节点没有被遍历，那么说明图中存在环，现在回头去看 BFS 的代码，你应该就很容易理解其中的逻辑了。
 
@@ -385,7 +378,3 @@ CC++GoJavaJavaScriptPython
 最后留一个思考题：
 
 对于 BFS 的环检测算法，如果问你形成环的节点具体是哪些，你应该如何实现呢？
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

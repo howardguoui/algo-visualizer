@@ -19,12 +19,7 @@
   * [二叉树心法（思路篇）](</zh/algo/data-structure/binary-tree-part1/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
 二叉树的题目还会夹杂着一些其他算法技巧一起考你，不过都离不开二叉树的遍历框架，看几道例题，体会一下。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -37,6 +32,5 @@ Loading comments...
   * 2096\. 从二叉树一个节点到另一个节点每一步的方向
   * 572\. 另一棵树的子树
   * 1367\. 二叉树中的链表
-
 
 AI 助教

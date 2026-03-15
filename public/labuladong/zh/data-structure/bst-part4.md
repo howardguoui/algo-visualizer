@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
   * [二叉树的 DFS/BFS 遍历](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
 本文是承接 [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>) 的第五篇文章，主要讲二叉树后序位置的妙用，复述下前文关于后序遍历的描述：
 
 > 前序位置的代码只能从函数参数中获取父节点传递来的数据，而后序位置的代码不仅可以获取参数数据，还可以获取到子树通过函数返回值传递回来的数据。
@@ -34,15 +33,14 @@ LeetCode| 力扣| 难度
 
 我们再看看后序遍历的代码框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void traverse(TreeNode root) {
-        traverse(root.left);
-        traverse(root.right);
-        // 后序代码的位置
-        // 在这里处理当前节点
-    }
+```java
+void traverse(TreeNode root) {
+    traverse(root.left);
+    traverse(root.right);
+    // 后序代码的位置
+    // 在这里处理当前节点
+}
+``` 
 
 看这个代码框架，你说什么情况下需要在后序位置写代码呢？
 
@@ -50,11 +48,6 @@ CC++GoJavaJavaScriptPython
 
 下面就讲一个经典的算法问题，可以直观地体会到后序位置的妙用。这是力扣第 1373 题「[二叉搜索子树的最大键值和](<https://leetcode.cn/problems/maximum-sum-bst-in-binary-tree/>)」，函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int maxSumBST(TreeNode root);
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
+```java
+int maxSumBST(TreeNode root);
+```

@@ -19,7 +19,7 @@ In this chapter, we will use the most basic static array and try to build our ow
 
 With dynamic arrays, you can also build more complex data structures later, like queues, stacks, and hash tables.
 
-## ¶Static Array
+## Static Array
 
 You must decide the element type and amount when you create a static array. Only languages like C++, Java, and Golang let you make a static array. Languages like Python and JavaScript do not.
 
@@ -27,18 +27,17 @@ Static arrays are low-level and rarely used in everyday software development or 
 
 Here’s how to define a static array:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // define a static array of size 10
-    int[] arr = new int[10];
-    
-    // assign values using indices
-    arr[0] = 1;
-    arr[1] = 2;
-    
-    // retrieve values using indices
-    int a = arr[0];
+```java
+// define a static array of size 10
+int[] arr = new int[10];
+
+// assign values using indices
+arr[0] = 1;
+arr[1] = 2;
+
+// retrieve values using indices
+int a = arr[0];
+``` 
 
 That's it. There is not much more you can do with it.
 
@@ -47,12 +46,10 @@ Let’s look at C++ as an example. What happens when we write `int arr[10]`? Her
   1. It creates a continuous piece of memory in RAM, with a size of `10 * sizeof(int)` bytes. In most systems, one int is 4 bytes, so the block uses 40 bytes.
   2. It defines a variable called `arr` that holds the address of the start of this memory.
 
-
 So what does `arr[1] = 2` do? Here’s how it works:
 
   1. It calculates the address by taking the array’s starting address and adding `1 * sizeof(int)` bytes (4 bytes) to reach the second item.
   2. It writes the number `2` into the 4 bytes that start at this address.
-
 
 For Beginners
 
@@ -64,7 +61,6 @@ When I first started college and learned C, some people struggled with the diffe
 
   3. If you don’t use something like `memset` to set the initial values, the values in the array will be random. That's because `int arr[10]` only asks the operating system for a memory block—it doesn’t know what was stored there before. So we usually use `memset` to fill the array with a known value before using it.
 
-
 All of this is about C/C++. When you use Java or Golang, the system will set all new array items to 0 for you, so you don't need to initialize them yourself.
 
 Let me organize the logic. A static array is a **continuous block of memory**. The statement `int arr[10]` tells us:
@@ -73,20 +69,19 @@ Let me organize the logic. A static array is a **continuous block of memory**. T
   2. We know the type of each element (e.g. int), so we know the size (for int, 4 bytes or 32 bits).
   3. The block is continuous, and total size is `10 * sizeof(int)`, or 40 bytes.
 
-
 **Because of this, we get the special power of arrays: random access. As long as we know the index, we can get its value in O(1)O(1)O(1) time.**
 
 That is, we use the start address and the index to find the memory location of any element. Memory lookup is considered O(1)O(1)O(1) in computers, so arrays allow O(1)O(1)O(1) random access.
 
 But, a person’s best strength is also sometimes their biggest weakness. This feature of continuous memory makes arrays powerful, but also causes some problems, which we will talk about next.
 
-## ¶Add, Delete, Query, and Update
+## Add, Delete, Query, and Update
 
 **The main job of a data structure is to add, delete, search, and update elements.**
 
 Earlier, we talked about the basic idea behind arrays and mainly explained how to read or change the value at a given index—that is, "query" and "update". Now, let's see how "add" and "delete" are done in arrays.
 
-### ¶Add
+### Add
 
 Adding elements to a static array can be a bit tricky, depending on where you want to add them.
 
@@ -96,23 +91,22 @@ For example, I have an array of size 10 with 4 elements. If I want to add a new 
 
 It's simple. Just set the value at the next available index. Here is how the code usually looks:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // An array of size 10 already contains 4 elements
-    int[] arr = new int[10];
-    for (int i = 0; i < 4; i++) {
-        arr[i] = i;
-    }
-    
-    // Now want to append an element 4 at the end of the array
-    arr[4] = 4;
-    
-    // Then append an element 5 at the end of the array
-    arr[5] = 5;
-    
-    // And so on
-    // ...
+```java
+// An array of size 10 already contains 4 elements
+int[] arr = new int[10];
+for (int i = 0; i < 4; i++) {
+    arr[i] = i;
+}
+
+// Now want to append an element 4 at the end of the array
+arr[4] = 4;
+
+// Then append an element 5 at the end of the array
+arr[5] = 5;
+
+// And so on
+// ...
+``` 
 
 **Since we are just setting a value at a specific index, appending an element to the end of the array takes O(1)O(1)O(1) time.**
 
@@ -122,25 +116,24 @@ Suppose I have an array `arr` of size 10, and the first 4 spots have values. If 
 
 Now, we need to "move data", making space for the new element. The steps are as follows:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // An array of size 10 already has 4 elements
-    int[] arr = new int[10];
-    for (int i = 0; i < 4; i++) {
-        arr[i] = i;
-    }
-    
-    // Insert element 666 at the index 2
-    // Need to move the elements from the index 2 and onwards one step back
-    // Note that we should traverse the array backwards to avoid
-    // overwriting existing elements, refer to the visual panel below if unclear
-    for (int i = 4; i > 2; i--) {
-        arr[i] = arr[i - 1];
-    }
-    
-    // Now the 3rd position is open, and we can insert the new element
-    arr[2] = 666;
+```java
+// An array of size 10 already has 4 elements
+int[] arr = new int[10];
+for (int i = 0; i < 4; i++) {
+    arr[i] = i;
+}
+
+// Insert element 666 at the index 2
+// Need to move the elements from the index 2 and onwards one step back
+// Note that we should traverse the array backwards to avoid
+// overwriting existing elements, refer to the visual panel below if unclear
+for (int i = 4; i > 2; i--) {
+    arr[i] = arr[i - 1];
+}
+
+// Now the 3rd position is open, and we can insert the new element
+arr[2] = 666;
+``` 
 
 Algorithm Visualization
 
@@ -160,32 +153,31 @@ For example, I create a new, larger array `int arr[20]`. I copy over the old 10 
 
 The code logic is something like this:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // the array of size 10 is already full
-    int[] arr = new int[10];
-    for (int i = 0; i < 10; i++) {
-        arr[i] = i;
-    }
-    
-    // now want to append an element 10 at the end of the array
-    // need to expand the array first
-    int[] newArr = new int[20];
-    // copy the original 10 elements
-    for (int i = 0; i < 10; i++) {
-        newArr[i] = arr[i];
-    }
-    
-    // the old array's memory space will be handled by the garbage collector
-    // ...
-    
-    // append the new element in the new larger array
-    newArr[10] = 10;
+```java
+// the array of size 10 is already full
+int[] arr = new int[10];
+for (int i = 0; i < 10; i++) {
+    arr[i] = i;
+}
+
+// now want to append an element 10 at the end of the array
+// need to expand the array first
+int[] newArr = new int[20];
+// copy the original 10 elements
+for (int i = 0; i < 10; i++) {
+    newArr[i] = arr[i];
+}
+
+// the old array's memory space will be handled by the garbage collector
+// ...
+
+// append the new element in the new larger array
+newArr[10] = 10;
+``` 
 
 **So, expanding an array means creating a new bigger array and copying all the values, which takes O(N)O(N)O(N) time.**
 
-### ¶Delete
+### Delete
 
 Deleting elements is similar to adding elements. Different situations need different approaches.
 
@@ -197,17 +189,16 @@ This is easy. Just set the last element to a special value to show it is deleted
 
 Here’s how the code looks:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // An array of size 10 already contains 5 elements
-    int[] arr = new int[10];
-    for (int i = 0; i < 5; i++) {
-        arr[i] = i;
-    }
-    
-    // Delete the last element, temporarily use -1 to represent the deleted element
-    arr[4] = -1;
+```java
+// An array of size 10 already contains 5 elements
+int[] arr = new int[10];
+for (int i = 0; i < 5; i++) {
+    arr[i] = i;
+}
+
+// Delete the last element, temporarily use -1 to represent the deleted element
+arr[4] = -1;
+``` 
 
 Case 2: Delete an element in the middle of the array
 
@@ -217,31 +208,30 @@ Again, we need to "move data". Move all elements after the deleted one forward b
 
 Here is the code logic:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // An array of size 10 already contains 5 elements
-    int[] arr = new int[10];
-    for (int i = 0; i < 5; i++) {
-        arr[i] = i;
-    }
-    
-    // delete arr[1]
-    // need to move all elements after arr[1] one position forward
-    // note that you should traverse the array forward to avoid
-    // overwriting, refer to the visualization panel below if you don't understand
-    for (int i = 1; i < 4; i++) {
-        arr[i] = arr[i + 1];
-    }
-    
-    // set the last element to -1 to indicate deletion
-    arr[4] = -1;
+```java
+// An array of size 10 already contains 5 elements
+int[] arr = new int[10];
+for (int i = 0; i < 5; i++) {
+    arr[i] = i;
+}
+
+// delete arr[1]
+// need to move all elements after arr[1] one position forward
+// note that you should traverse the array forward to avoid
+// overwriting, refer to the visualization panel below if you don't understand
+for (int i = 1; i < 4; i++) {
+    arr[i] = arr[i + 1];
+}
+
+// set the last element to -1 to indicate deletion
+arr[4] = -1;
+``` 
 
 Algorithm Visualization
 
 **So, deleting an element in the middle of the array takes O(N)O(N)O(N) time because you have to move elements for everything to stay in order.**
 
-### ¶Summary
+### Summary
 
 To sum up, the time complexity for the main operations of static arrays is:
 
@@ -254,16 +244,15 @@ To sum up, the time complexity for the main operations of static arrays is:
   * Access: Get the value at a given index, time complexity is O(1)O(1)O(1)
   * Update: Modify the value at a given index, time complexity is O(1)O(1)O(1)
 
-
 Some readers might ask: didn't we just discuss the array resizing operation? When an array expands, it needs to create a new space and copy data, which takes O(N)O(N)O(N) time. Why isn't this included in the "add" operation's complexity?
 
-That's a good question. But resizing doesn't happen every time you add an element. We use "amortized time complexity" to explain this. I have explained this in detail in [How to Analyze Time and Space Complexity](/en/algo/essential-technique/complexity-analysis/). I won't go further into that here.
+That's a good question. But resizing doesn't happen every time you add an element. We use "amortized time complexity" to explain this. I have explained this in detail in [How to Analyze Time and Space Complexity](</en/algo/essential-technique/complexity-analysis/>). I won't go further into that here.
 
 Another thing beginners should notice: we say the access and update operations are O(1)O(1)O(1) complexity, but this is only true when you know the index. If you are given a value and asked to find its index in the array, you have to check the whole array. That takes O(N)O(N)O(N) time.
 
 So, it is important to understand the principles, not just memorize the concepts. If you understand the principles, you can figure out the concepts by yourself.
 
-## ¶Dynamic Arrays
+## Dynamic Arrays
 
 We talked about static arrays and their limitations. Now let's talk about dynamic arrays. A dynamic array is an upgrade of the static array, and it is one of the most commonly used data structures in real software development and algorithm problems.
 
@@ -273,44 +262,41 @@ First, do not think that dynamic arrays can solve the problem of slow insert and
 
 Here are some ways to use dynamic arrays in different programming languages:
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // create a dynamic array
-    // no need to explicitly specify array size, it will
-    // automatically resize based on the number of elements stored
-    ArrayList<Integer> arr = new ArrayList<>();
-    
-    for (int i = 0; i < 10; i++) {
-        // append elements at the end, time complexity O(1)
-        arr.add(i);
-    }
-    
-    // insert elements in the middle, time complexity O(N)
-    // insert element 666 at index 2
-    arr.add(2, 666);
-    
-    // insert elements at the beginning, time complexity O(N)
-    arr.add(0, -1);
-    
-    // remove the last element, time complexity O(1)
-    arr.remove(arr.size() - 1);
-    
-    // remove elements in the middle, time complexity O(N)
-    // remove element at index 2
-    arr.remove(2);
-    
-    // query element by index, time complexity O(1)
-    int a = arr.get(0);
-    
-    // modify element by index, time complexity O(1)
-    arr.set(0, 100);
-    
-    // find index by element value, time complexity O(N)
-    int index = arr.indexOf(666);
+```java
+// create a dynamic array
+// no need to explicitly specify array size, it will
+// automatically resize based on the number of elements stored
+ArrayList<Integer> arr = new ArrayList<>();
+
+for (int i = 0; i < 10; i++) {
+    // append elements at the end, time complexity O(1)
+    arr.add(i);
+}
+
+// insert elements in the middle, time complexity O(N)
+// insert element 666 at index 2
+arr.add(2, 666);
+
+// insert elements at the beginning, time complexity O(N)
+arr.add(0, -1);
+
+// remove the last element, time complexity O(1)
+arr.remove(arr.size() - 1);
+
+// remove elements in the middle, time complexity O(N)
+// remove element at index 2
+arr.remove(2);
+
+// query element by index, time complexity O(1)
+int a = arr.get(0);
+
+// modify element by index, time complexity O(1)
+arr.set(0, 100);
+
+// find index by element value, time complexity O(N)
+int index = arr.indexOf(666);
+``` 
 
 In the following chapters, I will teach you step by step how to implement a dynamic array, so you can understand its internal workings better.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

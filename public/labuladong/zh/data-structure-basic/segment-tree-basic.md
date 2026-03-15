@@ -14,7 +14,6 @@
   * [二叉树基础及常见类型](</zh/algo/data-structure-basic/binary-tree-basic/>)
   * [二叉树的递归/层序遍历](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
 
-
 一句话总结
 
 线段树是 [二叉树结构](</zh/algo/data-structure-basic/binary-tree-basic/>) 的衍生，用于高效解决数组的区间查询和区间动态修改问题。
@@ -43,12 +42,8 @@
 
 下面我们来介绍线段树的使用场景和核心原理。
 
-## ¶使用场景
+## 使用场景
 
 在 [选择排序](</zh/algo/data-structure-basic/select-sort/>) 中，我们会尝试解决一个需求，就是计算 `nums` 数组中从索引 `i` 开始到末尾的最小值。
 
 我们将提出一种使用 `suffixMin` 数组的优化尝试，即提前预计算一个 `suffixMin` 数组，使得 `suffixMin[i] = min(nums[i..])`，这样就可以在 O(1)O(1)O(1) 时间内查询 `nums[i..]` 的最小值：
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

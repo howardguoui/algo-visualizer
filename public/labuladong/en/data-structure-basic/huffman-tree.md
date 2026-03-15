@@ -11,8 +11,7 @@ Prerequisite
 
 Before reading this article, you should first learn:
 
-  * [Basics of Binary Trees and Common Types](/en/algo/data-structure-basic/binary-tree-basic/)
-
+  * [Basics of Binary Trees and Common Types](</en/algo/data-structure-basic/binary-tree-basic/>)
 
 In One Sentence
 
@@ -22,7 +21,7 @@ This article will introduce the idea behind Huffman coding, and compare it with 
 
 The actual code will be shown in the data structure design chapter, where you will build a compression program based on Huffman coding.
 
-## ¶A Brief Look at Data Compression
+## A Brief Look at Data Compression
 
 We can divide data compression algorithms into two big categories: **lossless compression** and **lossy compression**.
 
@@ -39,7 +38,6 @@ Now think about a few questions:
   1. How can lossy compression drop information but still keep the image quality acceptable?
 
   2. For lossy compression, it is clear that we trade some information for less space. But how does lossless compression reduce size without losing any information?
-
 
 First, lossy compression does reduce quality. It is just that the loss is still within the range that humans can accept.
 
@@ -59,7 +57,7 @@ So there is no “perfect” compression algorithm. We must balance generality, 
 
 The Huffman coding explained in this article is a general lossless compression algorithm. When we give the original data to the Huffman algorithm, we get compressed data plus a code table. During decoding, we use the code table to restore the original data.
 
-## ¶Fixed-Length Encoding vs Variable-Length Encoding
+## Fixed-Length Encoding vs Variable-Length Encoding
 
 Since we are talking about encoding and decoding, we must talk about fixed-length encoding and variable-length encoding.
 
@@ -83,7 +81,6 @@ For example:
   * `b` → `01`
   * `c` → `10`
 
-
 Then `aaabacc` is encoded as `00000001001010`, with length 14 bits.
 
 This is called **fixed-length encoding** , because each character uses 2 bits.
@@ -98,10 +95,9 @@ Yes, this is **variable-length encoding**. For example:
   * `b` → `10`
   * `c` → `11`
 
-
 Then `aaabacc` is encoded as `0001001111`, length 10 bits, which is better than the fixed-length encoding.
 
-## ¶The Difficulties of Variable-Length Encoding
+## The Difficulties of Variable-Length Encoding
 
 Two Main Difficulties
 
@@ -111,7 +107,6 @@ Two Main Difficulties
 
   3. How to make decoding efficient?
 
-
 Let's look closely at the example `aaabacc` above.
 
 This encoding scheme has no ambiguity:
@@ -120,13 +115,11 @@ This encoding scheme has no ambiguity:
   * `b` is encoded as `10`
   * `c` is encoded as `11`
 
-
 But if you encode `a` as `1`, then there is ambiguity between the codes for `a` and `c`:
 
   * `a` is encoded as `1`
   * `b` is encoded as `10`
   * `c` is encoded as `11`
-
 
 The string `aaabacc` would be encoded as binary `11111011111`, but now the codes for `a` and `c` are confusing. `11` could be decoded as `c` or as `aa`. So you cannot decode the original data correctly.
 
@@ -140,19 +133,19 @@ Some readers might say, what about this encoding scheme:
   * `b` is encoded as `10`
   * `c` is encoded as `100`
 
-
 Although the codes have the same prefix, you could add extra logic when decoding:
 
 When you read a `1`, you look ahead two more bits to see if you can match `10` or `100`. Then you decide how to decode.
 
 This can make decoding unique, **but the compression rate is low, and decoding is slow**. The look-ahead logic acts like a nested for loop:
-    
-    
-    for (int i = 0; i < N; i++) {
-        for (int j = 1; j <= K; j++) {
-            ...
-        }
+
+```
+for (int i = 0; i < N; i++) {
+    for (int j = 1; j <= K; j++) {
+        ...
     }
+}
+``` 
 
 Suppose the longest code length is KKK, and the total encoded data length is NNN, then the decoding time complexity is O(NK)O(NK)O(NK).
 
@@ -161,5 +154,3 @@ If you make sure that no code is a prefix of another, you don't need to look ahe
 In real encoding and decoding, NNN is usually large. Even if KKK is small, decoding several times slower is still a big problem. So we want our algorithm's time complexity to be O(N)O(N)O(N), and the compression rate to be as high as possible.
 
 Last updated: 03/14/2026, 12:17 AM
-
-Loading comments...

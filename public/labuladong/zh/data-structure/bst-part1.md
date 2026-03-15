@@ -22,7 +22,6 @@ LeetCode| 力扣| 难度
   * [二叉树结构基础](</zh/algo/data-structure-basic/binary-tree-basic/>)
   * [二叉树的 DFS/BFS 遍历](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
 
-
 前文手把手带你刷二叉树已经写了 [思维篇](</zh/algo/data-structure/binary-tree-part1/>)，[构造篇](</zh/algo/data-structure/binary-tree-part2/>)，[后序篇](</zh/algo/data-structure/binary-tree-part3/>) 和 [序列化篇](</zh/algo/data-structure/serialize-and-deserialize-binary-tree/>)。
 
 今天开启二叉搜索树（Binary Search Tree，后文简写 BST）的系列文章，手把手带你刷 BST。
@@ -39,19 +38,14 @@ LeetCode| 力扣| 难度
 
 也就是说，如果输入一棵 BST，以下代码可以将 BST 中每个节点的值升序打印出来：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void traverse(TreeNode root) {
-        if (root == null) return;
-        traverse(root.left);
-        // 中序遍历代码位置
-        print(root.val);
-        traverse(root.right);
-    }
+```java
+void traverse(TreeNode root) {
+    if (root == null) return;
+    traverse(root.left);
+    // 中序遍历代码位置
+    print(root.val);
+    traverse(root.right);
+}
+``` 
 
 那么根据这个性质，我们来做两道算法题。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

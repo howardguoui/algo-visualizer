@@ -19,12 +19,7 @@
   * [二叉树心法（思路篇）](</zh/algo/data-structure/binary-tree-part1/>)
   * [二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>)
 
-
 如果让你在二叉树中的某些节点上做文章，一般来说也可以直接用遍历的思维模式。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -35,6 +30,5 @@ Loading comments...
   * 993\. 二叉树的堂兄弟节点
   * 1315\. 祖父节点值为偶数的节点和
   * 1448\. 统计二叉树中好节点的数目
-
 
 AI 助教

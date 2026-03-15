@@ -17,9 +17,7 @@
 
 全文没有什么硬核的代码，都是我的经验之谈，肯定能帮你少走弯路，更透彻地理解和掌握算法。
 
-加载思维导图...
-
-## ¶总结一切数据结构和算法
+## 总结一切数据结构和算法
 
 种种数据结构，皆为**数组** （顺序存储）和**链表** （链式存储）的变换。
 
@@ -33,7 +31,7 @@
 
 如果不理解，那么我就用下面的几千字，以及后面的几十篇文章和习题，来阐明上述的两句总结。大家在学习的时候，时刻品味这两句话，会大幅提高学习效率。
 
-## ¶数据结构的存储方式
+## 数据结构的存储方式
 
 **数据结构的存储方式只有两种：[数组（顺序存储）](</zh/algo/data-structure-basic/array-basic/>) 和 [链表（链式存储）](</zh/algo/data-structure-basic/linkedlist-basic/>)**。
 
@@ -55,7 +53,7 @@
 
 **[链表](</zh/algo/data-structure-basic/linkedlist-basic/>)** 因为元素不连续，而是靠指针指向下一个元素的位置，所以不存在数组的扩容问题；如果知道某一元素的前驱和后驱，操作指针即可删除该元素或者插入新元素，时间复杂度 O(1)O(1)O(1)。但是正因为存储空间不连续，你无法根据一个索引算出对应元素的地址，所以不能随机访问；而且由于每个元素必须存储指向前后元素位置的指针，会消耗相对更多的储存空间。
 
-## ¶数据结构的基本操作
+## 数据结构的基本操作
 
 **对于任何数据结构，其基本操作无非遍历 + 访问，再具体一点就是：增删查改** 。
 
@@ -67,76 +65,72 @@
 
 数组遍历框架，典型的线性迭代结构：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    void traverse(int[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            // 迭代访问 arr[i]
-        }
+```java
+void traverse(int[] arr) {
+    for (int i = 0; i < arr.length; i++) {
+        // 迭代访问 arr[i]
     }
+}
+``` 
 
 链表遍历框架，兼具迭代和递归结构：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 基本的单链表节点
-    class ListNode {
-        int val;
-        ListNode next;
+```java
+// 基本的单链表节点
+class ListNode {
+    int val;
+    ListNode next;
+}
+
+void traverse(ListNode head) {
+    for (ListNode p = head; p != null; p = p.next) {
+        // 迭代访问 p.val
     }
-    
-    void traverse(ListNode head) {
-        for (ListNode p = head; p != null; p = p.next) {
-            // 迭代访问 p.val
-        }
-    }
-    
-    void traverse(ListNode head) {
-        // 递归访问 head.val
-        traverse(head.next);
-    }
+}
+
+void traverse(ListNode head) {
+    // 递归访问 head.val
+    traverse(head.next);
+}
+``` 
 
 二叉树遍历框架，典型的非线性递归遍历结构：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 基本的二叉树节点
-    class TreeNode {
-        int val;
-        TreeNode left, right;
-    }
-    
-    void traverse(TreeNode root) {
-        traverse(root.left);
-        traverse(root.right);
-    }
+```java
+// 基本的二叉树节点
+class TreeNode {
+    int val;
+    TreeNode left, right;
+}
+
+void traverse(TreeNode root) {
+    traverse(root.left);
+    traverse(root.right);
+}
+``` 
 
 你看二叉树的递归遍历方式和链表的递归遍历方式，相似不？再看看二叉树结构和单链表结构，相似不？如果再多几条叉，N 叉树你会不会遍历？
 
 二叉树框架可以扩展为 N 叉树的遍历框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 基本的 N 叉树节点
-    class TreeNode {
-        int val;
-        TreeNode[] children;
-    }
-    
-    void traverse(TreeNode root) {
-        for (TreeNode child : root.children)
-            traverse(child);
-    }
+```java
+// 基本的 N 叉树节点
+class TreeNode {
+    int val;
+    TreeNode[] children;
+}
+
+void traverse(TreeNode root) {
+    for (TreeNode child : root.children)
+        traverse(child);
+}
+``` 
 
 `N` 叉树的遍历又可以扩展为图的遍历，因为图就是好几 `N` 叉棵树的结合体。你说图是可能出现环的？这个很好办，用个布尔数组 `visited` 做标记就行了，[图结构遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>) 中有具体讲解。
 
 **所谓框架，就是套路。不管增删查改，这些代码都是永远无法脱离的结构** ，你可以把这个结构作为大纲，根据具体问题在框架上添加代码就行了。
 
-## ¶算法的本质
+## 算法的本质
 
 **如果要让我一句话总结，我想说算法的本质就是「穷举」** 。
 
@@ -174,7 +168,7 @@ CC++GoJavaJavaScriptPython
 
 技术岗笔试面试考的那些算法题，求个最大值最小值什么的，你怎么求？把所有可行解穷举出来就能找到最值了呗，说白了不就这么点事儿么。
 
-## ¶穷举的难点
+## 穷举的难点
 
 穷举的两个关键
 
@@ -194,7 +188,7 @@ CC++GoJavaJavaScriptPython
 
 **2、如何聪明地穷举** ？即避免穷举过程中的冗余计算，消耗尽可能少的资源求出答案。
 
-### ¶如何穷举
+### 如何穷举
 
 **什么算法的难点在「如何穷举」呢？一般是递归类问题，比方说回溯算法、动态规划系列算法** 。
 
@@ -224,7 +218,7 @@ CC++GoJavaJavaScriptPython
 
 我专门写了 [动态规划设计方法：数学归纳法](</zh/algo/dynamic-programming/longest-increasing-subsequence/>) 这篇文章，告诉你穷举的核心是数学归纳法，明确函数的定义，分解问题，然后利用这个定义递归求解子问题。
 
-### ¶如何聪明地穷举
+### 如何聪明地穷举
 
 **什么算法的难点在「如何聪明地穷举」呢？一些耳熟能详的非递归算法技巧，都可以归在这一类** 。
 
@@ -240,7 +234,7 @@ CC++GoJavaJavaScriptPython
 
 下面我概括性地列举一些常见的算法技巧，供大家学习参考。
 
-## ¶数组/单链表系列算法
+## 数组/单链表系列算法
 
 **单链表常考的技巧就是双指针，属于「如何聪明地穷举」这一类** ，[单链表双指针技巧汇总](</zh/algo/essential-technique/linked-list-skills-summary/>) 全给你总结好了，会者不难，难者不会。
 
@@ -264,7 +258,7 @@ CC++GoJavaJavaScriptPython
 
 数组链表的技巧差不多就这些了，都比较固定，只要你都见过，运用出来的难度不算大，下面来说一说稍微有些难度的算法。
 
-## ¶二叉树系列算法
+## 二叉树系列算法
 
 老读者都知道，二叉树的重要性我之前说了无数次，因为二叉树模型几乎是所有高级算法的基础，尤其是那么多人说对递归的理解不到位，更应该好好刷二叉树相关题目。
 
@@ -274,43 +268,42 @@ Tip
 
 **[二叉树心法（纲领篇）](</zh/algo/essential-technique/binary-tree-summary/>) 说过，二叉树题目的递归解法可以分两类思路，第一类是遍历一遍二叉树得出答案，第二类是通过分解问题计算出答案，这两类思路分别对应着 [回溯算法核心框架](</zh/algo/essential-technique/backtrack-framework/>) 和 [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)**。
 
-### ¶遍历的思维模式
+### 遍历的思维模式
 
 **什么叫通过遍历一遍二叉树得出答案** ？
 
 就比如说计算二叉树最大深度这个问题让你实现 `maxDepth` 这个函数，你这样写代码完全没问题：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-    
-        // 记录最大深度
-        int res = 0;
-        // 记录当前遍历节点的深度
-        int depth = 0;
-    
-        // 主函数
-        int maxDepth(TreeNode root) {
-            traverse(root);
-            return res;
-        }
-    
-        // 二叉树遍历框架
-        void traverse(TreeNode root) {
-            if (root == null) {
-                // 到达叶子节点
-                res = Math.max(res, depth);
-                return;
-            }
-            // 前序遍历位置
-            depth++;
-            traverse(root.left);
-            traverse(root.right);
-            // 后序遍历位置
-            depth--;
-        }
+```java
+class Solution {
+
+    // 记录最大深度
+    int res = 0;
+    // 记录当前遍历节点的深度
+    int depth = 0;
+
+    // 主函数
+    int maxDepth(TreeNode root) {
+        traverse(root);
+        return res;
     }
+
+    // 二叉树遍历框架
+    void traverse(TreeNode root) {
+        if (root == null) {
+            // 到达叶子节点
+            res = Math.max(res, depth);
+            return;
+        }
+        // 前序遍历位置
+        depth++;
+        traverse(root.left);
+        traverse(root.right);
+        // 后序遍历位置
+        depth--;
+    }
+}
+``` 
 
 这个逻辑就是用 `traverse` 函数遍历了一遍二叉树的所有节点，维护 `depth` 变量，在叶子节点的时候更新最大深度。
 
@@ -318,204 +311,198 @@ CC++GoJavaJavaScriptPython
 
 不信你照着 [回溯算法核心框架](</zh/algo/essential-technique/backtrack-framework/>) 中全排列问题的代码对比下，`backtrack` 函数就是 `traverse` 函数，换汤不换药，整体逻辑非常类似：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // 记录所有全排列
-        List<List<Integer>> res = new LinkedList<>();
-        // 记录当前正在穷举的排列
-        LinkedList<Integer> track = new LinkedList<>();
-    
-        // track 中的元素会被标记为 true，避免重复使用
-        boolean[] used;
-    
-        // 主函数，输入一组不重复的数字，返回它们的全排列
-        List<List<Integer>> permute(int[] nums) {
-            used = new boolean[nums.length];
-            
-            backtrack(nums);
-            return res;
+```java
+class Solution {
+    // 记录所有全排列
+    List<List<Integer>> res = new LinkedList<>();
+    // 记录当前正在穷举的排列
+    LinkedList<Integer> track = new LinkedList<>();
+
+    // track 中的元素会被标记为 true，避免重复使用
+    boolean[] used;
+
+    // 主函数，输入一组不重复的数字，返回它们的全排列
+    List<List<Integer>> permute(int[] nums) {
+        used = new boolean[nums.length];
+        
+        backtrack(nums);
+        return res;
+    }
+
+    // 回溯算法核心框架，遍历回溯树，收集所有叶子节点上的全排列
+    void backtrack(int[] nums) {
+        // 到达叶子节点，track 中的元素就是一个全排列
+        if (track.size() == nums.length) {
+            res.add(new LinkedList(track));
+            return;
         }
-    
-        // 回溯算法核心框架，遍历回溯树，收集所有叶子节点上的全排列
-        void backtrack(int[] nums) {
-            // 到达叶子节点，track 中的元素就是一个全排列
-            if (track.size() == nums.length) {
-                res.add(new LinkedList(track));
-                return;
+        
+        for (int i = 0; i < nums.length; i++) {
+            // 排除不合法的选择
+            if (used[i]) {
+                // nums[i] 已经在 track 中，跳过
+                continue;
             }
+            // 做选择
+            track.add(nums[i]);
+            used[i] = true;
+
+            // 进入递归树的下一层
+            backtrack(nums);
             
-            for (int i = 0; i < nums.length; i++) {
-                // 排除不合法的选择
-                if (used[i]) {
-                    // nums[i] 已经在 track 中，跳过
-                    continue;
-                }
-                // 做选择
-                track.add(nums[i]);
-                used[i] = true;
-    
-                // 进入递归树的下一层
-                backtrack(nums);
-                
-                // 取消选择
-                track.removeLast();
-                used[i] = false;
-            }
+            // 取消选择
+            track.removeLast();
+            used[i] = false;
         }
     }
+}
+``` 
 
 你看这代码虽然多，但本质不就是多叉树的遍历吗？所以说回溯算法本质就是遍历多叉树，你只要能把问题抽象成树结构，就一定能用回溯算法解决。
 
-### ¶分解问题的思维模式
+### 分解问题的思维模式
 
 **那什么叫通过分解问题计算答案** ？
 
 同样是计算二叉树最大深度这个问题，你也可以写出下面这样的解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 定义：输入根节点，返回这棵二叉树的最大深度
-    int maxDepth(TreeNode root) {
-    	if (root == null) {
-    		return 0;
-    	}
-    	// 递归计算左右子树的最大深度
-    	int leftMax = maxDepth(root.left);
-    	int rightMax = maxDepth(root.right);
-    	// 整棵树的最大深度就是左右子树的最大深度加一
-    	int res = Math.max(leftMax, rightMax) + 1;
-    
-    	return res;
-    }
+```java
+// 定义：输入根节点，返回这棵二叉树的最大深度
+int maxDepth(TreeNode root) {
+	if (root == null) {
+		return 0;
+	}
+	// 递归计算左右子树的最大深度
+	int leftMax = maxDepth(root.left);
+	int rightMax = maxDepth(root.right);
+	// 整棵树的最大深度就是左右子树的最大深度加一
+	int res = Math.max(leftMax, rightMax) + 1;
+
+	return res;
+}
+``` 
 
 你看这段代码，有没有觉得很熟悉？有没有觉得有点动态规划解法代码的形式？
 
 不信你看 [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>) 中凑零钱问题的暴力穷举解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        public int coinChange(int[] coins, int amount) {
-            // 题目要求的最终结果是 dp(amount)
-            return dp(coins, amount);
-        }
-    
-        // 定义：要凑出目标金额 amount，至少要 dp(coins, amount) 个硬币
-        int dp(int[] coins, int amount) {
-            // base case
-            if (amount == 0) return 0;
-            if (amount < 0) return -1;
-    
-            int res = Integer.MAX_VALUE;
-            for (int coin : coins) {
-                // 计算子问题的结果
-                int subProblem = dp(coins, amount - coin);
-                // 子问题无解则跳过
-                if (subProblem == -1) continue;
-                // 在子问题中选择最优解，然后加一
-                res = Math.min(res, subProblem + 1);
-            }
-    
-            return res == Integer.MAX_VALUE ? -1 : res;
-        }
+```java
+class Solution {
+    public int coinChange(int[] coins, int amount) {
+        // 题目要求的最终结果是 dp(amount)
+        return dp(coins, amount);
     }
+
+    // 定义：要凑出目标金额 amount，至少要 dp(coins, amount) 个硬币
+    int dp(int[] coins, int amount) {
+        // base case
+        if (amount == 0) return 0;
+        if (amount < 0) return -1;
+
+        int res = Integer.MAX_VALUE;
+        for (int coin : coins) {
+            // 计算子问题的结果
+            int subProblem = dp(coins, amount - coin);
+            // 子问题无解则跳过
+            if (subProblem == -1) continue;
+            // 在子问题中选择最优解，然后加一
+            res = Math.min(res, subProblem + 1);
+        }
+
+        return res == Integer.MAX_VALUE ? -1 : res;
+    }
+}
+``` 
 
 这个暴力解法加个 `memo` 备忘录就是自顶向下的动态规划解法，你对照二叉树最大深度的解法代码，有没有发现很像？
 
-### ¶思路拓展
+### 思路拓展
 
 **如果你感受到最大深度这个问题两种解法的区别，那就趁热打铁，我问你，二叉树的前序遍历怎么写** ？
 
 我相信大家都会对这个问题嗤之以鼻，毫不犹豫就可以写出下面这段代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    List<Integer> res = new LinkedList<>();
-    
-    // 返回前序遍历结果
-    List<Integer> preorder(TreeNode root) {
-        traverse(root);
-        return res;
+```java
+List<Integer> res = new LinkedList<>();
+
+// 返回前序遍历结果
+List<Integer> preorder(TreeNode root) {
+    traverse(root);
+    return res;
+}
+
+// 二叉树遍历函数
+void traverse(TreeNode root) {
+    if (root == null) {
+        return;
     }
-    
-    // 二叉树遍历函数
-    void traverse(TreeNode root) {
-        if (root == null) {
-            return;
-        }
-        // 前序遍历位置
-        res.add(root.val);
-        traverse(root.left);
-        traverse(root.right);
-    }
+    // 前序遍历位置
+    res.add(root.val);
+    traverse(root.left);
+    traverse(root.right);
+}
+``` 
 
 但是，你结合上面说到的两种不同的思维模式，二叉树的遍历是否也可以通过分解问题的思路解决呢？
 
 可以观察一下二叉树前序遍历结果的特点：
 
-![](/images/algo/binary-tree-ii/1.jpeg)
+![diagram](https://labuladong.online/images/algo/binary-tree-ii/1.jpeg)
 
 **你注意前序遍历的结果，根节点的值在第一位，后面接着左子树的前序遍历结果，最后接着右子树的前序遍历结果** 。
 
 有没有体会出点什么来？其实完全可以重写前序遍历代码，用分解问题的形式写出来：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 定义：输入一棵二叉树的根节点，返回这棵树的前序遍历结果
-    List<Integer> preorder(TreeNode root) {
-        List<Integer> res = new LinkedList<>();
-        if (root == null) {
-            return res;
-        }
-        // 前序遍历的结果，root.val 在第一个
-        res.add(root.val);
-        // 后面接着左子树的前序遍历结果
-        res.addAll(preorder(root.left));
-        // 最后接着右子树的前序遍历结果
-        res.addAll(preorder(root.right));
+```java
+// 定义：输入一棵二叉树的根节点，返回这棵树的前序遍历结果
+List<Integer> preorder(TreeNode root) {
+    List<Integer> res = new LinkedList<>();
+    if (root == null) {
         return res;
     }
+    // 前序遍历的结果，root.val 在第一个
+    res.add(root.val);
+    // 后面接着左子树的前序遍历结果
+    res.addAll(preorder(root.left));
+    // 最后接着右子树的前序遍历结果
+    res.addAll(preorder(root.right));
+    return res;
+}
+``` 
 
 你看，这就是用分解问题的思维模式写二叉树的前序遍历，如果写中序和后序遍历也是类似的。
 
-### ¶层序遍历
+### 层序遍历
 
 除了动归、回溯（DFS）、分治，还有一个常用算法就是 BFS 了，[BFS 算法核心框架](</zh/algo/essential-technique/bfs-framework/>) 就是根据下面这段二叉树的层序遍历代码改装出来的：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    // 输入一棵二叉树的根节点，层序遍历这棵二叉树
-    void levelTraverse(TreeNode root) {
-        if (root == null) return;
-        Queue<TreeNode> q = new LinkedList<>();
-        q.offer(root);
-    
-        int depth = 1;
-        // 从上到下遍历二叉树的每一层
-        while (!q.isEmpty()) {
-            int sz = q.size();
-            // 从左到右遍历每一层的每个节点
-            for (int i = 0; i < sz; i++) {
-                TreeNode cur = q.poll();
-    
-                // 将下一层节点放入队列
-                if (cur.left != null) {
-                    q.offer(cur.left);
-                }
-                if (cur.right != null) {
-                    q.offer(cur.right);
-                }
+```java
+// 输入一棵二叉树的根节点，层序遍历这棵二叉树
+void levelTraverse(TreeNode root) {
+    if (root == null) return;
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+
+    int depth = 1;
+    // 从上到下遍历二叉树的每一层
+    while (!q.isEmpty()) {
+        int sz = q.size();
+        // 从左到右遍历每一层的每个节点
+        for (int i = 0; i < sz; i++) {
+            TreeNode cur = q.poll();
+
+            // 将下一层节点放入队列
+            if (cur.left != null) {
+                q.offer(cur.left);
             }
-            depth++;
+            if (cur.right != null) {
+                q.offer(cur.right);
+            }
         }
+        depth++;
     }
+}
+``` 
 
 **更进一步，图论相关的算法也是二叉树算法的延续** 。
 
@@ -523,7 +510,7 @@ CC++GoJavaJavaScriptPython
 
 好了，说的差不多了，上述这些算法的本质都是穷举二（多）叉树，有机会的话通过剪枝或者备忘录的方式减少冗余计算，提高效率，就这么点事儿。
 
-## ¶最后总结
+## 最后总结
 
 很多读者问我什么刷题方式是正确的，我认为正确的刷题方式应该是刷一道题能获得刷十道题的效果，不然力扣现在 2000 道题目，你都打算刷完么？
 
@@ -532,7 +519,3 @@ CC++GoJavaJavaScriptPython
 **这就是框架的力量，能够保证你在快睡着的时候，依然能写出正确的程序；就算你啥都没学过，就这种思维方法，都能比别人高一个维度** 。
 
 授人以鱼不如授人以渔，算法真的没啥难的，只要有心，谁都可以学好。我希望你能在我这里培养出成体系的思维方法，享受支配算法的乐趣，而不是被算法支配。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

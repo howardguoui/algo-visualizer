@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
 
   * [数组基础](</zh/algo/data-structure-basic/array-basic/>)
 
-
 先给大家讲个笑话乐呵一下：
 
 有一天阿东到图书馆借了 `N` 本书，出图书馆的时候，警报响了，于是保安把阿东拦下，要检查一下哪本书没有登记出借。阿东正准备把每一本书在报警器下过一下，以找出引发警报的书，但是保安露出不屑的眼神：你连二分查找都不会吗？
@@ -38,30 +37,29 @@ LeetCode| 力扣| 难度
 
 本文就来探究几个最常用的二分查找场景：寻找一个数、寻找左侧边界、寻找右侧边界。这三种场景使用统一的框架，while 条件统一用 `<=`，边界更新统一用 `mid ± 1`，便于记忆。
 
-## ¶二分查找框架
+## 二分查找框架
 
 二分搜索主要有两种主流写法，分别是「两端都闭」的写法和「左闭右开」的写法。**本文介绍「两端都闭」的写法** ，因为这种写法更容易记忆和统一。「左闭右开」的写法会在 [二分搜索的左闭右开写法](</zh/algo/essential-technique/binary-search-left-open/>) 拓展。
 
 无论哪种写法，二分搜索的代码都符合以下框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int binarySearch(int[] nums, int target) {
-        int left = 0, right = ...;
-    
-        while(...) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] == target) {
-                ...
-            } else if (nums[mid] < target) {
-                left = ...
-            } else if (nums[mid] > target) {
-                right = ...
-            }
+```java
+int binarySearch(int[] nums, int target) {
+    int left = 0, right = ...;
+
+    while(...) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) {
+            ...
+        } else if (nums[mid] < target) {
+            left = ...
+        } else if (nums[mid] > target) {
+            right = ...
         }
-        return ...;
     }
+    return ...;
+}
+``` 
 
 其中 `...` 标记的部分，就是可能出现细节问题的地方，当你见到一个二分查找的代码时，首先注意这几个地方，后面用实例分析这些地方能有什么样的变化。
 
@@ -69,7 +67,7 @@ CC++GoJavaJavaScriptPython
 
 **另外提前说明一下，计算`mid` 时需要防止溢出**，代码中 `left + (right - left) / 2` 就和 `(left + right) / 2` 的结果相同，但是有效防止了 `left` 和 `right` 太大，直接相加导致整型溢出的情况。
 
-## ¶搜索区间的概念
+## 搜索区间的概念
 
 准确理解二分查找的关键在于理解「搜索区间」这个概念，也就是 `left` 和 `right` 指针的含义。
 
@@ -84,44 +82,42 @@ CC++GoJavaJavaScriptPython
   * 搜索区间为空时，应该停止搜索，否则算法就会死循环。
   * 搜索的过程中，不能漏掉元素，否则就会得到错误的答案。
 
-
 记住这两个原则，下面我们来使用「**两端都闭** 」的二分搜索写法，探讨二分搜索的三种场景：寻找一个数、寻找左侧边界、寻找右侧边界。
 
-## ¶寻找一个数
+## 寻找一个数
 
 这个场景是最简单的，搜索一个数，如果存在返回其索引，否则返回 -1。
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Solution {
-        // 标准的二分搜索框架，搜索目标元素的索引，若不存在则返回 -1
-        public int search(int[] nums, int target) {
-            int left = 0;
-            // 注意
-            int right = nums.length - 1;
-    
-            while(left <= right) {
-                int mid = left + (right - left) / 2;
-                if(nums[mid] == target) {
-                    return mid;   
-                } else if (nums[mid] < target) {
-                    // 注意
-                    left = mid + 1;
-                } else if (nums[mid] > target) {
-                    // 注意
-                    right = mid - 1;
-                }
+```java
+class Solution {
+    // 标准的二分搜索框架，搜索目标元素的索引，若不存在则返回 -1
+    public int search(int[] nums, int target) {
+        int left = 0;
+        // 注意
+        int right = nums.length - 1;
+
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            if(nums[mid] == target) {
+                return mid;   
+            } else if (nums[mid] < target) {
+                // 注意
+                left = mid + 1;
+            } else if (nums[mid] > target) {
+                // 注意
+                right = mid - 1;
             }
-            return -1;
         }
+        return -1;
     }
+}
+``` 
 
 算法可视化
 
 这段代码可以解决力扣第 704 题「[二分查找](<https://leetcode.cn/problems/binary-search/>)」，我们深入探讨一下其中的细节。
 
-### ¶为什么 while 循环的条件是 `<=` 而不是 `<`？
+### 为什么 while 循环的条件是 `<=` 而不是 `<`？
 
 对于两端都闭的搜索区间，`<=` 不会漏掉元素。
 
@@ -133,13 +129,13 @@ CC++GoJavaJavaScriptPython
 
 所以必须彻底理解搜索区间，才能写出完全正确的代码。
 
-### ¶为什么是 `left = mid + 1`，`right = mid - 1`？
+### 为什么是 `left = mid + 1`，`right = mid - 1`？
 
 因为 `mid` 已经搜索过，应该从搜索区间中去除。
 
 因为我们的搜索区间是两端都闭的 `[left, right]`。当我们发现索引 `mid` 不是要找的 `target` 时，搜索区间应该收缩为 `[left, mid-1]` 或者区间 `[mid+1, right]`。
 
-### ¶此算法有什么缺陷？
+### 此算法有什么缺陷？
 
 比如说给你有序数组 `nums = [1,2,2,2,3]`，`target` 为 2，此算法返回的索引是 2，没错。但是如果我想得到 `target` 的左侧边界，即索引 1，或者我想得到 `target` 的右侧边界，即索引 3，这样的话此算法是无法处理的。
 
@@ -147,189 +143,190 @@ CC++GoJavaJavaScriptPython
 
 我们后续的算法就来讨论这两种寻找边界的算法，这也是实际算法题中比较常见的场景。
 
-## ¶寻找左侧边界
+## 寻找左侧边界
 
 先直接看寻找左侧边界的二分搜索代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int left_bound(int[] nums, int target) {
-        int left = 0, right = nums.length - 1;
-        // 搜索区间为 [left, right]
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] < target) {
-                // 搜索区间变为 [mid+1, right]
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                // 搜索区间变为 [left, mid-1]
-                right = mid - 1;
-            } else if (nums[mid] == target) {
-                // 收缩右侧边界
-                right = mid - 1;
-            }
+```java
+int left_bound(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    // 搜索区间为 [left, right]
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            // 搜索区间变为 [mid+1, right]
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            // 搜索区间变为 [left, mid-1]
+            right = mid - 1;
+        } else if (nums[mid] == target) {
+            // 收缩右侧边界
+            right = mid - 1;
         }
-        return left;
     }
+    return left;
+}
+``` 
 
 算法可视化
 
-### ¶为什么该算法能够搜索左侧边界？
+### 为什么该算法能够搜索左侧边界？
 
 关键在于对 `nums[mid] == target` 这个条件的处理：
-    
-    
-    if (nums[mid] == target) {
-        // 收缩右侧边界
-        right = mid - 1;
-    }
+
+```
+if (nums[mid] == target) {
+    // 收缩右侧边界
+    right = mid - 1;
+}
+``` 
 
 找到 target 时不要立即返回，而是收缩右边界 `right = mid - 1`，在区间 `[left, mid-1]` 中继续搜索，即不断向左收缩，达到锁定左侧边界的目的。
 
-### ¶如果 `target` 不存在怎么办？
+### 如果 `target` 不存在怎么办？
 
 如果 `target` 不存在，`left_bound` 返回的索引是「**大于`target` 的最小索引**」。
 
 这个结论不用死记，举个例子就明白了：`nums = [2,3,5,7], target = 4`，`left_bound` 返回值是 2，因为元素 5 是大于 4 的最小元素。
 
 如果你想在 `target` 不存在时返回 -1，在返回时额外判断一下 `nums[left]` 是否等于 `target` 就行了：
-    
-    
-    // 如果越界，target 肯定不存在，返回 -1
-    if (left < 0 || left >= nums.length) {
-        return -1;
-    }
-    // 判断一下 nums[left] 是不是 target
-    if (nums[left] != target) {
-        return -1;
-    }
-    // nums[left] == target，目标索引为 left
-    return left;
 
-## ¶寻找右侧边界
+```
+// 如果越界，target 肯定不存在，返回 -1
+if (left < 0 || left >= nums.length) {
+    return -1;
+}
+// 判断一下 nums[left] 是不是 target
+if (nums[left] != target) {
+    return -1;
+}
+// nums[left] == target，目标索引为 left
+return left;
+``` 
+
+## 寻找右侧边界
 
 先直接看寻找右侧边界的二分搜索代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int right_bound(int[] nums, int target) {
-        int left = 0, right = nums.length - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid - 1;
-            } else if (nums[mid] == target) {
-                // 这里改成收缩左侧边界即可
-                left = mid + 1;
-            }
+```java
+int right_bound(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid - 1;
+        } else if (nums[mid] == target) {
+            // 这里改成收缩左侧边界即可
+            left = mid + 1;
         }
-        // 最后改成返回 right
-        return right;
     }
+    // 最后改成返回 right
+    return right;
+}
+``` 
 
 算法可视化
 
-### ¶为什么该算法能够搜索右侧边界？
+### 为什么该算法能够搜索右侧边界？
 
 关键在于对 `nums[mid] == target` 这个条件的处理：
-    
-    
-    if (nums[mid] == target) {
-        // 收缩左侧边界
-        left = mid + 1;
-    }
+
+```
+if (nums[mid] == target) {
+    // 收缩左侧边界
+    left = mid + 1;
+}
+``` 
 
 找到 target 时不要立即返回，而是收缩左边界 `left = mid + 1`，在区间 `[mid+1, right]` 中继续搜索，即不断向右收缩，达到锁定右侧边界的目的。
 
-### ¶如果 `target` 不存在怎么办？
+### 如果 `target` 不存在怎么办？
 
 如果 `target` 不存在，`right_bound` 返回的索引是「**小于`target` 的最大索引**」。
 
 比如 `nums = [2,3,5,7], target = 4`，`right_bound` 返回值是 1，因为元素 3 是小于 4 的最大元素。
 
 如果你想在 `target` 不存在时返回 -1，在返回时额外判断一下 `nums[right]` 是否等于 `target` 就行了：
-    
-    
-    // 索引越界则说明不存在 target
-    if (right < 0 || right >= nums.length) {
-        return -1;
-    }
-    // 目标索引不等于 target 则说明不存在 target
-    if (nums[right] != target) {
-        return -1;
-    }
-    // nums[right] == target，目标索引为 right
-    return right;
 
-## ¶五、统一模板
+```
+// 索引越界则说明不存在 target
+if (right < 0 || right >= nums.length) {
+    return -1;
+}
+// 目标索引不等于 target 则说明不存在 target
+if (nums[right] != target) {
+    return -1;
+}
+// nums[right] == target，目标索引为 right
+return right;
+``` 
+
+## 五、统一模板
 
 三种场景使用统一的两端都闭搜索区间 `[left, right]`，只有 `nums[mid] == target` 时的处理不同：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int binary_search(int[] nums, int target) {
-        int left = 0, right = nums.length - 1; 
-        while(left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid - 1; 
-            } else if(nums[mid] == target) {
-                // 直接返回
-                return mid;
-            }
+```java
+int binary_search(int[] nums, int target) {
+    int left = 0, right = nums.length - 1; 
+    while(left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid - 1; 
+        } else if(nums[mid] == target) {
+            // 直接返回
+            return mid;
         }
-        // 直接返回
+    }
+    // 直接返回
+    return -1;
+}
+
+int left_bound(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid - 1;
+        } else if (nums[mid] == target) {
+            // 别返回，锁定左侧边界
+            right = mid - 1;
+        }
+    }
+    // 判断 target 是否存在于 nums 中
+    if (left < 0 || left >= nums.length) {
         return -1;
     }
-    
-    int left_bound(int[] nums, int target) {
-        int left = 0, right = nums.length - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid - 1;
-            } else if (nums[mid] == target) {
-                // 别返回，锁定左侧边界
-                right = mid - 1;
-            }
+    // 判断一下 nums[left] 是不是 target
+    return nums[left] == target ? left : -1;
+}
+
+int right_bound(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid - 1;
+        } else if (nums[mid] == target) {
+            // 别返回，锁定右侧边界
+            left = mid + 1;
         }
-        // 判断 target 是否存在于 nums 中
-        if (left < 0 || left >= nums.length) {
-            return -1;
-        }
-        // 判断一下 nums[left] 是不是 target
-        return nums[left] == target ? left : -1;
     }
-    
-    int right_bound(int[] nums, int target) {
-        int left = 0, right = nums.length - 1;
-        while (left <= right) {
-            int mid = left + (right - left) / 2;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else if (nums[mid] > target) {
-                right = mid - 1;
-            } else if (nums[mid] == target) {
-                // 别返回，锁定右侧边界
-                left = mid + 1;
-            }
-        }
-        // 由于 while 的结束条件是 right == left - 1，且现在在求右边界
-        // 所以用 right 替代 left - 1 更好记
-        if (right < 0 || right >= nums.length) {
-            return -1;
-        }
-        return nums[right] == target ? right : -1;
+    // 由于 while 的结束条件是 right == left - 1，且现在在求右边界
+    // 所以用 right 替代 left - 1 更好记
+    if (right < 0 || right >= nums.length) {
+        return -1;
     }
+    return nums[right] == target ? right : -1;
+}
+``` 
 
 通过本文，你学会了：
 
@@ -346,7 +343,3 @@ CC++GoJavaJavaScriptPython
 不过你可能在网上看到另一种写法：左闭右开的搜索区间 `[left, right)`，使用 `while (left < right)` 和 `right = mid`。这种写法也很常见，如果你想深入理解这种写法的逻辑，可以阅读 [二分搜索的左闭右开写法](</zh/algo/essential-technique/binary-search-left-open/>)。
 
 实际题目中不会直接让你写二分代码，我会在 [二分查找的运用](</zh/algo/frequency-interview/binary-search-in-action/>) 和 [二分查找的更多习题](</zh/algo/problem-set/binary-search/>) 中进一步讲解如何把二分思维运用到更多算法题中。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...

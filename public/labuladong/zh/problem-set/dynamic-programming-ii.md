@@ -17,12 +17,7 @@
 
   * [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>)
 
-
 本章列举一些经典的动态规划习题，帮助大家加深理解前面文章中讲到的知识点。
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
 
 此页内容
 
@@ -31,6 +26,5 @@ Loading comments...
   * 221\. 最大正方形
   * 329\. 矩阵中的最长递增路径
   * 1235\. 规划兼职工作
-
 
 AI 助教

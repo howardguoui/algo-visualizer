@@ -21,7 +21,6 @@ LeetCode| 力扣| 难度
 
   * [二叉树的递归/层序遍历](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>)
 
-
 一句话总结
 
 多叉树结构就是 [二叉树结构](</zh/algo/data-structure-basic/binary-tree-basic/>) 的延伸，二叉树是特殊的多叉树。
@@ -32,35 +31,34 @@ LeetCode| 力扣| 难度
 
 二叉树的节点长这样，每个节点有两个子节点：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-    }
+```java
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+}
+``` 
 
 多叉树的节点长这样，每个节点有任意个子节点：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    class Node {
-        int val;
-        List<Node> children;
-    }
+```java
+class Node {
+    int val;
+    List<Node> children;
+}
+``` 
 
 就这点区别，其他没了。
 
-## ¶森林
+## 森林
 
 这里介绍一下「森林」这个名词，后面讲到 [Union Find 并查集算法](</zh/algo/data-structure-basic/union-find-basic/>) 时，会用到这个概念。
 
 顾名思义，**森林就是多个多叉树的集合（单独一棵多叉树也是一个特殊的森林）** ，用代码表示就是多个多叉树的根节点列表，类似这样：
-    
-    
-    List<Node> forest;
+
+```
+List<Node> forest;
+``` 
 
 只需对每个根节点分别进行 DFS/BFS 遍历，即可遍历森林的所有节点。
 
@@ -68,10 +66,6 @@ CC++GoJavaJavaScriptPython
 
 接下来说下多叉树的遍历，和二叉树一样，也就递归遍历（DFS）和层序遍历（BFS）两种。
 
-## ¶递归遍历（DFS）
+## 递归遍历（DFS）
 
 对比二叉树的遍历框架看多叉树的遍历框架吧：
-
-更新时间：2026/03/14 00:17
-
-Loading comments...
