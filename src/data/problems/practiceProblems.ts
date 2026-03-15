@@ -10178,6 +10178,1032 @@ def solve(matrix): return Solution().leftMostColumnWithOne(matrix)`,
     hint: 'Start at top-right corner. If cell is 1, move left (record col). If cell is 0, move down. This finds the leftmost column in O(m+n). Or binary search each row for first 1, take min column.',
   },
 
+  // ─── Batch B10 — DP Game + Greedy + Math + Others ────────────────────────────
+
+  253: {
+    id: 253,
+    title: 'Meeting Rooms II',
+    titleZh: '会议室 II',
+    difficulty: 'Medium',
+    leetcodeSlug: 'meeting-rooms-ii',
+    tags: ['Array', 'Two Pointers', 'Greedy', 'Sorting', 'Heap (Priority Queue)', 'Prefix Sum'],
+    description: `Given an array of meeting time intervals \`intervals\` where \`intervals[i] = [start_i, end_i]\`, return the **minimum number of conference rooms** required.`,
+    examples: [
+      { input: 'intervals = [[0,30],[5,10],[15,20]]', output: '2' },
+      { input: 'intervals = [[7,10],[2,4]]', output: '1' },
+    ],
+    constraints: ['1 <= intervals.length <= 10^4', '0 <= start_i < end_i <= 10^6'],
+    starterCode: `/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+function minMeetingRooms(intervals) {
+
+}
+
+function solve(intervals) { return minMeetingRooms(intervals); }`,
+    starterCodePython: `class Solution:
+    def minMeetingRooms(self, intervals: list[list[int]]) -> int:
+        pass
+
+def solve(intervals): return Solution().minMeetingRooms(intervals)`,
+    testCases: [
+      { label: '[[0,30],[5,10],[15,20]] → 2', args: [[[0,30],[5,10],[15,20]]], expected: 2 },
+      { label: '[[7,10],[2,4]] → 1', args: [[[7,10],[2,4]]], expected: 1 },
+    ],
+    hint: 'Sort by start time. Use a min-heap of end times. For each meeting, if its start >= heap minimum, reuse that room (pop). Always push current end time. Answer = heap size at the end.',
+  },
+
+  312: {
+    id: 312,
+    title: 'Burst Balloons',
+    titleZh: '戳气球',
+    difficulty: 'Hard',
+    leetcodeSlug: 'burst-balloons',
+    tags: ['Array', 'Dynamic Programming', 'Divide and Conquer'],
+    description: `You are given \`n\` balloons, indexed from \`0\` to \`n-1\`. Each balloon is painted with a number on it represented by array \`nums\`. You are asked to burst all the balloons.
+
+If you burst balloon \`i\`, you will get \`nums[i-1] * nums[i] * nums[i+1]\` coins. If \`i-1\` or \`i+1\` goes out of bounds, treat it as if there is a balloon with value \`1\`.
+
+Return the **maximum coins** you can collect.`,
+    examples: [
+      { input: 'nums = [3,1,5,8]', output: '167', explanation: 'Burst 1→3×1×5=15, burst 5→3×5×8=120, burst 3→3×8=24, burst 8=8. Total=167.' },
+      { input: 'nums = [1,5]', output: '10' },
+    ],
+    constraints: ['n == nums.length', '1 <= n <= 300', '0 <= nums[i] <= 100'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function maxCoins(nums) {
+
+}
+
+function solve(nums) { return maxCoins(nums); }`,
+    starterCodePython: `class Solution:
+    def maxCoins(self, nums: list[int]) -> int:
+        pass
+
+def solve(nums): return Solution().maxCoins(nums)`,
+    testCases: [
+      { label: '[3,1,5,8] → 167', args: [[3,1,5,8]], expected: 167 },
+      { label: '[1,5] → 10', args: [[1,5]], expected: 10 },
+    ],
+    hint: 'Think in reverse: which balloon do we burst LAST in subarray [l,r]? dp[l][r] = max coins from bursting all balloons in (l,r). For each k in (l,r): dp[l][r] = max(nums[l]*nums[k]*nums[r] + dp[l][k] + dp[k][r]). Pad with 1s on both sides.',
+  },
+
+  435: {
+    id: 435,
+    title: 'Non-overlapping Intervals',
+    titleZh: '无重叠区间',
+    difficulty: 'Medium',
+    leetcodeSlug: 'non-overlapping-intervals',
+    tags: ['Array', 'Dynamic Programming', 'Greedy', 'Sorting'],
+    description: `Given an array of intervals \`intervals\` where \`intervals[i] = [start_i, end_i]\`, return the **minimum number of intervals you need to remove** to make the rest of the intervals non-overlapping.`,
+    examples: [
+      { input: 'intervals = [[1,2],[2,3],[3,4],[1,3]]', output: '1', explanation: 'Remove [1,3].' },
+      { input: 'intervals = [[1,2],[1,2],[1,2]]', output: '2' },
+      { input: 'intervals = [[1,2],[2,3]]', output: '0' },
+    ],
+    constraints: ['1 <= intervals.length <= 10^5', 'intervals[i].length == 2', '-5 * 10^4 <= start_i < end_i <= 5 * 10^4'],
+    starterCode: `/**
+ * @param {number[][]} intervals
+ * @return {number}
+ */
+function eraseOverlapIntervals(intervals) {
+
+}
+
+function solve(intervals) { return eraseOverlapIntervals(intervals); }`,
+    starterCodePython: `class Solution:
+    def eraseOverlapIntervals(self, intervals: list[list[int]]) -> int:
+        pass
+
+def solve(intervals): return Solution().eraseOverlapIntervals(intervals)`,
+    testCases: [
+      { label: '[[1,2],[2,3],[3,4],[1,3]] → 1', args: [[[1,2],[2,3],[3,4],[1,3]]], expected: 1 },
+      { label: '[[1,2],[1,2],[1,2]] → 2', args: [[[1,2],[1,2],[1,2]]], expected: 2 },
+      { label: '[[1,2],[2,3]] → 0', args: [[[1,2],[2,3]]], expected: 0 },
+    ],
+    hint: 'Sort by end time. Greedily keep intervals: track the end of the last kept interval. If next interval starts before that end, it overlaps — remove it. Otherwise keep it and update end. Answer = total - kept.',
+  },
+
+  452: {
+    id: 452,
+    title: 'Minimum Number of Arrows to Burst Balloons',
+    titleZh: '用最少数量的箭引爆气球',
+    difficulty: 'Medium',
+    leetcodeSlug: 'minimum-number-of-arrows-to-burst-balloons',
+    tags: ['Array', 'Greedy', 'Sorting'],
+    description: `There are spherical balloons taped onto a flat wall. Each balloon is represented as \`[xstart, xend]\`. Arrows shot vertically at position \`x\` burst all balloons where \`xstart <= x <= xend\`.
+
+Return the **minimum number of arrows** needed to burst all balloons.`,
+    examples: [
+      { input: 'points = [[10,16],[2,8],[1,6],[7,12]]', output: '2', explanation: 'Arrow at x=6 bursts [2,8],[1,6]; arrow at x=11 bursts [10,16],[7,12].' },
+      { input: 'points = [[1,2],[3,4],[5,6],[7,8]]', output: '4' },
+      { input: 'points = [[1,2],[2,3],[3,4],[4,5]]', output: '2' },
+    ],
+    constraints: ['1 <= points.length <= 10^5', 'points[i].length == 2', '-2^31 <= xstart < xend <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {number[][]} points
+ * @return {number}
+ */
+function findMinArrowShots(points) {
+
+}
+
+function solve(points) { return findMinArrowShots(points); }`,
+    starterCodePython: `class Solution:
+    def findMinArrowShots(self, points: list[list[int]]) -> int:
+        pass
+
+def solve(points): return Solution().findMinArrowShots(points)`,
+    testCases: [
+      { label: '[[10,16],[2,8],[1,6],[7,12]] → 2', args: [[[10,16],[2,8],[1,6],[7,12]]], expected: 2 },
+      { label: '[[1,2],[3,4],[5,6],[7,8]] → 4', args: [[[1,2],[3,4],[5,6],[7,8]]], expected: 4 },
+      { label: '[[1,2],[2,3],[3,4],[4,5]] → 2', args: [[[1,2],[2,3],[3,4],[4,5]]], expected: 2 },
+    ],
+    hint: 'Sort by end position. Shoot an arrow at the end of the first balloon. Any balloon whose start <= that position is also burst. Skip all burst balloons and repeat. Count arrows.',
+  },
+
+  486: {
+    id: 486,
+    title: 'Predict the Winner',
+    titleZh: '预测赢家',
+    difficulty: 'Medium',
+    leetcodeSlug: 'predict-the-winner',
+    tags: ['Array', 'Math', 'Dynamic Programming', 'Recursion', 'Game Theory'],
+    description: `You are given an integer array \`nums\`. Two players take turns picking a number from either end of the array. Player 1 picks first. The player with the higher score wins; Player 1 wins on a tie.
+
+Return \`true\` if Player 1 can win, otherwise return \`false\`.`,
+    examples: [
+      { input: 'nums = [1,5,2]', output: 'false', explanation: 'P2 always wins. P1 picks 1→P2 picks 5→P1 picks 2: P1=3,P2=5.' },
+      { input: 'nums = [1,5,233,7]', output: 'true' },
+    ],
+    constraints: ['1 <= nums.length <= 20', '0 <= nums[i] <= 10^7'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+function predictTheWinner(nums) {
+
+}
+
+function solve(nums) { return predictTheWinner(nums); }`,
+    starterCodePython: `class Solution:
+    def predictTheWinner(self, nums: list[int]) -> bool:
+        pass
+
+def solve(nums): return Solution().predictTheWinner(nums)`,
+    testCases: [
+      { label: '[1,5,2] → false', args: [[1,5,2]], expected: false },
+      { label: '[1,5,233,7] → true', args: [[1,5,233,7]], expected: true },
+    ],
+    hint: 'dp[i][j] = max score difference (current player minus opponent) for subarray nums[i..j]. dp[i][j] = max(nums[i]-dp[i+1][j], nums[j]-dp[i][j-1]). Player 1 wins if dp[0][n-1] >= 0.',
+  },
+
+  514: {
+    id: 514,
+    title: 'Freedom Trail',
+    titleZh: '自由之路',
+    difficulty: 'Hard',
+    leetcodeSlug: 'freedom-trail',
+    tags: ['String', 'Dynamic Programming', 'DFS', 'BFS'],
+    description: `Given a string \`ring\` (circular dial) and a string \`key\`, you need to spell out \`key\` by rotating the ring to align each character with 12 o'clock and pressing a button. The cost is 1 step per rotation plus 1 per key press.
+
+Return the **minimum steps** to spell out the entire \`key\`.`,
+    examples: [
+      { input: 'ring = "godding", key = "gd"', output: '4', explanation: 'Spell "g" (already at pos 0, press = 1 step). Rotate 2 steps right to "d", press = 3 more → total 4.' },
+      { input: 'ring = "godding", key = "godding"', output: '13' },
+    ],
+    constraints: ['1 <= ring.length, key.length <= 100', 'ring and key consist of lowercase English letters.', 'At least one character of key appears in ring.'],
+    starterCode: `/**
+ * @param {string} ring
+ * @param {string} key
+ * @return {number}
+ */
+function findRotateSteps(ring, key) {
+
+}
+
+function solve(ring, key) { return findRotateSteps(ring, key); }`,
+    starterCodePython: `class Solution:
+    def findRotateSteps(self, ring: str, key: str) -> int:
+        pass
+
+def solve(ring, key): return Solution().findRotateSteps(ring, key)`,
+    testCases: [
+      { label: '"godding","gd" → 4', args: ['godding', 'gd'], expected: 4 },
+      { label: '"godding","godding" → 13', args: ['godding', 'godding'], expected: 13 },
+    ],
+    hint: 'dp[i][j] = min cost to spell key[i:] when ring pointer is at position j. For each character key[i], try every occurrence in ring. Cost = min rotation distance (clockwise or counter-clockwise) + 1 (press) + dp[i+1][next_pos].',
+  },
+
+  714: {
+    id: 714,
+    title: 'Best Time to Buy and Sell Stock with Transaction Fee',
+    titleZh: '买卖股票的最佳时机含手续费',
+    difficulty: 'Medium',
+    leetcodeSlug: 'best-time-to-buy-and-sell-stock-with-transaction-fee',
+    tags: ['Array', 'Dynamic Programming', 'Greedy'],
+    description: `You are given an array \`prices\` where \`prices[i]\` is the price on day \`i\`, and an integer \`fee\` representing a transaction fee. You may complete unlimited transactions, but each transaction costs \`fee\`. Find the **maximum profit**.`,
+    examples: [
+      { input: 'prices = [1,3,2,8,4,9], fee = 2', output: '8', explanation: 'Buy at 1, sell at 8 (profit 7-2=5). Buy at 4, sell at 9 (profit 5-2=3). Total 8.' },
+      { input: 'prices = [1,3,7,5,10,3], fee = 3', output: '6' },
+    ],
+    constraints: ['1 <= prices.length <= 5 * 10^4', '1 <= prices[i] < 5 * 10^4', '0 <= fee < 5 * 10^4'],
+    starterCode: `/**
+ * @param {number[]} prices
+ * @param {number} fee
+ * @return {number}
+ */
+function maxProfit(prices, fee) {
+
+}
+
+function solve(prices, fee) { return maxProfit(prices, fee); }`,
+    starterCodePython: `class Solution:
+    def maxProfit(self, prices: list[int], fee: int) -> int:
+        pass
+
+def solve(prices, fee): return Solution().maxProfit(prices, fee)`,
+    testCases: [
+      { label: '[1,3,2,8,4,9], fee=2 → 8', args: [[1,3,2,8,4,9], 2], expected: 8 },
+      { label: '[1,3,7,5,10,3], fee=3 → 6', args: [[1,3,7,5,10,3], 3], expected: 6 },
+    ],
+    hint: 'DP: cash = max profit while not holding; hold = max profit while holding. Each day: cash = max(cash, hold+price-fee); hold = max(hold, cash-price). Fee is paid on sell.',
+  },
+
+  923: {
+    id: 923,
+    title: '3Sum With Multiplicity',
+    titleZh: '三数之和的多种可能',
+    difficulty: 'Medium',
+    leetcodeSlug: '3sum-with-multiplicity',
+    tags: ['Array', 'Hash Table', 'Two Pointers', 'Sorting', 'Counting'],
+    description: `Given an integer array \`arr\` and an integer \`target\`, return the number of tuples \`i, j, k\` such that \`i < j < k\` and \`arr[i] + arr[j] + arr[k] == target\`.
+
+Return the answer modulo \`10^9 + 7\`.`,
+    examples: [
+      { input: 'arr = [1,1,2,2,3,3,4,4,5,5], target = 8', output: '20' },
+      { input: 'arr = [1,1,2,2,2,2], target = 5', output: '12' },
+    ],
+    constraints: ['3 <= arr.length <= 3000', '0 <= arr[i] <= 100', '0 <= target <= 300'],
+    starterCode: `/**
+ * @param {number[]} arr
+ * @param {number} target
+ * @return {number}
+ */
+function threeSumMulti(arr, target) {
+
+}
+
+function solve(arr, target) { return threeSumMulti(arr, target); }`,
+    starterCodePython: `class Solution:
+    def threeSumMulti(self, arr: list[int], target: int) -> int:
+        pass
+
+def solve(arr, target): return Solution().threeSumMulti(arr, target)`,
+    testCases: [
+      { label: '[1,1,2,2,3,3,4,4,5,5], target=8 → 20', args: [[1,1,2,2,3,3,4,4,5,5], 8], expected: 20 },
+      { label: '[1,1,2,2,2,2], target=5 → 12', args: [[1,1,2,2,2,2], 5], expected: 12 },
+    ],
+    hint: 'Count frequency of each value (0–100). For each pair (i,j) with i<=j, k=target-i-j: use combinations formula based on whether i==j==k, i==j<k, i<j==k, or i<j<k. Sum all counts mod 10^9+7.',
+  },
+
+  1081: {
+    id: 1081,
+    title: 'Smallest Subsequence of Distinct Characters',
+    titleZh: '不同字符的最小子序列',
+    difficulty: 'Medium',
+    leetcodeSlug: 'smallest-subsequence-of-distinct-characters',
+    tags: ['String', 'Stack', 'Greedy', 'Monotonic Stack'],
+    description: `Given a string \`s\`, return the **lexicographically smallest** subsequence of \`s\` that contains all distinct characters of \`s\` exactly once.
+
+(This is the same problem as LeetCode 316 — Remove Duplicate Letters.)`,
+    examples: [
+      { input: 's = "bcabc"', output: '"abc"' },
+      { input: 's = "cbacdcbc"', output: '"acdb"' },
+    ],
+    constraints: ['1 <= s.length <= 1000', 's consists of lowercase English letters.'],
+    starterCode: `/**
+ * @param {string} s
+ * @return {string}
+ */
+function smallestSubsequence(s) {
+
+}
+
+function solve(s) { return smallestSubsequence(s); }`,
+    starterCodePython: `class Solution:
+    def smallestSubsequence(self, s: str) -> str:
+        pass
+
+def solve(s): return Solution().smallestSubsequence(s)`,
+    testCases: [
+      { label: '"bcabc" → "abc"', args: ['bcabc'], expected: 'abc' },
+      { label: '"cbacdcbc" → "acdb"', args: ['cbacdcbc'], expected: 'acdb' },
+    ],
+    hint: 'Monotonic stack: count remaining occurrences of each char. For each char c: while stack top > c, and top still appears later (count > 0), pop the stack. Push c if not already in stack. Track in-stack with a set.',
+  },
+
+  1352: {
+    id: 1352,
+    title: 'Product of the Last K Numbers',
+    titleZh: '最后 K 个数的乘积',
+    difficulty: 'Medium',
+    leetcodeSlug: 'product-of-the-last-k-numbers',
+    tags: ['Array', 'Math', 'Design', 'Queue', 'Data Stream'],
+    description: `Implement the \`ProductOfNumbers\` class:
+- \`add(int num)\` — adds \`num\` to the back of the stream.
+- \`getProduct(int k)\` — returns the product of the last \`k\` numbers.
+
+It is guaranteed that the current list has at least \`k\` numbers.
+
+**Simulate** with an ops array: \`["add",n]\` or \`["get",k]\`.`,
+    examples: [
+      { input: 'ops = [["add",3],["add",0],["add",2],["add",5],["add",4],["get",2],["get",3],["get",4]]', output: '[20,40,0]', explanation: 'get(2)=5×4=20; get(3)=2×5×4=40; get(4)=0×2×5×4=0.' },
+    ],
+    constraints: ['0 <= num <= 100', '1 <= k <= 4 * 10^4', 'At most 4 × 10^4 calls to add and getProduct.'],
+    starterCode: `class ProductOfNumbers {
+  constructor() {
+
+  }
+
+  /** @param {number} num */
+  add(num) {
+
+  }
+
+  /** @param {number} k @return {number} */
+  getProduct(k) {
+
+  }
+}
+
+function solve(ops) {
+  const obj = new ProductOfNumbers();
+  const res = [];
+  for (const [op, val] of ops) {
+    if (op === 'add') obj.add(val);
+    else res.push(obj.getProduct(val));
+  }
+  return res;
+}`,
+    starterCodePython: `class ProductOfNumbers:
+    def __init__(self):
+        pass
+
+    def add(self, num: int) -> None:
+        pass
+
+    def getProduct(self, k: int) -> int:
+        pass
+
+def solve(ops):
+    obj = ProductOfNumbers()
+    res = []
+    for op, val in ops:
+        if op == 'add': obj.add(val)
+        else: res.append(obj.getProduct(val))
+    return res`,
+    testCases: [
+      {
+        label: 'add 3,0,2,5,4 then get 2,3,4 → [20,40,0]',
+        args: [[['add',3],['add',0],['add',2],['add',5],['add',4],['get',2],['get',3],['get',4]]],
+        expected: [20,40,0],
+      },
+    ],
+    hint: 'Maintain a prefix product array. When a 0 is added, reset (prefix = [1]). getProduct(k): if k >= prefix length, return 0 (a 0 is in range). Otherwise return prefix.last / prefix[n-k-1].',
+  },
+
+  8: {
+    id: 8,
+    title: 'String to Integer (atoi)',
+    titleZh: '字符串转换整数 (atoi)',
+    difficulty: 'Medium',
+    leetcodeSlug: 'string-to-integer-atoi',
+    tags: ['String'],
+    description: `Implement \`myAtoi(string s)\` which converts a string to a 32-bit signed integer.
+
+Steps:
+1. Ignore leading whitespace.
+2. Read optional \`'+'\` or \`'-'\` sign.
+3. Read digits until non-digit or end.
+4. Clamp to \`[-2^31, 2^31 - 1]\`.`,
+    examples: [
+      { input: 's = "42"', output: '42' },
+      { input: 's = "   -42"', output: '-42' },
+      { input: 's = "4193 with words"', output: '4193' },
+    ],
+    constraints: ['0 <= s.length <= 200', 's consists of English letters, digits, \' \', \'+\', \'-\', \'.\'.'],
+    starterCode: `/**
+ * @param {string} s
+ * @return {number}
+ */
+function myAtoi(s) {
+
+}
+
+function solve(s) { return myAtoi(s); }`,
+    starterCodePython: `class Solution:
+    def myAtoi(self, s: str) -> int:
+        pass
+
+def solve(s): return Solution().myAtoi(s)`,
+    testCases: [
+      { label: '"42" → 42', args: ['42'], expected: 42 },
+      { label: '"   -42" → -42', args: ['   -42'], expected: -42 },
+      { label: '"4193 with words" → 4193', args: ['4193 with words'], expected: 4193 },
+      { label: '"words and 987" → 0', args: ['words and 987'], expected: 0 },
+    ],
+    hint: 'Trim whitespace, read sign, read digits accumulating value. After each digit: if value > INT_MAX/10 or (== INT_MAX/10 and digit > 7), clamp and return. Multiply by sign at end.',
+  },
+
+  9: {
+    id: 9,
+    title: 'Palindrome Number',
+    titleZh: '回文数',
+    difficulty: 'Easy',
+    leetcodeSlug: 'palindrome-number',
+    tags: ['Math'],
+    description: `Given an integer \`x\`, return \`true\` if \`x\` is a palindrome, and \`false\` otherwise. Do not convert to a string.`,
+    examples: [
+      { input: 'x = 121', output: 'true' },
+      { input: 'x = -121', output: 'false', explanation: 'Negative numbers are not palindromes.' },
+      { input: 'x = 10', output: 'false' },
+    ],
+    constraints: ['-2^31 <= x <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {number} x
+ * @return {boolean}
+ */
+function isPalindrome(x) {
+
+}
+
+function solve(x) { return isPalindrome(x); }`,
+    starterCodePython: `class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        pass
+
+def solve(x): return Solution().isPalindrome(x)`,
+    testCases: [
+      { label: '121 → true', args: [121], expected: true },
+      { label: '-121 → false', args: [-121], expected: false },
+      { label: '10 → false', args: [10], expected: false },
+    ],
+    hint: 'Negative numbers and numbers ending in 0 (except 0) are not palindromes. Reverse only the second half: while x > reversed, pop digit from x and push to reversed. At the end x == reversed or x == reversed/10 (odd length).',
+  },
+
+  43: {
+    id: 43,
+    title: 'Multiply Strings',
+    titleZh: '字符串相乘',
+    difficulty: 'Medium',
+    leetcodeSlug: 'multiply-strings',
+    tags: ['Math', 'String', 'Simulation'],
+    description: `Given two non-negative integers \`num1\` and \`num2\` represented as strings, return the product of \`num1\` and \`num2\`, also represented as a string. You must not use big integer libraries or convert to integer directly.`,
+    examples: [
+      { input: 'num1 = "2", num2 = "3"', output: '"6"' },
+      { input: 'num1 = "123", num2 = "456"', output: '"56088"' },
+    ],
+    constraints: ['1 <= num1.length, num2.length <= 200', 'num1 and num2 consist of digits only.', 'Neither num1 nor num2 has leading zeros, except the number 0 itself.'],
+    starterCode: `/**
+ * @param {string} num1
+ * @param {string} num2
+ * @return {string}
+ */
+function multiply(num1, num2) {
+
+}
+
+function solve(num1, num2) { return multiply(num1, num2); }`,
+    starterCodePython: `class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        pass
+
+def solve(num1, num2): return Solution().multiply(num1, num2)`,
+    testCases: [
+      { label: '"2"×"3" → "6"', args: ['2', '3'], expected: '6' },
+      { input: '"123"×"456" → "56088"', label: '"123"×"456" → "56088"', args: ['123', '456'], expected: '56088' },
+      { label: '"0"×"0" → "0"', args: ['0', '0'], expected: '0' },
+    ],
+    hint: 'Use grade-school multiplication: result array of length m+n. For each digit pair (i,j), add num1[i]*num2[j] to result[i+j+1], carry to result[i+j]. Convert result array to string, strip leading zeros.',
+  },
+
+  50: {
+    id: 50,
+    title: 'Pow(x, n)',
+    titleZh: '快速幂',
+    difficulty: 'Medium',
+    leetcodeSlug: 'powx-n',
+    tags: ['Math', 'Recursion'],
+    description: `Implement \`pow(x, n)\`, which calculates \`x\` raised to the power \`n\` (i.e., \`x^n\`).`,
+    examples: [
+      { input: 'x = 2.00000, n = 10', output: '1024.00000' },
+      { input: 'x = 2.10000, n = 3', output: '9.26100' },
+      { input: 'x = 2.00000, n = -2', output: '0.25000', explanation: '2^-2 = 1/4 = 0.25.' },
+    ],
+    constraints: ['-100.0 < x < 100.0', '-2^31 <= n <= 2^31 - 1', 'n is an integer.', '-10^4 <= x^n <= 10^4'],
+    starterCode: `/**
+ * @param {number} x
+ * @param {number} n
+ * @return {number}
+ */
+function myPow(x, n) {
+
+}
+
+function solve(x, n) { return myPow(x, n); }`,
+    starterCodePython: `class Solution:
+    def myPow(self, x: float, n: int) -> float:
+        pass
+
+def solve(x, n): return Solution().myPow(x, n)`,
+    testCases: [
+      { label: '2^10 → 1024', args: [2.0, 10], expected: 1024.0 },
+      { label: '2^-2 → 0.25', args: [2.0, -2], expected: 0.25 },
+      { label: '2.1^3 ≈ 9.261', args: [2.1, 3], expected: 9.261000000000001 },
+    ],
+    hint: 'Fast exponentiation: if n<0, x=1/x, n=-n. If n==0 return 1. If n is odd, return x * pow(x, n-1). If n is even, half = pow(x, n/2); return half*half. O(log n) time.',
+  },
+
+  67: {
+    id: 67,
+    title: 'Add Binary',
+    titleZh: '二进制求和',
+    difficulty: 'Easy',
+    leetcodeSlug: 'add-binary',
+    tags: ['Math', 'String', 'Bit Manipulation', 'Simulation'],
+    description: `Given two binary strings \`a\` and \`b\`, return their sum as a binary string.`,
+    examples: [
+      { input: 'a = "11", b = "1"', output: '"100"' },
+      { input: 'a = "1010", b = "1011"', output: '"10101"' },
+    ],
+    constraints: ['1 <= a.length, b.length <= 10^4', 'a and b consist only of \'0\' or \'1\' characters.', 'Neither a nor b has leading zeros, except "0".'],
+    starterCode: `/**
+ * @param {string} a
+ * @param {string} b
+ * @return {string}
+ */
+function addBinary(a, b) {
+
+}
+
+function solve(a, b) { return addBinary(a, b); }`,
+    starterCodePython: `class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        pass
+
+def solve(a, b): return Solution().addBinary(a, b)`,
+    testCases: [
+      { label: '"11"+"1" → "100"', args: ['11', '1'], expected: '100' },
+      { label: '"1010"+"1011" → "10101"', args: ['1010', '1011'], expected: '10101' },
+    ],
+    hint: 'Iterate from rightmost digit, sum corresponding bits plus carry. Remainder is the new bit (0 or 1), carry = sum >> 1. Prepend to result. If carry remains, prepend "1".',
+  },
+
+  172: {
+    id: 172,
+    title: 'Factorial Trailing Zeroes',
+    titleZh: '阶乘后的零',
+    difficulty: 'Medium',
+    leetcodeSlug: 'factorial-trailing-zeroes',
+    tags: ['Math'],
+    description: `Given an integer \`n\`, return the number of **trailing zeroes** in \`n!\`.
+
+Note that \`n! = n * (n-1) * (n-2) * ... * 1\`.`,
+    examples: [
+      { input: 'n = 3', output: '0', explanation: '3! = 6, no trailing zero.' },
+      { input: 'n = 5', output: '1', explanation: '5! = 120, one trailing zero.' },
+      { input: 'n = 0', output: '0' },
+    ],
+    constraints: ['0 <= n <= 10^4'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {number}
+ */
+function trailingZeroes(n) {
+
+}
+
+function solve(n) { return trailingZeroes(n); }`,
+    starterCodePython: `class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        pass
+
+def solve(n): return Solution().trailingZeroes(n)`,
+    testCases: [
+      { label: 'n=3 → 0', args: [3], expected: 0 },
+      { label: 'n=5 → 1', args: [5], expected: 1 },
+      { label: 'n=25 → 6', args: [25], expected: 6 },
+    ],
+    hint: 'Trailing zeros come from factors of 10 = 2×5. Factors of 2 are always more plentiful, so count factors of 5: floor(n/5) + floor(n/25) + floor(n/125) + ...',
+  },
+
+  191: {
+    id: 191,
+    title: 'Number of 1 Bits',
+    titleZh: '位1的个数',
+    difficulty: 'Easy',
+    leetcodeSlug: 'number-of-1-bits',
+    tags: ['Divide and Conquer', 'Bit Manipulation'],
+    description: `Given a positive integer \`n\`, return the number of **set bits** (1-bits) in its binary representation (also known as the Hamming weight).`,
+    examples: [
+      { input: 'n = 11', output: '3', explanation: '11 = 1011 in binary, three 1-bits.' },
+      { input: 'n = 128', output: '1', explanation: '128 = 10000000.' },
+      { input: 'n = 2147483645', output: '30' },
+    ],
+    constraints: ['1 <= n <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {number}
+ */
+function hammingWeight(n) {
+
+}
+
+function solve(n) { return hammingWeight(n); }`,
+    starterCodePython: `class Solution:
+    def hammingWeight(self, n: int) -> int:
+        pass
+
+def solve(n): return Solution().hammingWeight(n)`,
+    testCases: [
+      { label: '11 → 3', args: [11], expected: 3 },
+      { label: '128 → 1', args: [128], expected: 1 },
+      { label: '2147483645 → 30', args: [2147483645], expected: 30 },
+    ],
+    hint: 'Brian Kernighan\'s trick: n & (n-1) clears the lowest set bit. Count how many times you can do this until n=0. Or simply: while n: count += n&1, n >>= 1.',
+  },
+
+  231: {
+    id: 231,
+    title: 'Power of Two',
+    titleZh: '2的幂',
+    difficulty: 'Easy',
+    leetcodeSlug: 'power-of-two',
+    tags: ['Math', 'Bit Manipulation', 'Recursion'],
+    description: `Given an integer \`n\`, return \`true\` if it is a power of two. Otherwise, return \`false\`.
+
+An integer \`n\` is a power of two if there exists an integer \`x\` such that \`n == 2^x\`.`,
+    examples: [
+      { input: 'n = 1', output: 'true', explanation: '2^0 = 1.' },
+      { input: 'n = 16', output: 'true', explanation: '2^4 = 16.' },
+      { input: 'n = 3', output: 'false' },
+    ],
+    constraints: ['-2^31 <= n <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {boolean}
+ */
+function isPowerOfTwo(n) {
+
+}
+
+function solve(n) { return isPowerOfTwo(n); }`,
+    starterCodePython: `class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        pass
+
+def solve(n): return Solution().isPowerOfTwo(n)`,
+    testCases: [
+      { label: '1 → true', args: [1], expected: true },
+      { label: '16 → true', args: [16], expected: true },
+      { label: '3 → false', args: [3], expected: false },
+      { label: '0 → false', args: [0], expected: false },
+    ],
+    hint: 'A power of two has exactly one set bit. Check n > 0 && (n & (n-1)) == 0.',
+  },
+
+  268: {
+    id: 268,
+    title: 'Missing Number',
+    titleZh: '丢失的数字',
+    difficulty: 'Easy',
+    leetcodeSlug: 'missing-number',
+    tags: ['Array', 'Hash Table', 'Math', 'Binary Search', 'Bit Manipulation', 'Sorting'],
+    description: `Given an array \`nums\` containing \`n\` distinct numbers in the range \`[0, n]\`, return the only number in the range that is missing from the array.`,
+    examples: [
+      { input: 'nums = [3,0,1]', output: '2' },
+      { input: 'nums = [0,1]', output: '2' },
+      { input: 'nums = [9,6,4,2,3,5,7,0,1]', output: '8' },
+    ],
+    constraints: ['n == nums.length', '1 <= n <= 10^4', '0 <= nums[i] <= n', 'All nums are distinct.'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+function missingNumber(nums) {
+
+}
+
+function solve(nums) { return missingNumber(nums); }`,
+    starterCodePython: `class Solution:
+    def missingNumber(self, nums: list[int]) -> int:
+        pass
+
+def solve(nums): return Solution().missingNumber(nums)`,
+    testCases: [
+      { label: '[3,0,1] → 2', args: [[3,0,1]], expected: 2 },
+      { label: '[0,1] → 2', args: [[0,1]], expected: 2 },
+      { label: '[9,6,4,2,3,5,7,0,1] → 8', args: [[9,6,4,2,3,5,7,0,1]], expected: 8 },
+    ],
+    hint: 'Expected sum = n*(n+1)/2. Actual sum = sum of array. Missing = expected - actual. Or XOR all indices and values together: duplicates cancel, leaving the missing number.',
+  },
+
+  306: {
+    id: 306,
+    title: 'Additive Number',
+    titleZh: '累加数',
+    difficulty: 'Medium',
+    leetcodeSlug: 'additive-number',
+    tags: ['String', 'Backtracking'],
+    description: `An **additive number** is a string whose digits can be split into a sequence where each number (after the first two) equals the sum of the two preceding numbers.
+
+Given a string \`num\`, return \`true\` if it is an additive number, or \`false\` otherwise.
+
+Note: Numbers in the sequence should not have leading zeros, except for the number \`0\` itself.`,
+    examples: [
+      { input: 'num = "112358"', output: 'true', explanation: '1,1,2,3,5,8 is the Fibonacci sequence.' },
+      { input: 'num = "199100199"', output: 'true', explanation: '1,99,100,199.' },
+    ],
+    constraints: ['1 <= num.length <= 35', 'num consists of only digits.'],
+    starterCode: `/**
+ * @param {string} num
+ * @return {boolean}
+ */
+function isAdditiveNumber(num) {
+
+}
+
+function solve(num) { return isAdditiveNumber(num); }`,
+    starterCodePython: `class Solution:
+    def isAdditiveNumber(self, num: str) -> bool:
+        pass
+
+def solve(num): return Solution().isAdditiveNumber(num)`,
+    testCases: [
+      { label: '"112358" → true', args: ['112358'], expected: true },
+      { label: '"199100199" → true', args: ['199100199'], expected: true },
+      { label: '"123" → true', args: ['123'], expected: true },
+      { label: '"1023" → false', args: ['1023'], expected: false },
+    ],
+    hint: 'Try all pairs (first, second) by choosing split points i and j in the string. Then check if the rest of the string matches the additive sequence. Use string addition to avoid overflow.',
+  },
+
+  357: {
+    id: 357,
+    title: 'Count Numbers with Unique Digits',
+    titleZh: '统计各位数字都不同的数字个数',
+    difficulty: 'Medium',
+    leetcodeSlug: 'count-numbers-with-unique-digits',
+    tags: ['Math', 'Dynamic Programming', 'Backtracking'],
+    description: `Given an integer \`n\`, return the count of all numbers with unique digits in the range \`[0, 10^n)\`.`,
+    examples: [
+      { input: 'n = 2', output: '91', explanation: 'From 0 to 99, all numbers with unique digits. Excludes 11,22,...,99.' },
+      { input: 'n = 0', output: '1', explanation: 'Only 0.' },
+    ],
+    constraints: ['0 <= n <= 8'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {number}
+ */
+function countNumbersWithUniqueDigits(n) {
+
+}
+
+function solve(n) { return countNumbersWithUniqueDigits(n); }`,
+    starterCodePython: `class Solution:
+    def countNumbersWithUniqueDigits(self, n: int) -> int:
+        pass
+
+def solve(n): return Solution().countNumbersWithUniqueDigits(n)`,
+    testCases: [
+      { label: 'n=0 → 1', args: [0], expected: 1 },
+      { label: 'n=1 → 10', args: [1], expected: 10 },
+      { label: 'n=2 → 91', args: [2], expected: 91 },
+    ],
+    hint: 'For k-digit numbers (no leading zeros): first digit has 9 choices (1-9), second has 9 (0-9 minus first), third has 8, etc. Count(k) = 9 * 9 * 8 * ... * (11-k). Sum 1 + 10 + Count(2) + ... + Count(n).',
+  },
+
+  400: {
+    id: 400,
+    title: 'Nth Digit',
+    titleZh: '第 N 个数字',
+    difficulty: 'Medium',
+    leetcodeSlug: 'nth-digit',
+    tags: ['Math', 'Binary Search'],
+    description: `Given an integer \`n\`, return the \`n\`th digit of the infinite integer sequence \`1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...\`.`,
+    examples: [
+      { input: 'n = 3', output: '3' },
+      { input: 'n = 11', output: '0', explanation: 'The sequence is 1,2,...,9,10,11,... The 11th digit is 0 (from "10").' },
+    ],
+    constraints: ['1 <= n <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {number}
+ */
+function findNthDigit(n) {
+
+}
+
+function solve(n) { return findNthDigit(n); }`,
+    starterCodePython: `class Solution:
+    def findNthDigit(self, n: int) -> int:
+        pass
+
+def solve(n): return Solution().findNthDigit(n)`,
+    testCases: [
+      { label: 'n=3 → 3', args: [3], expected: 3 },
+      { label: 'n=11 → 0', args: [11], expected: 0 },
+    ],
+    hint: 'Count digits by range: 1-digit numbers contribute 9×1=9 digits, 2-digit contribute 90×2=180, etc. Find which range n falls in, then find the exact number and digit within it.',
+  },
+
+  645: {
+    id: 645,
+    title: 'Set Mismatch',
+    titleZh: '错误的集合',
+    difficulty: 'Easy',
+    leetcodeSlug: 'set-mismatch',
+    tags: ['Array', 'Hash Table', 'Bit Manipulation', 'Sorting'],
+    description: `You have a set of integers \`s\` that originally contains all numbers from \`1\` to \`n\`. Due to some error, one number is duplicated, causing another to be missing.
+
+Given the array \`nums\` representing the set after the error, return an array \`[dup, missing]\`.`,
+    examples: [
+      { input: 'nums = [1,2,2,4]', output: '[2,3]' },
+      { input: 'nums = [1,1]', output: '[1,2]' },
+    ],
+    constraints: ['2 <= nums.length <= 10^4', '1 <= nums[i] <= n'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+function findErrorNums(nums) {
+
+}
+
+function solve(nums) { return findErrorNums(nums); }`,
+    starterCodePython: `class Solution:
+    def findErrorNums(self, nums: list[int]) -> list[int]:
+        pass
+
+def solve(nums): return Solution().findErrorNums(nums)`,
+    testCases: [
+      { label: '[1,2,2,4] → [2,3]', args: [[1,2,2,4]], expected: [2,3] },
+      { label: '[1,1] → [1,2]', args: [[1,1]], expected: [1,2] },
+    ],
+    hint: 'Use a frequency count array. The number with count 2 is the duplicate; the number with count 0 is the missing one.',
+  },
+
+  809: {
+    id: 809,
+    title: 'Expressive Words',
+    titleZh: '情感丰富的文字',
+    difficulty: 'Medium',
+    leetcodeSlug: 'expressive-words',
+    tags: ['Array', 'Two Pointers', 'String'],
+    description: `Sometimes people elongate words by repeating characters, like turning "hello" into "heeellooo". A string \`s\` can be "stretched" to match a word if each group of consecutive identical characters in the word can be extended to at least 3 in \`s\`, or kept the same size.
+
+Given a string \`s\` and an array of query strings \`words\`, return the number of words that are stretchy.`,
+    examples: [
+      { input: 's = "heeellooo", words = ["hello","hi","helo"]', output: '1', explanation: '"hello" is stretchy: h→h, e→eee, l→ll, o→ooo.' },
+      { input: 's = "zzzzzyyyyy", words = ["zzyy","zy","zyy"]', output: '3' },
+    ],
+    constraints: ['1 <= s.length, words.length <= 100', '1 <= words[i].length <= 100'],
+    starterCode: `/**
+ * @param {string} s
+ * @param {string[]} words
+ * @return {number}
+ */
+function expressiveWords(s, words) {
+
+}
+
+function solve(s, words) { return expressiveWords(s, words); }`,
+    starterCodePython: `class Solution:
+    def expressiveWords(self, s: str, words: list[str]) -> int:
+        pass
+
+def solve(s, words): return Solution().expressiveWords(s, words)`,
+    testCases: [
+      { label: '"heeellooo",["hello","hi","helo"] → 1', args: ['heeellooo', ['hello','hi','helo']], expected: 1 },
+      { label: '"zzzzzyyyyy",["zzyy","zy","zyy"] → 3', args: ['zzzzzyyyyy', ['zzyy','zy','zyy']], expected: 3 },
+    ],
+    hint: 'RLE-encode both s and the word into (char, count) pairs. Match group by group: chars must be equal; if word group count <= s group count, it\'s stretchy only if s group count >= 3 or counts are equal.',
+  },
+
+  391: {
+    id: 391,
+    title: 'Perfect Rectangle',
+    titleZh: '完美矩形',
+    difficulty: 'Hard',
+    leetcodeSlug: 'perfect-rectangle',
+    tags: ['Array', 'Hash Table'],
+    description: `Given an array \`rectangles\` where \`rectangles[i] = [xi, yi, ai, bi]\` represents a rectangle from \`(xi, yi)\` to \`(ai, bi)\`, return \`true\` if all rectangles together form **exactly** one large rectangle without overlaps or gaps.`,
+    examples: [
+      { input: 'rectangles = [[1,1,3,3],[3,1,4,2],[3,2,4,4],[1,3,2,4],[2,3,3,4]]', output: 'true' },
+      { input: 'rectangles = [[1,1,2,3],[1,3,2,4],[3,1,4,2],[3,2,4,4]]', output: 'false', explanation: 'Gap between the rectangles.' },
+    ],
+    constraints: ['1 <= rectangles.length <= 2 * 10^4', 'rectangles[i].length == 4', '0 <= xi < ai <= 10^9', '0 <= yi < bi <= 10^9'],
+    starterCode: `/**
+ * @param {number[][]} rectangles
+ * @return {boolean}
+ */
+function isRectangleCover(rectangles) {
+
+}
+
+function solve(rectangles) { return isRectangleCover(rectangles); }`,
+    starterCodePython: `class Solution:
+    def isRectangleCover(self, rectangles: list[list[int]]) -> bool:
+        pass
+
+def solve(rectangles): return Solution().isRectangleCover(rectangles)`,
+    testCases: [
+      { label: '5 rectangles → true', args: [[[1,1,3,3],[3,1,4,2],[3,2,4,4],[1,3,2,4],[2,3,3,4]]], expected: true },
+      { label: '4 rectangles with gap → false', args: [[[1,1,2,3],[1,3,2,4],[3,1,4,2],[3,2,4,4]]], expected: false },
+    ],
+    hint: 'Two conditions: (1) Total area of all rectangles == area of bounding box. (2) Each corner point must appear an odd number of times only for the 4 corners of the bounding box (interior corners appear 2 or 4 times and cancel). Use a set with toggle logic.',
+  },
+
+  659: {
+    id: 659,
+    title: 'Split Array into Consecutive Subsequences',
+    titleZh: '分割数组为连续子序列',
+    difficulty: 'Medium',
+    leetcodeSlug: 'split-array-into-consecutive-subsequences',
+    tags: ['Array', 'Hash Table', 'Greedy', 'Heap (Priority Queue)'],
+    description: `Given an integer array \`nums\` that is sorted in **non-decreasing** order, return \`true\` if you can split it into one or more subsequences such that each subsequence consists of **consecutive integers** and has a **length of at least 3**.`,
+    examples: [
+      { input: 'nums = [1,2,3,3,4,5]', output: 'true', explanation: '[1,2,3] and [3,4,5].' },
+      { input: 'nums = [1,2,3,3,4,4,5,5]', output: 'true', explanation: '[1,2,3,4,5] and [3,4,5].' },
+      { input: 'nums = [1,2,3,4,4,5]', output: 'false' },
+    ],
+    constraints: ['1 <= nums.length <= 10^4', '-1000 <= nums[i] <= 1000', 'nums is sorted in non-decreasing order.'],
+    starterCode: `/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+function isPossible(nums) {
+
+}
+
+function solve(nums) { return isPossible(nums); }`,
+    starterCodePython: `class Solution:
+    def isPossible(self, nums: list[int]) -> bool:
+        pass
+
+def solve(nums): return Solution().isPossible(nums)`,
+    testCases: [
+      { label: '[1,2,3,3,4,5] → true', args: [[1,2,3,3,4,5]], expected: true },
+      { label: '[1,2,3,3,4,4,5,5] → true', args: [[1,2,3,3,4,4,5,5]], expected: true },
+      { label: '[1,2,3,4,4,5] → false', args: [[1,2,3,4,4,5]], expected: false },
+    ],
+    hint: 'Use two maps: count (remaining frequency) and tail (subsequences ending at value v). For each num: if tail[num]>0, extend that subsequence (tail[num]--, tail[num+1]++). Else if count[num+1]>0 and count[num+2]>0, start a new length-3 subsequence. Else return false.',
+  },
+
+  1009: {
+    id: 1009,
+    title: 'Complement of Base 10 Integer',
+    titleZh: '十进制整数的反码',
+    difficulty: 'Easy',
+    leetcodeSlug: 'complement-of-base-10-integer',
+    tags: ['Bit Manipulation'],
+    description: `The **complement** of an integer is obtained by flipping all bits in its binary representation.
+
+Given an integer \`n\`, return its complement.`,
+    examples: [
+      { input: 'n = 5', output: '2', explanation: '5 is 101 in binary; complement is 010 = 2.' },
+      { input: 'n = 7', output: '0', explanation: '7 is 111; complement is 000 = 0.' },
+      { input: 'n = 10', output: '5', explanation: '10 is 1010; complement is 0101 = 5.' },
+    ],
+    constraints: ['0 <= n < 10^9'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {number}
+ */
+function bitwiseComplement(n) {
+
+}
+
+function solve(n) { return bitwiseComplement(n); }`,
+    starterCodePython: `class Solution:
+    def bitwiseComplement(self, n: int) -> int:
+        pass
+
+def solve(n): return Solution().bitwiseComplement(n)`,
+    testCases: [
+      { label: 'n=5 → 2', args: [5], expected: 2 },
+      { label: 'n=7 → 0', args: [7], expected: 0 },
+      { label: 'n=10 → 5', args: [10], expected: 5 },
+      { label: 'n=0 → 1', args: [0], expected: 1 },
+    ],
+    hint: 'Find the number of bits in n: bit_length = floor(log2(n))+1. Create a mask of all 1s of that length: mask = (1 << bit_length) - 1. Answer = n XOR mask. Edge case: n=0 → 1.',
+  },
+
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {

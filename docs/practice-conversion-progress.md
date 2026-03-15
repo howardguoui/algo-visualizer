@@ -7,7 +7,7 @@ Converting the **Beginner (474)** problem set — only problems NOT already in H
 | Source | Total | Unique New | Status |
 |---|---|---|---|
 | Already converted | 58 | — | ✅ Done |
-| Beginner unique | ~199 standard IDs | **10 batches × ~20** | 🔄 In progress |
+| Beginner unique | ~199 standard IDs | **10 batches × ~20** | ✅ Done (B1–B10 complete) |
 | Hot 100 remaining | 66 | _(later phase)_ | ⏳ After Beginner |
 | Quick Master extras | 123 | _(later phase)_ | ⏳ After Hot 100 |
 
@@ -269,7 +269,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 
 ---
 
-## Batch B10 — DP Game + Greedy + Math + Others (27 problems) `[ ] Not started`
+## Batch B10 — DP Game + Greedy + Math + Others (27 problems) `[x] Done`
 
 > **Note:** This is the largest batch (~27 problems). You can split it across 2 sessions if needed.
 
@@ -320,7 +320,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 | B7 | 20 problems (315,327,341,493,669,671,948,1285,1427,1780,1790,1816,130,261,277,323,801,922,984,1275) | 2026-03-15 | pending |
 | B8 | 20 problems (89,301,399,473,526,638,694,698,800,803,1038,1073,1100,1160,1331,1418,1715,1825,1976,1485) | 2026-03-15 | pending |
 | B9 | 20 problems (115,140,310,417,516,542,960,967,1428,1437,2206,3092,10,122,123,174,188,213,309,337) | 2026-03-15 | pending |
-| B10 | _pending_ | | |
+| B10 | 27 problems (253,312,435,452,486,514,714,923,1081,1352,8,9,43,50,67,172,191,231,268,306,357,400,645,809,391,659,1009) | 2026-03-15 | pending |
 
 ---
 
