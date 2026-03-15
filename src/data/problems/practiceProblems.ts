@@ -6837,6 +6837,985 @@ def solve(teamPoints, pointsChange): return Solution().changeInRanking(teamPoint
     ],
     hint: 'Build a map from team_id to change. Compute old ranks by sorting by points desc, name asc. Apply changes, compute new ranks. For each team, rank_change = old_rank - new_rank. Sort output by team_id.',
   },
+
+  // ─── Batch B6 — BT Level Order + BST ────────────────────────────────────────
+
+  107: {
+    id: 107,
+    title: 'Binary Tree Level Order Traversal II',
+    titleZh: '二叉树的层序遍历 II',
+    difficulty: 'Medium',
+    leetcodeSlug: 'binary-tree-level-order-traversal-ii',
+    tags: ['Tree', 'BFS', 'Binary Tree'],
+    description: `Given the \`root\` of a binary tree, return the **bottom-up level order traversal** of its nodes' values (i.e., from left to right, level by level from leaf to root).`,
+    examples: [
+      { input: 'root = [3,9,20,null,null,15,7]', output: '[[15,7],[9,20],[3]]', explanation: 'Levels from bottom to top.' },
+      { input: 'root = [1]', output: '[[1]]' },
+      { input: 'root = []', output: '[]' },
+    ],
+    constraints: ['The number of nodes in the tree is in the range [0, 2000].', '-1000 <= Node.val <= 1000'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {number[][]}
+ */
+function levelOrderBottom(root) {
+
+}
+
+// Helper: build tree from array
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr) { return levelOrderBottom(build(arr)); }`,
+    starterCodePython: `class Solution:
+    def levelOrderBottom(self, root) -> list[list[int]]:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr): return Solution().levelOrderBottom(build(arr))`,
+    testCases: [
+      { label: '[3,9,20,null,null,15,7] → [[15,7],[9,20],[3]]', args: [[3,9,20,null,null,15,7]], expected: [[15,7],[9,20],[3]] },
+      { label: '[1] → [[1]]', args: [[1]], expected: [[1]] },
+      { label: '[] → []', args: [[]], expected: [] },
+    ],
+    hint: 'BFS level by level, collect each level\'s values into a list, then reverse the entire result at the end.',
+  },
+
+  117: {
+    id: 117,
+    title: 'Populating Next Right Pointers in Each Node II',
+    titleZh: '填充每个节点的下一个右侧节点指针 II',
+    difficulty: 'Medium',
+    leetcodeSlug: 'populating-next-right-pointers-in-each-node-ii',
+    tags: ['Tree', 'BFS', 'Linked List', 'Binary Tree'],
+    description: `Given a binary tree, populate each node's \`next\` pointer to point to its next right node. If there is no next right node, set \`next\` to \`null\`.
+
+Initially all \`next\` pointers are set to \`null\`. Try to use **O(1) extra space** (excluding recursion stack).`,
+    examples: [
+      { input: 'root = [1,2,3,4,5,null,7]', output: '[1,#,2,3,#,4,5,7,#]', explanation: 'Each level\'s nodes are linked left→right.' },
+      { input: 'root = []', output: '[]' },
+    ],
+    constraints: ['The number of nodes is in [0, 6000].', '-100 <= Node.val <= 100'],
+    starterCode: `/**
+ * @param {Node|null} root
+ * @return {Node|null}
+ */
+function connect(root) {
+
+}
+
+function Node(val, left, right, next) { this.val=val; this.left=left||null; this.right=right||null; this.next=next||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new Node(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function serialize(root) { if(!root) return []; let res=[],q=[root]; while(q.length){let node=q.shift();if(!node){res.push(null);continue;}res.push(node.val);q.push(node.left,node.right);} while(res[res.length-1]==null)res.pop(); return res; }
+function solve(arr) { return serialize(connect(build(arr))); }`,
+    starterCodePython: `class Solution:
+    def connect(self, root):
+        pass
+
+class Node:
+    def __init__(self, val=0, left=None, right=None, next=None):
+        self.val=val; self.left=left; self.right=right; self.next=next
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = Node(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def serialize(root):
+    if not root: return []
+    res, q = [], [root]
+    while q:
+        node = q.pop(0)
+        if not node: res.append(None); continue
+        res.append(node.val); q.append(node.left); q.append(node.right)
+    while res and res[-1] is None: res.pop()
+    return res
+
+def solve(arr): return serialize(Solution().connect(build(arr)))`,
+    testCases: [
+      { label: '[1,2,3,4,5,null,7] → level-linked', args: [[1,2,3,4,5,null,7]], expected: [1,2,3,4,5,7] },
+      { label: '[] → []', args: [[]], expected: [] },
+    ],
+    hint: 'Use a dummy head for each next level. Walk current level via next pointers, linking children into the dummy chain. O(1) extra space.',
+  },
+
+  515: {
+    id: 515,
+    title: 'Find Largest Value in Each Tree Row',
+    titleZh: '在每个树行中找最大值',
+    difficulty: 'Medium',
+    leetcodeSlug: 'find-largest-value-in-each-tree-row',
+    tags: ['Tree', 'BFS', 'DFS', 'Binary Tree'],
+    description: `Given the \`root\` of a binary tree, return an array of the **largest value** in each row of the tree (0-indexed).`,
+    examples: [
+      { input: 'root = [1,3,2,5,3,null,9]', output: '[1,3,9]', explanation: 'Row 0: [1]→1, row 1: [3,2]→3, row 2: [5,3,9]→9.' },
+      { input: 'root = [1,2,3]', output: '[1,3]' },
+    ],
+    constraints: ['Number of nodes: [0, 10^4]', '-2^31 <= Node.val <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {number[]}
+ */
+function largestValues(root) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr) { return largestValues(build(arr)); }`,
+    starterCodePython: `class Solution:
+    def largestValues(self, root) -> list[int]:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr): return Solution().largestValues(build(arr))`,
+    testCases: [
+      { label: '[1,3,2,5,3,null,9] → [1,3,9]', args: [[1,3,2,5,3,null,9]], expected: [1,3,9] },
+      { label: '[1,2,3] → [1,3]', args: [[1,2,3]], expected: [1,3] },
+      { label: '[] → []', args: [[]], expected: [] },
+    ],
+    hint: 'BFS level by level. For each level, track the maximum value seen and append it to result.',
+  },
+
+  637: {
+    id: 637,
+    title: 'Average of Levels in Binary Tree',
+    titleZh: '二叉树的层平均值',
+    difficulty: 'Easy',
+    leetcodeSlug: 'average-of-levels-in-binary-tree',
+    tags: ['Tree', 'BFS', 'DFS', 'Binary Tree'],
+    description: `Given the \`root\` of a binary tree, return the **average value** of the nodes on each level in the form of an array. Answers within \`10^-5\` of the actual answer will be accepted.`,
+    examples: [
+      { input: 'root = [3,9,20,null,null,15,7]', output: '[3.00000,14.50000,11.00000]', explanation: '(9+20)/2=14.5, (15+7)/2=11.' },
+      { input: 'root = [3,9,20,15,7]', output: '[3.00000,14.50000,11.00000]' },
+    ],
+    constraints: ['Number of nodes: [1, 10^4]', '-2^31 <= Node.val <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {number[]}
+ */
+function averageOfLevels(root) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr) { return averageOfLevels(build(arr)); }`,
+    starterCodePython: `class Solution:
+    def averageOfLevels(self, root) -> list[float]:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr): return Solution().averageOfLevels(build(arr))`,
+    testCases: [
+      { label: '[3,9,20,null,null,15,7] → [3,14.5,11]', args: [[3,9,20,null,null,15,7]], expected: [3,14.5,11] },
+      { label: '[1] → [1]', args: [[1]], expected: [1] },
+    ],
+    hint: 'BFS: for each level, sum all node values and divide by the count of nodes at that level.',
+  },
+
+  662: {
+    id: 662,
+    title: 'Maximum Width of Binary Tree',
+    titleZh: '二叉树最大宽度',
+    difficulty: 'Medium',
+    leetcodeSlug: 'maximum-width-of-binary-tree',
+    tags: ['Tree', 'BFS', 'DFS', 'Binary Tree'],
+    description: `Given the \`root\` of a binary tree, return the **maximum width** of the given tree.
+
+The **width** of one level is defined as the length between the end-nodes (the leftmost and rightmost non-null nodes), where null nodes between them in a complete binary tree are also counted into the length.
+
+The answer is guaranteed to fit in a 32-bit signed integer.`,
+    examples: [
+      { input: 'root = [1,3,2,5,3,null,9]', output: '4', explanation: 'Level 3 has nodes 5,3,null,9 → width 4.' },
+      { input: 'root = [1,3,2,5]', output: '2' },
+    ],
+    constraints: ['Number of nodes: [1, 3000]', '-100 <= Node.val <= 100'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {number}
+ */
+function widthOfBinaryTree(root) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr) { return widthOfBinaryTree(build(arr)); }`,
+    starterCodePython: `class Solution:
+    def widthOfBinaryTree(self, root) -> int:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr): return Solution().widthOfBinaryTree(build(arr))`,
+    testCases: [
+      { label: '[1,3,2,5,3,null,9] → 4', args: [[1,3,2,5,3,null,9]], expected: 4 },
+      { label: '[1,3,2,5] → 2', args: [[1,3,2,5]], expected: 2 },
+      { label: '[1] → 1', args: [[1]], expected: 1 },
+    ],
+    hint: 'BFS with index tracking: assign each node an index (left child = 2*i, right child = 2*i+1). Width at each level = last_index - first_index + 1. Normalize indices each level to prevent overflow.',
+  },
+
+  893: {
+    id: 893,
+    title: 'Groups of Special-Equivalent Strings',
+    titleZh: '特殊等价字符串组',
+    difficulty: 'Medium',
+    leetcodeSlug: 'groups-of-special-equivalent-strings',
+    tags: ['Array', 'Hash Table', 'String', 'Sorting'],
+    description: `You are given an array of strings \`words\`.
+
+A move consists of choosing any two even-indexed characters or any two odd-indexed characters in a string and swapping them. Two strings are **special-equivalent** if one can be transformed into the other via any number of moves.
+
+Return the **number of groups** of special-equivalent strings.`,
+    examples: [
+      { input: 'words = ["abcd","cdab","cbad","xyzz","zzxy","zzyx"]', output: '3', explanation: 'Three groups: {abcd,cdab,cbad}, {xyzz,zzxy}, {zzyx}.' },
+      { input: 'words = ["abc","acb","bac","bca","cab","cba"]', output: '3' },
+    ],
+    constraints: ['1 <= words.length <= 1000', '1 <= words[i].length <= 20', 'All words have the same length.', 'words[i] consists of lowercase English letters.'],
+    starterCode: `/**
+ * @param {string[]} words
+ * @return {number}
+ */
+function numSpecialEquivGroups(words) {
+
+}
+
+function solve(words) { return numSpecialEquivGroups(words); }`,
+    starterCodePython: `class Solution:
+    def numSpecialEquivGroups(self, words: list[str]) -> int:
+        pass
+
+def solve(words): return Solution().numSpecialEquivGroups(words)`,
+    testCases: [
+      { label: '["abcd","cdab","cbad","xyzz","zzxy","zzyx"] → 3', args: [['abcd','cdab','cbad','xyzz','zzxy','zzyx']], expected: 3 },
+      { label: '["abc","acb","bac","bca","cab","cba"] → 3', args: [['abc','acb','bac','bca','cab','cba']], expected: 3 },
+    ],
+    hint: 'For each word, extract even-indexed characters (sorted) and odd-indexed characters (sorted). Use "evens + \'|\' + odds" as a canonical key. Count distinct keys.',
+  },
+
+  904: {
+    id: 904,
+    title: 'Fruit Into Baskets',
+    titleZh: '水果成篮',
+    difficulty: 'Medium',
+    leetcodeSlug: 'fruit-into-baskets',
+    tags: ['Array', 'Hash Table', 'Sliding Window'],
+    description: `You are given an integer array \`fruits\` where \`fruits[i]\` is the type of fruit on tree \`i\`. You have two baskets, each holding one type of fruit. Starting from any tree, pick one fruit per tree moving in one direction.
+
+Return the **maximum** number of fruits you can pick (longest subarray with at most 2 distinct values).`,
+    examples: [
+      { input: 'fruits = [1,2,1]', output: '3', explanation: 'Pick all 3 fruits.' },
+      { input: 'fruits = [0,1,2,2]', output: '3', explanation: 'Pick [1,2,2].' },
+      { input: 'fruits = [1,2,3,2,2]', output: '4', explanation: 'Pick [2,3,2,2].' },
+    ],
+    constraints: ['1 <= fruits.length <= 10^5', '0 <= fruits[i] < fruits.length'],
+    starterCode: `/**
+ * @param {number[]} fruits
+ * @return {number}
+ */
+function totalFruit(fruits) {
+
+}
+
+function solve(fruits) { return totalFruit(fruits); }`,
+    starterCodePython: `class Solution:
+    def totalFruit(self, fruits: list[int]) -> int:
+        pass
+
+def solve(fruits): return Solution().totalFruit(fruits)`,
+    testCases: [
+      { label: '[1,2,1] → 3', args: [[1,2,1]], expected: 3 },
+      { label: '[0,1,2,2] → 3', args: [[0,1,2,2]], expected: 3 },
+      { label: '[1,2,3,2,2] → 4', args: [[1,2,3,2,2]], expected: 4 },
+    ],
+    hint: 'Sliding window with a frequency map. Shrink window from left whenever the map has more than 2 distinct fruit types. Track max window size.',
+  },
+
+  998: {
+    id: 998,
+    title: 'Maximum Binary Tree II',
+    titleZh: '最大二叉树 II',
+    difficulty: 'Medium',
+    leetcodeSlug: 'maximum-binary-tree-ii',
+    tags: ['Tree', 'Binary Tree'],
+    description: `A **maximum tree** is one where every node has a value greater than any other value in its subtree.
+
+You are given the \`root\` of a maximum binary tree built from array \`original\`, and an integer \`val\`. Insert \`val\` at the end of \`original\` and rebuild the maximum binary tree.
+
+Return the root of the resulting tree.`,
+    examples: [
+      { input: 'root = [4,1,3,null,null,2], val = 5', output: '[5,4,null,null,3,2]', explanation: 'val=5 is the largest, becomes new root.' },
+      { input: 'root = [5,2,4,null,1], val = 3', output: '[5,2,4,null,1,null,3]' },
+    ],
+    constraints: ['Number of nodes: [1, 100]', '1 <= Node.val <= 200', 'All values unique.', '1 <= val <= 200'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @param {number} val
+ * @return {TreeNode|null}
+ */
+function insertIntoMaxTree(root, val) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function serialize(root) { if(!root) return []; let res=[],q=[root]; while(q.length){let n=q.shift();if(!n){res.push(null);continue;}res.push(n.val);q.push(n.left,n.right);} while(res[res.length-1]==null)res.pop(); return res; }
+function solve(arr, val) { return serialize(insertIntoMaxTree(build(arr), val)); }`,
+    starterCodePython: `class Solution:
+    def insertIntoMaxTree(self, root, val: int):
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def serialize(root):
+    if not root: return []
+    res, q = [], [root]
+    while q:
+        n = q.pop(0)
+        if not n: res.append(None); continue
+        res.append(n.val); q.append(n.left); q.append(n.right)
+    while res and res[-1] is None: res.pop()
+    return res
+
+def solve(arr, val): return serialize(Solution().insertIntoMaxTree(build(arr), val))`,
+    testCases: [
+      { label: '[4,1,3,null,null,2], val=5 → [5,4,null,null,3,2]', args: [[4,1,3,null,null,2], 5], expected: [5,4,null,null,3,2] },
+      { label: '[5,2,4,null,1], val=3 → [5,2,4,null,1,null,3]', args: [[5,2,4,null,1], 3], expected: [5,2,4,null,1,null,3] },
+    ],
+    hint: 'Since val appends to the rightmost position: if val > root.val, create a new node with val as root and old root as left child. Otherwise recursively insert into root.right.',
+  },
+
+  1116: {
+    id: 1116,
+    title: 'Print Zero Even Odd',
+    titleZh: '打印零与奇偶数',
+    difficulty: 'Medium',
+    leetcodeSlug: 'print-zero-even-odd',
+    tags: ['Concurrency'],
+    description: `**Note:** This is a concurrency problem adapted for algorithmic practice.
+
+Given \`n\`, return the output string produced by alternating threads: "0102030405...0n" — alternating zeros with numbers 1 through n.`,
+    examples: [
+      { input: 'n = 2', output: '"0102"', explanation: 'Output sequence: 0,1,0,2.' },
+      { input: 'n = 5', output: '"0102030405"' },
+    ],
+    constraints: ['1 <= n <= 1000'],
+    starterCode: `/**
+ * @param {number} n
+ * @return {string}
+ */
+function printZeroEvenOdd(n) {
+
+}
+
+function solve(n) { return printZeroEvenOdd(n); }`,
+    starterCodePython: `class Solution:
+    def printZeroEvenOdd(self, n: int) -> str:
+        pass
+
+def solve(n): return Solution().printZeroEvenOdd(n)`,
+    testCases: [
+      { label: 'n=2 → "0102"', args: [2], expected: '0102' },
+      { label: 'n=5 → "0102030405"', args: [5], expected: '0102030405' },
+      { label: 'n=1 → "01"', args: [1], expected: '01' },
+    ],
+    hint: 'Iterate i from 1 to n, appending "0" then String(i) each iteration.',
+  },
+
+  1254: {
+    id: 1254,
+    title: 'Number of Closed Islands',
+    titleZh: '统计封闭岛屿的数目',
+    difficulty: 'Medium',
+    leetcodeSlug: 'number-of-closed-islands',
+    tags: ['Array', 'DFS', 'BFS', 'Union Find', 'Matrix'],
+    description: `Given a 2D grid of \`0\`s (land) and \`1\`s (water), return the number of **closed islands**.
+
+A **closed island** is a connected group of 0s totally surrounded by 1s — it must not touch the grid boundary.`,
+    examples: [
+      { input: 'grid = [[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]', output: '2' },
+      { input: 'grid = [[0,0,1,0,0],[0,1,0,1,0],[0,1,1,1,0]]', output: '1' },
+    ],
+    constraints: ['1 <= grid.length, grid[0].length <= 100', 'grid[i][j] is 0 or 1'],
+    starterCode: `/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+function closedIsland(grid) {
+
+}
+
+function solve(grid) { return closedIsland(grid); }`,
+    starterCodePython: `class Solution:
+    def closedIsland(self, grid: list[list[int]]) -> int:
+        pass
+
+def solve(grid): return Solution().closedIsland(grid)`,
+    testCases: [
+      { label: '5×8 grid → 2', args: [[[1,1,1,1,1,1,1,0],[1,0,0,0,0,1,1,0],[1,0,1,0,1,1,1,0],[1,0,0,0,0,1,0,1],[1,1,1,1,1,1,1,0]]], expected: 2 },
+      { label: '3×5 grid → 1', args: [[[0,0,1,0,0],[0,1,0,1,0],[0,1,1,1,0]]], expected: 1 },
+    ],
+    hint: 'First flood-fill all land cells reachable from the border (these are NOT closed). Then count remaining unvisited land components via DFS/BFS.',
+  },
+
+  1474: {
+    id: 1474,
+    title: 'Delete N Nodes After M Nodes of a Linked List',
+    titleZh: '删除链表 M 个节点之后的 N 个节点',
+    difficulty: 'Easy',
+    leetcodeSlug: 'delete-n-nodes-after-m-nodes-of-a-linked-list',
+    tags: ['Linked List'],
+    description: `Given the \`head\` of a linked list and two integers \`m\` and \`n\`.
+
+Traverse the list and:
+- Keep the first \`m\` nodes.
+- Remove the next \`n\` nodes.
+- Repeat until the end.
+
+Return the head of the modified list.`,
+    examples: [
+      { input: 'head = [1,2,3,4,5,6,7,8,9,10,11,12,13], m = 2, n = 3', output: '[1,2,6,7,11,12]' },
+      { input: 'head = [1,2,3,4,5,6,7], m = 1, n = 3', output: '[1,5]' },
+    ],
+    constraints: ['Number of nodes: [1, 10^4]', '1 <= Node.val <= 10^6', '1 <= m, n <= 1000'],
+    starterCode: `/**
+ * @param {ListNode|null} head
+ * @param {number} m
+ * @param {number} n
+ * @return {ListNode|null}
+ */
+function deleteNodes(head, m, n) {
+
+}
+
+function ListNode(val, next) { this.val=val; this.next=next||null; }
+function buildList(arr) { let d=new ListNode(0),c=d; arr.forEach(v=>{c.next=new ListNode(v);c=c.next;}); return d.next; }
+function listToArr(head) { let r=[]; while(head){r.push(head.val);head=head.next;} return r; }
+function solve(arr, m, n) { return listToArr(deleteNodes(buildList(arr), m, n)); }`,
+    starterCodePython: `class Solution:
+    def deleteNodes(self, head, m: int, n: int):
+        pass
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val; self.next = next
+
+def buildList(arr):
+    d = ListNode(0); c = d
+    for v in arr: c.next = ListNode(v); c = c.next
+    return d.next
+
+def listToArr(head):
+    r = []
+    while head: r.append(head.val); head = head.next
+    return r
+
+def solve(arr, m, n): return listToArr(Solution().deleteNodes(buildList(arr), m, n))`,
+    testCases: [
+      { label: '[1..13], m=2, n=3 → [1,2,6,7,11,12]', args: [[1,2,3,4,5,6,7,8,9,10,11,12,13], 2, 3], expected: [1,2,6,7,11,12] },
+      { label: '[1..7], m=1, n=3 → [1,5]', args: [[1,2,3,4,5,6,7], 1, 3], expected: [1,5] },
+    ],
+    hint: 'Walk m steps keeping nodes, then walk n steps skipping nodes (adjust next pointer). Repeat until null.',
+  },
+
+  1554: {
+    id: 1554,
+    title: 'Strings Differ by One Character',
+    titleZh: '只有一个不同字符的字符串',
+    difficulty: 'Medium',
+    leetcodeSlug: 'strings-differ-by-one-character',
+    tags: ['Hash Table', 'String', 'Rolling Hash', 'Randomized'],
+    description: `Given a list of strings \`dict\` where all strings have the same length, return \`true\` if there are two strings that differ in **exactly one index** (all other characters identical), otherwise return \`false\`.`,
+    examples: [
+      { input: 'dict = ["abcd","acbd","aacd"]', output: 'true', explanation: '"abcd" and "aacd" differ only at index 1.' },
+      { input: 'dict = ["ab","cd","yz"]', output: 'false' },
+      { input: 'dict = ["abcd","cccc","abyd","abab"]', output: 'true' },
+    ],
+    constraints: ['Number of words: [2, 10^5]', '1 <= dict[i].length <= 20', 'All words have same length.'],
+    starterCode: `/**
+ * @param {string[]} dict
+ * @return {boolean}
+ */
+function differByOne(dict) {
+
+}
+
+function solve(dict) { return differByOne(dict); }`,
+    starterCodePython: `class Solution:
+    def differByOne(self, dict: list[str]) -> bool:
+        pass
+
+def solve(d): return Solution().differByOne(d)`,
+    testCases: [
+      { label: '["abcd","acbd","aacd"] → true', args: [['abcd','acbd','aacd']], expected: true },
+      { label: '["ab","cd","yz"] → false', args: [['ab','cd','yz']], expected: false },
+      { label: '["abcd","cccc","abyd","abab"] → true', args: [['abcd','cccc','abyd','abab']], expected: true },
+    ],
+    hint: 'For each column index i, build a set of strings with that column wildcarded. If any masked string appears twice, return true. O(n*L) time.',
+  },
+
+  99: {
+    id: 99,
+    title: 'Recover Binary Search Tree',
+    titleZh: '恢复二叉搜索树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'recover-binary-search-tree',
+    tags: ['Tree', 'DFS', 'BST', 'Binary Tree'],
+    description: `You are given the \`root\` of a BST where **exactly two** nodes were swapped by mistake. Recover the tree without changing its structure.`,
+    examples: [
+      { input: 'root = [1,3,null,null,2]', output: '[3,1,null,null,2]', explanation: '1 and 3 were swapped.' },
+      { input: 'root = [3,1,4,null,null,2]', output: '[2,1,4,null,null,3]', explanation: '2 and 3 were swapped.' },
+    ],
+    constraints: ['Number of nodes: [2, 1000]', '-2^31 <= Node.val <= 2^31 - 1'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {void}
+ */
+function recoverTree(root) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function serialize(root) { if(!root) return []; let res=[],q=[root]; while(q.length){let n=q.shift();if(!n){res.push(null);continue;}res.push(n.val);q.push(n.left,n.right);} while(res[res.length-1]==null)res.pop(); return res; }
+function solve(arr) { let r=build(arr); recoverTree(r); return serialize(r); }`,
+    starterCodePython: `class Solution:
+    def recoverTree(self, root) -> None:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def serialize(root):
+    if not root: return []
+    res, q = [], [root]
+    while q:
+        n = q.pop(0)
+        if not n: res.append(None); continue
+        res.append(n.val); q.append(n.left); q.append(n.right)
+    while res and res[-1] is None: res.pop()
+    return res
+
+def solve(arr):
+    r = build(arr); Solution().recoverTree(r); return serialize(r)`,
+    testCases: [
+      { label: '[1,3,null,null,2] → [3,1,null,null,2]', args: [[1,3,null,null,2]], expected: [3,1,null,null,2] },
+      { label: '[3,1,4,null,null,2] → [2,1,4,null,null,3]', args: [[3,1,4,null,null,2]], expected: [2,1,4,null,null,3] },
+    ],
+    hint: 'Inorder traversal of BST produces sorted values. Find the two nodes where order is violated: first = node where prev > curr; second = last such curr. Swap their values.',
+  },
+
+  109: {
+    id: 109,
+    title: 'Convert Sorted List to Binary Search Tree',
+    titleZh: '有序链表转换二叉搜索树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'convert-sorted-list-to-binary-search-tree',
+    tags: ['Linked List', 'Divide and Conquer', 'Tree', 'BST', 'Binary Tree'],
+    description: `Given the \`head\` of a singly linked list where elements are sorted in **ascending order**, convert it to a **height-balanced** binary search tree.`,
+    examples: [
+      { input: 'head = [-10,-3,0,5,9]', output: '[0,-3,9,-10,null,5]', explanation: 'One possible answer.' },
+      { input: 'head = []', output: '[]' },
+    ],
+    constraints: ['Number of nodes: [0, 2 * 10^4]', '-10^5 <= Node.val <= 10^5'],
+    starterCode: `/**
+ * @param {ListNode|null} head
+ * @return {TreeNode|null}
+ */
+function sortedListToBST(head) {
+
+}
+
+function ListNode(val, next) { this.val=val; this.next=next||null; }
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function buildList(arr) { let d=new ListNode(0),c=d; arr.forEach(v=>{c.next=new ListNode(v);c=c.next;}); return d.next; }
+function serialize(root) { if(!root) return []; let res=[],q=[root]; while(q.length){let n=q.shift();if(!n){res.push(null);continue;}res.push(n.val);q.push(n.left,n.right);} while(res[res.length-1]==null)res.pop(); return res; }
+function solve(arr) { return serialize(sortedListToBST(buildList(arr))); }`,
+    starterCodePython: `class Solution:
+    def sortedListToBST(self, head):
+        pass
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val; self.next = next
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def buildList(arr):
+    d = ListNode(0); c = d
+    for v in arr: c.next = ListNode(v); c = c.next
+    return d.next
+
+def serialize(root):
+    if not root: return []
+    res, q = [], [root]
+    while q:
+        n = q.pop(0)
+        if not n: res.append(None); continue
+        res.append(n.val); q.append(n.left); q.append(n.right)
+    while res and res[-1] is None: res.pop()
+    return res
+
+def solve(arr): return serialize(Solution().sortedListToBST(buildList(arr)))`,
+    testCases: [
+      { label: '[-10,-3,0,5,9] → balanced BST', args: [[-10,-3,0,5,9]], expected: [0,-3,9,-10,null,5] },
+      { label: '[] → []', args: [[]], expected: [] },
+      { label: '[1] → [1]', args: [[1]], expected: [1] },
+    ],
+    hint: 'Use slow/fast pointer to find list midpoint. Mid becomes root. Recursively build left BST from nodes before mid, right BST from nodes after.',
+  },
+
+  173: {
+    id: 173,
+    title: 'Binary Search Tree Iterator',
+    titleZh: '二叉搜索树迭代器',
+    difficulty: 'Medium',
+    leetcodeSlug: 'binary-search-tree-iterator',
+    tags: ['Stack', 'Tree', 'Design', 'BST', 'Binary Tree', 'Iterator'],
+    description: `Implement \`BSTIterator\` representing an in-order iterator over a BST:
+- \`BSTIterator(root)\` — initializes the object.
+- \`next()\` — moves to the next smallest number and returns it.
+- \`hasNext()\` — returns whether a next number exists.
+
+Use **O(h)** memory where h is the tree height. Each \`next()\` call should run in average O(1).`,
+    examples: [
+      { input: 'root = [7,3,15,null,null,9,20], ops = ["next","next","hasNext","next","hasNext","next","hasNext","next","hasNext"]', output: '[3,7,true,9,true,15,true,20,false]' },
+    ],
+    constraints: ['Number of nodes: [1, 10^5]', '0 <= Node.val <= 10^6', 'At most 10^5 calls.'],
+    starterCode: `class BSTIterator {
+  /**
+   * @param {TreeNode|null} root
+   */
+  constructor(root) {
+
+  }
+
+  /** @return {number} */
+  next() {
+
+  }
+
+  /** @return {boolean} */
+  hasNext() {
+
+  }
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr, ops) {
+  const it = new BSTIterator(build(arr));
+  return ops.map(op => op === 'next' ? it.next() : it.hasNext());
+}`,
+    starterCodePython: `class BSTIterator:
+    def __init__(self, root):
+        pass
+
+    def next(self) -> int:
+        pass
+
+    def hasNext(self) -> bool:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr, ops):
+    it = BSTIterator(build(arr))
+    return [it.next() if op == 'next' else it.hasNext() for op in ops]`,
+    testCases: [
+      {
+        label: '[7,3,15,null,null,9,20] iterator → [3,7,true,9,true,15,true,20,false]',
+        args: [[7,3,15,null,null,9,20], ['next','next','hasNext','next','hasNext','next','hasNext','next','hasNext']],
+        expected: [3,7,true,9,true,15,true,20,false],
+      },
+    ],
+    hint: 'Use an explicit stack. Constructor: push all left-spine nodes. next(): pop top (return its value), then push its right child\'s entire left spine.',
+  },
+
+  449: {
+    id: 449,
+    title: 'Serialize and Deserialize BST',
+    titleZh: '序列化和反序列化二叉搜索树',
+    difficulty: 'Medium',
+    leetcodeSlug: 'serialize-and-deserialize-bst',
+    tags: ['String', 'Tree', 'Design', 'BST', 'Binary Tree'],
+    description: `Design an algorithm to **serialize** and **deserialize** a BST. The encoded string should be as compact as possible by exploiting BST properties.`,
+    examples: [
+      { input: 'root = [2,1,3]', output: '[2,1,3]', explanation: 'Serialize then deserialize reproduces the same BST.' },
+      { input: 'root = []', output: '[]' },
+    ],
+    constraints: ['Number of nodes: [0, 10^4]', '0 <= Node.val <= 10^4', 'Input is a valid BST.', 'All values unique.'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {string}
+ */
+function serialize(root) {
+
+}
+
+/**
+ * @param {string} data
+ * @return {TreeNode|null}
+ */
+function deserialize(data) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function serializeTree(root) { if(!root) return []; let res=[],q=[root]; while(q.length){let n=q.shift();if(!n){res.push(null);continue;}res.push(n.val);q.push(n.left,n.right);} while(res[res.length-1]==null)res.pop(); return res; }
+function solve(arr) { return serializeTree(deserialize(serialize(build(arr)))); }`,
+    starterCodePython: `class Codec:
+    def serialize(self, root) -> str:
+        pass
+
+    def deserialize(self, data: str):
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def serializeTree(root):
+    if not root: return []
+    res, q = [], [root]
+    while q:
+        n = q.pop(0)
+        if not n: res.append(None); continue
+        res.append(n.val); q.append(n.left); q.append(n.right)
+    while res and res[-1] is None: res.pop()
+    return res
+
+def solve(arr):
+    c = Codec(); return serializeTree(c.deserialize(c.serialize(build(arr))))`,
+    testCases: [
+      { label: '[2,1,3] → roundtrip → [2,1,3]', args: [[2,1,3]], expected: [2,1,3] },
+      { label: '[] → roundtrip → []', args: [[]], expected: [] },
+      { label: '[5,2,7,1,3] → roundtrip', args: [[5,2,7,1,3]], expected: [5,2,7,1,3] },
+    ],
+    hint: 'Serialize via preorder traversal. Deserialize: use the BST property — for each value in preorder sequence, place it knowing it must be within [min, max] bounds from its ancestors.',
+  },
+
+  501: {
+    id: 501,
+    title: 'Find Mode in Binary Search Tree',
+    titleZh: '二叉搜索树中的众数',
+    difficulty: 'Easy',
+    leetcodeSlug: 'find-mode-in-binary-search-tree',
+    tags: ['Tree', 'DFS', 'BST', 'Binary Tree'],
+    description: `Given the \`root\` of a BST with possible **duplicates**, return all **mode(s)** (most frequently occurring elements). If multiple modes exist, return them in any order.
+
+Assume left subtree values ≤ root value ≤ right subtree values.`,
+    examples: [
+      { input: 'root = [1,null,2,2]', output: '[2]' },
+      { input: 'root = [0]', output: '[0]' },
+    ],
+    constraints: ['Number of nodes: [1, 10^4]', '-10^5 <= Node.val <= 10^5'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {number[]}
+ */
+function findMode(root) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr) { return findMode(build(arr)).sort((a,b)=>a-b); }`,
+    starterCodePython: `class Solution:
+    def findMode(self, root) -> list[int]:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr): return sorted(Solution().findMode(build(arr)))`,
+    testCases: [
+      { label: '[1,null,2,2] → [2]', args: [[1,null,2,2]], expected: [2] },
+      { label: '[0] → [0]', args: [[0]], expected: [0] },
+    ],
+    hint: 'Inorder traversal gives sorted order. Track current value, current count, and max count. No extra hash map needed — collect values achieving max count.',
+  },
+
+  530: {
+    id: 530,
+    title: 'Minimum Absolute Difference in BST',
+    titleZh: '二叉搜索树的最小绝对差',
+    difficulty: 'Easy',
+    leetcodeSlug: 'minimum-absolute-difference-in-bst',
+    tags: ['Tree', 'DFS', 'BFS', 'BST', 'Binary Tree'],
+    description: `Given the \`root\` of a BST, return the **minimum absolute difference** between the values of any two different nodes.`,
+    examples: [
+      { input: 'root = [4,2,6,1,3]', output: '1', explanation: 'Min diff is |3-2|=1 or |3-4|=1.' },
+      { input: 'root = [1,0,48,null,null,12,49]', output: '1' },
+    ],
+    constraints: ['Number of nodes: [2, 10^4]', '0 <= Node.val <= 10^5'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @return {number}
+ */
+function getMinimumDifference(root) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr) { return getMinimumDifference(build(arr)); }`,
+    starterCodePython: `class Solution:
+    def getMinimumDifference(self, root) -> int:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr): return Solution().getMinimumDifference(build(arr))`,
+    testCases: [
+      { label: '[4,2,6,1,3] → 1', args: [[4,2,6,1,3]], expected: 1 },
+      { label: '[1,0,48,null,null,12,49] → 1', args: [[1,0,48,null,null,12,49]], expected: 1 },
+    ],
+    hint: 'Inorder traversal of BST gives sorted values. Min absolute difference must be between two consecutive inorder values. Track prev node and compute diff at each step.',
+  },
+
+  653: {
+    id: 653,
+    title: 'Two Sum IV - Input is a BST',
+    titleZh: '两数之和 IV - 输入二叉搜索树',
+    difficulty: 'Easy',
+    leetcodeSlug: 'two-sum-iv-input-is-a-bst',
+    tags: ['Hash Table', 'Two Pointers', 'Tree', 'DFS', 'BFS', 'BST', 'Binary Tree'],
+    description: `Given the \`root\` of a BST and an integer \`k\`, return \`true\` if there exist two elements in the BST whose sum equals \`k\`, and \`false\` otherwise.`,
+    examples: [
+      { input: 'root = [5,3,6,2,4,null,7], k = 9', output: 'true' },
+      { input: 'root = [5,3,6,2,4,null,7], k = 28', output: 'false' },
+    ],
+    constraints: ['Number of nodes: [1, 10^4]', '-10^4 <= Node.val <= 10^4', 'All values unique.', '-10^5 <= k <= 10^5'],
+    starterCode: `/**
+ * @param {TreeNode|null} root
+ * @param {number} k
+ * @return {boolean}
+ */
+function findTarget(root, k) {
+
+}
+
+function TreeNode(val, left, right) { this.val=val; this.left=left||null; this.right=right||null; }
+function build(arr, i=0) { if(i>=arr.length||arr[i]==null) return null; let n=new TreeNode(arr[i]); n.left=build(arr,2*i+1); n.right=build(arr,2*i+2); return n; }
+function solve(arr, k) { return findTarget(build(arr), k); }`,
+    starterCodePython: `class Solution:
+    def findTarget(self, root, k: int) -> bool:
+        pass
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val; self.left = left; self.right = right
+
+def build(arr, i=0):
+    if i >= len(arr) or arr[i] is None: return None
+    n = TreeNode(arr[i]); n.left = build(arr, 2*i+1); n.right = build(arr, 2*i+2); return n
+
+def solve(arr, k): return Solution().findTarget(build(arr), k)`,
+    testCases: [
+      { label: '[5,3,6,2,4,null,7], k=9 → true', args: [[5,3,6,2,4,null,7], 9], expected: true },
+      { label: '[5,3,6,2,4,null,7], k=28 → false', args: [[5,3,6,2,4,null,7], 28], expected: false },
+    ],
+    hint: 'DFS/BFS the tree with a HashSet. For each node value v, check if k-v is already in the set. If yes, return true. Otherwise add v to the set.',
+  },
+
+  1050: {
+    id: 1050,
+    title: 'Actors and Directors Who Cooperated At Least Three Times',
+    titleZh: '合作过至少三次的演员和导演',
+    difficulty: 'Easy',
+    leetcodeSlug: 'actors-and-directors-who-cooperated-at-least-three-times',
+    tags: ['Database'],
+    description: `**Note:** This is a database problem adapted for algorithmic practice.
+
+You are given a list of \`[actor_id, director_id, timestamp]\` records. Return all \`[actor_id, director_id]\` pairs that cooperated **at least three times**, sorted by actor_id then director_id ascending.`,
+    examples: [
+      { input: 'records = [[1,1,0],[1,1,1],[1,1,2],[1,2,3],[1,2,4],[2,1,5],[2,1,6]]', output: '[[1,1]]', explanation: 'Actor 1 and Director 1 cooperated 3 times.' },
+    ],
+    constraints: ['1 <= records.length <= 10^5', 'All timestamps are unique.'],
+    starterCode: `/**
+ * @param {number[][]} records  each [actor_id, director_id, timestamp]
+ * @return {number[][]}  pairs [actor_id, director_id] with count >= 3
+ */
+function actorDirectorPairs(records) {
+
+}
+
+function solve(records) { return actorDirectorPairs(records); }`,
+    starterCodePython: `class Solution:
+    def actorDirectorPairs(self, records: list[list[int]]) -> list[list[int]]:
+        pass
+
+def solve(records): return Solution().actorDirectorPairs(records)`,
+    testCases: [
+      { label: '7 records → [[1,1]]', args: [[[1,1,0],[1,1,1],[1,1,2],[1,2,3],[1,2,4],[2,1,5],[2,1,6]]], expected: [[1,1]] },
+      { label: '4 same pair → [[1,1]]', args: [[[1,1,0],[1,1,1],[1,1,2],[1,1,3]]], expected: [[1,1]] },
+    ],
+    hint: 'Use a hash map keyed by "actor_id,director_id" to count cooperations. Collect pairs with count >= 3. Sort by actor_id then director_id.',
+  },
+
 }
 
 export function getPracticeProblem(id: number): PracticeProblem | undefined {

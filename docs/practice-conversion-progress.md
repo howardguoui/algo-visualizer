@@ -161,7 +161,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 
 ---
 
-## Batch B6 — Binary Tree Level Order + BST (20 problems) `[ ] Not started`
+## Batch B6 — Binary Tree Level Order + BST (20 problems) `[x] Done`
 
 | ID | Problem | Difficulty | Topic |
 |---|---|---|---|
@@ -316,7 +316,7 @@ To start a batch: say **"Convert Batch B1"** (or B2, B3, etc.)
 | B3 | 19 problems (1955,1962,211,648,677,1949,284,316,785,885,1159,652,1475,129,257,386,404,513,572) | 2026-03-13 | pending |
 | B4 | 21 problems (112,113,617,623,933,975,1011,1029,1030,1035,1079,1194,1243,1248,1387,1484,1544,1568,2217,774,1498) | 2026-03-14 | pending |
 | B5 | 20 problems (100,110,331,508,563,606,687,832,896,930,988,1008,1021,1040,1092,1157,1207,1450,1465,2175) | 2026-03-15 | pending |
-| B6 | _pending_ | | |
+| B6 | 20 problems (107,117,515,637,662,893,904,998,1116,1254,1474,1554,99,109,173,449,501,530,653,1050) | 2026-03-15 | pending |
 | B7 | _pending_ | | |
 | B8 | _pending_ | | |
 | B9 | _pending_ | | |
