@@ -52,13 +52,13 @@ export function VisualizePage() {
 
       {/* Main */}
       <PanelGroup orientation="horizontal" className="flex-1 overflow-hidden min-h-0">
-        <Panel flex-1 minSize={40} className="flex-1 p-4 flex flex-col min-h-0">
+        <Panel defaultSize={50} minSize={20} className="flex-1 p-4 flex flex-col min-h-0">
           <ArrayVisualizer step={vis.currentStep} maxValue={maxValue} />
         </Panel>
         
         <PanelResizeHandle className={`w-1.5 transition-colors cursor-col-resize hover:bg-blue-500 ${theme === 'dark' ? 'bg-slate-800' : 'bg-gray-200'}`} />
         
-        <Panel defaultSize={30} minSize={20} maxSize={50} className={`p-4 flex flex-col min-h-0 overflow-auto ${theme === 'dark' ? 'bg-slate-900/50' : 'bg-white'}`}>
+        <Panel defaultSize={50} minSize={20} className={`p-4 flex flex-col min-h-0 overflow-auto ${theme === 'dark' ? 'bg-slate-900/50' : 'bg-white'}`}>
           <CodePanel algorithm={algorithm} step={vis.currentStep} />
         </Panel>
       </PanelGroup>

@@ -19,6 +19,7 @@ export function Sidebar({ isOpen }: Props) {
   const { lang } = useLang()
   const location = useLocation()
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
+  const [searchQuery, setSearchQuery] = useState('')
 
   const toggleChapter = (id: string) =>
     setCollapsed(prev => ({ ...prev, [id]: !prev[id] }))
@@ -29,19 +30,39 @@ export function Sidebar({ isOpen }: Props) {
     <aside className="w-64 shrink-0 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col overflow-hidden">
       {/* Search bar */}
       <div className="p-3 border-b border-gray-200 dark:border-slate-800">
-        <div className="flex items-center gap-2 bg-gray-100 dark:bg-slate-800 rounded-lg px-3 py-2 text-sm text-gray-500 dark:text-slate-400">
+        <div className="flex items-center gap-2 bg-gray-100 dark:bg-slate-800 rounded-lg px-3 py-2 text-sm text-gray-500 dark:text-slate-400 focus-within:ring-2 focus-within:ring-blue-500 focus-within:bg-white dark:focus-within:bg-slate-900 transition-colors">
           <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current shrink-0">
             <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
           </svg>
-          <span>Search topics...</span>
+          <input
+            type="text"
+            placeholder={lang === 'zh' ? '搜索主题...' : 'Search topics...'}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="bg-transparent border-none outline-none w-full text-gray-900 dark:text-slate-200 placeholder-gray-500 dark:placeholder-slate-400"
+          />
         </div>
       </div>
 
       {/* Chapters */}
       <nav className="flex-1 overflow-y-auto py-2">
         {curriculum.map(chapter => {
-          const isChapterCollapsed = collapsed[chapter.id]
-          const hasActive = chapter.topics.some(t => t.id === topicId)
+          const filteredTopics = chapter.topics.filter(topic => {
+            if (!searchQuery) return true;
+            const titleEn = topic.title.en.toLowerCase();
+            const titleZh = topic.title.zh.toLowerCase();
+            const q = searchQuery.toLowerCase();
+            return titleEn.includes(q) || titleZh.includes(q);
+          });
+
+          // Show chapter if it has filtered topics, or if we have no search query and we are showing 'intro'
+          if (filteredTopics.length === 0 && searchQuery && chapter.id !== 'intro') return null;
+          // Also show 'intro' if "skill tree" matches the query
+          const skillTreeMatch = searchQuery ? ('skill tree curriculum'.includes(searchQuery.toLowerCase()) || '技能树'.includes(searchQuery.toLowerCase())) : true;
+          if (filteredTopics.length === 0 && searchQuery && chapter.id === 'intro' && !skillTreeMatch) return null;
+
+          const isChapterCollapsed = collapsed[chapter.id] && !searchQuery
+          const hasActive = chapter.topics.some(t => t.id === topicId) || (location.pathname === '/' && chapter.id === 'intro')
 
           return (
             <div key={chapter.id} className="mb-1">
@@ -67,7 +88,26 @@ export function Sidebar({ isOpen }: Props) {
               {/* Topics */}
               {!isChapterCollapsed && (
                 <div className="pl-2">
-                  {chapter.topics.map(topic => {
+                  {chapter.id === 'intro' && (skillTreeMatch) && (
+                    <Link
+                      to="/"
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg mx-1 mb-0.5 text-sm no-underline transition-colors group ${
+                        location.pathname === '/'
+                          ? 'bg-blue-600 text-white'
+                          : 'text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-slate-200'
+                      }`}
+                    >
+                      <span className="flex-1 leading-snug">
+                        {lang === 'zh' ? '技能树/课程表' : 'Skill Tree / Curriculum'}
+                      </span>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium shrink-0 ${
+                        location.pathname === '/' ? 'bg-blue-500 text-blue-100' : 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
+                      }`}>
+                        🗺️ Map
+                      </span>
+                    </Link>
+                  )}
+                  {filteredTopics.map(topic => {
                     const isActive = topic.id === topicId
                     const badge = CONTENT_TYPE_BADGE[topic.contentType]
 

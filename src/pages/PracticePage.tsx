@@ -125,7 +125,7 @@ export function PracticePage() {
       {/* Main split layout using React Resizable Panels */}
       <PanelGroup orientation="horizontal" className="flex-1 overflow-hidden">
         {/* Left panel — problem description */}
-        <Panel defaultSize={40} minSize={20} className="flex flex-col overflow-hidden">
+        <Panel defaultSize={50} minSize={20} className="flex flex-col overflow-hidden">
           <ProblemDescription problem={problem} />
         </Panel>
 
@@ -135,7 +135,7 @@ export function PracticePage() {
         <Panel flex-1 minSize={30} className="flex flex-col overflow-hidden">
           <PanelGroup orientation="vertical">
             {/* Code editor */}
-            <Panel defaultSize={60} minSize={20} className="flex flex-col overflow-hidden">
+            <Panel defaultSize={50} minSize={20} className="flex flex-col overflow-hidden">
               <CodeEditor
                 code={code}
                 onChange={setCode}
@@ -149,7 +149,7 @@ export function PracticePage() {
             <PanelResizeHandle className={`h-1.5 transition-colors cursor-row-resize hover:bg-blue-500 ${theme === 'dark' ? 'bg-slate-800' : 'bg-gray-200'}`} />
 
             {/* Test panel */}
-            <Panel minSize={20} className="flex flex-col overflow-hidden">
+            <Panel defaultSize={50} minSize={20} className="flex flex-col overflow-hidden">
               <TestPanel
                 testCases={problem.testCases}
                 results={results}
