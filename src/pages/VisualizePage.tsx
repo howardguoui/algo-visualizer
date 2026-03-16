@@ -52,7 +52,7 @@ export function VisualizePage() {
 
       {/* Main */}
       <PanelGroup orientation="horizontal" className="flex-1 overflow-hidden min-h-0">
-        <Panel defaultSize={50} minSize={20} className="flex-1 p-4 flex flex-col min-h-0">
+        <Panel defaultSize={50} minSize={20} className="p-4 flex flex-col min-h-0">
           <ArrayVisualizer step={vis.currentStep} maxValue={maxValue} />
         </Panel>
         

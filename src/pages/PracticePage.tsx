@@ -132,7 +132,7 @@ export function PracticePage() {
         <PanelResizeHandle className={`w-1.5 transition-colors cursor-col-resize hover:bg-blue-500 ${theme === 'dark' ? 'bg-slate-800' : 'bg-gray-200'}`} />
 
         {/* Right panel — editor + test results */}
-        <Panel flex-1 minSize={30} className="flex flex-col overflow-hidden">
+        <Panel defaultSize={50} minSize={30} className="flex flex-col overflow-hidden">
           <PanelGroup orientation="vertical">
             {/* Code editor */}
             <Panel defaultSize={50} minSize={20} className="flex flex-col overflow-hidden">
