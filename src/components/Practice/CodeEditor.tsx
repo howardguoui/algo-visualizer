@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import Editor from '@monaco-editor/react'
 
 export type Language = 'js' | 'python'
 
@@ -12,44 +12,19 @@ interface Props {
 }
 
 export function CodeEditor({ code, onChange, onRun, isRunning, language, onLanguageChange }: Props) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const lineCountRef = useRef<HTMLDivElement>(null)
-
-  const lineCount = code.split('\n').length
-
-  // Sync scroll between line numbers and textarea
-  const handleScroll = () => {
-    if (textareaRef.current && lineCountRef.current) {
-      lineCountRef.current.scrollTop = textareaRef.current.scrollTop
-    }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Tab → indent (2 spaces for JS, 4 for Python)
-    if (e.key === 'Tab') {
-      e.preventDefault()
-      const spaces = language === 'python' ? '    ' : '  '
-      const el = e.currentTarget
-      const start = el.selectionStart
-      const end = el.selectionEnd
-      const newVal = code.substring(0, start) + spaces + code.substring(end)
-      onChange(newVal)
-      requestAnimationFrame(() => {
-        el.selectionStart = start + spaces.length
-        el.selectionEnd = start + spaces.length
-      })
-    }
-    // Ctrl/Cmd + Enter → run
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+  const handleEditorDidMount = (editor: any, monaco: any) => {
+    // Add Ctrl+Enter or Cmd+Enter shortcut
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
       onRun()
-    }
+    })
+    
+    // Focus the editor automatically
+    editor.focus()
   }
 
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.focus()
-    }
-  }, [])
+  const handleLanguageChange = (lang: Language) => {
+    onLanguageChange(lang)
+  }
 
   return (
     <div className="flex flex-col h-full bg-slate-950">
@@ -59,7 +34,7 @@ export function CodeEditor({ code, onChange, onRun, isRunning, language, onLangu
           {/* Language toggle */}
           <div className="flex rounded-lg overflow-hidden border border-slate-700">
             <button
-              onClick={() => onLanguageChange('js')}
+              onClick={() => handleLanguageChange('js')}
               className={`px-2.5 py-0.5 text-xs font-medium transition-colors ${
                 language === 'js'
                   ? 'bg-yellow-500/20 text-yellow-300 border-r border-slate-700'
@@ -69,7 +44,7 @@ export function CodeEditor({ code, onChange, onRun, isRunning, language, onLangu
               JS
             </button>
             <button
-              onClick={() => onLanguageChange('python')}
+              onClick={() => handleLanguageChange('python')}
               className={`px-2.5 py-0.5 text-xs font-medium transition-colors ${
                 language === 'python'
                   ? 'bg-blue-500/20 text-blue-300'
@@ -101,28 +76,32 @@ export function CodeEditor({ code, onChange, onRun, isRunning, language, onLangu
       </div>
 
       {/* Editor area */}
-      <div className="flex flex-1 overflow-hidden font-mono text-sm">
-        {/* Line numbers */}
-        <div
-          ref={lineCountRef}
-          className="select-none overflow-hidden shrink-0 w-10 bg-slate-950 text-slate-600 text-right pr-3 pt-3 text-xs leading-6"
-          style={{ overflowY: 'hidden' }}
-        >
-          {Array.from({ length: lineCount }, (_, i) => (
-            <div key={i + 1}>{i + 1}</div>
-          ))}
-        </div>
-
-        {/* Textarea */}
-        <textarea
-          ref={textareaRef}
+      <div className="flex-1 overflow-hidden relative">
+        <Editor
+          height="100%"
+          language={language === 'js' ? 'javascript' : 'python'}
+          theme="vs-dark"
           value={code}
-          onChange={e => onChange(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onScroll={handleScroll}
-          spellCheck={false}
-          className="flex-1 bg-slate-950 text-slate-100 resize-none outline-none pt-3 pr-4 pb-3 pl-2 leading-6 caret-white text-sm"
-          style={{ fontFamily: "'Fira Code', 'Cascadia Code', 'Consolas', monospace" }}
+          onChange={(value) => onChange(value ?? '')}
+          onMount={handleEditorDidMount}
+          options={{
+            minimap: { enabled: false },
+            fontSize: 14,
+            fontFamily: "'Fira Code', 'Cascadia Code', 'Consolas', monospace",
+            lineHeight: 24,
+            padding: { top: 16 },
+            scrollBeyondLastLine: false,
+            smoothScrolling: true,
+            cursorBlinking: 'smooth',
+            cursorSmoothCaretAnimation: 'on',
+            formatOnPaste: true,
+            wordWrap: 'on'
+          }}
+          loading={
+             <div className="flex h-full items-center justify-center text-slate-500 text-sm">
+                Loading editor...
+             </div>
+          }
         />
       </div>
     </div>

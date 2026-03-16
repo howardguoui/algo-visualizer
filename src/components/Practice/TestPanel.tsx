@@ -3,6 +3,7 @@ import type { TestCase } from '../../data/problems/practiceProblems'
 import { AlgoVisualizer } from './AlgoVisualizer'
 import { isPyodideReady } from '../../utils/pythonRunner'
 import type { Language } from './CodeEditor'
+import { AITutorPanel } from './AITutorPanel'
 
 export interface TestResult {
   caseIndex: number
@@ -20,6 +21,9 @@ interface Props {
   hasRun: boolean
   language: Language
   isRunning: boolean
+  problemTitle?: string
+  problemDescription?: string
+  userCode?: string
 }
 
 function formatValue(v: unknown): string {
@@ -43,7 +47,9 @@ function checkDeepEqual(a: unknown, b: unknown): boolean {
 export function runCode(userCode: string, args: unknown[]): { result?: unknown; error?: string; time: number } {
   const start = performance.now()
   try {
-    const fnMatch = userCode.match(/function\s+(\w+)\s*\(/)
+    // Prefer explicit `function solve` adapter (used for tree/LL problems)
+    const solveMatch = userCode.match(/function\s+(solve)\s*\(/)
+    const fnMatch = solveMatch || userCode.match(/function\s+(\w+)\s*\(/)
     if (!fnMatch) return { error: 'No function definition found. Write a named function.', time: 0 }
     const fnName = fnMatch[1]
     // eslint-disable-next-line no-new-func
@@ -64,7 +70,7 @@ export function evaluateTestCases(userCode: string, testCases: TestCase[]): Test
   })
 }
 
-export function TestPanel({ testCases, results, hasRun, problemId, language, isRunning }: Props) {
+export function TestPanel({ testCases, results, hasRun, problemId, language, isRunning, problemTitle, problemDescription, userCode }: Props) {
   const [tab, setTab] = useState<'cases' | 'results' | 'visualize'>('cases')
   const [selectedCase, setSelectedCase] = useState(0)
 
@@ -174,6 +180,25 @@ export function TestPanel({ testCases, results, hasRun, problemId, language, isR
                     {allPassed ? 'All tests passed!' : `${passCount} of ${results.length} tests passed`}
                   </span>
                 </div>
+
+                {/* AI Tutor Panel injection */}
+                {(() => {
+                  if (allPassed || !problemTitle || !userCode) return null;
+                  const firstFail = results.find(r => !r.passed);
+                  if (!firstFail) return null;
+                  
+                  return (
+                    <AITutorPanel
+                      problemTitle={problemTitle}
+                      problemDescription={problemDescription || ''}
+                      userCode={userCode}
+                      language={language}
+                      failingTestInput={testCases[firstFail.caseIndex].args.map(a => formatValue(a)).join(', ')}
+                      failingTestExpected={formatValue(firstFail.expected)}
+                      failingTestActual={formatValue(firstFail.result) || (firstFail.error ?? 'Unknown error')}
+                    />
+                  )
+                })()}
 
                 {results.map((res, i) => (
                   <div key={i} className={`rounded-lg border p-3 ${

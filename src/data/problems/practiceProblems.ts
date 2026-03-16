@@ -10686,7 +10686,7 @@ function solve(num1, num2) { return multiply(num1, num2); }`,
 def solve(num1, num2): return Solution().multiply(num1, num2)`,
     testCases: [
       { label: '"2"×"3" → "6"', args: ['2', '3'], expected: '6' },
-      { input: '"123"×"456" → "56088"', label: '"123"×"456" → "56088"', args: ['123', '456'], expected: '56088' },
+      { label: '"123"×"456" → "56088"', args: ['123', '456'], expected: '56088' },
       { label: '"0"×"0" → "0"', args: ['0', '0'], expected: '0' },
     ],
     hint: 'Use grade-school multiplication: result array of length m+n. For each digit pair (i,j), add num1[i]*num2[j] to result[i+j+1], carry to result[i+j]. Convert result array to string, strip leading zeros.',

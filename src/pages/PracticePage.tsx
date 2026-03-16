@@ -144,6 +144,9 @@ export function PracticePage() {
               problemId={problem.id}
               language={language}
               isRunning={isRunning}
+              problemTitle={title}
+              problemDescription={problem.description}
+              userCode={code}
             />
           </div>
         </div>
