@@ -1,4 +1,5 @@
 import Editor from '@monaco-editor/react'
+import { useTheme } from '../../context/ThemeContext'
 
 export type Language = 'js' | 'python'
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export function CodeEditor({ code, onChange, onRun, isRunning, language, onLanguageChange }: Props) {
+  const { theme } = useTheme()
   const handleEditorDidMount = (editor: any, monaco: any) => {
     // Add Ctrl+Enter or Cmd+Enter shortcut
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
@@ -27,18 +29,18 @@ export function CodeEditor({ code, onChange, onRun, isRunning, language, onLangu
   }
 
   return (
-    <div className="flex flex-col h-full bg-slate-950">
+    <div className={`flex flex-col h-full ${theme === 'dark' ? 'bg-slate-950' : 'bg-white'}`}>
       {/* Editor toolbar */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-slate-800 shrink-0">
+      <div className={`flex items-center justify-between px-4 py-2 border-b shrink-0 ${theme === 'dark' ? 'border-slate-800' : 'border-gray-200'}`}>
         <div className="flex items-center gap-2">
           {/* Language toggle */}
-          <div className="flex rounded-lg overflow-hidden border border-slate-700">
+          <div className={`flex rounded-lg overflow-hidden border ${theme === 'dark' ? 'border-slate-700' : 'border-gray-200'}`}>
             <button
               onClick={() => handleLanguageChange('js')}
               className={`px-2.5 py-0.5 text-xs font-medium transition-colors ${
                 language === 'js'
-                  ? 'bg-yellow-500/20 text-yellow-300 border-r border-slate-700'
-                  : 'bg-slate-800 text-slate-500 hover:text-slate-300 border-r border-slate-700'
+                  ? (theme === 'dark' ? 'bg-yellow-500/20 text-yellow-300 border-r border-slate-700' : 'bg-yellow-100 text-yellow-700 border-r border-gray-200')
+                  : (theme === 'dark' ? 'bg-slate-800 text-slate-500 hover:text-slate-300 border-r border-slate-700' : 'bg-gray-50 text-gray-500 hover:text-gray-700 border-r border-gray-200')
               }`}
             >
               JS
@@ -47,14 +49,14 @@ export function CodeEditor({ code, onChange, onRun, isRunning, language, onLangu
               onClick={() => handleLanguageChange('python')}
               className={`px-2.5 py-0.5 text-xs font-medium transition-colors ${
                 language === 'python'
-                  ? 'bg-blue-500/20 text-blue-300'
-                  : 'bg-slate-800 text-slate-500 hover:text-slate-300'
+                  ? (theme === 'dark' ? 'bg-blue-500/20 text-blue-300' : 'bg-blue-100 text-blue-700')
+                  : (theme === 'dark' ? 'bg-slate-800 text-slate-500 hover:text-slate-300' : 'bg-gray-50 text-gray-500 hover:text-gray-700')
               }`}
             >
               Python
             </button>
           </div>
-          <span className="text-xs text-slate-600">Ctrl+Enter to run</span>
+          <span className={`text-xs ${theme === 'dark' ? 'text-slate-600' : 'text-gray-400'}`}>Ctrl+Enter to run</span>
         </div>
         <button
           onClick={onRun}
@@ -80,7 +82,7 @@ export function CodeEditor({ code, onChange, onRun, isRunning, language, onLangu
         <Editor
           height="100%"
           language={language === 'js' ? 'javascript' : 'python'}
-          theme="vs-dark"
+          theme={theme === 'dark' ? "vs-dark" : "light"}
           value={code}
           onChange={(value) => onChange(value ?? '')}
           onMount={handleEditorDidMount}
