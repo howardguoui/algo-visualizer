@@ -45,16 +45,16 @@ const components: Components = {
 
     return (
       <BlockCodeCtx.Provider value={true}>
-        <div className="my-4 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700">
+        <div className="my-4 rounded-xl overflow-hidden border border-slate-700">
           {lang && (
-            <div className="bg-gray-100 dark:bg-slate-800 px-4 py-2 text-xs text-gray-500 dark:text-slate-400 font-mono border-b border-gray-200 dark:border-slate-700 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-400" />
-              <span className="w-2 h-2 rounded-full bg-yellow-400" />
-              <span className="w-2 h-2 rounded-full bg-green-400" />
+            <div className="bg-slate-800 px-4 py-2 text-xs text-slate-400 font-mono border-b border-slate-700 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-red-500" />
+              <span className="w-2 h-2 rounded-full bg-yellow-500" />
+              <span className="w-2 h-2 rounded-full bg-green-500" />
               <span className="ml-2">{lang}</span>
             </div>
           )}
-          <pre className="bg-gray-50 dark:bg-slate-900 p-4 overflow-x-auto text-sm font-mono text-gray-800 dark:text-slate-200 leading-6">
+          <pre className="bg-slate-900 p-4 overflow-x-auto text-sm font-mono text-slate-200 leading-6">
             {children}
           </pre>
         </div>
@@ -72,7 +72,7 @@ const components: Components = {
       return <code>{children}</code>
     }
     return (
-      <code className="bg-gray-100 dark:bg-slate-800 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded text-sm font-mono">
+      <code className="bg-slate-800 text-blue-300 px-1.5 py-0.5 rounded text-sm font-mono">
         {children}
       </code>
     )
