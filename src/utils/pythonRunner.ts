@@ -70,6 +70,11 @@ function buildHarness(userCode: string, args: unknown[]): string {
   const argsParse = `_a = _j.loads(${argsLiteral})`
   const resultLine = `_j.dumps(_r)`
 
+  // Prefer explicit `def solve` adapter (used for tree/LL problems)
+  if (/(?:^|\n)def\s+solve\s*\(/.test(userCode)) {
+    return [jsonSetup, userCode, argsParse, `_r = solve(*_a)`, resultLine].join('\n')
+  }
+
   if (/class\s+Solution\s*:/.test(userCode)) {
     // Find first non-__init__ method
     const m = userCode.match(/def\s+(?!__init__)(\w+)\s*\(\s*self/)

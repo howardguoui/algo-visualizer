@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react'
+import Editor from '@monaco-editor/react'
+import { useTheme } from '../../context/ThemeContext'
 
 export type Language = 'js' | 'python'
 
@@ -12,74 +13,50 @@ interface Props {
 }
 
 export function CodeEditor({ code, onChange, onRun, isRunning, language, onLanguageChange }: Props) {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const lineCountRef = useRef<HTMLDivElement>(null)
-
-  const lineCount = code.split('\n').length
-
-  // Sync scroll between line numbers and textarea
-  const handleScroll = () => {
-    if (textareaRef.current && lineCountRef.current) {
-      lineCountRef.current.scrollTop = textareaRef.current.scrollTop
-    }
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Tab → indent (2 spaces for JS, 4 for Python)
-    if (e.key === 'Tab') {
-      e.preventDefault()
-      const spaces = language === 'python' ? '    ' : '  '
-      const el = e.currentTarget
-      const start = el.selectionStart
-      const end = el.selectionEnd
-      const newVal = code.substring(0, start) + spaces + code.substring(end)
-      onChange(newVal)
-      requestAnimationFrame(() => {
-        el.selectionStart = start + spaces.length
-        el.selectionEnd = start + spaces.length
-      })
-    }
-    // Ctrl/Cmd + Enter → run
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+  const { theme } = useTheme()
+  const handleEditorDidMount = (editor: any, monaco: any) => {
+    // Add Ctrl+Enter or Cmd+Enter shortcut
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
       onRun()
-    }
+    })
+    
+    // Focus the editor automatically
+    editor.focus()
   }
 
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.focus()
-    }
-  }, [])
+  const handleLanguageChange = (lang: Language) => {
+    onLanguageChange(lang)
+  }
 
   return (
-    <div className="flex flex-col h-full bg-slate-950">
+    <div className={`flex flex-col h-full ${theme === 'dark' ? 'bg-slate-950' : 'bg-white'}`}>
       {/* Editor toolbar */}
-      <div className="flex items-center justify-between px-4 py-2 border-b border-slate-800 shrink-0">
+      <div className={`flex items-center justify-between px-4 py-2 border-b shrink-0 ${theme === 'dark' ? 'border-slate-800' : 'border-gray-200'}`}>
         <div className="flex items-center gap-2">
           {/* Language toggle */}
-          <div className="flex rounded-lg overflow-hidden border border-slate-700">
+          <div className={`flex rounded-lg overflow-hidden border ${theme === 'dark' ? 'border-slate-700' : 'border-gray-200'}`}>
             <button
-              onClick={() => onLanguageChange('js')}
+              onClick={() => handleLanguageChange('js')}
               className={`px-2.5 py-0.5 text-xs font-medium transition-colors ${
                 language === 'js'
-                  ? 'bg-yellow-500/20 text-yellow-300 border-r border-slate-700'
-                  : 'bg-slate-800 text-slate-500 hover:text-slate-300 border-r border-slate-700'
+                  ? (theme === 'dark' ? 'bg-yellow-500/20 text-yellow-300 border-r border-slate-700' : 'bg-yellow-100 text-yellow-700 border-r border-gray-200')
+                  : (theme === 'dark' ? 'bg-slate-800 text-slate-500 hover:text-slate-300 border-r border-slate-700' : 'bg-gray-50 text-gray-500 hover:text-gray-700 border-r border-gray-200')
               }`}
             >
               JS
             </button>
             <button
-              onClick={() => onLanguageChange('python')}
+              onClick={() => handleLanguageChange('python')}
               className={`px-2.5 py-0.5 text-xs font-medium transition-colors ${
                 language === 'python'
-                  ? 'bg-blue-500/20 text-blue-300'
-                  : 'bg-slate-800 text-slate-500 hover:text-slate-300'
+                  ? (theme === 'dark' ? 'bg-blue-500/20 text-blue-300' : 'bg-blue-100 text-blue-700')
+                  : (theme === 'dark' ? 'bg-slate-800 text-slate-500 hover:text-slate-300' : 'bg-gray-50 text-gray-500 hover:text-gray-700')
               }`}
             >
               Python
             </button>
           </div>
-          <span className="text-xs text-slate-600">Ctrl+Enter to run</span>
+          <span className={`text-xs ${theme === 'dark' ? 'text-slate-600' : 'text-gray-400'}`}>Ctrl+Enter to run</span>
         </div>
         <button
           onClick={onRun}
@@ -101,28 +78,32 @@ export function CodeEditor({ code, onChange, onRun, isRunning, language, onLangu
       </div>
 
       {/* Editor area */}
-      <div className="flex flex-1 overflow-hidden font-mono text-sm">
-        {/* Line numbers */}
-        <div
-          ref={lineCountRef}
-          className="select-none overflow-hidden shrink-0 w-10 bg-slate-950 text-slate-600 text-right pr-3 pt-3 text-xs leading-6"
-          style={{ overflowY: 'hidden' }}
-        >
-          {Array.from({ length: lineCount }, (_, i) => (
-            <div key={i + 1}>{i + 1}</div>
-          ))}
-        </div>
-
-        {/* Textarea */}
-        <textarea
-          ref={textareaRef}
+      <div className="flex-1 overflow-hidden relative">
+        <Editor
+          height="100%"
+          language={language === 'js' ? 'javascript' : 'python'}
+          theme={theme === 'dark' ? "vs-dark" : "light"}
           value={code}
-          onChange={e => onChange(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onScroll={handleScroll}
-          spellCheck={false}
-          className="flex-1 bg-slate-950 text-slate-100 resize-none outline-none pt-3 pr-4 pb-3 pl-2 leading-6 caret-white text-sm"
-          style={{ fontFamily: "'Fira Code', 'Cascadia Code', 'Consolas', monospace" }}
+          onChange={(value) => onChange(value ?? '')}
+          onMount={handleEditorDidMount}
+          options={{
+            minimap: { enabled: false },
+            fontSize: 14,
+            fontFamily: "'Fira Code', 'Cascadia Code', 'Consolas', monospace",
+            lineHeight: 24,
+            padding: { top: 16 },
+            scrollBeyondLastLine: false,
+            smoothScrolling: true,
+            cursorBlinking: 'smooth',
+            cursorSmoothCaretAnimation: 'on',
+            formatOnPaste: true,
+            wordWrap: 'on'
+          }}
+          loading={
+             <div className="flex h-full items-center justify-center text-slate-500 text-sm">
+                Loading editor...
+             </div>
+          }
         />
       </div>
     </div>

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LangProvider } from './context/LangContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { GlobalAIChat } from './components/AITutor/GlobalAIChat'
 import { AppLayout } from './components/Layout/AppLayout'
 import { AlgorithmStudyNoteLayout } from './components/Layout/AlgorithmStudyNoteLayout'
 import { HomePage } from './pages/HomePage'
@@ -36,6 +37,8 @@ export default function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
         </Routes>
+        {/* Global AI Chat */}
+        <GlobalAIChat />
       </BrowserRouter>
     </LangProvider>
     </ThemeProvider>

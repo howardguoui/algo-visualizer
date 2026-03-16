@@ -34,8 +34,9 @@ export function ArrayVisualizer({ step, maxValue }: Props) {
       </div>
 
       {/* Bars */}
-      <div className="flex-1 flex items-end justify-center gap-[2px] px-4 pb-2 bg-slate-900 rounded-xl overflow-hidden">
-        {array.map((value, index) => {
+      <div className="flex-1 flex px-4 pb-2 bg-slate-900 rounded-xl overflow-x-auto custom-scrollbar">
+        <div className="flex flex-1 items-end justify-center gap-[2px] min-w-fit mx-auto">
+          {array.map((value, index) => {
           const heightPct = (value / maxValue) * 100
           const color = getBarColor(index, step)
           const isHighlighted =
@@ -70,6 +71,7 @@ export function ArrayVisualizer({ step, maxValue }: Props) {
             </div>
           )
         })}
+        </div>
       </div>
 
       {/* Legend */}

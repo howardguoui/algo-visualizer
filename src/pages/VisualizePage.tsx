@@ -6,12 +6,15 @@ import { Controls } from '../components/Controls'
 import { AlgorithmSelector } from '../components/AlgorithmSelector'
 import { StatsPanel } from '../components/StatsPanel'
 import { CodePanel } from '../components/CodePanel'
+import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels'
+import { useTheme } from '../context/ThemeContext'
 
 function randomArray(size: number): number[] {
   return Array.from({ length: size }, () => Math.floor(Math.random() * 95) + 5)
 }
 
 export function VisualizePage() {
+  const { theme } = useTheme()
   const [algoKey, setAlgoKey] = useState('bubbleSort')
   const [arraySize, setArraySize] = useState(20)
   const [sourceArray, setSourceArray] = useState(() => randomArray(20))
@@ -38,9 +41,9 @@ export function VisualizePage() {
   }, [vis])
 
   return (
-    <div className="flex flex-col h-full">
+    <div className={`flex flex-col h-full transition-colors ${theme === 'dark' ? 'bg-slate-950 text-white' : 'bg-gray-50 text-gray-900'}`}>
       {/* Top bar */}
-      <div className="border-b border-slate-800 px-4 py-2 flex items-center gap-4 flex-wrap">
+      <div className={`border-b px-4 py-2 flex items-center gap-4 flex-wrap ${theme === 'dark' ? 'border-slate-800' : 'border-gray-200 bg-white'}`}>
         <AlgorithmSelector selectedKey={algoKey} onSelect={handleAlgoChange} />
         <div className="ml-auto">
           <StatsPanel step={vis.currentStep} stepIndex={vis.stepIndex} totalSteps={vis.totalSteps} />
@@ -48,17 +51,20 @@ export function VisualizePage() {
       </div>
 
       {/* Main */}
-      <div className="flex flex-1 overflow-hidden min-h-0">
-        <div className="flex-1 p-4 flex flex-col min-h-0">
+      <PanelGroup orientation="horizontal" className="flex-1 overflow-hidden min-h-0">
+        <Panel defaultSize={50} minSize={20} className="p-4 flex flex-col min-h-0">
           <ArrayVisualizer step={vis.currentStep} maxValue={maxValue} />
-        </div>
-        <div className="w-72 xl:w-80 border-l border-slate-800 p-4 flex flex-col min-h-0 overflow-auto">
+        </Panel>
+        
+        <PanelResizeHandle className={`w-1.5 transition-colors cursor-col-resize hover:bg-blue-500 ${theme === 'dark' ? 'bg-slate-800' : 'bg-gray-200'}`} />
+        
+        <Panel defaultSize={50} minSize={20} className={`p-4 flex flex-col min-h-0 overflow-auto ${theme === 'dark' ? 'bg-slate-900/50' : 'bg-white'}`}>
           <CodePanel algorithm={algorithm} step={vis.currentStep} />
-        </div>
-      </div>
+        </Panel>
+      </PanelGroup>
 
       {/* Controls */}
-      <div className="border-t border-slate-800 p-3">
+      <div className={`border-t p-3 ${theme === 'dark' ? 'border-slate-800 bg-slate-900' : 'border-gray-200 bg-white'}`}>
         <Controls
           isPlaying={vis.isPlaying}
           isFirst={vis.isFirst}

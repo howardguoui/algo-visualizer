@@ -2,16 +2,10 @@ import { Link } from 'react-router-dom'
 import { curriculum } from '../content/curriculum'
 import { studyNoteChapters } from '../content/algorithm-study-note/curriculum'
 import { useLang } from '../context/LangContext'
-
-const CONTENT_TYPE_INFO = {
-  'content': { icon: '📖', label: 'Article', labelZh: '文章' },
-  'content+visual': { icon: '🎬', label: 'Visual', labelZh: '可视化' },
-  'content+practice': { icon: '💪', label: 'Practice', labelZh: '练习' },
-  'all': { icon: '⭐', label: 'Full', labelZh: '完整' },
-}
+import { SkillTreeRenderer } from '../components/SkillTree/SkillTreeRenderer'
 
 export function HomePage() {
-  const { lang, t } = useLang()
+  const { t } = useLang()
   const totalTopics = curriculum.flatMap(c => c.topics).length
   const lbArticleCount = studyNoteChapters.flatMap(ch => ch.sections.flatMap(s => s.articles)).length
   const firstLbArticle = studyNoteChapters[0]?.sections[0]?.articles[0]
@@ -102,47 +96,9 @@ export function HomePage() {
         </div>
       </div>
 
-      {/* Chapters grid */}
-      <div className="grid gap-6">
-        {curriculum.map(chapter => (
-          <div key={chapter.id}>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-xl">{chapter.icon}</span>
-              <h2 className="text-base font-bold text-gray-800 dark:text-slate-200">
-                {lang === 'zh' ? chapter.title.zh : chapter.title.en}
-              </h2>
-              <span className="text-gray-400 dark:text-slate-600 text-sm">({chapter.topics.length} {t('topics', '个主题')})</span>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-2">
-              {chapter.topics.map(topic => {
-                const typeInfo = CONTENT_TYPE_INFO[topic.contentType]
-                return (
-                  <Link
-                    key={topic.id}
-                    to={`/learn/${topic.id}`}
-                    className="flex items-start gap-3 p-3 bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 transition-all no-underline group"
-                  >
-                    <span className="text-lg shrink-0">{typeInfo.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-medium text-gray-800 dark:text-slate-200 group-hover:text-gray-900 dark:group-hover:text-white leading-snug">
-                        {lang === 'zh' ? topic.title.zh : topic.title.en}
-                      </div>
-                      <div className="text-xs text-gray-500 dark:text-slate-500 mt-1 line-clamp-1">
-                        {lang === 'zh' ? topic.description.zh : topic.description.en}
-                      </div>
-                      <div className="flex items-center gap-2 mt-1.5">
-                        <span className="text-[10px] text-gray-400 dark:text-slate-600">{topic.timeEstimate}</span>
-                        {topic.leetcode.length > 0 && (
-                          <span className="text-[10px] text-gray-400 dark:text-slate-600">· {topic.leetcode.length} {t('problems', '题')}</span>
-                        )}
-                      </div>
-                    </div>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        ))}
+      {/* Skill Tree Curriculum Preview */}
+      <div className="mb-10">
+        <SkillTreeRenderer />
       </div>
     </div>
   )
