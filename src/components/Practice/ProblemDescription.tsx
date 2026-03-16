@@ -21,20 +21,20 @@ function InlineCode({ children }: { children: string }) {
   )
 }
 
-function renderText(text: string) {
+function renderText(text: string, theme: string) {
   const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*)/)
   return parts.map((part, i) => {
     if (part.startsWith('`') && part.endsWith('`')) {
       return <InlineCode key={i}>{part.slice(1, -1)}</InlineCode>
     }
     if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={i} className="text-white font-semibold">{part.slice(2, -2)}</strong>
+      return <strong key={i} className={`font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{part.slice(2, -2)}</strong>
     }
     return <span key={i}>{part}</span>
   })
 }
 
-function renderDescription(text: string) {
+function renderDescription(text: string, theme: string) {
   const lines = text.split('\n')
   const result: React.ReactNode[] = []
   let i = 0
@@ -44,8 +44,8 @@ function renderDescription(text: string) {
     if (!line.trim()) { i++; continue }
 
     result.push(
-      <p key={i} className="text-slate-300 text-sm leading-relaxed mb-3">
-        {renderText(line)}
+      <p key={i} className={`text-sm leading-relaxed mb-3 ${theme === 'dark' ? 'text-slate-300' : 'text-gray-700'}`}>
+        {renderText(line, theme)}
       </p>
     )
     i++
@@ -86,8 +86,8 @@ export function ProblemDescription({ problem }: Props) {
             onClick={() => setTab(t)}
             className={`px-4 py-2 text-sm font-medium capitalize transition-colors border-b-2 -mb-px ${
               tab === t
-                ? 'text-white border-blue-500'
-                : 'text-slate-500 border-transparent hover:text-slate-300'
+                ? `border-blue-500 ${theme === 'dark' ? 'text-white' : 'text-blue-600'}`
+                : `border-transparent ${theme === 'dark' ? 'text-slate-500 hover:text-slate-300' : 'text-gray-500 hover:text-gray-700'}`
             }`}
           >
             {t === 'hints' ? '💡 Hint' : 'Description'}
@@ -101,7 +101,7 @@ export function ProblemDescription({ problem }: Props) {
           <div>
             {/* Description */}
             <div className="mb-6">
-              {renderDescription(problem.description)}
+              {renderDescription(problem.description, theme)}
             </div>
 
             {/* Examples */}
