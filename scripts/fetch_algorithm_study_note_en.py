@@ -1,18 +1,18 @@
 """
-scripts/fetch_labuladong_en.py
-------------------------------
-Fetch the English versions of labuladong articles.
+scripts/fetch_algorithm_study_note_en.py
+-----------------------------------------
+Fetch the English versions of algorithm study note articles.
 
 Chinese URL : https://labuladong.online/zh/algo/[section]/[article]/
 English URL : https://labuladong.online/algo/en/[section]/[article]/
 
-Output: public/labuladong/en/<section>/<article>.md
+Output: public/algorithm-study-note/en/<section>/<article>.md
 
 Usage
 -----
-    python scripts/fetch_labuladong_en.py              # skip existing files
-    python scripts/fetch_labuladong_en.py --force      # re-crawl & overwrite all
-    python scripts/fetch_labuladong_en.py --dry-run    # print URLs only
+    python scripts/fetch_algorithm_study_note_en.py              # skip existing files
+    python scripts/fetch_algorithm_study_note_en.py --force      # re-crawl & overwrite all
+    python scripts/fetch_algorithm_study_note_en.py --dry-run    # print URLs only
 """
 
 import sys, io, time, urllib.request
@@ -39,7 +39,7 @@ from _extractor import extract_article  # noqa
 BASE_URL    = "https://labuladong.online"
 EN_PREFIX   = "/algo/en"
 SCRIPT_DIR  = Path(__file__).parent
-OUTPUT_ROOT = SCRIPT_DIR.parent / "public" / "labuladong" / "en"
+OUTPUT_ROOT = SCRIPT_DIR.parent / "public" / "algorithm-study-note" / "en"
 
 HEADERS = {
     "User-Agent": (
@@ -279,7 +279,7 @@ def main():
     saved = skipped = errors = 0
 
     print(f"\n{'='*58}")
-    print(f"  labuladong English archiver  (v3 — preferred lang selection)")
+    print(f"  Algorithm Study Note English archiver  (v3 — preferred lang selection)")
     print(f"  Output : {OUTPUT_ROOT}")
     print(f"  Seeds  : {len(queue)}   force={force}")
     if use_pw:

@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { Link, useParams, useLocation } from 'react-router-dom'
-import { labuladongChapters } from '../../content/labuladong/curriculum'
+import { studyNoteChapters } from '../../content/algorithm-study-note/curriculum'
 import { useLang } from '../../context/LangContext'
 
 interface Props {
   isOpen: boolean
 }
 
-export function LabuladongSidebar({ isOpen }: Props) {
+export function AlgorithmStudyNoteSidebar({ isOpen }: Props) {
   const { articleId } = useParams<{ articleId: string }>()
   const location = useLocation()
   const { lang } = useLang()
@@ -24,26 +24,26 @@ export function LabuladongSidebar({ isOpen }: Props) {
 
   if (!isOpen) return null
 
-  const isProblemSet = location.pathname === '/labuladong/problem-set'
+  const isProblemSet = location.pathname === '/algorithm-study-note/problem-set'
 
   return (
     <aside className="w-64 shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col overflow-hidden">
       {/* Header */}
       <div className="p-3 border-b border-slate-800">
         <Link
-          to="/labuladong"
+          to="/algorithm-study-note"
           className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-slate-800 no-underline group"
         >
           <span className="text-lg">📚</span>
           <span className="text-sm font-semibold text-slate-200 group-hover:text-white">
-            {lang === 'zh' ? 'Labuladong 课程' : 'Labuladong Curriculum'}
+            {lang === 'zh' ? '算法学习笔记' : 'Algorithm Study Notes'}
           </span>
         </Link>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-2">
-        {labuladongChapters.map(chapter => {
+        {studyNoteChapters.map(chapter => {
           const isChapterCollapsed = collapsedChapters[chapter.id]
 
           // Determine if this chapter has the active article
@@ -107,7 +107,7 @@ export function LabuladongSidebar({ isOpen }: Props) {
                               return (
                                 <Link
                                   key={article.id}
-                                  to={`/labuladong/article/${article.id}`}
+                                  to={`/algorithm-study-note/article/${article.id}`}
                                   className={`flex items-center px-3 py-1.5 rounded-lg mx-1 mb-0.5 text-xs no-underline transition-colors ${
                                     isActive
                                       ? 'bg-blue-600 text-white'
@@ -135,7 +135,7 @@ export function LabuladongSidebar({ isOpen }: Props) {
       {/* Problem Sets link at bottom */}
       <div className="px-3 py-2 border-t border-slate-800">
         <Link
-          to="/labuladong/problem-set"
+          to="/algorithm-study-note/problem-set"
           className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium no-underline transition-colors ${
             isProblemSet
               ? 'bg-blue-600 text-white'

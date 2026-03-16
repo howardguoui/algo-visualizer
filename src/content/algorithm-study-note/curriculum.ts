@@ -1,5 +1,5 @@
 /**
- * Labuladong curriculum definition.
+ * Algorithm Study Note curriculum definition.
  *
  * Chapter structure mirrors labuladong.online/zh/algo/:
  *   Intro  →  Site intro + language basics
@@ -11,44 +11,44 @@
  *   Ch 4   →  Other techniques (greedy, math, CS, design patterns)
  *   PS     →  Problem set (static final page)
  *
- * zhPath is relative to public/labuladong/zh/  (e.g. "essential-technique/algorithm-summary")
- * The English file lives at:            public/labuladong/en/[same path]
+ * zhPath is relative to public/algorithm-study-note/zh/  (e.g. "essential-technique/algorithm-summary")
+ * The English file lives at:            public/algorithm-study-note/en/[same path]
  */
 
-export interface LabuladongArticle {
+export interface StudyNoteArticle {
   id: string                      // URL-safe slug, unique across all chapters
   zhPath: string                  // e.g. "essential-technique/algorithm-summary"
   title: { en: string; zh: string }
 }
 
-export interface LabuladongSection {
+export interface StudyNoteSection {
   id: string
   title: { en: string; zh: string }
-  articles: LabuladongArticle[]
+  articles: StudyNoteArticle[]
 }
 
-export interface LabuladongChapter {
+export interface StudyNoteChapter {
   id: string
   label: string                   // e.g. "Chapter 0" or "Intro"
   title: { en: string; zh: string }
   icon: string
-  sections: LabuladongSection[]
+  sections: StudyNoteSection[]
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 //  Helper
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function allArticles(): LabuladongArticle[] {
-  return labuladongChapters.flatMap(ch => ch.sections.flatMap(s => s.articles))
+export function allArticles(): StudyNoteArticle[] {
+  return studyNoteChapters.flatMap(ch => ch.sections.flatMap(s => s.articles))
 }
 
 export function findArticle(id: string): {
-  chapter: LabuladongChapter
-  section: LabuladongSection
-  article: LabuladongArticle
+  chapter: StudyNoteChapter
+  section: StudyNoteSection
+  article: StudyNoteArticle
 } | null {
-  for (const chapter of labuladongChapters) {
+  for (const chapter of studyNoteChapters) {
     for (const section of chapter.sections) {
       const article = section.articles.find(a => a.id === id)
       if (article) return { chapter, section, article }
@@ -58,8 +58,8 @@ export function findArticle(id: string): {
 }
 
 export function getAdjacentArticles(id: string): {
-  prev: LabuladongArticle | null
-  next: LabuladongArticle | null
+  prev: StudyNoteArticle | null
+  next: StudyNoteArticle | null
 } {
   const flat = allArticles()
   const idx = flat.findIndex(a => a.id === id)
@@ -73,7 +73,7 @@ export function getAdjacentArticles(id: string): {
 //  CHAPTERS
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const labuladongChapters: LabuladongChapter[] = [
+export const studyNoteChapters: StudyNoteChapter[] = [
 
   // ── INTRO ──────────────────────────────────────────────────────────────────
   {

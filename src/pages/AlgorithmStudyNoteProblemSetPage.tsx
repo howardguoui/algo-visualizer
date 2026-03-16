@@ -46,7 +46,7 @@ const PROBLEM_SETS = [
   },
 ]
 
-export function LabuladongProblemSetPage() {
+export function AlgorithmStudyNoteProblemSetPage() {
   const { lang, t } = useLang()
 
   return (
@@ -55,7 +55,7 @@ export function LabuladongProblemSetPage() {
       <div className="flex items-center gap-2 text-xs text-slate-500 mb-6">
         <Link to="/" className="hover:text-slate-300 no-underline">{t('Home', '首页')}</Link>
         <span>/</span>
-        <Link to="/labuladong" className="hover:text-slate-300 no-underline">Labuladong</Link>
+        <Link to="/algorithm-study-note" className="hover:text-slate-300 no-underline">Algorithm Study Notes</Link>
         <span>/</span>
         <span className="text-slate-200">{t('Problem Sets', '题单')}</span>
       </div>

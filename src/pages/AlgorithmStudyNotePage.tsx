@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
-import { findArticle, getAdjacentArticles } from '../content/labuladong/curriculum'
+import { findArticle, getAdjacentArticles } from '../content/algorithm-study-note/curriculum'
 import { MarkdownRenderer } from '../components/Content/MarkdownRenderer'
 import { useLang } from '../context/LangContext'
 
 type LoadState = 'loading' | 'ok' | 'fallback' | 'error'
 
-export function LabuladongArticlePage() {
+export function AlgorithmStudyNotePage() {
   const { articleId } = useParams<{ articleId: string }>()
   const { lang, t } = useLang()
   const [content, setContent] = useState('')
@@ -28,8 +28,8 @@ export function LabuladongArticlePage() {
     setContent('')
 
     async function load() {
-      const primary = `/labuladong/${lang}/${article.zhPath}.md`
-      const fallback = `/labuladong/zh/${article.zhPath}.md`
+      const primary = `/algorithm-study-note/${lang}/${article.zhPath}.md`
+      const fallback = `/algorithm-study-note/zh/${article.zhPath}.md`
 
       try {
         const res = await fetch(primary)
@@ -58,7 +58,7 @@ export function LabuladongArticlePage() {
     load()
   }, [articleId, lang])
 
-  if (!articleId) return <Navigate to="/labuladong/article/lb-home" />
+  if (!articleId) return <Navigate to="/algorithm-study-note/article/lb-home" />
 
   if (!result) {
     return (
@@ -82,7 +82,7 @@ export function LabuladongArticlePage() {
       <div className="flex items-center gap-2 text-xs text-slate-500 mb-6 flex-wrap">
         <Link to="/" className="hover:text-slate-300 no-underline">{t('Home', '首页')}</Link>
         <span>/</span>
-        <Link to="/labuladong" className="hover:text-slate-300 no-underline">Labuladong</Link>
+        <Link to="/algorithm-study-note" className="hover:text-slate-300 no-underline">Algorithm Study Notes</Link>
         <span>/</span>
         <span>{chapterTitle}</span>
         <span>/</span>
@@ -138,7 +138,7 @@ export function LabuladongArticlePage() {
       <div className="flex gap-4 mt-12 pt-8 border-t border-slate-800">
         {prev ? (
           <Link
-            to={`/labuladong/article/${prev.id}`}
+            to={`/algorithm-study-note/article/${prev.id}`}
             className="flex-1 flex flex-col gap-1 p-4 bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 no-underline group"
           >
             <span className="text-xs text-slate-500">← {t('Previous', '上一节')}</span>
@@ -150,7 +150,7 @@ export function LabuladongArticlePage() {
 
         {next ? (
           <Link
-            to={`/labuladong/article/${next.id}`}
+            to={`/algorithm-study-note/article/${next.id}`}
             className="flex-1 flex flex-col gap-1 p-4 bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 no-underline group text-right"
           >
             <span className="text-xs text-slate-500">{t('Next', '下一节')} →</span>

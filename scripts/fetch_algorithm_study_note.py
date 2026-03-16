@@ -1,16 +1,16 @@
 """
-scripts/fetch_labuladong.py
----------------------------
+scripts/fetch_algorithm_study_note.py
+--------------------------------------
 Archive labuladong.online/zh/algo/ articles as clean GitHub-Flavored Markdown.
 
-Output: public/labuladong/zh/<section>/<article>.md
+Output: public/algorithm-study-note/zh/<section>/<article>.md
         (mirrors the URL path under /zh/algo/)
 
 Usage
 -----
-    python scripts/fetch_labuladong.py              # skip existing files
-    python scripts/fetch_labuladong.py --force      # re-crawl & overwrite all
-    python scripts/fetch_labuladong.py --dry-run    # print URLs only
+    python scripts/fetch_algorithm_study_note.py              # skip existing files
+    python scripts/fetch_algorithm_study_note.py --force      # re-crawl & overwrite all
+    python scripts/fetch_algorithm_study_note.py --dry-run    # print URLs only
 """
 
 import sys, io, re, time, urllib.request
@@ -39,7 +39,7 @@ from _extractor import extract_article  # noqa
 BASE_URL    = "https://labuladong.online"
 LANG_PREFIX = "/zh/algo"
 SCRIPT_DIR  = Path(__file__).parent
-OUTPUT_ROOT = SCRIPT_DIR.parent / "public" / "labuladong" / "zh"
+OUTPUT_ROOT = SCRIPT_DIR.parent / "public" / "algorithm-study-note" / "zh"
 
 HEADERS = {
     "User-Agent": (
@@ -306,7 +306,7 @@ def main():
     saved = skipped = errors = 0
 
     print(f"\n{'='*58}")
-    print(f"  labuladong Chinese archiver  (v3 — preferred lang selection)")
+    print(f"  Algorithm Study Note Chinese archiver  (v3 — preferred lang selection)")
     print(f"  Output : {OUTPUT_ROOT}")
     print(f"  Seeds  : {len(queue)}   force={force}")
     if use_pw:

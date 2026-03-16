@@ -10,8 +10,8 @@ Setup (one-time):
     playwright install chromium
 
 Usage in crawlers:
-    python scripts/fetch_labuladong.py    --force --playwright
-    python scripts/fetch_labuladong_en.py --force --playwright
+    python scripts/fetch_algorithm_study_note.py    --force --playwright
+    python scripts/fetch_algorithm_study_note_en.py --force --playwright
 """
 
 # Programming language preference order — first available wins per page.
@@ -26,7 +26,7 @@ class PlaywrightSession:
     Example
     -------
     with PlaywrightSession(HEADERS) as session:
-        html = session.fetch("https://labuladong.online/...")
+        html = session.fetch("https://labuladong.online/zh/algo/...")
     """
 
     def __init__(self, headers: dict[str, str], headless: bool = True) -> None:

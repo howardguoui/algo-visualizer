@@ -1,14 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LangProvider } from './context/LangContext'
 import { AppLayout } from './components/Layout/AppLayout'
-import { LabuladongLayout } from './components/Layout/LabuladongLayout'
+import { AlgorithmStudyNoteLayout } from './components/Layout/AlgorithmStudyNoteLayout'
 import { HomePage } from './pages/HomePage'
 import { TopicPage } from './pages/TopicPage'
 import { VisualizePage } from './pages/VisualizePage'
 import { ProblemsPage } from './pages/ProblemsPage'
 import { PracticePage } from './pages/PracticePage'
-import { LabuladongArticlePage } from './pages/LabuladongArticlePage'
-import { LabuladongProblemSetPage } from './pages/LabuladongProblemSetPage'
+import { AlgorithmStudyNotePage } from './pages/AlgorithmStudyNotePage'
+import { AlgorithmStudyNoteProblemSetPage } from './pages/AlgorithmStudyNoteProblemSetPage'
 
 export default function App() {
   return (
@@ -18,11 +18,11 @@ export default function App() {
           {/* Practice page is full-screen — no sidebar layout */}
           <Route path="/practice/:problemId" element={<PracticePage />} />
 
-          {/* Labuladong curriculum — uses its own sidebar */}
-          <Route path="/labuladong" element={<LabuladongLayout />}>
-            <Route index element={<Navigate to="/labuladong/article/lb-home" replace />} />
-            <Route path="article/:articleId" element={<LabuladongArticlePage />} />
-            <Route path="problem-set" element={<LabuladongProblemSetPage />} />
+          {/* Algorithm Study Note — uses its own sidebar */}
+          <Route path="/algorithm-study-note" element={<AlgorithmStudyNoteLayout />}>
+            <Route index element={<Navigate to="/algorithm-study-note/article/lb-home" replace />} />
+            <Route path="article/:articleId" element={<AlgorithmStudyNotePage />} />
+            <Route path="problem-set" element={<AlgorithmStudyNoteProblemSetPage />} />
           </Route>
 
           {/* Main app layout */}

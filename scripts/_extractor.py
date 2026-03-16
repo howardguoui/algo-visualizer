@@ -2,7 +2,7 @@
 scripts/_extractor.py
 ---------------------
 Shared HTML → clean GitHub-Flavored Markdown extraction logic for
-labuladong crawlers.
+algorithm-study-note crawlers.
 
 Site tech stack (confirmed via debug):
   - Next.js 14 with SSR

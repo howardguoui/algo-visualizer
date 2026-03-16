@@ -113,19 +113,19 @@ export function Sidebar({ isOpen }: Props) {
           <span>{lang === 'zh' ? 'LeetCode 题单' : 'Problem Sets'}</span>
         </Link>
 
-        {/* Labuladong curriculum link */}
+        {/* Algorithm Study Notes link */}
         <Link
-          to="/labuladong"
+          to="/algorithm-study-note"
           className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium no-underline transition-colors mt-0.5 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
         >
           <span>📚</span>
-          <span>{lang === 'zh' ? 'Labuladong 课程' : 'Labuladong Curriculum'}</span>
+          <span>{lang === 'zh' ? '算法学习笔记' : 'Algorithm Study Notes'}</span>
         </Link>
       </div>
 
       {/* Footer */}
       <div className="p-3 border-t border-slate-800 text-xs text-slate-600 text-center">
-        {curriculum.flatMap(c => c.topics).length} topics · Inspired by labuladong
+        {curriculum.flatMap(c => c.topics).length} topics · Algorithm Study Notes
       </div>
     </aside>
   )

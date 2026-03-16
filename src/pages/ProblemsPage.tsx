@@ -49,8 +49,8 @@ export function ProblemsPage() {
         </h1>
         <p className="text-slate-400">
           {lang === 'zh'
-            ? '来自 labuladong 的精选题单 — 按算法分类，系统学习'
-            : 'Curated problem sets from labuladong — organized by algorithm topic for systematic study'}
+            ? '精选题单 — 按算法分类，系统学习'
+            : 'Curated problem sets — organized by algorithm topic for systematic study'}
         </p>
       </div>
 
