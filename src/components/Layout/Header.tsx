@@ -71,13 +71,6 @@ export function Header({ onMenuToggle }: Props) {
         🎯 {t('Problems', '题单')}
       </Link>
 
-      {/* Standalone visualizer link */}
-      <Link
-        to="/visualize"
-        className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 transition-colors text-sm font-medium text-white no-underline"
-      >
-        {t('Visualizer', '算法可视化')}
-      </Link>
     </header>
   )
 }
