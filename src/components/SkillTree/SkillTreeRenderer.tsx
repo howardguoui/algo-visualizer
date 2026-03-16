@@ -3,7 +3,8 @@ import { ReactFlow, Controls, Background, useNodesState, useEdgesState, Position
 import '@xyflow/react/dist/style.css';
 import { useNavigate } from 'react-router-dom';
 import { useLang } from '../../context/LangContext';
-import { initialNodes, initialEdges } from '../../data/curriculumGraph';
+import { initialNodes as defaultNodes, initialEdges as defaultEdges } from '../../data/curriculumGraph';
+import type { Node, Edge } from '@xyflow/react';
 
 const CustomNode = ({ data }: any) => {
   return (
@@ -26,8 +27,24 @@ const nodeTypes = {
   custom: CustomNode,
 };
 
-export function SkillTreeRenderer() {
-  const { lang, t } = useLang();
+export interface SkillTreeRendererProps {
+  initialNodes?: Node[];
+  initialEdges?: Edge[];
+  titleEn?: string;
+  titleZh?: string;
+  subtitleEn?: string;
+  subtitleZh?: string;
+}
+
+export function SkillTreeRenderer({ 
+  initialNodes = defaultNodes, 
+  initialEdges = defaultEdges,
+  titleEn = 'Skill Tree Curriculum',
+  titleZh = '核心课程树',
+  subtitleEn = 'Master topics to unlock the next skills.',
+  subtitleZh = '掌握该主题以解锁下一个技能。'
+}: SkillTreeRendererProps) {
+  const { lang } = useLang();
   const navigate = useNavigate();
 
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
@@ -53,9 +70,9 @@ export function SkillTreeRenderer() {
     <div className="w-full relative rounded-2xl overflow-hidden border border-slate-800/50 bg-slate-950">
       <div className="absolute top-4 left-4 z-10">
         <h2 className="text-lg font-bold text-white flex items-center gap-2">
-           <span className="text-blue-400">❖</span> {t('Skill Tree Curriculum', '技能树课程')}
+           <span className="text-blue-400">❖</span> {lang === 'zh' ? titleZh : titleEn}
         </h2>
-        <p className="text-xs text-slate-400">{t('Master topics to unlock the next skills.', '掌握该主题以解锁下一个技能。')}</p>
+        <p className="text-xs text-slate-400">{lang === 'zh' ? subtitleZh : subtitleEn}</p>
       </div>
       
       <div className="w-full h-[600px]">
