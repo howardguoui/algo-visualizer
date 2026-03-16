@@ -12,22 +12,22 @@ const BlockCodeCtx = createContext(false)
 
 const components: Components = {
   h1: ({ children }) => (
-    <h1 className="text-3xl font-bold text-white mt-8 mb-4 pb-3 border-b border-slate-800">{children}</h1>
+    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4 pb-3 border-b border-gray-200 dark:border-slate-800">{children}</h1>
   ),
   h2: ({ children }) => (
-    <h2 className="text-xl font-bold text-white mt-8 mb-3 flex items-center gap-2">{children}</h2>
+    <h2 className="text-xl font-bold text-gray-900 dark:text-white mt-8 mb-3 flex items-center gap-2">{children}</h2>
   ),
   h3: ({ children }) => (
-    <h3 className="text-base font-semibold text-slate-200 mt-6 mb-2">{children}</h3>
+    <h3 className="text-base font-semibold text-gray-800 dark:text-slate-200 mt-6 mb-2">{children}</h3>
   ),
   p: ({ children }) => (
-    <p className="text-slate-300 leading-7 mb-4">{children}</p>
+    <p className="text-gray-700 dark:text-slate-300 leading-7 mb-4">{children}</p>
   ),
   ul: ({ children }) => (
-    <ul className="list-disc list-inside space-y-1.5 mb-4 text-slate-300 pl-2">{children}</ul>
+    <ul className="list-disc list-inside space-y-1.5 mb-4 text-gray-700 dark:text-slate-300 pl-2">{children}</ul>
   ),
   ol: ({ children }) => (
-    <ol className="list-decimal list-inside space-y-1.5 mb-4 text-slate-300 pl-2">{children}</ol>
+    <ol className="list-decimal list-inside space-y-1.5 mb-4 text-gray-700 dark:text-slate-300 pl-2">{children}</ol>
   ),
   li: ({ children }) => (
     <li className="leading-7">{children}</li>
@@ -45,16 +45,16 @@ const components: Components = {
 
     return (
       <BlockCodeCtx.Provider value={true}>
-        <div className="my-4 rounded-xl overflow-hidden border border-slate-700">
+        <div className="my-4 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700">
           {lang && (
-            <div className="bg-slate-800 px-4 py-2 text-xs text-slate-400 font-mono border-b border-slate-700 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-red-500" />
-              <span className="w-2 h-2 rounded-full bg-yellow-500" />
-              <span className="w-2 h-2 rounded-full bg-green-500" />
+            <div className="bg-gray-100 dark:bg-slate-800 px-4 py-2 text-xs text-gray-500 dark:text-slate-400 font-mono border-b border-gray-200 dark:border-slate-700 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-red-400" />
+              <span className="w-2 h-2 rounded-full bg-yellow-400" />
+              <span className="w-2 h-2 rounded-full bg-green-400" />
               <span className="ml-2">{lang}</span>
             </div>
           )}
-          <pre className="bg-slate-900 p-4 overflow-x-auto text-sm font-mono text-slate-200 leading-6">
+          <pre className="bg-gray-50 dark:bg-slate-900 p-4 overflow-x-auto text-sm font-mono text-gray-800 dark:text-slate-200 leading-6">
             {children}
           </pre>
         </div>
@@ -72,31 +72,31 @@ const components: Components = {
       return <code>{children}</code>
     }
     return (
-      <code className="bg-slate-800 text-blue-300 px-1.5 py-0.5 rounded text-sm font-mono">
+      <code className="bg-gray-100 dark:bg-slate-800 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded text-sm font-mono">
         {children}
       </code>
     )
   },
 
   blockquote: ({ children }) => (
-    <blockquote className="border-l-4 border-blue-500 pl-4 my-4 text-slate-400 italic">
+    <blockquote className="border-l-4 border-blue-400 dark:border-blue-500 pl-4 my-4 text-gray-600 dark:text-slate-400 italic">
       {children}
     </blockquote>
   ),
   strong: ({ children }) => (
-    <strong className="text-white font-semibold">{children}</strong>
+    <strong className="text-gray-900 dark:text-white font-semibold">{children}</strong>
   ),
-  hr: () => <hr className="border-slate-800 my-8" />,
+  hr: () => <hr className="border-gray-200 dark:border-slate-800 my-8" />,
   table: ({ children }) => (
     <div className="overflow-x-auto my-4">
-      <table className="w-full text-sm text-slate-300 border-collapse">{children}</table>
+      <table className="w-full text-sm text-gray-700 dark:text-slate-300 border-collapse">{children}</table>
     </div>
   ),
   th: ({ children }) => (
-    <th className="border border-slate-700 bg-slate-800 px-4 py-2 text-left font-semibold text-slate-200">{children}</th>
+    <th className="border border-gray-200 dark:border-slate-700 bg-gray-100 dark:bg-slate-800 px-4 py-2 text-left font-semibold text-gray-800 dark:text-slate-200">{children}</th>
   ),
   td: ({ children }) => (
-    <td className="border border-slate-700 px-4 py-2">{children}</td>
+    <td className="border border-gray-200 dark:border-slate-700 px-4 py-2">{children}</td>
   ),
   a: ({ href, children }) => {
     // Intercept LeetCode problem links — redirect to internal practice page if available
@@ -108,7 +108,7 @@ const components: Components = {
       const id = idMatch ? parseInt(idMatch[1]) : null
       if (id && practiceProblemIds.has(id)) {
         return (
-          <Link to={`/practice/${id}`} className="text-blue-400 hover:text-blue-300 underline font-medium">
+          <Link to={`/practice/${id}`} className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 underline font-medium">
             {children}
             <span className="ml-1 text-[10px] text-blue-500 align-middle">●</span>
           </Link>
@@ -116,7 +116,7 @@ const components: Components = {
       }
     }
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 underline">
+      <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300 underline">
         {children}
       </a>
     )
@@ -125,7 +125,7 @@ const components: Components = {
 
 export function MarkdownRenderer({ content }: { content: string }) {
   return (
-    <div className="prose prose-invert max-w-none">
+    <div className="prose max-w-none dark:prose-invert">
       <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
         {content}
       </ReactMarkdown>

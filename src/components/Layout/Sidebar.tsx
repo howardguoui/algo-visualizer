@@ -4,10 +4,10 @@ import { useLang } from '../../context/LangContext'
 import { useState } from 'react'
 
 const CONTENT_TYPE_BADGE: Record<string, { label: string; color: string }> = {
-  'content': { label: 'Article', color: 'bg-slate-700 text-slate-300' },
-  'content+visual': { label: 'Visual', color: 'bg-purple-900 text-purple-300' },
-  'content+practice': { label: 'Practice', color: 'bg-green-900 text-green-300' },
-  'all': { label: 'Full', color: 'bg-blue-900 text-blue-300' },
+  'content': { label: 'Article', color: 'bg-gray-200 text-gray-600 dark:bg-slate-700 dark:text-slate-300' },
+  'content+visual': { label: 'Visual', color: 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300' },
+  'content+practice': { label: 'Practice', color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' },
+  'all': { label: 'Full', color: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300' },
 }
 
 interface Props {
@@ -26,10 +26,10 @@ export function Sidebar({ isOpen }: Props) {
   if (!isOpen) return null
 
   return (
-    <aside className="w-64 shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col overflow-hidden">
+    <aside className="w-64 shrink-0 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col overflow-hidden">
       {/* Search bar */}
-      <div className="p-3 border-b border-slate-800">
-        <div className="flex items-center gap-2 bg-slate-800 rounded-lg px-3 py-2 text-sm text-slate-400">
+      <div className="p-3 border-b border-gray-200 dark:border-slate-800">
+        <div className="flex items-center gap-2 bg-gray-100 dark:bg-slate-800 rounded-lg px-3 py-2 text-sm text-gray-500 dark:text-slate-400">
           <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current shrink-0">
             <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
           </svg>
@@ -48,8 +48,8 @@ export function Sidebar({ isOpen }: Props) {
               {/* Chapter header */}
               <button
                 onClick={() => toggleChapter(chapter.id)}
-                className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-semibold transition-colors hover:bg-slate-800 ${
-                  hasActive ? 'text-blue-400' : 'text-slate-300'
+                className={`w-full flex items-center gap-2 px-3 py-2 text-sm font-semibold transition-colors hover:bg-gray-100 dark:hover:bg-slate-800 ${
+                  hasActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-700 dark:text-slate-300'
                 }`}
               >
                 <span className="text-base">{chapter.icon}</span>
@@ -58,7 +58,7 @@ export function Sidebar({ isOpen }: Props) {
                 </span>
                 <svg
                   viewBox="0 0 24 24"
-                  className={`w-4 h-4 fill-current text-slate-500 transition-transform ${isChapterCollapsed ? '-rotate-90' : ''}`}
+                  className={`w-4 h-4 fill-current text-gray-400 dark:text-slate-500 transition-transform ${isChapterCollapsed ? '-rotate-90' : ''}`}
                 >
                   <path d="M7 10l5 5 5-5z"/>
                 </svg>
@@ -78,7 +78,7 @@ export function Sidebar({ isOpen }: Props) {
                         className={`flex items-center gap-2 px-3 py-2 rounded-lg mx-1 mb-0.5 text-sm no-underline transition-colors group ${
                           isActive
                             ? 'bg-blue-600 text-white'
-                            : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                            : 'text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-slate-200'
                         }`}
                       >
                         <span className="flex-1 leading-snug">
@@ -100,13 +100,13 @@ export function Sidebar({ isOpen }: Props) {
       </nav>
 
       {/* Problem sets link */}
-      <div className="px-3 py-2 border-t border-slate-800">
+      <div className="px-3 py-2 border-t border-gray-200 dark:border-slate-800">
         <Link
           to="/problems"
           className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium no-underline transition-colors ${
             location.pathname === '/problems'
               ? 'bg-blue-600 text-white'
-              : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+              : 'text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-slate-200'
           }`}
         >
           <span>🎯</span>
@@ -116,7 +116,7 @@ export function Sidebar({ isOpen }: Props) {
         {/* Algorithm Study Notes link */}
         <Link
           to="/algorithm-study-note"
-          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium no-underline transition-colors mt-0.5 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+          className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium no-underline transition-colors mt-0.5 text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-slate-200"
         >
           <span>📚</span>
           <span>{lang === 'zh' ? '算法学习笔记' : 'Algorithm Study Notes'}</span>
@@ -124,7 +124,7 @@ export function Sidebar({ isOpen }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="p-3 border-t border-slate-800 text-xs text-slate-600 text-center">
+      <div className="p-3 border-t border-gray-200 dark:border-slate-800 text-xs text-gray-400 dark:text-slate-600 text-center">
         {curriculum.flatMap(c => c.topics).length} topics · Algorithm Study Notes
       </div>
     </aside>

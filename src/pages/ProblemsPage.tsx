@@ -11,7 +11,7 @@ const TABS = [
     label: { en: 'Hot 100', zh: 'Hot 100' },
     icon: '🔥',
     desc: { en: '100 must-know problems', zh: '100道必刷题目' },
-    badge: 'bg-orange-900 text-orange-300',
+    badge: 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300',
     content: hot100Raw,
   },
   {
@@ -19,7 +19,7 @@ const TABS = [
     label: { en: 'Quick Master', zh: '速成清单' },
     icon: '⚡',
     desc: { en: 'Core techniques, curated paths', zh: '核心技巧精选路径' },
-    badge: 'bg-blue-900 text-blue-300',
+    badge: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
     content: quickmasterRaw,
   },
   {
@@ -27,7 +27,7 @@ const TABS = [
     label: { en: 'Beginner', zh: '入门系列' },
     icon: '🌱',
     desc: { en: '474 problems across 32 categories', zh: '32个分类共474道题' },
-    badge: 'bg-green-900 text-green-300',
+    badge: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
     content: beginnerRaw,
   },
 ] as const
@@ -44,10 +44,10 @@ export function ProblemsPage() {
     <div className="max-w-3xl mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
           {lang === 'zh' ? 'LeetCode 题单' : 'LeetCode Problem Sets'}
         </h1>
-        <p className="text-slate-400">
+        <p className="text-gray-600 dark:text-slate-400">
           {lang === 'zh'
             ? '精选题单 — 按算法分类，系统学习'
             : 'Curated problem sets — organized by algorithm topic for systematic study'}
@@ -62,8 +62,8 @@ export function ProblemsPage() {
             onClick={() => setActiveTab(t.key)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
               activeTab === t.key
-                ? 'bg-slate-800 border-slate-600 text-white'
-                : 'bg-slate-900 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                ? 'bg-gray-200 dark:bg-slate-800 border-gray-400 dark:border-slate-600 text-gray-900 dark:text-white'
+                : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-800 text-gray-600 dark:text-slate-400 hover:border-gray-300 dark:hover:border-slate-700 hover:text-gray-800 dark:hover:text-slate-200'
             }`}
           >
             <span>{t.icon}</span>

@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
-* { box-sizing: border-box; }
-body { margin: 0; background: #0f172a; font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+/* Enable class-based dark mode for Tailwind v4 */
+@variant dark (&:where(.dark, .dark *));
 
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'JetBrains Mono', 'Fira Code', monospace; }
+
+/* Light scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #1e293b; }
-::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+
+/* Dark scrollbar */
+.dark ::-webkit-scrollbar-track { background: #1e293b; }
+.dark ::-webkit-scrollbar-thumb { background: #475569; }

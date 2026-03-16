@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LangProvider } from './context/LangContext'
+import { ThemeProvider } from './context/ThemeContext'
 import { AppLayout } from './components/Layout/AppLayout'
 import { AlgorithmStudyNoteLayout } from './components/Layout/AlgorithmStudyNoteLayout'
 import { HomePage } from './pages/HomePage'
@@ -12,6 +13,7 @@ import { AlgorithmStudyNoteProblemSetPage } from './pages/AlgorithmStudyNoteProb
 
 export default function App() {
   return (
+    <ThemeProvider>
     <LangProvider>
       <BrowserRouter>
         <Routes>
@@ -36,5 +38,6 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </LangProvider>
+    </ThemeProvider>
   )
 }

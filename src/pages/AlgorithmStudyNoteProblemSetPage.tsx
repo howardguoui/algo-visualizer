@@ -52,21 +52,21 @@ export function AlgorithmStudyNoteProblemSetPage() {
   return (
     <div className="max-w-3xl mx-auto px-6 py-8">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-xs text-slate-500 mb-6">
-        <Link to="/" className="hover:text-slate-300 no-underline">{t('Home', '首页')}</Link>
+      <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-slate-500 mb-6">
+        <Link to="/" className="hover:text-gray-600 dark:hover:text-slate-300 no-underline">{t('Home', '首页')}</Link>
         <span>/</span>
-        <Link to="/algorithm-study-note" className="hover:text-slate-300 no-underline">Algorithm Study Notes</Link>
+        <Link to="/algorithm-study-note" className="hover:text-gray-600 dark:hover:text-slate-300 no-underline">Algorithm Study Notes</Link>
         <span>/</span>
-        <span className="text-slate-200">{t('Problem Sets', '题单')}</span>
+        <span className="text-gray-800 dark:text-slate-200">{t('Problem Sets', '题单')}</span>
       </div>
 
       {/* Header */}
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-3">
           <span className="text-4xl">🎯</span>
-          <h1 className="text-3xl font-bold text-white">{t('Problem Sets', '题单')}</h1>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('Problem Sets', '题单')}</h1>
         </div>
-        <p className="text-slate-400 leading-7">
+        <p className="text-gray-600 dark:text-slate-400 leading-7">
           {t(
             'Curated problem sets organized by topic. Each set reinforces the frameworks learned in the curriculum.',
             '按主题整理的精选题单，每个题单强化课程中学习的算法框架。'
@@ -82,17 +82,17 @@ export function AlgorithmStudyNoteProblemSetPage() {
             href={ps.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-start gap-4 p-5 bg-slate-900 hover:bg-slate-800 rounded-xl border border-slate-800 hover:border-slate-700 transition-all no-underline group"
+            className="flex items-start gap-4 p-5 bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-xl border border-gray-200 dark:border-slate-800 hover:border-gray-300 dark:hover:border-slate-700 transition-all no-underline group"
           >
             <span className="text-3xl shrink-0">{ps.icon}</span>
             <div>
-              <div className="font-semibold text-slate-200 group-hover:text-white mb-1">
+              <div className="font-semibold text-gray-800 dark:text-slate-200 group-hover:text-gray-900 dark:group-hover:text-white mb-1">
                 {lang === 'zh' ? ps.title.zh : ps.title.en}
               </div>
-              <div className="text-sm text-slate-500">
+              <div className="text-sm text-gray-500 dark:text-slate-500">
                 {lang === 'zh' ? ps.description.zh : ps.description.en}
               </div>
-              <div className="mt-2 text-xs text-blue-500 group-hover:text-blue-400">
+              <div className="mt-2 text-xs text-blue-600 dark:text-blue-500 group-hover:text-blue-500 dark:group-hover:text-blue-400">
                 {t('Open on labuladong.online →', '在 labuladong.online 打开 →')}
               </div>
             </div>
@@ -101,7 +101,7 @@ export function AlgorithmStudyNoteProblemSetPage() {
       </div>
 
       {/* Footer note */}
-      <div className="mt-10 p-4 bg-slate-900 rounded-xl border border-slate-800 text-sm text-slate-500">
+      <div className="mt-10 p-4 bg-white dark:bg-slate-900 rounded-xl border border-gray-200 dark:border-slate-800 text-sm text-gray-500 dark:text-slate-500">
         💡 {t(
           'Problem sets open on labuladong.online. Some may require a membership.',
           '题单在 labuladong.online 上打开，部分内容可能需要会员权限。'

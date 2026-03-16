@@ -27,15 +27,15 @@ export function AlgorithmStudyNoteSidebar({ isOpen }: Props) {
   const isProblemSet = location.pathname === '/algorithm-study-note/problem-set'
 
   return (
-    <aside className="w-64 shrink-0 bg-slate-900 border-r border-slate-800 flex flex-col overflow-hidden">
+    <aside className="w-64 shrink-0 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="p-3 border-b border-slate-800">
+      <div className="p-3 border-b border-gray-200 dark:border-slate-800">
         <Link
           to="/algorithm-study-note"
-          className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-slate-800 no-underline group"
+          className="flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 no-underline group"
         >
           <span className="text-lg">📚</span>
-          <span className="text-sm font-semibold text-slate-200 group-hover:text-white">
+          <span className="text-sm font-semibold text-gray-800 dark:text-slate-200 group-hover:text-gray-900 dark:group-hover:text-white">
             {lang === 'zh' ? '算法学习笔记' : 'Algorithm Study Notes'}
           </span>
         </Link>
@@ -56,8 +56,8 @@ export function AlgorithmStudyNoteSidebar({ isOpen }: Props) {
               {/* Chapter header */}
               <button
                 onClick={() => toggleChapter(chapter.id)}
-                className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-wide transition-colors hover:bg-slate-800 ${
-                  hasActive ? 'text-blue-400' : 'text-slate-500'
+                className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-bold uppercase tracking-wide transition-colors hover:bg-gray-100 dark:hover:bg-slate-800 ${
+                  hasActive ? 'text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-slate-500'
                 }`}
               >
                 <span className="text-sm">{chapter.icon}</span>
@@ -84,8 +84,8 @@ export function AlgorithmStudyNoteSidebar({ isOpen }: Props) {
                         {/* Section header */}
                         <button
                           onClick={() => toggleSection(section.id)}
-                          className={`w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors hover:bg-slate-800 rounded-lg mx-1 ${
-                            hasSectionActive ? 'text-blue-300' : 'text-slate-400'
+                          className={`w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium transition-colors hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg mx-1 ${
+                            hasSectionActive ? 'text-blue-600 dark:text-blue-300' : 'text-gray-500 dark:text-slate-400'
                           }`}
                         >
                           <span className="flex-1 text-left">
@@ -93,7 +93,7 @@ export function AlgorithmStudyNoteSidebar({ isOpen }: Props) {
                           </span>
                           <svg
                             viewBox="0 0 24 24"
-                            className={`w-3 h-3 fill-current text-slate-600 transition-transform shrink-0 ${isSectionCollapsed ? '-rotate-90' : ''}`}
+                            className={`w-3 h-3 fill-current text-gray-400 dark:text-slate-600 transition-transform shrink-0 ${isSectionCollapsed ? '-rotate-90' : ''}`}
                           >
                             <path d="M7 10l5 5 5-5z"/>
                           </svg>
@@ -111,7 +111,7 @@ export function AlgorithmStudyNoteSidebar({ isOpen }: Props) {
                                   className={`flex items-center px-3 py-1.5 rounded-lg mx-1 mb-0.5 text-xs no-underline transition-colors ${
                                     isActive
                                       ? 'bg-blue-600 text-white'
-                                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                                      : 'text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-slate-200'
                                   }`}
                                 >
                                   <span className="leading-snug">
@@ -133,13 +133,13 @@ export function AlgorithmStudyNoteSidebar({ isOpen }: Props) {
       </nav>
 
       {/* Problem Sets link at bottom */}
-      <div className="px-3 py-2 border-t border-slate-800">
+      <div className="px-3 py-2 border-t border-gray-200 dark:border-slate-800">
         <Link
           to="/algorithm-study-note/problem-set"
           className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium no-underline transition-colors ${
             isProblemSet
               ? 'bg-blue-600 text-white'
-              : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+              : 'text-gray-600 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-slate-200'
           }`}
         >
           <span>🎯</span>
@@ -148,8 +148,8 @@ export function AlgorithmStudyNoteSidebar({ isOpen }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="p-3 border-t border-slate-800 text-xs text-slate-600 text-center">
-        <Link to="/" className="hover:text-slate-400 no-underline">
+      <div className="p-3 border-t border-gray-200 dark:border-slate-800 text-xs text-gray-400 dark:text-slate-600 text-center">
+        <Link to="/" className="hover:text-gray-600 dark:hover:text-slate-400 no-underline">
           ← {lang === 'zh' ? '返回主课程' : 'Back to Main'}
         </Link>
       </div>
