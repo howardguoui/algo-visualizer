@@ -3,7 +3,6 @@ import { curriculum } from '../content/curriculum'
 import { studyNoteChapters } from '../content/algorithm-study-note/curriculum'
 import { useLang } from '../context/LangContext'
 import { SkillTreeRenderer } from '../components/SkillTree/SkillTreeRenderer'
-import { studyNoteNodes, studyNoteEdges } from '../data/studyNoteGraph'
 
 export function HomePage() {
   const { t } = useLang()
@@ -95,25 +94,10 @@ export function HomePage() {
             </Link>
           ))}
         </div>
-
-        {/* Study Note Skill Tree */}
-        <div className="mt-8">
-          <SkillTreeRenderer 
-            initialNodes={studyNoteNodes} 
-            initialEdges={studyNoteEdges} 
-            titleEn="Study Notes Roadmap"
-            titleZh="学习笔记知识树"
-            subtitleEn="Complete the fundamental paths directly through study articles."
-            subtitleZh="通过学习笔记文章完成完整的知识进阶脉络。"
-          />
-        </div>
       </div>
 
-      {/* Primary Skill Tree Curriculum Preview */}
+      {/* Skill Tree Curriculum Preview */}
       <div className="mb-10">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-          {t('Interactive Visualizer Curriculum', '交互式可视化课程树')}
-        </h2>
         <SkillTreeRenderer />
       </div>
     </div>

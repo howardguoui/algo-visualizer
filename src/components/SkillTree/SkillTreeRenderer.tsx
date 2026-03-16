@@ -3,8 +3,7 @@ import { ReactFlow, Controls, Background, useNodesState, useEdgesState, Position
 import '@xyflow/react/dist/style.css';
 import { useNavigate } from 'react-router-dom';
 import { useLang } from '../../context/LangContext';
-import { initialNodes as defaultNodes, initialEdges as defaultEdges } from '../../data/curriculumGraph';
-import type { Node, Edge } from '@xyflow/react';
+import { initialNodes, initialEdges } from '../../data/curriculumGraph';
 
 const CustomNode = ({ data }: any) => {
   return (
@@ -14,7 +13,7 @@ const CustomNode = ({ data }: any) => {
         <span className="text-xl">{data.icon}</span>
         <div className="flex items-center justify-center">
           <span className={`text-sm font-bold ${data.locked ? 'text-slate-500' : 'text-slate-200'}`}>
-             {data.label}
+            {data.label}
           </span>
         </div>
       </div>
@@ -27,37 +26,21 @@ const nodeTypes = {
   custom: CustomNode,
 };
 
-export interface SkillTreeRendererProps {
-  initialNodes?: Node[];
-  initialEdges?: Edge[];
-  titleEn?: string;
-  titleZh?: string;
-  subtitleEn?: string;
-  subtitleZh?: string;
-}
-
-export function SkillTreeRenderer({ 
-  initialNodes = defaultNodes, 
-  initialEdges = defaultEdges,
-  titleEn = 'Skill Tree Curriculum',
-  titleZh = '核心课程树',
-  subtitleEn = 'Master topics to unlock the next skills.',
-  subtitleZh = '掌握该主题以解锁下一个技能。'
-}: SkillTreeRendererProps) {
-  const { lang } = useLang();
+export function SkillTreeRenderer() {
+  const { lang, t } = useLang();
   const navigate = useNavigate();
 
   const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, , onEdgesChange] = useEdgesState(initialEdges);
 
   const localizedNodes = useMemo(() => {
-     return nodes.map(node => ({
-        ...node,
-        data: {
-           ...node.data,
-           label: lang === 'zh' ? node.data.labelZh : node.data.labelEn,
-        }
-     }));
+    return nodes.map(node => ({
+      ...node,
+      data: {
+        ...node.data,
+        label: lang === 'zh' ? node.data.labelZh : node.data.labelEn,
+      }
+    }));
   }, [nodes, lang]);
 
   const onNodeClick = useCallback((_event: React.MouseEvent, node: any) => {
@@ -70,11 +53,11 @@ export function SkillTreeRenderer({
     <div className="w-full relative rounded-2xl overflow-hidden border border-slate-800/50 bg-slate-950">
       <div className="absolute top-4 left-4 z-10">
         <h2 className="text-lg font-bold text-white flex items-center gap-2">
-           <span className="text-blue-400">❖</span> {lang === 'zh' ? titleZh : titleEn}
+          <span className="text-blue-400">❖</span> {t('Skill Tree Curriculum', '技能树课程')}
         </h2>
-        <p className="text-xs text-slate-400">{lang === 'zh' ? subtitleZh : subtitleEn}</p>
+        <p className="text-xs text-slate-400">{t('Master topics to unlock the next skills.', '掌握该主题以解锁下一个技能。')}</p>
       </div>
-      
+
       <div className="w-full h-[600px]">
         <ReactFlow
           nodes={localizedNodes}
