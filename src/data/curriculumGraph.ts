@@ -64,12 +64,38 @@ export const initialNodes: Node[] = [
     data: { labelEn: 'Tree Traversal', labelZh: '树的遍历', icon: '🌳', path: '/learn/trees-traversal', locked: false }
   },
 
+  // Tier 3 extra: Prefix Sum
+  {
+    id: 'prefix-sum',
+    type: 'custom',
+    position: { x: -50, y: 250 },
+    data: { labelEn: 'Prefix Sum', labelZh: '前缀和', icon: '➕', path: '/learn/arrays-prefix-sum', locked: false }
+  },
+
   // Tier 5: Advanced Trees & Sorting
   {
-    id: 'sorting',
+    id: 'sorting-bubble',
     type: 'custom',
-    position: { x: 150, y: 450 },
-    data: { labelEn: 'Sorting', labelZh: '排序算法', icon: '📊', path: '/learn/sorting-bubble-sort', locked: false }
+    position: { x: 0, y: 450 },
+    data: { labelEn: 'Bubble Sort', labelZh: '冒泡排序', icon: '🫧', path: '/learn/sorting-bubble-sort', locked: false }
+  },
+  {
+    id: 'sorting-merge',
+    type: 'custom',
+    position: { x: 130, y: 450 },
+    data: { labelEn: 'Merge Sort', labelZh: '归并排序', icon: '🔀', path: '/learn/sorting-merge-sort', locked: false }
+  },
+  {
+    id: 'sorting-quick',
+    type: 'custom',
+    position: { x: 260, y: 450 },
+    data: { labelEn: 'Quick Sort', labelZh: '快速排序', icon: '⚡', path: '/learn/sorting-quick-sort', locked: false }
+  },
+  {
+    id: 'trees-bst',
+    type: 'custom',
+    position: { x: 700, y: 350 },
+    data: { labelEn: 'BST', labelZh: '二叉搜索树', icon: '🌲', path: '/learn/trees-bst', locked: false }
   },
   {
     id: 'trees-bfs',
@@ -81,20 +107,32 @@ export const initialNodes: Node[] = [
     id: 'backtracking',
     type: 'custom',
     position: { x: 650, y: 450 },
-    data: { labelEn: 'Backtracking', labelZh: '回溯算法', icon: '🔄', path: '/learn/backtracking-framework', locked: false }
+    data: { labelEn: 'Backtracking', labelZh: '回溯算法', icon: '🔁', path: '/learn/backtracking-framework', locked: false }
+  },
+  {
+    id: 'backtracking-perms',
+    type: 'custom',
+    position: { x: 800, y: 450 },
+    data: { labelEn: 'Permutations', labelZh: '排列组合', icon: '🔢', path: '/learn/backtracking-permutations', locked: false }
   },
 
   // Tier 6: DP & Graphs
   {
     id: 'dp-intro',
     type: 'custom',
-    position: { x: 650, y: 550 },
+    position: { x: 650, y: 560 },
     data: { labelEn: 'Dynamic Prog.', labelZh: '动态规划', icon: '💡', path: '/learn/dp-intro', locked: false }
+  },
+  {
+    id: 'dp-fibonacci',
+    type: 'custom',
+    position: { x: 800, y: 560 },
+    data: { labelEn: 'Fibonacci DP', labelZh: '斐波那契DP', icon: '🐇', path: '/learn/dp-fibonacci', locked: false }
   },
   {
     id: 'graphs',
     type: 'custom',
-    position: { x: 450, y: 550 },
+    position: { x: 450, y: 560 },
     data: { labelEn: 'Graphs', labelZh: '图论', icon: '🕸️', path: '/learn/graphs-basics', locked: false }
   },
 
@@ -102,19 +140,19 @@ export const initialNodes: Node[] = [
   {
     id: 'union-find',
     type: 'custom',
-    position: { x: 250, y: 650 },
+    position: { x: 300, y: 660 },
     data: { labelEn: 'Union Find', labelZh: '并查集', icon: '🔗', path: '/learn/graphs-union-find', locked: false }
   },
   {
     id: 'heaps',
     type: 'custom',
-    position: { x: 750, y: 350 },
+    position: { x: 850, y: 350 },
     data: { labelEn: 'Binary Heaps', labelZh: '二叉堆', icon: '⛰️', path: '/learn/heaps-binary-heap', locked: false }
   },
   {
     id: 'dp-advanced',
     type: 'custom',
-    position: { x: 650, y: 650 },
+    position: { x: 650, y: 660 },
     data: { labelEn: 'Advanced DP', labelZh: '进阶动规', icon: '🧠', path: '/learn/dp-knapsack', locked: false }
   }
 ];
@@ -123,26 +161,32 @@ const defaultEdgeStyle = { stroke: '#475569', strokeWidth: 2 };
 export const initialEdges: Edge[] = [
   { id: 'e-algo-arr', source: 'algo-thinking', target: 'array-fundamentals', style: defaultEdgeStyle },
   { id: 'e-algo-ll', source: 'algo-thinking', target: 'linked-list-fundamentals', style: defaultEdgeStyle },
-  
+
   { id: 'e-arr-tp', source: 'array-fundamentals', target: 'two-pointers', style: defaultEdgeStyle },
   { id: 'e-arr-sw', source: 'array-fundamentals', target: 'sliding-window', style: defaultEdgeStyle },
   { id: 'e-arr-bs', source: 'array-fundamentals', target: 'binary-search', style: defaultEdgeStyle },
-  
+  { id: 'e-arr-ps', source: 'array-fundamentals', target: 'prefix-sum', style: defaultEdgeStyle },
+
   { id: 'e-ll-sq', source: 'linked-list-fundamentals', target: 'stack-queue-basics', style: defaultEdgeStyle },
 
   { id: 'e-arr-ht', source: 'array-fundamentals', target: 'hash-table', style: defaultEdgeStyle },
-  
+
   { id: 'e-sq-trees', source: 'stack-queue-basics', target: 'trees-traversal', style: defaultEdgeStyle },
 
   { id: 'e-trees-bfs', source: 'trees-traversal', target: 'trees-bfs', style: defaultEdgeStyle },
   { id: 'e-trees-bt', source: 'trees-traversal', target: 'backtracking', style: defaultEdgeStyle },
-  
+  { id: 'e-trees-bst', source: 'trees-traversal', target: 'trees-bst', style: defaultEdgeStyle },
+
   { id: 'e-bt-dp', source: 'backtracking', target: 'dp-intro', style: defaultEdgeStyle },
+  { id: 'e-bt-perms', source: 'backtracking', target: 'backtracking-perms', style: defaultEdgeStyle },
   { id: 'e-bfs-graphs', source: 'trees-bfs', target: 'graphs', style: defaultEdgeStyle },
-  { id: 'e-arr-sort', source: 'array-fundamentals', target: 'sorting', style: defaultEdgeStyle },
-  
+  { id: 'e-arr-sort-b', source: 'array-fundamentals', target: 'sorting-bubble', style: defaultEdgeStyle },
+  { id: 'e-sort-b-m', source: 'sorting-bubble', target: 'sorting-merge', style: defaultEdgeStyle },
+  { id: 'e-sort-m-q', source: 'sorting-merge', target: 'sorting-quick', style: defaultEdgeStyle },
+
   // Advanced edges
   { id: 'e-graphs-uf', source: 'graphs', target: 'union-find', style: defaultEdgeStyle },
   { id: 'e-trees-heaps', source: 'trees-traversal', target: 'heaps', style: defaultEdgeStyle },
   { id: 'e-dp-adv', source: 'dp-intro', target: 'dp-advanced', style: defaultEdgeStyle },
+  { id: 'e-dp-fib', source: 'dp-intro', target: 'dp-fibonacci', style: defaultEdgeStyle },
 ];

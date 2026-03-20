@@ -3,7 +3,6 @@ import { LangProvider } from './context/LangContext'
 import { ThemeProvider } from './context/ThemeContext'
 import { GlobalAIChat } from './components/AITutor/GlobalAIChat'
 import { AppLayout } from './components/Layout/AppLayout'
-import { AlgorithmStudyNoteLayout } from './components/Layout/AlgorithmStudyNoteLayout'
 import { HomePage } from './pages/HomePage'
 import { TopicPage } from './pages/TopicPage'
 import { VisualizePage } from './pages/VisualizePage'
@@ -21,19 +20,15 @@ export default function App() {
           {/* Practice page is full-screen — no sidebar layout */}
           <Route path="/practice/:problemId" element={<PracticePage />} />
 
-          {/* Algorithm Study Note — uses its own sidebar */}
-          <Route path="/algorithm-study-note" element={<AlgorithmStudyNoteLayout />}>
-            <Route index element={<Navigate to="/algorithm-study-note/article/lb-home" replace />} />
-            <Route path="article/:articleId" element={<AlgorithmStudyNotePage />} />
-            <Route path="problem-set" element={<AlgorithmStudyNoteProblemSetPage />} />
-          </Route>
-
-          {/* Main app layout */}
+          {/* Main app layout — all routes share the unified sidebar */}
           <Route element={<AppLayout />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/learn/:topicId" element={<TopicPage />} />
             <Route path="/visualize" element={<VisualizePage />} />
             <Route path="/problems" element={<ProblemsPage />} />
+            <Route path="/algorithm-study-note" element={<Navigate to="/algorithm-study-note/article/lb-home" replace />} />
+            <Route path="/algorithm-study-note/article/:articleId" element={<AlgorithmStudyNotePage />} />
+            <Route path="/algorithm-study-note/problem-set" element={<AlgorithmStudyNoteProblemSetPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
         </Routes>

@@ -55,7 +55,7 @@ export function AlgorithmStudyNoteProblemSetPage() {
       <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-slate-500 mb-6">
         <Link to="/" className="hover:text-gray-600 dark:hover:text-slate-300 no-underline">{t('Home', '首页')}</Link>
         <span>/</span>
-        <Link to="/algorithm-study-note" className="hover:text-gray-600 dark:hover:text-slate-300 no-underline">Algorithm Study Notes</Link>
+        <span>{t('Study Notes', '学习笔记')}</span>
         <span>/</span>
         <span className="text-gray-800 dark:text-slate-200">{t('Problem Sets', '题单')}</span>
       </div>
