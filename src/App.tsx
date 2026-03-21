@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LangProvider } from './context/LangContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { FloatingPanelProvider } from './context/FloatingPanelContext'
 import { GlobalAIChat } from './components/AITutor/GlobalAIChat'
 import { AppLayout } from './components/Layout/AppLayout'
 import { HomePage } from './pages/HomePage'
@@ -15,6 +16,7 @@ export default function App() {
   return (
     <ThemeProvider>
     <LangProvider>
+    <FloatingPanelProvider>
       <BrowserRouter>
         <Routes>
           {/* Practice page is full-screen — no sidebar layout */}
@@ -35,6 +37,7 @@ export default function App() {
         {/* Global AI Chat */}
         <GlobalAIChat />
       </BrowserRouter>
+    </FloatingPanelProvider>
     </LangProvider>
     </ThemeProvider>
   )

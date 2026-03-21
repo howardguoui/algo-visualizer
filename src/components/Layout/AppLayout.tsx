@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import { Header } from './Header'
 import { Sidebar } from './Sidebar'
+import { NoteDrawer } from '../Notes/NoteDrawer'
 
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(true)
@@ -42,6 +43,9 @@ export function AppLayout() {
           <Outlet />
         </main>
       </div>
+
+      {/* Notes canvas — available on every page */}
+      <NoteDrawer />
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { evaluatePythonTestCases, preloadPyodide } from '../utils/pythonRunner'
 import { useLang } from '../context/LangContext'
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels'
 import { useTheme } from '../context/ThemeContext'
+import { NoteDrawer } from '../components/Notes/NoteDrawer'
 
 export function PracticePage() {
   const { problemId } = useParams<{ problemId: string }>()
@@ -165,6 +166,9 @@ export function PracticePage() {
           </PanelGroup>
         </Panel>
       </PanelGroup>
+
+      {/* Notes canvas */}
+      <NoteDrawer />
     </div>
   )
 }
