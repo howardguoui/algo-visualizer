@@ -6,6 +6,8 @@ import { sqlAggregation } from './topics/sql/aggregation'
 import { sqlSubqueries } from './topics/sql/subqueries'
 import { sqlWindowFunctions } from './topics/sql/windowFunctions'
 import { oracleSQLContent } from './topics/sql/oracleSQL'
+import { postgresqlContent } from './topics/sql/postgresql'
+import { mysqlContent } from './topics/sql/mysql'
 
 import { algoThinking } from './topics/intro/algoThinking'
 import { arrayFundamentals } from './topics/arrays/fundamentals'
@@ -107,9 +109,9 @@ export const curriculum: Chapter[] = [
   },
   {
     id: 'sql',
-    title: { en: 'SQL & Oracle SQL', zh: 'SQL 与 Oracle SQL' },
+    title: { en: 'SQL & Databases', zh: 'SQL 与数据库' },
     icon: '🗄️',
-    topics: [sqlBasics, sqlJoins, sqlAggregation, sqlSubqueries, sqlWindowFunctions, oracleSQLContent],
+    topics: [sqlBasics, sqlJoins, sqlAggregation, sqlSubqueries, sqlWindowFunctions, oracleSQLContent, postgresqlContent, mysqlContent],
   },
 ]
 

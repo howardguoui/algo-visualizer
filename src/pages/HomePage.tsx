@@ -124,13 +124,8 @@ export function HomePage() {
         </div>
       </div>
 
-      {/* ── Interactive Skill Tree ───────────────────────────────────────── */}
-      <div>
-        <h2 className="text-base font-semibold text-gray-700 dark:text-slate-300 mb-3">
-          {t('Interactive Skill Tree', '交互式技能树')}
-        </h2>
-        <SkillTreeRenderer />
-      </div>
+      {/* ── Skill Tree ──────────────────────────────────────────────────── */}
+      <SkillTreeRenderer />
 
     </div>
   )
