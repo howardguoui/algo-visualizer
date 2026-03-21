@@ -8,6 +8,7 @@ export default defineConfig({
     react(),
   ],
   server: {
+    port: 5173,
     watch: {
       // Vite reloads the browser whenever public/ files change.
       // Exclude the algorithm-study-note markdown archive (466 static .md files)

@@ -82,7 +82,7 @@ export function AlgorithmStudyNotePage() {
       <div className="flex items-center gap-2 text-xs text-gray-400 dark:text-slate-500 mb-6 flex-wrap">
         <Link to="/" className="hover:text-gray-600 dark:hover:text-slate-300 no-underline">{t('Home', '首页')}</Link>
         <span>/</span>
-        <Link to="/algorithm-study-note" className="hover:text-gray-600 dark:hover:text-slate-300 no-underline">Algorithm Study Notes</Link>
+        <span>{t('Study Notes', '学习笔记')}</span>
         <span>/</span>
         <span>{chapterTitle}</span>
         <span>/</span>

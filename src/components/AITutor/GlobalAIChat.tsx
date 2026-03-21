@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useTheme } from '../../context/ThemeContext'
 import { useLang } from '../../context/LangContext'
+import { useFloatingPanel } from '../../context/FloatingPanelContext'
 import { findTopic } from '../../content/curriculum'
 import { getPracticeProblem } from '../../data/problems/practiceProblems'
 
@@ -17,7 +18,17 @@ export function GlobalAIChat() {
   const [isTyping, setIsTyping] = useState(false)
   const { theme } = useTheme()
   const { lang, t } = useLang()
+  const { activePanel, setActivePanel } = useFloatingPanel()
   const location = useLocation()
+
+  const handleOpen = () => {
+    setIsOpen(true)
+    setActivePanel('chat')
+  }
+  const handleClose = () => {
+    setIsOpen(false)
+    setActivePanel(null)
+  }
   
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -130,6 +141,9 @@ User request: ${userMessage}`
     }
   }
 
+  // Hide entirely when notes panel is active
+  if (activePanel === 'notes') return null
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {isOpen && (
@@ -140,8 +154,8 @@ User request: ${userMessage}`
               <span className="text-xl">🤖</span>
               <span className="font-semibold">{t('AI Tutor', 'AI 导师')}</span>
             </div>
-            <button 
-              onClick={() => setIsOpen(false)}
+            <button
+              onClick={handleClose}
               className="text-white/70 hover:text-white transition-colors"
             >
               <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
@@ -201,9 +215,9 @@ User request: ${userMessage}`
       )}
 
       {/* Toggle Button */}
-      {isOpen ? null : (
+      {!isOpen && (
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={handleOpen}
           className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
         >
           <span className="text-2xl">💬</span>

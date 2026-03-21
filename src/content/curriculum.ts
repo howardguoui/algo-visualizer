@@ -1,5 +1,14 @@
 import type { TopicContent } from './types'
 
+import { sqlBasics } from './topics/sql/basics'
+import { sqlJoins } from './topics/sql/joins'
+import { sqlAggregation } from './topics/sql/aggregation'
+import { sqlSubqueries } from './topics/sql/subqueries'
+import { sqlWindowFunctions } from './topics/sql/windowFunctions'
+import { oracleSQLContent } from './topics/sql/oracleSQL'
+import { postgresqlContent } from './topics/sql/postgresql'
+import { mysqlContent } from './topics/sql/mysql'
+
 import { algoThinking } from './topics/intro/algoThinking'
 import { arrayFundamentals } from './topics/arrays/fundamentals'
 import { twoPointers } from './topics/arrays/twoPointers'
@@ -97,6 +106,12 @@ export const curriculum: Chapter[] = [
     title: { en: 'Sorting Algorithms', zh: '排序算法' },
     icon: '📊',
     topics: [bubbleSortContent, mergeSortContent, quickSortContent],
+  },
+  {
+    id: 'sql',
+    title: { en: 'SQL & Databases', zh: 'SQL 与数据库' },
+    icon: '🗄️',
+    topics: [sqlBasics, sqlJoins, sqlAggregation, sqlSubqueries, sqlWindowFunctions, oracleSQLContent, postgresqlContent, mysqlContent],
   },
 ]
 
