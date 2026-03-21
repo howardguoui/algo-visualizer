@@ -667,7 +667,7 @@ export function SQLSandboxPage() {
                   <div className={`h-full flex flex-col items-center justify-center gap-2 text-sm text-red-400 p-4 text-center`}>
                     <span className="text-2xl">Failed to load SQLite engine</span>
                     <span className="text-xs opacity-80">{dbError}</span>
-                    <span className="text-xs opacity-60">Check your internet connection (WASM loaded from sql.js.org CDN)</span>
+                    <span className="text-xs opacity-60">Try a hard refresh (Ctrl+Shift+R). If the problem persists, restart the dev server.</span>
                   </div>
                 ) : (
                   <Editor
