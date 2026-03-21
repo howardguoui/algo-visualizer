@@ -3,6 +3,7 @@ import { findTopic, getNextTopic, getPrevTopic } from '../content/curriculum'
 import { MarkdownRenderer } from '../components/Content/MarkdownRenderer'
 import { LeetCodeLinks } from '../components/Content/LeetCodeLinks'
 import { VisualizerEmbed } from '../components/Content/VisualizerEmbed'
+import { NoteDrawer } from '../components/Notes/NoteDrawer'
 import { useLang } from '../context/LangContext'
 
 const BADGE_STYLE: Record<string, string> = {
@@ -80,6 +81,9 @@ export function TopicPage() {
 
       {/* LeetCode problems */}
       <LeetCodeLinks problems={topic.leetcode} />
+
+      {/* Notes drawer — floating FAB + slide-in canvas */}
+      <NoteDrawer topicId={topicId} />
 
       {/* Prev / Next navigation */}
       <div className="flex gap-4 mt-12 pt-8 border-t border-gray-200 dark:border-slate-800">
