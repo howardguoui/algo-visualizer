@@ -332,7 +332,7 @@ export function SQLSandboxPage() {
       try {
         const initSqlJs = (await import('sql.js')).default
         const SQL = await initSqlJs({
-          locateFile: (file: string) => `https://sql.js.org/dist/${file}`,
+          locateFile: (file: string) => `/${file}`,
         }) as { Database: new (data?: ArrayBuffer) => unknown }
 
         if (cancelled) return
@@ -433,7 +433,6 @@ export function SQLSandboxPage() {
 
         <span className={isDark ? 'text-slate-700' : 'text-gray-300'}>|</span>
 
-        <span className="text-base">🗄️</span>
         <span className={`font-bold text-sm ${isDark ? 'text-white' : 'text-gray-900'}`}>
           {lang === 'zh' ? 'SQL 沙盒' : 'SQL Sandbox'}
         </span>
@@ -464,9 +463,14 @@ export function SQLSandboxPage() {
           </button>
           <button
             onClick={toggleTheme}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
             className={`p-1.5 rounded transition-colors ${isDark ? 'text-slate-500 hover:text-slate-300 hover:bg-slate-800' : 'text-gray-400 hover:text-gray-700 hover:bg-gray-100'}`}
           >
-            {isDark ? '☀️' : '🌙'}
+            {isDark ? (
+              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7zm0-2a1 1 0 0 0 1-1V2a1 1 0 0 0-2 0v2a1 1 0 0 0 1 1zm0 14a1 1 0 0 0-1 1v2a1 1 0 0 0 2 0v-2a1 1 0 0 0-1-1zm9-8h-2a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2zM4 11H2a1 1 0 0 0 0 2h2a1 1 0 0 0 0-2zm14.24-5.76a1 1 0 0 0-1.41 0l-1.42 1.42a1 1 0 1 0 1.42 1.41l1.41-1.41a1 1 0 0 0 0-1.42zM7.76 17.66l-1.42 1.41a1 1 0 1 0 1.42 1.42l1.41-1.42a1 1 0 0 0-1.41-1.41zm11.32 1.41-1.41-1.41a1 1 0 0 0-1.42 1.41l1.42 1.42a1 1 0 0 0 1.41-1.42zM7.76 6.34 6.34 4.93a1 1 0 0 0-1.42 1.41l1.42 1.42a1 1 0 0 0 1.42-1.42z"/></svg>
+            ) : (
+              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            )}
           </button>
         </div>
       </header>
