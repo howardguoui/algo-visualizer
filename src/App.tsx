@@ -11,6 +11,7 @@ import { ProblemsPage } from './pages/ProblemsPage'
 import { PracticePage } from './pages/PracticePage'
 import { AlgorithmStudyNotePage } from './pages/AlgorithmStudyNotePage'
 import { AlgorithmStudyNoteProblemSetPage } from './pages/AlgorithmStudyNoteProblemSetPage'
+import { SQLSandboxPage } from './pages/SQLSandboxPage'
 
 export default function App() {
   return (
@@ -19,8 +20,9 @@ export default function App() {
     <FloatingPanelProvider>
       <BrowserRouter>
         <Routes>
-          {/* Practice page is full-screen — no sidebar layout */}
+          {/* Full-screen standalone pages (no sidebar) */}
           <Route path="/practice/:problemId" element={<PracticePage />} />
+          <Route path="/sql-sandbox" element={<SQLSandboxPage />} />
 
           {/* Main app layout — all routes share the unified sidebar */}
           <Route element={<AppLayout />}>

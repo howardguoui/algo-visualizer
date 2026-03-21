@@ -95,6 +95,21 @@ export function Sidebar({ isOpen }: Props) {
           </Link>
         </div>
 
+        {/* ── SQL Sandbox ───────────────────────────────────────────────────── */}
+        <div className="px-3 mb-1">
+          <Link
+            to="/sql-sandbox"
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold no-underline transition-colors ${
+              location.pathname === '/sql-sandbox'
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <span>🗄️</span>
+            {lang === 'zh' ? 'SQL 沙盒练习' : 'SQL Sandbox'}
+          </Link>
+        </div>
+
         {/* Divider */}
         <div className="border-t border-gray-200 dark:border-slate-800 mx-3 my-2" />
 
