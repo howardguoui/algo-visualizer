@@ -330,9 +330,13 @@ export function SQLSandboxPage() {
 
     async function init() {
       try {
-        const initSqlJs = (await import('sql.js')).default
+        const mod = await import('sql.js')
+        // sql.js is a CJS module — the function may land on .default or the namespace itself
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const initSqlJs: (cfg: unknown) => Promise<unknown> = (mod as any).default ?? mod
         const SQL = await initSqlJs({
-          locateFile: (file: string) => `/${file}`,
+          // Use a fully-qualified URL so the pre-bundled code always resolves correctly
+          locateFile: (file: string) => `${window.location.origin}/${file}`,
         }) as { Database: new (data?: ArrayBuffer) => unknown }
 
         if (cancelled) return

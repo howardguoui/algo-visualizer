@@ -7,12 +7,6 @@ export default defineConfig({
     tailwindcss(),
     react(),
   ],
-  optimizeDeps: {
-    // sql.js loads a WASM file at runtime via its own locateFile mechanism.
-    // Pre-bundling it with esbuild breaks that mechanism, causing the browser
-    // to receive an HTML 404 page instead of the WASM binary.
-    exclude: ['sql.js'],
-  },
   server: {
     port: 5173,
     watch: {
