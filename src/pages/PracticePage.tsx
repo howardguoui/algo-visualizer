@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { getPracticeProblem } from '../data/problems/practiceProblems'
 import { ProblemDescription } from '../components/Practice/ProblemDescription'
@@ -11,11 +11,13 @@ import { useLang } from '../context/LangContext'
 import { Group as PanelGroup, Panel, Separator as PanelResizeHandle } from 'react-resizable-panels'
 import { useTheme } from '../context/ThemeContext'
 import { NoteDrawer } from '../components/Notes/NoteDrawer'
+import { useProgress } from '../context/ProgressContext'
 
 export function PracticePage() {
   const { problemId } = useParams<{ problemId: string }>()
   const { lang } = useLang()
   const { theme, toggleTheme } = useTheme()
+  const { markSolved } = useProgress()
 
   const id = Number(problemId)
   const problem = getPracticeProblem(id)
@@ -63,9 +65,13 @@ export function PracticePage() {
     setHasRun(false)
   }, [problem, language])
 
-  if (!problem) return <Navigate to="/problems" />
-
   const allPassed = hasRun && results.length > 0 && results.every(r => r.passed)
+
+  useEffect(() => {
+    if (allPassed && problem) markSolved(id)
+  }, [allPassed, id, markSolved, problem])
+
+  if (!problem) return <Navigate to="/problems" />
   const passCount = results.filter(r => r.passed).length
   const title = lang === 'zh' ? problem.titleZh : problem.title
 

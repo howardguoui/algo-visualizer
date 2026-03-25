@@ -2,13 +2,16 @@ import { Link } from 'react-router-dom'
 import { curriculum } from '../content/curriculum'
 import { studyNoteChapters } from '../content/algorithm-study-note/curriculum'
 import { useLang } from '../context/LangContext'
+import { useProgress } from '../context/ProgressContext'
 import { SkillTreeRenderer } from '../components/SkillTree/SkillTreeRenderer'
 
 export function HomePage() {
   const { t, lang } = useLang()
+  const { solvedProblemIds, readTopicIds, clearProgress } = useProgress()
   const totalTopics = curriculum.flatMap(c => c.topics).length
   const lbArticleCount = studyNoteChapters.flatMap(ch => ch.sections.flatMap(s => s.articles)).length
   const firstLbArticle = studyNoteChapters[0]?.sections[0]?.articles[0]
+  const hasProgress = solvedProblemIds.size > 0 || readTopicIds.size > 0
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-8">
@@ -122,6 +125,85 @@ export function HomePage() {
             {t('Browse Topics →', '浏览主题 →')}
           </Link>
         </div>
+      </div>
+
+      {/* ── Progress + System Design row ────────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
+
+        {/* Progress card */}
+        <div className="p-5 bg-emerald-50 dark:bg-emerald-900/10 rounded-2xl border border-emerald-200 dark:border-emerald-800/30">
+          <div className="flex items-start gap-3 mb-3">
+            <span className="text-3xl shrink-0">📈</span>
+            <div>
+              <h2 className="text-base font-bold text-gray-900 dark:text-white">
+                {t('My Progress', '我的进度')}
+              </h2>
+              <p className="text-gray-600 dark:text-slate-400 text-xs mt-0.5">
+                {t('Tracks problems solved and topics read', '记录已解题目和已读主题')}
+              </p>
+            </div>
+          </div>
+
+          {hasProgress ? (
+            <div className="space-y-3">
+              <div className="flex gap-4">
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-emerald-200 dark:border-slate-700">
+                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{solvedProblemIds.size}</div>
+                  <div className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">{t('Problems Solved', '已解题目')}</div>
+                </div>
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-emerald-200 dark:border-slate-700">
+                  <div className="text-2xl font-bold text-blue-500 dark:text-blue-400">{readTopicIds.size}</div>
+                  <div className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">{t('Topics Read', '已读主题')}</div>
+                </div>
+                <div className="flex-1 bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-emerald-200 dark:border-slate-700">
+                  <div className="text-2xl font-bold text-purple-500 dark:text-purple-400">
+                    {totalTopics > 0 ? Math.round((readTopicIds.size / totalTopics) * 100) : 0}%
+                  </div>
+                  <div className="text-xs text-gray-500 dark:text-slate-400 mt-0.5">{t('Coverage', '覆盖率')}</div>
+                </div>
+              </div>
+              <button
+                onClick={clearProgress}
+                className="text-xs text-gray-400 dark:text-slate-600 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+              >
+                {t('Reset progress', '重置进度')}
+              </button>
+            </div>
+          ) : (
+            <div className="text-sm text-gray-500 dark:text-slate-500">
+              {t('No progress yet. Start solving problems or reading topics!', '还没有进度。开始刷题或阅读主题吧！')}
+            </div>
+          )}
+        </div>
+
+        {/* System Design card */}
+        <div className="p-5 bg-violet-50 dark:bg-violet-900/10 rounded-2xl border border-violet-200 dark:border-violet-800/30">
+          <div className="flex items-start gap-3 mb-3">
+            <span className="text-3xl shrink-0">🏗️</span>
+            <div>
+              <h2 className="text-base font-bold text-gray-900 dark:text-white">
+                {t('System Design', '系统设计')}
+              </h2>
+              <p className="text-gray-600 dark:text-slate-400 text-xs mt-0.5">
+                {t('6 cases · Bloomberg, Google, Meta patterns', '6 个案例 · Bloomberg、Google、Meta 面试模式')}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            {['URL Shortener', 'Rate Limiter', 'News Feed', 'Order Book', 'Distributed Cache', 'Real-time Chat'].map(label => (
+              <span key={label} className="text-xs px-2 py-1 rounded-lg bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 border border-violet-200 dark:border-transparent">
+                {label}
+              </span>
+            ))}
+          </div>
+          <Link
+            to="/system-design"
+            className="inline-block px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white rounded-lg font-medium text-xs transition-colors no-underline"
+          >
+            {t('Study Cases →', '学习案例 →')}
+          </Link>
+        </div>
+
       </div>
 
       {/* ── Skill Tree ──────────────────────────────────────────────────── */}
