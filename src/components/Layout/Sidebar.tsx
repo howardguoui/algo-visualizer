@@ -2,6 +2,7 @@ import { Link, useParams, useLocation } from 'react-router-dom'
 import { curriculum } from '../../content/curriculum'
 import { studyNoteChapters } from '../../content/algorithm-study-note/curriculum'
 import { useLang } from '../../context/LangContext'
+import { useProgress } from '../../context/ProgressContext'
 import { useState } from 'react'
 
 const CONTENT_TYPE_BADGE: Record<string, { label: string; color: string }> = {
@@ -26,6 +27,7 @@ export function Sidebar({ isOpen }: Props) {
   const location = useLocation()
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>(STUDY_NOTE_DEFAULTS)
   const [searchQuery, setSearchQuery] = useState('')
+  const { solvedProblemIds, readTopicIds } = useProgress()
 
   const toggle = (id: string) =>
     setCollapsed(prev => ({ ...prev, [id]: !prev[id] }))
@@ -106,6 +108,23 @@ export function Sidebar({ isOpen }: Props) {
             }`}
           >
             {lang === 'zh' ? 'SQL 沙盒练习' : 'SQL Sandbox'}
+          </Link>
+        </div>
+
+        {/* ── System Design ─────────────────────────────────────────────────── */}
+        <div className="px-3 mb-1">
+          <Link
+            to="/system-design"
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold no-underline transition-colors ${
+              location.pathname === '/system-design'
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <span>{lang === 'zh' ? '系统设计' : 'System Design'}</span>
+            <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300 font-medium">
+              NEW
+            </span>
           </Link>
         </div>
 
@@ -259,11 +278,27 @@ export function Sidebar({ isOpen }: Props) {
 
       </nav>
 
-      {/* Footer */}
-      <div className="p-3 border-t border-gray-200 dark:border-slate-800 text-xs text-gray-400 dark:text-slate-600 text-center">
-        {studyNoteChapters.flatMap(ch => ch.sections.flatMap(s => s.articles)).length} notes
-        {' · '}
-        {curriculum.flatMap(c => c.topics).length} topics
+      {/* Footer — progress stats */}
+      <div className="p-3 border-t border-gray-200 dark:border-slate-800 text-xs text-gray-400 dark:text-slate-600">
+        <div className="flex items-center justify-between mb-1.5">
+          <span>{studyNoteChapters.flatMap(ch => ch.sections.flatMap(s => s.articles)).length} notes · {curriculum.flatMap(c => c.topics).length} topics</span>
+        </div>
+        {(solvedProblemIds.size > 0 || readTopicIds.size > 0) && (
+          <div className="flex items-center gap-3 mt-1 pt-1.5 border-t border-gray-200 dark:border-slate-800">
+            {solvedProblemIds.size > 0 && (
+              <span className="flex items-center gap-1 text-green-600 dark:text-green-400 font-medium">
+                <span>✓</span>
+                <span>{solvedProblemIds.size} solved</span>
+              </span>
+            )}
+            {readTopicIds.size > 0 && (
+              <span className="flex items-center gap-1 text-blue-500 dark:text-blue-400 font-medium">
+                <span>📖</span>
+                <span>{readTopicIds.size} read</span>
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </aside>
   )

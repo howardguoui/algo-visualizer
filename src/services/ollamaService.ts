@@ -33,7 +33,7 @@ Rule 3: Keep it extremely concise, maximum 3 sentences.
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'glm-4.7-flash', // Users can override with their local model
+        model: 'sorc/qwen3.5-claude-4.6-opus:9b', // Users can override with their local model
         prompt: prompt,
         stream: true,
       }),

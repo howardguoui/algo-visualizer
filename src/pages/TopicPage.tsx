@@ -1,9 +1,11 @@
+import { useEffect } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { findTopic, getNextTopic, getPrevTopic } from '../content/curriculum'
 import { MarkdownRenderer } from '../components/Content/MarkdownRenderer'
 import { LeetCodeLinks } from '../components/Content/LeetCodeLinks'
 import { VisualizerEmbed } from '../components/Content/VisualizerEmbed'
 import { useLang } from '../context/LangContext'
+import { useProgress } from '../context/ProgressContext'
 
 const BADGE_STYLE: Record<string, string> = {
   'content': 'bg-gray-200 text-gray-600 dark:bg-slate-700 dark:text-slate-300',
@@ -22,6 +24,11 @@ const BADGE_LABEL: Record<string, { en: string; zh: string }> = {
 export function TopicPage() {
   const { topicId } = useParams<{ topicId: string }>()
   const { lang, t } = useLang()
+  const { markTopicRead } = useProgress()
+
+  useEffect(() => {
+    if (topicId) markTopicRead(topicId)
+  }, [topicId, markTopicRead])
 
   if (!topicId) return <Navigate to="/" />
 
