@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[877\. Stone Game](<https://leetcode.com/problems/stone-game/>)| [877\. 石子游戏](<https://leetcode.cn/problems/stone-game/>)|   
-[486\. Predict the Winner](<https://leetcode.com/problems/predict-the-winner/>)| [486\. 预测赢家](<https://leetcode.cn/problems/predict-the-winner/>)|   
+$Stone Game](<https://leetcode.com/problems/stone-game/>)|$ 石子游戏](<https://leetcode.cn/problems/stone-game/>)|   
+[486\. Predict the Winner](<https://leetcode.com$[486\. 预测赢家](<https://leetcode.cn$   
   
 前置知识
 
@@ -23,7 +23,7 @@ LeetCode| 力扣| 难度
 
 上一篇文章 [几道智力题](</zh/algo/frequency-interview/one-line-solutions/>) 中讨论到一个有趣的「石头游戏」，通过题目的限制条件，这个游戏是先手必胜的。但是智力题终究是智力题，真正的算法问题肯定不会是投机取巧能搞定的。所以，本文就借石头游戏来讲讲「假设两个人都足够聪明，最后谁会获胜」这一类问题该如何用动态规划算法解决。
 
-博弈类问题的套路都差不多，下文参考 [这个 YouTube 视频](<https://www.youtube.com/watch?v=WxpIHvsu1RI>) 的思路讲解，其核心思路是在二维 dp 的基础上使用元组分别存储两个人的博弈结果。掌握了这个技巧以后，别人再问你什么俩海盗分宝石，俩人拿硬币的问题，你就告诉别人：我懒得想，直接给你写个算法算一下得了。
+博弈类问题的套路都差不多，下文参考 [这个 YouTube 视频](<https://$w$.youtube.com/watch?v=WxpIHvsu1RI>) 的思路讲解，其核心思路是在二维 dp 的基础上使用元组分别存储两个人的博弈结果。掌握了这个技巧以后，别人再问你什么俩海盗分宝石，俩人拿硬币的问题，你就告诉别人：我懒得想，直接给你写个算法算一下得了。
 
 我们把力扣第 877 题「[石头游戏](<https://leetcode.cn/problems/stone-game/>)」改的更具有一般性：
 
@@ -74,9 +74,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean predictTheWinner(int[] nums);
 
 那么如果有了一个计算先手和后手分差的 `stoneGame` 函数，这道题的解法就直接出来了：
@@ -103,7 +101,7 @@ CC++GoJavaJavaScriptPython
 
 先回答几个读者可能提出的问题：
 
-这个二维 dp table 中存储的是元组，怎么编程表示呢？这个 dp table 有一半根本没用上，怎么优化？很简单，都不要管，先把解题的思路想明白了再谈也不迟。
+这个二维 dp $中存储的是元组，怎么编程表示呢？这个 dp$ 有一半根本没用上，怎么优化？很简单，都不要管，先把解题的思路想明白了再谈也不迟。
 
 **以下是对 dp 数组含义的解释：**
 
@@ -177,7 +175,7 @@ CC++GoJavaJavaScriptPython
 
 ![](/images/algo/stone-game/2.png)
 
-这里需要注意一点，我们发现 base case 是斜着的，而且我们推算 `dp[i][j]` 时需要用到 `dp[i+1][j]` 和 `dp[i][j-1]`：
+这里需要注意一点，我们发现 base case 是斜着的，而且我们推算 `dp[i$时需要用到 `dp[i+1$ 和 `dp[i][j-1]`：
 
 ![](/images/algo/stone-game/3.png)
 
@@ -196,9 +194,7 @@ CC++GoJavaJavaScriptPython
 
 如何实现这个 fir 和 sec 元组呢，你可以用 python，自带元组类型；或者使用 C++ 的 pair 容器；或者用一个三维数组 `dp[n][n][2]`，最后一个维度就相当于元组；或者我们自己写一个 Pair 类：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Pair {
         int fir, sec;
         Pair(int fir, int sec) {
@@ -209,9 +205,7 @@ CC++GoJavaJavaScriptPython
 
 然后直接把我们的状态转移方程翻译成代码即可，注意我们要倒着遍历数组：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 返回游戏最后先手和后手的得分之差
     int stoneGame(int[] piles) {
         int n = piles.length;

@@ -1,6 +1,6 @@
-# 利用后序位置解题 III
+# 利用后序位置解题 $I$
 
-> Source: https://labuladong.online/zh/algo/problem-set/binary-tree-post-order-iii/
+> Source: https://labuladong.online/zh/algo/problem-set/binary-tree-post-order-$i$/
 > Archived: labuladong.online — 算法笔记
 
 ---
@@ -9,7 +9,7 @@
 
 此页内容
 
-# 利用后序位置解题 III
+# 利用后序位置解题 $I$
 
 前置知识
 

@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[207\. Course Schedule](<https://leetcode.com/problems/course-schedule/>)| [207\. 课程表](<https://leetcode.cn/problems/course-schedule/>)|   
+$Course Schedule](<https://leetcode.com/problems/course-schedule/>)|$ 课程表](<https://leetcode.cn/problems/course-schedule/>)|   
   
 前置知识
 
@@ -71,9 +71,7 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 207. 课程表](<https://leetcode.cn/problems/course-schedule/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
     boolean canFinish(int numCourses, int[][] prerequisites);
 
@@ -95,9 +93,7 @@ CC++GoJavaJavaScriptPython
 
 前文 [图结构的存储](</zh/algo/data-structure-basic/graph-basic/>) 写过图的两种存储形式，邻接矩阵和邻接表。这里我就用邻接表形式存储图吧，写一个建图函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     List<Integer>[] buildGraph(int numCourses, int[][] prerequisites) {
         // 图中共有 numCourses 个节点
         List<Integer>[] graph = new LinkedList[numCourses];
@@ -123,9 +119,7 @@ CC++GoJavaJavaScriptPython
 
 基于这个思路，先看第一版代码（会超时）：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 记录递归堆栈中的节点
         boolean[] onPath;
@@ -188,9 +182,7 @@ CC++GoJavaJavaScriptPython
 
 优化后的代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 记录一次递归堆栈中的节点
         boolean[] onPath;
@@ -247,7 +239,7 @@ CC++GoJavaJavaScriptPython
         }
     }
 
-`visited` 为 true 的节点为绿色，`onPath` 为 true 的节点为橙色。
+`visited` 为 $的节点为绿色，`onPath` 为$ 的节点为橙色。
 
 你可以打开可视化面板，多次点击 `if (onPath[s])` 这部分代码，即可查看 DFS 遍历图的过程。
 
@@ -279,9 +271,7 @@ CC++GoJavaJavaScriptPython
 
 直接看 BFS 算法的解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean canFinish(int numCourses, int[][] prerequisites) {
             // 建图，有向边代表「被依赖」关系

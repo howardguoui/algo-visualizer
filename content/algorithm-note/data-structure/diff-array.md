@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[370\. Range Addition](<https://leetcode.com/problems/range-addition/>)🔒| [370\. 区间加法](<https://leetcode.cn/problems/range-addition/>)🔒|   
-[1109\. Corporate Flight Bookings](<https://leetcode.com/problems/corporate-flight-bookings/>)| [1109\. 航班预订统计](<https://leetcode.cn/problems/corporate-flight-bookings/>)|   
-[1094\. Car Pooling](<https://leetcode.com/problems/car-pooling/>)| [1094\. 拼车](<https://leetcode.cn/problems/car-pooling/>)|   
+[370\. Range Addition](<https://leetcode.com$[370\. 区间加法](<https://leetcode.cn$   
+[1109\. C$Flight Bookings](<https://leetcode.com/problems/c$$[1109\. 航班预订统计](<https://leetcode.cn/problems/corporate$   
+[1094\. Car Pooling](<https://leetcode.com$[1094\. 拼车](<https://leetcode.cn$   
   
 前置知识
 
@@ -25,9 +25,7 @@ LeetCode| 力扣| 难度
 
 [前缀和技巧](</zh/algo/data-structure/prefix-sum/>) 主要适用的场景是原始数组不会被修改的情况下，频繁查询某个区间的累加和，核心代码就是下面这段：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class PrefixSum {
         // 前缀和数组
         private int[] preSum;
@@ -58,13 +56,11 @@ CC++GoJavaJavaScriptPython
 
 一通操作猛如虎，然后问你，最后 `nums` 数组的值是什么？
 
-常规的思路很容易，你让我给区间 `nums[i..j]` 加上 `val`，那我就一个 for 循环给它们都加上呗，还能咋样？这种思路的时间复杂度是 O(N)O(N)O(N)，由于这个场景下对 `nums` 的修改非常频繁，所以效率会很低下。
+常规的思路很容易，你让我给区间 `nums[i..j]` 加上 `val`，那我就一个 for 循环给它们都加上呗，还能咋样？这种思路的时间复杂度是 $O(N)$，由于这个场景下对 `nums` 的修改非常频繁，所以效率会很低下。
 
 这里就需要差分数组的技巧，类似前缀和技巧构造的 `preSum` 数组，我们先对 `nums` 数组构造一个 `diff` 差分数组，**`diff[i]` 就是 `nums[i]` 和 `nums[i-1]` 之差**：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[] diff = new int[nums.length];
     // 构造差分数组
     diff[0] = nums[0];
@@ -76,9 +72,7 @@ CC++GoJavaJavaScriptPython
 
 通过这个 `diff` 差分数组是可以反推出原始数组 `nums` 的，代码逻辑如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[] res = new int[diff.length];
     // 根据差分数组构造结果数组
     res[0] = diff[0];
@@ -96,9 +90,7 @@ CC++GoJavaJavaScriptPython
 
 现在我们把差分数组抽象成一个类，包含 `increment` 方法和 `result` 方法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 差分数组工具类
     class Difference {
         // 差分数组
@@ -136,9 +128,7 @@ CC++GoJavaJavaScriptPython
 
 这里注意一下 `increment` 方法中的 if 语句：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void increment(int i, int j, int val) {
         diff[i] += val;
         if (j + 1 < diff.length) {
@@ -154,15 +144,13 @@ CC++GoJavaJavaScriptPython
 
 ## ¶算法实践
 
-力扣第 370 题「[区间加法](<https://leetcode.cn/problems/range-addition/>)」直接考察了差分数组技巧，相当于给你输入一个长度为 `n` 的 `nums` 数组，其中的元素初始值都为 0，让你对其中的区间元素进行增减操作，最后返回最终的 `nums` 数组。
+力扣第 370 题「[区间加法](<https://leetcode.cn/problems/range-addition/>)」直接考察了差分数组技巧，相当于给你输入一个长度为 `n` 的 $数组，其中的元素初始值都为 0，让你对其中的区间元素进行增减操作，最后返回最终的$ 数组。
 
 把我们实现的 `Difference` 类复制过去就能解决：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
-        public int[] getModifiedArray(int length, int[][] updates) {
+        public $getModifiedArray(int length,$[] updates) {
             // nums 初始化为全 0
             int[] nums = new int[length];
             // 构造差分解法
@@ -216,7 +204,7 @@ CC++GoJavaJavaScriptPython
 
 这里有 `n` 个航班，它们分别从 `1` 到 `n` 进行编号。
 
-有一份航班预订表 `bookings` ，表中第 `i` 条预订记录 `bookings[i] = [firsti, lasti, seatsi]` 意味着在从 `firsti` 到 `lasti` （**包含** `firsti` 和 `lasti` ）的 **每个航班** 上预订了 `seatsi` 个座位。
+有一份航班预订表 `bookings` ，表中第 `i` 条预订记录 `bookings[i] = [firsti, lasti, seatsi]` 意味着在从 `firsti` 到 `la$（**包含** `fir$ 和 `lasti` ）的 **每个航班** 上预订了 `seatsi` 个座位。
 
 请你返回一个长度为 `n` 的数组 `answer`，里面的元素是每个航班预定的座位总数。
 
@@ -260,9 +248,7 @@ CC++GoJavaJavaScriptPython
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[] corpFlightBookings(int[][] bookings, int n)
 
 这个题目就在那绕弯弯，其实它就是个差分数组的题，我给你翻译一下：
@@ -275,9 +261,7 @@ Note
 
 这么一看，不就是一道标准的差分数组题嘛？我们可以直接复用刚才写的类：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int[] corpFlightBookings(int[][] bookings, int n) {
             // nums 初始化为全 0
@@ -370,9 +354,7 @@ CC++GoJavaJavaScriptPython
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean carPooling(int[][] trips, int capacity);
 
 比如输入：
@@ -391,9 +373,7 @@ CC++GoJavaJavaScriptPython
 
 车站编号从 0 开始，最多到 1000，也就是最多有 1001 个车站，那么我们的差分数组长度可以直接设置为 1001，这样索引刚好能够涵盖所有车站的编号：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean carPooling(int[][] trips, int capacity) {
             // 最多有 1000 个车站

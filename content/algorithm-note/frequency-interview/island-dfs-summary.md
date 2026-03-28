@@ -11,12 +11,12 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[200\. Number of Islands](<https://leetcode.com/problems/number-of-islands/>)| [200\. 岛屿数量](<https://leetcode.cn/problems/number-of-islands/>)|   
-[1254\. Number of Closed Islands](<https://leetcode.com/problems/number-of-closed-islands/>)| [1254\. 统计封闭岛屿的数目](<https://leetcode.cn/problems/number-of-closed-islands/>)|   
-[1020\. Number of Enclaves](<https://leetcode.com/problems/number-of-enclaves/>)| [1020\. 飞地的数量](<https://leetcode.cn/problems/number-of-enclaves/>)|   
-[695\. Max Area of Island](<https://leetcode.com/problems/max-area-of-island/>)| [695\. 岛屿的最大面积](<https://leetcode.cn/problems/max-area-of-island/>)|   
-[1905\. Count Sub Islands](<https://leetcode.com/problems/count-sub-islands/>)| [1905\. 统计子岛屿](<https://leetcode.cn/problems/count-sub-islands/>)|   
-[694\. Number of Distinct Islands](<https://leetcode.com/problems/number-of-distinct-islands/>)🔒| [694\. 不同岛屿的数量](<https://leetcode.cn/problems/number-of-distinct-islands/>)🔒|   
+[200\. Number of Islands](<https://leetcode.com$[200\. 岛屿数量](<https://leetcode.cn$   
+[1254\. Number of Closed Islands](<https://leetcode.com$[1254\. 统计封闭岛屿的数目](<https://leetcode.cn$   
+[1020\. Number of Enclaves](<https://leetcode.com$[1020\. 飞地的数量](<https://leetcode.cn$   
+[695\. Max Area of Island](<https://leetcode.com$[695\. 岛屿的最大面积](<https://leetcode.cn$   
+[1905\. Count Sub Islands](<https://leetcode.com$[1905\. 统计子岛屿](<https://leetcode.cn$   
+[694\. Number of Distinct Islands](<https://leetcode.com$[694\. 不同岛屿的数量](<https://leetcode.cn$   
   
 前置知识
 
@@ -37,9 +37,7 @@ LeetCode| 力扣| 难度
 
 根据 [学习数据结构和算法的框架思维](</zh/algo/essential-technique/algorithm-summary/>)，完全可以根据二叉树的遍历框架改写出二维矩阵的 DFS 代码框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 二叉树遍历框架
     void traverse(TreeNode root) {
         traverse(root.left);
@@ -76,9 +74,7 @@ CC++GoJavaJavaScriptPython
 
 这里额外说一个处理二维数组的常用小技巧，你有时会看到使用「方向数组」来处理上下左右的遍历，和前文 [union-find 算法详解](</zh/algo/data-structure/union-find/>) 的代码很类似：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 方向数组，分别代表上、下、左、右
     int[][] dirs = new int[][]{{-1,0}, {1,0}, {0,-1}, {0,1}};
     

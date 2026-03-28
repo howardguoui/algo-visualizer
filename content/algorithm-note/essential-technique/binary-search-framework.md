@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[704\. Binary Search](<https://leetcode.com/problems/binary-search/>)| [704\. 二分查找](<https://leetcode.cn/problems/binary-search/>)|   
-[34\. Find First and Last Position of Element in Sorted Array](<https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/>)| [34\. 在排序数组中查找元素的第一个和最后一个位置](<https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/>)|   
+$Binary Search](<https://leetcode.com/problems/binary-search/>)|$ 二分查找](<https://leetcode.cn/problems/binary-search/>)|   
+[34\. Find First and Last Position of Element in Sorted Array](<https://leetcode.com/problems$[34\. 在排序数组中查找元素的第一个和最后一个位置](<https://leetcode.cn/problems$   
 [LCR 172. 统计目标成绩的出现次数](<https://leetcode.com/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/>)| [LCR 172. 统计目标成绩的出现次数](<https://leetcode.cn/problems/zai-pai-xu-shu-zu-zhong-cha-zhao-shu-zi-lcof/>)|   
   
 前置知识
@@ -44,9 +44,7 @@ LeetCode| 力扣| 难度
 
 无论哪种写法，二分搜索的代码都符合以下框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int binarySearch(int[] nums, int target) {
         int left = 0, right = ...;
     
@@ -91,9 +89,7 @@ CC++GoJavaJavaScriptPython
 
 这个场景是最简单的，搜索一个数，如果存在返回其索引，否则返回 -1。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 标准的二分搜索框架，搜索目标元素的索引，若不存在则返回 -1
         public int search(int[] nums, int target) {
@@ -141,7 +137,7 @@ CC++GoJavaJavaScriptPython
 
 ### ¶此算法有什么缺陷？
 
-比如说给你有序数组 `nums = [1,2,2,2,3]`，`target` 为 2，此算法返回的索引是 2，没错。但是如果我想得到 `target` 的左侧边界，即索引 1，或者我想得到 `target` 的右侧边界，即索引 3，这样的话此算法是无法处理的。
+比如说给你有序数组 `nums = [1,2,2,2,3]`，`target` 为 2，此算法返回的索引是 2，没错。但是如果我想得到 $的左侧边界，即索引 1，或者我想得到$ 的右侧边界，即索引 3，这样的话此算法是无法处理的。
 
 你也许会说，找到一个 `target`，然后向左或向右线性搜索不行吗？可以，但是这样难以保证二分查找对数级的复杂度了。
 
@@ -151,9 +147,7 @@ CC++GoJavaJavaScriptPython
 
 先直接看寻找左侧边界的二分搜索代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int left_bound(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
         // 搜索区间为 [left, right]
@@ -189,7 +183,7 @@ CC++GoJavaJavaScriptPython
 
 ### ¶如果 `target` 不存在怎么办？
 
-如果 `target` 不存在，`left_bound` 返回的索引是「**大于`target` 的最小索引**」。
+如果 $不存在，`left_bound` 返回的索引是「**大于$ 的最小索引**」。
 
 这个结论不用死记，举个例子就明白了：`nums = [2,3,5,7], target = 4`，`left_bound` 返回值是 2，因为元素 5 是大于 4 的最小元素。
 
@@ -211,9 +205,7 @@ CC++GoJavaJavaScriptPython
 
 先直接看寻找右侧边界的二分搜索代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int right_bound(int[] nums, int target) {
         int left = 0, right = nums.length - 1;
         while (left <= right) {
@@ -247,7 +239,7 @@ CC++GoJavaJavaScriptPython
 
 ### ¶如果 `target` 不存在怎么办？
 
-如果 `target` 不存在，`right_bound` 返回的索引是「**小于`target` 的最大索引**」。
+如果 $不存在，`right_bound` 返回的索引是「**小于$ 的最大索引**」。
 
 比如 `nums = [2,3,5,7], target = 4`，`right_bound` 返回值是 1，因为元素 3 是小于 4 的最大元素。
 
@@ -258,7 +250,7 @@ CC++GoJavaJavaScriptPython
     if (right < 0 || right >= nums.length) {
         return -1;
     }
-    // 目标索引不等于 target 则说明不存在 target
+    // 目标索引不等于 t$则说明不存在 t$
     if (nums[right] != target) {
         return -1;
     }
@@ -269,9 +261,7 @@ CC++GoJavaJavaScriptPython
 
 三种场景使用统一的两端都闭搜索区间 `[left, right]`，只有 `nums[mid] == target` 时的处理不同：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int binary_search(int[] nums, int target) {
         int left = 0, right = nums.length - 1; 
         while(left <= right) {

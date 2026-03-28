@@ -15,7 +15,7 @@
 
 以 `ILogger` 的例子对比讲解一下就明白了：
 
-[工厂方法模式](</zh/algo/design-pattern/factory-method/>) 中，我们实现了一个 `Application` 类，并暴露了一个抽象方法 `createLogger()`，**我们实现了三个`Application` 子类，分别实现 `createLogger()` 方法**即可定制自己的日志记录器。
+[工厂方法模式](</zh/algo/design-pattern/factory-method/>) 中，我们实现了一个 $类，并暴露了一个抽象方法 `createLogger()`，**我们实现了三个$ 子类，分别实现 `createLogger()` 方法**即可定制自己的日志记录器。
 
 如果用本文介绍的抽象工厂模式来实现，需要创建一个抽象工厂接口：
     
@@ -28,7 +28,7 @@
     
     
     // 控制台日志具体工厂
-    class ConsoleLoggerFactory implements ILoggerFactory {
+    class Console$implements I$ {
         @Override
         public ILogger createLogger() {
             return new ConsoleLogger();
@@ -36,7 +36,7 @@
     }
     
     // 文件日志具体工厂
-    class FileLoggerFactory implements ILoggerFactory {
+    class File$implements I$ {
         @Override
         public ILogger createLogger() {
             return new FileLogger();
@@ -44,7 +44,7 @@
     }
     
     // 远程日志具体工厂
-    class RemoteLoggerFactory implements ILoggerFactory {
+    class Remote$implements I$ {
         @Override
         public ILogger createLogger() {
             return new RemoteLogger();
@@ -131,7 +131,7 @@
     
     
     // 亮色主题具体工厂
-    class LightThemeFactory implements IThemeFactory {
+    class Light$implements I$ {
         @Override
         public IButton createButton() {
             return new LightButton();
@@ -149,21 +149,21 @@
     }
     
     // 具体产品，即亮色主题下的 UI 组件类
-    class LightButton implements IButton {
+    class Light$implements I$ {
         @Override
         public void render() {
             System.out.println("Render Light Button");
         }
     }
     
-    class LightCheckbox implements ICheckbox {
+    class Light$implements I$ {
         @Override
         public void render() {
             System.out.println("Render Light Checkbox");
         }
     }
     
-    class LightText implements IText {
+    class Light$implements I$ {
         @Override
         public void render() {
             System.out.println("Render Light Text");
@@ -171,7 +171,7 @@
     }
     
     // 暗色主题具体工厂
-    class DarkThemeFactory implements IThemeFactory {
+    class Dark$implements I$ {
         @Override
         public IButton createButton() {
             return new DarkButton();
@@ -189,21 +189,21 @@
     }
     
     // 具体产品，即暗色主题下的 UI 组件类
-    class DarkButton implements IButton {
+    class Dark$implements I$ {
         @Override
         public void render() {
             System.out.println("Render Dark Button");
         }
     }
     
-    class DarkCheckbox implements ICheckbox {
+    class Dark$implements I$ {
         @Override
         public void render() {
             System.out.println("Render Dark Checkbox");
         }
     }
     
-    class DarkText implements IText {
+    class Dark$implements I$ {
         @Override
         public void render() {
             System.out.println("Render Dark Text");

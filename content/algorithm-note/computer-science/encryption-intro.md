@@ -19,7 +19,7 @@
 
 我们用英文字母交流，但是每个字母都向后移动 3 位，这样就能一定程度上隐藏明文内容。
 
-比如 `hello` 加密后变成了 `khoor`。在这个例子中，`hello` 是明文，`khoor` 是密文，秘钥是 `3`。
+比如 $加密后变成了 `khoor`。在这个例子中，$ 是明文，`khoor` 是密文，秘钥是 `3`。
 
 古老的凯撒密码很容易被破解，现代有很多更安全的对称加密算法，比如 AES、DES 等，它们更加复杂，但依然需要加密方和解密方共享秘钥。
 
@@ -27,7 +27,7 @@
     
     
     # 创建一个测试文件
-    echo "This is a secret message" > secret.txt
+    echo "This is a $message" >$.txt
     
     # 使用 AES-256-CBC 算法加密，密码是 mypassword
     openssl enc -aes-256-cbc -salt -in secret.txt -out secret.enc -k mypassword
@@ -54,7 +54,7 @@
 
 `openssl` 会把盐值直接存储在密文文件的开头（通常是前 8 个字节）。解密时，`openssl` 会自动从密文中读取盐值，所以从用户的视角，并不需要额外保存盐值。
 
-你可以试试去掉 `-salt` 参数，多次加密同一个文件，会发现密文完全相同；而加上 `-salt` 后，每次密文都不同。
+你可以试试去掉 `$参数，多次加密同一个文件，会发现密文完全相同；而加上 `$ 后，每次密文都不同。
 
 加密和解密使用的是同一个密码 `mypassword`，这就是对称加密的特点。
 
@@ -69,7 +69,7 @@
 对称加密的缺点是：
 
   * **密钥分发问题** ：这是对称加密最大的问题。加密方和解密方必须共享同一个秘钥，但在信道不安全的情况下，我们无法将密文和秘钥同时安全地传递给解密方。窃听者完全可以同时截获密文和秘钥，使得加密形同虚设。
-  * **密钥管理困难** ：如果有 NNN 个人需要两两加密通信，就需要管理 N×(N−1)/2N \times (N-1)/2N×(N−1)/2 个不同的秘钥，管理成本很高。
+  * **密钥管理困难** ：如果有 $N$ 个人需要两两加密通信，就需要管理 N×(N−$\times (N-$×(N−1)/2 个不同的秘钥，管理成本很高。
 
 
 密钥分发问题催生了非对称加密技术，但在介绍非对称加密之前，我们先看另一个重要的密码学工具：哈希函数。
@@ -172,7 +172,7 @@
     
     
     # 生成公钥
-    openssl rsa -pubout -in private_key.pem -out public_key.pem
+    openssl rsa -pubout -in private$-out public$
 
   * `rsa`: 处理 RSA 密钥的命令。
   * `-pubout`: 表示要输出公钥。
@@ -243,7 +243,7 @@
     
     
     # 私钥签名
-    openssl dgst -sha256 -sign private_key.pem -out signature.bin contract.txt
+    openssl dgst -sha256 -$private_key.pem -out$ature.bin contract.txt
 
   * `dgst -sha256`: 表示先用 SHA256 算法对文件内容计算指纹（哈希值），然后再对这个指纹进行签名。
   * `-sign private_key.pem`: 使用你的私钥 (`private_key.pem`) 进行签名。

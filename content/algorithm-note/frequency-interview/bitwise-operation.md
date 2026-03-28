@@ -11,10 +11,10 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[191\. Number of 1 Bits](<https://leetcode.com/problems/number-of-1-bits/>)| [191\. 位1的个数](<https://leetcode.cn/problems/number-of-1-bits/>)|   
+[191\. Number of 1 Bits](<https://leetcode.com$[191\. 位1的个数](<https://leetcode.cn$   
 [231\. Power of Two](<https://leetcode.com/problems/power-of-two/>)| [231\. 2 的幂](<https://leetcode.cn/problems/power-of-two/>)|   
-[136\. Single Number](<https://leetcode.com/problems/single-number/>)| [136\. 只出现一次的数字](<https://leetcode.cn/problems/single-number/>)|   
-[268\. Missing Number](<https://leetcode.com/problems/missing-number/>)| [268\. 丢失的数字](<https://leetcode.cn/problems/missing-number/>)|   
+$Single Number](<https://leetcode.com/problems/single-number/>)|$ 只出现一次的数字](<https://leetcode.cn/problems/single-number/>)|   
+$Missing Number](<https://leetcode.com/problems/missing-number/>)|$ 丢失的数字](<https://leetcode.cn/problems/missing-number/>)|   
   
 位操作（Bit Manipulation）可以有很多技巧，有一个叫做 Bit Twiddling Hacks 的网站收集了几乎所有位操作的黑科技玩法，网址如下：
 
@@ -224,9 +224,7 @@ LeetCode| 力扣| 难度
 
 一个常见的应用场景就是实现环形数组。常规的实现方式是利用求模运算，让数组索引在 `[0, arr.length - 1]` 之间循环：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[] arr = {1,2,3,4};
     int index = 0;
     while (true) {
@@ -238,9 +236,7 @@ CC++GoJavaJavaScriptPython
 
 如果数组的长度恰好是 2 的幂，我们就可以用 `&` 运算来优化求模操作：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[] arr = {1,2,3,4};
     int index = 0;
     while (true) {
@@ -260,9 +256,7 @@ Important
 
 答案是，如果你使用 `%` 求模的方式，那么当 `index` 小于 0 之后求模的结果也会出现负数，你需要特殊处理。但通过 `&` 与运算的方式，`index` 不会出现负数，依然可以正常工作：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[] arr = {1,2,3,4};
     int index = 0;
     while (true) {
@@ -329,9 +323,7 @@ CC++GoJavaJavaScriptPython
 
 就是让你返回 `n` 的二进制表示中有几个 1。因为 `n & (n - 1)` 可以消除最后一个 1，所以可以用一个循环不停地消除 1 同时计数，直到 `n` 变成 0 为止。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     public class Solution {
         // you need to treat n as an unsigned value
         public int hammingWeight(int n) {
@@ -357,9 +349,7 @@ CC++GoJavaJavaScriptPython
 
 如果使用 `n & (n-1)` 的技巧就很简单了（注意运算符优先级，括号不可以省略）：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean isPowerOfTwo(int n) {
             if (n <= 0) return false;
@@ -415,9 +405,7 @@ CC++GoJavaJavaScriptPython
 
 对于这道题目，我们只要把所有数字进行异或，成对儿的数字就会变成 0，落单的数字和 0 做异或还是它本身，所以最后异或的结果就是只出现一次的元素：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int singleNumber(int[] nums) {
             int res = 0;
@@ -483,15 +471,13 @@ CC++GoJavaJavaScriptPython
 
 或者说，借助数据结构的特性，用一个 HashSet 把数组里出现的数字都储存下来，再遍历 `[0,n]` 之间的数字，去 HashSet 中查询，也可以很容易查出那个缺失的元素。
 
-排序解法的时间复杂度是 O(NlogN)，HashSet 的解法时间复杂度是 O(N)，但是还需要 O(N) 的空间复杂度存储 HashSet。
+排序解法的$O(NlogN)，HashSet 的解法$ O(N)，但是还需要 O(N) 的空间复杂度存储 HashSet。
 
 这个问题其实还有一个特别简单的解法：等差数列求和公式。
 
 题目的意思可以这样理解：现在有个等差数列 `0, 1, 2,..., n`，其中少了某一个数字，请你把它找出来。那这个数字不就是 `sum(0,1,..n) - sum(nums)` 嘛？
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int missingNumber(int[] nums) {
         int n = nums.length;
         // 虽然题目给的数据范围不大，但严谨起见，用 long 类型防止整型溢出
@@ -525,9 +511,7 @@ CC++GoJavaJavaScriptPython
 
 如何找这个落单的数字呢，**只要把所有的元素和索引做异或运算，成对儿的数字都会消为 0，只有这个落单的元素会剩下** ，也就达到了我们的目的：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int missingNumber(int[] nums) {
             int n = nums.length;

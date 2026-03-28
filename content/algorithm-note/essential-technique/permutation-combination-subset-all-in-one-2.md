@@ -11,14 +11,14 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[78\. Subsets](<https://leetcode.com/problems/subsets/>)| [78\. 子集](<https://leetcode.cn/problems/subsets/>)|   
-[77\. Combinations](<https://leetcode.com/problems/combinations/>)| [77\. 组合](<https://leetcode.cn/problems/combinations/>)|   
-[46\. Permutations](<https://leetcode.com/problems/permutations/>)| [46\. 全排列](<https://leetcode.cn/problems/permutations/>)|   
-[90\. Subsets II](<https://leetcode.com/problems/subsets-ii/>)| [90\. 子集 II](<https://leetcode.cn/problems/subsets-ii/>)|   
+[$Subsets](<https://leetcode.com/problems/subsets/>)| [$ 子集](<https://leetcode.cn/problems/subsets/>)|   
+[77\. Combinations](<https://leetcode.com$[77\. 组合](<https://leetcode.cn$   
+[46\. Permutations](<https://leetcode.com$[46\. 全排列](<https://leetcode.cn$   
+$Subsets II](<https://leetcode.com/problems/subsets-ii/>)|$ 子集 II](<https://leetcode.cn/problems/subsets-ii/>)|   
 [40\. Combination Sum II](<https://leetcode.com/problems/combination-sum-ii/>)| [40\. 组合总和 II](<https://leetcode.cn/problems/combination-sum-ii/>)|   
-[47\. Permutations II](<https://leetcode.com/problems/permutations-ii/>)| [47\. 全排列 II](<https://leetcode.cn/problems/permutations-ii/>)|   
-[39\. Combination Sum](<https://leetcode.com/problems/combination-sum/>)| [39\. 组合总和](<https://leetcode.cn/problems/combination-sum/>)|   
-[216\. Combination Sum III](<https://leetcode.com/problems/combination-sum-iii/>)| [216\. 组合总和 III](<https://leetcode.cn/problems/combination-sum-iii/>)|   
+$Permutations II](<https://leetcode.com/problems/permutations-ii/>)|$ 全排列 II](<https://leetcode.cn/problems/permutations-ii/>)|   
+$Combination Sum](<https://leetcode.com/problems/combination-sum/>)|$ 组合总和](<https://leetcode.cn/problems/combination-sum/>)|   
+[216\. Combination Sum $I$](<https://leetcode.com/problems/combination-sum-$i$/>)| [216\. 组合总和 $I$](<https://leetcode.cn/problems/combination-sum-$i$/>)|   
 [LCR 082. 组合总和 II](<https://leetcode.com/problems/4sjJUc/>)| [LCR 082. 组合总和 II](<https://leetcode.cn/problems/4sjJUc/>)|   
 [LCR 084. 全排列 II ](<https://leetcode.com/problems/7p8L0Z/>)| [LCR 084. 全排列 II ](<https://leetcode.cn/problems/7p8L0Z/>)|   
   

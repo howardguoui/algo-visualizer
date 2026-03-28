@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[912\. Sort an Array](<https://leetcode.com/problems/sort-an-array/>)| [912\. 排序数组](<https://leetcode.cn/problems/sort-an-array/>)|   
+[912\. Sort an Array](<https://leetcode.com$[912\. 排序数组](<https://leetcode.cn$   
   
 前置知识
 
@@ -23,7 +23,7 @@ LeetCode| 力扣| 难度
 
 一句话总结
 
-堆排序是从 [二叉堆结构](</zh/algo/data-structure-basic/binary-heap-basic/>) 衍生出来的排序算法，复杂度为 O(Nlog⁡N)O(N \log N)O(NlogN)。堆排序主要分两步，第一步是在待排序数组上原地创建二叉堆（Heapify），然后进行原地排序（Sort）。
+堆排序是从 [二叉堆结构](</zh/algo/data-structure-basic/binary-heap-basic/>) 衍生出来的排序算法，复杂度为 O(Nlog⁡N$\log N$logN)。堆排序主要分两步，第一步是在待排序数组上原地创建二叉堆（Heapify），然后进行原地排序（Sort）。
 
 你可以打开下方可视化面板，点击跳转到 `let heap = ...` 这部分代码可以看到数组被抽象成完全二叉树；不断点击 `Heap.swim` 这部分代码，可以看到原地建堆的过程；点击 `Heap.sink` 这部分代码，可以看到原地排序的过程。
 
@@ -47,9 +47,7 @@ LeetCode| 力扣| 难度
 
 那么最简单的堆排序算法思路就是直接利用优先级队列，把所有元素塞到优先级队列里面，然后再取出来，不就完成排序了吗？
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 直接利用优先级队列对数组从小到大排序
     void sort(int[] nums) {
         // 创建一个从小到大排序元素的小顶堆
@@ -66,11 +64,11 @@ CC++GoJavaJavaScriptPython
         }
     }
 
-因为优先级队列的 `push, pop` 方法的复杂度都是 O(log⁡N)O(\log N)O(logN)，所以整个排序的时间复杂度是 O(Nlog⁡N)O(N \log N)O(NlogN)，其中 `N` 是输入数组的长度。
+因为优先级队列的 `push, pop` 方法的复杂度都是 O(log⁡N)O($N)O(logN)，所以整个排序的时间复杂度是 O(Nlog⁡N)O(N$ N)O(NlogN)，其中 `N` 是输入数组的长度。
 
-这个思路可以得到正确的排序结果，但空间复杂度是 O(N)O(N)O(N)，因为我们创建的这个优先级队列是一个额外的数据结构，它的底层使用了一个数组来存储元素。
+这个思路可以得到正确的排序结果，但空间复杂度是 $O(N)$，因为我们创建的这个优先级队列是一个额外的数据结构，它的底层使用了一个数组来存储元素。
 
-所以，堆排序要解决的问题是，**不要使用额外的辅助空间，直接在原数组上进行`sink, swim` 操作**，在 O(Nlog⁡N)O(N \log N)O(NlogN) 的时间内完成排序。
+所以，堆排序要解决的问题是，**不要使用额外的辅助空间，直接在原数组上进行`sink, swim` 操作**，在 O(Nlog⁡N$\log N$logN) 的时间内完成排序。
 
 堆排序的两个关键步骤
 

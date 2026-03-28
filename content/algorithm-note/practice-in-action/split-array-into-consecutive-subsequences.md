@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[659\. Split Array into Consecutive Subsequences](<https://leetcode.com/problems/split-array-into-consecutive-subsequences/>)| [659\. 分割数组为连续子序列](<https://leetcode.cn/problems/split-array-into-consecutive-subsequences/>)|   
+[659\. Split Array $Consecutive Subsequences](<https://leetcode.com/problems/split-array-$$[659\. 分割数组为连续子序列](<https://leetcode.cn/problems/split-array-into$   
   
 斗地主中，大小连续的牌可以作为顺子，有时候我们把对子拆掉，结合单牌，可以组合出更多的顺子，可能更容易赢。
 
@@ -23,9 +23,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean isPossible(int[] nums);
 
 比如题目举的例子，输入 `nums = [1,2,3,3,4,4,5,5]`，算法返回 true。

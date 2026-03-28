@@ -15,9 +15,7 @@
 
 这道题比较简单，可以直接套用 [回溯算法实践：数独和 N 皇后问题](</zh/algo/practice-in-action/sudoku-nqueue/>) 的解法。参考代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 游戏面板仅支持提交 JavaScript 代码
     // 其他语言代码的作用是帮助大家理解算法逻辑
     

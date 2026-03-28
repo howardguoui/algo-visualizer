@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[912\. Sort an Array](<https://leetcode.com/problems/sort-an-array/>)| [912\. 排序数组](<https://leetcode.cn/problems/sort-an-array/>)|   
-[215\. Kth Largest Element in an Array](<https://leetcode.com/problems/kth-largest-element-in-an-array/>)| [215\. 数组中的第K个最大元素](<https://leetcode.cn/problems/kth-largest-element-in-an-array/>)|   
+[912\. Sort an Array](<https://leetcode.com$[912\. 排序数组](<https://leetcode.cn$   
+[215\. Kth Largest Element in an Array](<https://leetcode.com$[215\. 数组中的第K个最大元素](<https://leetcode.cn$   
   
 前置知识
 
@@ -30,14 +30,12 @@ LeetCode| 力扣| 难度
 
 首先我们看一下快速排序的代码框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void sort(int[] nums, int lo, int hi) {
         if (lo >= hi) {
             return;
         }
-        // ****** 前序位置 ******
+        // *$前序位置 *$
         // 对 nums[lo..hi] 进行切分，将 nums[p] 排好序
         // 使得 nums[lo..p-1] <= nums[p] < nums[p+1..hi]
         int p = partition(nums, lo, hi);
@@ -49,15 +47,13 @@ CC++GoJavaJavaScriptPython
 
 其实你对比之后可以发现，快速排序就是一个二叉树的前序遍历：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 二叉树遍历框架
     void traverse(TreeNode root) {
         if (root == null) {
             return;
         }
-        // ***** 前序位置 *****
+        // *$前序位置 *$
         print(root.val);
         // *******************
         traverse(root.left);

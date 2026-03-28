@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[295\. Find Median from Data Stream](<https://leetcode.com/problems/find-median-from-data-stream/>)| [295\. 数据流的中位数](<https://leetcode.cn/problems/find-median-from-data-stream/>)|   
+[295\. Find Median $Data Stream](<https://leetcode.com/problems/find-median-$$[295\. 数据流的中位数](<https://leetcode.cn/problems/find-median-from$   
   
 前置知识
 
@@ -48,10 +48,10 @@ LeetCode| 力扣| 难度
     
     
     **输入**
-    ["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"]
+    ["MedianFinder", $"addNum", "findMedian",$ "findMedian"]
     [[], [1], [2], [], [3], []]
     **输出**
-    [null, null, null, 1.5, null, 2.0]
+    [n$null, n$ 1.5, null, 2.0]
     
     **解释**
     MedianFinder medianFinder = new MedianFinder();
@@ -70,9 +70,7 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 295. 数据流的中位数](<https://leetcode.cn/problems/find-median-from-data-stream/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 题目让你设计这样一个类
     class MedianFinder {
     
@@ -103,7 +101,7 @@ CC++GoJavaJavaScriptPython
 
 第一，`TreeSet` 是一种 `Set`，其中不存在重复元素的元素，但是我们的数据流可能输入重复数据的，而且计算中位数也是需要算上重复元素的。
 
-第二，`TreeSet` 并没有实现一个通过排名快速计算元素的 API。假设我想找到 `TreeSet` 中第 5 大的元素，并没有一个现成可用的方法实现这个需求。
+第二，$并没有实现一个通过排名快速计算元素的 API。假设我想找到$ 中第 5 大的元素，并没有一个现成可用的方法实现这个需求。
 
 Info
 

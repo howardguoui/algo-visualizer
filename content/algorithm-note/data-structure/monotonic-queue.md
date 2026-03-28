@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[239\. Sliding Window Maximum](<https://leetcode.com/problems/sliding-window-maximum/>)| [239\. 滑动窗口最大值](<https://leetcode.cn/problems/sliding-window-maximum/>)|   
+[239\. S$Window Maximum](<https://leetcode.com/problems/s$$[239\. 滑动窗口最大值](<https://leetcode.cn/problems/sliding$   
 [LCR 184. 设计自助结算系统](<https://leetcode.com/problems/dui-lie-de-zui-da-zhi-lcof/>)| [LCR 184. 设计自助结算系统](<https://leetcode.cn/problems/dui-lie-de-zui-da-zhi-lcof/>)|   
   
 前置知识
@@ -29,7 +29,7 @@ LeetCode| 力扣| 难度
 
 为啥要发明「单调队列」这种结构呢，主要是为了解决下面这个场景：
 
-**给你一个数组`window`，已知其最值为 `A`，如果给 `window` 中添加一个数 `B`，那么比较一下 `A` 和 `B` 就可以立即算出新的最值；但如果要从 `window` 数组中减少一个数，就不能直接得到最值了，因为如果减少的这个数恰好是 `A`，就需要遍历 `window` 中的所有元素重新寻找新的最值**。
+**给你一个数组`window`，已知其最值为 `A`，如果给 `window` 中添加一个数 `B`，那么比较一下 `A` 和 `B` 就可以立即算出新的最值；但如果要从 $数组中减少一个数，就不能直接得到最值了，因为如果减少的这个数恰好是 `A`，就需要遍历$ 中的所有元素重新寻找新的最值**。
 
 这个场景很常见，但不用单调队列似乎也可以，比如 [优先级队列（二叉堆）](</zh/algo/data-structure-basic/binary-heap-basic/>) 就是专门用来动态寻找最值的，我创建一个大（小）顶堆，不就可以很快拿到最大（小）值了吗？
 
@@ -49,9 +49,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[] maxSlidingWindow(int[] nums, int k);
 
 比如说力扣给出的一个示例：
@@ -69,15 +67,13 @@ CC++GoJavaJavaScriptPython
      1  3  -1  -3 [5  3  6] 7       6
      1  3  -1  -3  5 [3  6  7]      7
 
-接下来，我们就借助单调队列结构，用 O(1)O(1)O(1) 时间算出每个滑动窗口中的最大值，使得整个算法在线性时间完成。
+接下来，我们就借助单调队列结构，用 $O(1)$ 时间算出每个滑动窗口中的最大值，使得整个算法在线性时间完成。
 
 ### ¶一、搭建解题框架
 
 在介绍「单调队列」这种数据结构的 API 之前，先来对比一下 [普通的队列](</zh/algo/data-structure-basic/queue-stack-basic/>) 的标准 API 和单调队列实现的 API：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 普通队列的 API
     class Queue {
         // enqueue 操作，在队尾加入元素 n
@@ -98,9 +94,7 @@ CC++GoJavaJavaScriptPython
 
 当然，单调队列这几个 API 的实现方法肯定跟一般的 Queue 不一样，不过我们暂且不管，而且认为这几个操作的时间复杂度都是 O(1)，先把这道「滑动窗口」问题的解答框架搭出来：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[] maxSlidingWindow(int[] nums, int k) {
         MonotonicQueue window = new MonotonicQueue();
         List<Integer> res = new ArrayList<>();
@@ -137,9 +131,7 @@ CC++GoJavaJavaScriptPython
 
 「单调队列」的核心思路和「单调栈」类似，`push` 方法依然在队尾添加元素，但是要把前面比自己小的元素都删掉：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class MonotonicQueue {
         // 双链表，支持快速在头部和尾部增删元素
         // 维护其中的元素自尾部到头部单调递增
@@ -161,9 +153,7 @@ CC++GoJavaJavaScriptPython
 
 如果每个元素被加入时都这样操作，最终单调队列中的元素大小就会保持一个**单调递减** 的顺序，因此我们的 `max` 方法就很好写了，只要把队头元素返回即可；`pop` 方法也是操作队头，如果队头元素是待删除元素 `n`，那么就删除它：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class MonotonicQueue {
         // 为了节约篇幅，省略上文给出的代码部分...
     
@@ -185,9 +175,7 @@ CC++GoJavaJavaScriptPython
 
 至此，单调队列设计完毕，看下完整的解题代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 单调队列的实现
         class MonotonicQueue {
@@ -241,21 +229,21 @@ CC++GoJavaJavaScriptPython
 
 有一点细节问题不要忽略，在实现 `MonotonicQueue` 时，我们使用了 Java 的 `LinkedList`，因为链表结构支持在头部和尾部快速增删元素；而在解法代码中的 `res` 则使用的 `ArrayList` 结构，因为后续会按照索引取元素，所以数组结构更合适。其他语言的实现也要注意这些细节。
 
-关于单调队列 API 的时间复杂度，读者可能有疑惑：`push` 操作中含有 while 循环，最坏情况下的时间复杂度应该 O(N)O(N)O(N) 呀，再加上一层 for 循环，本算法的时间复杂度应该是 O(N2)O(N^2)O(N2) 才对吧？
+关于单调队列 API 的时间复杂度，读者可能有疑惑：`push` 操作中含有 while 循环，最坏情况下的时间复杂度应该 $O(N)$ 呀，再加上一层 for 循环，本算法的时间复杂度应该是 $O(N^2)$ 才对吧？
 
 这里就用到了 [算法时空复杂度分析指南](</zh/algo/essential-technique/complexity-analysis/>) 中讲到的摊还分析：
 
-单独看 `push` 操作，最坏时间复杂度确实是 O(N)O(N)O(N)，但是平均时间复杂度是 O(1)O(1)O(1)。我们一般用平均复杂度而不是最坏时间复杂度来衡量 API 接口，所以这个算法整体的时间复杂度是 O(N)O(N)O(N)，而不是 O(N2)O(N^2)O(N2)。
+单独看 `push` 操作，最坏时间复杂度确实是 $O(N)$，但是平均时间复杂度是 $O(1)$。我们一般用平均复杂度而不是最坏时间复杂度来衡量 API 接口，所以这个算法整体的时间复杂度是 $O(N)$，而不是 $O(N^2)$。
 
-也可以这样从整体上分析：整个算法做的事情就是把 `nums` 中的每个元素加入和移出 `window` **至多一次** ，不可能把同一个元素多次移入移出 `window`，所以整体的时间复杂度是 O(N)O(N)O(N)。
+也可以这样从整体上分析：整个算法做的事情就是把 `nums` 中的每个元素加入和移出 $**至多一次** ，不可能把同一个元素多次移入移出$，所以整体的时间复杂度是 $O(N)$。
 
-空间复杂度很容易分析，就是窗口的大小 O(k)O(k)O(k)。
+空间复杂度很容易分析，就是窗口的大小 $O(k)$。
 
 ### ¶拓展延伸
 
 最后，我提出几个问题请大家思考：
 
-1、本文给出的 `MonotonicQueue` 类只实现了 `max` 方法，你是否能够再额外添加一个 `min` 方法，在 O(1)O(1)O(1) 的时间返回队列中所有元素的最小值？
+1、本文给出的 `MonotonicQueue` 类只实现了 `max` 方法，你是否能够再额外添加一个 `min` 方法，在 $O(1)$ 的时间返回队列中所有元素的最小值？
 
 2、本文给出的 `MonotonicQueue` 类的 `pop` 方法还需要接收一个参数，这不那么优雅，而且有悖于标准队列的 API，请你修复这个缺陷。
 
@@ -263,9 +251,7 @@ CC++GoJavaJavaScriptPython
 
 也就是说，你是否能够实现单调队列的通用实现：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 单调队列的通用实现，可以高效维护最大值和最小值
     class MonotonicQueue<E extends Comparable<E>> {
     

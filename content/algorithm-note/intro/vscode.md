@@ -13,7 +13,7 @@
 
 有些读者不喜欢在网页上刷题，认为在编辑器或 IDE 中刷题更方便编写和调试代码，所以我开发维护了各个平台的刷题插件满足这个需求，允许读者在插件中查看本站的题目讲解、可视化以及题单。
 
-vscode 插件可以让大家在 **vscode 或 Cursor** 中刷 LeetCode/力扣，支持逐行调试代码，可以直接查看本站的思路讲解、可视化面板，同时集成了 [速成目录](</zh/algo/intro/quick-learning-plan/>) 和 [初学者目录](</zh/algo/intro/beginner-learning-plan/>) 中的题目题单，方便复习：
+$插件可以让大家在 **$ 或 Cursor** 中刷 LeetCode/力扣，支持逐行调试代码，可以直接查看本站的思路讲解、可视化面板，同时集成了 [速成目录](</zh/algo/intro/quick-learning-plan/>) 和 [初学者目录](</zh/algo/intro/beginner-learning-plan/>) 中的题目题单，方便复习：
 
 ![](/images/algo/intro/vs_intro1.jpg)
 
@@ -81,11 +81,11 @@ vscode 插件可以让大家在 **vscode 或 Cursor** 中刷 LeetCode/力扣，�
 
 登录报错？
 
-若出现登录报错，大概率是浏览器给你的 cURL 命令有问题。可以查看你复制的 cURL 命令，应该类似下面这样，包含 `csrftoken=xxx` 和 `LEETCODE_SESSION=xxx` 这两部分值：
+若出现登录报错，大概率是浏览器给你的 cURL 命令有问题。可以查看你复制的 cURL 命令，应该类似下面这样，包含 `csrftoken=$x$` 和 `LEETCODE_SESSION=$x$` 这两部分值：
     
     
     curl 'https://leetcode.cn/problemset/' \
-      -H 'Cookie: ... ; csrftoken=xxx; LEETCODE_SESSION=xxx'; ... \
+      -H 'Cookie: ... ; csrftoken=$x$; LEETCODE_SESSION=$x$'; ... \
       -H 'Pragma: no-cache' \
       -H 'Sec-Fetch-Dest: document' \
     ...
@@ -182,7 +182,7 @@ vscode 插件可以让大家在 **vscode 或 Cursor** 中刷 LeetCode/力扣，�
 
 Java 配置方法
 
-打开力扣题目编写算法代码，打好断点，并在 `main` 函数中写好测试用例，最后点击 `main` 函数上方的 `Debug` 按钮即可逐行调试代码了：
+打开力扣题目编写算法代码，打好断点，并在 `$函数中写好测试用例，最后点击 `$ 函数上方的 `Debug` 按钮即可逐行调试代码了：
 
 ![](/images/algo/plugin-debug/vscode-java-debug.jpg)
 
@@ -218,7 +218,7 @@ Golang 的一个 package 内不能有多个可运行的 main 函数，不过我�
 
 ![](/images/algo/plugin-debug/vscode-go-debug.jpg)
 
-如果你没有看到 `debug test` 按钮，可能是没有安装 [Go for Visual Studio Code](<https://marketplace.visualstudio.com/items?itemName=golang.Go>) 插件，请安装后重试。
+如果你没有看到 `debug test` 按钮，可能是没有安装 [Go for V$Studio Code](<https://marketplace.v$studio.com/items?itemName=golang.Go>) 插件，请安装后重试。
 
 JavaScript 配置方法
 
@@ -228,7 +228,7 @@ JavaScript 配置方法
 
 ## ¶常用配置
 
-在 vscode 的设置页面中搜索关键词 `labuladong-leetcode`，可以看到插件相关的所有配置，可以根据自己的需求进行修改。
+在 vs$的设置页面中搜索关键词 `labuladong-leet$`，可以看到插件相关的所有配置，可以根据自己的需求进行修改。
 
 ### ¶设置刷题编程语言
 
@@ -265,9 +265,9 @@ JavaScript 配置方法
 
 ## ¶常见问题解决方法
 
-### ¶报错 `command xxx not found`？
+### ¶报错 `command $x$ not found`？
 
-报错 `command xxx not found` 说明插件还没有加载。请你点击 vscode 侧边栏的力扣图标，让插件启动并加载。
+报错 `command $x$ not found` 说明插件还没有加载。请你点击 vscode 侧边栏的力扣图标，让插件启动并加载。
 
 ### ¶无法登录力扣/LeetCode？
 
@@ -295,7 +295,7 @@ JavaScript 配置方法
 
 插件支持按照不同的编程语言设置对应的代码文件的存储名称。
 
-在 vscode 的设置页面中搜索配置关键词 `labuladong-leetcode filepath`，可以看到一个 `Edit in setting.json` 选项，点击后可以把你需要的配置写入 `settings.json` 文件中。
+在 vs$的设置页面中搜索配置关键词 `labuladong-leet$ filepath`，可以看到一个 `Edit in setting$选项，点击后可以把你需要的配置写入 `settings$ 文件中。
 
 比如可以如下设置 python3 的代码文件的命名规范：
     

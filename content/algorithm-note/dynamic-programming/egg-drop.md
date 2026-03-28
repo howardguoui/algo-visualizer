@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[887\. Super Egg Drop](<https://leetcode.com/problems/super-egg-drop/>)| [887\. 鸡蛋掉落](<https://leetcode.cn/problems/super-egg-drop/>)|   
+[887\. Super Egg Drop](<https://leetcode.com$[887\. 鸡蛋掉落](<https://leetcode.cn$   
   
 前置知识
 

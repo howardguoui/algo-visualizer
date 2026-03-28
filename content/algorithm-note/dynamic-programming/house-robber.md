@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[198\. House Robber](<https://leetcode.com/problems/house-robber/>)| [198\. 打家劫舍](<https://leetcode.cn/problems/house-robber/>)|   
-[213\. House Robber II](<https://leetcode.com/problems/house-robber-ii/>)| [213\. 打家劫舍 II](<https://leetcode.cn/problems/house-robber-ii/>)|   
-[337\. House Robber III](<https://leetcode.com/problems/house-robber-iii/>)| [337\. 打家劫舍 III](<https://leetcode.cn/problems/house-robber-iii/>)|   
+$House Robber](<https://leetcode.com/problems/house-robber/>)|$ 打家劫舍](<https://leetcode.cn/problems/house-robber/>)|   
+[213\. H$Robber II](<https://leetcode.com/problems/h$-robber-ii/>)| [213\. 打家劫舍 II](<https://leetcode.cn/problems/house-robber-ii/>)|   
+[337\. House Robber $I$](<https://leetcode.com/problems/house-robber-$i$/>)| [337\. 打家劫舍 $I$](<https://leetcode.cn/problems/house-robber-$i$/>)|   
   
 前置知识
 
@@ -37,9 +37,7 @@ LeetCode| 力扣| 难度
 
 请你写一个算法，计算在不触动报警器的前提下，最多能够盗窃多少现金呢？函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int rob(int[] nums);
 
 比如说输入 `nums=[2,1,7,9,3,1]`，算法返回 12，小偷可以盗窃 `nums[0], nums[3], nums[5]` 三个房屋，得到的现金之和为 2 + 9 + 1 = 12，是最优的选择。

@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[1024\. Video Stitching](<https://leetcode.com/problems/video-stitching/>)| [1024\. 视频拼接](<https://leetcode.cn/problems/video-stitching/>)|   
+[1024\. Video Stitching](<https://leetcode.com$[1024\. 视频拼接](<https://leetcode.cn$   
   
 前面发过几个视频，也算是对视频剪辑入了个门。像我这种非专业剪辑玩家，不做什么宏大特效电影镜头，只是做个视频教程，其实也没啥难度，只需要把视频剪流畅，所以用到最多的功能就是切割功能，然后删除和拼接视频片接。
 

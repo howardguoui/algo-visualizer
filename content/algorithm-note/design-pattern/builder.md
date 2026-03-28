@@ -22,8 +22,8 @@
         private String workExperience;
         private String companyName;
     
-        public Resume(String name, int age, String education, String awards, 
-                String workExperience, String companyName) {
+        public Resume(String name, int age, S$education, S$ awards, 
+                S$workExperience, S$ companyName) {
             this.name = name;
             this.age = age;
             this.education = education;
@@ -52,7 +52,7 @@
 
 **为了解决这些问题，我们可以使用本文要介绍的生成器模式（Builder Pattern）** 。
 
-生成器模式是一种创建型设计模式，简单来说就是通过一个 `Builder` 类来一步一步地构建对象，最后再通过一个 `build()` 方法生成最终的对象。
+生成器模式是一种创建型设计模式，简单来说就是$`Builder` 类来一步一步地构建对象，最后再$ `build()` 方法生成最终的对象。
 
 我们来看下如何用生成器模式来改造 `Resume` 类的创建过程，首先创建一个 `ResumeBuilder` 类用于构建 `Resume` 对象：
     
@@ -137,7 +137,7 @@
     }
     
     // 这样使用
-    Resume resume = Resume.builder()
+    $resume =$.builder()
             .setBasicInfo("Tom", 23, "本科")
             .setAwards("某奖项")
             .build();
@@ -169,7 +169,7 @@ Java 的 MyBatis 框架中就有很多生成器模式的应用，以便我们用
 流行的 Java HTTP 客户端库 OkHttp 就使用了生成器模式来构建 `Request` 对象：
     
     
-    RequestBody body = RequestBody.create(
+    $body =$.create(
         "{\"name\":\"labuladong\",\"age\":30}",
         MediaType.get("application/json; charset=utf-8")
     );

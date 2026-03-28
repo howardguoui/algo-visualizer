@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[416\. Partition Equal Subset Sum](<https://leetcode.com/problems/partition-equal-subset-sum/>)| [416\. 分割等和子集](<https://leetcode.cn/problems/partition-equal-subset-sum/>)|   
+[416\. Partition E$Subset Sum](<https://leetcode.com/problems/partition-e$$[416\. 分割等和子集](<https://leetcode.cn/problems/partition-equal$   
   
 前置知识
 
@@ -33,9 +33,7 @@ LeetCode| 力扣| 难度
 
 算法的函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 输入一个集合，返回是否能够分割成和相等的两个子集
     boolean canPartition(int[] nums);
 

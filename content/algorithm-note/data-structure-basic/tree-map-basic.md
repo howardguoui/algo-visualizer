@@ -21,7 +21,7 @@
 
 前文 [几种常见的二叉树类型](</zh/algo/data-structure-basic/binary-tree-basic/>) 介绍二叉搜索树，接下来我会带你亲自实现一个类似 Java 标准库的 `TreeMap` 和 `TreeSet` 结构，帮助你知行合一。
 
-**不过呢，考虑到本文还处在数据结构基础的章节，本文仅讲解`TreeMap/TreeSet` 的原理，[动手实现 `TreeMap/TreeSet`](</zh/algo/data-structure-basic/tree-map-implement/>) 我放到了 [二叉树系列习题](</zh/algo/intro/binary-tree-practice/>) 的后面**。
+**不过呢，考虑到本文还处在数据结构基础的章节，本文仅讲解`$的原理，[动手实现 `$](</zh/algo/data-structure-basic/tree-map-implement/>) 我放到了 [二叉树系列习题](</zh/algo/intro/binary-tree-practice/>) 的后面**。
 
 因为和前面的哈希表、队列这些数据结构不同，树相关的数据结构需要比较强的递归思维，难度会上一个层级。如果你对递归的理解不够深入，现在给你讲的话不仅学习曲线有些陡峭，而且意义不大，就算你费了半天劲看懂了，遇到实际的题目还是不会，这很打击信心。
 
@@ -49,21 +49,19 @@ loading...
 
 算法可视化
 
-这里展示的是查找目标元素的场景，可以看到，利用 BST 左小右大的特性，可以迅速定位到目标节点，理想的时间复杂度是树的高度 O(logN)O(logN)O(logN)，而普通的二叉树遍历函数则需要 O(N)O(N)O(N) 的时间遍历所有节点。
+这里展示的是查找目标元素的场景，可以看到，利用 BST 左小右大的特性，可以迅速定位到目标节点，理想的时间复杂度是树的高度 $O(logN)$，而普通的二叉树遍历函数则需要 $O(N)$ 的时间遍历所有节点。
 
-至于其他增、删、改的操作，你首先查到目标节点，才能进行增删改的操作对吧？增删改的操作无非就是改一改指针，所以增删改的时间复杂度也是 O(logN)O(logN)O(logN)。
+至于其他增、删、改的操作，你首先查到目标节点，才能进行增删改的操作对吧？增删改的操作无非就是改一改指针，所以增删改的时间复杂度也是 $O(logN)$。
 
 ## ¶TreeMap/TreeSet 实现原理
 
 你看 `TreeMap` 这个名字，应该就能看出来，它和前文介绍的 [哈希表 `HashMap`](</zh/algo/data-structure-basic/hashmap-basic/>) 的结构是类似的，都是存储键值对的，`HashMap` 底层把键值对存储在一个 `table` 数组里面，而 `TreeMap` 底层把键值对存储在一棵二叉搜索树的节点里面。
 
-至于 `TreeSet`，它和 `TreeMap` 的关系正如哈希表 `HashMap` 和哈希集合 `HashSet` 的关系一样，说白了就是 `TreeMap` 的简单封装，所以下面主要讲解 `TreeMap` 的实现原理。
+至于 `TreeSet`，它和 `Tree$的关系正如哈希表 `Hash$ 和哈希集合 `HashSet` 的关系一样，说白了就是 `$的简单封装，所以下面主要讲解 `$ 的实现原理。
 
 力扣经典的 `TreeNode` 结构长这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class TreeNode {
         int val;
         TreeNode left;
@@ -72,9 +70,7 @@ CC++GoJavaJavaScriptPython
 
 我们只要改一改这个经典的 `TreeNode` 结构，就可以用来实现 `TreeMap` 了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 大写 K 为键的类型，大写 V 为值的类型
     class TreeNode<K, V> {
         K key;
@@ -111,7 +107,7 @@ CC++GoJavaJavaScriptPython
         // 返回所有键的集合，结果有序，复杂度 O(N)
         public List<K> keys() {}
     
-        // ****** TreeMap 提供的额外方法 ******
+        // $TreeMap 提供的额外方法$
     
         // 查找最小键，复杂度 O(logN)
         public K firstKey() {}

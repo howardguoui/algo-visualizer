@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[698\. Partition to K Equal Sum Subsets](<https://leetcode.com/problems/partition-to-k-equal-sum-subsets/>)| [698\. 划分为k个相等的子集](<https://leetcode.cn/problems/partition-to-k-equal-sum-subsets/>)|   
+[698\. Partition to K Equal Sum Subsets](<https://leetcode.com$[698\. 划分为k个相等的子集](<https://leetcode.cn$   
   
 前置知识
 
@@ -29,13 +29,11 @@ LeetCode| 力扣| 难度
 
 题目非常简单：
 
-给你输入一个数组 `nums` 和一个正整数 `k`，请你判断 `nums` 是否能够被平分为元素和相同的 `k` 个子集。
+给你输入一个数组 $和一个正整数 `k`，请你判断$ 是否能够被平分为元素和相同的 `k` 个子集。
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean canPartitionKSubsets(int[] nums, int k);
 
 思考题

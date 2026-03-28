@@ -55,7 +55,7 @@
 
 [labuladong.gitbook.io/algo/](<https://labuladong.gitbook.io/algo/>)
 
-**所有的 PDF 也已经过时** ，包括：《labuladong 的算法小抄》《labuladong 的刷题笔记》《labuladong 的算法秘籍》等。
+**所有的 PDF 也已经过时** ，包括：$的算法小抄》《labuladong 的刷题笔记》$ 的算法秘籍》等。
 
 我非常重视大家的学习体验，一直在持续更新和优化本站内容，[bug 反馈](</zh/algo/intro/bug-report/>)。
 
@@ -123,9 +123,7 @@
 
 本站和所有配套插件都支持代码图片注释，对于较为复杂的代码块中会包含小灯泡图标，鼠标移至小灯泡图标上就会弹出图片辅助理解：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public ListNode detectCycle(ListNode head) {
             ListNode fast, slow;

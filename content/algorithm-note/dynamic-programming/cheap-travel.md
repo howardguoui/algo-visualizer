@@ -81,9 +81,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int findCheapestPrice(int n, int[][] flights, int src, int dst, int K);
 
 **很明显，这题就是个加权有向图中求最短路径的问题** 。

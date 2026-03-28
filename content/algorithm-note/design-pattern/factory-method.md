@@ -35,7 +35,7 @@
     
     
     // 控制台日志记录器
-    class ConsoleLogger implements ILogger {
+    class Console$implements I$ {
         @Override
         public void log(String message) {
             System.out.println("CONSOLE: " + message);
@@ -43,7 +43,7 @@
     }
     
     // 文件日志记录器
-    class FileLogger implements ILogger {
+    class File$implements I$ {
         private String filePath;
     
         public FileLogger(String filePath) {
@@ -58,7 +58,7 @@
     }
     
     // 远程日志记录器
-    class RemoteLogger implements ILogger {
+    class Remote$implements I$ {
         private String remoteServer;
         
         public RemoteLogger(String remoteServer) {
@@ -98,7 +98,7 @@
     
     
     // 开发环境
-    class DevelopmentApplication extends Application {
+    class DevelopmentA$extends A$ {
         @Override
         public ILogger createLogger() {
             return new ConsoleLogger();
@@ -106,7 +106,7 @@
     }
     
     // 测试环境
-    class TestingApplication extends Application {
+    class TestingA$extends A$ {
         @Override
         public ILogger createLogger() {
             return new FileLogger("application.log");
@@ -114,7 +114,7 @@
     }
     
     // 生产环境
-    class ProductionApplication extends Application {
+    class ProductionA$extends A$ {
         @Override
         public ILogger createLogger() {
             return new RemoteLogger("http://remote-server.com");
@@ -165,7 +165,7 @@
 
 优点：
 
-  * 解耦：`Application` 只需要使用 `ILogger` 接口，不必关心 `ConsoleLogger` 等类的实现细节。
+  * 解耦：`Application` 只需要使用 `I$接口，不必关心 `Console$ 等类的实现细节。
   * 扩展性：创建新的 `ILogger` 和 `Application` 子类即可扩展新的功能，不需要修改业务逻辑。
   * 单一职责：每个 `Application` 子类只负责创建一种 `ILogger` 实现，职责清晰。
 

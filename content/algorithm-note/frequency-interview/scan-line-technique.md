@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[253\. Meeting Rooms II](<https://leetcode.com/problems/meeting-rooms-ii/>)🔒| [253\. 会议室 II](<https://leetcode.cn/problems/meeting-rooms-ii/>)🔒|   
-[1235\. Maximum Profit in Job Scheduling](<https://leetcode.com/problems/maximum-profit-in-job-scheduling/>)| [1235\. 规划兼职工作](<https://leetcode.cn/problems/maximum-profit-in-job-scheduling/>)|   
+[253\. M$Rooms II](<https://leetcode.com/problems/m$-rooms-ii/>)🔒| [253\. 会议室 II](<https://leetcode.cn/problems/meeting-rooms-ii/>)🔒|   
+[1235\. Maximum Profit in Job Scheduling](<https://leetcode.com$[1235\. 规划兼职工作](<https://leetcode.cn$   
   
 之前面试，被问到一道非常经典且非常实用的算法题目：会议室安排问题。
 
@@ -24,9 +24,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 返回需要申请的会议室数量
     int minMeetingRooms(int[][] meetings);
 

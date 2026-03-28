@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[134\. Gas Station](<https://leetcode.com/problems/gas-station/>)| [134\. 加油站](<https://leetcode.cn/problems/gas-station/>)|   
+[134\. Gas Station](<https://leetcode.com$[134\. 加油站](<https://leetcode.cn$   
   
 今天讲一个贪心的老司机的故事，就是力扣第 134 题「[加油站](<https://leetcode.cn/problems/gas-station/>)」：
 
@@ -77,11 +77,11 @@ LeetCode| 力扣| 难度
         }
     }
 
-很明显时间复杂度是 O(N2)O(N^2)O(N2)，这么简单粗暴的解法一定不是最优的，我们试图分析一下是否有优化的余地。
+很明显时间复杂度是 $O(N^2)$，这么简单粗暴的解法一定不是最优的，我们试图分析一下是否有优化的余地。
 
 暴力解法是否有重复计算的部分？是否可以抽象出「状态」，是否对同一个「状态」重复计算了多次？
 
-我们前文 [动态规划详解](</zh/algo/essential-technique/dynamic-programming-framework/>) 说过，变化的量就是「状态」。那么观察这个暴力穷举的过程，变化的量有两个，分别是「起点」和「当前油箱的油量」，但这两个状态的组合肯定有不下 O(N2)O(N^2)O(N2) 种，显然没有任何优化的空间。
+我们前文 [动态规划详解](</zh/algo/essential-technique/dynamic-programming-framework/>) 说过，变化的量就是「状态」。那么观察这个暴力穷举的过程，变化的量有两个，分别是「起点」和「当前油箱的油量」，但这两个状态的组合肯定有不下 $O(N^2)$ 种，显然没有任何优化的空间。
 
 **所以说这道题肯定不是通过简单的剪枝来优化暴力解法的效率，而是需要我们发现一些隐藏较深的规律，从而减少一些冗余的计算** 。
 

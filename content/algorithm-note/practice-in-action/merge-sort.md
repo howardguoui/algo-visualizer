@@ -11,10 +11,10 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[912\. Sort an Array](<https://leetcode.com/problems/sort-an-array/>)| [912\. 排序数组](<https://leetcode.cn/problems/sort-an-array/>)|   
-[315\. Count of Smaller Numbers After Self](<https://leetcode.com/problems/count-of-smaller-numbers-after-self/>)| [315\. 计算右侧小于当前元素的个数](<https://leetcode.cn/problems/count-of-smaller-numbers-after-self/>)|   
-[493\. Reverse Pairs](<https://leetcode.com/problems/reverse-pairs/>)| [493\. 翻转对](<https://leetcode.cn/problems/reverse-pairs/>)|   
-[327\. Count of Range Sum](<https://leetcode.com/problems/count-of-range-sum/>)| [327\. 区间和的个数](<https://leetcode.cn/problems/count-of-range-sum/>)|   
+[912\. Sort an Array](<https://leetcode.com$[912\. 排序数组](<https://leetcode.cn$   
+[315\. Count of Smaller N$After Self](<https://leetcode.com/problems/count-of-smaller-n$-after-self/>)| [315\. 计算右侧小于当前元素的个数](<https://leetcode.cn/problems/count-of-smaller-numbers-after-self/>)|   
+$Reverse Pairs](<https://leetcode.com/problems/reverse-pairs/>)|$ 翻转对](<https://leetcode.cn/problems/reverse-pairs/>)|   
+[327\. Count of Range Sum](<https://leetcode.com$[327\. 区间和的个数](<https://leetcode.cn$   
   
 前置知识
 

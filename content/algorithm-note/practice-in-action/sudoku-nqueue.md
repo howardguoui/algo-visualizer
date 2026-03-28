@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[37\. Sudoku Solver](<https://leetcode.com/problems/sudoku-solver/>)| [37\. 解数独](<https://leetcode.cn/problems/sudoku-solver/>)|   
-[51\. N-Queens](<https://leetcode.com/problems/n-queens/>)| [51\. N 皇后](<https://leetcode.cn/problems/n-queens/>)|   
-[52\. N-Queens II](<https://leetcode.com/problems/n-queens-ii/>)| [52\. N 皇后 II](<https://leetcode.cn/problems/n-queens-ii/>)|   
+$Sudoku Solver](<https://leetcode.com/problems/sudoku-solver/>)|$ 解数独](<https://leetcode.cn/problems/sudoku-solver/>)|   
+[$N-Queens](<https://leetcode.com/problems/n-queens/>)| [$ N 皇后](<https://leetcode.cn/problems/n-queens/>)|   
+$N-Queens II](<https://leetcode.com/problems/n-queens-ii/>)|$ N 皇后 II](<https://leetcode.cn/problems/n-queens-ii/>)|   
   
 前置知识
 
@@ -64,9 +64,7 @@ LeetCode| 力扣| 难度
 
 我来给你编一道简单的题目，请你实现这样一个函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     List<String> generateBinaryNumber(int n);
 
 函数的输入是一个正整数 `n`，请你返回所有长度为 `n` 的二进制数（0、1 组成），你可以按任意顺序返回答案。

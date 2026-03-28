@@ -11,11 +11,11 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[48\. Rotate Image](<https://leetcode.com/problems/rotate-image/>)| [48\. 旋转图像](<https://leetcode.cn/problems/rotate-image/>)|   
-[151\. Reverse Words in a String](<https://leetcode.com/problems/reverse-words-in-a-string/>)| [151\. 反转字符串中的单词](<https://leetcode.cn/problems/reverse-words-in-a-string/>)|   
-[61\. Rotate List](<https://leetcode.com/problems/rotate-list/>)| [61\. 旋转链表](<https://leetcode.cn/problems/rotate-list/>)|   
-[54\. Spiral Matrix](<https://leetcode.com/problems/spiral-matrix/>)| [54\. 螺旋矩阵](<https://leetcode.cn/problems/spiral-matrix/>)|   
-[59\. Spiral Matrix II](<https://leetcode.com/problems/spiral-matrix-ii/>)| [59\. 螺旋矩阵 II](<https://leetcode.cn/problems/spiral-matrix-ii/>)|   
+$Rotate Image](<https://leetcode.com/problems/rotate-image/>)|$ 旋转图像](<https://leetcode.cn/problems/rotate-image/>)|   
+[151\. Reverse Words in a String](<https://leetcode.com$[151\. 反转字符串中的单词](<https://leetcode.cn$   
+$Rotate List](<https://leetcode.com/problems/rotate-list/>)|$ 旋转链表](<https://leetcode.cn/problems/rotate-list/>)|   
+$Spiral Matrix](<https://leetcode.com/problems/spiral-matrix/>)|$ 螺旋矩阵](<https://leetcode.cn/problems/spiral-matrix/>)|   
+[59\. S$Matrix II](<https://leetcode.com/problems/s$-matrix-ii/>)| [59\. 螺旋矩阵 II](<https://leetcode.cn/problems/spiral-matrix-ii/>)|   
 [LCR 146. 螺旋遍历二维数组](<https://leetcode.com/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/>)| [LCR 146. 螺旋遍历二维数组](<https://leetcode.cn/problems/shun-shi-zhen-da-yin-ju-zhen-lcof/>)|   
   
 前置知识
@@ -70,9 +70,7 @@ LeetCode| 力扣| 难度
 
 题目很好理解，就是让你将一个二维矩阵顺时针旋转 90 度，**难点在于要「原地」修改** ，函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void rotate(int[][] matrix)
 
 如何「原地」旋转二维矩阵？稍想一下，感觉操作起来非常复杂，可能要设置巧妙的算法机制来「一圈一圈」旋转矩阵：

@@ -65,9 +65,7 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 303. 区域和检索 - 数组不可变](<https://leetcode.cn/problems/range-sum-query-immutable/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 题目要求你实现这样一个类
     class NumArray {
     
@@ -96,13 +94,11 @@ CC++GoJavaJavaScriptPython
     	}
     }
 
-这个解法每次调用 `sumRange` 函数时，都要进行一次 for 循环遍历，时间复杂度为 O(N)O(N)O(N)，而 `sumRange` 的调用频率可能非常高，所以这个算法的效率很低。
+这个解法每次调用 `sumRange` 函数时，都要进行一次 for 循环遍历，时间复杂度为 $O(N)$，而 `sumRange` 的调用频率可能非常高，所以这个算法的效率很低。
 
-正确的解法是使用前缀和技巧进行优化，使得 `sumRange` 函数的时间复杂度为 O(1)O(1)O(1)：
+正确的解法是使用前缀和技巧进行优化，使得 `sumRange` 函数的时间复杂度为 $O(1)$：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class NumArray {
         // 前缀和数组
         private int[] preSum;
@@ -129,7 +125,7 @@ CC++GoJavaJavaScriptPython
 
 看这个 `preSum` 数组，如果我想求索引区间 `[1, 4]` 内的所有元素之和，就可以通过 `preSum[5] - preSum[1]` 得出。
 
-这样，`sumRange` 函数仅仅需要做一次减法运算，避免了每次进行 for 循环调用，最坏时间复杂度为常数 O(1)O(1)O(1)。
+这样，`sumRange` 函数仅仅需要做一次减法运算，避免了每次进行 for 循环调用，最坏时间复杂度为常数 $O(1)$。
 
 你可以点开下面的可视化动画，点击 `preSum[i] = preSum[i - 1] + nums[i - 1]` 这行代码，即可看到 `preSum` 数组的计算，多次点击 `console.log` 这行代码，即可看到 `sumRange` 函数的调用：
 
@@ -219,9 +215,7 @@ CC++GoJavaJavaScriptPython
 
 那么做这道题更好的思路和一维数组中的前缀和是非常类似的，我们可以维护一个二维 `preSum` 数组，专门记录以原点为顶点的矩阵的元素之和，就可以用几次加减运算算出任何一个子矩阵的元素和：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class NumMatrix {
         // preSum[i][j] 记录矩阵 [0, 0, i-1, j-1] 的元素和
         private int[][] preSum;
@@ -246,7 +240,7 @@ CC++GoJavaJavaScriptPython
         }
     }
 
-这样，`sumRegion` 函数的时间复杂度也用前缀和技巧优化到了 O(1)O(1)O(1)，这是典型的「空间换时间」思路。
+这样，`sumRegion` 函数的时间复杂度也用前缀和技巧优化到了 $O(1)$，这是典型的「空间换时间」思路。
 
 你可以点开下面的可视化动画，多次点击 `preSum[i][j] = ...` 这一行代码，即可看到 `preSum` 数组的计算过程，多次点击 `console.log` 这一行代码，即可看到 `sumRegion` 函数的调用：
 
@@ -264,13 +258,13 @@ CC++GoJavaJavaScriptPython
 
 **第一个局限性：使用前缀和技巧的前提是原数组`nums` 不会发生变化**。
 
-如果原数组中的某个元素改变了，那么 `preSum` 数组中该元素后面的值就会失效，需要重新花费 O(n)O(n)O(n) 的时间计算 `preSum` 数组，这就和普通的暴力解法没太大区别了。
+如果原数组中的某个元素改变了，那么 `preSum` 数组中该元素后面的值就会失效，需要重新花费 $O(n)$ 的时间计算 `preSum` 数组，这就和普通的暴力解法没太大区别了。
 
 **第二个局限性：前缀和技巧只适用于存在逆运算的场景** 。
 
 比方说求和的场景，你知道 x+6=10x + 6 = 10x+6=10，那么可以推导出 x=10−6=4x = 10 - 6 = 4x=10−6=4，求乘积的场景也是类似的，你知道 x∗6=12x * 6 = 12x∗6=12，那么可以推导出 x=12/6=2x = 12 / 6 = 2x=12/6=2，这就叫存在逆运算，都可以使用前缀和技巧。
 
-但有些场景是没有逆运算的，比方说求最大值的场景，你知道 max(x,8)=8max(x, 8) = 8max(x,8)=8，此时你无法推导出 xxx 的值。
+但有些场景是没有逆运算的，比方说求最大值的场景，你知道 max(x,8)=8max(x, 8) = 8max(x,8)=8，此时你无法推导出 $x$ 的值。
 
 想要同时解决这两个问题，就需要更高级的数据结构，最通用的解决方案是 [线段树](</zh/algo/data-structure-basic/segment-tree-basic/>)，我们会在数据结构设计章节具体讲解。
 

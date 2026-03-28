@@ -9,7 +9,7 @@
 
 Info
 
-本页面为 vscode 插件的更新日志，插件的详细使用指南见[vscode 插件说明书](</zh/algo/intro/vscode/>)。
+本页面为 $插件的更新日志，插件的详细使用指南见[vscode 插件说明书](</zh/algo/intro/$/>)。
 
 ## ¶v3.3.1
 

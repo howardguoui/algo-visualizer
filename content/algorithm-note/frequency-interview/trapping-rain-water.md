@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[42\. Trapping Rain Water](<https://leetcode.com/problems/trapping-rain-water/>)| [42\. 接雨水](<https://leetcode.cn/problems/trapping-rain-water/>)|   
-[11\. Container With Most Water](<https://leetcode.com/problems/container-with-most-water/>)| [11\. 盛最多水的容器](<https://leetcode.cn/problems/container-with-most-water/>)|   
+[42\. T$Rain Water](<https://leetcode.com/problems/t$$[42\. 接雨水](<https://leetcode.cn/problems/trapping$   
+[11\. Container With Most Water](<https://leetcode.com$[11\. 盛最多水的容器](<https://leetcode.cn$   
   
 前置知识
 
@@ -57,9 +57,7 @@ LeetCode| 力扣| 难度
 
 就是用一个数组表示一个条形图，问你这个条形图最多能接多少水。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int trap(int[] height);
 
 下面就来由浅入深介绍暴力解法 -> 备忘录解法 -> 双指针解法，在 O(N) 时间 O(1) 空间内解决这个问题。

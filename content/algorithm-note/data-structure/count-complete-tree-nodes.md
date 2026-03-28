@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[222\. Count Complete Tree Nodes](<https://leetcode.com/problems/count-complete-tree-nodes/>)| [222\. 完全二叉树的节点个数](<https://leetcode.cn/problems/count-complete-tree-nodes/>)|   
+[222\. Count C$Tree Nodes](<https://leetcode.com/problems/count-c$$[222\. 完全二叉树的节点个数](<https://leetcode.cn/problems/count-complete$   
   
 前置知识
 
@@ -25,7 +25,7 @@ LeetCode| 力扣| 难度
 
 但是，力扣第第 222 题「完全二叉树的节点个数」给你一棵完全二叉树，让你计算它的节点个数，你会不会？算法的时间复杂度是多少？
 
-这个算法的时间复杂度应该是 O(logN∗logN)O(logN*logN)O(logN∗logN)，如果你心中的算法没有达到这么高效，那么本文就是给你写的。
+这个算法的时间复杂度应该是 $O(logN*logN)$，如果你心中的算法没有达到这么高效，那么本文就是给你写的。
 
 关于「完全二叉树」和「满二叉树」等名词的定义，可以参考基础知识章节的 [二叉树基础](</zh/algo/data-structure-basic/binary-tree-basic/>)。
 
@@ -33,9 +33,7 @@ LeetCode| 力扣| 难度
 
 现在回归正题，如何求一棵完全二叉树的节点个数呢？
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 输入一棵完全二叉树，返回节点总数
     int countNodes(TreeNode root);
 

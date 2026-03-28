@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[855\. Exam Room](<https://leetcode.com/problems/exam-room/>)| [855\. 考场就座](<https://leetcode.cn/problems/exam-room/>)|   
+$Exam Room](<https://leetcode.com/problems/exam-room/>)|$ 考场就座](<https://leetcode.cn/problems/exam-room/>)|   
   
 本文讲一讲力扣第 855 题「[考场就座](<https://leetcode.cn/problems/exam-room/>)」，有趣且具有一定技巧性。这种题目并不像动态规划这类算法拼智商，而是看你对常用数据结构的理解和写代码的水平。
 

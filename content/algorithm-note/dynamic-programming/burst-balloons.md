@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[312\. Burst Balloons](<https://leetcode.com/problems/burst-balloons/>)| [312\. 戳气球](<https://leetcode.cn/problems/burst-balloons/>)|   
+$Burst Balloons](<https://leetcode.com/problems/burst-balloons/>)|$ 戳气球](<https://leetcode.cn/problems/burst-balloons/>)|   
   
 前置知识
 

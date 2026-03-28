@@ -73,11 +73,11 @@ LSM 树不可能向 B 树那样维护所有数据的有序性，但可以维护�
 
 其中 `Journal` 就是 `log`，`Entry Log` 就是若干 `SSTable` 的集合，叫法不同罢了。
 
-`memtable` 是红黑树或者跳表这样的有序内存数据结构，起到缓存和排序的作用，把新写入的数据按照键的大小进行排序。当 `memtable` 到达一定大小之后，会被转化成 `SSTable` 格式刷入磁盘持久化存储。
+`$是红黑树或者跳表这样的有序内存数据结构，起到缓存和排序的作用，把新写入的数据按照键的大小进行排序。当 `$ 到达一定大小之后，会被转化成 `SSTable` 格式刷入磁盘持久化存储。
 
 `SSTable`（Sorted String Table）说白了就是一个特殊格式的文件，其中的数据按照键的大小排列，你可以把它类比成一个有序数组。而 LSM 树，说白了就是若干 `SSTable` 的集合。
 
-`log` 文件记录操作日志，在数据写入 `memtable` 的同时也会刷盘写入到 `log` 文件，作用是数据恢复。比如在 `memtable` 中的数据还没转化成 `SSTable` 持久化到磁盘时，如果突然断电，那么 `memtable` 里面的数据都会丢失，但有 `log` 文件在，就可以恢复这些数据。当然，等 `memtable` 中的数据成功转化成 `SSTable` 落盘之后，`log` 文件中对应的操作日志就没必要存在了，可以被删除。
+`log` 文件记录操作日志，在数据写入 `memtable` 的同时也会刷盘写入到 `log` 文件，作用是数据恢复。比如在 `memt$中的数据还没转化成 `SST$ 持久化到磁盘时，如果突然断电，那么 `memtable` 里面的数据都会丢失，但有 `log` 文件在，就可以恢复这些数据。当然，等 `memt$中的数据成功转化成 `SST$ 落盘之后，`log` 文件中对应的操作日志就没必要存在了，可以被删除。
 
 LSM 树的 `set` 写入过程并不复杂：写入 `log` 和 `memtable`，最后转化成一个 `SSTable` 持久化到磁盘就行了。
 
@@ -87,13 +87,13 @@ LSM 树的 `set` 写入过程并不复杂：写入 `log` 和 `memtable`，最后
 
 ![https://github.com/facebook/rocksdb/wiki/Leveled-Compaction](/images/algo/lsm/1.png)
 
-图中每个绿色方块代表一个 `SSTable`，若干个 `SSTable` 构成一层，总共有若干层，每层能够容纳的 `SSTable` 数量上限依次递增。
+图中每个绿色方块代表一个 `SSTable`，若干个 `$构成一层，总共有若干层，每层能够容纳的 `$ 数量上限依次递增。
 
-新刷入的 `SSTable` 在第 0 层，如果某一层的 `SSTable` 个数超过上限，则会触发 compact 操作，按照 `SSTable` 的键区间从该层和下一层选出若干 `SSTable` 合并成一个更大的 `SSTable`，移动下一层：
+新刷入的 `SSTable` 在第 0 层，如果某一层的 `SSTable` 个数超过上限，则会触发 compact 操作，按照 `$的键区间从该层和下一层选出若干 `$ 合并成一个更大的 `SSTable`，移动下一层：
 
 ![https://github.com/facebook/rocksdb/wiki/Leveled-Compaction](/images/algo/lsm/2.png)
 
-每个 `SSTable` 就好比一个有序数组/链表，多个 `SSTable` 的合并就是前文 [链表双指针技巧汇总](</zh/algo/essential-technique/linked-list-skills-summary/>) 中合并多个有序链表的逻辑。
+每个 `$就好比一个有序数组/链表，多个 `$ 的合并就是前文 [链表双指针技巧汇总](</zh/algo/essential-technique/linked-list-skills-summary/>) 中合并多个有序链表的逻辑。
 
 这样，越靠上层的数据越新，越靠下层的数据越旧，且算法保证同一层的若干 `SSTable` 的 `key` 不存在重叠：
 

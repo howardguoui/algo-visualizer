@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[115\. Distinct Subsequences](<https://leetcode.com/problems/distinct-subsequences/>)| [115\. 不同的子序列](<https://leetcode.cn/problems/distinct-subsequences/>)|   
+[115\. Distinct Subsequences](<https://leetcode.com$[115\. 不同的子序列](<https://leetcode.cn$   
   
 前置知识
 

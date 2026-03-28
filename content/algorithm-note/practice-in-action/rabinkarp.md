@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[187\. Repeated DNA Sequences](<https://leetcode.com/problems/repeated-dna-sequences/>)| [187\. 重复的DNA序列](<https://leetcode.cn/problems/repeated-dna-sequences/>)|   
-[28\. Find the Index of the First Occurrence in a String](<https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/>)| [28\. 找出字符串中第一个匹配项的下标](<https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/>)|   
+[187\. Repeated DNA Sequences](<https://leetcode.com$[187\. 重复的DNA序列](<https://leetcode.cn$   
+[28\. Find the Index of the First Occurrence in a String](<https://leetcode.com/pro$[28\. 找出字符串中第一个匹配项的下标](<https://leetcode.cn/pro$   
   
 前置知识
 
@@ -36,9 +36,7 @@ LeetCode| 力扣| 难度
 
 首先，我问你一个很基础的问题，给你输入一个字符串形式的正整数，如何把它转化成数字的形式？很简单，下面这段代码就可以做到：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     String s = "8264";
     int number = 0;
     for (int i = 0; i < s.length(); i++) {

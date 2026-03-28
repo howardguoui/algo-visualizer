@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[55\. Jump Game](<https://leetcode.com/problems/jump-game/>)| [55\. 跳跃游戏](<https://leetcode.cn/problems/jump-game/>)|   
+$Jump Game](<https://leetcode.com/problems/jump-game/>)|$ 跳跃游戏](<https://leetcode.cn/problems/jump-game/>)|   
 [45\. Jump Game II](<https://leetcode.com/problems/jump-game-ii/>)| [45\. 跳跃游戏 II](<https://leetcode.cn/problems/jump-game-ii/>)|   
   
 前置知识
@@ -91,7 +91,7 @@ LeetCode| 力扣| 难度
         return 100 * n;
     }
 
-这就是贪心算法，复杂度从 O(2n)O(2^n)O(2n) 优化到了 O(1)O(1)O(1)，堪称离谱。
+这就是贪心算法，复杂度从 $O(2^n)$ 优化到了 $O(1)$，堪称离谱。
 
 你可能会认为这个例子太简单？
 

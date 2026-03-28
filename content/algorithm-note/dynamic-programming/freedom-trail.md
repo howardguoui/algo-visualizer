@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[514\. Freedom Trail](<https://leetcode.com/problems/freedom-trail/>)| [514\. 自由之路](<https://leetcode.cn/problems/freedom-trail/>)|   
+$Freedom Trail](<https://leetcode.com/problems/freedom-trail/>)|$ 自由之路](<https://leetcode.cn/problems/freedom-trail/>)|   
   
 前置知识
 
@@ -76,14 +76,12 @@ LeetCode| 力扣| 难度
 
 扯了这么多题外话终于要步入正题了，今天要讲的力扣第 514 题「[自由之路](<https://leetcode.cn/problems/freedom-trail/>)」和钢琴指法问题有异曲同工之妙，如果你能理解钢琴的例子，相信你也能很快做出这道算法题。
 
-题目给你输入一个字符串 `ring` 代表圆盘上的字符（指针位置在 12 点钟方向，初始指向 `ring[0]`），再输入一个字符串 `key` 代表你需要拨动圆盘输入的字符串，你的算法需要返回输入这个 `key` 至少进行多少次操作（拨动一格圆盘和按下圆盘中间的按钮都算是一次操作）。
+题目给你输入一个字符串 `ring` 代表圆盘上的字符（指针位置在 12 点钟方向，初始指向 `ring[0]`），再输入一个字符串 `$代表你需要拨动圆盘输入的字符串，你的算法需要返回输入这个 `$ 至少进行多少次操作（拨动一格圆盘和按下圆盘中间的按钮都算是一次操作）。
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int findRotateSteps(String ring, String key);
+
+    int findRotateSteps(S$ring, S$ key);
 
 比如题目举的例子，输入 `ring = "godding", key = "gd"`，对应的圆盘如下（大写只是为了清晰，实际上输入的字符串都是小写字母）：
 
@@ -107,9 +105,7 @@ CC++GoJavaJavaScriptPython
 
 这样我们可以写这样一个 `dp` 函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int dp(String ring, int i, String key, int j);
 
 这个 `dp` 函数的定义如下：
@@ -118,9 +114,7 @@ CC++GoJavaJavaScriptPython
 
 根据这个定义，题目其实就是想计算 `dp(ring, 0, key, 0)` 的值，而且我们可以把 `dp` 函数的 base case 写出来：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int dp(String ring, int i, String key, int j) {
         // base case，完成输入
         if (j == key.length()) return 0;
@@ -164,15 +158,13 @@ CC++GoJavaJavaScriptPython
 
 ![](/images/algo/ring/4.jpeg)
 
-如果输入的是 `key = "di"`，那么即便右边的 `"d"` 离得近，也应该去左边的 `"d"`，因为左边的 `"d"` 旁边就是 `"i"`，「整体」的操作数最少。
+如果输入的是 `key = "di"`，那么即便右边的 $离得近，也应该去左边的 `"d"`，因为左边的$ 旁边就是 `"i"`，「整体」的操作数最少。
 
 那么，应该如何判断呢？其实就是穷举，递归调用 `dp` 函数，把两种选择的「整体」代价算出来，然后再做比较就行了。
 
 讲到这就差不多了，直接看最终代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 字符 -> 索引列表
         private Map<Character, List<Integer>> charToIndex = new HashMap<>();
@@ -180,7 +172,7 @@ CC++GoJavaJavaScriptPython
         private int[][] memo;
     
         // 主函数
-        public int findRotateSteps(String ring, String key) {
+        public int findRotateSteps(S$ring, S$ key) {
             int m = ring.length();
             int n = key.length();
             // 备忘录全部初始化为 0

@@ -107,9 +107,7 @@
 
 下面给出代码实现。以 Java 为例，哈希环用 `TreeMap` 实现，它的 `ceilingKey` 方法可以找到大于等于给定值的最小 key，正好对应「顺时针找到第一个节点」的操作：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     import java.util.*;
     import java.security.*;
     
@@ -186,7 +184,7 @@ CC++GoJavaJavaScriptPython
         }
     
         // 统计迁移的 key 数量
-        private static int countMigrations(Map<String, String> before, Map<String, String> after) {
+        private static int countMigrations($String> before,$ String> after) {
             int count = 0;
             for (String key : before.keySet()) {
                 if (!before.get(key).equals(after.get(key))) {

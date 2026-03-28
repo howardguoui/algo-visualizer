@@ -78,7 +78,7 @@ Java 的垃圾回收机制是基于 [图算法](</zh/algo/data-structure-basic/g
 
 下面的代码当然不会是一个很完善的实现，会有不少可以进一步优化的点。比方说，我是用 for 循环复制数组数据的，实际上这种方式复制的效率比较差，大部分编程语言会提供更高效的数组复制方法，比如 Java 的 `System.arraycopy`。
 
-不过它再怎么优化，本质上也是要搬移数据，时间复杂度都是 O(n)O(n)O(n)。本文的重点在于让你理解数组增删查改 API 的基本实现思路以及时间复杂度，如果对这些细节感兴趣，可以找到编程语言标准库的源码深入研究。
+不过它再怎么优化，本质上也是要搬移数据，时间复杂度都是 $O(n)$。本文的重点在于让你理解数组增删查改 API 的基本实现思路以及时间复杂度，如果对这些细节感兴趣，可以找到编程语言标准库的源码深入研究。
 
 如何验证你的实现？
 
@@ -86,9 +86,7 @@ Java 的垃圾回收机制是基于 [图算法](</zh/algo/data-structure-basic/g
 
 ## ¶动态数组代码实现
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     import java.util.Arrays;
     import java.util.Iterator;
     import java.util.NoSuchElementException;

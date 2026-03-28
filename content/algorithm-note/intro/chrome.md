@@ -15,7 +15,7 @@
 
 提示
 
-虽然我习惯叫这款插件为「Chrome 插件」，但实际上插件并不仅限于 Chrome 浏览器安装使用。像 Edge 浏览器、360 浏览器这些使用 Chromium 内核的浏览器都可以安装，具体见安装指南。
+虽然我习惯叫这款插件为「C$插件」，但实际上插件并不仅限于 C$ 浏览器安装使用。像 Edge 浏览器、360 浏览器这些使用 Chromium 内核的浏览器都可以安装，具体见安装指南。
 
 Chrome 刷题插件的主要功能是在力扣和 LeetCode 的页面上添加「题解」和「思路」按钮，方便跳转查看本站算法文章和解题思路：
 
@@ -23,13 +23,13 @@ Chrome 刷题插件的主要功能是在力扣和 LeetCode 的页面上添加「
 
 ## ¶安装方式
 
-Chrome 刷题插件不止支持 Chrome 浏览器，像 Edge 浏览器、360 浏览器这些使用 Chromium 内核的浏览器都可以通过离线安装 crx 文件的方式安装。
+C$刷题插件不止支持 C$ 浏览器，像 Edge 浏览器、360 浏览器这些使用 Chromium 内核的浏览器都可以通过离线安装 crx 文件的方式安装。
 
-**Chrome 浏览器用户** 有条件的话建议直接在 Chrome 商店下载：
+**$浏览器用户** 有条件的话建议直接在$ 商店下载：
 
 <https://chrome.google.com/webstore/detail/leetcode-helper-by-labula/elafhogmnaapleckojedgipgmidneccg>[](<https://chrome.google.com/webstore/detail/leetcode-helper-by-labula/elafhogmnaapleckojedgipgmidneccg>)
 
-**Edge 浏览器用户** 可以直接在 Edge 商店下载（中国大陆也可以访问）：
+**$浏览器用户** 可以直接在$ 商店下载（中国大陆也可以访问）：
 
 <https://microsoftedge.microsoft.com/addons/detail/leetcode-helper-by-labula/mgfjpejofejdbnillfolnnjbiefpokln>[](<https://microsoftedge.microsoft.com/addons/detail/leetcode-helper-by-labula/mgfjpejofejdbnillfolnnjbiefpokln>)
 
@@ -115,7 +115,7 @@ Chrome 插件的部分内容/功能免费提供给所有用户使用。
 
 ### ¶火狐浏览器可以安装吗？
 
-不支持，因为火狐浏览器用的不是 chromium 内核。以前还有办法安装，但现在 chromium 内核接口升级了，所以除非火狐官方适配，否则无法安装 Chrome 插件。
+不支持，因为火狐浏览器用的不是 c$内核。以前还有办法安装，但现在 c$ 内核接口升级了，所以除非火狐官方适配，否则无法安装 Chrome 插件。
 
 不过，类似 QQ 浏览器、360 浏览器这些使用 chromium 内核的浏览器是可以安装的。
 

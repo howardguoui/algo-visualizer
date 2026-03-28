@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[232\. Implement Queue using Stacks](<https://leetcode.com/problems/implement-queue-using-stacks/>)| [232\. 用栈实现队列](<https://leetcode.cn/problems/implement-queue-using-stacks/>)|   
-[225\. Implement Stack using Queues](<https://leetcode.com/problems/implement-stack-using-queues/>)| [225\. 用队列实现栈](<https://leetcode.cn/problems/implement-stack-using-queues/>)|   
+[232\. Implement Q$using Stacks](<https://leetcode.com/problems/implement-q$$[232\. 用栈实现队列](<https://leetcode.cn/problems/implement-queue$   
+[225\. Implement S$using Queues](<https://leetcode.com/problems/implement-s$$[225\. 用队列实现栈](<https://leetcode.cn/problems/implement-stack$   
   
 前置知识
 
@@ -35,9 +35,7 @@ LeetCode| 力扣| 难度
 
 力扣第 232 题「[用栈实现队列](<https://leetcode.cn/problems/implement-queue-using-stacks/>)」让我们实现的 API 如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class MyQueue {
         
         // 添加元素到队尾
@@ -65,13 +63,11 @@ CC++GoJavaJavaScriptPython
 
 ![](/images/algo/stack-queue/4.jpg)
 
-当 `s2` 中存在元素时，直接调用操作 `s2` 的 `pop` 方法，弹出的就是最先插入的元素，即实现了队列的 `pop` 操作。
+当 `s2` 中存在元素时，直接调用操作 `s2` 的 `$方法，弹出的就是最先插入的元素，即实现了队列的 `$ 操作。
 
 完整代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class MyQueue {
         private Stack<Integer> s1, s2;
     
@@ -112,7 +108,7 @@ CC++GoJavaJavaScriptPython
 
 值得一提的是，这几个操作的时间复杂度是多少呢？
 
-有点意思的是 `peek` 操作，调用它时可能触发 `while` 循环，这样的话时间复杂度是 O(N)，但是大部分情况下 `while` 循环不会被触发，时间复杂度是 O(1)。由于 `pop` 操作调用了 `peek`，它的时间复杂度和 `peek` 相同。
+有点意思的是 `peek` 操作，调用它时可能触发 $循环，这样的话时间复杂度是 O(N)，但是大部分情况下$ 循环不会被触发，时间复杂度是 O(1)。由于 `pop` 操作调用了 `peek`，它的时间复杂度和 `peek` 相同。
 
 像这种情况，可以说它们的**最坏时间复杂度** 是 O(N)，因为包含 `while` 循环，**可能** 需要从 `s1` 往 `s2` 搬移元素。
 
@@ -126,9 +122,7 @@ CC++GoJavaJavaScriptPython
 
 力扣第 225 题「[用队列实现栈](<https://leetcode.cn/problems/implement-stack-using-queues/>)」让我们实现如下 API：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class MyStack {
         
         // 添加元素到栈顶
@@ -146,9 +140,7 @@ CC++GoJavaJavaScriptPython
 
 先说 `push` API，直接将元素加入队列，同时记录队尾元素，因为队尾元素相当于栈顶元素，如果要 `top` 查看栈顶元素的话可以直接返回：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class MyStack {
         Queue<Integer> q = new LinkedList<>();
         int top_elem = 0;
@@ -170,7 +162,7 @@ CC++GoJavaJavaScriptPython
         }
     }
 
-我们的底层数据结构是先进先出的队列，每次 `pop` 只能从队头取元素；但是栈是后进先出，也就是说 `pop` API 要从队尾取元素：
+我们的底层数据结构是先进先出的队列，每次 `$只能从队头取元素；但是栈是后进先出，也就是说 `$ API 要从队尾取元素：
 
 ![](/images/algo/stack-queue/5.jpg)
 
@@ -178,9 +170,7 @@ CC++GoJavaJavaScriptPython
 
 ![](/images/algo/stack-queue/6.jpg)
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class MyStack {
         // 为了节约篇幅，省略上文给出的代码部分...
     
@@ -198,9 +188,7 @@ CC++GoJavaJavaScriptPython
 
 这样实现还有一点小问题就是，原来的队尾元素被推到队头并删除了，但是 `top_elem` 变量没有更新，我们还需要一点小修改：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class MyStack {
         // 为了节约篇幅，省略上文给出的代码部分...
     
@@ -222,9 +210,7 @@ CC++GoJavaJavaScriptPython
 
 这样就实现完了，完整的代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class MyStack {
         Queue<Integer> q = new LinkedList<>();
         int top_elem = 0;

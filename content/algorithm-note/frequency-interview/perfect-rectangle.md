@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[391\. Perfect Rectangle](<https://leetcode.com/problems/perfect-rectangle/>)| [391\. 完美矩形](<https://leetcode.cn/problems/perfect-rectangle/>)|   
+[391\. Perfect Rectangle](<https://leetcode.com$[391\. 完美矩形](<https://leetcode.cn$   
   
 今天讲一道非常有意思，而且比较有难度的题目。
 
@@ -64,9 +64,7 @@ LeetCode| 力扣| 难度
 
 也就是说，输入的 `rectangles` 数组实际上就是很多小矩形，题目要求我们输出一个布尔值，判断这些小矩形能否构成一个「完美矩形」。函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean isRectangleCover(int[][] rectangles)
 
 **所谓「完美矩形」，就是说`rectangles` 中的小矩形拼成图形必须是一个大矩形，且大矩形中不能有重叠和空缺**。
@@ -87,9 +85,7 @@ CC++GoJavaJavaScriptPython
 
 注意我们用小写字母表示小矩形的坐标，大写字母表示最终形成的完美矩形的坐标，可以这样写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 左下角顶点，初始化为正无穷，以便记录最小值
     double X1 = Double.POSITIVE_INFINITY, Y1 = Double.POSITIVE_INFINITY;
     
@@ -114,9 +110,7 @@ CC++GoJavaJavaScriptPython
 
 代码可以进一步：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean isRectangleCover(int[][] rectangles) {
         int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;
         int X2 = Integer.MIN_VALUE, Y2 = Integer.MIN_VALUE;
@@ -177,9 +171,7 @@ Note
 
 注意，2 和 4 都是偶数，1 和 3 都是奇数，我们想计算最终形成的图形中有几个顶点，也就是要筛选出那些出现了奇数次的顶点，可以这样写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean isRectangleCover(int[][] rectangles) {
         int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;
         int X2 = Integer.MIN_VALUE, Y2 = Integer.MIN_VALUE;
@@ -231,7 +223,7 @@ CC++GoJavaJavaScriptPython
 
 这段代码中，我们用一个 `points` 集合记录 `rectangles` 中小矩形组成的最终图形的顶点坐标，关键逻辑在于如何向 `points` 中添加坐标：
 
-**如果某一个顶点`p` 存在于集合 `points` 中，则将它删除；如果不存在于集合 `points` 中，则将它插入**。
+**如果某一个顶点`p` $`points` 中，则将它删除；如果不$ `points` 中，则将它插入**。
 
 这个简单的逻辑，让 `points` 集合最终只会留下那些出现了 1 次或者 3 次的顶点，那些出现了 2 次或者 4 次的顶点都被消掉了。
 
@@ -245,9 +237,7 @@ CC++GoJavaJavaScriptPython
 
 所以不仅要保证 `len(points) == 4`，而且要保证 `points` 中最终剩下的点坐标就是完美矩形的四个理论坐标，直接看代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean isRectangleCover(int[][] rectangles) {
             int X1 = Integer.MAX_VALUE, Y1 = Integer.MAX_VALUE;

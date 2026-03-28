@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[96\. Unique Binary Search Trees](<https://leetcode.com/problems/unique-binary-search-trees/>)| [96\. 不同的二叉搜索树](<https://leetcode.cn/problems/unique-binary-search-trees/>)|   
-[95\. Unique Binary Search Trees II](<https://leetcode.com/problems/unique-binary-search-trees-ii/>)| [95\. 不同的二叉搜索树 II](<https://leetcode.cn/problems/unique-binary-search-trees-ii/>)|   
+[96\. Unique B$Search Trees](<https://leetcode.com/problems/unique-b$$[96\. 不同的二叉搜索树](<https://leetcode.cn/problems/unique-binary$   
+[95\. Unique Binary S$Trees II](<https://leetcode.com/problems/unique-binary-s$-trees-ii/>)| [95\. 不同的二叉搜索树 II](<https://leetcode.cn/problems/unique-binary-search-trees-ii/>)|   
   
 前置知识
 
@@ -57,9 +57,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int numTrees(int n);
 
 这就是一个正宗的穷举问题，那么什么方式能够正确地穷举有效 BST 的数量呢？

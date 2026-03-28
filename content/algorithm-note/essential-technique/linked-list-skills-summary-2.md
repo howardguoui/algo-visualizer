@@ -11,14 +11,14 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[21\. Merge Two Sorted Lists](<https://leetcode.com/problems/merge-two-sorted-lists/>)| [21\. 合并两个有序链表](<https://leetcode.cn/problems/merge-two-sorted-lists/>)|   
-[86\. Partition List](<https://leetcode.com/problems/partition-list/>)| [86\. 分隔链表](<https://leetcode.cn/problems/partition-list/>)|   
+[21\. Merge Two Sorted Lists](<https://leetcode.com$[21\. 合并两个有序链表](<https://leetcode.cn$   
+$Partition List](<https://leetcode.com/problems/partition-list/>)|$ 分隔链表](<https://leetcode.cn/problems/partition-list/>)|   
 [23\. Merge k Sorted Lists](<https://leetcode.com/problems/merge-k-sorted-lists/>)| [23\. 合并 K 个升序链表](<https://leetcode.cn/problems/merge-k-sorted-lists/>)|   
 [19\. Remove Nth Node From End of List](<https://leetcode.com/problems/remove-nth-node-from-end-of-list/>)| [19\. 删除链表的倒数第 N 个结点](<https://leetcode.cn/problems/remove-nth-node-from-end-of-list/>)|   
-[876\. Middle of the Linked List](<https://leetcode.com/problems/middle-of-the-linked-list/>)| [876\. 链表的中间结点](<https://leetcode.cn/problems/middle-of-the-linked-list/>)|   
+[876\. Middle of the Linked List](<https://leetcode.com$[876\. 链表的中间结点](<https://leetcode.cn$   
 [142\. Linked List Cycle II](<https://leetcode.com/problems/linked-list-cycle-ii/>)| [142\. 环形链表 II](<https://leetcode.cn/problems/linked-list-cycle-ii/>)|   
-[160\. Intersection of Two Linked Lists](<https://leetcode.com/problems/intersection-of-two-linked-lists/>)| [160\. 相交链表](<https://leetcode.cn/problems/intersection-of-two-linked-lists/>)|   
-[141\. Linked List Cycle](<https://leetcode.com/problems/linked-list-cycle/>)| [141\. 环形链表](<https://leetcode.cn/problems/linked-list-cycle/>)|   
+[160\. Intersection of Two Linked Lists](<https://leetcode.com$[160\. 相交链表](<https://leetcode.cn$   
+[141\. L$List Cycle](<https://leetcode.com/problems/l$$[141\. 环形链表](<https://leetcode.cn/problems/linked$   
 [LCR 140. 训练计划 II](<https://leetcode.com/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/>)| [LCR 140. 训练计划 II](<https://leetcode.cn/problems/lian-biao-zhong-dao-shu-di-kge-jie-dian-lcof/>)|   
   
 前置知识
@@ -90,19 +90,15 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 21. 合并两个有序链表](<https://leetcode.cn/problems/merge-two-sorted-lists/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
-    ListNode mergeTwoLists(ListNode l1, ListNode l2);
+    $mergeTwoLists(ListNode l1,$ l2);
 
 这题比较简单，我们直接看解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
-        public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        public $mergeTwoLists(ListNode l1,$ l2) {
             // 虚拟头结点
             ListNode dummy = new ListNode(-1), p = dummy;
             ListNode p1 = l1, p2 = l2;
@@ -143,7 +139,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-**代码中还用到一个链表的算法题中是很常见的「虚拟头结点」技巧，也就是`dummy` 节点**。你可以试试，如果不使用 `dummy` 虚拟节点，代码会复杂一些，需要额外处理指针 `p` 为空的情况。而有了 `dummy` 节点这个占位符，可以避免处理空指针的情况，降低代码的复杂性。
+**代码中还用到一个链表的算法题中是很常见的「虚拟头结点」技巧，也就是`$节点**。你可以试试，如果不使用 `$ 虚拟节点，代码会复杂一些，需要额外处理指针 `p` 为空的情况。而有了 `dummy` 节点这个占位符，可以避免处理空指针的情况，降低代码的复杂性。
 
 何时使用虚拟头结点
 
@@ -190,9 +186,7 @@ CC++GoJavaJavaScriptPython
 
 整体逻辑和合并有序链表非常相似，细节直接看代码吧，注意虚拟头结点的运用：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public ListNode partition(ListNode head, int x) {
             // 存放小于 x 的链表的虚拟头结点
@@ -295,9 +289,7 @@ CC++GoJavaJavaScriptPython
 
 题目来源：[力扣 23. 合并 K 个升序链表](<https://leetcode.cn/problems/merge-k-sorted-lists/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
     ListNode mergeKLists(ListNode[] lists);
 
@@ -305,9 +297,7 @@ CC++GoJavaJavaScriptPython
 
 这里我们就要用到优先级队列这种数据结构，把链表节点放入一个最小堆，就可以每次获得 `k` 个节点中的最小节点。关于优先级队列可以参考 [优先级队列（二叉堆）原理及实现](</zh/algo/data-structure-basic/binary-heap-implement/>)，本文不展开。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public ListNode mergeKLists(ListNode[] lists) {
             if (lists.length == 0) return null;
@@ -343,7 +333,7 @@ CC++GoJavaJavaScriptPython
 
 这个算法是面试常考题，它的时间复杂度是多少呢？
 
-优先队列 `pq` 中的元素个数最多是 kkk，所以一次 `poll` 或者 `add` 方法的时间复杂度是 O(logk)O(logk)O(logk)；所有的链表节点都会被加入和弹出 `pq`，**所以算法整体的时间复杂度是 O(Nlogk)O(Nlogk)O(Nlogk)，其中 kkk 是链表的条数，NNN 是这些链表的节点总数**。
+优先队列 `pq` 中的元素个数最多是 $k$，所以一次 `poll` 或者 `add` 方法的时间复杂度是 $O(logk)$；所有的链表节点都会被加入和弹出 `pq`，**所以算法整体的时间复杂度是 $O(Nlogk)$，其中 $k$ 是链表的条数，$N$ 是这些链表的节点总数**。
 
 提示
 
@@ -381,9 +371,7 @@ CC++GoJavaJavaScriptPython
 
 上述逻辑的代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 返回链表的倒数第 k 个节点
     ListNode findFromEnd(ListNode head, int k) {
         ListNode p1 = head;
@@ -405,7 +393,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-当然，如果用 big O 表示法来计算时间复杂度，无论遍历一次链表和遍历两次链表的时间复杂度都是 O(N)O(N)O(N)，但上述这个算法更有技巧性。
+当然，如果用 big O 表示法来计算时间复杂度，无论遍历一次链表和遍历两次链表的时间复杂度都是 $O(N)$，但上述这个算法更有技巧性。
 
 很多链表相关的算法题都会用到这个技巧，比如说力扣第 19 题「[删除链表的倒数第 N 个结点](<https://leetcode.cn/problems/remove-nth-node-from-end-of-list/>)」：
 
@@ -450,9 +438,7 @@ CC++GoJavaJavaScriptPython
 
 我们直接看解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public ListNode removeNthFromEnd(ListNode head, int n) {
             // 虚拟头结点
@@ -488,13 +474,11 @@ CC++GoJavaJavaScriptPython
 
 我们让两个指针 `slow` 和 `fast` 分别指向链表头结点 `head`。
 
-**每当慢指针`slow` 前进一步，快指针 `fast` 就前进两步，这样，当 `fast` 走到链表末尾时，`slow` 就指向了链表中点**。
+**每当慢指针`slow` 前进一步，快指针 `$就前进两步，这样，当 `$ 走到链表末尾时，`slow` 就指向了链表中点**。
 
 上述思路的代码实现如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public ListNode middleNode(ListNode head) {
             // 快慢指针初始化指向 head
@@ -524,13 +508,11 @@ CC++GoJavaJavaScriptPython
 
 每当慢指针 `slow` 前进一步，快指针 `fast` 就前进两步。
 
-如果 `fast` 最终能正常走到链表末尾，说明链表中没有环；如果 `fast` 走着走着竟然和 `slow` 相遇了，那肯定是 `fast` 在链表中转圈了，说明链表中含有环。
+如果 `$最终能正常走到链表末尾，说明链表中没有环；如果 `$ 走着走着竟然和 `slow` 相遇了，那肯定是 `fast` 在链表中转圈了，说明链表中含有环。
 
 只需要把寻找链表中点的代码稍加修改就行了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     public class Solution {
         public boolean hasCycle(ListNode head) {
             // 快慢指针初始化指向 head
@@ -562,9 +544,7 @@ CC++GoJavaJavaScriptPython
 
 这里先直接看一下寻找环起点的解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public ListNode detectCycle(ListNode head) {
             ListNode fast, slow;
@@ -617,10 +597,8 @@ CC++GoJavaJavaScriptPython
 
 这个问题有意思，也是力扣第 160 题「[相交链表](<https://leetcode.cn/problems/intersection-of-two-linked-lists/>)」函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    ListNode getIntersectionNode(ListNode headA, ListNode headB);
+
+    $getIntersectionNode(ListNode headA,$ headB);
 
 给你输入两个链表的头结点 `headA` 和 `headB`，这两个链表可能存在相交。
 
@@ -656,11 +634,9 @@ CC++GoJavaJavaScriptPython
 
 按照这个思路，可以写出如下代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     public class Solution {
-        public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        public $getIntersectionNode(ListNode headA,$ headB) {
             // p1 指向 A 链表头结点，p2 指向 B 链表头结点
             ListNode p1 = headA, p2 = headB;
             while (p1 != p2) {
@@ -679,7 +655,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-这样，这道题就解决了，空间复杂度为 O(1)O(1)O(1)，时间复杂度为 O(N)O(N)O(N)。
+这样，这道题就解决了，空间复杂度为 $O(1)$，时间复杂度为 $O(N)$。
 
 以上就是单链表的所有技巧，希望对你有启发。
 
@@ -695,11 +671,9 @@ CC++GoJavaJavaScriptPython
 
 另外，还有读者提到，既然「寻找两条链表的交点」的核心在于让 `p1` 和 `p2` 两个指针能够同时到达相交节点 `c1`，那么可以通过预先计算两条链表的长度来做到这一点，具体代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
-        public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        public $getIntersectionNode(ListNode headA,$ headB) {
             int lenA = 0, lenB = 0;
             // 计算两条链表的长度
             for (ListNode p1 = headA; p1 != null; p1 = p1.next) {
@@ -730,7 +704,7 @@ CC++GoJavaJavaScriptPython
         }
     }
 
-虽然代码多一些，但是时间复杂度是还是 O(N)O(N)O(N)，而且会更容易理解一些。
+虽然代码多一些，但是时间复杂度是还是 $O(N)$，而且会更容易理解一些。
 
 总之，我的解法代码并不一定就是最优或者最正确的，鼓励大家在评论区多多提出自己的疑问和思考，我也很高兴和大家探讨更多的解题思路~
 

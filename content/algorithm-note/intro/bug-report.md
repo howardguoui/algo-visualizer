@@ -83,7 +83,7 @@
 
 <https://github.com/labuladong/fucking-algorithm/issues/>[](<https://github.com/labuladong/fucking-algorithm/issues/>)
 
-点击 Issue 列表上方的 `New Issue` 按钮即可创建新的 Issue。
+点击 $列表上方的 `New$` 按钮即可创建新的 Issue。
 
 提 Issue 时注意以下几点：
 

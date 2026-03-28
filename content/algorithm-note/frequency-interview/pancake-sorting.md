@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[969\. Pancake Sorting](<https://leetcode.com/problems/pancake-sorting/>)| [969\. 煎饼排序](<https://leetcode.cn/problems/pancake-sorting/>)|   
+$Pancake Sorting](<https://leetcode.com/problems/pancake-sorting/>)|$ 煎饼排序](<https://leetcode.cn/problems/pancake-sorting/>)|   
   
 力扣第 969 题「[煎饼排序](<https://leetcode.cn/problems/pancake-sorting/>)」是个很有意思的实际问题：假设盘子上有 `n` 块**面积大小不一** 的烧饼，你如何用一把锅铲进行若干次翻转，让这些烧饼的大小有序（小的在上，大的在下）？
 
@@ -77,9 +77,7 @@ LeetCode| 力扣| 难度
 
 为什么说这个问题有递归性质呢？比如说我们需要实现这样一个函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // cakes 是一堆烧饼，函数会将前 n 个烧饼排序
     void sort(int[] cakes, int n);
 
@@ -117,9 +115,7 @@ base case：`n == 1` 时，排序 1 个饼时不需要翻转。
 
 只要把上述的思路用代码实现即可，唯一需要注意的是，数组索引从 0 开始，而我们要返回的结果是从 1 开始算的。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 记录反转操作序列
         LinkedList<Integer> res = new LinkedList<>();

@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[341\. Flatten Nested List Iterator](<https://leetcode.com/problems/flatten-nested-list-iterator/>)| [341\. 扁平化嵌套列表迭代器](<https://leetcode.cn/problems/flatten-nested-list-iterator/>)|   
+[341\. Flatten N$List Iterator](<https://leetcode.com/problems/flatten-n$$[341\. 扁平化嵌套列表迭代器](<https://leetcode.cn/problems/flatten-nested$   
   
 前置知识
 
@@ -73,12 +73,10 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 341. 扁平化嵌套列表迭代器](<https://leetcode.cn/problems/flatten-nested-list-iterator/>)。
 
-我们的算法会被输入一个 `NestedInteger` 列表，我们需要做的就是写一个迭代器类 `NestedIterator`，将这个带有嵌套结构 `NestedInteger` 的列表「拍平」：
+我们的算法会被输入一个 $列表，我们需要做的就是写一个迭代器类 `NestedIterator`，将这个带有嵌套结构$ 的列表「拍平」：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    public class NestedIterator implements Iterator<Integer> {
+
+    public class NestedI$implements I$<Integer> {
         // 构造器输入一个 NestedInteger 列表
         public NestedIterator(List<NestedInteger> nestedList) {}
         
@@ -89,7 +87,7 @@ CC++GoJavaJavaScriptPython
         public boolean hasNext() {}
     }
 
-我们写的这个 `NestedIterator` 类会被这样调用，**先调用`hasNext` 方法，后调用 `next` 方法**：
+我们写的这个 `NestedIterator` 类会被这样调用，**先调用`hasN$方法，后调用 `n$ 方法**：
     
     
     NestedIterator i = new NestedIterator(nestedList);

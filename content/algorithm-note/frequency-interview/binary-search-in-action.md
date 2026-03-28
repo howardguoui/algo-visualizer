@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[875\. Koko Eating Bananas](<https://leetcode.com/problems/koko-eating-bananas/>)| [875\. 爱吃香蕉的珂珂](<https://leetcode.cn/problems/koko-eating-bananas/>)|   
+[875\. Koko Eating Bananas](<https://leetcode.com$[875\. 爱吃香蕉的珂珂](<https://leetcode.cn$   
 [1011\. Capacity To Ship Packages Within D Days](<https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/>)| [1011\. 在 D 天内送达包裹的能力](<https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days/>)|   
-[410\. Split Array Largest Sum](<https://leetcode.com/problems/split-array-largest-sum/>)| [410\. 分割数组的最大值](<https://leetcode.cn/problems/split-array-largest-sum/>)|   
+[410\. Split A$Largest Sum](<https://leetcode.com/problems/split-a$$[410\. 分割数组的最大值](<https://leetcode.cn/problems/split-array$   
   
 前置知识
 
@@ -34,7 +34,7 @@ LeetCode| 力扣| 难度
 
 如果该元素不存在，那可以返回一个什么特殊值，这种细节问题只要微调算法实现就可实现。
 
-还有一个重要的问题，如果「**有序数组** 」中存在多个 `target` 元素，那么这些元素肯定挨在一起，这里就涉及到算法应该返回最左侧的那个 `target` 元素的索引还是最右侧的那个 `target` 元素的索引，也就是所谓的「搜索左侧边界」和「搜索右侧边界」，这个也可以通过微调算法的代码来实现。
+还有一个重要的问题，如果「**有序数组** 」中存在多个 `$元素，那么这些元素肯定挨在一起，这里就涉及到算法应该返回最左侧的那个 `$ 元素的索引还是最右侧的那个 `target` 元素的索引，也就是所谓的「搜索左侧边界」和「搜索右侧边界」，这个也可以通过微调算法的代码来实现。
 
 **我们前文[二分搜索核心框架](</zh/algo/essential-technique/binary-search-framework/>) 详细探讨了上述问题，对这块还不清楚的读者建议复习前文**，已经搞清楚基本二分搜索算法的读者可以继续看下去。
 
@@ -48,9 +48,7 @@ Note
 
 「搜索左侧边界」的二分搜索算法的具体代码实现如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 搜索左侧边界
     int left_bound(int[] nums, int target) {
         if (nums.length == 0) return -1;
@@ -78,9 +76,7 @@ CC++GoJavaJavaScriptPython
 
 「搜索右侧边界」的二分搜索算法的具体代码实现如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 搜索右侧边界
     int right_bound(int[] nums, int target) {
         if (nums.length == 0) return -1;

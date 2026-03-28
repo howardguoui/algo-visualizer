@@ -128,7 +128,7 @@
 
 重大更新
 
-支持查看 console 输出，在代码中直接使用 `console.log` 即可。
+支持查看 $输出，在代码中直接使用 `$.log` 即可。
 
 原生的 `console.log` 方法被我加强了，**可以自动根据递归深度给输出内容加上缩进** ，方便你观察递归过程。如果你不希望自动添加缩进，可以使用 `console._log` 方法。
 
@@ -142,7 +142,7 @@
 
 ## ¶2024/4/3
 
-  * 支持 `@visualize hide` 和 `@visualize global` 注释，具体介绍见 [可视化面板简介](</zh/algo/intro/visualize/>)。
+  * 支持 $hide` 和$ global` 注释，具体介绍见 [可视化面板简介](</zh/algo/intro/visualize/>)。
 
 
 ## ¶2024/3/18
@@ -178,7 +178,7 @@ bug 修复
 
 重大更新
 
-支持 `@visualize choice(nums[i])` 和 `@visualize unchoice(nums[i])` 注释，用于可视化回溯/动态规划算法的选择和撤销选择过程。鼠标移动到递归树节点上，会显示递归路径上所做的所有选择：
+支持 $choice(nums[i])` 和$ unchoice(nums[i])` 注释，用于可视化回溯/动态规划算法的选择和撤销选择过程。鼠标移动到递归树节点上，会显示递归路径上所做的所有选择：
 
 ![](/images/algo/changelog/editor-choose.jpg)
 

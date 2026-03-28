@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[139\. Word Break](<https://leetcode.com/problems/word-break/>)| [139\. 单词拆分](<https://leetcode.cn/problems/word-break/>)|   
+$Word Break](<https://leetcode.com/problems/word-break/>)|$ 单词拆分](<https://leetcode.cn/problems/word-break/>)|   
 [140\. Word Break II](<https://leetcode.com/problems/word-break-ii/>)| [140\. 单词拆分 II](<https://leetcode.cn/problems/word-break-ii/>)|   
   
 前置知识

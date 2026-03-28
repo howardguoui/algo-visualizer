@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[509\. Fibonacci Number](<https://leetcode.com/problems/fibonacci-number/>)| [509\. 斐波那契数](<https://leetcode.cn/problems/fibonacci-number/>)|   
-[70\. Climbing Stairs](<https://leetcode.com/problems/climbing-stairs/>)| [70\. 爬楼梯](<https://leetcode.cn/problems/climbing-stairs/>)|   
-[322\. Coin Change](<https://leetcode.com/problems/coin-change/>)| [322\. 零钱兑换](<https://leetcode.cn/problems/coin-change/>)|   
+$Fibonacci Number](<https://leetcode.com/problems/fibonacci-number/>)|$ 斐波那契数](<https://leetcode.cn/problems/fibonacci-number/>)|   
+$Climbing Stairs](<https://leetcode.com/problems/climbing-stairs/>)|$ 爬楼梯](<https://leetcode.cn/problems/climbing-stairs/>)|   
+$Coin Change](<https://leetcode.com/problems/coin-change/>)|$ 零钱兑换](<https://leetcode.cn/problems/coin-change/>)|   
   
 前置知识
 
@@ -80,9 +80,7 @@ LeetCode| 力扣| 难度
 
 斐波那契数列的数学形式就是递归的，写成代码就是这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // f(n) 计算第 n 个斐波那契数
     int fib(int n) {
         // base case
@@ -110,15 +108,15 @@ CC++GoJavaJavaScriptPython
 
 **递归算法的时间复杂度怎么计算？就是用子问题个数乘以解决一个子问题需要的时间** 。
 
-首先计算子问题个数，即递归树中节点的总数。这棵递归树的高度为 nnn，所以二叉树的节点总数为 2n2^n2n。
+首先计算子问题个数，即递归树中节点的总数。这棵递归树的高度为 $n$，所以二叉树的节点总数为 2n2^n2n。
 
-然后计算解决一个子问题的时间，在本算法中，没有循环，只有 `f(n - 1) + f(n - 2)` 一个加法操作，时间为 O(1)O(1)O(1)。
+然后计算解决一个子问题的时间，在本算法中，没有循环，只有 `f(n - 1) + f(n - 2)` 一个加法操作，时间为 $O(1)$。
 
-所以，这个算法的时间复杂度为二者相乘，即 O(2n)O(2^n)O(2n)，指数级别，爆炸。
+所以，这个算法的时间复杂度为二者相乘，即 $O(2^n)$，指数级别，爆炸。
 
 观察递归树，很明显发现了算法低效的原因：存在大量重复计算。
 
-比如 `f(18)` 被计算了两次，而且你可以看到，以 `f(18)` 为根的这个递归树体量巨大，多算一遍，会耗费大量的时间。更何况还不止 `f(18)` 这一个节点被重复计算，所以这个算法效率很差。
+比如 `$被计算了两次，而且你可以看到，以 `$ 为根的这个递归树体量巨大，多算一遍，会耗费大量的时间。更何况还不止 `f(18)` 这一个节点被重复计算，所以这个算法效率很差。
 
 ![](/images/algo/dynamic-programming/1.jpg)
 
@@ -132,9 +130,7 @@ CC++GoJavaJavaScriptPython
 
 当然，你也可以用一个哈希表来存储，思想都是一样的。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int fib(int n) {
         // 备忘录全初始化为 -1
         // 因为斐波那契数肯定是非负整数，所以初始化为特殊值 -1 表示未计算
@@ -172,11 +168,11 @@ CC++GoJavaJavaScriptPython
 
 **递归算法的时间复杂度怎么计算？就是用子问题个数乘以解决一个子问题需要的时间** 。
 
-子问题个数，即图中节点的总数，由于本算法不存在冗余计算，子问题就是 `f(0)`, `f(1)`, `f(2)` ... `f(20)`，数量和输入规模 `n = 20` 成正比，所以子问题个数为 O(n)O(n)O(n)。
+子问题个数，即图中节点的总数，由于本算法不存在冗余计算，子问题就是 `f(0)`, `f(1)`, `f(2)` ... `f(20)`，数量和输入规模 `n = 20` 成正比，所以子问题个数为 $O(n)$。
 
-解决一个子问题的时间，同上，没有什么循环，时间为 O(1)O(1)O(1)。
+解决一个子问题的时间，同上，没有什么循环，时间为 $O(1)$。
 
-所以，本算法的时间复杂度是 O(n)O(n)O(n)，比起指数级复杂度的暴力算法，已经非常高效了。
+所以，本算法的时间复杂度是 $O(n)$，比起指数级复杂度的暴力算法，已经非常高效了。
 
 这里也结合算法可视化面板来感受剪枝的效果。`fib(20)` 的递归树太大，我们看看 `fib(5)` 的递归过程吧。
 
@@ -220,9 +216,7 @@ CC++GoJavaJavaScriptPython
 
 有了上一步的启发，我们不再使用递归函数，直接创建一个数组（DP table），用一个 for 循环从 base case 开始从左到右进行计算即可。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int fib(int n) {
         if (n == 0 || n == 1) {
             return n;
@@ -271,11 +265,9 @@ f(n)={0,n=01,n=1f(n−1)+f(n−2),n>1f(n) = \begin{cases} 0, & n = 0 \\\ 1, & n 
 
 细心的读者会发现，根据斐波那契数列的状态转移方程，当前状态 `n` 只和之前的 `n-1, n-2` 两个状态有关，其实并不需要那么长的一个 DP table 来存储所有的状态，只要想办法存储之前的两个状态就行了。
 
-所以，可以进一步优化，把空间复杂度降为 O(1)O(1)O(1)。这也就是我们最常见的计算斐波那契数的算法：
+所以，可以进一步优化，把空间复杂度降为 $O(1)$。这也就是我们最常见的计算斐波那契数的算法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int fib(int n) {
         if (n == 0 || n == 1) {
             // base case
@@ -295,9 +287,9 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-这一般是动态规划问题的最后一步优化，如果我们发现每次状态转移只需要 DP table 中的一部分，那么可以尝试缩小 DP table 的大小，只记录必要的数据，从而降低空间复杂度。
+这一般是动态规划问题的最后一步优化，如果我们发现每次状态转移只需要 DP $中的一部分，那么可以尝试缩小 DP$ 的大小，只记录必要的数据，从而降低空间复杂度。
 
-上述例子就相当于把 DP table 的大小从 `n` 缩小到 2，即把空间复杂度下降了一个量级。我会在后文 [对动态规划发动降维打击](</zh/algo/dynamic-programming/space-optimization/>) 进一步讲解这个压缩空间复杂度的技巧，一般来说用来把一个二维的 DP table 压缩成一维，即把空间复杂度从 O(n2)O(n^2)O(n2) 压缩到 O(n)O(n)O(n)。
+上述例子就相当于把 DP table 的大小从 `n` 缩小到 2，即把空间复杂度下降了一个量级。我会在后文 [对动态规划发动降维打击](</zh/algo/dynamic-programming/space-optimization/>) 进一步讲解这个压缩空间复杂度的技巧，一般来说用来把一个二维的 DP table 压缩成一维，即把空间复杂度从 $O(n^2)$ 压缩到 $O(n)$。
 
 怎么样，这样梳理下来思路是不是清晰了？没想到斐波那契数列这个简单的问题里面还有这么多门道吧？
 
@@ -313,9 +305,7 @@ CC++GoJavaJavaScriptPython
 
 给你 `k` 种面值的硬币，面值分别为 `c1, c2 ... ck`，每种硬币的数量无限，再给一个总金额 `amount`，问你**最少** 需要几枚硬币凑出这个金额，如果不可能凑出，算法返回 -1 。算法的函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // coins 中是可选硬币面值，amount 是目标金额
     int coinChange(int[] coins, int amount);
 
@@ -355,9 +345,7 @@ Tip
 
 搞清楚上面这几个关键点，解法的伪码就可以写出来了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 伪码框架
     int coinChange(int[] coins, int amount) {
         // 题目要求的最终结果是 dp(amount)
@@ -375,9 +363,7 @@ CC++GoJavaJavaScriptPython
 
 根据伪码，我们加上 base case 即可得到最终的答案。显然目标金额为 0 时，所需硬币数量为 0；当目标金额小于 0 时，无解，返回 -1：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int coinChange(int[] coins, int amount) {
             // 题目要求的最终结果是 dp(amount)
@@ -426,15 +412,13 @@ dp(n)={0,n=0−1,n<0min⁡{dp(n−coin)+1∣coin∈coins},n>0dp(n) = \begin{case
 
 假设目标金额为 `n`，给定的硬币个数为 `k`，那么递归树最坏情况下高度为 `n`（全用面额为 1 的硬币），然后再假设这是一棵满 `k` 叉树，则节点的总数在 `k^n` 这个数量级。
 
-接下来看每个子问题的复杂度，由于每次递归包含一个 for 循环，复杂度为 O(k)O(k)O(k)，相乘得到总时间复杂度为 O(kn)O(k^n)O(kn)，指数级别。
+接下来看每个子问题的复杂度，由于每次递归包含一个 for 循环，复杂度为 $O(k)$，相乘得到总时间复杂度为 $O(k^n)$，指数级别。
 
 ### ¶带备忘录的递归
 
 类似之前斐波那契数列的例子，只需要稍加修改，就可以通过备忘录消除子问题：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         int[] memo;
     
@@ -470,7 +454,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-不画图了，很显然「备忘录」大大减小了子问题数目，完全消除了子问题的冗余，所以子问题总数不会超过金额数 `n`，即子问题数目为 O(n)O(n)O(n)。处理一个子问题的时间不变，仍是 O(k)O(k)O(k)，所以总的时间复杂度是 O(kn)O(kn)O(kn)。
+不画图了，很显然「备忘录」大大减小了子问题数目，完全消除了子问题的冗余，所以子问题总数不会超过金额数 `n`，即子问题数目为 $O(n)$。处理一个子问题的时间不变，仍是 $O(k)$，所以总的时间复杂度是 $O(kn)$。
 
 ### ¶`dp` 数组的迭代解法
 
@@ -480,9 +464,7 @@ CC++GoJavaJavaScriptPython
 
 根据我们文章开头给出的动态规划代码框架可以写出如下解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int coinChange(int[] coins, int amount) {
             int[] dp = new int[amount + 1];
@@ -508,7 +490,7 @@ CC++GoJavaJavaScriptPython
 
 Info
 
-为啥 `dp` 数组中的值都初始化为 `amount + 1` 呢，因为凑成 `amount` 金额的硬币数最多只可能等于 `amount`（全用 1 元面值的硬币），所以初始化为 `amount + 1` 就相当于初始化为正无穷，便于后续取最小值。为啥不直接初始化为 int 型的最大值 `Integer.MAX_VALUE` 呢？因为后面有 `dp[i - coin] + 1`，这就会导致整型溢出。
+为啥 `dp` 数组中的值都初始化为 `amount + 1` 呢，因为凑成 `$金额的硬币数最多只可能等于 `$（全用 1 元面值的硬币），所以初始化为 `amount + 1` 就相当于初始化为正无穷，便于后续取最小值。为啥不直接初始化为 int 型的最大值 `Integer.MAX_VALUE` 呢？因为后面有 `dp[i - coin] + 1`，这就会导致整型溢出。
 
 ![](/images/algo/dynamic-programming/6.jpg)
 

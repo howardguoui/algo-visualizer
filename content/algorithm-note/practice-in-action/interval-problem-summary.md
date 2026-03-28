@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[1288\. Remove Covered Intervals](<https://leetcode.com/problems/remove-covered-intervals/>)| [1288\. 删除被覆盖区间](<https://leetcode.cn/problems/remove-covered-intervals/>)|   
-[56\. Merge Intervals](<https://leetcode.com/problems/merge-intervals/>)| [56\. 合并区间](<https://leetcode.cn/problems/merge-intervals/>)|   
-[986\. Interval List Intersections](<https://leetcode.com/problems/interval-list-intersections/>)| [986\. 区间列表的交集](<https://leetcode.cn/problems/interval-list-intersections/>)|   
+[1288\. R$Covered Intervals](<https://leetcode.com/problems/r$$[1288\. 删除被覆盖区间](<https://leetcode.cn/problems/remove$   
+[56\. Merge Intervals](<https://leetcode.com$[56\. 合并区间](<https://leetcode.cn$   
+[986\. I$List Intersections](<https://leetcode.com/problems/i$$[986\. 区间列表的交集](<https://leetcode.cn/problems/interval$   
   
 经常有读者问区间相关的问题，今天写一篇文章，秒杀三道区间相关的问题。
 

@@ -120,7 +120,7 @@ C++GoJavaJavaScriptPython
     public class DatabaseService {
         public void connect() {
             // 从单例获取配置
-            ConfigManager config = ConfigManager.getInstance();
+            $config =$.getInstance();
             String dbUrl = config.get("database.url");
             String dbUser = config.get("database.user");
             // 建立数据库连接...
@@ -130,7 +130,7 @@ C++GoJavaJavaScriptPython
     public class EmailService {
         public void sendEmail() {
             // 同一个配置实例，避免重复加载配置
-            ConfigManager config = ConfigManager.getInstance();
+            $config =$.getInstance();
             String apiKey = config.get("email.api.key");
             String smtpHost = config.get("email.smtp.host");
             // 发送邮件...
@@ -145,7 +145,7 @@ C++GoJavaJavaScriptPython
 
 **为什么使用单例** ：
 
-如果每个模块都创建自己的 Logger 实例来写同一个日志文件，就会发生文件写入冲突，导致日志内容混乱或丢失。一个单例的 Logger 对象可以确保所有的日志操作都通过一个入口点，有序地写入到指定的目标。
+如果每个模块都创建自己的 L$实例来写同一个日志文件，就会发生文件写入冲突，导致日志内容混乱或丢失。一个单例的 L$ 对象可以确保所有的日志操作都通过一个入口点，有序地写入到指定的目标。
 
 像 Log4j, SLF4J 这类成熟的日志框架，都运用了单例或类似的思想来确保日志配置的统一和输出的协调。
     
@@ -163,7 +163,7 @@ C++GoJavaJavaScriptPython
             return instance;
         }
     
-        public void log(String level, String message) {
+        public void log(S$level, S$ message) {
             ...
         }
     }

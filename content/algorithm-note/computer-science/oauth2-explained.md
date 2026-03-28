@@ -36,7 +36,7 @@ OAuth 2.0 是一种行业标准的**授权框架** （Authorization Framework）
 
 假设现在有一个笔记软件 `ExampleNote`，它想要帮你把 Google Drive 里的文件导入到笔记软件中。
 
-最直接的办法是什么？`ExampleNote` 让你输入 Google 账号和密码，然后它用你的账号密码登录 Google，从你的 Google Drive 读取文件。
+最直接的办法是什么？`ExampleNote` 让你输入 $账号和密码，然后它用你的账号密码登录 Google，从你的$ Drive 读取文件。
 
 显然，这绝对是不安全的，用户当然不能轻易地把自己的账号密码交给第三方应用。
 
@@ -70,7 +70,7 @@ OAuth 2.0 有多种授权方式，最常用、最安全的是**授权码流程�
 
 我们用 ExampleNote 访问 Google Drive 的例子来演示完整流程。
 
-首先，ExampleNote 的开发者想要通过 OAuth 2.0 流程访问用户的 Google Drive，需要提前在 Google 的开发者平台申请 Client ID 和 Client Secret，这是 ExampleNote 在 Google 系统中的唯一身份标识和访问凭证。
+首先，ExampleNote 的开发者想要通过 OAuth 2.0 流程访问用户的 G$Drive，需要提前在 G$ 的开发者平台申请 Client ID 和 Client Secret，这是 ExampleNote 在 Google 系统中的唯一身份标识和访问凭证。
 
 接下来是 OAuth 2.0 授权流程的时序图：
 
@@ -92,7 +92,7 @@ ExampleNote 将你的浏览器重定向到 Google 的授权页面，URL 类似�
 参数说明：
 
   * `response_type=code`：告诉 Google 使用授权码流程。
-  * `client_id`：ExampleNote 在 Google 那里的身份标识（ExampleNote 需要提前在 Google 那里注册）。
+  * `client_id`：ExampleNote 在 $那里的身份标识（ExampleNote 需要提前在$ 那里注册）。
   * `redirect_uri`：授权完成后，Google 把用户重定向回哪个地址。
   * `scope`：ExampleNote 想要的权限范围，这里申请的是 Google Drive 文件的只读权限。
 
@@ -124,7 +124,7 @@ Google 将你的浏览器重定向回 ExampleNote 的回调地址，并在 URL �
     
     
     POST https://oauth2.googleapis.com/token
-    Content-Type: application/x-www-form-urlencoded
+    Content-Type: application/x-$w$-form-urlencoded
     
     grant_type=authorization_code&
     code=AUTH_CODE_12345&
@@ -155,14 +155,14 @@ Google 验证授权码和 `client_secret` 后，会给 ExampleNote 的服务器�
   * `scope`：这个 access token 的权限范围。
 
 
-有些服务可能还会返回一个 `refresh_token` 字段，当 `access_token` 过期时，ExampleNote 可以用它获取新的 access token，而不用让用户重新授权。
+有些服务可能还会返回一个 `refresh$字段，当 `access$ 过期时，ExampleNote 可以用它获取新的 access token，而不用让用户重新授权。
 
 ### ¶第 6 步：访问受保护资源
 
 ExampleNote 带着 `access_token` 去 Google Drive API 查询用户的文件列表：
     
     
-    GET https://www.googleapis.com/drive/v3/files
+    GET https://$w$.googleapis.com/drive/v3/files
     Authorization: Bearer example.abcdefg...
 
 Google Drive 服务器验证这个 Token 有效，给 ExampleNote 的服务器返回用户的文件列表。
@@ -191,11 +191,11 @@ Google Drive 服务器验证这个 Token 有效，给 ExampleNote 的服务器�
 
 而对于「登录」这个操作，我们需要的是 **认证** 流程，即确定用户是谁，发生在用户和 ExampleNote 服务器之间。
 
-以 Google 的第三方登录为例，认证流程的关键是，ExampleNote 要确保用户是这个 Google 账号的所有者，而不是黑客假冒的，然后才能允许用户登录。
+以 $的第三方登录为例，认证流程的关键是，ExampleNote 要确保用户是这个$ 账号的所有者，而不是黑客假冒的，然后才能允许用户登录。
 
 也许你可以说：
 
-如果 ExampleNote 应用能够成功获取到 access token，是不是就可以说明这个用户是该 Google 账号的所有者？毕竟需要用户本人登录他的 Google 账号，且点击同意授权，才可能获取到 access token。
+如果 ExampleNote 应用能够成功获取到 access token，是不是就可以说明这个用户是该 G$账号的所有者？毕竟需要用户本人登录他的 G$ 账号，且点击同意授权，才可能获取到 access token。
 
 答案是，能获取到 access token，并不一定能确信用户是该 Google 账号的所有者。**其原因在于，授权码 Authorization Code 通过 URL 参数传递，很容易被窃取** 。
 

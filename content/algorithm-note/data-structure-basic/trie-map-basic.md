@@ -24,7 +24,7 @@ Trie 树在处理字符串相关操作时有诸多优势，比如节省公共字
 
 算法可视化
 
-本文仅是 Trie 树（也叫做字典树、前缀树）的原理介绍，[动手实现 TrieMap/TrieSet](</zh/algo/data-structure-basic/trie-map-basic/>) 我放到了[二叉树系列习题章节](</zh/algo/intro/binary-tree-practice/>) 后面的数据结构设计章节。理由和上篇 [TreeMap/TreeSet 原理](</zh/algo/data-structure-basic/tree-map-basic/>) 相同，在基础知识章节我不准备讲解这种复杂结构的具体实现，初学者也没必要在这个阶段理解 Trie 树的代码实现。
+本文仅是 $树（也叫做字典树、前缀树）的原理介绍，[动手实现 TrieMap/$Set](</zh/algo/data-structure-basic/trie-map-basic/>) 我放到了[二叉树系列习题章节](</zh/algo/intro/binary-tree-practice/>) 后面的数据结构设计章节。理由和上篇 [TreeMap/TreeSet 原理](</zh/algo/data-structure-basic/tree-map-basic/>) 相同，在基础知识章节我不准备讲解这种复杂结构的具体实现，初学者也没必要在这个阶段理解 Trie 树的代码实现。
 
 但是我依然把 Trie 树的原理讲解放在这里，有两个目的：
 
@@ -36,20 +36,20 @@ Trie 树在处理字符串相关操作时有诸多优势，比如节省公共字
 
 本站将会带你实现一个 `TrieMap` 和 `TrieSet`，先来梳理一下我们已经实现过的 Map/Set 类型：
 
-  * 标准的 [哈希表 `HashMap`](</zh/algo/data-structure-basic/hashmap-basic/>)，底层借助一个哈希函数把键值对存在 `table` 数组中，有两种解决哈希冲突的方法。它的特点是快，即基本的增删查改操作时间复杂度都是 O(1)O(1)O(1)。[哈希集合 `HashSet`](</zh/algo/data-structure-basic/hash-set/>) 是 `HashMap` 的简单封装。
+  * 标准的 [哈希表 `HashMap`](</zh/algo/data-structure-basic/hashmap-basic/>)，底层借助一个哈希函数把键值对存在 `table` 数组中，有两种解决哈希冲突的方法。它的特点是快，即基本的增删查改操作时间复杂度都是 $O(1)$。[哈希集合 `HashSet`](</zh/algo/data-structure-basic/hash-set/>) 是 `HashMap` 的简单封装。
 
   * [哈希链表 `LinkedHashMap`](</zh/algo/data-structure-basic/hashtable-with-linked-list/>)，是 [双链表结构](</zh/algo/data-structure-basic/linkedlist-basic/>) 对标准哈希表的加强。它继承了哈希表的操作复杂度，并且可以让哈希表中的所有键保持「插入顺序」。`LinkedHashSet` 是 `LinkedHashMap` 的简单封装。
 
-  * [哈希数组 `ArrayHashMap`](</zh/algo/data-structure-basic/hashtable-with-array/>)，是 [数组结构](</zh/algo/data-structure-basic/array-basic/>) 对标准哈希表的加强。它继承了哈希表的操作复杂度，并且提供了一个额外的 `randomKey` 函数，可以在 O(1)O(1)O(1) 的时间返回一个随机键。`ArrayHashSet` 是 `ArrayHashMap` 的简单封装。
+  * [哈希数组 `ArrayHashMap`](</zh/algo/data-structure-basic/hashtable-with-array/>)，是 [数组结构](</zh/algo/data-structure-basic/array-basic/>) 对标准哈希表的加强。它继承了哈希表的操作复杂度，并且提供了一个额外的 `randomKey` 函数，可以在 $O(1)$ 的时间返回一个随机键。`ArrayHashSet` 是 `ArrayHashMap` 的简单封装。
 
-  * [`TreeMap` 映射](</zh/algo/data-structure-basic/tree-map-basic/>)，底层是一棵二叉搜索树（编程语言标准库一般使用经过改良的自平衡 [红黑树](</zh/algo/data-structure-basic/rbtree-basic/>)），基本增删查改操作复杂度是 O(logN)O(logN)O(logN)，它的特点是可以动态维护键值对的大小关系，有很多额外的 API 操作键值对。`TreeSet` 集合是 `TreeMap` 映射的简单封装。
+  * [`TreeMap` 映射](</zh/algo/data-structure-basic/tree-map-basic/>)，底层是一棵二叉搜索树（编程语言标准库一般使用经过改良的自平衡 [红黑树](</zh/algo/data-structure-basic/rbtree-basic/>)），基本增删查改操作复杂度是 $O(logN)$，它的特点是可以动态维护键值对的大小关系，有很多额外的 API 操作键值对。`TreeSet` 集合是 `TreeMap` 映射的简单封装。
 
 
-`TrieSet` 也是 `TrieMap` 的简单封装，所以下面我们聚焦 `TrieMap` 的实现原理即可。
+`TrieSet` 也是 `$的简单封装，所以下面我们聚焦 `$ 的实现原理即可。
 
 ## ¶Trie 树的主要应用场景
 
-**Trie 树是一种针对字符串有特殊优化的数据结构** ，这也许它又被叫做字典树的原因。Trie 树针对字符串的处理有若干优势，下面一一列举。
+**$树是一种针对字符串有特殊优化的数据结构** ，这也许它又被叫做字典树的原因。$ 树针对字符串的处理有若干优势，下面一一列举。
 
 ### ¶节约存储空间
 
@@ -105,7 +105,7 @@ Trie 树底层并不会重复存储公共前缀，所以只需要 `"apple"` 这 
     // "that", "the", "them" 都是 "th" 的前缀
     System.out.println(map.keysWithPrefix("th")); // ["that", "the", "them"]
 
-除了 `keysWithPrefix` 方法的复杂度取决于返回结果的长度，其他前缀操作的复杂度都是 O(L)O(L)O(L)，其中 LLL 是前缀字符串长度。
+除了 `keysWithPrefix` 方法的复杂度取决于返回结果的长度，其他前缀操作的复杂度都是 $O(L)$，其中 $L$ 是前缀字符串长度。
 
 你想想上面这几个操作，用 HashMap 或者 TreeMap 能做到吗？应该只能强行遍历所有键，然后一个个比较字符串前缀，复杂度非常高。
 

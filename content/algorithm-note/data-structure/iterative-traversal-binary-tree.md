@@ -29,9 +29,7 @@
 
 通用性较差的意思是说，模板只是针对「用迭代的方式返回二叉树前/中/后序的遍历结果」这个问题，函数签名类似这样，返回一个 `TreeNode` 列表：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     List<TreeNode> traverse(TreeNode root);
 
 如果给一些稍微复杂的二叉树问题，比如 [最近公共祖先](</zh/algo/practice-in-action/lowest-common-ancestor-summary/>)，[二叉搜索子树的最大键值和](</zh/algo/data-structure/bst-part4/>)，想把这些递归解法改成迭代，就无能为力了。
@@ -40,9 +38,7 @@ CC++GoJavaJavaScriptPython
 
 换句话说，类似二叉树的递归框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(TreeNode root) {
         if (root == null) return;
         // 前序遍历代码位置
@@ -54,9 +50,7 @@ CC++GoJavaJavaScriptPython
 
 迭代框架也应该有前中后序代码的位置：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(TreeNode root) {
         while (...) {
             if (...) {
@@ -83,7 +77,7 @@ CC++GoJavaJavaScriptPython
 
 前序遍历位置的代码，会在刚遍历到当前节点 `root`，遍历 `root` 的左右子树之前执行；
 
-中序遍历位置的代码，会在在遍历完当前节点 `root` 的左子树，即将开始遍历 `root` 的右子树的时候执行；
+中序遍历位置的代码，会在在遍历完当前节点 `$的左子树，即将开始遍历 `$ 的右子树的时候执行；
 
 后序遍历位置的代码，会在遍历完以当前节点 `root` 为根的整棵子树之后执行。
 

@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[380\. Insert Delete GetRandom O(1)](<https://leetcode.com/problems/insert-delete-getrandom-o1/>)| [380\. O(1) 时间插入、删除和获取随机元素](<https://leetcode.cn/problems/insert-delete-getrandom-o1/>)|   
-[710\. Random Pick with Blacklist](<https://leetcode.com/problems/random-pick-with-blacklist/>)| [710\. 黑名单中的随机数](<https://leetcode.cn/problems/random-pick-with-blacklist/>)|   
+[380\. Insert D$GetRandom O(1)](<https://leetcode.com/problems/insert-d$-getrandom-o1/>)| [380\. O(1) 时间插入、删除和获取随机元素](<https://leetcode.cn/problems/insert-delete-getrandom-o1/>)|   
+[710\. Random Pick with Blacklist](<https://leetcode.com$[710\. 黑名单中的随机数](<https://leetcode.cn$   
   
 前置知识
 

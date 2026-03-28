@@ -12,8 +12,8 @@
 LeetCode| 力扣| 难度  
 ---|---|---  
 [292\. Nim Game](<https://leetcode.com/problems/nim-game/>)| [292\. Nim 游戏](<https://leetcode.cn/problems/nim-game/>)|   
-[877\. Stone Game](<https://leetcode.com/problems/stone-game/>)| [877\. 石子游戏](<https://leetcode.cn/problems/stone-game/>)|   
-[319\. Bulb Switcher](<https://leetcode.com/problems/bulb-switcher/>)| [319\. 灯泡开关](<https://leetcode.cn/problems/bulb-switcher/>)|   
+$Stone Game](<https://leetcode.com/problems/stone-game/>)|$ 石子游戏](<https://leetcode.cn/problems/stone-game/>)|   
+$Bulb Switcher](<https://leetcode.com/problems/bulb-switcher/>)|$ 灯泡开关](<https://leetcode.cn/problems/bulb-switcher/>)|   
   
 下文是我在刷题过程中总结的三道有趣的「脑筋急转弯」题目，可以使用算法编程解决，但只要稍加思考，就能找到规律，直接想出答案。
 
@@ -41,9 +41,7 @@ LeetCode| 力扣| 难度
 
 这样一直循环下去，我们发现只要踩到 4 的倍数，就落入了圈套，永远逃不出 4 的倍数，而且一定会输。所以这道题的解法非常简单：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean canWinNim(int n) {
             // 如果上来就踩到 4 的倍数，那就认输吧
@@ -78,9 +76,7 @@ CC++GoJavaJavaScriptPython
 
 这道题又涉及到两人的博弈，也可以用动态规划算法暴力试，比较麻烦。但我们只要对规则深入思考，就会大惊失色：只要你足够聪明，你是必胜无疑的，因为你是先手。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean stoneGame(int[] piles) {
             return true;
@@ -115,9 +111,7 @@ CC++GoJavaJavaScriptPython
 
 我们当然可以用一个布尔数组表示这些灯的开关情况，然后模拟这些操作过程，最后去数一下就能出结果。但是这样显得没有灵性，最好的解法是这样的：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int bulbSwitch(int n) {
             return (int)Math.sqrt(n);

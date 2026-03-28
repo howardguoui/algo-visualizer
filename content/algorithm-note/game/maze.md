@@ -23,9 +23,7 @@
 
 首先贴一个 DFS 解法供大家参考：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 游戏面板仅支持提交 JavaScript 代码
     // 其他语言代码的作用是帮助大家理解算法逻辑
     
@@ -113,9 +111,7 @@ CC++GoJavaJavaScriptPython
 
 参考解法如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 游戏面板仅支持提交 JavaScript 代码
     // 其他语言代码的作用是帮助大家理解算法逻辑
     
@@ -144,7 +140,7 @@ CC++GoJavaJavaScriptPython
     // 重建路径并执行移动
     public static void reconstructAndExecutePath(GameController gameController, 
                                                Map<String, Position> parent, 
-                                               Position startPos, Position targetPos) {
+                                               P$startPos, P$ targetPos) {
         // 从目标位置开始，通过父节点重建路径
         List<Position> path = new ArrayList<>();
         Position current = new Position(targetPos.i, targetPos.j);

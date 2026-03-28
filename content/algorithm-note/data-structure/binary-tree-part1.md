@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[226\. Invert Binary Tree](<https://leetcode.com/problems/invert-binary-tree/>)| [226\. 翻转二叉树](<https://leetcode.cn/problems/invert-binary-tree/>)|   
-[116\. Populating Next Right Pointers in Each Node](<https://leetcode.com/problems/populating-next-right-pointers-in-each-node/>)| [116\. 填充每个节点的下一个右侧节点指针](<https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/>)|   
-[114\. Flatten Binary Tree to Linked List](<https://leetcode.com/problems/flatten-binary-tree-to-linked-list/>)| [114\. 二叉树展开为链表](<https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/>)|   
+[226\. I$Binary Tree](<https://leetcode.com/problems/i$$[226\. 翻转二叉树](<https://leetcode.cn/problems/invert$   
+[116\. Populating Next Right Pointers in Each Node](<https://leetcode.com$[116\. 填充每个节点的下一个右侧节点指针](<https://leetcode.cn$   
+[114\. Flatten Binary Tree to Linked List](<https://leetcode.com$[114\. 二叉树展开为链表](<https://leetcode.cn$   
   
 前置知识
 

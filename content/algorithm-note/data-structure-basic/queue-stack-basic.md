@@ -33,9 +33,7 @@
 
 这两种数据结构的基本 API 如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 队列的基本 API
     class MyQueue<E> {
         // 向队尾插入元素，时间复杂度 O(1)

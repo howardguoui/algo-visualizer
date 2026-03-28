@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[785\. Is Graph Bipartite?](<https://leetcode.com/problems/is-graph-bipartite/>)| [785\. 判断二分图](<https://leetcode.cn/problems/is-graph-bipartite/>)|   
-[886\. Possible Bipartition](<https://leetcode.com/problems/possible-bipartition/>)| [886\. 可能的二分法](<https://leetcode.cn/problems/possible-bipartition/>)|   
-[LCR 106. 判断二分图](<https://leetcode.com/problems/vEAB3K/>)| [LCR 106. 判断二分图](<https://leetcode.cn/problems/vEAB3K/>)|   
+[785\. Is Graph Bipartite?](<https://leetcode.com$[785\. 判断二分图](<https://leetcode.cn$   
+[886\. Possible Bipartition](<https://leetcode.com$[886\. 可能的二分法](<https://leetcode.cn$   
+$106. 判断二分图](<https://leetcode.com/problems/vEAB3K/>)|$ 106. 判断二分图](<https://leetcode.cn/problems/vEAB3K/>)|   
   
 前置知识
 
@@ -73,9 +73,7 @@ LeetCode| 力扣| 难度
 
 首先，基于 [图结构的遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>) 写出图的 DFS 遍历框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 遍历图的所有节点
     void traverse(Graph graph, int s, boolean[] visited) {
         // base case
@@ -97,13 +95,11 @@ CC++GoJavaJavaScriptPython
 
 因为图中可能存在环，所以用 `visited` 数组防止走回头路。
 
-这里可以看到我习惯把 return 语句都放在函数开头，因为一般 return 语句都是 base case，集中放在一起可以让算法结构更清晰。
+这里可以看到我习惯把 r$语句都放在函数开头，因为一般 r$ 语句都是 base case，集中放在一起可以让算法结构更清晰。
 
 其实，如果你愿意，也可以把 if 判断放到其它地方，比如图遍历框架可以稍微改改：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 图遍历框架
     boolean[] visited;
     void traverse(Graph graph, int v) {
@@ -125,9 +121,7 @@ CC++GoJavaJavaScriptPython
 
 所以，判定二分图的代码逻辑可以这样写：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 图遍历框架
     void traverse(Graph graph, boolean[] visited, int v) {
         visited[v] = true;
@@ -153,9 +147,7 @@ CC++GoJavaJavaScriptPython
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean isBipartite(int[][] graph);
 
 比如题目给的例子，输入的邻接表 `graph = [[1,2,3],[0,2],[0,1,3],[0,2]]`，也就是这样一幅图：
@@ -172,9 +164,7 @@ CC++GoJavaJavaScriptPython
 
 结合之前的代码框架，我们可以额外使用一个 `color` 数组来记录每个节点的颜色，从而写出解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
         // 记录图是否符合二分图性质
@@ -232,9 +222,7 @@ CC++GoJavaJavaScriptPython
 
 接下来看一下 BFS 算法的逻辑：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 记录图是否符合二分图性质
         private boolean ok = true;
@@ -334,9 +322,7 @@ CC++GoJavaJavaScriptPython
 
 题目来源：[力扣 886. 可能的二分法](<https://leetcode.cn/problems/possible-bipartition/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
     boolean possibleBipartition(int n, int[][] dislikes);
 
@@ -350,9 +336,7 @@ CC++GoJavaJavaScriptPython
 
 所以解法就出来了，我们把 `dislikes` 构造成一幅图，然后执行二分图的判定算法即可：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
         private boolean ok = true;

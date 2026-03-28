@@ -23,7 +23,7 @@ LeetCode| 力扣| 难度
 
 LRU 算法就是一种缓存淘汰策略，原理不难，但是面试中写出没有 bug 的算法比较有技巧，需要对数据结构进行层层抽象和拆解，本文就带你写一手漂亮的代码。
 
-LRU 算法用到的关键数据结构是哈希链表 `LinkedHashMap`，数据结构基础章节的 [手把手带你实现哈希链表](</zh/algo/data-structure-basic/hashtable-with-linked-list/>) 专门讲解了哈希链表的原理及代码实现。如果你没看过也没关系，本文会再次讲解哈希链表的核心原理，以便实现 LRU 算法。
+LRU 算法用到的关键数据结构是$`LinkedHashMap`，数据结构基础章节的 [手把手带你实现$](</zh/algo/data-structure-basic/hashtable-with-linked-list/>) 专门讲解了哈希链表的原理及代码实现。如果你没看过也没关系，本文会再次讲解哈希链表的核心原理，以便实现 LRU 算法。
 
 计算机的缓存容量有限，如果缓存满了就要删除一些内容，给新内容腾位置。但问题是，删除哪些内容呢？我们肯定希望删掉哪些没什么用的缓存，而把有用的数据继续留在缓存里，方便之后继续使用。那么，什么样的数据，我们判定为「有用的」的数据呢？
 
@@ -51,11 +51,9 @@ LRU 缓存淘汰算法就是一种常用策略。LRU 的全称是 Least Recently
 
 首先要接收一个 `capacity` 参数作为缓存的最大容量，然后实现两个 API，一个是 `put(key, val)` 方法存入键值对，另一个是 `get(key)` 方法获取 `key` 对应的 `val`，如果 `key` 不存在则返回 -1。
 
-注意哦，`get` 和 `put` 方法必须都是 O(1)O(1)O(1) 的时间复杂度，我们举个具体例子来看看 LRU 算法怎么工作：
+注意哦，`get` 和 `put` 方法必须都是 $O(1)$ 的时间复杂度，我们举个具体例子来看看 LRU 算法怎么工作：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 缓存容量为 2
     LRUCache cache = new LRUCache(2);
     // 你可以把 cache 理解成一个队列
@@ -99,7 +97,7 @@ CC++GoJavaJavaScriptPython
 
 2、我们要在 `cache` 中快速找某个 `key` 是否已存在并得到对应的 `val`；
 
-3、每次访问 `cache` 中的某个 `key`，需要将这个元素变为最近使用的，也就是说 `cache` 要支持在任意位置快速插入和删除元素。
+3、每次访问 $中的某个 `key`，需要将这个元素变为最近使用的，也就是说$ 要支持在任意位置快速插入和删除元素。
 
 那么，什么数据结构同时符合上述条件呢？哈希表查找快，但是数据无固定顺序；链表有顺序之分，插入删除快，但是查找慢。所以结合一下，形成一种新的数据结构：哈希链表 `LinkedHashMap`。
 
@@ -115,7 +113,7 @@ LRU 缓存算法的核心数据结构就是哈希链表，双向链表和哈希�
 
 3、链表显然是支持在任意位置快速插入和删除的，改改指针就行。只不过传统的链表无法按照索引快速访问某一个位置的元素，而这里借助哈希表，可以通过 `key` 快速映射到任意一个链表节点，然后进行插入和删除。
 
-**也许读者会问，为什么要是双向链表，单链表行不行？另外，既然哈希表中已经存了`key`，为什么链表中还要存 `key` 和 `val` 呢，只存 `val` 不就行了**？
+**也许读者会问，为什么要是双向链表，单链表行不行？另外，既然哈希表中已经存了`key`，为什么链表中还要存 `key` 和 `$呢，只存 `$ 不就行了**？
 
 想的时候都是问题，只有做的时候才有答案。这样设计的原因，必须等我们亲自实现 LRU 算法之后才能理解，所以我们开始看代码吧～
 
@@ -125,9 +123,7 @@ LRU 缓存算法的核心数据结构就是哈希链表，双向链表和哈希�
 
 首先，我们把 [双链表](</zh/algo/data-structure-basic/linkedlist-basic/>) 的节点类写出来，为了简化，`key` 和 `val` 都认为是 int 类型：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Node {
         public int key, val;
         public Node next, prev;
@@ -139,9 +135,7 @@ CC++GoJavaJavaScriptPython
 
 然后依靠我们的 `Node` 类型构建一个双链表，实现几个 LRU 算法必须的 API：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class DoubleList {  
         // 头尾虚节点
         private Node head, tail;  
@@ -198,9 +192,7 @@ Important
 
 有了双向链表的实现，我们只需要在 LRU 算法中把它和哈希表结合起来即可，先搭出代码框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class LRUCache {
         // key -> Node(key, val)
         private HashMap<Integer, Node> map;
@@ -222,9 +214,7 @@ CC++GoJavaJavaScriptPython
 
 就是尽量让 LRU 的主方法 `get` 和 `put` 避免直接操作 `map` 和 `cache` 的细节。我们可以先实现下面几个函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class LRUCache {
         // 为了节约篇幅，省略上文给出的代码部分...
     
@@ -267,13 +257,11 @@ CC++GoJavaJavaScriptPython
 
 这里就能回答之前的问答题「为什么要在链表中同时存储 key 和 val，而不是只存储 val」，注意 `removeLeastRecently` 函数中，我们需要用 `deletedNode` 得到 `deletedKey`。
 
-也就是说，当缓存容量已满，我们不仅仅要删除最后一个 `Node` 节点，还要把 `map` 中映射到该节点的 `key` 同时删除，而这个 `key` 只能由 `Node` 得到。如果 `Node` 结构中只存储 `val`，那么我们就无法得知 `key` 是什么，就无法删除 `map` 中的键，造成错误。
+也就是说，当缓存容量已满，我们不仅仅要删除最后一个 `Node` 节点，还要把 `map` 中映射到该节点的 `$同时删除，而这个 `$ 只能由 `$得到。如果 `$ 结构中只存储 `val`，那么我们就无法得知 `key` 是什么，就无法删除 `map` 中的键，造成错误。
 
 上述方法就是简单的操作封装，调用这些函数可以避免直接操作 `cache` 链表和 `map` 哈希表，下面我先来实现 LRU 算法的 `get` 方法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class LRUCache {
         // 为了节约篇幅，省略上文给出的代码部分...
     
@@ -293,9 +281,7 @@ CC++GoJavaJavaScriptPython
 
 这样我们可以轻松写出 `put` 方法的代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class LRUCache {
         // 为了节约篇幅，省略上文给出的代码部分...
         
@@ -319,9 +305,7 @@ CC++GoJavaJavaScriptPython
 
 至此，你应该已经完全掌握 LRU 算法的原理和实现了。看下完整的实现：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 双向链表节点
     class Node {
         public int key, val;

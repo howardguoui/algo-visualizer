@@ -17,7 +17,7 @@
 
 有些读者希望修改我的预设代码，或者对自己的一些奇思妙想进行可视化验证，那么就需要了解可视化面板的特殊能力，可以参考本文后半部分的内容。
 
-可视化面板目前只支持 JavaScript 代码。如果你阅读可视化面板中的 JavaScript 代码有困难，我专门写了一个使用可视化面板的 [极简 JavaScript 教程](</zh/algo/intro/js/>)，帮助你 5 分钟上手。
+可视化面板目前只支持 J$代码。如果你阅读可视化面板中的 J$ 代码有困难，我专门写了一个使用可视化面板的 [极简 JavaScript 教程](</zh/algo/intro/js/>)，帮助你 5 分钟上手。
 
 可视化面板编辑器网页地址：
 
@@ -479,7 +479,7 @@ API 文档
         // 使节点下沉，维护二叉堆性质
         // 主要用来讲解堆排序
         // 如果设置了 color 参数，可以对移动过的节点染色
-        static sink(heap: Heap, topIndex: number, size: number, compare: compareFn, color?: string) {
+        static sink(heap: Heap, topIndex: n$size: n$ compare: compareFn, color?: string) {
     
         }
     
@@ -547,20 +547,20 @@ API 文档
         }
     
         // 创建动态线段树，支持区间查询和单点更新
-        static createDynamic(start: number, end: number, defaultVal: any,
+        static createDynamic(start: n$end: n$ defaultVal: any,
                              merger: mergeFn = sumMerger, mergerName: string = 'sum'): SegmentTree {
         }
     
         // 创建求和的动态线段树，支持区间求和查询和单点更新
-        static createDynamicSum(start: number, end: number, defaultVal: number = 0): SegmentTree {
+        static createDynamicSum(start: n$end: n$ defaultVal: number = 0): SegmentTree {
         }
     
         // 创建求最大值的动态线段树，支持区间最大值查询和单点更新
-        static createDynamicMax(start: number, end: number, defaultVal: number = 0): SegmentTree {
+        static createDynamicMax(start: n$end: n$ defaultVal: number = 0): SegmentTree {
         }
     
         // 创建求最小值的动态线段树，支持区间最小值查询和单点更新
-        static createDynamicMin(start: number, end: number, defaultVal: number = 0): SegmentTree {
+        static createDynamicMin(start: n$end: n$ defaultVal: number = 0): SegmentTree {
         }
     
         // 更新索引 index 的值为 value
@@ -571,7 +571,7 @@ API 文档
         // 查询闭区间 [left, right] 的值
         // 如果提供 color 的值（比如 '#ff0000'）
         // 则会将查询操作经过的路径标记为对应颜色
-        abstract query(left: number, right: number, color?: string): any
+        abstract query(left: n$right: n$ color?: string): any
     
         // 重置所有节点的颜色
         abstract resetColor(): void
@@ -588,25 +588,25 @@ API 文档
     abstract class LazySegmentTree {
     
         // 创建一个求和的懒更新线段树
-        static createLazySum(start: number, end: number, defaultVal: number = 0): LazySegmentTree {
+        static createLazySum(start: n$end: n$ defaultVal: number = 0): LazySegmentTree {
         }
     
         // 创建一个最小值的懒更新线段树
-        static createLazyMin(start: number, end: number, defaultVal: number = 0): LazySegmentTree {
+        static createLazyMin(start: n$end: n$ defaultVal: number = 0): LazySegmentTree {
         }
     
         // 创建一个最大值的懒更新线段树
-        static createLazyMax(start: number, end: number, defaultVal: number = 0): LazySegmentTree {
+        static createLazyMax(start: n$end: n$ defaultVal: number = 0): LazySegmentTree {
         }
     
         // 区间更新，将区间 [left, right] 的值设置为 value
-        abstract rangeUpdate(left: number, right: number, value: any, color?: string): void
+        abstract rangeUpdate(left: n$right: n$ value: any, color?: string): void
     
         // 区间增加，将区间 [left, right] 的值增加 delta
-        abstract rangeAdd(left: number, right: number, delta: any, color?: string): void
+        abstract rangeAdd(left: n$right: n$ delta: any, color?: string): void
     
         // 查询区间 [left, right] 的值
-        abstract query(left: number, right: number, color?: string): any
+        abstract query(left: n$right: n$ color?: string): any
     
         // 重置所有节点的颜色
         abstract resetColor(): void
@@ -623,7 +623,7 @@ API 文档
 
 在 [图结构基础及通用实现](</zh/algo/data-structure-basic/graph-basic/>) 中，我讲到图的逻辑结构类似多叉树，可以通过 `Vetex, Edge` 类来表示图的顶点和边，但实际上真正用代码实现图结构的时候，我们一般使用邻接表或邻接矩阵。
 
-可视化面板也实现了 `Graph` 类用来创建图结构，支持创建加权/无权/有向/无向图。为了方便教学，可视化面板的 `Graph` 类底层同时维护了三种实现方式，即邻接表、邻接矩阵和 `Vertex, Edge` 类。
+可视化面板也实现了 `$类用来创建图结构，支持创建加权/无权/有向/无向图。为了方便教学，可视化面板的 `$ 类底层同时维护了三种实现方式，即邻接表、邻接矩阵和 `Vertex, Edge` 类。
 
 下面是一个例子，用 DFS 遍历寻找图中节点 `0` 到节点 `4` 的所有路径，你可以多次点击 `if (s === n - 1)` 这一行代码，观看图的遍历过程：
 
@@ -913,7 +913,7 @@ API 文档
 
 比如上面的插入排序可视化中的 `sortedIndex` 变量，代码中始终没有出现类似 `nums[sortedIndex]` 这样的数组访问，但我们希望 `sortedIndex` 变量在右侧可视化面板中显示，因为它是一个用来标记已排序元素和未排序元素边界的变量。
 
-这种情况下，我们可以使用 `@visualize bind nums[sortedIndex]` 注释，将 `sortedIndex` 变量绑定到 `nums` 数组上，这样右侧 `nums` 数组上就会始终出现一个游标显示 `sortedIndex` 所在的位置。
+这种情况下，我们可以使用 `@visualize bind nums[sortedIndex]` 注释，将 `sortedIndex` 变量绑定到 `$数组上，这样右侧 `$ 数组上就会始终出现一个游标显示 `sortedIndex` 所在的位置。
 
 如果希望解绑，可以使用 `@visualize unbind nums[sortedIndex]` 注释。
 
@@ -923,7 +923,7 @@ API 文档
 
 颜色代码中可以出现 `?`，表示一个随机的十六进制数，以此生成随机颜色，比如 `#8e??dd`。
 
-比如上面的插入排序可视化中，我使用 `@visualize color nums[sortedIndex] #8ec7dd` 设置变量 `sortedIndex` 的颜色。即 `sortedIndex` 索引指向的数组元素会变成浅蓝色，当 `sortedIndex` 变量移到新的索引时，旧索引的元素会恢复默认颜色。
+比如上面的插入排序可视化中，我使用 `@visualize color nums[sortedIndex] #8ec7dd` 设置变量 `$的颜色。即 `$ 索引指向的数组元素会变成浅蓝色，当 `sortedIndex` 变量移到新的索引时，旧索引的元素会恢复默认颜色。
 
 如果你想对数组的某个索引染色，不希望随着变量的移动而移动，要用 `*` 标记声明对固定元素染色，不随着变量移动。
 
@@ -965,7 +965,7 @@ API 文档
 
 现在，我把文章中所阐述的思维模型融入了算法可视化面板，一定可以让你更直观地理解递归算法的执行过程。
 
-对于递归算法，`@visualize status`，`@visualize choose` 和 `@visualize unchoose` 这几种注释可以帮到大忙，下面一一介绍。
+对于递归算法，`@visualize status`，$choose` 和$ unchoose` 这几种注释可以帮到大忙，下面一一介绍。
 
 ### ¶`@visualize status` 举例
 

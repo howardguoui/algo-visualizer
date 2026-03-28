@@ -11,11 +11,11 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[236\. Lowest Common Ancestor of a Binary Tree](<https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/>)| [236\. 二叉树的最近公共祖先](<https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/>)|   
+[236\. Lowest Common Ancestor of a Binary Tree](<https://leetcode.com$[236\. 二叉树的最近公共祖先](<https://leetcode.cn$   
 [1676\. Lowest Common Ancestor of a Binary Tree IV](<https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iv/>)🔒| [1676\. 二叉树的最近公共祖先 IV](<https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-iv/>)🔒|   
 [1644\. Lowest Common Ancestor of a Binary Tree II](<https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-ii/>)🔒| [1644\. 二叉树的最近公共祖先 II](<https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-ii/>)🔒|   
-[235\. Lowest Common Ancestor of a Binary Search Tree](<https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/>)| [235\. 二叉搜索树的最近公共祖先](<https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/>)|   
-[1650\. Lowest Common Ancestor of a Binary Tree III](<https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/>)🔒| [1650\. 二叉树的最近公共祖先 III](<https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-iii/>)🔒|   
+[235\. Lowest Common Ancestor of a Binary Search Tree](<https://leetcode.com$[235\. 二叉搜索树的最近公共祖先](<https://leetcode.cn$   
+[1650\. Lowest Common Ancestor of a Binary Tree $I$](<https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-$i$/>)🔒| [1650\. 二叉树的最近公共祖先 $I$](<https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree-$i$/>)🔒|   
   
 前置知识
 

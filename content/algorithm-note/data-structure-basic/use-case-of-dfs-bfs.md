@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[111\. Minimum Depth of Binary Tree](<https://leetcode.com/problems/minimum-depth-of-binary-tree/>)| [111\. 二叉树的最小深度](<https://leetcode.cn/problems/minimum-depth-of-binary-tree/>)|   
+[111\. Minimum Depth of Binary Tree](<https://leetcode.com$[111\. 二叉树的最小深度](<https://leetcode.cn$   
   
 前置知识
 

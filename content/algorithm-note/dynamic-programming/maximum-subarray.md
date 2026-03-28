@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[53\. Maximum Subarray](<https://leetcode.com/problems/maximum-subarray/>)| [53\. 最大子数组和](<https://leetcode.cn/problems/maximum-subarray/>)|   
+[53\. Maximum Subarray](<https://leetcode.com$[53\. 最大子数组和](<https://leetcode.cn$   
   
 前置知识
 
@@ -26,9 +26,7 @@ LeetCode| 力扣| 难度
 
 给你输入一个整数数组 `nums`，请你找在其中找一个和最大的子数组，返回这个子数组的和。函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int maxSubArray(int[] nums);
 
 比如说输入 `nums = [-3,1,3,-1,2,-4,2]`，算法返回 5，因为最大子数组 `[1,3,-1,2]` 的和为 5。

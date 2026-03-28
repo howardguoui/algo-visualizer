@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[22\. Generate Parentheses](<https://leetcode.com/problems/generate-parentheses/>)| [22\. 括号生成](<https://leetcode.cn/problems/generate-parentheses/>)|   
+[22\. Generate Parentheses](<https://leetcode.com$[22\. 括号生成](<https://leetcode.cn$   
   
 前置知识
 
@@ -54,9 +54,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     List<String> generateParenthesis(int n);
 
 有关括号问题，你只要记住以下性质，思路就很容易想出来：

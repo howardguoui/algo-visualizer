@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[516\. Longest Palindromic Subsequence](<https://leetcode.com/problems/longest-palindromic-subsequence/>)| [516\. 最长回文子序列](<https://leetcode.cn/problems/longest-palindromic-subsequence/>)|   
-[1312\. Minimum Insertion Steps to Make a String Palindrome](<https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/>)| [1312\. 让字符串成为回文串的最少插入次数](<https://leetcode.cn/problems/minimum-insertion-steps-to-make-a-string-palindrome/>)|   
+[516\. L$Palindromic Subsequence](<https://leetcode.com/problems/l$$[516\. 最长回文子序列](<https://leetcode.cn/problems/longest$   
+[1312\. Minimum Insertion Steps to Make a String Palindrome](<https://leetcode.com/prob$[1312\. 让字符串成为回文串的最少插入次数](<https://leetcode.cn/prob$   
   
 前置知识
 

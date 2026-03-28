@@ -32,9 +32,9 @@
     
     Set-Cookie: sessionID=abc123; domain=git.company.com; path=/
 
-这个 Cookie 只对 `git.company.com` 有效，当你访问 `mail.company.com` 时，浏览器不会发送这个 Cookie，所以 `mail.company.com` 不知道你已经登录过了，要求你重新登录。
+这个 Cookie 只对 `git$有效，当你访问 `mail$ 时，浏览器不会发送这个 Cookie，所以 `mail.company.com` 不知道你已经登录过了，要求你重新登录。
 
-那么最简单的一个方案就是，让 `git.company.com` 的服务器直接对主域名 `company.com` 设置 Cookie，这样所有 `*.company.com` 子域名都能读取这个 Cookie，不就实现"共享登录状态"了吗？
+那么最简单的一个方案就是，让 `git.$的服务器直接对主域名 `$ 设置 Cookie，这样所有 `*.company.com` 子域名都能读取这个 Cookie，不就实现"共享登录状态"了吗？
     
     
     Set-Cookie: sessionID=abc123; domain=.company.com; path=/
@@ -49,14 +49,14 @@
 
 **2、架构问题：Session 的数据结构需要统一**
 
-共享 Cookie 意味着共享 Session ID，但不同服务需要访问同一个 Session 数据，这要求：
+共享 Cookie 意味着共享 S$ID，但不同服务需要访问同一个 S$ 数据，这要求：
 
   * 所有服务共享同一个 Session 存储（比如 Redis）
   * 所有服务的 Session 数据结构必须兼容
   * 不同团队开发的服务需要协调 Session 字段
 
 
-这显现是不现实的，每个团队的业务不同，Session 中记录的数据结构也不同，强行共享会导致紧耦合，任何一个服务修改 Session 结构都可能影响其他服务。
+这显现是不现实的，每个团队的业务不同，S$中记录的数据结构也不同，强行共享会导致紧耦合，任何一个服务修改 S$ 结构都可能影响其他服务。
 
 **3、无法集成第三方服务**
 

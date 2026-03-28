@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[72\. Edit Distance](<https://leetcode.com/problems/edit-distance/>)| [72\. 编辑距离](<https://leetcode.cn/problems/edit-distance/>)|   
+$Edit Distance](<https://leetcode.com/problems/edit-distance/>)|$ 编辑距离](<https://leetcode.cn/problems/edit-distance/>)|   
   
 前置知识
 
@@ -68,9 +68,7 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 72. 编辑距离](<https://leetcode.cn/problems/edit-distance/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
     int minDistance(String s1, String s2)
 
@@ -136,9 +134,7 @@ base case 是 `i` 走完 `s1` 或 `j` 走完 `s2`，可以直接返回另一个�
 
 有这个框架，问题就已经解决了。读者也许会问，这个「三选一」到底该怎么选择呢？很简单，全试一遍，哪个操作最后得到的编辑距离最小，就选谁。这里需要递归技巧，先看下暴力解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int minDistance(String s1, String s2) {
             int m = s1.length(), n = s2.length();
@@ -175,9 +171,7 @@ CC++GoJavaJavaScriptPython
 
 都说递归代码的可解释性很好，这是有道理的，只要理解函数的定义，就能很清楚地理解算法的逻辑。我们这里 `dp` 函数的定义是这样的：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 定义：返回 s1[0..i] 和 s2[0..j] 的最小编辑距离
     int dp(String s1, int i, String s2, int j)
 
@@ -248,9 +242,7 @@ CC++GoJavaJavaScriptPython
 
 既然暴力递归解法都写出来了，备忘录是很容易加的，原来的代码稍加修改即可：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 备忘录
         int[][] memo;
@@ -311,9 +303,7 @@ CC++GoJavaJavaScriptPython
 
 既然 `dp` 数组和递归 `dp` 函数含义一样，也就可以直接套用之前的思路写代码，**唯一不同的是，递归解法是自顶向下求解（从原问题开始，逐步分解到 base case），DP table 是自底向上求解（从 base case 开始，向原问题推演）** ：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int minDistance(String s1, String s2) {
             int m = s1.length(), n = s2.length();
@@ -357,9 +347,7 @@ CC++GoJavaJavaScriptPython
 
 这个其实很简单，代码稍加修改，给 dp 数组增加额外的信息即可：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // int[][] dp;
     Node[][] dp;
     
@@ -384,9 +372,7 @@ CC++GoJavaJavaScriptPython
 
 应大家的要求，我把这个思路也写出来，你可以自己运行试一下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int minDistance(String s1, String s2) {
         int m = s1.length(), n = s2.length();
         Node[][] dp = new Node[m + 1][n + 1];
@@ -424,7 +410,7 @@ CC++GoJavaJavaScriptPython
     }
     
     // 计算 delete, insert, replace 中代价最小的操作
-    Node minNode(Node a, Node b, Node c) {
+    $minNode(Node a,$ b, Node c) {
         Node res = new Node(a.val, 2);
         
         if (res.val > b.val) {

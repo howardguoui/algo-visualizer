@@ -11,13 +11,13 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[26\. Remove Duplicates from Sorted Array](<https://leetcode.com/problems/remove-duplicates-from-sorted-array/>)| [26\. 删除有序数组中的重复项](<https://leetcode.cn/problems/remove-duplicates-from-sorted-array/>)|   
-[83\. Remove Duplicates from Sorted List](<https://leetcode.com/problems/remove-duplicates-from-sorted-list/>)| [83\. 删除排序链表中的重复元素](<https://leetcode.cn/problems/remove-duplicates-from-sorted-list/>)|   
-[27\. Remove Element](<https://leetcode.com/problems/remove-element/>)| [27\. 移除元素](<https://leetcode.cn/problems/remove-element/>)|   
-[283\. Move Zeroes](<https://leetcode.com/problems/move-zeroes/>)| [283\. 移动零](<https://leetcode.cn/problems/move-zeroes/>)|   
+[26\. Remove Duplicates $Sorted Array](<https://leetcode.com/problems/remove-duplicates-$-sorted-array/>)| [26\. 删除有序数组中的重复项](<https://leetcode.cn/problems/remove-duplicates-from-sorted-array/>)|   
+[83\. Remove Duplicates $Sorted List](<https://leetcode.com/problems/remove-duplicates-$-sorted-list/>)| [83\. 删除排序链表中的重复元素](<https://leetcode.cn/problems/remove-duplicates-from-sorted-list/>)|   
+$Remove Element](<https://leetcode.com/problems/remove-element/>)|$ 移除元素](<https://leetcode.cn/problems/remove-element/>)|   
+$Move Zeroes](<https://leetcode.com/problems/move-zeroes/>)|$ 移动零](<https://leetcode.cn/problems/move-zeroes/>)|   
 [167\. Two Sum II - Input Array Is Sorted](<https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/>)| [167\. 两数之和 II - 输入有序数组](<https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/>)|   
-[344\. Reverse String](<https://leetcode.com/problems/reverse-string/>)| [344\. 反转字符串](<https://leetcode.cn/problems/reverse-string/>)|   
-[5\. Longest Palindromic Substring](<https://leetcode.com/problems/longest-palindromic-substring/>)| [5\. 最长回文子串](<https://leetcode.cn/problems/longest-palindromic-substring/>)|   
+$Reverse String](<https://leetcode.com/problems/reverse-string/>)|$ 反转字符串](<https://leetcode.cn/problems/reverse-string/>)|   
+[5\. L$Palindromic Substring](<https://leetcode.com/problems/l$$[5\. 最长回文子串](<https://leetcode.cn/problems/longest$   
   
 前置知识
 
@@ -49,7 +49,7 @@ LeetCode| 力扣| 难度
 
 考虑 `nums` 的唯一元素的数量为 `k` ，你需要做以下事情确保你的题解可以被通过：
 
-  * 更改数组 `nums` ，使 `nums` 的前 `k` 个元素包含唯一元素，并按照它们最初在 `nums` 中出现的顺序排列。`nums` 的其余元素与 `nums` 的大小不重要。
+  * 更改数组 `nums` ，使 `nums` 的前 `k` 个元素包含唯一元素，并按照它们最初在 $中出现的顺序排列。`nums` 的其余元素与$ 的大小不重要。
   * 返回 `k` 。
 
 
@@ -97,9 +97,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int removeDuplicates(int[] nums);
 
 简单解释一下什么是原地修改：
@@ -108,7 +106,7 @@ CC++GoJavaJavaScriptPython
 
 但是现在题目让你原地删除，不允许 new 新数组，只能在原数组上操作，然后返回一个长度，这样就可以通过返回的长度和原始数组得到我们去重后的元素有哪些了。
 
-由于数组已经排序，所以重复的元素一定连在一起，找出它们并不难。但如果毎找到一个重复元素就立即原地删除它，由于数组中删除元素涉及数据搬移，整个时间复杂度是会达到 O(N2)O(N^2)O(N2)。
+由于数组已经排序，所以重复的元素一定连在一起，找出它们并不难。但如果毎找到一个重复元素就立即原地删除它，由于数组中删除元素涉及数据搬移，整个时间复杂度是会达到 $O(N^2)$。
 
 高效解决这道题就要用到快慢指针技巧：
 
@@ -118,9 +116,7 @@ CC++GoJavaJavaScriptPython
 
 看代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int removeDuplicates(int[] nums) {
             if (nums.length == 0) {
@@ -148,9 +144,7 @@ CC++GoJavaJavaScriptPython
 
 其实和数组去重是一模一样的，唯一的区别是把数组赋值操作变成操作指针而已，你对照着之前的代码来看：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public ListNode deleteDuplicates(ListNode head) {
             if (head == null) return null;
@@ -193,7 +187,7 @@ Note
 
 假设 `nums` 中不等于 `val` 的元素数量为 `k`，要通过此题，您需要执行以下操作：
 
-  * 更改 `nums` 数组，使 `nums` 的前 `k` 个元素包含不等于 `val` 的元素。`nums` 的其余元素和 `nums` 的大小并不重要。
+  * 更改 `$数组，使 `$ 的前 `k` 个元素包含不等于 `val` 的元素。`$的其余元素和 `$ 的大小并不重要。
   * 返回 `k`。
 
 
@@ -244,21 +238,17 @@ Note
 
 题目来源：[力扣 27. 移除元素](<https://leetcode.cn/problems/remove-element/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
     int removeElement(int[] nums, int val);
 
 题目要求我们把 `nums` 中所有值为 `val` 的元素原地删除，依然需要使用快慢指针技巧：
 
-如果 `fast` 遇到值为 `val` 的元素，则直接跳过，否则就赋值给 `slow` 指针，并让 `slow` 前进一步。
+如果 `fast` 遇到值为 `val` 的元素，则直接跳过，否则就赋值给 `$指针，并让 `$ 前进一步。
 
 这和前面说到的数组去重问题解法思路是完全一样的，直接看代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int removeElement(int[] nums, int val) {
             int fast = 0, slow = 0;
@@ -283,22 +273,18 @@ CC++GoJavaJavaScriptPython
 
 给你输入一个数组 `nums`，请你**原地修改** ，将数组中的所有值为 0 的元素移到数组末尾，函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void moveZeroes(int[] nums);
 
 比如说给你输入 `nums = [0,1,4,0,2]`，你的算法没有返回值，但是会把 `nums` 数组原地修改成 `[1,4,2,0,0]`。
 
 结合之前说到的几个题目，你是否有已经有了答案呢？
 
-稍微修改上一题中的 `removeElement` 函数就可以完成这道题，或者直接复用 `removeElement` 函数也可以。
+稍微修改上一题中的 `$函数就可以完成这道题，或者直接复用 `$ 函数也可以。
 
 题目让我们将所有 0 移到最后，其实就相当于移除 `nums` 中的所有 0，然后再把后面的元素都赋值为 0：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public void moveZeroes(int[] nums) {
             // 去除 nums 中的所有 0
@@ -360,9 +346,7 @@ CC++GoJavaJavaScriptPython
 
 我在另一篇文章 [二分查找框架详解](</zh/algo/essential-technique/binary-search-framework/>) 中有详细探讨二分搜索代码的细节问题，这里只写最简单的二分算法，旨在突出它的双指针特性：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int binarySearch(int[] nums, int target) {
         // 一左一右两个指针相向而行
         int left = 0, right = nums.length - 1;
@@ -427,9 +411,7 @@ CC++GoJavaJavaScriptPython
 
 只要数组有序，就应该想到双指针技巧。这道题的解法有点类似二分查找，通过调节 `left` 和 `right` 就可以调整 `sum` 的大小：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int[] twoSum(int[] numbers, int target) {
             // 一左一右两个指针相向而行
@@ -457,9 +439,7 @@ CC++GoJavaJavaScriptPython
 
 一般编程语言都会提供 `reverse` 函数，其实这个函数的原理非常简单，力扣第 344 题「[反转字符串](<https://leetcode.cn/problems/reverse-string/>)」就是类似的需求，让你反转一个 `char[]` 类型的字符数组，我们直接看代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void reverseString(char[] s) {
         // 一左一右两个指针相向而行
         int left = 0, right = s.length - 1;
@@ -481,9 +461,7 @@ CC++GoJavaJavaScriptPython
 
 现在你应该能感觉到回文串问题和左右指针肯定有密切的联系，比如让你判断一个字符串是不是回文串，你可以写出下面这段代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean isPalindrome(String s) {
         // 一左一右两个指针相向而行
         int left = 0, right = s.length() - 1;
@@ -530,18 +508,14 @@ CC++GoJavaJavaScriptPython
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     String longestPalindrome(String s);
 
 找回文串的难点在于，回文串的的长度可能是奇数也可能是偶数，解决该问题的核心是**从中心向两端扩散的双指针技巧** 。
 
 如果回文串的长度为奇数，则它有一个中心字符；如果回文串的长度为偶数，则可以认为它有两个中心字符。所以我们可以先实现这样一个函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 在 s 中寻找以 s[l] 和 s[r] 为中心的最长回文串
     String palindrome(String s, int l, int r) {
         // 防止索引越界
@@ -567,9 +541,7 @@ CC++GoJavaJavaScriptPython
 
 翻译成代码，就可以解决最长回文子串这个问题：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public String longestPalindrome(String s) {
             String res = "";

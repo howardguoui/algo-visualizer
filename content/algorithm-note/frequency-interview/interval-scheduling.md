@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[435\. Non-overlapping Intervals](<https://leetcode.com/problems/non-overlapping-intervals/>)| [435\. 无重叠区间](<https://leetcode.cn/problems/non-overlapping-intervals/>)|   
-[452\. Minimum Number of Arrows to Burst Balloons](<https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/>)| [452\. 用最少数量的箭引爆气球](<https://leetcode.cn/problems/minimum-number-of-arrows-to-burst-balloons/>)|   
+[435\. Non-overlapping Intervals](<https://leetcode.com$[435\. 无重叠区间](<https://leetcode.cn$   
+[452\. Minimum Number of Arrows to Burst Balloons](<https://leetcode.com$[452\. 用最少数量的箭引爆气球](<https://leetcode.cn$   
   
 什么是贪心算法呢？贪心算法可以认为是动态规划算法的一个特例，相比动态规划，使用贪心算法需要满足更多的条件（贪心选择性质），但是效率比动态规划要高。
 
@@ -30,9 +30,7 @@ LeetCode| 力扣| 难度
 
 给你很多形如 `[start, end]` 的闭区间，请你设计一个算法，**算出这些区间中最多有几个互不相交的区间** 。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int intervalSchedule(int[][] intvs);
 
 举个例子，`intvs = [[1,3], [2,4], [3,6]]`，这些区间最多有 2 个区间互不相交，即 `[[1,3], [3,6]]`，你的算法应该返回 2。注意边界相同并不算相交。

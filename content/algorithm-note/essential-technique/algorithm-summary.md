@@ -51,9 +51,9 @@
 
 综上，数据结构种类很多，甚至你也可以发明自己的数据结构，但是底层存储无非数组或者链表，二者的优缺点如下：
 
-**[数组](</zh/algo/data-structure-basic/array-basic/>)** 由于是紧凑连续存储，可以随机访问，通过索引快速找到对应元素，而且相对节约存储空间。但正因为连续存储，内存空间必须一次性分配够，所以说数组如果要扩容，需要重新分配一块更大的空间，再把数据全部复制过去，时间复杂度 O(N)O(N)O(N)；而且你如果想在数组中间进行插入和删除，每次必须搬移后面的所有数据以保持连续，时间复杂度 O(N)O(N)O(N)。
+**[数组](</zh/algo/data-structure-basic/array-basic/>)** 由于是紧凑连续存储，可以随机访问，通过索引快速找到对应元素，而且相对节约存储空间。但正因为连续存储，内存空间必须一次性分配够，所以说数组如果要扩容，需要重新分配一块更大的空间，再把数据全部复制过去，时间复杂度 $O(N)$；而且你如果想在数组中间进行插入和删除，每次必须搬移后面的所有数据以保持连续，时间复杂度 $O(N)$。
 
-**[链表](</zh/algo/data-structure-basic/linkedlist-basic/>)** 因为元素不连续，而是靠指针指向下一个元素的位置，所以不存在数组的扩容问题；如果知道某一元素的前驱和后驱，操作指针即可删除该元素或者插入新元素，时间复杂度 O(1)O(1)O(1)。但是正因为存储空间不连续，你无法根据一个索引算出对应元素的地址，所以不能随机访问；而且由于每个元素必须存储指向前后元素位置的指针，会消耗相对更多的储存空间。
+**[链表](</zh/algo/data-structure-basic/linkedlist-basic/>)** 因为元素不连续，而是靠指针指向下一个元素的位置，所以不存在数组的扩容问题；如果知道某一元素的前驱和后驱，操作指针即可删除该元素或者插入新元素，时间复杂度 $O(1)$。但是正因为存储空间不连续，你无法根据一个索引算出对应元素的地址，所以不能随机访问；而且由于每个元素必须存储指向前后元素位置的指针，会消耗相对更多的储存空间。
 
 ## ¶数据结构的基本操作
 
@@ -63,13 +63,11 @@
 
 如何遍历 + 访问？我们仍然从最高层来看，各种数据结构的遍历 + 访问无非两种形式：线性的和非线性的。
 
-线性就是 for/while 迭代为代表，非线性就是递归为代表。再具体一步，无非以下几种框架：
+$for/while 迭代为代表，非$递归为代表。再具体一步，无非以下几种框架：
 
 数组遍历框架，典型的线性迭代结构：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
             // 迭代访问 arr[i]
@@ -78,9 +76,7 @@ CC++GoJavaJavaScriptPython
 
 链表遍历框架，兼具迭代和递归结构：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 基本的单链表节点
     class ListNode {
         int val;
@@ -100,9 +96,7 @@ CC++GoJavaJavaScriptPython
 
 二叉树遍历框架，典型的非线性递归遍历结构：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 基本的二叉树节点
     class TreeNode {
         int val;
@@ -118,9 +112,7 @@ CC++GoJavaJavaScriptPython
 
 二叉树框架可以扩展为 N 叉树的遍历框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 基本的 N 叉树节点
     class TreeNode {
         int val;
@@ -230,7 +222,7 @@ CC++GoJavaJavaScriptPython
 
 最简单的例子，比方说让你在有序数组中寻找一个元素，用一个 for 循环暴力穷举谁都会，但 [二分搜索算法](</zh/algo/essential-technique/binary-search-framework/>) 就是更聪明的穷举方式，拥有更好的时间复杂度。
 
-还有前文 [Union Find 并查集算法详解](</zh/algo/data-structure/union-find/>) 告诉你一种高效计算连通分量的技巧，理论上说，想判断图中的两个节点是否连通，我用 DFS/BFS 暴力搜索（穷举）肯定可以做到，但人家 Union Find 算法硬是用数组模拟树结构，给你把连通性相关的操作复杂度给干到 O(1)O(1)O(1) 了。
+还有前文 [U$Find 并查集算法详解](</zh/algo/data-structure/u$-find/>) 告诉你一种高效计算连通分量的技巧，理论上说，想判断图中的两个节点是否连通，我用 DFS/BFS 暴力搜索（穷举）肯定可以做到，但人家 Union Find 算法硬是用数组模拟树结构，给你把连通性相关的操作复杂度给干到 $O(1)$ 了。
 
 这就属于聪明地穷举，大佬们把这些技巧发明出来，你学过就会用，没学过恐怕很难想出这种思路。
 
@@ -248,11 +240,11 @@ CC++GoJavaJavaScriptPython
 
 **数组常用的技巧有也是双指针相关的技巧，也都属于「如何聪明地穷举」这一类** 。[数组双指针技巧汇总](</zh/algo/essential-technique/array-two-pointers-summary/>) 全给你总结好了，会者不难，难者不会。
 
-**首先说二分搜索技巧** ，可以归为两端向中心的双指针。如果让你在数组中搜索元素，一个 for 循环花 O(N)O(N)O(N) 时间穷举肯定能搞定对吧，但是二分搜索告诉你，如果数组是有序的，它只要 O(logN)O(logN)O(logN) 的复杂度，这不就是一种更聪明的搜索方式么。
+**首先说二分搜索技巧** ，可以归为两端向中心的双指针。如果让你在数组中搜索元素，一个 for 循环花 $O(N)$ 时间穷举肯定能搞定对吧，但是二分搜索告诉你，如果数组是有序的，它只要 $O(logN)$ 的复杂度，这不就是一种更聪明的搜索方式么。
 
 [二分搜索框架详解](</zh/algo/essential-technique/binary-search-framework/>) 给你总结了二分搜索代码模板，保证不会出现搜索边界的问题。[二分搜索算法运用](</zh/algo/frequency-interview/binary-search-in-action/>) 给你总结了二分搜索相关题目的共性以及如何将二分搜索思想运用到实际算法中。
 
-**再说说[滑动窗口算法技巧](</zh/algo/essential-technique/sliding-window-framework/>)**，典型的快慢双指针。你用嵌套 for 循环花 O(N2)O(N^2)O(N2) 的时间肯定可以穷举出所有子数组，也就必然可以找到符合题目要求的子数组。但是滑动窗口算法表示，在某些场景下，它可以用一快一慢两个指针，只需 O(N)O(N)O(N) 的时间就可以找到答案，这就是更聪明地穷举方式。
+**再说说[滑动窗口算法技巧](</zh/algo/essential-technique/sliding-window-framework/>)**，典型的快慢双指针。你用嵌套 for 循环花 $O(N^2)$ 的时间肯定可以穷举出所有子数组，也就必然可以找到符合题目要求的子数组。但是滑动窗口算法表示，在某些场景下，它可以用一快一慢两个指针，只需 $O(N)$ 的时间就可以找到答案，这就是更聪明地穷举方式。
 
 [滑动窗口算法框架详解](</zh/algo/essential-technique/sliding-window-framework/>) 介绍了滑动窗口算法的适用场景以及通用代码模板，保你写出正确的代码。[滑动窗口习题](</zh/algo/problem-set/sliding-window/>) 中手把手带你运用滑动窗口框架解决各种问题。
 
@@ -280,9 +272,7 @@ Tip
 
 就比如说计算二叉树最大深度这个问题让你实现 `maxDepth` 这个函数，你这样写代码完全没问题：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
         // 记录最大深度
@@ -318,9 +308,7 @@ CC++GoJavaJavaScriptPython
 
 不信你照着 [回溯算法核心框架](</zh/algo/essential-technique/backtrack-framework/>) 中全排列问题的代码对比下，`backtrack` 函数就是 `traverse` 函数，换汤不换药，整体逻辑非常类似：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 记录所有全排列
         List<List<Integer>> res = new LinkedList<>();
@@ -374,9 +362,7 @@ CC++GoJavaJavaScriptPython
 
 同样是计算二叉树最大深度这个问题，你也可以写出下面这样的解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 定义：输入根节点，返回这棵二叉树的最大深度
     int maxDepth(TreeNode root) {
     	if (root == null) {
@@ -395,9 +381,7 @@ CC++GoJavaJavaScriptPython
 
 不信你看 [动态规划核心框架](</zh/algo/essential-technique/dynamic-programming-framework/>) 中凑零钱问题的暴力穷举解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int coinChange(int[] coins, int amount) {
             // 题目要求的最终结果是 dp(amount)
@@ -432,9 +416,7 @@ CC++GoJavaJavaScriptPython
 
 我相信大家都会对这个问题嗤之以鼻，毫不犹豫就可以写出下面这段代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     List<Integer> res = new LinkedList<>();
     
     // 返回前序遍历结果
@@ -464,9 +446,7 @@ CC++GoJavaJavaScriptPython
 
 有没有体会出点什么来？其实完全可以重写前序遍历代码，用分解问题的形式写出来：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 定义：输入一棵二叉树的根节点，返回这棵树的前序遍历结果
     List<Integer> preorder(TreeNode root) {
         List<Integer> res = new LinkedList<>();
@@ -488,9 +468,7 @@ CC++GoJavaJavaScriptPython
 
 除了动归、回溯（DFS）、分治，还有一个常用算法就是 BFS 了，[BFS 算法核心框架](</zh/algo/essential-technique/bfs-framework/>) 就是根据下面这段二叉树的层序遍历代码改装出来的：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 输入一棵二叉树的根节点，层序遍历这棵二叉树
     void levelTraverse(TreeNode root) {
         if (root == null) return;

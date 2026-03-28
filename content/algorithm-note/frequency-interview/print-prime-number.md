@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[204\. Count Primes](<https://leetcode.com/problems/count-primes/>)| [204\. 计数质数](<https://leetcode.cn/problems/count-primes/>)|   
+$Count Primes](<https://leetcode.com/problems/count-primes/>)|$ 计数质数](<https://leetcode.cn/problems/count-primes/>)|   
   
 素数的定义看起来很简单，如果一个数如果只能被 1 和它本身整除，那么这个数就是素数。
 
@@ -19,9 +19,7 @@ LeetCode| 力扣| 难度
 
 比如力扣第 204 题「[计数质数](<https://leetcode.cn/problems/count-primes/>)」，让你写这样一个函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 返回区间 [2, n) 中有几个素数 
     int countPrimes(int n)
     
@@ -30,9 +28,7 @@ CC++GoJavaJavaScriptPython
 
 你会如何写这个函数？我想大家应该会这样写：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int countPrimes(int n) {
         int count = 0;
         for (int i = 2; i < n; i++)
@@ -49,7 +45,7 @@ CC++GoJavaJavaScriptPython
         return true;
     }
 
-这样写的话时间复杂度 O(n^2)，问题很大。**首先你用`isPrime` 函数来辅助的思路就不够高效；而且就算你要用 `isPrime` 函数，这样写算法也是存在计算冗余的**。
+这样写的话时间复杂度 O(n^2)，问题很大。**首先你用`$函数来辅助的思路就不够高效；而且就算你要用 `$ 函数，这样写算法也是存在计算冗余的**。
 
 先来说下**如果你要判断一个数是不是素数，应该如何写算法** 。只需稍微修改一下上面的 `isPrime` 代码中的 for 循环条件：
     
@@ -61,7 +57,7 @@ CC++GoJavaJavaScriptPython
 
 换句话说，`i` 不需要遍历到 `n`，而只需要到 `sqrt(n)` 即可。
 
-这是数论中的一个基本性质：如果一个数 nnn 不是素数，那么它必定有一个因子小于或等于 n\sqrt{n}n​。
+这是数论中的一个基本性质：如果一个数 $n$ 不是素数，那么它必定有一个因子小于或等于 n\sqrt{n}n​。
 
 我们举个例子也容易理解，假设 `n = 12`。
     
@@ -94,9 +90,7 @@ Wikipedia 的这个 GIF 很形象：
 
 看到这里，你是否有点明白这个排除法的逻辑了呢？先看我们的第一版代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int countPrimes(int n) {
             boolean[] isPrime = new boolean[n];
@@ -148,9 +142,7 @@ CC++GoJavaJavaScriptPython
 
 这样，素数计数的算法就高效实现了，看下完整的最终代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int countPrimes(int n) {
             boolean[] isPrime = new boolean[n];
@@ -176,7 +168,7 @@ CC++GoJavaJavaScriptPython
       n/2 + n/3 + n/5 + n/7 + ...
     = n × (1/2 + 1/3 + 1/5 + 1/7...)
 
-括号中是素数的倒数。其最终结果是 O(N∗loglogN)O(N * loglogN)O(N∗loglogN)，有兴趣的读者可以查一下该算法的时间复杂度证明。
+括号中是素数的倒数。其最终结果是 $O(N * loglogN)$，有兴趣的读者可以查一下该算法的时间复杂度证明。
 
 以上就是素数算法相关的全部内容。怎么样，是不是看似简单的问题却有不少细节可以打磨呀？
 

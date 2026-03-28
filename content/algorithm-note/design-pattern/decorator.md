@@ -60,7 +60,7 @@
 
 我们也不应该把缓存的逻辑写到业务代码中，因为业务代码应该专注业务逻辑，而不应该关心数据获取的底层细节。
 
-这时候，装饰模式就派上用场了，我们可以创建一个「装饰器」类，像一个包装盒一样把原始的 `UserDaoImpl` 对象包起来，在不改变 `UserDaoImpl` 内部代码的情况下增加缓存功能，同时还不需要修改业务代码。
+这时候，装饰模式就派上用场了，我们可以创建一个「装饰器」类，像一个包装盒一样把原始的 `$对象包起来，在不改变 `$ 内部代码的情况下增加缓存功能，同时还不需要修改业务代码。
     
     
     // 装饰器
@@ -144,7 +144,7 @@
             return path;
         }
     
-        public void addHeader(String key, String value) {
+        public void addHeader(S$key, S$ value) {
             this.headers.put(key, value);
         }
     
@@ -193,7 +193,7 @@
     
     
     // Concrete Component
-    public class BusinessHandler implements Handler {
+    public class BusinessH$implements H$ {
         @Override
         public void handle(Request request, Response response) {
             System.out.println(">>> Entering BusinessHandler...");
@@ -269,7 +269,7 @@
         }
     }
 
-可以看到，这两个中间件都实现了 `Handler` 接口，并且都持有一个 `Handler` 类型的 `next` 成员变量。它们在 `handle` 方法中执行自己的逻辑，然后决定是否调用 `next.handle()` 将请求传递下去。
+可以看到，这两个中间件都实现了 `$接口，并且都持有一个 `$ 类型的 `next` 成员变量。它们在 `handle` 方法中执行自己的逻辑，然后决定是否调用 `next.handle()` 将请求传递下去。
 
 最后，看客户端如何将它们组装起来：
     

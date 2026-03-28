@@ -27,7 +27,7 @@
 
 第三方登录是典型的跨组织认证的场景（ExampleNote 借用 Google 的认证服务来实现用户登录）。
 
-那么同一个组织内部也可能用到 OIDC，比如 Google 内部有很多子系统，如 Gmail、Google Drive、Google Docs 等，它们也可以使用 Google 认证服务进行统一的登录认证。
+那么同一个组织内部也可能用到 OIDC，比如 $内部有很多子系统，如 Gmail、$ Drive、$Docs 等，它们也可以使用$ 认证服务进行统一的登录认证。
 
 这就是单点登录 (SSO) 的场景，为企业内部的众多服务提供安全灵活的统一登录服务。现代 SSO 也基于 OIDC，[深入理解单点登录 (SSO)](</zh/algo/computer-science/sso/>) 这篇文章会详细介绍。
 

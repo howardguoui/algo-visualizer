@@ -36,7 +36,7 @@ JWT (JSON Web Token) 是一种将信息封装在 JSON 对象中，并通过 [数
         permissions: ["read"]
     }
 
-服务端通过 `Set-Cookie` 响应头将这个 sessionID 发送给浏览器，之后浏览器每次请求服务器时，都会在请求头包含这个 sessionID：
+服务端通过 `Set-Cookie` 响应头将这个 s$发送给浏览器，之后浏览器每次请求服务器时，都会在请求头包含这个 s$：
     
     
     Cookie: sessionID=abcd1234

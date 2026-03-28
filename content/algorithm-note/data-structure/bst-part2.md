@@ -11,10 +11,10 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[98\. Validate Binary Search Tree](<https://leetcode.com/problems/validate-binary-search-tree/>)| [98\. 验证二叉搜索树](<https://leetcode.cn/problems/validate-binary-search-tree/>)|   
-[700\. Search in a Binary Search Tree](<https://leetcode.com/problems/search-in-a-binary-search-tree/>)| [700\. 二叉搜索树中的搜索](<https://leetcode.cn/problems/search-in-a-binary-search-tree/>)|   
-[701\. Insert into a Binary Search Tree](<https://leetcode.com/problems/insert-into-a-binary-search-tree/>)| [701\. 二叉搜索树中的插入操作](<https://leetcode.cn/problems/insert-into-a-binary-search-tree/>)|   
-[450\. Delete Node in a BST](<https://leetcode.com/problems/delete-node-in-a-bst/>)| [450\. 删除二叉搜索树中的节点](<https://leetcode.cn/problems/delete-node-in-a-bst/>)|   
+[98\. Validate B$Search Tree](<https://leetcode.com/problems/validate-b$$[98\. 验证二叉搜索树](<https://leetcode.cn/problems/validate-binary$   
+[700\. Search in a B$Search Tree](<https://leetcode.com/problems/search-in-a-b$$[700\. 二叉搜索树中的搜索](<https://leetcode.cn/problems/search-in-a-binary$   
+[701\. Insert into a B$Search Tree](<https://leetcode.com/problems/insert-into-a-b$-search-tree/>)| [701\. 二叉搜索树中的插入操作](<https://leetcode.cn/problems/insert-into-a-binary-search-tree/>)|   
+[450\. Delete Node in a BST](<https://leetcode.com$[450\. 删除二叉搜索树中的节点](<https://leetcode.cn$   
   
 前置知识
 
@@ -32,9 +32,7 @@ BST 的基础操作主要依赖「左小右大」的特性，可以在二叉树�
 
 对于 BST 相关的问题，你可能会经常看到类似下面这样的代码逻辑：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void BST(TreeNode root, int target) {
         if (root.val == target)
             // 找到目标，做点什么
@@ -90,9 +88,7 @@ CC++GoJavaJavaScriptPython
 
 注意，这里是有坑的哦。按照 BST 左小右大的特性，每个节点想要判断自己是否是合法的 BST 节点，要做的事不就是比较自己和左右孩子吗？感觉应该这样写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean isValidBST(TreeNode root) {
         if (root == null) return true;
         // root 的左边应该更小
@@ -114,16 +110,14 @@ loading...
 
 问题是，对于某一个节点 `root`，他只能管得了自己的左右子节点，怎么把 `root` 的约束传递给左右子树呢？请看正确的代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean isValidBST(TreeNode root) {
             return isValidBST(root, null, null);
         }
     
         // 限定以 root 为根的子树节点必须满足 max.val > root.val > min.val
-        boolean isValidBST(TreeNode root, TreeNode min, TreeNode max) {
+        boolean isValidBST(T$root, T$ min, TreeNode max) {
             // base case
             if (root == null) return true;
             // 若 root.val 不符合 max 和 min 的限制，说明不是合法 BST
@@ -143,16 +137,12 @@ CC++GoJavaJavaScriptPython
 
 力扣第 700 题「[二叉搜索树中的搜索](<https://leetcode.cn/problems/search-in-a-binary-search-tree/>)」就是让你在 BST 中搜索值为 `target` 的节点，函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     TreeNode searchBST(TreeNode root, int target);
 
 如果是在一棵普通的二叉树中寻找，可以这样写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     TreeNode searchBST(TreeNode root, int target) {
         if (root == null) return null;
         if (root.val == target) return root;
@@ -167,9 +157,7 @@ CC++GoJavaJavaScriptPython
 
 很简单，其实不需要递归地搜索两边，类似二分查找思想，根据 `target` 和 `root.val` 的大小比较，就能排除一边。我们把上面的思路稍稍改动：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 定义：在以 root 为根的 BST 中搜索值为 target 的节点，返回该节点
     TreeNode searchBST(TreeNode root, int target) {
         if (root == null) {
@@ -245,9 +233,7 @@ CC++GoJavaJavaScriptPython
 
 直接看解法代码吧，可以结合注释和可视化面板的来理解：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public TreeNode insertIntoBST(TreeNode root, int val) {
             // 找到空位置插入新节点
@@ -270,7 +256,7 @@ CC++GoJavaJavaScriptPython
 
 **450\. 删除二叉搜索树中的节点** |[力扣](<https://leetcode.cn/problems/delete-node-in-a-bst/>)|[LeetCode](<https://leetcode.com/problems/delete-node-in-a-bst/>)
 
-给定一个二叉搜索树的根节点 **root** 和一个值 **key** ，删除二叉搜索树中的 **key** 对应的节点，并保证二叉搜索树的性质不变。返回二叉搜索树（有可能被更新）的根节点的引用。
+给定一个二叉搜索树的根节点 **root** 和一个值 *$，删除二叉搜索树中的 *$ 对应的节点，并保证二叉搜索树的性质不变。返回二叉搜索树（有可能被更新）的根节点的引用。
 
 一般来说，删除节点可分为两个步骤：
 
@@ -321,9 +307,7 @@ CC++GoJavaJavaScriptPython
 
 这个问题稍微复杂，跟插入操作类似，先「找」再「改」，先把框架写出来再说：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     TreeNode deleteNode(TreeNode root, int key) {
         if (root.val == key) {
             // 找到啦，进行删除
@@ -372,9 +356,7 @@ CC++GoJavaJavaScriptPython
 
 三种情况分析完毕，填入框架，简化一下代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public TreeNode deleteNode(TreeNode root, int key) {
             if (root == null) return null;

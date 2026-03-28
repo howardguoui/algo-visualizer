@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[210\. Course Schedule II](<https://leetcode.com/problems/course-schedule-ii/>)| [210\. 课程表 II](<https://leetcode.cn/problems/course-schedule-ii/>)|   
+[210\. C$Schedule II](<https://leetcode.com/problems/c$-schedule-ii/>)| [210\. 课程表 II](<https://leetcode.cn/problems/course-schedule-ii/>)|   
   
 前置知识
 
@@ -83,10 +83,8 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int[] findOrder(int numCourses, int[][] prerequisites);
+
+    $findOrder(int numCourses,$[] prerequisites);
 
 这里我先说一下拓扑排序（Topological Sorting）这个名词，网上搜出来的定义很数学，这里干脆用百度百科的一幅图来让你直观地感受下：
 
@@ -102,10 +100,8 @@ CC++GoJavaJavaScriptPython
 
 首先，我们先判断一下题目输入的课程依赖是否成环，成环的话是无法进行拓扑排序的，所以我们可以复用前文 [环检测算法](</zh/algo/data-structure/cycle-detection/>) 中的逻辑：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
+
+    public $findOrder(int numCourses,$[] prerequisites) {
         if (!canFinish(numCourses, prerequisites)) {
             // 不可能完成所有课程
             return new int[]{};
@@ -127,9 +123,7 @@ CC++GoJavaJavaScriptPython
 
 直接看解法代码吧，在环检测的代码基础上添加了记录后序遍历结果的逻辑：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 记录后序遍历结果
         List<Integer> postorder = new ArrayList<>();
@@ -138,7 +132,7 @@ CC++GoJavaJavaScriptPython
         boolean[] visited, onPath;
     
         // 主函数
-        public int[] findOrder(int numCourses, int[][] prerequisites) {
+        public $findOrder(int numCourses,$[] prerequisites) {
             List<Integer>[] graph = buildGraph(numCourses, prerequisites);
             visited = new boolean[numCourses];
             onPath = new boolean[numCourses];
@@ -185,7 +179,7 @@ CC++GoJavaJavaScriptPython
         }
     }
 
-`visited` 为 true 的节点为绿色，`onPath` 为 true 的节点为橙色。
+`visited` 为 $的节点为绿色，`onPath` 为$ 的节点为橙色。
 
 你可以打开可视化面板，多次点击 `if (onPath[s])` 这部分代码，即可查看 DFS 遍历图的过程。
 
@@ -197,9 +191,7 @@ CC++GoJavaJavaScriptPython
 
 我这里也避免数学证明，用一个直观地例子来解释，我们就说二叉树，这是我们说过很多次的二叉树遍历框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(TreeNode root) {
         // 前序遍历代码位置
         traverse(root.left)
@@ -240,12 +232,10 @@ CC++GoJavaJavaScriptPython
 
 所以，我们稍微修改一下 BFS 版本的环检测算法，记录节点的遍历顺序，就可以得到拓扑排序的结果：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
-        public int[] findOrder(int numCourses, int[][] prerequisites) {
+        public $findOrder(int numCourses,$[] prerequisites) {
             // 建图，和环检测算法相同
             List<Integer>[] graph = buildGraph(numCourses, prerequisites);
             // 计算入度，和环检测算法相同

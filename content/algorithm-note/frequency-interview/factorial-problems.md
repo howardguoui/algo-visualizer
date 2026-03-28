@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[793\. Preimage Size of Factorial Zeroes Function](<https://leetcode.com/problems/preimage-size-of-factorial-zeroes-function/>)| [793\. 阶乘函数后 K 个零](<https://leetcode.cn/problems/preimage-size-of-factorial-zeroes-function/>)|   
-[172\. Factorial Trailing Zeroes](<https://leetcode.com/problems/factorial-trailing-zeroes/>)| [172\. 阶乘后的零](<https://leetcode.cn/problems/factorial-trailing-zeroes/>)|   
+[793\. Preimage Size of F$Zeroes Function](<https://leetcode.com/problems/preimage-size-of-f$-zeroes-function/>)| [793\. 阶乘函数后 K 个零](<https://leetcode.cn/problems/preimage-size-of-factorial-zeroes-function/>)|   
+[172\. F$Trailing Zeroes](<https://leetcode.com/problems/f$$[172\. 阶乘后的零](<https://leetcode.cn/problems/factorial$   
   
 前置知识
 

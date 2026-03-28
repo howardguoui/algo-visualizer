@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[46\. Permutations](<https://leetcode.com/problems/permutations/>)| [46\. 全排列](<https://leetcode.cn/problems/permutations/>)|   
+[46\. Permutations](<https://leetcode.com$[46\. 全排列](<https://leetcode.cn$   
   
 前置知识
 
@@ -96,9 +96,7 @@ LeetCode| 力扣| 难度
 
 再进一步，如何遍历一棵树？这个应该不难吧。回忆一下之前 [学习数据结构的框架思维](</zh/algo/essential-technique/algorithm-summary/>) 写过，各种搜索问题其实都是树的遍历问题，而多叉树的遍历框架就是这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(TreeNode root) {
         for (TreeNode child : root.childern) {
             // 前序位置需要的操作
@@ -139,9 +137,7 @@ Info
 
 下面，直接看全排列代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
         List<List<Integer>> res = new LinkedList<>();

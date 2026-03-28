@@ -9,9 +9,7 @@
 
 刷过力扣的读者肯定对单链表非常熟悉，力扣上的单链表节点定义如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class ListNode {
         int val;
         ListNode next;
@@ -20,9 +18,7 @@ CC++GoJavaJavaScriptPython
 
 这仅仅是一个最简单的**单链表节点** ，方便力扣出算法题来考你。在实际的编程语言中，我们使用的链表节点会稍微复杂一点，类似这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Node<E> {
         E val;
         Node<E> next;
@@ -37,9 +33,9 @@ CC++GoJavaJavaScriptPython
 
 主要区别有两个：
 
-1、编程语言标准库一般都会提供泛型，即你可以指定 `val` 字段为任意类型，而力扣的单链表节点的 `val` 字段只有 int 类型。
+1、编程语言标准库一般都会提供泛型，即你可以指定 `$字段为任意类型，而力扣的单链表节点的 `$ 字段只有 int 类型。
 
-2、编程语言标准库一般使用的都是双链表而非单链表。单链表节点只有一个 `next` 指针，指向下一个节点；而双链表节点有两个指针，`prev` 指向前一个节点，`next` 指向下一个节点。
+2、编程语言标准库一般使用的都是双链表而非单链表。单链表节点只有一个 $指针，指向下一个节点；而双链表节点有两个指针，`prev` 指向前一个节点，$ 指向下一个节点。
 
 有了 `prev` 前驱指针，链表支持双向遍历，但由于要多维护一个指针，增删查改时会稍微复杂一些，后面带大家实现双链表时会具体介绍。
 
@@ -63,9 +59,7 @@ CC++GoJavaJavaScriptPython
 
 我先写一个工具函数，用于创建一条单链表，方便后面的讲解：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class ListNode {
         int val;
         ListNode next;
@@ -92,9 +86,7 @@ CC++GoJavaJavaScriptPython
 
 比方说，我想访问单链表的每一个节点，并打印其值，可以这样写：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条单链表
     ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -105,7 +97,7 @@ CC++GoJavaJavaScriptPython
 
 类似的，如果是要通过索引访问或修改链表中的某个节点，也只能用 for 循环从头结点开始往后找，直到找到索引对应的节点，然后进行访问或修改。
 
-这个操作的最坏时间复杂度是 O(n)O(n)O(n)，其中 nnn 是链表的长度。
+这个操作的最坏时间复杂度是 $O(n)$，其中 $n$ 是链表的长度。
 
 ### ¶增
 
@@ -113,9 +105,7 @@ CC++GoJavaJavaScriptPython
 
 我们会持有单链表的头结点，所以只需要将插入的节点接到头结点之前，并将新插入的节点作为头结点即可。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条单链表
     ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -126,15 +116,13 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
 
-这个操作的时间复杂度是 O(1)O(1)O(1)。
+这个操作的时间复杂度是 $O(1)$。
 
 在单链表尾部插入新元素
 
 直接看代码吧，很简单：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条单链表
     ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -150,7 +138,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
-这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到链表尾部。当然，如果我们持有对链表尾节点的引用，那么在尾部插入新节点的操作就会变得非常简单，不用每次从头去遍历了。这个优化会在后面具体实现双链表时介绍。
+这个操作的时间复杂度是 $O(n)$，因为需要先遍历到链表尾部。当然，如果我们持有对链表尾节点的引用，那么在尾部插入新节点的操作就会变得非常简单，不用每次从头去遍历了。这个优化会在后面具体实现双链表时介绍。
 
 在单链表尾部插入新元素
 
@@ -158,9 +146,7 @@ CC++GoJavaJavaScriptPython
 
 这个操作稍微有点复杂，我们还是要先找到要插入位置的前驱节点，然后操作前驱节点把新节点插入进去：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条单链表
     ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -180,7 +166,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
 
-这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到插入位置的前驱节点。
+这个操作的时间复杂度是 $O(n)$，因为需要先找到插入位置的前驱节点。
 
 在单链表中间插入新元素
 
@@ -190,9 +176,7 @@ CC++GoJavaJavaScriptPython
 
 删除一个节点，首先要找到要被删除节点的前驱节点，然后把这个前驱节点的 `next` 指针指向被删除节点的下一个节点。这样就能把被删除节点从链表中摘除了。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条单链表
     ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -208,7 +192,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 1 -> 2 -> 3 -> 5
 
-这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到被删除节点的前驱节点。
+这个操作的时间复杂度是 $O(n)$，因为需要先找到被删除节点的前驱节点。
 
 在单链表中删除一个节点
 
@@ -216,9 +200,7 @@ CC++GoJavaJavaScriptPython
 
 这个操作比较简单，找到倒数第二个节点，然后把它的 `next` 指针置为 null 就行了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条单链表
     ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -235,7 +217,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 1 -> 2 -> 3 -> 4
 
-这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到倒数第二个节点。
+这个操作的时间复杂度是 $O(n)$，因为需要先遍历到倒数第二个节点。
 
 在单链表尾部删除元素
 
@@ -243,9 +225,7 @@ CC++GoJavaJavaScriptPython
 
 这个操作比较简单，直接把 `head` 移动到下一个节点就行了，直接看代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条单链表
     ListNode head = createLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -254,7 +234,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 2 -> 3 -> 4 -> 5
 
-这个操作的时间复杂度是 O(1)O(1)O(1)。
+这个操作的时间复杂度是 $O(1)$。
 
 不过可能有读者疑惑，之前那个旧的头结点 `1` 的 next 指针依然指向着节点 `2`，这样会不会造成内存泄漏？
 
@@ -288,9 +268,7 @@ CC++GoJavaJavaScriptPython
 
 我先写一个工具函数，用于创建一条双链表，方便后面的讲解：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class DoublyListNode {
         int val;
         DoublyListNode next, prev;
@@ -319,9 +297,7 @@ CC++GoJavaJavaScriptPython
 
 对于双链表的遍历和查找，我们可以从头节点或尾节点开始，根据需要向前或向后遍历：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条双链表
     DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
     DoublyListNode tail = null;
@@ -337,7 +313,7 @@ CC++GoJavaJavaScriptPython
         System.out.println(p.val);
     }
 
-这个操作的最坏时间复杂度是 O(n)O(n)O(n)。访问或修改节点时，可以根据索引是靠近头部还是尾部，选择合适的方向遍历，这样可以一定程度上提高效率。
+这个操作的最坏时间复杂度是 $O(n)$。访问或修改节点时，可以根据索引是靠近头部还是尾部，选择合适的方向遍历，这样可以一定程度上提高效率。
 
 ### ¶增
 
@@ -345,9 +321,7 @@ CC++GoJavaJavaScriptPython
 
 在双链表头部插入元素，需要调整新节点和原头节点的指针：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条双链表
     DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -358,7 +332,7 @@ CC++GoJavaJavaScriptPython
     head = newHead;
     // 现在链表变成了 0 -> 1 -> 2 -> 3 -> 4 -> 5
 
-这个操作的时间复杂度是 O(1)O(1)O(1)。
+这个操作的时间复杂度是 $O(1)$。
 
 在双链表头部插入新元素
 
@@ -366,9 +340,7 @@ CC++GoJavaJavaScriptPython
 
 在双链表尾部插入元素时，如果我们持有尾节点的引用，这个操作会非常简单：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条双链表
     DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -387,7 +359,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 1 -> 2 -> 3 -> 4 -> 5 -> 6
 
-这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到尾节点。如果持有尾节点引用，则是 O(1)O(1)O(1)。
+这个操作的时间复杂度是 $O(n)$，因为需要先遍历到尾节点。如果持有尾节点引用，则是 $O(1)$。
 
 在双链表尾部插入新元素
 
@@ -397,9 +369,7 @@ CC++GoJavaJavaScriptPython
 
 比如下面的例子，把元素 66 插入到索引 3（第 4 个节点）的位置：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条双链表
     DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -421,7 +391,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 1 -> 2 -> 3 -> 66 -> 4 -> 5
 
-这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到插入位置。
+这个操作的时间复杂度是 $O(n)$，因为需要先找到插入位置。
 
 在双链表中间插入新元素
 
@@ -431,9 +401,7 @@ CC++GoJavaJavaScriptPython
 
 在双链表中删除节点时，需要调整前驱节点和后继节点的指针来摘除目标节点：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条双链表
     DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -457,7 +425,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 1 -> 2 -> 3 -> 5
 
-这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先找到被删除节点的位置。如果已知被删除节点的引用，则删除操作本身是 O(1)O(1)O(1)。
+这个操作的时间复杂度是 $O(n)$，因为需要先找到被删除节点的位置。如果已知被删除节点的引用，则删除操作本身是 $O(1)$。
 
 在双链表中删除一个节点
 
@@ -465,9 +433,7 @@ CC++GoJavaJavaScriptPython
 
 在双链表头部删除元素需要调整头节点的指针：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条双链表
     DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -481,7 +447,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 2 -> 3 -> 4 -> 5
 
-这个操作的时间复杂度是 O(1)O(1)O(1)。
+这个操作的时间复杂度是 $O(1)$。
 
 在双链表头部删除元素
 
@@ -491,9 +457,7 @@ CC++GoJavaJavaScriptPython
 
 但在双链表中，由于每个节点都存储了前驱节点的指针，所以我们可以直接操作尾节点，把它自己从链表中摘除：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 创建一条双链表
     DoublyListNode head = createDoublyLinkedList(new int[]{1, 2, 3, 4, 5});
     
@@ -513,7 +477,7 @@ CC++GoJavaJavaScriptPython
     
     // 现在链表变成了 1 -> 2 -> 3 -> 4
 
-这个操作的时间复杂度是 O(n)O(n)O(n)，因为需要先遍历到尾节点。如果持有尾节点引用，则是 O(1)O(1)O(1)。
+这个操作的时间复杂度是 $O(n)$，因为需要先遍历到尾节点。如果持有尾节点引用，则是 $O(1)$。
 
 在双链表尾部删除元素
 

@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[10\. Regular Expression Matching](<https://leetcode.com/problems/regular-expression-matching/>)| [10\. 正则表达式匹配](<https://leetcode.cn/problems/regular-expression-matching/>)|   
+[10\. R$Expression Matching](<https://leetcode.com/problems/r$$[10\. 正则表达式匹配](<https://leetcode.cn/problems/regular$   
   
 前置知识
 
@@ -25,15 +25,13 @@ LeetCode| 力扣| 难度
 
 这两个通配符是最常用的，其中点号「.」可以匹配任意一个字符，星号「*」可以让之前的那个字符重复任意次数（包括 0 次）。
 
-比如说模式串 `".a*b"` 就可以匹配文本 `"zaaab"`，也可以匹配 `"cb"`；模式串 `"a..b"` 可以匹配文本 `"amnb"`；而模式串 `".*"` 就比较牛逼了，它可以匹配任何文本。
+比如说模式串 `".a*b"` 就可以匹配文本 `"zaaab"`，也$`"cb"`；模式串 `"a..b"`$文本 `"amnb"`；而模式串 `".*"` 就比较牛逼了，它可以匹配任何文本。
 
 题目会给我们输入两个字符串 `s` 和 `p`，`s` 代表文本，`p` 代表模式串，请你判断模式串 `p` 是否可以匹配文本 `s`。我们可以假设模式串只包含小写字母和上述两种通配符且一定合法，不会出现 `*a` 或者 `b**` 这种不合法的模式串，
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean isMatch(string s, string p);
 
 对于我们将要实现的这个正则表达式，难点在那里呢？
@@ -48,9 +46,7 @@ CC++GoJavaJavaScriptPython
 
 **如果不考虑`*` 通配符，面对两个待匹配字符 `s[i]` 和 `p[j]`，我们唯一能做的就是看他俩是否匹配**：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     boolean isMatch(String s, String p) {
         int i = 0, j = 0;
         while (i < s.length() && j < p.length()) {
@@ -72,7 +68,7 @@ CC++GoJavaJavaScriptPython
 
 1、如果 `s[i] == p[j]`，那么有两种情况：
 
-1.1 `p[j]` 有可能会匹配多个字符，比如 `s = "aaa", p = "a*"`，那么 `p[0]` 会通过 `*` 匹配 3 个字符 `"a"`。
+1.1 `p[j]` 有可能会匹配多个字符，比如 `s = "$a$", p = "a*"`，那么 `p[0]` 会通过 `*` 匹配 3 个字符 `"a"`。
 
 1.2 `p[i]` 也有可能匹配 0 个字符，比如 `s = "aa", p = "a*aa"`，由于后面的字符可以匹配 `s`，所以 `p[0]` 只能匹配 0 次。
 
@@ -82,9 +78,7 @@ CC++GoJavaJavaScriptPython
 
 综上，可以把之前的代码针对 `*` 通配符进行一下改造：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     if (s.charAt(i) == p.charAt(j) || p.charAt(j) == '.') {
         // 匹配
         if (j < p.length() - 1 && p.charAt(j + 1) == '*') {

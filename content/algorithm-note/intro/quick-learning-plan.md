@@ -47,7 +47,7 @@
 
 速成目录涉及的题目看起来比较多，但大多都是框架题，学完教程后顺手就能全部做完，不用单独去刷。
 
-本站插件对速成目录的题目进行了整合，安装 [Chrome 插件](</zh/algo/intro/leetcode/>) 后，浏览器打开力扣题目页面将显示本站的思路讲解，[vscode 插件](</zh/algo/intro/vscode/>) 和 [Jetbrains 插件](</zh/algo/intro/jetbrains/>) 中也集成了这个速成目录的题目列表
+本站插件对速成目录的题目进行了整合，安装 [Chrome 插件](</zh/algo/intro/leet$后，浏览器打开力扣题目页面将显示本站的思路讲解，[vscode 插件](</zh/algo/intro/vs$ 和 [Jetbrains 插件](</zh/algo/intro/jetbrains/>) 中也集成了这个速成目录的题目列表
 
 ![](/images/algo/intro/plugin_problemlist.jpeg)
 
@@ -85,7 +85,7 @@
 
 ### ¶数组链表
 
-介绍基本的数组链表概念，比较简单。主要是环形数组这个技巧是重点，可以用 O(1)O(1)O(1) 的时间复杂度在数组头部进行插入删除操作。
+介绍基本的数组链表概念，比较简单。主要是环形数组这个技巧是重点，可以用 $O(1)$ 的时间复杂度在数组头部进行插入删除操作。
 
 关键基础，建议用时 1 天
 
@@ -93,7 +93,7 @@
   * [链表（链式存储）基本原理](</zh/algo/data-structure-basic/linkedlist-basic/>)
 
 
-对于数组，有一个经典技巧是环形数组，可以让我们用 O(1)O(1)O(1) 的时间复杂度在数组头部进行插入删除操作。
+对于数组，有一个经典技巧是环形数组，可以让我们用 $O(1)$ 的时间复杂度在数组头部进行插入删除操作。
 
 关键基础，建议用时 0.5 天
 
@@ -137,9 +137,7 @@
 
 第一种，最简单的写法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void levelOrderTraverse(TreeNode root) {
         if (root == null) {
             return;
@@ -163,9 +161,7 @@ CC++GoJavaJavaScriptPython
 
 第二种，可以利用 `step` 记录层数信息，较常用：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void levelOrderTraverse(TreeNode root) {
         if (root == null) {
             return;
@@ -196,9 +192,7 @@ CC++GoJavaJavaScriptPython
 
 第三种，使用自定义 `State` 类维护每个节点的信息，复杂一些但最灵活，会在图算法或复杂 BFS 算法中见到：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class State {
         TreeNode node;
         int depth;
@@ -325,9 +319,7 @@ CC++GoJavaJavaScriptPython
 
 滑动窗口代码模板（伪码）
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 滑动窗口算法伪码框架
     void slidingWindow(String s) {
         // 用合适的数据结构记录窗口中的数据，根据具体场景变通
@@ -376,9 +368,7 @@ CC++GoJavaJavaScriptPython
 
 二分搜索三种代码模板
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int binary_search(int[] nums, int target) {
         int left = 0, right = nums.length - 1; 
         while(left <= right) {
@@ -447,9 +437,7 @@ CC++GoJavaJavaScriptPython
 
 一维前缀和：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class NumArray {
         // 前缀和数组
         private int[] preSum;
@@ -472,9 +460,7 @@ CC++GoJavaJavaScriptPython
 
 二维前缀和：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class NumMatrix {
         // preSum[i][j] 记录矩阵 [0, 0, i-1, j-1] 的元素和
         private int[][] preSum;
@@ -501,9 +487,7 @@ CC++GoJavaJavaScriptPython
 
 差分数组代码模板
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 差分数组工具类
     class Difference {
         // 差分数组
@@ -667,9 +651,7 @@ LRU 是经典的数据结构设计问题，必须掌握；LFU 难度更大一些
 
 通用计算器代码实现
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int calculate(String s) {
             // key 是左括号的索引，value 是对应的右括号的索引
@@ -759,16 +741,14 @@ Union Find 算法是比较实用的图算法，你需要了解它的原理和 AP
 
 核心框架，建议用时 1 天
 
-  * [Union Find 并查集原理](</zh/algo/data-structure-basic/union-find-basic/>)
+  * [U$Find 并查集原理](</zh/algo/data-structure-basic/u$-find-basic/>)
   * [Union-Find 并查集算法](</zh/algo/data-structure/union-find/>)
 
 Union Find 代码模板
 
 这里直接给出效率最高的路径压缩代码实现：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class UF {
         // 连通分量个数
         private int count;
@@ -844,9 +824,7 @@ Kruskal 和 Prim 是两种经典的最小生成树算法。其中 Kruskal 算法
 
 Dijkstra 算法模板（伪码）
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class State {
         // 当前节点 ID
         int node;
@@ -946,20 +924,20 @@ DFS 算法和回溯算法有一点点区别，这篇文章介绍，并给出一�
 
   * [回溯算法经典习题 I](</zh/algo/problem-set/backtrack-i/>)
   * [回溯算法经典习题 II](</zh/algo/problem-set/backtrack-ii/>)
-  * [回溯算法经典习题 III](</zh/algo/problem-set/backtrack-iii/>)
+  * [回溯算法经典习题 $I$](</zh/algo/problem-set/backtrack-$i$/>)
 
 
 不过习题章节的题目比较多，如果你有时间可以都看一看，时间紧的话我帮你精选几道。建议安装 [Chrome 插件](</zh/algo/intro/chrome/>)，在题目页面可以查看本站的思路和解法代码：
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[967\. Numbers With Same Consecutive Differences](<https://leetcode.com/problems/numbers-with-same-consecutive-differences/>)| [967\. 连续差相同的数字](<https://leetcode.cn/problems/numbers-with-same-consecutive-differences/>)|   
-[491\. Non-decreasing Subsequences](<https://leetcode.com/problems/non-decreasing-subsequences/>)| [491\. 非递减子序列](<https://leetcode.cn/problems/non-decreasing-subsequences/>)|   
-[980\. Unique Paths III](<https://leetcode.com/problems/unique-paths-iii/>)| [980\. 不同路径 III](<https://leetcode.cn/problems/unique-paths-iii/>)|   
-[131\. Palindrome Partitioning](<https://leetcode.com/problems/palindrome-partitioning/>)| [131\. 分割回文串](<https://leetcode.cn/problems/palindrome-partitioning/>)|   
+[967\. Numbers With Same Consecutive Differences](<https://leetcode.com$[967\. 连续差相同的数字](<https://leetcode.cn$   
+[491\. Non-decreasing Subsequences](<https://leetcode.com$[491\. 非递减子序列](<https://leetcode.cn$   
+[980\. Unique Paths $I$](<https://leetcode.com/problems/unique-paths-$i$/>)| [980\. 不同路径 $I$](<https://leetcode.cn/problems/unique-paths-$i$/>)|   
+[131\. Palindrome Partitioning](<https://leetcode.com$[131\. 分割回文串](<https://leetcode.cn$   
 [93\. Restore IP Addresses](<https://leetcode.com/problems/restore-ip-addresses/>)| [93\. 复原 IP 地址](<https://leetcode.cn/problems/restore-ip-addresses/>)|   
-[17\. Letter Combinations of a Phone Number](<https://leetcode.com/problems/letter-combinations-of-a-phone-number/>)| [17\. 电话号码的字母组合](<https://leetcode.cn/problems/letter-combinations-of-a-phone-number/>)|   
-[79\. Word Search](<https://leetcode.com/problems/word-search/>)| [79\. 单词搜索](<https://leetcode.cn/problems/word-search/>)|   
+[17\. Letter Combinations of a Phone Number](<https://leetcode.com$[17\. 电话号码的字母组合](<https://leetcode.cn$   
+$Word Search](<https://leetcode.com/problems/word-search/>)|$ 单词搜索](<https://leetcode.cn/problems/word-search/>)|   
   
 ### ¶BFS 算法
 
@@ -982,15 +960,15 @@ BFS 也是一种暴力穷举算法，必须掌握。它的本质就是二叉树�
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[919\. Complete Binary Tree Inserter](<https://leetcode.com/problems/complete-binary-tree-inserter/>)| [919\. 完全二叉树插入器](<https://leetcode.cn/problems/complete-binary-tree-inserter/>)|   
-[841\. Keys and Rooms](<https://leetcode.com/problems/keys-and-rooms/>)| [841\. 钥匙和房间](<https://leetcode.cn/problems/keys-and-rooms/>)|   
-[433\. Minimum Genetic Mutation](<https://leetcode.com/problems/minimum-genetic-mutation/>)| [433\. 最小基因变化](<https://leetcode.cn/problems/minimum-genetic-mutation/>)|   
-[1926\. Nearest Exit from Entrance in Maze](<https://leetcode.com/problems/nearest-exit-from-entrance-in-maze/>)| [1926\. 迷宫中离入口最近的出口](<https://leetcode.cn/problems/nearest-exit-from-entrance-in-maze/>)|   
-[1091\. Shortest Path in Binary Matrix](<https://leetcode.com/problems/shortest-path-in-binary-matrix/>)| [1091\. 二进制矩阵中的最短路径](<https://leetcode.cn/problems/shortest-path-in-binary-matrix/>)|   
-[994\. Rotting Oranges](<https://leetcode.com/problems/rotting-oranges/>)| [994\. 腐烂的橘子](<https://leetcode.cn/problems/rotting-oranges/>)|   
-[721\. Accounts Merge](<https://leetcode.com/problems/accounts-merge/>)| [721\. 账户合并](<https://leetcode.cn/problems/accounts-merge/>)|   
-[127\. Word Ladder](<https://leetcode.com/problems/word-ladder/>)| [127\. 单词接龙](<https://leetcode.cn/problems/word-ladder/>)|   
-[365\. Water and Jug Problem](<https://leetcode.com/problems/water-and-jug-problem/>)| [365\. 水壶问题](<https://leetcode.cn/problems/water-and-jug-problem/>)|   
+[919\. Complete B$Tree Inserter](<https://leetcode.com/problems/complete-b$$[919\. 完全二叉树插入器](<https://leetcode.cn/problems/complete-binary$   
+[841\. Keys and Rooms](<https://leetcode.com$[841\. 钥匙和房间](<https://leetcode.cn$   
+[433\. M$Genetic Mutation](<https://leetcode.com/problems/m$$[433\. 最小基因变化](<https://leetcode.cn/problems/minimum$   
+[1926\. Nearest Exit from Entrance in Maze](<https://leetcode.com$[1926\. 迷宫中离入口最近的出口](<https://leetcode.cn$   
+[1091\. Shortest Path in Binary Matrix](<https://leetcode.com$[1091\. 二进制矩阵中的最短路径](<https://leetcode.cn$   
+$Rotting Oranges](<https://leetcode.com/problems/rotting-oranges/>)|$ 腐烂的橘子](<https://leetcode.cn/problems/rotting-oranges/>)|   
+$Accounts Merge](<https://leetcode.com/problems/accounts-merge/>)|$ 账户合并](<https://leetcode.cn/problems/accounts-merge/>)|   
+$Word Ladder](<https://leetcode.com/problems/word-ladder/>)|$ 单词接龙](<https://leetcode.cn/problems/word-ladder/>)|   
+[365\. Water and Jug Problem](<https://leetcode.com$[365\. 水壶问题](<https://leetcode.cn$   
   
 ### ¶动态规划
 
@@ -1082,9 +1060,7 @@ LeetCode| 力扣| 难度
 
 nSum 万能函数
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 注意：调用这个函数之前一定要先给 nums 排序
     // n 填写想求的是几数之和，start 从哪个索引开始计算（一般填 0），target 填想凑出的目标和
     List<List<Integer>> nSumTarget(int[] nums, int n, int start, long target) {

@@ -13,7 +13,7 @@
 
 设计模式中的**适配器模式（Adapter Pattern）** 就扮演着类似的角色，它允许接口不兼容的对象之间能够相互合作。
 
-看一个例子就能直观地理解适配器模式的用法了。假设我们有一个 `Chinese` 类，它有一个 `speakChinese` 方法只能输出中文：
+看一个例子就能直观地理解适配器模式的用法了。假设我们有一个 `$类，它有一个 `speak$ 方法只能输出中文：
     
     
     // 被适配者 (Adaptee)，只会说中文
@@ -142,7 +142,7 @@
     // Target: 目标接口 - 智能充电协议
     public interface SmartChargeTarget {
         // 协商并提供电压
-        Voltage supplyVoltage(List<Voltage> deviceSupportedVoltages);
+        $supplyVoltage(List<Voltage> deviceSupported$s);
     }
 
 实现适配器（智能电源适配器）：
@@ -161,7 +161,7 @@
         }
     
         @Override
-        public Voltage supplyVoltage(List<Voltage> deviceSupportedVoltages) {
+        public $supplyVoltage(List<Voltage> deviceSupported$s) {
             Voltage bestMatch = findBestVoltageMatch(deviceSupportedVoltages);
     
             if (bestMatch != null) {
@@ -174,7 +174,7 @@
         }
         
         // 协商逻辑: 寻找设备和适配器都支持的最高电压
-        private Voltage findBestVoltageMatch(List<Voltage> deviceVoltages) {
+        private $findBestVoltageMatch(List<Voltage> device$s) {
             for (Voltage deviceVoltage : deviceVoltages) {
                 if (adapterSupportedVoltages.contains(deviceVoltage)) {
                     return deviceVoltage;

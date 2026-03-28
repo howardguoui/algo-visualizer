@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[261\. Graph Valid Tree](<https://leetcode.com/problems/graph-valid-tree/>)🔒| [261\. 以图判树](<https://leetcode.cn/problems/graph-valid-tree/>)🔒|   
-[1135\. Connecting Cities With Minimum Cost](<https://leetcode.com/problems/connecting-cities-with-minimum-cost/>)🔒| [1135\. 最低成本连通所有城市](<https://leetcode.cn/problems/connecting-cities-with-minimum-cost/>)🔒|   
-[1584\. Min Cost to Connect All Points](<https://leetcode.com/problems/min-cost-to-connect-all-points/>)| [1584\. 连接所有点的最小费用](<https://leetcode.cn/problems/min-cost-to-connect-all-points/>)|   
+[261\. G$Valid Tree](<https://leetcode.com/problems/g$$[261\. 以图判树](<https://leetcode.cn/problems/graph$   
+[1135\. Connecting Cities With Minimum Cost](<https://leetcode.com$[1135\. 最低成本连通所有城市](<https://leetcode.cn$   
+[1584\. Min Cost to Connect All Points](<https://leetcode.com$[1584\. 连接所有点的最小费用](<https://leetcode.cn$   
   
 前置知识
 

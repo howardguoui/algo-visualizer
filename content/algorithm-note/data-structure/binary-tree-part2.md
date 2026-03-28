@@ -11,10 +11,10 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[654\. Maximum Binary Tree](<https://leetcode.com/problems/maximum-binary-tree/>)| [654\. 最大二叉树](<https://leetcode.cn/problems/maximum-binary-tree/>)|   
-[105\. Construct Binary Tree from Preorder and Inorder Traversal](<https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/>)| [105\. 从前序与中序遍历序列构造二叉树](<https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/>)|   
-[106\. Construct Binary Tree from Inorder and Postorder Traversal](<https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/>)| [106\. 从中序与后序遍历序列构造二叉树](<https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/>)|   
-[889\. Construct Binary Tree from Preorder and Postorder Traversal](<https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/>)| [889\. 根据前序和后序遍历构造二叉树](<https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-postorder-traversal/>)|   
+[654\. M$Binary Tree](<https://leetcode.com/problems/m$$[654\. 最大二叉树](<https://leetcode.cn/problems/maximum$   
+[105\. Construct Binary Tree from Preorder and Inorder Traversal](<https://leetcode.com/problems/c$[105\. 从前序与中序遍历序列构造二叉树](<https://leetcode.cn/problems/c$   
+[106\. Construct Binary Tree from Inorder and Postorder Traversal](<https://leetcode.com/problems/co$[106\. 从中序与后序遍历序列构造二叉树](<https://leetcode.cn/problems/co$   
+[889\. Construct Binary Tree from Preorder and Postorder Traversal](<https://leetcode.com/problems/con$[889\. 根据前序和后序遍历构造二叉树](<https://leetcode.cn/problems/con$   
   
 前置知识
 
@@ -68,7 +68,7 @@ Note
     **输入：** nums = [3,2,1,6,0,5]
     **输出：**[6,3,5,null,2,0,null,null,1]
     **解释：** 递归调用如下所示：
-    - [3,2,1,6,0,5] 中的最大值是 6 ，左边部分是 [3,2,1] ，右边部分是 [0,5] 。
+    - [3,2,1,6,0,5] 中的最大值是 6 ，左$[3,2,1] ，右$ [0,5] 。
         - [3,2,1] 中的最大值是 3 ，左边部分是 [] ，右边部分是 [2,1] 。
             - 空数组，无子节点。
             - [2,1] 中的最大值是 2 ，左边部分是 [] ，右边部分是 [1] 。
@@ -97,9 +97,7 @@ Note
 
 题目来源：[力扣 654. 最大二叉树](<https://leetcode.cn/problems/maximum-binary-tree/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
     TreeNode constructMaximumBinaryTree(int[] nums);
 
@@ -109,9 +107,7 @@ CC++GoJavaJavaScriptPython
 
 按照题目给出的例子，输入的数组为 `[3,2,1,6,0,5]`，对于整棵树的根节点来说，其实在做这件事：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     TreeNode constructMaximumBinaryTree([3,2,1,6,0,5]) {
         // 找到数组中的最大值
         TreeNode root = new TreeNode(6);
@@ -146,9 +142,7 @@ CC++GoJavaJavaScriptPython
 
 明确了思路，我们可以重新写一个辅助函数 `build`，来控制 `nums` 的索引：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
         public TreeNode constructMaximumBinaryTree(int[] nums) {
@@ -215,18 +209,16 @@ CC++GoJavaJavaScriptPython
   * `inorder.length == preorder.length`
   * `-3000 <= preorder[i], inorder[i] <= 3000`
   * `preorder` 和 `inorder` 均 **无重复** 元素
-  * `inorder` 均出现在 `preorder`
+  * `in$均出现在 `pre$
   * `preorder` **保证** 为二叉树的前序遍历序列
   * `inorder` **保证** 为二叉树的中序遍历序列
 
 
 题目来源：[力扣 105. 从前序与中序遍历序列构造二叉树](<https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
-    TreeNode buildTree(int[] preorder, int[] inorder);
+    TreeNode buildTree(i$preorder, i$ inorder);
 
 废话不多说，直接来想思路，首先思考，根节点应该做什么。
 
@@ -234,9 +226,7 @@ CC++GoJavaJavaScriptPython
 
 我们先来回顾一下，前序遍历和中序遍历的结果有什么特点？
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(TreeNode root) {
         // 前序遍历
         preorder.add(root.val);
@@ -261,10 +251,8 @@ CC++GoJavaJavaScriptPython
 
 换句话说，对于以下代码中的 `?` 部分应该填入什么：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    TreeNode buildTree(int[] preorder, int[] inorder) {
+
+    TreeNode buildTree(i$preorder, i$ inorder) {
         // 根据函数定义，用 preorder 和 inorder 构造二叉树
         return build(preorder, 0, preorder.length - 1,
                     inorder, 0, inorder.length - 1);
@@ -303,15 +291,13 @@ CC++GoJavaJavaScriptPython
 
 另外，也有读者注意到，通过 for 循环遍历的方式去确定 `index` 效率不算高，可以进一步优化。
 
-因为题目说二叉树节点的值不存在重复，所以可以使用一个 HashMap 存储元素到索引的映射，这样就可以直接通过 HashMap 查到 `rootVal` 对应的 `index`：
+因为题目说二叉树节点的值不存在重复，所以可以使用一个 H$存储元素到索引的映射，这样就可以直接通过 H$ 查到 `rootVal` 对应的 `index`：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 存储 inorder 中值到索引的映射
     HashMap<Integer, Integer> valToIndex = new HashMap<>();
     
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
+    public TreeNode buildTree(i$preorder, i$ inorder) {
         for (int i = 0; i < inorder.length; i++) {
             valToIndex.put(inorder[i], i);
         }
@@ -366,14 +352,12 @@ CC++GoJavaJavaScriptPython
 
 至此，整个算法思路就完成了，我们再补一补 base case 即可写出解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 存储 inorder 中值到索引的映射
         HashMap<Integer, Integer> valToIndex = new HashMap<>();
     
-        public TreeNode buildTree(int[] preorder, int[] inorder) {
+        public TreeNode buildTree(i$preorder, i$ inorder) {
             for (int i = 0; i < inorder.length; i++) {
                 valToIndex.put(inorder[i], i);
             }
@@ -417,7 +401,7 @@ CC++GoJavaJavaScriptPython
 
 **106\. 从中序与后序遍历序列构造二叉树** |[力扣](<https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/>)|[LeetCode](<https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/>)
 
-给定两个整数数组 `inorder` 和 `postorder` ，其中 `inorder` 是二叉树的中序遍历， `postorder` 是同一棵树的后序遍历，请你构造并返回这颗  _二叉树_ 。
+给定两个整数数组 `inorder` 和 `postorder` ，其中 `in$是二叉树的中序遍历， `post$ 是同一棵树的后序遍历，请你构造并返回这颗  _二叉树_ 。
 
 **示例 1:**
 
@@ -441,24 +425,20 @@ CC++GoJavaJavaScriptPython
   * `postorder.length == inorder.length`
   * `-3000 <= inorder[i], postorder[i] <= 3000`
   * `inorder` 和 `postorder` 都由 **不同** 的值组成
-  * `postorder` 中每一个值都在 `inorder` 中
+  * `post$中每一个值都在 `in$ 中
   * `inorder` **保证** 是树的中序遍历
   * `postorder` **保证** 是树的后序遍历
 
 
 题目来源：[力扣 106. 从中序与后序遍历序列构造二叉树](<https://leetcode.cn/problems/construct-binary-tree-from-inorder-and-postorder-traversal/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
-    TreeNode buildTree(int[] inorder, int[] postorder);
+    TreeNode buildTree(i$inorder, i$ postorder);
 
 类似的，看下后序和中序遍历的特点：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(TreeNode root) {
         traverse(root.left);
         traverse(root.right);
@@ -481,14 +461,12 @@ CC++GoJavaJavaScriptPython
 
 整体的算法框架和上一题非常类似，我们依然写一个辅助函数 `build`：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 存储 inorder 中值到索引的映射
         HashMap<Integer, Integer> valToIndex = new HashMap<>();
     
-        public TreeNode buildTree(int[] inorder, int[] postorder) {
+        public TreeNode buildTree(i$inorder, i$ postorder) {
             for (int i = 0; i < inorder.length; i++) {
                 valToIndex.put(inorder[i], i);
             }
@@ -535,14 +513,12 @@ CC++GoJavaJavaScriptPython
 
 综上，可以写出完整的解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 存储 inorder 中值到索引的映射
         HashMap<Integer, Integer> valToIndex = new HashMap<>();
     
-        public TreeNode buildTree(int[] inorder, int[] postorder) {
+        public TreeNode buildTree(i$inorder, i$ postorder) {
             for (int i = 0; i < inorder.length; i++) {
                 valToIndex.put(inorder[i], i);
             }
@@ -586,10 +562,8 @@ CC++GoJavaJavaScriptPython
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    TreeNode constructFromPrePost(int[] preorder, int[] postorder);
+
+    TreeNode constructFromPrePost(i$preorder, i$ postorder);
 
 这道题和前两道题有一个本质的区别：
 
@@ -624,14 +598,12 @@ CC++GoJavaJavaScriptPython
 
 详情见代码。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 存储 postorder 中值到索引的映射
         HashMap<Integer, Integer> valToIndex = new HashMap<>();
     
-        public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        public TreeNode constructFromPrePost(i$preorder, i$ postorder) {
             for (int i = 0; i < postorder.length; i++) {
                 valToIndex.put(postorder[i], i);
             }

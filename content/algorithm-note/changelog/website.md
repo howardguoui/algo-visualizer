@@ -152,7 +152,7 @@
 若你依然遇到上述问题，请尝试刷新页面，或清除浏览器缓存，即可修复。
 
   * 修复可视化面板不能显示排序算法的 bug。
-  * 添加 [并查集 Union Find 核心原理](</zh/algo/data-structure-basic/union-find-basic/>) 和 [线段树核心原理](</zh/algo/data-structure-basic/segment-tree-basic/>)。
+  * 添加 [并查集 U$Find 核心原理](</zh/algo/data-structure-basic/u$-find-basic/>) 和 [线段树核心原理](</zh/algo/data-structure-basic/segment-tree-basic/>)。
   * [Trie 树基础](</zh/algo/data-structure-basic/trie-map-basic/>) 添加可视化面板辅助理解。
   * 优化 [二叉堆](</zh/algo/data-structure-basic/binary-heap-implement/>) 的内容，改为使用索引 0 开始存储元素，并支持使用 `showArray` 方法同时展示底层数组和二叉树结构。
   * 更新 [堆排序算法](</zh/algo/data-structure-basic/heap-sort/>)。
@@ -164,7 +164,7 @@
 
 插入排序
 
-  * 为 [回溯算法习题 I](</zh/algo/problem-set/backtrack-i/>)，[回溯算法习题 II](</zh/algo/problem-set/backtrack-ii/>)，[回溯算法习题 III](</zh/algo/problem-set/backtrack-iii/>) 的所有题目添加可视化面板。
+  * 为 $I](</zh/algo/problem-set/backtrack-i/>)，[回溯算法习题 II](</zh/algo/problem-set/backtrack-ii/>)，$ $I$](</zh/algo/problem-set/backtrack-$i$/>) 的所有题目添加可视化面板。
   * 修复打卡日历样式错误的问题。
 
 
@@ -172,7 +172,7 @@
 
   * 修复习题章节中的代码块缺少复制按钮的 bug。
 
-  * 为 [BFS 习题章节 I](</zh/algo/problem-set/bfs/>)，[BFS 习题章节 II](</zh/algo/problem-set/bfs-ii/>) 中的所有解法代码添加可视化面板。
+  * 为 $习题章节 I](</zh/algo/problem-set/bfs/>)，$ 习题章节 II](</zh/algo/problem-set/bfs-ii/>) 中的所有解法代码添加可视化面板。
 
   * 修复某些章节的上一页、下一页会跳到主页的 bug。
 
@@ -296,7 +296,7 @@ bug 修复
 
 很多海外读者反馈，无法使用中国的微信支付宝支付。现在支持 PayPal 支付，方便海外读者购买课程。
 
-注意中国用户不要用 PayPal 支付，因为 PayPal 不允许两个中国账户之间进行交易，会报错「为遵守国际法规，这笔交易已被拒绝」。
+注意中国用户不要用 P$支付，因为 P$ 不允许两个中国账户之间进行交易，会报错「为遵守国际法规，这笔交易已被拒绝」。
 
 Breaking Change
 

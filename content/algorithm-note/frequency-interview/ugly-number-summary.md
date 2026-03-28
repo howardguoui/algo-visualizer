@@ -11,10 +11,10 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[263\. Ugly Number](<https://leetcode.com/problems/ugly-number/>)| [263\. 丑数](<https://leetcode.cn/problems/ugly-number/>)|   
+$Ugly Number](<https://leetcode.com/problems/ugly-number/>)|$ 丑数](<https://leetcode.cn/problems/ugly-number/>)|   
 [264\. Ugly Number II](<https://leetcode.com/problems/ugly-number-ii/>)| [264\. 丑数 II](<https://leetcode.cn/problems/ugly-number-ii/>)|   
-[313\. Super Ugly Number](<https://leetcode.com/problems/super-ugly-number/>)| [313\. 超级丑数](<https://leetcode.cn/problems/super-ugly-number/>)|   
-[1201\. Ugly Number III](<https://leetcode.com/problems/ugly-number-iii/>)| [1201\. 丑数 III](<https://leetcode.cn/problems/ugly-number-iii/>)|   
+[313\. S$Ugly Number](<https://leetcode.com/problems/s$$[313\. 超级丑数](<https://leetcode.cn/problems/super$   
+[1201\. Ugly Number $I$](<https://leetcode.com/problems/ugly-number-$i$/>)| [1201\. 丑数 $I$](<https://leetcode.cn/problems/ugly-number-$i$/>)|   
   
 前置知识
 
@@ -51,9 +51,7 @@ LeetCode| 力扣| 难度
 
 有了这个思路，就可以实现 `isUgly` 函数了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean isUgly(int n) {
             if (n <= 0) return false;
@@ -69,9 +67,7 @@ CC++GoJavaJavaScriptPython
 
 接下来提升难度，看下力扣第 264 题「[丑数 II](<https://leetcode.cn/problems/ugly-number-ii/>)」，现在题目不是让你判断一个数是不是丑数，而是给你输入一个 `n`，让你计算第 `n` 个丑数是多少，函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int nthUglyNumber(int n)
 
 更新时间：2026/03/14 00:17

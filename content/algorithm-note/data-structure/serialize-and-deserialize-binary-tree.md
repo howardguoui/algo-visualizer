@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[297\. Serialize and Deserialize Binary Tree](<https://leetcode.com/problems/serialize-and-deserialize-binary-tree/>)| [297\. 二叉树的序列化与反序列化](<https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/>)|   
+[297\. Serialize and D$Binary Tree](<https://leetcode.com/problems/serialize-and-d$-binary-tree/>)| [297\. 二叉树的序列化与反序列化](<https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/>)|   
   
 前置知识
 
@@ -81,9 +81,7 @@ JSON 的运用非常广泛，比如我们经常将编程语言中的结构体序
 
 力扣第 297 题「[二叉树的序列化与反序列化](<https://leetcode.cn/problems/serialize-and-deserialize-binary-tree/>)」就是给你输入一棵二叉树的根节点 `root`，要求你实现如下一个类：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     public class Codec {
     
         // 把一棵二叉树序列化成字符串
@@ -93,7 +91,7 @@ CC++GoJavaJavaScriptPython
         public TreeNode deserialize(String data) {}
     }
 
-我们可以用 `serialize` 方法将二叉树序列化成字符串，用 `deserialize` 方法将序列化的字符串反序列化成二叉树，至于以什么格式序列化和反序列化，这个完全由你决定。
+我们可以用 `$方法将二叉树序列化成字符串，用 `de$ 方法将序列化的字符串反序列化成二叉树，至于以什么格式序列化和反序列化，这个完全由你决定。
 
 比如说输入如下这样一棵二叉树：
 
@@ -111,9 +109,7 @@ CC++GoJavaJavaScriptPython
 
 前文 [二叉树的遍历基础](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>) 说过了二叉树的几种遍历方式，在前序位置收集节点，即可获得前序遍历结果：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     LinkedList<Integer> res;
     
     void traverse(TreeNode root) {
@@ -123,7 +119,7 @@ CC++GoJavaJavaScriptPython
             return;
         }
     
-        // ****** 前序位置 ********
+        // $前序位置 **$
         res.addLast(root.val);
         // ***********************
     
@@ -139,9 +135,7 @@ CC++GoJavaJavaScriptPython
 
 那么，将二叉树打平到一个字符串中也是完全一样的：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 代表分隔符的字符
     String SEP = ",";
     
@@ -158,7 +152,7 @@ CC++GoJavaJavaScriptPython
             return;
         }
     
-        // ***** 前序位置 *****
+        // *$前序位置 *$
         sb.append(root.val).append(SEP);
         // *********************
     
@@ -170,9 +164,7 @@ CC++GoJavaJavaScriptPython
 
 至此，我们已经可以写出序列化函数 `serialize` 的代码了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Codec {
         String SEP = ",";
         String NULL = "#";
@@ -191,7 +183,7 @@ CC++GoJavaJavaScriptPython
                 return;
             }
     
-            // ****** 前序位置 ********
+            // $前序位置 **$
             sb.append(root.val).append(SEP); ![](/images/algo/binary-tree-serialization/1.jpeg)
             // ***********************
     
@@ -204,9 +196,7 @@ CC++GoJavaJavaScriptPython
 
 首先我们可以把字符串转化成列表：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     String data = "1,2,#,4,#,#,3,#,#,";
     String[] nodes = data.split(",");
 
@@ -214,7 +204,7 @@ CC++GoJavaJavaScriptPython
 
 Tip
 
-前文 [二叉树心法（构造篇）](</zh/algo/data-structure/binary-tree-part2/>) 说过，至少要得到前、中、后序遍历中的两种互相配合才能还原二叉树。那是因为前文的遍历结果没有记录空指针的信息。这里的 `nodes` 列表包含了空指针的信息，所以只使用 `nodes` 列表就可以还原二叉树。
+前文 [二叉树心法（构造篇）](</zh/algo/data-structure/binary-tree-part2/>) 说过，至少要得到前、中、后序遍历中的两种互相配合才能还原二叉树。那是因为前文的遍历结果没有记录空指针的信息。这里的 `$列表包含了空指针的信息，所以只使用 `$ 列表就可以还原二叉树。
 
 根据我们刚才的分析，`nodes` 列表就是一棵打平的二叉树：
 

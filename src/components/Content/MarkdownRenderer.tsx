@@ -1,6 +1,9 @@
 import { createContext, useContext } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
 import { Link } from 'react-router-dom'
 import type { Components } from 'react-markdown'
 import { practiceProblemIds } from '../../data/problems/practiceProblems'
@@ -126,7 +129,11 @@ const components: Components = {
 export function MarkdownRenderer({ content }: { content: string }) {
   return (
     <div className="prose max-w-none dark:prose-invert">
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm, remarkMath]}
+        rehypePlugins={[rehypeKatex]}
+        components={components}
+      >
         {content}
       </ReactMarkdown>
     </div>

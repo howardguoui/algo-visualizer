@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[870\. Advantage Shuffle](<https://leetcode.com/problems/advantage-shuffle/>)| [870\. 优势洗牌](<https://leetcode.cn/problems/advantage-shuffle/>)|   
+[870\. Advantage Shuffle](<https://leetcode.com$[870\. 优势洗牌](<https://leetcode.cn$   
   
 前置知识
 
@@ -34,16 +34,14 @@ LeetCode| 力扣| 难度
 
 不过，我一直没具体把这个思路实现出来，直到最近刷到力扣第 870 题「[优势洗牌](<https://leetcode.cn/problems/advantage-shuffle/>)」，一眼就发现这是田忌赛马问题的加强版：
 
-给你输入两个**长度相等** 的数组 `nums1` 和 `nums2`，请你重新组织 `nums1` 中元素的位置，使得 `nums1` 的「优势」最大化。
+给你输入两个**长度相等** 的数组 `nums1` 和 `nums2`，请你重新组织 `$中元素的位置，使得 `$ 的「优势」最大化。
 
 如果 `nums1[i] > nums2[i]`，就是说 `nums1` 在索引 `i` 上对 `nums2[i]` 有「优势」。优势最大化也就是说让你重新组织 `nums1`，**尽可能多的让`nums1[i] > nums2[i]`**。
 
 算法签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
-    int[] advantageCount(int[] nums1, int[] nums2);
+
+    $advantageCount(int[] nums1,$ nums2);
 
 比如输入：
     

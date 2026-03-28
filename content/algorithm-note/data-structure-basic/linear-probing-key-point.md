@@ -30,9 +30,7 @@
 
 线性探查法的大致逻辑如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 线性探查法的基本逻辑，伪码实现
     
     class MyLinearProbingHashMap {

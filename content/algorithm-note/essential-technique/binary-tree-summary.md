@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[104\. Maximum Depth of Binary Tree](<https://leetcode.com/problems/maximum-depth-of-binary-tree/>)| [104\. 二叉树的最大深度](<https://leetcode.cn/problems/maximum-depth-of-binary-tree/>)|   
-[144\. Binary Tree Preorder Traversal](<https://leetcode.com/problems/binary-tree-preorder-traversal/>)| [144\. 二叉树的前序遍历](<https://leetcode.cn/problems/binary-tree-preorder-traversal/>)|   
-[543\. Diameter of Binary Tree](<https://leetcode.com/problems/diameter-of-binary-tree/>)| [543\. 二叉树的直径](<https://leetcode.cn/problems/diameter-of-binary-tree/>)|   
+[104\. Maximum Depth of Binary Tree](<https://leetcode.com$[104\. 二叉树的最大深度](<https://leetcode.cn$   
+[144\. Binary Tree Preorder Traversal](<https://leetcode.com$[144\. 二叉树的前序遍历](<https://leetcode.cn$   
+[543\. Diameter of Binary Tree](<https://leetcode.com$[543\. 二叉树的直径](<https://leetcode.cn$   
   
 前置知识
 
@@ -59,14 +59,12 @@ LeetCode| 力扣| 难度
 
 快速排序的代码框架如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void sort(int[] nums, int lo, int hi) {
         if (lo >= hi) {
             return;
         }
-        // ****** 前序位置 ******
+        // *$前序位置 *$
         // 对 nums[lo..hi] 进行切分，将 nums[p] 排好序
         // 使得 nums[lo..p-1] <= nums[p] < nums[p+1..hi]
         int p = partition(nums, lo, hi);
@@ -82,9 +80,7 @@ CC++GoJavaJavaScriptPython
 
 归并排序的代码框架如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 定义：排序 nums[lo..hi]
     void sort(int[] nums, int lo, int hi) {
         if (lo == hi) {
@@ -96,7 +92,7 @@ CC++GoJavaJavaScriptPython
         // 利用定义，排序 nums[mid+1..hi]
         sort(nums, mid + 1, hi);
     
-        // ****** 后序位置 ******
+        // *$后序位置 *$
         // 此时两部分子数组已经被排好序
         // 合并两个有序数组，使 nums[lo..hi] 有序
         merge(nums, lo, mid, hi);
@@ -124,9 +120,7 @@ CC++GoJavaJavaScriptPython
 
 首先，回顾一下 [二叉树的 DFS/BFS 遍历](</zh/algo/data-structure-basic/binary-tree-traverse-basic/>) 中说到的二叉树递归遍历框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 二叉树的遍历框架
     void traverse(TreeNode root) {
         if (root == null) {
@@ -143,9 +137,7 @@ CC++GoJavaJavaScriptPython
 
 其实它就是一个能够遍历二叉树所有节点的一个函数，和你遍历数组或者链表本质上没有区别：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 迭代遍历数组
     void traverse(int[] arr) {
         for (int i = 0; i < arr.length; i++) {
@@ -192,9 +184,7 @@ CC++GoJavaJavaScriptPython
 
 实现方式当然有很多，但如果你对递归的理解足够透彻，可以利用后序位置来操作：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 递归遍历单链表，倒序打印链表元素
     void traverse(ListNode head) {
         if (head == null) {
@@ -259,9 +249,7 @@ Tip
 
 解法代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 遍历的思路
     class Solution {
     
@@ -308,9 +296,7 @@ CC++GoJavaJavaScriptPython
 
 解法代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 分解问题的思路
     class Solution {
         // 定义：输入一个节点，返回以该节点为根的二叉树的最大深度
@@ -339,9 +325,7 @@ CC++GoJavaJavaScriptPython
 
 我们熟悉的解法就是用「遍历」的思路，我想应该没什么好说的：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 用遍历的思路计算前序遍历结果
     class Solution {
         // 存放前序遍历结果
@@ -366,7 +350,7 @@ CC++GoJavaJavaScriptPython
 
 但你是否能够用「分解问题」的思路，来计算前序遍历的结果？
 
-换句话说，不要用像 `traverse` 这样的辅助函数和任何外部变量，单纯用题目给的 `preorderTraverse` 函数递归解题，你会不会？
+换句话说，不要用像 `t$这样的辅助函数和任何外部变量，单纯用题目给的 `preorderT$ 函数递归解题，你会不会？
 
 我们知道前序遍历的特点是，根节点的值排在首位，接着是左子树的前序遍历结果，最后是右子树的前序遍历结果：
 
@@ -376,9 +360,7 @@ CC++GoJavaJavaScriptPython
 
 所以，你可以这样实现前序遍历算法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 定义：输入一棵二叉树的根节点，返回这棵树的前序遍历结果
         List<Integer> preorderTraversal(TreeNode root) {
@@ -500,9 +482,7 @@ Java 的话无论 ArrayList 还是 LinkedList，`addAll` 方法的复杂度都�
 
 最大深度的算法我们刚才实现过了，上述思路就可以写出以下代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 记录最大直径的长度
         int maxDiameter = 0;
@@ -544,13 +524,11 @@ CC++GoJavaJavaScriptPython
 
 这就出现了刚才探讨的情况，**前序位置无法获取子树信息，所以只能让每个节点调用`maxDepth` 函数去算子树的深度**。
 
-那如何优化？我们应该把计算「直径」的逻辑放在后序位置，准确说应该是放在 `maxDepth` 的后序位置，因为 `maxDepth` 的后序位置是知道左右子树的最大深度的。
+那如何优化？我们应该把计算「直径」的逻辑放在后序位置，准确说应该是放在 `$的后序位置，因为 `$ 的后序位置是知道左右子树的最大深度的。
 
 所以，稍微改一下代码逻辑即可得到更好的解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 记录最大直径的长度
         int maxDiameter = 0;
@@ -617,9 +595,7 @@ Info
 
 **第一个例子** ，给你一棵二叉树，请你用分解问题的思路写一个 `count` 函数，计算这棵二叉树共有多少个节点。代码很简单，上文都写过了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 定义：输入一棵二叉树，返回这棵二叉树的节点总数
     int count(TreeNode root) {
         if (root == null) {
@@ -637,9 +613,7 @@ CC++GoJavaJavaScriptPython
 
 你再看看具体的动态规划问题，比如 [动态规划框架套路详解](</zh/algo/essential-technique/dynamic-programming-framework/>) 中举的斐波那契的例子，我们的关注点在一棵棵子树的返回值上：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // f(n) 计算第 n 个斐波那契数
     int fib(int n) {
         // base case
@@ -733,9 +707,7 @@ CC++GoJavaJavaScriptPython
 
 **第三个例子** ，我给你一棵二叉树，请你写一个 `traverse` 函数，把这棵二叉树上的每个节点的值都加一。很简单吧，代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(TreeNode root) {
         if (root == null) return;
         // 遍历过的每个节点的值加一
@@ -772,9 +744,7 @@ CC++GoJavaJavaScriptPython
 
 有了这些铺垫，你就很容易理解为什么回溯算法和 DFS 算法代码中「做选择」和「撤销选择」的位置不同了，看下面两段代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // DFS 算法把「做选择」「撤销选择」的逻辑放在 for 循环外面
     void dfs(Node root) {
         if (root == null) return;
@@ -805,9 +775,7 @@ CC++GoJavaJavaScriptPython
 
 二叉树题型主要是用来培养递归思维的，而层序遍历属于迭代遍历，也比较简单，这里就过一下代码框架吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 输入一棵二叉树的根节点，层序遍历这棵二叉树
     void levelTraverse(TreeNode root) {
         if (root == null) return;
@@ -854,9 +822,7 @@ CC++GoJavaJavaScriptPython
 
 如果你对二叉树足够熟悉，可以想到很多方式通过递归函数得到层序遍历结果，比如下面这种写法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         List<List<Integer>> res = new ArrayList<>();
     
@@ -891,9 +857,7 @@ CC++GoJavaJavaScriptPython
 
 还有优秀读者评论了这样一种递归进行层序遍历的思路：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
         List<List<Integer>> res = new LinkedList<>();

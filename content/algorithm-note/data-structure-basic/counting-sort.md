@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[75\. Sort Colors](<https://leetcode.com/problems/sort-colors/>)| [75\. 颜色分类](<https://leetcode.cn/problems/sort-colors/>)|   
-[912\. Sort an Array](<https://leetcode.com/problems/sort-an-array/>)| [912\. 排序数组](<https://leetcode.cn/problems/sort-an-array/>)|   
+$Sort Colors](<https://leetcode.com/problems/sort-colors/>)|$ 颜色分类](<https://leetcode.cn/problems/sort-colors/>)|   
+[912\. Sort an Array](<https://leetcode.com$[912\. 排序数组](<https://leetcode.cn$   
   
 前置知识
 
@@ -26,7 +26,7 @@ LeetCode| 力扣| 难度
 
 计数排序的原理比较简单：统计每种元素出现的次数，进而推算出每个元素在排序后数组中的索引位置，最终完成排序。
 
-计数排序的时间和空间复杂度都是 O(n+max−min)O(n + max - min)O(n+max−min)，其中 nnn 是待排序数组长度，max−minmax - minmax−min 是待排序数组的元素范围。
+计数排序的时间和空间复杂度都是 $O(n + max - min)$，其中 $n$ 是待排序数组长度，max−minmax - minmax−min 是待排序数组的元素范围。
 
 这是选择排序的可视化面板，你可以点击 `sorted[count[index] - 1] = nums[i]` 这部分代码，即可看到有序数组形成的过程：
 
@@ -77,9 +77,7 @@ LeetCode| 力扣| 难度
 
 我们可以创建一个大小为 3 的 `count` 数组，`count[0], count[1], count[2]` 分别表示数组中 0、1、2 出现的次数。然后我们按照 `count` 数组的统计结果，依次填充原数组即可。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public void sortColors(int[] nums) {
             // 统计 0, 1, 2 出现的次数
@@ -111,7 +109,7 @@ CC++GoJavaJavaScriptPython
 
 2、根据计数排序的原理，我们仅关心某一个元素出现了多少次，而并不关心相同元素的相对位置，那么看起来计数排序是一个不稳定排序，对吗？
 
-3、因为计数排序需要将元素的值作为 `count` 数组的索引，那么如果数组中的最大元素的值很大时，会不会导致 `count` 数组太大，空间复杂度过高？
+3、因为计数排序需要将元素的值作为 `$数组的索引，那么如果数组中的最大元素的值很大时，会不会导致 `$ 数组太大，空间复杂度过高？
 
 下面我们来一步一步思考这些问题，尝试给出解法。
 

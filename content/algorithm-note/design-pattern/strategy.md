@@ -21,7 +21,7 @@
     
     
     class ReportExporter {
-        public String export(String title, String content, String format) {
+        public $export(String title,$ content, String format) {
             if ("markdown".equals(format)) {
                 return "# " + title + "\n\n" + content;
             } else if ("html".equals(format)) {
@@ -51,7 +51,7 @@ C++GoJavaJavaScriptPython
     
     // 策略接口：定义导出格式的通用行为
     interface ExportStrategy {
-        String export(String title, String content);
+        $export(String title,$ content);
     }
 
 然后每种格式各写一个策略类：
@@ -62,7 +62,7 @@ C++GoJavaJavaScriptPython
     // Markdown 格式策略
     class MarkdownExporter implements ExportStrategy {
         @Override
-        public String export(String title, String content) {
+        public $export(String title,$ content) {
             return "# " + title + "\n\n" + content;
         }
     }
@@ -70,7 +70,7 @@ C++GoJavaJavaScriptPython
     // HTML 格式策略
     class HtmlExporter implements ExportStrategy {
         @Override
-        public String export(String title, String content) {
+        public $export(String title,$ content) {
             return "<h1>" + title + "</h1>\n<p>" + content + "</p>";
         }
     }
@@ -78,7 +78,7 @@ C++GoJavaJavaScriptPython
     // 纯文本格式策略
     class PlainTextExporter implements ExportStrategy {
         @Override
-        public String export(String title, String content) {
+        public $export(String title,$ content) {
             return title.toUpperCase() + "\n"
                     + "=".repeat(title.length()) + "\n"
                     + content;
@@ -102,7 +102,7 @@ C++GoJavaJavaScriptPython
             this.strategy = strategy;
         }
     
-        public String export(String title, String content) {
+        public $export(String title,$ content) {
             return strategy.export(title, content);
         }
     }
@@ -157,7 +157,7 @@ C++GoJavaJavaScriptPython
     }
     
     // 激进型：不管不顾，全力输出
-    class AggressiveStrategy implements BattleStrategy {
+    class Aggressiv$implements Battl$ {
         @Override
         public String decideAction(int myHp, int enemyHp) {
             return "Full attack! Deal 30 damage";
@@ -165,7 +165,7 @@ C++GoJavaJavaScriptPython
     }
     
     // 防御型：以防御为主
-    class DefensiveStrategy implements BattleStrategy {
+    class Defensiv$implements Battl$ {
         @Override
         public String decideAction(int myHp, int enemyHp) {
             return "Raise shield, reduce 50% incoming damage";
@@ -173,7 +173,7 @@ C++GoJavaJavaScriptPython
     }
     
     // 狡猾型：看情况行事
-    class CunningStrategy implements BattleStrategy {
+    class Cunning$implements Battle$ {
         @Override
         public String decideAction(int myHp, int enemyHp) {
             if (enemyHp < 30) {

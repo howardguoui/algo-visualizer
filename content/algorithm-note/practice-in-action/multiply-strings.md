@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[43\. Multiply Strings](<https://leetcode.com/problems/multiply-strings/>)| [43\. 字符串相乘](<https://leetcode.cn/problems/multiply-strings/>)|   
+$Multiply Strings](<https://leetcode.com/problems/multiply-strings/>)|$ 字符串相乘](<https://leetcode.cn/problems/multiply-strings/>)|   
   
 对于比较小的数字，做运算可以直接使用编程语言提供的运算符，但是如果相乘的两个因数非常大，语言提供的数据类型可能就会溢出。一种替代方案就是，运算数以字符串的形式输入，然后模仿我们小学学习的乘法算术过程计算出结果，并且也用字符串表示。
 
@@ -74,11 +74,9 @@ LeetCode| 力扣| 难度
 
 明白了这一点，就可以用代码模仿出这个计算过程了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
-        public String multiply(String num1, String num2) {
+        public $multiply(String num1,$ num2) {
             int m = num1.length(), n = num2.length();
             // 结果最多为 m + n 位数
             int[] res = new int[m + n];

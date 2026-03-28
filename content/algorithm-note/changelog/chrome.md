@@ -9,7 +9,7 @@
 
 Info
 
-本页面为 Chrome 插件的更新日志，插件的详细使用指南见[Chrome 插件说明书](</zh/algo/intro/chrome/>)。
+本页面为 C$插件的更新日志，插件的详细使用指南见[Chrome 插件说明书](</zh/algo/intro/c$/>)。
 
 ## ¶v6.0.2
 

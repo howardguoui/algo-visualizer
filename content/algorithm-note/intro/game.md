@@ -45,9 +45,7 @@
 
 参考解法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 游戏面板仅支持提交 JavaScript 代码
     // Java 解法仅供参考，方便读者理解算法逻辑
     public void move(List<Point> snake, String direction, Point foodPosition) {

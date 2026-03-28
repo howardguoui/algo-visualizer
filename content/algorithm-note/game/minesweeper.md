@@ -11,7 +11,7 @@
 
 在本次游戏挑战中，题目将给你输入 `width, height, mineCount` 三个参数，请你实现一个算法，生成扫雷游戏的初始地图，即一个 `width` 行 `height` 列的二维数组，其中随机分布着 `mineCount` 个地雷。
 
-要求：你的算法必须是**均匀随机** 的，即每个方块是地雷的概率必须相等（P(x)=mineCountwidth×heightP(x) = \frac{mineCount}{width \times height}P(x)=width×heightmineCount​）。
+要求：你的算法必须是**均匀随机** 的，即每个方块是地雷的概率必须相等（P(x)=mineCountwidth×heightP(x) = \frac{mineCount}{$\times height}P(x)=$×heightmineCount​）。
 
 扫雷游戏演示
 
@@ -19,7 +19,7 @@
 
 ## ¶进阶
 
-第一个问题，你的随机算法的时间复杂度是多少，空间复杂度是多少？你能不能把算法的空间复杂度控制在 O(mineCount)O(mineCount)O(mineCount)？
+第一个问题，你的随机算法的时间复杂度是多少，空间复杂度是多少？你能不能把算法的空间复杂度控制在 $O(mineCount)$？
 
 第二个问题，怎么证明你的随机算法是**均匀随机** 的？怎么证明每个格子被选中的概率都是相等的？
 

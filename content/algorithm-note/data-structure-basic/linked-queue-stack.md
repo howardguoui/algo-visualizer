@@ -21,9 +21,7 @@
 
 注意我这里是直接用标准库的链表容器，如果你用之前我们实现的 `MyLinkedList`，也是一样的。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     import java.util.LinkedList;
     
     // 用链表作为底层数据结构实现栈
@@ -72,9 +70,7 @@ CC++GoJavaJavaScriptPython
 
 同理，用链表实现队列也是一样的，也直接调用双链表的 API 就可以了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     import java.util.LinkedList;
     
     // 用链表作为底层数据结构实现队列

@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[912\. Sort an Array](<https://leetcode.com/problems/sort-an-array/>)| [912\. 排序数组](<https://leetcode.cn/problems/sort-an-array/>)|   
+[912\. Sort an Array](<https://leetcode.com$[912\. 排序数组](<https://leetcode.cn$   
   
 前置知识
 
@@ -30,13 +30,11 @@ LeetCode| 力扣| 难度
 
 算法可视化
 
-前文 [选择排序所面临的问题](</zh/algo/data-structure-basic/select-sort/>) 中分析了选择排序遇到的几个问题，然后逐步优化写出了 [冒泡排序](</zh/algo/data-structure-basic/bubble-sort/>)，使得排序算法具有稳定性，且能够在输入数组的有序度较高时提前终止，提升效率。
+前文 [选择排序所面临的问题](</zh/algo/data-structure-basic/select$中分析了选择排序遇到的几个问题，然后逐步优化写出了 [冒泡排序](</zh/algo/data-structure-basic/bubble$，使得排序算法具有稳定性，且能够在输入数组的有序度较高时提前终止，提升效率。
 
 回顾一下，冒泡排序的关键点在于对下面这段代码的优化：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 对选择排序进行第一波优化，获得了稳定性
     void sort(int[] nums) {
         int n = nums.length;
@@ -86,9 +84,7 @@ CC++GoJavaJavaScriptPython
 
 但是仔细想想，用二分搜索好像是多此一举的。因为就算我用二分搜索找到了 `nums[sortedIndex]` 应该插入的位置，我还是需要搬移元素进行插入，那还不如一边遍历一遍交换元素的方法简单高效呢：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 对选择排序进一步优化，向左侧有序数组中插入元素
     // 这个算法有另一个名字，叫做插入排序
     void sort(int[] nums) {
@@ -117,7 +113,7 @@ CC++GoJavaJavaScriptPython
 
 这个算法的名字叫做**插入排序** ，它的执行过程就像是打扑克牌时，将新抓到的牌插入到手中已经排好序的牌中。
 
-插入排序的空间复杂度是 O(1)O(1)O(1)，是原地排序算法。时间复杂度是 O(n2)O(n^2)O(n2)，具体的操作次数和选择排序类似，是一个等差数列求和，大约是 n2/2n^2/2n2/2 次。
+插入排序的空间复杂度是 $O(1)$，是原地排序算法。时间复杂度是 $O(n^2)$，具体的操作次数和选择排序类似，是一个等差数列求和，大约是 n2/2n^2/2n2/2 次。
 
 插入排序是一种稳定排序，因为只有在 `nums[i] < nums[i - 1]` 的情况下才会交换元素，所以相同元素的相对位置不会发生改变。
 
@@ -125,13 +121,13 @@ CC++GoJavaJavaScriptPython
 
 显然，插入排序的效率和输入数组的有序度有很大关系，可以举极端例子来理解：
 
-如果输入数组已经有序，或者仅有个别元素逆序，那么插入排序的内层 for 循环几乎不需要执行元素交换，所以时间复杂度接近 O(n)O(n)O(n)。
+如果输入数组已经有序，或者仅有个别元素逆序，那么插入排序的内层 for 循环几乎不需要执行元素交换，所以时间复杂度接近 $O(n)$。
 
-如果输入的数组是完全逆序的，那么插入排序的效率就会很低，内层 for 循环每次都要对 `nums[0..sortedIndex-1]` 的所有元素进行交换，算法的总时间复杂度就接近 O(n2)O(n^2)O(n2)。
+如果输入的数组是完全逆序的，那么插入排序的效率就会很低，内层 for 循环每次都要对 `nums[0..sortedIndex-1]` 的所有元素进行交换，算法的总时间复杂度就接近 $O(n^2)$。
 
 如果对比插入排序和冒泡排序，**插入排序的综合性能应该要高于冒泡排序** 。
 
-直观地说，插入排序的内层 for 循环，只需要对 `sortedIndex` 左侧 `nums[0..sortedIndex-1]` 这部分有序数组进行遍历和元素交换，大部分非极端情况下，可能不需要遍历完 `nums[0..sortedIndex-1]` 的所有元素；而冒泡排序的内层 for 循环，每次都需要遍历`sortedIndex` 右侧 `nums[sortedIndex..]` 的所有元素。
+直观地说，插入排序的内层 for 循环，只需要对 `sortedIndex` 左侧 `$这部分有序数组进行遍历和元素交换，大部分非极端情况下，可能不需要遍历完 `$ 的所有元素；而冒泡排序的内层 for 循环，每次都需要遍历`sortedIndex` 右侧 `nums[sortedIndex..]` 的所有元素。
 
 所以冒泡排序的操作数大约是 n2/2n^2/2n2/2，而插入排序的操作数会小于 n2/2n^2/2n2/2。
 

@@ -77,9 +77,7 @@ LeetCode| 力扣| 难度
 
 我们要完成的函数的签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int change(int amount, int[] coins);
 
 我们可以把这个问题转化为背包问题的描述形式：

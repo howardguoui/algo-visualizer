@@ -11,10 +11,10 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[76\. Minimum Window Substring](<https://leetcode.com/problems/minimum-window-substring/>)| [76\. 最小覆盖子串](<https://leetcode.cn/problems/minimum-window-substring/>)|   
-[567\. Permutation in String](<https://leetcode.com/problems/permutation-in-string/>)| [567\. 字符串的排列](<https://leetcode.cn/problems/permutation-in-string/>)|   
-[438\. Find All Anagrams in a String](<https://leetcode.com/problems/find-all-anagrams-in-a-string/>)| [438\. 找到字符串中所有字母异位词](<https://leetcode.cn/problems/find-all-anagrams-in-a-string/>)|   
-[3\. Longest Substring Without Repeating Characters](<https://leetcode.com/problems/longest-substring-without-repeating-characters/>)| [3\. 无重复字符的最长子串](<https://leetcode.cn/problems/longest-substring-without-repeating-characters/>)|   
+[76\. M$Window Substring](<https://leetcode.com/problems/m$$[76\. 最小覆盖子串](<https://leetcode.cn/problems/minimum$   
+[567\. Permutation in String](<https://leetcode.com$[567\. 字符串的排列](<https://leetcode.cn$   
+[438\. Find All Anagrams in a String](<https://leetcode.com$[438\. 找到字符串中所有字母异位词](<https://leetcode.cn$   
+[3\. Longest Substring Without Repeating Characters](<https://leetcode.com$[3\. 无重复字符的最长子串](<https://leetcode.cn$   
   
 视频讲解
 
@@ -32,7 +32,7 @@ LeetCode| 力扣| 难度
 
 ## ¶滑动窗口框架概览
 
-如果用暴力解的话，你需要嵌套 for 循环这样穷举所有子数组，时间复杂度是 O(N2)O(N^2)O(N2)：
+如果用暴力解的话，你需要嵌套 for 循环这样穷举所有子数组，时间复杂度是 $O(N^2)$：
     
     
     for (int i = 0; i < nums.length; i++) {
@@ -59,15 +59,15 @@ LeetCode| 力扣| 难度
         }
     }
 
-基于滑动窗口算法框架写出的代码，时间复杂度是 O(N)O(N)O(N)，比嵌套 for 循环的暴力解法效率高。
+基于滑动窗口算法框架写出的代码，时间复杂度是 $O(N)$，比嵌套 for 循环的暴力解法效率高。
 
 为啥是 $O(N)$？
 
-肯定有读者要问了，你这个滑动窗口框架不也用了一个嵌套 while 循环？为啥复杂度是 O(N)O(N)O(N) 呢？
+肯定有读者要问了，你这个滑动窗口框架不也用了一个嵌套 while 循环？为啥复杂度是 $O(N)$ 呢？
 
 简单说，指针 `left, right` 不会回退（它们的值只增不减），所以字符串/数组中的每个元素都只会进入窗口一次，然后被移出窗口一次，不会说有某些元素多次进入和离开窗口，所以算法的时间复杂度就和字符串/数组的长度成正比。
 
-反观嵌套 for 循环的暴力解法，那个 `j` 会回退，所以某些元素会进入和离开窗口多次，所以时间复杂度就是 O(N2)O(N^2)O(N2) 了。
+反观嵌套 for 循环的暴力解法，那个 `j` 会回退，所以某些元素会进入和离开窗口多次，所以时间复杂度就是 $O(N^2)$ 了。
 
 我在 [算法时空复杂度分析实用指南](</zh/algo/essential-technique/complexity-analysis/>) 有具体教大家如何从理论上估算时间空间复杂度，这里就不展开了。
 
@@ -85,9 +85,7 @@ LeetCode| 力扣| 难度
 
 因为本文的例题大多是子串相关的题目，字符串实际上就是数组，所以我就把输入设置成字符串了。你做题的时候根据具体题目自行变通即可：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 滑动窗口算法伪码框架
     void slidingWindow(String s) {
         // 用合适的数据结构记录窗口中的数据，根据具体场景变通
@@ -124,7 +122,7 @@ CC++GoJavaJavaScriptPython
         }
     }
 
-**框架中两处`...` 表示的更新窗口数据的地方，在具体的题目中，你需要做的就是往这里面填代码逻辑**。而且，这两个 `...` 处的操作分别是扩大和缩小窗口的更新操作，等会你会发现它们操作是完全对称的。
+**框架中两处`$表示的更新窗口数据的地方，在具体的题目中，你需要做的就是往这里面填代码逻辑**。而且，这两个 `$ 处的操作分别是扩大和缩小窗口的更新操作，等会你会发现它们操作是完全对称的。
 
 基于这个框架，遇到子串/子数组相关的题目，你只需要回答以下三个问题：
 
@@ -197,7 +195,7 @@ CC++GoJavaJavaScriptPython
             if s[i:j] 包含 t 的所有字母:
                 更新答案
 
-思路很直接，但是显然，这个算法的复杂度肯定大于 O(N2)O(N^2)O(N2) 了，不好。
+思路很直接，但是显然，这个算法的复杂度肯定大于 $O(N^2)$ 了，不好。
 
 **滑动窗口算法的思路是这样** ：
 
@@ -277,15 +275,13 @@ CC++GoJavaJavaScriptPython
 
 3、我们要的结果应该在扩大窗口时还是缩小窗口时进行更新？
 
-如果一个字符进入窗口，应该增加 `window` 计数器；如果一个字符将移出窗口的时候，应该减少 `window` 计数器；当 `valid` 满足 `need` 时应该收缩窗口；应该在收缩窗口的时候更新最终结果。
+如果一个字符进入窗口，应该增加 `$计数器；如果一个字符将移出窗口的时候，应该减少 `$ 计数器；当 `valid` 满足 `need` 时应该收缩窗口；应该在收缩窗口的时候更新最终结果。
 
 下面是完整代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
-        public String minWindow(String s, String t) {
+        public $minWindow(String s,$ t) {
             Map<Character, Integer> need = new HashMap<>();
             Map<Character, Integer> window = new HashMap<>();
             for (char c : t.toCharArray()) {
@@ -389,9 +385,7 @@ CC++GoJavaJavaScriptPython
 
 首先，先复制粘贴之前的算法框架代码，然后明确刚才提出的几个问题，即可写出这道题的答案：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 判断 s 中是否存在 t 的排列
         public boolean checkInclusion(String t, String s) {
@@ -490,9 +484,7 @@ CC++GoJavaJavaScriptPython
 
 直接默写一下框架，明确刚才讲的三个问题，即可秒杀这道题：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public List<Integer> findAnagrams(String s, String t) {
             Map<Character, Integer> need = new HashMap<>();
@@ -585,9 +577,7 @@ CC++GoJavaJavaScriptPython
 
 这个题终于有了点新意，不是一套框架就出答案，不过反而更简单了，稍微改一改框架就行了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int lengthOfLongestSubstring(String s) {
             Map<Character, Integer> window = new HashMap<>();

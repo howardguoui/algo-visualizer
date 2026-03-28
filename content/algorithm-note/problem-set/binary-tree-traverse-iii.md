@@ -1,6 +1,6 @@
-# 用「遍历」思维解题 III
+# 用「遍历」思维解题 $I$
 
-> Source: https://labuladong.online/zh/algo/problem-set/binary-tree-traverse-iii/
+> Source: https://labuladong.online/zh/algo/problem-set/binary-tree-traverse-$i$/
 > Archived: labuladong.online — 算法笔记
 
 ---
@@ -9,7 +9,7 @@
 
 此页内容
 
-# 用「遍历」思维解题 III
+# 用「遍历」思维解题 $I$
 
 前置知识
 
@@ -28,7 +28,7 @@ Loading comments...
 
 此页内容
 
-  * 437\. 路径总和 III
+  * 437\. 路径总和 $I$
   * 513\. 找树左下角的值
   * 1261\. 在受污染的二叉树中查找元素
   * 386\. 字典序排数

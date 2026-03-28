@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[224\. Basic Calculator](<https://leetcode.com/problems/basic-calculator/>)| [224\. 基本计算器](<https://leetcode.cn/problems/basic-calculator/>)|   
-[227\. Basic Calculator II](<https://leetcode.com/problems/basic-calculator-ii/>)| [227\. 基本计算器 II](<https://leetcode.cn/problems/basic-calculator-ii/>)|   
-[772\. Basic Calculator III](<https://leetcode.com/problems/basic-calculator-iii/>)🔒| [772\. 基本计算器 III](<https://leetcode.cn/problems/basic-calculator-iii/>)🔒|   
+[224\. Basic Calculator](<https://leetcode.com$[224\. 基本计算器](<https://leetcode.cn$   
+[227\. B$Calculator II](<https://leetcode.com/problems/b$-calculator-ii/>)| [227\. 基本计算器 II](<https://leetcode.cn/problems/basic-calculator-ii/>)|   
+[772\. Basic Calculator $I$](<https://leetcode.com/problems/basic-calculator-$i$/>)🔒| [772\. 基本计算器 $I$](<https://leetcode.cn/problems/basic-calculator-$i$/>)🔒|   
   
 前置知识
 
@@ -58,9 +58,7 @@ LeetCode| 力扣| 难度
 
 是的，就是这么一个简单的问题，首先告诉我，怎么把一个字符串形式的**正整数** ，转化成 int 型？
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     String s = "458";
     
     int n = 0;
@@ -86,9 +84,7 @@ CC++GoJavaJavaScriptPython
 
 我们直接看代码，结合一张图就看明白了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int calculate(String s) {
         Stack<Integer> stk = new Stack<>();
         // 记录算式中的数字
@@ -141,9 +137,7 @@ CC++GoJavaJavaScriptPython
 
 比如上述例子就可以分解为 `+2`，`-3`，`*4`，`+5` 几对儿，我们刚才不是没有处理乘除号吗，很简单，**其他部分都不用变** ，在 `switch` 部分加上对应的 case 就行了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int calculate(String s) {
         Stack<Integer> stk = new Stack<>();
         // 记录算式中的数字

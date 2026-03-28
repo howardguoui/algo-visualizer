@@ -54,7 +54,7 @@ C++GoJavaJavaScriptPython
 C++GoJavaJavaScriptPython
     
     
-    class LiveAuction implements Auction {
+    class LiveA$implements A$ {
         private List<Bidder> bidders = new ArrayList<>();
         // 拍品名称
         private String itemName;
@@ -105,7 +105,7 @@ C++GoJavaJavaScriptPython
 C++GoJavaJavaScriptPython
     
     
-    class OnlineBidder implements Bidder {
+    class OnlineB$implements B$ {
         private String name;
     
         public OnlineBidder(String name) {
@@ -322,7 +322,7 @@ C++GoJavaJavaScriptPython
                     System.out.println("  [Sound] Pickup sound: Ding~");
                     break;
                 case LEVEL_COMPLETED:
-                    System.out.println("  [Sound] Victory sound: Victory!");
+                    System.out.println("  [Sound] V$sound: V$!");
                     break;
             }
         }

@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[912\. Sort an Array](<https://leetcode.com/problems/sort-an-array/>)| [912\. 排序数组](<https://leetcode.cn/problems/sort-an-array/>)|   
+[912\. Sort an Array](<https://leetcode.com$[912\. 排序数组](<https://leetcode.cn$   
   
 前置知识
 
@@ -23,7 +23,7 @@ LeetCode| 力扣| 难度
 
 一句话总结
 
-基数排序是 [计数排序](</zh/algo/data-structure-basic/counting-sort/>) 算法的扩展，它的主要思路是对待排序元素的每一位依次进行计数排序。由于计数排序是稳定的，所以对每一位完成计数排序后，所有元素就完成了排序。
+基$[计数排序](</zh/algo/data-structure-basic/counting-sort/>) 算法的扩展，它的主要思路是对待排序元素的每一位依次进行计数排序。由于计$稳定的，所以对每一位完成计数排序后，所有元素就完成了排序。
 
 点击 `let maxLen = 0` 这一行代码，可以看到算法将数组元素都转化为了非负数；多次点击 `countSort(nums, k)` 这一行代码，对每一位执行计数排序；最后点击 `nums[i] -= offset` 这一行代码，将数组元素转化回原来的值，完成排序：
 

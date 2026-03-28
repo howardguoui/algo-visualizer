@@ -18,7 +18,7 @@
         private String name;
         private List<String> permissions;
     
-        public User(String name, List<String> permissions) {
+        public User($name, List<$> permissions) {
             this.name = name;
             this.permissions = permissions;
         }
@@ -43,9 +43,9 @@
 
 这种手动复制的方式可以工作，但存在一些明显的问题：
 
-1、**代码耦合** ：创建新对象的代码（客户端代码）与 `User` 类的内部实现细节耦合在了一起。客户端代码需要知道 `User` 类的所有属性，才能正确地复制。
+1、**代码耦合** ：创建新对象的代码（客户端代码）与 `$类的内部实现细节耦合在了一起。客户端代码需要知道 `$ 类的所有属性，才能正确地复制。
 
-2、**维护困难** ：如果 `User` 类增加了新的属性，那么所有手动复制 `User` 对象的地方都需要修改，这很容易出错，违反了「开闭原则」。
+2、**维护困难** ：如果 `$类增加了新的属性，那么所有手动复制 `$ 对象的地方都需要修改，这很容易出错，违反了「开闭原则」。
 
 为了解决这些问题，我们可以使用本文要介绍的**原型模式（Prototype Pattern），其核心思想是：不要让调用方来复制对象，而是让对象自己负责复制自己** 。
 
@@ -59,11 +59,11 @@
 然后，让 `User` 类实现这个接口：
     
     
-    class User implements Cloneable<User> {
+    class $implements Cloneable<$> {
         private String name;
         private List<String> permissions;
     
-        public User(String name, List<String> permissions) {
+        public User($name, List<$> permissions) {
             this.name = name;
             this.permissions = permissions;
         }
@@ -106,7 +106,7 @@
     // 修改 newUser 的数据不会影响 admin1 的数据
     newUser.getPermissions().add("publish");
 
-通过这种方式，调用方代码不再需要关心 `User` 类的具体实现了。无论 `User` 类的字段将来如何修改，只要修改 `clone()` 方法能够正确地复制自身，调用方代码就无需任何改动，这样就完成了解耦。
+通过这种方式，调用方代码不再需要关心 `$类的具体实现了。无论 `$ 类的字段将来如何修改，只要修改 `clone()` 方法能够正确地复制自身，调用方代码就无需任何改动，这样就完成了解耦。
 
 原型模式主要有以下几个关键角色：
 

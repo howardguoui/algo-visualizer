@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[230\. Kth Smallest Element in a BST](<https://leetcode.com/problems/kth-smallest-element-in-a-bst/>)| [230\. 二叉搜索树中第K小的元素](<https://leetcode.cn/problems/kth-smallest-element-in-a-bst/>)|   
-[538\. Convert BST to Greater Tree](<https://leetcode.com/problems/convert-bst-to-greater-tree/>)| [538\. 把二叉搜索树转换为累加树](<https://leetcode.cn/problems/convert-bst-to-greater-tree/>)|   
-[1038\. Binary Search Tree to Greater Sum Tree](<https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree/>)| [1038\. 从二叉搜索树到更大和树](<https://leetcode.cn/problems/binary-search-tree-to-greater-sum-tree/>)|   
+[230\. Kth Smallest Element in a BST](<https://leetcode.com$[230\. 二叉搜索树中第K小的元素](<https://leetcode.cn$   
+[538\. Convert BST to Greater Tree](<https://leetcode.com$[538\. 把二叉搜索树转换为累加树](<https://leetcode.cn$   
+[1038\. Binary Search Tree to Greater Sum Tree](<https://leetcode.com$[1038\. 从二叉搜索树到更大和树](<https://leetcode.cn$   
   
 前置知识
 
@@ -29,7 +29,7 @@ LeetCode| 力扣| 难度
 
 首先，BST 的特性大家应该都很熟悉了（详见基础知识章节的 [二叉树基础](</zh/algo/data-structure-basic/binary-tree-basic/>)）：
 
-1、对于 BST 的每一个节点 `node`，左子树节点的值都比 `node` 的值要小，右子树节点的值都比 `node` 的值大。
+1、对于 BST 的每一个节点 `node`，左$`node` 的值要小，右$ `node` 的值大。
 
 2、对于 BST 的每一个节点 `node`，它的左侧子树和右侧子树都是 BST。
 
@@ -39,9 +39,7 @@ LeetCode| 力扣| 难度
 
 也就是说，如果输入一棵 BST，以下代码可以将 BST 中每个节点的值升序打印出来：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(TreeNode root) {
         if (root == null) return;
         traverse(root.left);

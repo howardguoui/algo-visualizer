@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[773\. Sliding Puzzle](<https://leetcode.com/problems/sliding-puzzle/>)| [773\. 滑动谜题](<https://leetcode.cn/problems/sliding-puzzle/>)|   
-[752\. Open the Lock](<https://leetcode.com/problems/open-the-lock/>)| [752\. 打开转盘锁](<https://leetcode.cn/problems/open-the-lock/>)|   
+$Sliding Puzzle](<https://leetcode.com/problems/sliding-puzzle/>)|$ 滑动谜题](<https://leetcode.cn/problems/sliding-puzzle/>)|   
+[752\. Open the Lock](<https://leetcode.com$[752\. 打开转盘锁](<https://leetcode.cn$   
   
 前置知识
 
@@ -63,9 +63,7 @@ BFS 的算法框架其实就是 [图结构的 DFS/BFS 遍历](</zh/algo/data-str
 
 本文的例题都是中等难度，所以本文给出的解法都以第二种写法为准：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 从 s 开始 BFS 遍历图的所有节点，且记录遍历的步数
     // 当走到目标节点 target 时，返回步数
     int bfs(int s, int target) {
@@ -98,7 +96,7 @@ CC++GoJavaJavaScriptPython
         return -1;
     }
 
-上面这个代码框架几乎就是从 [图结构的 DFS/BFS 遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>) 中复制过来的，只不过添加了一个 `target` 参数，当第一次走到 `target` 时，直接结束算法并返回走过的步数。
+上面这个代码框架几乎就是从 [图结构的 DFS/BFS 遍历](</zh/algo/data-structure-basic/graph-traverse-basic/>) 中复制过来的，只不过添加了一个 `$参数，当第一次走到 `$ 时，直接结束算法并返回走过的步数。
 
 下面我们用几个具体的例题来看看如何运用这个框架。
 
@@ -153,7 +151,7 @@ CC++GoJavaJavaScriptPython
 伪码如下：
     
     
-    int bfs(int[][] board, int[][] target) {
+    int bfs(i$board, i$ target) {
         Queue<int[][]> q = new LinkedList<>();
         HashSet visited = new HashSet<>();
     
@@ -199,9 +197,7 @@ CC++GoJavaJavaScriptPython
 
 对于这道题，题目说输入的数组大小都是 2 x 3，所以我们可以直接手动写出来这个映射：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 记录一维字符串的相邻索引
     int[][] neighbor = new int[][]{
         {1, 3},
@@ -226,9 +222,7 @@ CC++GoJavaJavaScriptPython
 
 这样，对于 `m x n` 的二维数组，我们可以写一个函数来生成它的 `neighbor` 索引映射：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[][] generateNeighborMapping(int m, int n) {
         int[][] neighbor = new int[m * n][];
         for (int i = 0; i < m * n; i++) {
@@ -254,9 +248,7 @@ CC++GoJavaJavaScriptPython
 
 这样，无论数字 0 在哪里，都可以通过这个索引映射得到它的相邻索引进行交换了。下面是完整的代码实现：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int slidingPuzzle(int[][] board) {
             int m = 2, n = 3;
@@ -316,7 +308,7 @@ CC++GoJavaJavaScriptPython
         }
     
         private String swap(char[] chars, int i, int j) {
-            char temp = chars[i];
+            $temp =$s[i];
             chars[i] = chars[j];
             chars[j] = temp;
             return new String(chars);
@@ -336,7 +328,7 @@ CC++GoJavaJavaScriptPython
 
 **752\. 打开转盘锁** |[力扣](<https://leetcode.cn/problems/open-the-lock/>)|[LeetCode](<https://leetcode.com/problems/open-the-lock/>)
 
-你有一个带有四个圆形拨轮的转盘锁。每个拨轮都有10个数字： `'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'` 。每个拨轮可以自由旋转：例如把 `'9'` 变为 `'0'`，`'0'` 变为 `'9'` 。每次旋转都只能旋转一个拨轮的一位数字。
+你有一个带有四个圆形拨轮的转盘锁。每个拨轮都有10个数字： `'0', '1', '2', '3', '4', '5', '6', '7', '8', $。每个拨轮可以自由旋转：例如把 `$ 变为 `'0'`，`'0'` 变为 `'9'` 。每次旋转都只能旋转一个拨轮的一位数字。
 
 锁的初始数字为 `'0000'` ，一个代表四个拨轮的数字的字符串。
 
@@ -384,9 +376,7 @@ CC++GoJavaJavaScriptPython
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int openLock(String[] deadends, String target) {
             // ...
@@ -401,7 +391,7 @@ CC++GoJavaJavaScriptPython
 
 **第一步，我们不管所有的限制条件，不管`deadends` 和 `target` 的限制，就思考一个问题：如果让你设计一个算法，穷举所有可能的密码组合，你怎么做**？
 
-就从 `"0000"` 开始，如果你只转一下锁，有几种可能？总共有 4 个位置，每个位置可以向上转，也可以向下转，也就是可以穷举出 `"1000", "9000", "0100", "0900"...` 共 8 种密码。
+就从 `"0000"` 开始，如果你只转一下锁，有几种可能？总共有 4 个位置，每个位置可以向上转，也可以向下转，也就是可以穷举出 `"10$"9000", "01$ "0900"...` 共 8 种密码。
 
 然后，再以这 8 种密码作为基础，其中每个密码又可以转动一下衍生出 8 种密码，以此类推...
 
@@ -409,9 +399,7 @@ CC++GoJavaJavaScriptPython
 
 下面这段伪码就描述了上述思路，用层序遍历一棵八叉树：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 将 s[j] 向上拨动一次
     String plusOne(String s, int j) {
         char[] ch = s.toCharArray();
@@ -469,7 +457,7 @@ CC++GoJavaJavaScriptPython
 
 这个代码已经可以穷举所有可能的密码组合了，但是还有些问题需要解决。
 
-1、会走回头路，我们可以从 `"0000"` 拨到 `"1000"`，但是等从队列拿出 `"1000"` 时，还会拨出一个 `"0000"`，这样的话会产生死循环。
+1、会走回头路，我们可以从 `"0000"` 拨到 `"1000"`，但是等从队列拿出 `"1$时，还会拨出一个 `"0$，这样的话会产生死循环。
 
 这个问题很好解决，其实就是成环了嘛，我们用一个 `visited` 集合记录已经穷举过的密码，再次遇到时，不要再加到队列里就行了。
 
@@ -481,9 +469,7 @@ CC++GoJavaJavaScriptPython
 
 下面是完整的代码实现：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int openLock(String[] deadends, String target) {
             // 记录需要跳过的死亡密码
@@ -575,7 +561,7 @@ CC++GoJavaJavaScriptPython
 
 图示中的树形结构，如果终点在最底部，按照传统 BFS 算法的策略，会把整棵树的节点都搜索一遍，最后找到 `target`；而双向 BFS 其实只遍历了半棵树就出现了交集，也就是找到了最短距离。
 
-当然从 Big O 表示法分析算法复杂度的话，这两种 BFS 在最坏情况下都可能遍历完所有节点，所以理论时间复杂度都是 O(N)O(N)O(N)，但实际运行中双向 BFS 确实会更快一些。
+当然从 Big O 表示法分析算法复杂度的话，这两种 BFS 在最坏情况下都可能遍历完所有节点，所以理论时间复杂度都是 $O(N)$，但实际运行中双向 BFS 确实会更快一些。
 
 双向 BFS 的局限性
 
@@ -589,9 +575,7 @@ CC++GoJavaJavaScriptPython
 
 下面我们就以密码锁问题为例，看看如何将普通 BFS 算法优化为双向 BFS 算法，直接看代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int openLock(String[] deadends, String target) {
             Set<String> deads = new HashSet<>();

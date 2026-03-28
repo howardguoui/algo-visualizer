@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[104\. Maximum Depth of Binary Tree](<https://leetcode.com/problems/maximum-depth-of-binary-tree/>)| [104\. 二叉树的最大深度](<https://leetcode.cn/problems/maximum-depth-of-binary-tree/>)|   
+[104\. Maximum Depth of Binary Tree](<https://leetcode.com$[104\. 二叉树的最大深度](<https://leetcode.cn$   
   
 前置知识
 
@@ -62,7 +62,7 @@ fib(n)={0n=01n=1fib(n−1)+fib(n−2)n>1fib(n) = \begin{cases} 0 & n = 0 \\\ 1 &
 
 fib(4)=fib(3)+fib(2)=(fib(2)+fib(1))+(fib(1)+fib(0))=((fib(1)+fib(0))+fib(1))+(fib(1)+fib(0))=((1+0)+1)+(1+0)=3\begin{aligned} & fib(4) \\\ & = fib(3) + fib(2) \\\ & = (fib(2) + fib(1)) + (fib(1) + fib(0)) \\\ & = ((fib(1) + fib(0)) + fib(1)) + (fib(1) + fib(0)) \\\ & = ((1 + 0) + 1) + (1 + 0) = 3 \end{aligned}​fib(4)=fib(3)+fib(2)=(fib(2)+fib(1))+(fib(1)+fib(0))=((fib(1)+fib(0))+fib(1))+(fib(1)+fib(0))=((1+0)+1)+(1+0)=3​
 
-那么现在请你写一个函数，输入一个整数 nnn，返回斐波那契数列 fib(n)fib(n)fib(n) 的值：
+那么现在请你写一个函数，输入一个整数 $n$，返回斐波那契数列 fib(n)fib(n)fib(n) 的值：
     
     
     int fib(int n);
@@ -181,9 +181,7 @@ fib(4)=fib(3)+fib(2)=(fib(2)+fib(1))+(fib(1)+fib(0))=((fib(1)+fib(0))+fib(1))+(f
 
 目前不需要你彻底理解代码，只需留意代码中的递归部分：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
         List<List<Integer>> res = new LinkedList<>();
@@ -264,7 +262,7 @@ CC++GoJavaJavaScriptPython
 
 ### ¶分解问题的思维模式
 
-你看斐波那契数列问题，递归树上的每个节点，其实就是一个子问题的解。`fib(5)` 是怎么算出来的？是根节点 `fib(5)` 去问左右子节点 `fib(4)` 和 `fib(3)` 的值，然后相加得到的：
+你看斐波那契数列问题，递归树上的每个节点，其实就是一个子问题的解。`$是怎么算出来的？是根节点 `$ 去问左右子节点 `fib(4)` 和 `fib(3)` 的值，然后相加得到的：
 
 算法可视化
 
@@ -332,9 +330,7 @@ CC++GoJavaJavaScriptPython
 
 maxDepth(root)={0if root=nullmax(maxDepth(root.left),maxDepth(root.right))+1otherwisemaxDepth(root) = \begin{cases} 0 & \text{if } root = null \\\ max(maxDepth(root.left), maxDepth(root.right)) + 1 & \text{otherwise} \end{cases}maxDepth(root)={0max(maxDepth(root.left),maxDepth(root.right))+1​if root=nullotherwise​
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 分解问题的思路
     class Solution {
         // 定义：输入一个节点，返回以该节点为根的二叉树的最大深度
@@ -404,9 +400,7 @@ CC++GoJavaJavaScriptPython
 
 再来看力扣第 104 题「二叉树的最大深度」，我们也可以用「遍历」的思维模式来写解法，用标准的二叉树遍历函数 `traverse` 来遍历整棵树，在遍历的过程更新最大深度，这样当遍历完所有节点时，必然可以求出整棵树的最大深度：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 遍历的思路
     class Solution {
     

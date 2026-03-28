@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[1373\. Maximum Sum BST in Binary Tree](<https://leetcode.com/problems/maximum-sum-bst-in-binary-tree/>)| [1373\. 二叉搜索子树的最大键值和](<https://leetcode.cn/problems/maximum-sum-bst-in-binary-tree/>)|   
+[1373\. Maximum Sum BST in Binary Tree](<https://leetcode.com$[1373\. 二叉搜索子树的最大键值和](<https://leetcode.cn$   
   
 前置知识
 
@@ -34,9 +34,7 @@ LeetCode| 力扣| 难度
 
 我们再看看后序遍历的代码框架：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void traverse(TreeNode root) {
         traverse(root.left);
         traverse(root.right);
@@ -50,9 +48,7 @@ CC++GoJavaJavaScriptPython
 
 下面就讲一个经典的算法问题，可以直观地体会到后序位置的妙用。这是力扣第 1373 题「[二叉搜索子树的最大键值和](<https://leetcode.cn/problems/maximum-sum-bst-in-binary-tree/>)」，函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int maxSumBST(TreeNode root);
 
 更新时间：2026/03/14 00:17

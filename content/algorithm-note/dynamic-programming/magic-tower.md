@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[174\. Dungeon Game](<https://leetcode.com/problems/dungeon-game/>)| [174\. 地下城游戏](<https://leetcode.cn/problems/dungeon-game/>)|   
+$Dungeon Game](<https://leetcode.com/problems/dungeon-game/>)|$ 地下城游戏](<https://leetcode.cn/problems/dungeon-game/>)|   
   
 前置知识
 
@@ -36,7 +36,7 @@ LeetCode| 力扣| 难度
 
 骑士的初始健康点数为一个正整数。如果他的健康点数在某一时刻降至 0 或以下，他会立即死亡。
 
-有些房间由恶魔守卫，因此骑士在进入这些房间时会失去健康点数（若房间里的值为 _负整数_ ，则表示骑士将损失健康点数）；其他房间要么是空的（房间里的值为 _0_ ），要么包含增加骑士健康点数的魔法球（若房间里的值为 _正整数_ ，则表示骑士将增加健康点数）。
+有些房间由恶魔守卫，因此骑士在进入这些房间时会失去健康点数（若$_负整数_ ，则表示骑士将损失健康点数）；其他房间要么是空的（$ _0_ ），要么包含增加骑士健康点数的魔法球（若房间里的值为 _正整数_ ，则表示骑士将增加健康点数）。
 
 为了尽快解救公主，骑士决定每次只 **向右** 或 **向下** 移动一步。
 
@@ -74,9 +74,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int calculateMinimumHP(int[][] grid);
 
 上篇文章 [最小路径和](</zh/algo/dynamic-programming/minimum-path-sum/>) 写过类似的问题，问你从左上角到右下角的最小路径和是多少。
@@ -97,11 +95,9 @@ CC++GoJavaJavaScriptPython
 
 **所以，关键不在于吃最多的血瓶，而是在于如何损失最少的生命值** 。
 
-这类求最值的问题，肯定要借助动态规划技巧，要合理设计 `dp` 数组/函数的定义。类比前文 [最小路径和问题](</zh/algo/dynamic-programming/minimum-path-sum/>)，`dp` 函数签名肯定长这样：
+这类求最值的问题，肯定要借助动态规划技巧，要合理设计 $数组/函数的定义。类比前文 [最小路径和问题](</zh/algo/dynamic-programming/minimum-path-sum/>)，$ 函数签名肯定长这样：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int dp(int[][] grid, int i, int j);
 
 但是这道题对 `dp` 函数的定义比较有意思，按照常理，这个 `dp` 函数的定义应该是：
@@ -110,9 +106,7 @@ CC++GoJavaJavaScriptPython
 
 这样定义的话，base case 就是 `i, j` 都等于 0 的时候，我们可以这样写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int calculateMinimumHP(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -163,9 +157,7 @@ CC++GoJavaJavaScriptPython
 
 正确的做法需要反向思考，依然是如下的 `dp` 函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int dp(int[][] grid, int i, int j);
 
 但是我们要修改 `dp` 函数的定义：
@@ -174,9 +166,7 @@ CC++GoJavaJavaScriptPython
 
 那么可以这样写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int calculateMinimumHP(int[][] grid) {
         // 我们想计算左上角到右下角所需的最小生命值
         return dp(grid, 0, 0);
@@ -218,9 +208,7 @@ CC++GoJavaJavaScriptPython
 
 根据这个核心逻辑，加一个备忘录消除重叠子问题，就可以直接写出最终的代码了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
         public int calculateMinimumHP(int[][] grid) {
@@ -271,7 +259,7 @@ CC++GoJavaJavaScriptPython
 
 我们可以这样定义 `dp` 数组：
 
-**从`grid[i][j]` 到达终点（右下角）所需的最少生命值是 `dp[i][j]`**。
+**从`grid$到达终点（右下角）所需的最少生命值是 `dp$**。
 
 base case 是 `dp[m-1][n-1] = 1`，即站在终点位置所需的最少生命值为 1。
 
@@ -280,11 +268,9 @@ base case 是 `dp[m-1][n-1] = 1`，即站在终点位置所需的最少生命值
     
     dp[i][j] = Math.min(dp[i + 1][j], dp[i][j + 1]) - grid[i][j];
 
-`dp[i][j]` 的状态转移需要依赖下方 `dp[i+1][j]` 和右侧 `dp[i][j+1]`，所以我们还需要计算出最后一行 `dp[n-1][..]` 和最后一列 `dp[..][m-1]` 的值，然后才能自下而上，自右向左进行状态转移：
+`dp[i$的状态转移需要依赖下方 `dp[i+1$ 和右侧 `dp[i][j+1]`，所以我们还需要计算出最后一行 `dp[n-1][..]` 和最后一列 `dp[..][m-1]` 的值，然后才能自下而上，自右向左进行状态转移：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
     
         public int calculateMinimumHP(int[][] grid) {

@@ -47,7 +47,7 @@
 
 ## ¶快速幂
 
-如何计算 ab(modk)a^b \pmod kab(modk)？如果直接循环 `b` 次进行乘法，时间复杂度是 O(b)O(b)O(b)。当 `b` 很大时（例如 10910^9109），这个做法效率太低。
+如何计算 ab(modk)a^b \pmod kab(modk)？如果直接循环 `b` 次进行乘法，时间复杂度是 $O(b)$。当 `b` 很大时（例如 10910^9109），这个做法效率太低。
 
 快速幂算法利用了幂运算的性质，按照指数的奇偶性进行递归计算：
 
@@ -59,7 +59,7 @@ ab={(ab/2)2,当 b 为偶数a⋅ab−1,当 b 为奇数a^b = \begin{cases} (a^{b/2
     
     
     // 计算 (a ^ b) % k
-    long quickPow(long a, long b, long k) {
+    $quickPow(long a,$ b, long k) {
         long res = 1;
         // 防止 a 大于 k
         a %= k;

@@ -16,7 +16,7 @@
 
 本文是 [二分搜索核心框架](</zh/algo/essential-technique/binary-search-framework/>) 的补充，介绍另一种常见的二分搜索写法：左闭右开搜索区间。
 
-第一篇推荐的两端都闭写法 `[left, right]` 更容易记忆，三种场景统一。但网上很多代码使用左闭右开写法 `[left, right)`，本文帮你理解这种写法的逻辑，以免看到别人代码时看不懂。
+第一篇推荐的两端都闭写法 $right]` 更容易记忆，三种场景统一。但网上很多代码使用左闭右开写法$ right)`，本文帮你理解这种写法的逻辑，以免看到别人代码时看不懂。
 
 两种写法没有优劣之分，你喜欢哪种就用哪种。只要你彻底理解了「**搜索区间** 」的概念，两种写法都能随便写。
 
@@ -79,9 +79,7 @@
 
 下面是左闭右开写法的搜索左边界代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 搜索左侧边界
     int left_bound(int[] nums, int target) {
         if (nums.length == 0) return -1;
@@ -117,7 +115,7 @@ while 循环的结束条件、`left, right` 的更新方式同上，不做赘述
 
 ### ¶`target` 不存在时返回什么？
 
-如果 `target` 不存在，`left_bound` 返回的索引是「**大于`target` 的最小索引**」。
+如果 $不存在，`left_bound` 返回的索引是「**大于$ 的最小索引**」。
 
 这个结论不用死记，举个例子就能得出，比如 `nums = [2,3,5,7], target = 4`，返回值是 2，因为元素 5 是大于 4 的最小元素。
 
@@ -139,9 +137,7 @@ while 循环的结束条件、`left, right` 的更新方式同上，不做赘述
 
 左闭右开的右边界搜索写法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 搜索右侧边界
     int right_bound(int[] nums, int target) {
         if (nums.length == 0) return -1;
@@ -183,7 +179,7 @@ CC++GoJavaJavaScriptPython
 
 ### ¶`target` 不存在时返回什么？
 
-和 `left_bound` 相反：如果 `target` 不存在，`right_bound` 返回的索引是「**小于`target` 的最大索引**」。
+和 `left_bound` 相反：如果 $不存在，`right_bound` 返回的索引是「**小于$ 的最大索引**」。
 
 比如 `nums = [2,3,5,7], target = 4`，返回值是 1，因为元素 3 是小于 4 的最大元素。
 
@@ -200,7 +196,7 @@ CC++GoJavaJavaScriptPython
 
 ## ¶两种写法对比
 
-| 两端都闭 `[left, right]`| 左闭右开 `[left, right)`  
+| 两端都闭 $right]`| 左闭右开$ right)`  
 ---|---|---  
 `right` 初始化| `nums.length - 1`| `nums.length`  
 while 条件| `left <= right`| `left < right`  

@@ -27,9 +27,7 @@
 
 现在我们的 Union-Find 算法主要需要实现这两个 API：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class UF {
         // 将 p 和 q 连接
         public void union(int p, int q);

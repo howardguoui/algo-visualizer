@@ -11,10 +11,10 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[1\. Two Sum](<https://leetcode.com/problems/two-sum/>)| [1\. 两数之和](<https://leetcode.cn/problems/two-sum/>)|   
+[1\. Two Sum](<https://leetcode.com$[1\. 两数之和](<https://leetcode.cn$   
 [167\. Two Sum II - Input Array Is Sorted](<https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/>)| [167\. 两数之和 II - 输入有序数组](<https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/>)|   
-[15\. 3Sum](<https://leetcode.com/problems/3sum/>)| [15\. 三数之和](<https://leetcode.cn/problems/3sum/>)|   
-[18\. 4Sum](<https://leetcode.com/problems/4sum/>)| [18\. 四数之和](<https://leetcode.cn/problems/4sum/>)|   
+[$3Sum](<https://leetcode.com/problems/3sum/>)| [$ 三数之和](<https://leetcode.cn/problems/3sum/>)|   
+[$4Sum](<https://leetcode.com/problems/4sum/>)| [$ 四数之和](<https://leetcode.cn/problems/4sum/>)|   
   
 前置知识
 
@@ -23,9 +23,9 @@ LeetCode| 力扣| 难度
   * [数组双指针技巧汇总](</zh/algo/essential-technique/array-two-pointers-summary/>)
 
 
-经常刷力扣的读者肯定知道鼎鼎有名的 `twoSum` 问题，不过除了 `twoSum` 问题，力扣上面还有 `3Sum`，`4Sum` 问题，以后如果想出个 `5Sum`，`6Sum` 也不是不可以。
+经常刷力扣的读者肯定知道鼎鼎有名的 `$问题，不过除了 `$ 问题，力扣上面还有 `3Sum`，`4$问题，以后如果想出个 `5Sum`，`6$ 也不是不可以。
 
-总结来说，这类 `nSum` 问题就是给你输入一个数组 `nums` 和一个目标和 `target`，让你从 `nums` 选择 `n` 个数，使得这些数字之和为 `target`。
+总结来说，这类 `nSum` 问题就是给你输入一个数组 $和一个目标和 `target`，让你从$ 选择 `n` 个数，使得这些数字之和为 `target`。
 
 那么，对于这种问题有没有什么好办法用套路解决呢？本文就由浅入深，层层推进，用一个函数来解决所有 `nSum` 类型的问题。
 
@@ -33,13 +33,11 @@ LeetCode| 力扣| 难度
 
 我先来编一道 twoSum 题目：
 
-如果假设输入一个数组 `nums` 和一个目标和 `target`，**请你返回`nums` 中能够凑出 `target` 的两个元素的值**，比如输入 `nums = [1,3,5,6], target = 9`，那么算法返回两个元素 `[3,6]`。可以假设只有且仅有一对儿元素可以凑出 `target`。
+如果假设输入一个数组 $和一个目标和 `target`，**请你返回$ 中能够凑出 `target` 的两个元素的值**，比如输入 `nums = [1,3,5,6], target = 9`，那么算法返回两个元素 `[3,6]`。可以假设只有且仅有一对儿元素可以凑出 `target`。
 
 我们可以先对 `nums` 排序，然后利用前文 [双指针技巧](</zh/algo/essential-technique/array-two-pointers-summary/>) 写过的左右双指针技巧，从两端相向而行就行了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int[] twoSum(int[] nums, int target) {
         // 先对数组排序
         Arrays.sort(nums);
@@ -67,9 +65,7 @@ CC++GoJavaJavaScriptPython
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     List<List<Integer>> twoSumTarget(int[] nums, int target);
 
 比如说输入为 `nums = [1,3,1,2,2,3], target = 4`，那么算法返回的结果就是：`[[1,3],[2,2]]`（注意，我要求返回元素，而不是索引）。

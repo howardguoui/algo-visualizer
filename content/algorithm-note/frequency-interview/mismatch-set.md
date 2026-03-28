@@ -11,18 +11,16 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[645\. Set Mismatch](<https://leetcode.com/problems/set-mismatch/>)| [645\. 错误的集合](<https://leetcode.cn/problems/set-mismatch/>)|   
-[41\. First Missing Positive](<https://leetcode.com/problems/first-missing-positive/>)| [41\. 缺失的第一个正数](<https://leetcode.cn/problems/first-missing-positive/>)|   
+[645\. Set Mismatch](<https://leetcode.com$[645\. 错误的集合](<https://leetcode.cn$   
+[41\. F$Missing Positive](<https://leetcode.com/problems/f$$[41\. 缺失的第一个正数](<https://leetcode.cn/problems/first$   
   
 今天就聊一道很看起来简单却十分巧妙的问题，寻找缺失和重复的元素。之前的一篇文章 [常用的位操作](</zh/algo/frequency-interview/bitwise-operation/>) 中也写过类似的问题，不过这次的和上次的问题使用的技巧不同。
 
 这是力扣第 645 题「[错误的集合](<https://leetcode.cn/problems/set-mismatch/>)」，我来描述一下这个题目：
 
-给一个长度为 `N` 的数组 `nums`，其中本来装着 `[1..N]` 这 `N` 个元素，无序。但是现在出现了一些错误，`nums` 中的一个元素出现了重复，也就同时导致了另一个元素的缺失。请你写一个算法，找到 `nums` 中的重复元素和缺失元素的值。
+给一个长度为 `N` 的数组 `nums`，其中本来装着 `[1..N]` 这 `N` 个元素，无序。但是现在出现了一些错误，`$中的一个元素出现了重复，也就同时导致了另一个元素的缺失。请你写一个算法，找到 `$ 中的重复元素和缺失元素的值。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 返回两个数字，分别是 {dup, missing}
     int[] findErrorNums(int[] nums);
 

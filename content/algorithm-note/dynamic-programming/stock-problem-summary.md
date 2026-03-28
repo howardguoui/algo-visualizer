@@ -11,12 +11,12 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[714\. Best Time to Buy and Sell Stock with Transaction Fee](<https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/>)| [714\. 买卖股票的最佳时机含手续费](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/>)|   
+[714\. Best Time to Buy and Sell Stock with Transaction Fee](<https://leetcode.com/probl$[714\. 买卖股票的最佳时机含手续费](<https://leetcode.cn/probl$   
 [188\. Best Time to Buy and Sell Stock IV](<https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/>)| [188\. 买卖股票的最佳时机 IV](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iv/>)|   
-[121\. Best Time to Buy and Sell Stock](<https://leetcode.com/problems/best-time-to-buy-and-sell-stock/>)| [121\. 买卖股票的最佳时机](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/>)|   
+[121\. Best Time to Buy and Sell Stock](<https://leetcode.com$[121\. 买卖股票的最佳时机](<https://leetcode.cn$   
 [122\. Best Time to Buy and Sell Stock II](<https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/>)| [122\. 买卖股票的最佳时机 II](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-ii/>)|   
-[309\. Best Time to Buy and Sell Stock with Cooldown](<https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/>)| [309\. 买卖股票的最佳时机含冷冻期](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-with-cooldown/>)|   
-[123\. Best Time to Buy and Sell Stock III](<https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/>)| [123\. 买卖股票的最佳时机 III](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/>)|   
+[309\. Best Time to Buy and Sell Stock with Cooldown](<https://leetcode.com$[309\. 买卖股票的最佳时机含冷冻期](<https://leetcode.cn$   
+[123\. Best Time to Buy and Sell Stock $I$](<https://leetcode.com/problems/best-time-to-buy-and-sell-stock-$i$/>)| [123\. 买卖股票的最佳时机 $I$](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-$i$/>)|   
   
 前置知识
 
@@ -172,7 +172,7 @@ Note
 
 Note
 
-这里补充修正一点，以前我以为在 `sell` 的时候给 `k` 减小 1 和在 `buy` 的时候给 `k` 减小 1 是等效的，但细心的读者向我提出质疑，经过深入思考我发现前者确实是错误的，因为交易是从 `buy` 开始，如果 `buy` 的选择不改变交易次数 `k` 的话，会出现交易次数超出限制的的错误。
+这里补充修正一点，以前我以为在 `sell` 的时候给 `k` 减小 1 和在 `buy` 的时候给 `k` 减小 1 是等效的，但细心的读者向我提出质疑，经过深入思考我发现前者确实是错误的，因为交易是从 `$开始，如果 `$ 的选择不改变交易次数 `k` 的话，会出现交易次数超出限制的的错误。
 
 现在，我们已经完成了动态规划中最困难的一步：状态转移方程。**如果之前的内容你都可以理解，那么你已经可以秒杀所有问题了，只要套这个框架就行了** 。不过还差最后一点点，就是定义 base case，即最简单的情况。
     
@@ -286,9 +286,7 @@ Note
 
 这样 base case 在循环外一次性初始化，循环体内不需要任何条件判断，代码更加简洁清晰。注意一下状态转移方程，新状态只和相邻的一个状态有关，所以可以用前文 [动态规划的降维打击：空间压缩技巧](</zh/algo/dynamic-programming/space-optimization/>)，不需要用整个 `dp` 数组，只需要一个变量储存相邻的那个状态就足够了，这样可以把空间复杂度降到 O(1):
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 原始版本
     int maxProfit_k_1(int[] prices) {
         int n = prices.length;
@@ -381,9 +379,7 @@ CC++GoJavaJavaScriptPython
 
 直接翻译成代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 原始版本
     int maxProfit_k_inf(int[] prices) {
         int n = prices.length;
@@ -458,9 +454,7 @@ CC++GoJavaJavaScriptPython
 
 由于状态转移需要 `dp[i-2][0]`，我们需要偏移 2 个位置，让 `dp[0]` 和 `dp[1]` 都表示 base case，`dp[i]` 表示第 `i - 2` 天的状态：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 原始版本
     int maxProfit_with_cool(int[] prices) {
         int n = prices.length;
@@ -552,9 +546,7 @@ Note
 
 直接翻译成代码，注意状态转移方程改变后 base case 也要做出对应改变：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 原始版本
     int maxProfit_with_fee(int[] prices, int fee) {
         int n = prices.length;
@@ -583,11 +575,11 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-### ¶123\. 买卖股票的最佳时机 III
+### ¶123\. 买卖股票的最佳时机 $I$
 
-**第五题，看力扣第 123 题「[买卖股票的最佳时机 III](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/>)」，也就是 `k = 2` 的情况**：
+**第五题，看力扣第 123 题「[买卖股票的最佳时机 $I$](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-$i$/>)」，也就是 `k = 2` 的情况**：
 
-**123\. 买卖股票的最佳时机 III** |[力扣](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/>)|[LeetCode](<https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/>)
+**123\. 买卖股票的最佳时机 $I$** |[力扣](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-$i$/>)|[LeetCode](<https://leetcode.com/problems/best-time-to-buy-and-sell-stock-$i$/>)
 
 给定一个数组，它的第 __`i` 个元素是一支给定的股票在第 `i` __ 天的价格。
 
@@ -633,7 +625,7 @@ CC++GoJavaJavaScriptPython
   * `0 <= prices[i] <= 105`
 
 
-题目来源：[力扣 123. 买卖股票的最佳时机 III](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-iii/>)。
+题目来源：[力扣 123. 买卖股票的最佳时机 $I$](<https://leetcode.cn/problems/best-time-to-buy-and-sell-stock-$i$/>)。
 
 `k = 2` 和前面题目的情况稍微不同，因为上面的情况都和 `k` 的关系不太大：要么 `k` 是正无穷，状态转移和 `k` 没关系了；要么 `k = 1`，跟 `k = 0` 这个 base case 挨得近，最后也没有存在感。
 
@@ -678,9 +670,7 @@ CC++GoJavaJavaScriptPython
 
 但当 `k = 2` 时，由于没有消掉 `k` 的影响，所以必须要对 `k` 进行穷举：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 原始版本
     int maxProfit_k_2(int[] prices) {
         int max_k = 2, n = prices.length;
@@ -775,9 +765,7 @@ Note
 
 所以我们可以直接把之前的代码重用：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int maxProfit_k_any(int max_k, int[] prices) {
         int n = prices.length;
         if (n <= 0) {
@@ -825,9 +813,7 @@ CC++GoJavaJavaScriptPython
 
 由于状态转移需要 `dp[i-cooldown-1]`，我们需要偏移 `cooldown + 1` 个位置：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 同时考虑交易次数的限制、冷冻期和手续费
     int maxProfit_all_in_one(int max_k, int[] prices, int cooldown, int fee) {
         int n = prices.length;

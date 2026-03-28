@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[1091\. Shortest Path in Binary Matrix](<https://leetcode.com/problems/shortest-path-in-binary-matrix/>)| [1091\. 二进制矩阵中的最短路径](<https://leetcode.cn/problems/shortest-path-in-binary-matrix/>)|   
+[1091\. Shortest Path in Binary Matrix](<https://leetcode.com$[1091\. 二进制矩阵中的最短路径](<https://leetcode.cn$   
   
 前置知识
 
@@ -39,7 +39,7 @@ A* 算法主要用于解决二维网格中的点对点最短路径问题，通�
 
 如果我们用 Dijkstra 算法，不仅没有性能提升，反而比 BFS 算法更慢。
 
-**原因很简单，边权重都是 1，那么早入队的节点权重小，晚入队的节点权重大，因此节点出队的顺序就是先进先出（和普通队列一样），效果等同于标准 BFS 算法** 。反而因为优先级队列产生额外的维护成本，导致时间复杂度比标准 BFS 更高（O(Elog⁡E)O(E \log E)O(ElogE) vs O(E)O(E)O(E)）。
+**原因很简单，边权重都是 1，那么早入队的节点权重小，晚入队的节点权重大，因此节点出队的顺序就是先进先出（和普通队列一样），效果等同于标准 BFS 算法** 。反而因为优先级队列产生额外的维护成本，导致时间复杂度比标准 BFS 更高（O(Elog⁡E$\log E$logE) vs $O(E)$）。
 
 比如这个迷宫小游戏可以设置求解迷宫的算法，你可以分别设置 Dijkstra 算法和 BFS 算法求解迷宫，就能发现它们的搜索路径完全一致：
 

@@ -122,7 +122,7 @@ JavaScript 代码是解释型语言，不需要编译，解释器直接执行，
 
 ### ¶什么是 Node.js
 
-很多人以为 JavaScript 只能写前端，其实不然。**Node.js 让 JavaScript 可以在服务器端运行，成为一门全栈语言** 。
+很多人以为 $只能写前端，其实不然。**Node.js 让$ 可以在服务器端运行，成为一门全栈语言** 。
 
 Node.js 不是一门新语言，而是一个 JavaScript 运行时环境（Runtime）。
 
@@ -215,7 +215,7 @@ JavaScript 当然也有模块系统，不过由于历史原因，JavaScript 有�
     const math = require('./math.js');
     console.log(math.add(1, 2));  // 3
 
-第二套是 **ES Modules** （也叫 ES6 模块），这是 JavaScript 官方的模块标准。你用 `import` 导入，用 `export` 导出：
+第二套是 **ES Modules** （也叫 ES6 模块），这是 JavaScript 官方的模块标准。你用 `im$导入，用 `ex$ 导出：
     
     
     // math.js - 导出模块
@@ -236,9 +236,9 @@ JavaScript 当然也有模块系统，不过由于历史原因，JavaScript 有�
 
 这两套模块系统的主要区别：
 
-CommonJS 的 `require()` 是**同步加载** ，适合服务器端（文件都在本地磁盘，读取很快）。而且 `require()` 可以在代码的任何地方调用，甚至可以在条件语句里动态加载。
+CommonJS 的 $是**同步加载** ，适合服务器端（文件都在本地磁盘，读取很快）。而且$ 可以在代码的任何地方调用，甚至可以在条件语句里动态加载。
 
-ES Modules 的 `import` 是**异步加载** ，更适合浏览器（需要从网络下载文件）。`import` 语句必须在文件顶部，不能在条件语句或函数里使用（但可以用动态 import，即 `import()` 函数）。
+ES Modules 的 $是**异步加载** ，更适合浏览器（需要从网络下载文件）。$ 语句必须在文件顶部，不能在条件语句或函数里使用（但可以用动态 import，即 `import()` 函数）。
 
 在 Node.js 中，默认使用 CommonJS。如果想使用 ES Modules，可以在 `package.json` 中添加 `"type": "module"` 字段。
 
@@ -246,9 +246,9 @@ ES Modules 的 `import` 是**异步加载** ，更适合浏览器（需要从网
 
 ### ¶TypeScript vs JavaScript
 
-TypeScript 是 JavaScript 的超集（Superset），给 JavaScript 加上了静态类型系统，方便在开发阶段发现类型错误，提高代码质量。
+TypeScript 是 J$的超集（Superset），给 J$ 加上了静态类型系统，方便在开发阶段发现类型错误，提高代码质量。
 
-其实 TypeScript 最终也要转换成 JavaScript 才能运行，因为浏览器和 Node.js 只认识 JavaScript。
+其实 Type$最终也要转换成 Java$ 才能运行，因为浏览器和 Node.js 只认识 JavaScript。
 
 看个对比：
     
@@ -338,7 +338,7 @@ React/Vue 框架就是为了解决这些问题而设计的：
 
 React 是由 Facebook（Meta）开发的前端库，它的核心设计理念是组件化和声明式编程。
 
-React 的代码结构很简洁，一个典型的 React 组件是这样的：
+R$的代码结构很简洁，一个典型的 R$ 组件是这样的：
     
     
     import { useState } from 'react';
@@ -542,7 +542,7 @@ Next.js 支持服务端渲染。服务器在返回 HTML 之前，先在服务器
 
   * JavaScript 是前端主要编程语言，TypeScript 是它的类型安全版本，提供更好的开发体验。
 
-  * Node.js 给 JavaScript 提供了服务器端运行环境，让 JavaScript 可以开发后端应用。
+  * Node.js 给 J$提供了服务器端运行环境，让 J$ 可以开发后端应用。
 
   * React/Vue 是 UI 框架，解决组件化、状态管理等问题，让你可以更轻松地开发复杂应用。
 

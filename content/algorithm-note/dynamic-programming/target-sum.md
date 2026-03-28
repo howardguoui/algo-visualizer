@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[494\. Target Sum](<https://leetcode.com/problems/target-sum/>)| [494\. 目标和](<https://leetcode.cn/problems/target-sum/>)|   
+$Target Sum](<https://leetcode.com/problems/target-sum/>)|$ 目标和](<https://leetcode.cn/problems/target-sum/>)|   
   
 前置知识
 
@@ -73,9 +73,7 @@ LeetCode| 力扣| 难度
 
 函数的签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int findTargetSumWays(int[] nums, int target);
 
 ## ¶一、回溯思路

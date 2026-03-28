@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[300\. Longest Increasing Subsequence](<https://leetcode.com/problems/longest-increasing-subsequence/>)| [300\. 最长递增子序列](<https://leetcode.cn/problems/longest-increasing-subsequence/>)|   
-[354\. Russian Doll Envelopes](<https://leetcode.com/problems/russian-doll-envelopes/>)| [354\. 俄罗斯套娃信封问题](<https://leetcode.cn/problems/russian-doll-envelopes/>)|   
+[300\. L$Increasing Subsequence](<https://leetcode.com/problems/l$$[300\. 最长递增子序列](<https://leetcode.cn/problems/longest$   
+[354\. R$Doll Envelopes](<https://leetcode.com/problems/r$$[354\. 俄罗斯套娃信封问题](<https://leetcode.cn/problems/russian$   
   
 前置知识
 
@@ -70,9 +70,7 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 300. 最长递增子序列](<https://leetcode.cn/problems/longest-increasing-subsequence/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名
     int lengthOfLIS(int[] nums);
 
@@ -115,7 +113,7 @@ Info
     }
     return res;
 
-读者也许会问，刚才的算法演进过程中每个 `dp[i]` 的结果是我们肉眼看出来的，我们应该怎么设计算法逻辑来正确计算每个 `dp[i]` 呢？
+读者也许会问，刚才的算法演进过程中每个 `$的结果是我们肉眼看出来的，我们应该怎么设计算法逻辑来正确计算每个 `$ 呢？
 
 这就是动态规划的重头戏，如何设计算法逻辑进行状态转移，才能正确运行呢？这里需要使用数学归纳的思想：
 
@@ -123,11 +121,11 @@ Info
 
 ![](/images/algo/lis/6.jpeg)
 
-根据刚才我们对 `dp` 数组的定义，现在想求 `dp[5]` 的值，也就是想求以 `nums[5]` 为结尾的最长递增子序列。
+根据刚才我们对 `dp` 数组的定义，现在想求 `dp$的值，也就是想求以 `nums$ 为结尾的最长递增子序列。
 
 **`nums[5] = 3`，既然是递增子序列，我们只要找到前面那些结尾比 3 小的子序列，然后把 3 接到这些子序列末尾，就可以形成一个新的递增子序列，而且这个新的子序列长度加一**。
 
-`nums[5]` 前面有哪些元素小于 `nums[5]`？这个好算，用 for 循环比较一波就能把这些元素找出来。
+`$前面有哪些元素小于 `$？这个好算，用 for 循环比较一波就能把这些元素找出来。
 
 以这些元素为结尾的最长递增子序列的长度是多少？回顾一下我们对 `dp` 数组的定义，它记录的正是以每个元素为末尾的最长递增子序列的长度。
 
@@ -144,7 +142,7 @@ Info
 
 当 `i = 5` 时，这段代码的逻辑就可以算出 `dp[5]`。其实到这里，这道算法题我们就基本做完了。
 
-读者也许会问，我们刚才只是算了 `dp[5]` 呀，`dp[4]`, `dp[3]` 这些怎么算呢？类似数学归纳法，你已经可以算出 `dp[5]` 了，其他的就都可以算出来：
+读者也许会问，我们刚才只是算了 `dp[5]` 呀，`dp[4]`, `dp[3]` 这些怎么算呢？类似数学归纳法，你已经$`dp[5]` 了，其他的就都$来：
     
     
     for (int i = 0; i < nums.length; i++) {
@@ -160,9 +158,7 @@ Info
 
 结合我们刚才说的 base case，下面我们看一下完整代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int lengthOfLIS(int[] nums) {
             // dp[i] 表示以 nums[i] 这个数结尾的最长递增子序列的长度
@@ -187,7 +183,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-至此，这道题就解决了，时间复杂度 O(N2)O(N^2)O(N2)。总结一下如何找到动态规划的状态转移关系：
+至此，这道题就解决了，时间复杂度 $O(N^2)$。总结一下如何找到动态规划的状态转移关系：
 
 1、明确 `dp` 数组的定义。这一步对于任何动态规划问题都很重要，如果不得当或者不够清晰，会阻碍之后的步骤。
 
@@ -199,9 +195,9 @@ CC++GoJavaJavaScriptPython
 
 ## ¶二、二分查找解法
 
-这个解法的时间复杂度为 O(NlogN)O(NlogN)O(NlogN)，但是说实话，正常人基本想不到这种解法（也许玩过某些纸牌游戏的人可以想出来）。所以大家了解一下就好，正常情况下能够给出动态规划解法就已经很不错了。
+这个解法的时间复杂度为 $O(NlogN)$，但是说实话，正常人基本想不到这种解法（也许玩过某些纸牌游戏的人可以想出来）。所以大家了解一下就好，正常情况下能够给出动态规划解法就已经很不错了。
 
-根据题目的意思，我都很难想象这个问题竟然能和二分查找扯上关系。其实最长递增子序列和一种叫做 patience game 的纸牌游戏有关，甚至有一种排序方法就叫做 patience sorting（耐心排序）。
+根据题目的意思，我都很难想象这个问题竟然能和二分查找扯上关系。其实最长递增子序列和一种叫做 $game 的纸牌游戏有关，甚至有一种排序方法就叫做$ sorting（耐心排序）。
 
 为了简单起见，后文跳过所有数学证明，通过一个简化的例子来理解一下算法思路。
 
@@ -231,9 +227,7 @@ Tip
 
 前文 [二分查找算法详解](</zh/algo/essential-technique/binary-search-framework/>) 详细介绍了二分查找的细节及变体，这里就完美应用上了，如果没读过强烈建议阅读。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int lengthOfLIS(int[] nums) {
             int[] top = new int[nums.length];
@@ -243,7 +237,7 @@ CC++GoJavaJavaScriptPython
                 // 要处理的扑克牌
                 int poker = nums[i];
     
-                // ***** 搜索左侧边界的二分查找 *****
+                // *$搜索左侧边界的二分查找 *$
                 int left = 0, right = piles;
                 while (left < right) {
                     int mid = (left + right) / 2;
@@ -340,9 +334,7 @@ CC++GoJavaJavaScriptPython
 
 下面看解法代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int maxEnvelopes(int[][] envelopes) {
             int n = envelopes.length;
@@ -391,7 +383,7 @@ CC++GoJavaJavaScriptPython
 
 为了复用之前的函数，我将代码分为了两个函数，你也可以合并代码，节省下 `height` 数组的空间。
 
-由于增加了测试用例，这里必须使用二分搜索版的 `lengthOfLIS` 函数才能通过所有测试用例。这样的话算法的时间复杂度为 O(NlogN)O(NlogN)O(NlogN)，因为排序和计算 LIS 各需要 O(NlogN)O(NlogN)O(NlogN) 的时间，加到一起还是 O(NlogN)O(NlogN)O(NlogN)；空间复杂度为 O(N)O(N)O(N)，因为计算 LIS 的函数中需要一个 `top` 数组。
+由于增加了测试用例，这里必须使用二分搜索版的 `lengthOfLIS` 函数才能通过所有测试用例。这样的话算法的时间复杂度为 $O(NlogN)$，因为排序和计算 LIS 各需要 $O(NlogN)$ 的时间，加到一起还是 $O(NlogN)$；空间复杂度为 $O(N)$，因为计算 LIS 的函数中需要一个 `top` 数组。
 
 更新时间：2026/03/14 00:17
 

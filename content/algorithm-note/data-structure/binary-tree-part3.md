@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[652\. Find Duplicate Subtrees](<https://leetcode.com/problems/find-duplicate-subtrees/>)| [652\. 寻找重复的子树](<https://leetcode.cn/problems/find-duplicate-subtrees/>)|   
+[652\. Find Duplicate Subtrees](<https://leetcode.com$[652\. 寻找重复的子树](<https://leetcode.cn$   
   
 前置知识
 
@@ -70,9 +70,7 @@ LeetCode| 力扣| 难度
 
 题目来源：[力扣 652. 寻找重复的子树](<https://leetcode.cn/problems/find-duplicate-subtrees/>)。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 函数签名如下
     List<TreeNode> findDuplicateSubtrees(TreeNode root);
 
@@ -80,15 +78,15 @@ CC++GoJavaJavaScriptPython
 
 说起来比较绕，举例来说，比如输入如下的二叉树：
 
-![](/images/algo/binary-tree-iii/1.png)
+![](/images/algo/binary-tree-$i$/1.png)
 
 首先，节点 4 本身可以作为一棵子树，且二叉树中有多个节点 4：
 
-![](/images/algo/binary-tree-iii/2.png)
+![](/images/algo/binary-tree-$i$/2.png)
 
 类似的，还存在两棵以 2 为根的重复子树：
 
-![](/images/algo/binary-tree-iii/3.png)
+![](/images/algo/binary-tree-$i$/3.png)
 
 那么，我们返回的 `List` 中就应该有两个 `TreeNode`，值分别为 4 和 2（具体是哪个节点都无所谓）。
 

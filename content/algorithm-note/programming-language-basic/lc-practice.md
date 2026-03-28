@@ -65,9 +65,7 @@
 
 最简单的办法就是穷举嘛，用嵌套 for 循环，外层循环固定第一个数，内层循环找另一个数，看看它们的和是否等于目标值。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int[] twoSum(int[] nums, int target) {
             for (int i = 0; i < nums.length; i++) {
@@ -119,9 +117,7 @@ CC++GoJavaJavaScriptPython
 
 我们可以把数组中的元素逐个放入哈希集合中，如果发现某个元素已经存在，就直接返回 `true`。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean containsDuplicate(int[] nums) {
             HashSet<Integer> set = new HashSet<>();
@@ -177,9 +173,7 @@ CC++GoJavaJavaScriptPython
 
 这道题让你找出数组中只出现一次的数字，对于元素计数相关的问题，我们一般要用键值对来存储元素和其出现次数的对应关系，也就是要用到哈希表这种数据结构。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int singleNumber(int[] nums) {
             Map<Integer, Integer> count = new HashMap<>();
@@ -242,9 +236,7 @@ CC++GoJavaJavaScriptPython
 
 这是一道经典的括号问题，这类问题一般都可以用栈来解决，思路是：**遇到左括号则把左括号入栈，遇到右括号则把栈顶的左括号拿出来，看是否和右括号匹配** 。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public boolean isValid(String str) {
             Stack<Character> left = new Stack<>();
@@ -319,9 +311,7 @@ CC++GoJavaJavaScriptPython
 
 这是一个实际场景的算法题，比较有意思。我们如果直接用队列来模拟整个过程，肯定可以解决这个问题。直接看代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int timeRequiredToBuy(int[] tickets, int k) {
             // 用队列模拟整个过程

@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[912\. Sort an Array](<https://leetcode.com/problems/sort-an-array/>)| [912\. 排序数组](<https://leetcode.cn/problems/sort-an-array/>)|   
+[912\. Sort an Array](<https://leetcode.com$[912\. 排序数组](<https://leetcode.cn$   
   
 前置知识
 
@@ -23,7 +23,7 @@ LeetCode| 力扣| 难度
 
 一句话总结
 
-希尔排序是基于 [插入排序](</zh/algo/data-structure-basic/insertion-sort/>) 的简单改进，通过预处理增加数组的局部有序性，突破了插入排序的 O(N2)O(N^2)O(N2) 时间复杂度。
+希尔排序是基于 [插入排序](</zh/algo/data-structure-basic/insertion-sort/>) 的简单改进，通过预处理增加数组的局部有序性，突破了插入排序的 $O(N^2)$ 时间复杂度。
 
 你可以点开可视化面板，点击播放按钮，然后点击加速/减速按钮调节速度，即可直观感受希尔排序的过程：
 

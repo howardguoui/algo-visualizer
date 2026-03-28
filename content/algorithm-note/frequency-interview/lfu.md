@@ -39,9 +39,7 @@ LRU 算法的核心数据结构是使用哈希链表 `LinkedHashMap`，首先借
 
 要求你写一个类，接受一个 `capacity` 参数，实现 `get` 和 `put` 方法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class LFUCache {
         // 构造容量为 capacity 的缓存
         public LFUCache(int capacity) {}
@@ -51,15 +49,13 @@ CC++GoJavaJavaScriptPython
         public void put(int key, int val) {}
     }
 
-`get(key)` 方法会去缓存中查询键 `key`，如果 `key` 存在，则返回 `key` 对应的 `val`，否则返回 -1。
+`get(key)` 方法会去缓存中查询键 `key`，如果 `$存在，则返回 `$ 对应的 `val`，否则返回 -1。
 
-`put(key, value)` 方法插入或修改缓存。如果 `key` 已存在，则将它对应的值改为 `val`；如果 `key` 不存在，则插入键值对 `(key, val)`。
+`put(key, value)` 方法插入或修改缓存。如果 $已存在，则将它对应的值改为 `val`；如果$ 不存在，则插入键值对 `(key, val)`。
 
-当缓存达到容量 `capacity` 时，则应该在插入新的键值对之前，删除使用频次（后文用 `freq` 表示）最低的键值对。如果 `freq` 最低的键值对有多个，则删除其中最旧的那个。
+当缓存达到容量 `capacity` 时，则应该在插入新的键值对之前，删除使用频次（后文用 `$表示）最低的键值对。如果 `$ 最低的键值对有多个，则删除其中最旧的那个。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 构造一个容量为 2 的 LFU 缓存
     LFUCache cache = new LFUCache(2);
     
@@ -92,16 +88,12 @@ CC++GoJavaJavaScriptPython
 
 1、使用一个 `HashMap` 存储 `key` 到 `val` 的映射，就可以快速计算 `get(key)`。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     HashMap<Integer, Integer> keyToVal;
 
 2、使用一个 `HashMap` 存储 `key` 到 `freq` 的映射，就可以快速操作 `key` 对应的 `freq`。
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     HashMap<Integer, Integer> keyToFreq;
 
 3、这个需求应该是 LFU 算法的核心，所以我们分开说：

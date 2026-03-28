@@ -44,7 +44,7 @@
     
     
     抽象层（消息类型）              实现层（发送渠道）
-    Message ──────────────────→ MessageSender (接口)
+    M$──────────────────→ M$Sender (接口)
     ├── NormalMessage            ├── EmailSender
     └── UrgentMessage            ├── SmsSender
                                  └── PushSender
@@ -64,7 +64,7 @@
     }
     
     // 具体实现：邮件发送器
-    class EmailSender implements MessageSender {
+    class Email$implements Message$ {
         @Override
         public void send(String content) {
             System.out.println("发送邮件: " + content);
@@ -72,7 +72,7 @@
     }
     
     // 具体实现：短信发送器
-    class SmsSender implements MessageSender {
+    class Sms$implements Message$ {
         @Override
         public void send(String content) {
             System.out.println("发送短信: " + content);
@@ -80,7 +80,7 @@
     }
     
     // 具体实现：App 推送发送器
-    class PushSender implements MessageSender {
+    class Push$implements Message$ {
         @Override
         public void send(String content) {
             System.out.println("发送推送: " + content);
@@ -104,7 +104,7 @@
     }
     
     // 精确抽象：普通消息
-    class NormalMessage extends Message {
+    class NormalM$extends M$ {
         public NormalMessage(MessageSender sender) {
             super(sender);
         }
@@ -117,7 +117,7 @@
     }
     
     // 精确抽象：紧急消息
-    class UrgentMessage extends Message {
+    class UrgentM$extends M$ {
         public UrgentMessage(MessageSender sender) {
             super(sender);
         }
@@ -167,7 +167,7 @@
     
     
     // 新增：定时消息
-    class ScheduledMessage extends Message {
+    class ScheduledM$extends M$ {
         private String scheduledTime;
     
         public ScheduledMessage(MessageSender sender, String scheduledTime) {
@@ -185,7 +185,7 @@
     
     
     // 新增：微信发送器
-    class WechatSender implements MessageSender {
+    class Wechat$implements Message$ {
         @Override
         public void send(String content) {
             System.out.println("发送微信: " + content);

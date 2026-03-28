@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[316\. Remove Duplicate Letters](<https://leetcode.com/problems/remove-duplicate-letters/>)| [316\. 去除重复字母](<https://leetcode.cn/problems/remove-duplicate-letters/>)|   
-[1081\. Smallest Subsequence of Distinct Characters](<https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/>)| [1081\. 不同字符的最小子序列](<https://leetcode.cn/problems/smallest-subsequence-of-distinct-characters/>)|   
+[316\. R$Duplicate Letters](<https://leetcode.com/problems/r$$[316\. 去除重复字母](<https://leetcode.cn/problems/remove$   
+[1081\. Smallest Subsequence of Distinct Characters](<https://leetcode.com$[1081\. 不同字符的最小子序列](<https://leetcode.cn$   
   
 前置知识
 

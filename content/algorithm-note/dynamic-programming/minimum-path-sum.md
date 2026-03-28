@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[64\. Minimum Path Sum](<https://leetcode.com/problems/minimum-path-sum/>)| [64\. 最小路径和](<https://leetcode.cn/problems/minimum-path-sum/>)|   
+[64\. M$Path Sum](<https://leetcode.com/problems/m$$[64\. 最小路径和](<https://leetcode.cn/problems/minimum$   
   
 前置知识
 
@@ -57,9 +57,7 @@ LeetCode| 力扣| 难度
 
 函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int minPathSum(int[][] grid);
 
 其实这道题难度不算大，但你可能会遇到一些难度比较大的变体，所以统一讲一讲这种问题的通用思路。
@@ -86,9 +84,7 @@ CC++GoJavaJavaScriptPython
 
 比如我们定义如下一个 `dp` 函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int dp(int[][] grid, int i, int j);
 
 这个 `dp` 函数的定义如下：
@@ -97,9 +93,7 @@ CC++GoJavaJavaScriptPython
 
 根据这个定义，我们想求的最小路径和就可以通过调用这个 `dp` 函数计算出来：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int minPathSum(int[][] grid) {
         int m = grid.length;
         int n = grid[0].length;
@@ -111,9 +105,7 @@ CC++GoJavaJavaScriptPython
 
 我们可以直接写代码了：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int dp(int[][] grid, int i, int j) {
         // base case
         if (i == 0 && j == 0) {
@@ -149,9 +141,7 @@ CC++GoJavaJavaScriptPython
 
 那么我们可以使用备忘录技巧进行优化：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         int[][] memo;
     
@@ -190,7 +180,7 @@ CC++GoJavaJavaScriptPython
 
 算法可视化
 
-至此，本题就算是解决了，时间复杂度和空间复杂度都是 O(MN)O(MN)O(MN)，标准的自顶向下动态规划解法。
+至此，本题就算是解决了，时间复杂度和空间复杂度都是 $O(MN)$，标准的自顶向下动态规划解法。
 
 有的读者可能问，能不能用自底向上的迭代解法来做这道题呢？完全可以的。
 
@@ -198,18 +188,16 @@ CC++GoJavaJavaScriptPython
 
 **从左上角位置`(0, 0)` 走到位置 `(i, j)` 的最小路径和为 `dp[i][j]`**。
 
-状态转移方程当然不会变的，`dp[i][j]` 依然取决于 `dp[i-1][j]` 和 `dp[i][j-1]`，直接看代码吧：
+状态转移方程当然不会变的，`dp[i$依然取决于 `dp[i-1$ 和 `dp[i][j-1]`，直接看代码吧：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         public int minPathSum(int[][] grid) {
             int m = grid.length;
             int n = grid[0].length;
             int[][] dp = new int[m][n];
     
-            // **** base case ****
+            // $base case$
             dp[0][0] = grid[0][0];
     
             for (int i = 1; i < m; i++)
@@ -254,7 +242,7 @@ CC++GoJavaJavaScriptPython
 那么按照 `dp` 数组的定义，`dp[i][0] = sum(grid[0..i][0]), dp[0][j] = sum(grid[0][0..j])`，也就是如下代码：
     
     
-    // **** base case ****
+    // $base case$
     dp[0][0] = grid[0][0];
     
     for (int i = 1; i < m; i++)

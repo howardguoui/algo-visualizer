@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[384\. Shuffle an Array](<https://leetcode.com/problems/shuffle-an-array/>)| [384\. 打乱数组](<https://leetcode.cn/problems/shuffle-an-array/>)|   
-[382\. Linked List Random Node](<https://leetcode.com/problems/linked-list-random-node/>)| [382\. 链表随机节点](<https://leetcode.cn/problems/linked-list-random-node/>)|   
-[398\. Random Pick Index](<https://leetcode.com/problems/random-pick-index/>)| [398\. 随机数索引](<https://leetcode.cn/problems/random-pick-index/>)|   
+[384\. Shuffle an Array](<https://leetcode.com$[384\. 打乱数组](<https://leetcode.cn$   
+[382\. Linked List Random Node](<https://leetcode.com$[382\. 链表随机节点](<https://leetcode.cn$   
+[398\. R$Pick Index](<https://leetcode.com/problems/r$$[398\. 随机数索引](<https://leetcode.cn/problems/random$   
   
 前置知识
 

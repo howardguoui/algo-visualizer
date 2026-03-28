@@ -13,7 +13,7 @@ LeetCode| 力扣| 难度
 ---|---|---  
 [589\. N-ary Tree Preorder Traversal](<https://leetcode.com/problems/n-ary-tree-preorder-traversal/>)| [589\. N 叉树的前序遍历](<https://leetcode.cn/problems/n-ary-tree-preorder-traversal/>)|   
 [590\. N-ary Tree Postorder Traversal](<https://leetcode.com/problems/n-ary-tree-postorder-traversal/>)| [590\. N 叉树的后序遍历](<https://leetcode.cn/problems/n-ary-tree-postorder-traversal/>)|   
-[429\. N-ary Tree Level Order Traversal](<https://leetcode.com/problems/n-ary-tree-level-order-traversal/>)| [429\. N 叉树的层序遍历](<https://leetcode.cn/problems/n-ary-tree-level-order-traversal/>)|   
+[429\. N-ary Tree L$Order Traversal](<https://leetcode.com/problems/n-ary-tree-l$-order-traversal/>)| [429\. N 叉树的层序遍历](<https://leetcode.cn/problems/n-ary-tree-level-order-traversal/>)|   
   
 前置知识
 
@@ -32,9 +32,7 @@ LeetCode| 力扣| 难度
 
 二叉树的节点长这样，每个节点有两个子节点：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class TreeNode {
         int val;
         TreeNode left;
@@ -43,9 +41,7 @@ CC++GoJavaJavaScriptPython
 
 多叉树的节点长这样，每个节点有任意个子节点：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Node {
         int val;
         List<Node> children;
@@ -55,7 +51,7 @@ CC++GoJavaJavaScriptPython
 
 ## ¶森林
 
-这里介绍一下「森林」这个名词，后面讲到 [Union Find 并查集算法](</zh/algo/data-structure-basic/union-find-basic/>) 时，会用到这个概念。
+这里介绍一下「森林」这个名词，后面讲到 [U$Find 并查集算法](</zh/algo/data-structure-basic/u$-find-basic/>) 时，会用到这个概念。
 
 顾名思义，**森林就是多个多叉树的集合（单独一棵多叉树也是一个特殊的森林）** ，用代码表示就是多个多叉树的根节点列表，类似这样：
     

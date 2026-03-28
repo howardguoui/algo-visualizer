@@ -11,10 +11,10 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[144\. Binary Tree Preorder Traversal](<https://leetcode.com/problems/binary-tree-preorder-traversal/>)| [144\. 二叉树的前序遍历](<https://leetcode.cn/problems/binary-tree-preorder-traversal/>)|   
-[94\. Binary Tree Inorder Traversal](<https://leetcode.com/problems/binary-tree-inorder-traversal/>)| [94\. 二叉树的中序遍历](<https://leetcode.cn/problems/binary-tree-inorder-traversal/>)|   
-[145\. Binary Tree Postorder Traversal](<https://leetcode.com/problems/binary-tree-postorder-traversal/>)| [145\. 二叉树的后序遍历](<https://leetcode.cn/problems/binary-tree-postorder-traversal/>)|   
-[102\. Binary Tree Level Order Traversal](<https://leetcode.com/problems/binary-tree-level-order-traversal/>)| [102\. 二叉树的层序遍历](<https://leetcode.cn/problems/binary-tree-level-order-traversal/>)|   
+[144\. Binary Tree Preorder Traversal](<https://leetcode.com$[144\. 二叉树的前序遍历](<https://leetcode.cn$   
+[94\. Binary Tree Inorder Traversal](<https://leetcode.com$[94\. 二叉树的中序遍历](<https://leetcode.cn$   
+[145\. Binary Tree Postorder Traversal](<https://leetcode.com$[145\. 二叉树的后序遍历](<https://leetcode.cn$   
+[102\. Binary Tree L$Order Traversal](<https://leetcode.com/problems/binary-tree-l$$[102\. 二叉树的层序遍历](<https://leetcode.cn/problems/binary-tree-level$   
   
 前置知识
 
@@ -47,9 +47,7 @@ LeetCode| 力扣| 难度
 
 递归遍历二叉树的代码模板如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 基本的二叉树节点
     class TreeNode {
         int val;
@@ -81,9 +79,7 @@ CC++GoJavaJavaScriptPython
 
 那么我们简单拓展一下，如果修改前面的 `traverse` 函数，先递归遍历 `root.right`，再递归遍历 `root.left`，会是什么效果？
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 修改标准的二叉树遍历框架
     void traverseFlip(TreeNode root) {
         if (root == null) {
@@ -106,9 +102,7 @@ CC++GoJavaJavaScriptPython
 
 我们说二叉树遍历时，一般不会像 `traverseFlip` 这样遍历二叉树，默认还是按照先左后右的顺序，所以当我们说二叉树遍历的代码模板时，指的是先左后右的遍历顺序：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 基本的二叉树节点
     class TreeNode {
         int val;
@@ -144,9 +138,7 @@ CC++GoJavaJavaScriptPython
 
 所谓的前中后序遍历，其实就是在二叉树遍历框架的不同位置写代码：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 二叉树的遍历框架
     void traverse(TreeNode root) {
         if (root == null) {
@@ -211,9 +203,7 @@ BST 的中序遍历结果是有序的
 
 这是最简单的写法，代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void levelOrderTraverse(TreeNode root) {
         if (root == null) {
             return;
@@ -251,9 +241,7 @@ CC++GoJavaJavaScriptPython
 
 对上面的解法稍加改造，就得出了下面这种写法：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     void levelOrderTraverse(TreeNode root) {
         if (root == null) {
             return;
@@ -322,9 +310,7 @@ CC++GoJavaJavaScriptPython
 
 写法三就是为了解决这个问题，在写法一的基础上添加一个 `State` 类，让每个节点自己负责维护自己的路径权重和，代码如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class State {
         TreeNode node;
         int depth;

@@ -19,9 +19,7 @@
 
 参考解法如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 游戏面板仅支持提交 JavaScript 代码
     // 其他语言代码的作用是帮助大家理解算法逻辑
     

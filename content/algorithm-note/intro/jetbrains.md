@@ -13,7 +13,7 @@
 
 有些读者不喜欢在网页上刷题，认为在编辑器或 IDE 中刷题更方便编写和调试代码，所以我开发维护了各个平台的刷题插件满足这个需求，允许读者在插件中查看本站的题目讲解、可视化以及题单。
 
-JetBrains 刷题插件可以在 JetBrains 的所有 IDE（比如 Intellij，Pycharm 等等）中刷 LeetCode/力扣，支持逐行 Debug 代码，可以直接查看本站的思路讲解、可视化面板，同时集成了 [速成目录](</zh/algo/intro/quick-learning-plan/>) 和 [初学者目录](</zh/algo/intro/beginner-learning-plan/>) 中的题目题单，方便复习：
+J$刷题插件可以在 J$ 的所有 IDE（比如 Intellij，Pycharm 等等）中刷 LeetCode/力扣，支持逐行 Debug 代码，可以直接查看本站的思路讲解、可视化面板，同时集成了 [速成目录](</zh/algo/intro/quick-learning-plan/>) 和 [初学者目录](</zh/algo/intro/beginner-learning-plan/>) 中的题目题单，方便复习：
 
 ![](/images/algo/intro/jb_intro1.jpg)
 

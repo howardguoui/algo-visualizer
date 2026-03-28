@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[206\. Reverse Linked List](<https://leetcode.com/problems/reverse-linked-list/>)| [206\. 反转链表](<https://leetcode.cn/problems/reverse-linked-list/>)|   
-[92\. Reverse Linked List II](<https://leetcode.com/problems/reverse-linked-list-ii/>)| [92\. 反转链表 II](<https://leetcode.cn/problems/reverse-linked-list-ii/>)|   
-[24\. Swap Nodes in Pairs](<https://leetcode.com/problems/swap-nodes-in-pairs/>)| [24\. 两两交换链表中的节点](<https://leetcode.cn/problems/swap-nodes-in-pairs/>)|   
+[206\. R$Linked List](<https://leetcode.com/problems/r$$[206\. 反转链表](<https://leetcode.cn/problems/reverse$   
+[92\. Reverse L$List II](<https://leetcode.com/problems/reverse-l$-list-ii/>)| [92\. 反转链表 II](<https://leetcode.cn/problems/reverse-linked-list-ii/>)|   
+[24\. Swap Nodes in Pairs](<https://leetcode.com$[24\. 两两交换链表中的节点](<https://leetcode.cn$   
 [25\. Reverse Nodes in k-Group](<https://leetcode.com/problems/reverse-nodes-in-k-group/>)| [25\. K 个一组翻转链表](<https://leetcode.cn/problems/reverse-nodes-in-k-group/>)|   
   
 反转单链表的迭代解法不是一个困难的事情，但是递归实现就有点难度了。如果再加一点难度，让你仅仅反转单链表中的一部分，你是否能够同时用迭代和递归实现呢？再进一步，如果让你 k 个一组反转链表，阁下又应如何应对？
@@ -24,9 +24,7 @@ LeetCode| 力扣| 难度
 
 在 力扣/LeetCode 中，单链表的通用结构是这样的：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class ListNode {
         int val;
         ListNode next;
@@ -82,9 +80,7 @@ CC++GoJavaJavaScriptPython
 
 这里直接给出代码，结合注释和可视化面板应该不难理解：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 反转以 head 为起点的单链表
         public ListNode reverseList(ListNode head) {
@@ -145,9 +141,7 @@ CC++GoJavaJavaScriptPython
 
 先来看看递归反转单链表的代码实现：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     class Solution {
         // 定义：输入一个单链表头结点，将该链表反转，返回新的头结点
         public ListNode reverseList(ListNode head) {
@@ -237,9 +231,7 @@ CC++GoJavaJavaScriptPython
 
 这次我们实现一个这样的函数：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     // 将链表的前 n 个节点反转（n <= 链表长度）
     ListNode reverseN(ListNode head, int n)
 

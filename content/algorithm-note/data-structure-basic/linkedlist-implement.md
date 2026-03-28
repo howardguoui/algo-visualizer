@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[707\. Design Linked List](<https://leetcode.com/problems/design-linked-list/>)| [707\. 设计链表](<https://leetcode.cn/problems/design-linked-list/>)|   
+[707\. D$Linked List](<https://leetcode.com/problems/d$$[707\. 设计链表](<https://leetcode.cn/problems/design$   
   
 前置知识
 
@@ -28,9 +28,9 @@ LeetCode| 力扣| 难度
 
 在力扣做题时，一般题目给我们传入的就是单链表的头指针。但是在实际开发中，用的都是双链表，而双链表一般会同时持有头尾节点的引用。
 
-因为在软件开发中，在容器尾部添加元素是个非常高频的操作，双链表持有尾部节点的引用，就可以在 O(1)O(1)O(1) 的时间复杂度内完成尾部添加元素的操作。
+因为在软件开发中，在容器尾部添加元素是个非常高频的操作，双链表持有尾部节点的引用，就可以在 $O(1)$ 的时间复杂度内完成尾部添加元素的操作。
 
-对于单链表来说，持有尾部节点的引用也有优化效果。比如你要在单链表尾部添加元素，如果没有尾部节点的引用，你就需要遍历整个链表找到尾部节点，时间复杂度是 O(n)O(n)O(n)；如果有尾部节点的引用，就可以在 O(1)O(1)O(1) 的时间复杂度内完成尾部添加元素的操作。
+对于单链表来说，持有尾部节点的引用也有优化效果。比如你要在单链表尾部添加元素，如果没有尾部节点的引用，你就需要遍历整个链表找到尾部节点，时间复杂度是 $O(n)$；如果有尾部节点的引用，就可以在 $O(1)$ 的时间复杂度内完成尾部添加元素的操作。
 
 细心的读者可能会说，即便如此，如果删除一次单链表的尾结点，那么之前尾结点的引用就失效了，还是需要遍历一遍链表找到尾结点。
 
@@ -88,9 +88,7 @@ LeetCode| 力扣| 难度
 
 ## ¶双链表代码实现
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     import java.util.NoSuchElementException;
     
     public class MyLinkedList<E> {
@@ -273,7 +271,7 @@ CC++GoJavaJavaScriptPython
             return oldVal;
         }
     
-        // ***** 其他工具函数 *****
+        // *$其他工具函数 *$
     
         public int size() {
             return size;
@@ -338,9 +336,7 @@ CC++GoJavaJavaScriptPython
 
 ## ¶单链表代码实现
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     import java.util.NoSuchElementException;
     
     public class MyLinkedList2<E> {
@@ -482,7 +478,7 @@ CC++GoJavaJavaScriptPython
             return oldVal;
         }
     
-        // ***** 其他工具函数 *****
+        // *$其他工具函数 *$
         public int size() {
             return size;
         }

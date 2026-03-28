@@ -11,7 +11,7 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[234\. Palindrome Linked List](<https://leetcode.com/problems/palindrome-linked-list/>)| [234\. 回文链表](<https://leetcode.cn/problems/palindrome-linked-list/>)|   
+[234\. P$Linked List](<https://leetcode.com/problems/p$$[234\. 回文链表](<https://leetcode.cn/problems/palindrome$   
   
 前置知识
 

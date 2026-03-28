@@ -11,9 +11,9 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[1143\. Longest Common Subsequence](<https://leetcode.com/problems/longest-common-subsequence/>)| [1143\. 最长公共子序列](<https://leetcode.cn/problems/longest-common-subsequence/>)|   
-[583\. Delete Operation for Two Strings](<https://leetcode.com/problems/delete-operation-for-two-strings/>)| [583\. 两个字符串的删除操作](<https://leetcode.cn/problems/delete-operation-for-two-strings/>)|   
-[712\. Minimum ASCII Delete Sum for Two Strings](<https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/>)| [712\. 两个字符串的最小ASCII删除和](<https://leetcode.cn/problems/minimum-ascii-delete-sum-for-two-strings/>)|   
+[1143\. L$Common Subsequence](<https://leetcode.com/problems/l$$[1143\. 最长公共子序列](<https://leetcode.cn/problems/longest$   
+[583\. Delete Operation for Two Strings](<https://leetcode.com$[583\. 两个字符串的删除操作](<https://leetcode.cn$   
+[712\. Minimum ASCII Delete Sum for Two Strings](<https://leetcode.com$[712\. 两个字符串的最小ASCII删除和](<https://leetcode.cn$   
   
 前置知识
 
@@ -34,9 +34,7 @@ LeetCode| 力扣| 难度
 
 给你输入两个字符串 `s1` 和 `s2`，请你找出他们俩的最长公共子序列，返回这个子序列的长度。函数签名如下：
 
-CC++GoJavaJavaScriptPython
-    
-    
+
     int longestCommonSubsequence(String s1, String s2);
 
 比如说输入 `s1 = "zabcde", s2 = "acez"`，它俩的最长公共子序列是 `lcs = "ace"`，长度为 3，所以算法返回 3。

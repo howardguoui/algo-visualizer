@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[528\. Random Pick with Weight](<https://leetcode.com/problems/random-pick-with-weight/>)| [528\. 按权重随机选择](<https://leetcode.cn/problems/random-pick-with-weight/>)|   
-[LCR 071. 按权重随机选择](<https://leetcode.com/problems/cuyjEf/>)| [LCR 071. 按权重随机选择](<https://leetcode.cn/problems/cuyjEf/>)|   
+[528\. Random Pick with Weight](<https://leetcode.com$[528\. 按权重随机选择](<https://leetcode.cn$   
+$071. 按权重随机选择](<https://leetcode.com/problems/cuyjEf/>)|$ 071. 按权重随机选择](<https://leetcode.cn/problems/cuyjEf/>)|   
   
 前置知识
 

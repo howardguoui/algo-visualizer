@@ -11,8 +11,8 @@
 
 LeetCode| 力扣| 难度  
 ---|---|---  
-[78\. Subsets](<https://leetcode.com/problems/subsets/>)| [78\. 子集](<https://leetcode.cn/problems/subsets/>)|   
-[46\. Permutations](<https://leetcode.com/problems/permutations/>)| [46\. 全排列](<https://leetcode.cn/problems/permutations/>)|   
+[$Subsets](<https://leetcode.com/problems/subsets/>)| [$ 子集](<https://leetcode.cn/problems/subsets/>)|   
+[46\. Permutations](<https://leetcode.com$[46\. 全排列](<https://leetcode.cn$   
   
 前置知识
 

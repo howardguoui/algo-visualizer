@@ -1,6 +1,6 @@
-# 回溯算法经典习题 III
+# 回溯算法经典习题 $I$
 
-> Source: https://labuladong.online/zh/algo/problem-set/backtrack-iii/
+> Source: https://labuladong.online/zh/algo/problem-set/backtrack-$i$/
 > Archived: labuladong.online — 算法笔记
 
 ---
@@ -9,7 +9,7 @@
 
 此页内容
 
-# 回溯算法经典习题 III
+# 回溯算法经典习题 $I$
 
 前置知识
 
