@@ -128,6 +128,20 @@ export function Sidebar({ isOpen }: Props) {
           </Link>
         </div>
 
+        {/* ── AI Tutor ──────────────────────────────────────────────────────── */}
+        <div className="px-3 mb-1">
+          <Link
+            to="/ai-tutor"
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-semibold no-underline transition-colors ${
+              location.pathname === '/ai-tutor'
+                ? 'bg-indigo-600 text-white'
+                : 'text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800'
+            }`}
+          >
+            <span>{lang === 'zh' ? 'AI 导师' : 'AI Tutor'}</span>
+          </Link>
+        </div>
+
         {/* Divider */}
         <div className="border-t border-gray-200 dark:border-slate-800 mx-3 my-2" />
 

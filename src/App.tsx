@@ -14,6 +14,7 @@ import { AlgorithmStudyNotePage } from './pages/AlgorithmStudyNotePage'
 import { AlgorithmStudyNoteProblemSetPage } from './pages/AlgorithmStudyNoteProblemSetPage'
 import { SQLSandboxPage } from './pages/SQLSandboxPage'
 import { SystemDesignPage } from './pages/SystemDesignPage'
+import { AITutorPage } from './pages/AITutorPage'
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
             <Route path="/algorithm-study-note/article/:articleId" element={<AlgorithmStudyNotePage />} />
             <Route path="/algorithm-study-note/problem-set" element={<AlgorithmStudyNoteProblemSetPage />} />
             <Route path="/system-design" element={<SystemDesignPage />} />
+            <Route path="/ai-tutor" element={<AITutorPage />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Route>
         </Routes>

@@ -11,12 +11,29 @@ const CHAT_STORAGE_KEY = 'algo-viz-chat-history'
 const MAX_PERSISTED_MESSAGES = 30
 
 interface Message {
-  role: 'user' | 'assistant'
+  role: 'user' | 'assistant' | 'system'
   content: string
 }
 
+// ── Section name resolver ─────────────────────────────────────────────────────
+function getSectionName(pathname: string, lang: string): string {
+  if (pathname.includes('/system-design')) return lang === 'zh' ? '系统设计' : 'System Design'
+  if (pathname.includes('/practice/')) return lang === 'zh' ? '编程练习' : 'Practice'
+  if (pathname.includes('/learn/')) {
+    const topicId = pathname.split('/learn/')[1]
+    const found = findTopic(topicId)
+    if (found) return lang === 'zh' ? found.topic.title.zh : found.topic.title.en
+    return topicId
+  }
+  if (pathname.includes('/visualize')) return lang === 'zh' ? '算法可视化' : 'Visualizer'
+  if (pathname.includes('/sql')) return lang === 'zh' ? 'SQL 沙盒' : 'SQL Sandbox'
+  if (pathname.includes('/algorithm-study-note')) return lang === 'zh' ? '算法笔记' : 'Study Notes'
+  if (pathname === '/problems') return lang === 'zh' ? 'LeetCode 题单' : 'Problem Sets'
+  return lang === 'zh' ? '主页' : 'Home'
+}
+
 // ── Simple markdown renderer ──────────────────────────────────────────────────
-function renderMarkdown(text: string): React.ReactNode[] {
+export function renderMarkdown(text: string): React.ReactNode[] {
   const lines = text.split('\n')
   const result: React.ReactNode[] = []
   let i = 0
@@ -94,7 +111,7 @@ function renderMarkdown(text: string): React.ReactNode[] {
   return result
 }
 
-function inlineFormat(text: string): React.ReactNode {
+export function inlineFormat(text: string): React.ReactNode {
   // Split on **bold**, *italic*, `code`
   const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/)
   return (
@@ -178,6 +195,7 @@ export function GlobalAIChat() {
   }, [])
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const prevPathRef = useRef<string | null>(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -186,6 +204,22 @@ export function GlobalAIChat() {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  useEffect(() => {
+    const current = location.pathname + location.search
+    if (prevPathRef.current !== null && prevPathRef.current !== current) {
+      const sectionName = getSectionName(location.pathname, lang)
+      setMessages(prev => {
+        if (prev.length === 0) return prev
+        const label = lang === 'zh'
+          ? `已切换至：${sectionName}`
+          : `Context refreshed: ${sectionName}`
+        return [...prev, { role: 'system' as const, content: label }]
+      })
+    }
+    prevPathRef.current = current
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname, location.search])
 
   const sendMessage = useCallback(async (userMessage: string) => {
     if (!userMessage.trim() || isTyping) return
@@ -237,7 +271,7 @@ export function GlobalAIChat() {
       constraints = 'Help with SQL concepts, query writing, and optimization. Use examples with standard SQL syntax.'
     }
 
-    const conversationHistory = messages.slice(-6).map(m =>
+    const conversationHistory = messages.filter(m => m.role !== 'system').slice(-6).map(m =>
       `${m.role === 'user' ? 'Student' : 'Tutor'}: ${m.content.slice(0, 300)}`
     ).join('\n')
 
@@ -395,28 +429,41 @@ Tutor:`
                 </div>
               </div>
             ) : (
-              messages.map((msg, idx) => (
-                <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[88%] rounded-2xl px-4 py-2.5 text-sm ${
-                    msg.role === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-none'
-                      : theme === 'dark'
-                        ? 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700'
-                        : 'bg-white border border-gray-200 text-gray-800 shadow-sm rounded-bl-none'
-                  }`}>
-                    {msg.role === 'assistant' && msg.content
-                      ? renderMarkdown(msg.content)
-                      : msg.role === 'assistant' && !msg.content && isTyping
-                        ? <span className="inline-flex gap-1 items-center py-1">
-                            <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '0ms' }} />
-                            <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '150ms' }} />
-                            <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '300ms' }} />
-                          </span>
-                        : <span className="whitespace-pre-wrap">{msg.content}</span>
-                    }
+              messages.map((msg, idx) => {
+                if (msg.role === 'system') {
+                  return (
+                    <div key={idx} className="flex items-center gap-2 my-1">
+                      <div className={`flex-1 h-px ${theme === 'dark' ? 'bg-slate-700' : 'bg-gray-200'}`} />
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full shrink-0 ${theme === 'dark' ? 'text-slate-500 bg-slate-800' : 'text-gray-400 bg-gray-100'}`}>
+                        {msg.content}
+                      </span>
+                      <div className={`flex-1 h-px ${theme === 'dark' ? 'bg-slate-700' : 'bg-gray-200'}`} />
+                    </div>
+                  )
+                }
+                return (
+                  <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[88%] rounded-2xl px-4 py-2.5 text-sm ${
+                      msg.role === 'user'
+                        ? 'bg-blue-600 text-white rounded-br-none'
+                        : theme === 'dark'
+                          ? 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700'
+                          : 'bg-white border border-gray-200 text-gray-800 shadow-sm rounded-bl-none'
+                    }`}>
+                      {msg.role === 'assistant' && msg.content
+                        ? renderMarkdown(msg.content)
+                        : msg.role === 'assistant' && !msg.content && isTyping
+                          ? <span className="inline-flex gap-1 items-center py-1">
+                              <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '0ms' }} />
+                              <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '150ms' }} />
+                              <span className="w-1.5 h-1.5 rounded-full bg-current animate-bounce" style={{ animationDelay: '300ms' }} />
+                            </span>
+                          : <span className="whitespace-pre-wrap">{msg.content}</span>
+                      }
+                    </div>
                   </div>
-                </div>
-              ))
+                )
+              })
             )}
             <div ref={messagesEndRef} />
           </div>
